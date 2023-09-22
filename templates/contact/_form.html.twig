@@ -1,0 +1,46 @@
+{{ form_start(form, {attr: {'class': 'contact-form', novalidate: 'novalidate'}}) }}
+{% if errors %}
+    <div class="alert alert-danger">
+        <ul>
+            {% for error in errors %}
+                <li>{{ error.message }}</li>
+                {% endfor %}           
+        </ul>
+    </div>
+{% endif %} 
+<div class="form-row">    
+    <div class="col-md-6">
+        <div class="form-group">
+            {{ form_label(form.name, 'Your Name'|trans) }}
+            {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'form.contact.name'|trans}}) }}
+        </div>
+    </div>    
+    <div class="col-md-6">
+        <div class="form-group">
+            {{ form_label(form.email, 'Your Email'|trans) }}
+            {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'form.contact.email'|trans}}) }}
+        </div>
+    </div>    
+    <div class="col-md-6">
+        <div class="form-group">
+            {{ form_label(form.phone, 'Your Phone Number'|trans) }}
+            {{ form_widget(form.phone, {'attr': {'class': 'form-control', 'placeholder': 'form.contact.phone'|trans}}) }}
+        </div>
+    </div>    
+    <div class="col-md-6">
+        <div class="form-group">
+            {{ form_label(form.subject, 'Subject'|trans) }}
+            {{ form_widget(form.subject, {'attr': {'class': 'form-control', 'placeholder': 'form.contact.subject'|trans}}) }}
+        </div>  
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            {{ form_label(form.message, 'Your Message'|trans) }}
+            {{ form_widget(form.message, {'attr': {'class': 'form-control', 'rows': 6, 'placeholder': 'form.contact.message'|trans}}) }}
+        </div>
+    </div>
+    <div class="col-md-12 text-center">
+        {{ form_widget(form.save, { 'label': 'Send'|trans }) }}
+    </div>
+</div>
+{{ form_end(form) }}

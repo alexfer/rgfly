@@ -1,0 +1,39 @@
+{
+    "name": "symfony-demo",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "directories": {
+        "test": "tests"
+    },
+    "scripts": {
+        "dev-server": "encore dev-server",
+        "dev": "encore dev",
+        "watch": "encore dev --watch",
+        "build": "encore production --progress"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@babel/plugin-proposal-class-properties": "^7.18.6",
+        "@babel/preset-env": "^7.22.10",
+        "@hotwired/stimulus": "^3.2.2",
+        "@popperjs/core": "^2.11.8",
+        "@symfony/stimulus-bridge": "^3.2.2",
+        "@symfony/webpack-encore": "^4.4.0",
+        "bootstrap": "^4.6.2",
+        "font-awesome": "^4.7.0",
+        "jquery": "^3.7.1",
+        "popper.js": "^1.16.1",
+        "webpack": "^5.88.2",
+        "webpack-cli": "^5.1.4",
+        "webpack-notifier": "^1.15.0"
+    },
+    "dependencies": {
+        "@babel/core": "^7.22.10",
+        "ckeditor4": "^4.23.0",
+        "node-sass": "^9.0.0",
+        "sass-loader": "^13.3.2",
+        "watch": "^1.0.2"
+    }
+}

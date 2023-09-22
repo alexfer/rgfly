@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+        <header>
+            <tool tool-id="symfony" tool-name="Symfony"/>
+        </header>
+        <body>
+            <trans-unit id="title.questions">
+                <source>title.questions</source>
+                <target>Questions</target>
+            </trans-unit>
+            <trans-unit id="title.home">
+                <source>title.home</source>
+                <target>Home</target>
+            </trans-unit>
+            <trans-unit id="title.about_us">
+                <source>title.about_us</source>
+                <target>About Us</target>
+            </trans-unit>
+            <trans-unit id="title.info">
+                <source>title.info</source>
+                <target>Info</target>
+            </trans-unit>
+            <trans-unit id="title.services">
+                <source>title.services</source>
+                <target>Services</target>
+            </trans-unit>
+            <trans-unit id="title.service_details">
+                <source>title.service_details</source>
+                <target>Service Details</target>
+            </trans-unit>
+            <trans-unit id="title.search_for">
+                <source>title.search_for</source>
+                <target>Search for</target>
+            </trans-unit>
+            <trans-unit id="title.search">
+                <source>title.search</source>
+                <target>Search</target>
+            </trans-unit>
+            <trans-unit id="title.contact_us">
+                <source>title.contact_us</source>
+                <target>Contact Us</target>
+            </trans-unit>
+            <trans-unit id="title.private_policy">
+                <source>title.private_policy</source>
+                <target>Private Policy</target>
+            </trans-unit>
+            <trans-unit id="title.terms">
+                <source>title.terms</source>
+                <target><![CDATA[Terms &amp; Conditions]]></target>
+            </trans-unit>
+            <trans-unit id="title.contact_information">
+                <source>title.contact_information</source>
+                <target>Contact Information</target>
+            </trans-unit>
+            <trans-unit id="title.phone">
+                <source>title.phone</source>
+                <target>Phone</target>
+            </trans-unit>
+            <trans-unit id="title.email">
+                <source>title.email</source>
+                <target>Enail</target>
+            </trans-unit>
+            <trans-unit id="title.address">
+                <source>title.address</source>
+                <target>Address</target>
+            </trans-unit>
+            <trans-unit id="title.subscribe_email">
+                <source>title.subscribe_email</source>
+                <target>Enter your email</target>
+            </trans-unit>
+            <trans-unit id="title.subscribe">
+                <source>title.subscribe</source>
+                <target>Subscribe</target>
+            </trans-unit>
+            <trans-unit id="text.all_right_reserved">
+                <source>text.all_right_reserved</source>
+                <target>All Rights Reserved</target>
+            </trans-unit>
+            <trans-unit id="text.home.header">
+                <source>text.home.header</source>
+                <target>Software development company</target>
+            </trans-unit>
+            <trans-unit id="text.home.desc">
+                <source>text.home.desc</source>
+                <target>
+                    <![CDATA[Helping leading companies and tech startups strengthen<br />their teams is what we do and what we do best.]]>
+                </target>
+            </trans-unit>
+            <trans-unit id="text.faq.header">
+                <source>text.faq.header</source>
+                <target>Direct answers to frequently asked questions</target>
+            </trans-unit>
+            <trans-unit id="text.faq.desc">
+                <source>text.faq.desc</source>
+                <target>
+                    <![CDATA[Are there any questions, ambiguities or doubts about hiring a developer?<br />Answers to the most frequently asked questions can be found below.]]>
+                </target>
+            </trans-unit>
+            <trans-unit id="text.contact.header">
+                <source>text.contact.header</source>
+                <target>Contact us</target>
+            </trans-unit>
+            <trans-unit id="text.contact.desc">
+                <source>text.contact.desc</source>
+                <target><![CDATA[Leave your information using the form below and<br>we will contact you within 1 business day.]]></target>
+            </trans-unit>
+            <trans-unit id="text.info.header">
+                <source>text.info.header</source>
+                <target>Information about our services</target>
+            </trans-unit>
+            <trans-unit id="text.info.desc">
+                <source>text.info.desc</source>
+                <target><![CDATA[Want to know more about our services?]]></target>
+            </trans-unit>
+            <trans-unit id="text.about_us.header">
+                <source>text.about_us.header</source>
+                <target>Want to know more about us immediately?</target>
+            </trans-unit>
+            <trans-unit id="text.about_us.short_desc">
+                <source>text.about_us.short_desc</source>
+                <target>
+                    <![CDATA[Read more about how Techspace came to be and how we support our customers with IT issues on a daily basis.]]>
+                </target>
+            </trans-unit>
+            <trans-unit id="text.about_us.long_desc">
+                <source>text.about_us.long_desc</source>
+                <target>
+                    <![CDATA[We started as an internet agency and have increasingly grown to develop applications, mobile apps, platforms and products. For customers and with customers. During the growth we noticed that more and more companies were having trouble attracting personnel and so we received the first requests whether we wanted to help our customers with this. Because we already had our own nearshore location at that time, the idea arose to provide our customers with developers for the longer term, whom they could manage themselves. We then shifted our focus.]]>
+                </target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

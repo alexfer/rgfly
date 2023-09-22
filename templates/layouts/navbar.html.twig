@@ -1,0 +1,64 @@
+{% set _route = app.request.get('_route') %}
+<div class="navbar-area">
+    <div class="tech-responsive-nav">
+        <div class="container">
+            <div class="tech-responsive-menu">
+                <div class="tech-logo">
+                    <a href="{{ path('app_index') }}">
+                        <span class="black-logo text-dark">TECHSPACE</span>
+                        <span class="white-logo text-white">TECHSPACE</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tech-nav">
+        <nav class="navbar navbar-expand-md navbar-light">
+            <div class="container">
+                <a class="navbar-brand" href="{{ path('app_index') }}">
+                    <span class="black-logo text-dark">TECHSPACE</span>
+                    <span class="white-logo text-white">TECHSPACE</span>                            
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#tech-navbar" aria-controls="tech-navbar" aria-expanded="false">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link {{_route == 'app_index'? 'active': '' }}" href="{{ path('app_index') }}">{{ 'title.home'|trans }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{_route == 'about'? 'active': '' }}" href="{{ path('about') }}">{{ 'title.about_us'|trans }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{_route == 'faq'? 'active': '' }}" href="{{ path('faq') }}">{{ 'title.questions'|trans }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{_route == 'info'? 'active': '' }}" href="{{ path('info') }}">{{ 'title.info'|trans }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">{{ 'title.services'|trans }} <i class="fa fa-chevron-down fa-1x"></i></a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item"> 
+                                    <a href="#" class="nav-link">{{ 'title.services'|trans }}</a>
+                                </li>
+                                <li class="nav-item"> 
+                                    <a href="#" class="nav-link">{{ 'title.service_details'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>                                
+                    {#<div class="widget_search">
+                        <form class="search-form search-top">
+                            <label> <span class="screen-reader-text">{{ 'title.search_for'|trans }}:</span>
+                                <input type="search" class="search-field bg-light" placeholder="{{ 'title.search'|trans }}...">
+                            </label>
+                            <button type="submit"> <i class="fa fa-search"></i>
+                            </button>
+                        </form>
+                    </div>#}
+                </div>
+            </div>              
+        </nav>
+    </div>
+</div>
