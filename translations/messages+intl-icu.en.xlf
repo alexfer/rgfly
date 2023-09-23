@@ -17,9 +17,25 @@
                 <source>title.about_us</source>
                 <target>About Us</target>
             </trans-unit>
-            <trans-unit id="title.info">
-                <source>title.info</source>
-                <target>Info</target>
+            <trans-unit id="title.service">
+                <source>title.service</source>
+                <target>Service</target>
+            </trans-unit>
+            <trans-unit id="title.user.area">
+                <source>title.user.area</source>
+                <target>User Area</target>
+            </trans-unit>
+            <trans-unit id="title.user.signin">
+                <source>title.user.signin</source>
+                <target>Sign In</target>
+            </trans-unit>
+            <trans-unit id="title.user.signup">
+                <source>title.user.signup</source>
+                <target>Sign Up</target>
+            </trans-unit>
+            <trans-unit id="title.user.logoff">
+                <source>title.user.logoff</source>
+                <target>Log Off</target>
             </trans-unit>
             <trans-unit id="title.services">
                 <source>title.services</source>

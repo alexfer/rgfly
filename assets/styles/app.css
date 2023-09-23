@@ -408,7 +408,6 @@ p:last-child {
 .tech-nav .navbar .navbar-nav .nav-item .dropdown-menu {
     -webkit-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
     box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
-    background: #ffffff;
     position: absolute;
     border: none;
     top: 80px;
@@ -419,9 +418,19 @@ p:last-child {
     opacity: 0;
     visibility: hidden;
     border-radius: 0;
-    -webkit-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
     padding: 0px;
+}
+.navbar-light .navbar-nav .nav-link.btn {
+    color: #fff;
+    font-weight: 600;
+    font-size: 15px;
+    background-color: #5e87eb;
+    border-radius: .30rem;
+    border: 1px solid transparent;
+    transition:all 0.90s ease 0s;
+    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12), 0 2px 4px -1px rgba(0, 0, 0, .2)
 }
 
 .tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li {
@@ -442,10 +451,12 @@ p:last-child {
     margin: 0;
 }
 
-.tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li a:hover, .tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li a:focus, .tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li a.active {
-    color: #505060;
-    background: #f8f8f8;
-    padding-left: 20px;
+.tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li a:hover,
+.tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li a:focus,
+.tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li a.active {
+    color: #fff;
+    background: #5e87eb;
+    padding-left: 20px
 }
 
 .tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-menu {

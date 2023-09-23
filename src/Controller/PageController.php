@@ -18,13 +18,13 @@ class PageController extends AbstractController
     #[Route('/terms', name: 'terms')]
     #[Route('/policy', name: 'policy')]
     #[Route('/about', name: 'about')]
-    #[Route('/info', name: 'info')]
+    #[Route('/service', name: 'service')]
     public function index(Request $request): Response
     {
         $template = $request->attributes->get('_route');
 
         return $this->render('pages/' . $template . '.html.twig', [
-                    'controller_name' => 'PageController',
+                    'data' => [],
         ]);
     }
 }
