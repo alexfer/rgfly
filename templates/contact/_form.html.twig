@@ -10,37 +10,47 @@
 {% endif %} 
 <div class="form-row">    
     <div class="col-md-6">
-        <div class="form-group">
-            {{ form_label(form.name, 'Your Name'|trans) }}
-            {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'form.contact.name'|trans}}) }}
+        <div class="form-group">            
+            {% set name_error = form.name.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.name, 'label.form.name') }}
+            {{ form_widget(form.name, {'attr': {'class': name_error, 'placeholder': 'label.form.name'}}) }}
+            <small class="form-text text-muted">{{ 'contact.form.name.help'|trans({ '%min%': form.name.vars.attr.min, '%max%': form.name.vars.attr.max }) }}</small>
+        </div>
+    </div>    
+    <div class="col-md-6">
+        <div class="form-group">     
+            {% set email_error = form.email.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.email, 'label.form.email') }}
+            {{ form_widget(form.email, {'attr': {'class': email_error, 'placeholder': 'label.form.email'}}) }}
+            <small class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
     </div>    
     <div class="col-md-6">
         <div class="form-group">
-            {{ form_label(form.email, 'Your Email'|trans) }}
-            {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'form.contact.email'|trans}}) }}
+            {% set phone_error = form.phone.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.phone, 'label.form.phone') }}
+            {{ form_widget(form.phone, {'attr': {'class': phone_error, 'placeholder': 'label.form.phone'}}) }}
+            <small class="form-text text-muted">For instance should be like 3106398200.</small>
         </div>
     </div>    
     <div class="col-md-6">
         <div class="form-group">
-            {{ form_label(form.phone, 'Your Phone Number'|trans) }}
-            {{ form_widget(form.phone, {'attr': {'class': 'form-control', 'placeholder': 'form.contact.phone'|trans}}) }}
-        </div>
-    </div>    
-    <div class="col-md-6">
-        <div class="form-group">
-            {{ form_label(form.subject, 'Subject'|trans) }}
-            {{ form_widget(form.subject, {'attr': {'class': 'form-control', 'placeholder': 'form.contact.subject'|trans}}) }}
+            {% set subject_error = form.subject.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.subject, 'label.form.subject') }}
+            {{ form_widget(form.subject, {'attr': {'class': subject_error, 'placeholder': 'label.form.subject'}}) }}
+            <small class="form-text text-muted">{{ 'contact.form.subject.help'|trans({ '%min%': form.subject.vars.attr.min, '%max%': form.subject.vars.attr.max }) }}</small>
         </div>  
     </div>
     <div class="col-md-12">
         <div class="form-group">
-            {{ form_label(form.message, 'Your Message'|trans) }}
-            {{ form_widget(form.message, {'attr': {'class': 'form-control', 'rows': 6, 'placeholder': 'form.contact.message'|trans}}) }}
+            {% set message_error = form.message.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.message, 'label.form.message') }}
+            {{ form_widget(form.message, {'attr': {'class': message_error, 'rows': 6, 'placeholder': 'label.form.message'}}) }}
+            <small class="form-text text-muted">{{ 'contact.form.message.help'|trans({ '%min%': form.message.vars.attr.min, '%max%': form.message.vars.attr.max }) }}</small>
         </div>
     </div>
     <div class="col-md-12 text-center">
-        {{ form_widget(form.save, { 'label': 'Send'|trans }) }}
+        {{ form_widget(form.send, { 'label': 'contact.form.action.send' }) }}
     </div>
 </div>
 {{ form_end(form) }}

@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractController
 {
+
     /**
      * 
      * @return Response
@@ -16,7 +17,7 @@ class DefaultController extends AbstractController
     public function index(): Response
     {
         return $this->render('page/index.html.twig', [
-            'controller_name' => 'DefaultController',
+                    'controller_name' => 'DefaultController',
         ]);
     }
 }

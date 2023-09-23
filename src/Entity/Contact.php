@@ -11,6 +11,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Contact
 {
 
+    const CONSTRAINTS = [
+        'name' => [
+            'min' => 10,
+            'max' => 200,
+        ],
+        'subject' => [
+            'min' => 20,
+            'max' => 200,
+        ],
+        'message' => [
+            'min' => 100,
+            'max' => 65535,
+        ],
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -19,9 +34,9 @@ class Contact
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'contact.name.not_blank')]
     #[Assert\Length(
-                min: 10,
+                min: self::CONSTRAINTS['name']['min'],
                 minMessage: 'contact.name.min',
-                max: 255,
+                max: self::CONSTRAINTS['name']['max'],
                 maxMessage: 'contact.name.max',
         )]
     private ?string $name = null;
@@ -35,9 +50,9 @@ class Contact
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(
-                min: 20,
+                min: self::CONSTRAINTS['subject']['min'],
                 minMessage: 'contact.subject.min',
-                max: 255,
+                max: self::CONSTRAINTS['subject']['max'],
                 maxMessage: 'contact.subject.max',
         )]
     private ?string $subject = null;
@@ -45,9 +60,9 @@ class Contact
     #[ORM\Column(length: 65535)]
     #[Assert\NotBlank(message: 'contact.message.not_blank')]
     #[Assert\Length(
-                min: 100,
+                min: self::CONSTRAINTS['message']['min'],
                 minMessage: 'contact.message.min',
-                max: 65535,
+                max: self::CONSTRAINTS['message']['max'],
                 maxMessage: 'contact.message.max',
         )]
     private ?string $message = null;

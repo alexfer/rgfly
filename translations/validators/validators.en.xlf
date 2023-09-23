@@ -5,11 +5,11 @@
             <trans-unit id="contact.name.not_blank">
                 <source>contact.name.not_blank</source>
                 <target>The name can't be blank.</target>
-            </trans-unit>
+            </trans-unit>            
             <trans-unit id="contact.name.min">
                 <source>contact.name.min</source>
                 <target>Your name is too short. It should have {{ limit }} characters or more.</target>
-            </trans-unit>
+            </trans-unit>            
             <trans-unit id="contact.name.max">
                 <source>contact.name.max</source>
                 <target>Your name is too long. It should have {{ limit }} characters or less.</target>

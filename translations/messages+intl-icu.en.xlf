@@ -129,6 +129,42 @@
                     <![CDATA[We started as an internet agency and have increasingly grown to develop applications, mobile apps, platforms and products. For customers and with customers. During the growth we noticed that more and more companies were having trouble attracting personnel and so we received the first requests whether we wanted to help our customers with this. Because we already had our own nearshore location at that time, the idea arose to provide our customers with developers for the longer term, whom they could manage themselves. We then shifted our focus.]]>
                 </target>
             </trans-unit>
+            <trans-unit id="label.form.name">
+                <source>label.form.name</source>
+                <target>Your Name</target>
+            </trans-unit>
+            <trans-unit id="contact.form.name.help">
+                <source>contact.form.name.help</source>
+                <target>There should be from { min } to { max } characters long.</target>
+            </trans-unit>
+            <trans-unit id="contact.form.subject.help">
+                <source>contact.form.subject.help</source>
+                <target>There should be from { min } to { max } characters long.</target>
+            </trans-unit>
+            <trans-unit id="contact.form.message.help">
+                <source>contact.form.message.help</source>
+                <target>There should be from { min } to { max } characters long.</target>
+            </trans-unit>
+            <trans-unit id="label.form.email">
+                <source>label.form.email</source>
+                <target>Your Email address</target>
+            </trans-unit>
+            <trans-unit id="label.form.phone">
+                <source>label.form.phone</source>
+                <target>Your phone number</target>
+            </trans-unit>
+            <trans-unit id="label.form.subject">
+                <source>label.form.subject</source>
+                <target>Subject</target>
+            </trans-unit>
+            <trans-unit id="label.form.message">
+                <source>label.form.message</source>
+                <target>Message</target>
+            </trans-unit>
+            <trans-unit id="contact.form.action.send">
+                <source>contact.form.action.send</source>
+                <target>Send Message</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
