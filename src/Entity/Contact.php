@@ -13,11 +13,11 @@ class Contact
 
     const CONSTRAINTS = [
         'name' => [
-            'min' => 10,
+            'min' => 3,
             'max' => 200,
         ],
         'subject' => [
-            'min' => 20,
+            'min' => 10,
             'max' => 200,
         ],
         'message' => [

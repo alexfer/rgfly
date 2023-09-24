@@ -14,13 +14,20 @@ use App\Form\Type\ContactType;
 class ContactController extends AbstractController
 {
 
+    /**
+     * 
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param ValidatorInterface $validator
+     * @return Response
+     */
     #[Route('/contact', name: 'contact', methods: ['GET', 'POST'])]
     public function index(
             Request $request,
             EntityManagerInterface $em,
             ValidatorInterface $validator,
     ): Response
-    {
+    {        
         $contact = new Contact();
 
         $form = $this->createForm(ContactType::class, $contact);
@@ -32,12 +39,25 @@ class ContactController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
+            $em->persist($contact);
+            $em->flush();
+
+            return $this->redirectToRoute('contact_success');
         }
 
         return $this->render('contact/index.html.twig', [
                     'errors' => $errors,
                     'form' => $form,
         ]);
+    }
+    
+    /**
+     * 
+     * @return Response
+     */
+    #[Route('/contact/success', name: 'contact_success')]
+    public function success(): Response
+    {
+        return $this->render('contact/success.html.twig', []);
     }
 }

@@ -265,6 +265,12 @@ a:hover {
     text-decoration: underline;
     color: #000;    
 }
+blockquote i.bi {
+    vertical-align: middle;
+    font-size: 2.5rem;
+    margin: 0 20px;
+    color: #ff7a87;
+}
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
     line-height: 1.4;

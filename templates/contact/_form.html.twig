@@ -8,8 +8,11 @@
         </ul>
     </div>
 {% else %}
-    <blockquote class="blockquote bg-light py-4 pl-3 shadow-sm">
-        <p class="mb-0">{{ 'text.rquired'|trans|raw }}</p>
+    <blockquote class="blockquote bg-light py-1 pl-3 shadow-sm">
+        <p class="mb-0">
+            <i class="bi bi-exclamation-triangle"></i> 
+            {{ 'text.rquired'|trans|raw }}
+        </p>
     </blockquote>
 {% endif %} 
 <div class="form-row">    
