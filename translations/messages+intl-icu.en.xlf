@@ -119,6 +119,38 @@
             </trans-unit>
             <trans-unit id="text.contact.desc">
                 <source>text.contact.desc</source>
+                <target>Leave your information using the form and we will contact you within 1 business day.</target>
+            </trans-unit>
+            <trans-unit id="text.register">
+                <source>text.register</source>
+                <target>Register</target>
+            </trans-unit>
+            <trans-unit id="text.register.desc">
+                <source>text.register.desc</source>
+                <target>Please, provide us your required information the form below</target>
+            </trans-unit>
+            <trans-unit id="text.register.success">
+                <source>text.register.success</source>
+                <target>Registeration Complete</target>
+            </trans-unit>
+            <trans-unit id="text.register.success.desc">
+                <source>text.register.success.desc</source>
+                <target>Your registration has been completed successfully.</target>
+            </trans-unit>
+            <trans-unit id="text.register.success.text_help">
+                <source>text.register.success.text_help</source>
+                <target>
+                    <![CDATA[
+                        You can log in by going to the page: <a class="link" href="{app_login}">Sign In</a> using your email and password specified during registration.
+                    ]]>
+                </target>
+            </trans-unit>
+            <trans-unit id="text.rquired">
+                <source>text.rquired</source>
+                <target><![CDATA[All fields marked with <span class="text-danger">*</span> are required and must be filled.]]></target>
+            </trans-unit>
+            <trans-unit id="text.desc">
+                <source>text.desc</source>
                 <target><![CDATA[Leave your information using the form below and<br>we will contact you within 1 business day.]]></target>
             </trans-unit>
             <trans-unit id="text.info.header">
@@ -149,16 +181,32 @@
                 <source>label.form.name</source>
                 <target>Your Name</target>
             </trans-unit>
-            <trans-unit id="contact.form.name.help">
-                <source>contact.form.name.help</source>
+            <trans-unit id="label.form.first_name">
+                <source>label.form.first_name</source>
+                <target>Your First Name</target>
+            </trans-unit>
+            <trans-unit id="label.form.last_name">
+                <source>label.form.last_name</source>
+                <target>Your Last Name</target>
+            </trans-unit>
+            <trans-unit id="form.first_name.help">
+                <source>form.first_name.help</source>
                 <target>There should be from { min } to { max } characters long.</target>
             </trans-unit>
-            <trans-unit id="contact.form.subject.help">
-                <source>contact.form.subject.help</source>
+            <trans-unit id="form.last_name.help">
+                <source>form.last_name.help</source>
                 <target>There should be from { min } to { max } characters long.</target>
             </trans-unit>
-            <trans-unit id="contact.form.message.help">
-                <source>contact.form.message.help</source>
+            <trans-unit id="form.name.help">
+                <source>form.name.help</source>
+                <target>There should be from { min } to { max } characters long.</target>
+            </trans-unit>
+            <trans-unit id="form.subject.help">
+                <source>form.subject.help</source>
+                <target>There should be from { min } to { max } characters long.</target>
+            </trans-unit>
+            <trans-unit id="form.message.help">
+                <source>form.message.help</source>
                 <target>There should be from { min } to { max } characters long.</target>
             </trans-unit>
             <trans-unit id="label.form.email">
@@ -169,6 +217,10 @@
                 <source>label.form.phone</source>
                 <target>Your phone number</target>
             </trans-unit>
+            <trans-unit id="form.phone.help">
+                <source>form.phone.help</source>
+                <target>For instance should be like 3106398200.</target>
+            </trans-unit>
             <trans-unit id="label.form.subject">
                 <source>label.form.subject</source>
                 <target>Subject</target>
@@ -177,9 +229,21 @@
                 <source>label.form.message</source>
                 <target>Message</target>
             </trans-unit>
-            <trans-unit id="contact.form.action.send">
-                <source>contact.form.action.send</source>
+            <trans-unit id="form.action.send">
+                <source>form.action.send</source>
                 <target>Send Message</target>
+            </trans-unit>
+            <trans-unit id="form.action.reidter">
+                <source>form.action.reidter</source>
+                <target>Register</target>
+            </trans-unit>
+            <trans-unit id="form.email.help">
+                <source>form.email.help</source>
+                <target>We'll never share your email with anyone else.</target>
+            </trans-unit>
+            <trans-unit id="label.form.password">
+                <source>label.form.password</source>
+                <target>Your password</target>
             </trans-unit>
         </body>
     </file>

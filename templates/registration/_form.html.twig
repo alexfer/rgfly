@@ -1,0 +1,54 @@
+{{ form_start(form, {attr: {class: 'tech-form', novalidate: 'novalidate'}}) }}
+{% if errors %}
+    <div class="alert alert-danger">
+        <ul>
+            {% for error in errors %}
+                <li>{{ error.message }}</li>
+                {% endfor %}           
+        </ul>
+    </div>
+{% else %}
+    <blockquote class="blockquote bg-light py-4 pl-3 shadow-sm">
+        <p class="mb-0">{{ 'text.rquired'|trans|raw }}</p>
+    </blockquote>
+{% endif %}
+<div class="form-row">
+    <div class="col-md-6">
+        <div class="form-group">     
+            {% set email_error = form.email.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.email, 'label.form.email') }} <span class="text-danger">*</span>
+            {{ form_widget(form.email, {attr: {class: email_error, placeholder: 'label.form.email'}}) }}
+            <small class="form-text text-muted">{{ 'form.email.help'|trans }}</small>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">     
+            {% set password_error = form.plainPassword.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.plainPassword, 'label.form.password') }} <span class="text-danger">*</span>
+            {{ form_widget(form.plainPassword, {attr: {class: password_error, placeholder: 'label.form.password'}}) }}
+            <small class="form-text text-muted">{{ 'form.password.help'|trans }}</small>
+        </div>
+    </div>
+</div>
+<div class="form-row">
+    <div class="col-md-6">
+        <div class="form-group">     
+            {% set first_name_error = form.first_name.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.first_name, 'label.form.first_name') }} <span class="text-danger">*</span>
+            {{ form_widget(form.first_name, {attr: {class: first_name_error, placeholder: 'label.form.first_name'}}) }}
+            <small class="form-text text-muted">{{ 'form.first_name.help'|trans({ '%min%': form.first_name.vars.attr.min, '%max%': form.first_name.vars.attr.max }) }}</small>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">     
+            {% set last_name_error = form.last_name.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.last_name, 'label.form.last_name') }} <span class="text-danger">*</span>
+            {{ form_widget(form.last_name, {attr: {class: last_name_error, placeholder: 'label.form.last_name'}}) }}
+            <small class="form-text text-muted">{{ 'form.last_name.help'|trans({ '%min%': form.last_name.vars.attr.min, '%max%': form.last_name.vars.attr.max }) }}</small>
+        </div>
+    </div>
+    <div class="col-md-12 text-center my-4">
+        {{ form_widget(form.send, { label: 'form.action.reidter' }) }}
+    </div>
+</div>
+{{ form_end(form) }}

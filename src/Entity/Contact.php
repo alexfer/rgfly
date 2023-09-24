@@ -32,44 +32,44 @@ class Contact
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'contact.name.not_blank')]
+    #[Assert\NotBlank(message: 'form.name.not_blank')]
     #[Assert\Length(
                 min: self::CONSTRAINTS['name']['min'],
-                minMessage: 'contact.name.min',
+                minMessage: 'form.name.min',
                 max: self::CONSTRAINTS['name']['max'],
-                maxMessage: 'contact.name.max',
+                maxMessage: 'form.name.max',
         )]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Regex(
                 pattern: "/^[0-9]*$/",
-                message: 'contact.phone.not_valid',
+                message: 'form.phone.not_valid',
         )]
     private ?string $phone = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(
                 min: self::CONSTRAINTS['subject']['min'],
-                minMessage: 'contact.subject.min',
+                minMessage: 'form.subject.min',
                 max: self::CONSTRAINTS['subject']['max'],
-                maxMessage: 'contact.subject.max',
+                maxMessage: 'form.subject.max',
         )]
     private ?string $subject = null;
 
     #[ORM\Column(length: 65535)]
-    #[Assert\NotBlank(message: 'contact.message.not_blank')]
+    #[Assert\NotBlank(message: 'form.message.not_blank')]
     #[Assert\Length(
                 min: self::CONSTRAINTS['message']['min'],
-                minMessage: 'contact.message.min',
+                minMessage: 'form.message.min',
                 max: self::CONSTRAINTS['message']['max'],
-                maxMessage: 'contact.message.max',
+                maxMessage: 'form.message.max',
         )]
     private ?string $message = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Email(message: 'contact.email.not_valid')]
-    #[Assert\NotBlank(message: 'contact.email.not_blank')]
+    #[Assert\Email(message: 'form.email.not_valid')]
+    #[Assert\NotBlank(message: 'form.email.not_blank')]
     private ?string $email = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]

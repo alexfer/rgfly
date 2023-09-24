@@ -1,49 +1,89 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="en" datatype="plaintext" original="file.ext">
+    <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
         <body>
-            <trans-unit id="contact.name.not_blank">
-                <source>contact.name.not_blank</source>
+            <trans-unit id="form.name.not_blank">
+                <source>form.name.not_blank</source>
                 <target>The name can't be blank.</target>
             </trans-unit>            
-            <trans-unit id="contact.name.min">
-                <source>contact.name.min</source>
+            <trans-unit id="form.name.min">
+                <source>form.name.min</source>
                 <target>Your name is too short. It should have {{ limit }} characters or more.</target>
             </trans-unit>            
-            <trans-unit id="contact.name.max">
-                <source>contact.name.max</source>
+            <trans-unit id="form.name.max">
+                <source>form.name.max</source>
                 <target>Your name is too long. It should have {{ limit }} characters or less.</target>
             </trans-unit>
-            <trans-unit id="contact.subject.min">
-                <source>contact.subject.min</source>
+            <trans-unit id="form.subject.min">
+                <source>form.subject.min</source>
                 <target>The subject is too short. It should have {{ limit }} characters or more.</target>
             </trans-unit>
-            <trans-unit id="contact.subject.max">
-                <source>contact.subject.max</source>
+            <trans-unit id="form.subject.max">
+                <source>form.subject.max</source>
                 <target>The subject is too long. It should have {{ limit }} characters or less.</target>
             </trans-unit>
-            <trans-unit id="contact.phone.not_valid">
-                <source>contact.phone.not_valid</source>
+            <trans-unit id="form.password.min">
+                <source>form.password.min</source>
+                <target>The password is too short. It should have {{ limit }} characters or more.</target>
+            </trans-unit>
+            <trans-unit id="form.password.max">
+                <source>form.password.max</source>
+                <target>The password is too long. It should have {{ limit }} characters or less.</target>
+            </trans-unit>
+            <trans-unit id="form.first_name.min">
+                <source>form.first_name.min</source>
+                <target>The first name is too short. It should have {{ limit }} characters or more.</target>
+            </trans-unit>
+            <trans-unit id="form.first_name.max">
+                <source>form.first_name.max</source>
+                <target>The first name is too long. It should have {{ limit }} characters or less.</target>
+            </trans-unit>
+            <trans-unit id="form.last_name.min">
+                <source>form.last_name.min</source>
+                <target>The last name is too short. It should have {{ limit }} characters or more.</target>
+            </trans-unit>
+            <trans-unit id="form.last_name.max">
+                <source>form.last_name.max</source>
+                <target>The last name is too long. It should have {{ limit }} characters or less.</target>
+            </trans-unit>
+            <trans-unit id="form.phone.not_valid">
+                <source>form.phone.not_valid</source>
                 <target>The phone number '{{ value }}' is not a valid. Please provide a valid phone number.</target>
             </trans-unit>
-            <trans-unit id="contact.email.not_blank">
-                <source>contact.email.not_blank</source>
+            <trans-unit id="form.email.not_blank">
+                <source>form.email.not_blank</source>
                 <target>The email can't be blank.</target>
             </trans-unit>
-            <trans-unit id="contact.email.not_valid">
-                <source>contact.email.not_valid</source>
+            <trans-unit id="form.first_name.not_blank">
+                <source>form.first_name.not_blank</source>
+                <target>The first name can't be blank.</target>
+            </trans-unit>
+            <trans-unit id="form.last_name.not_blank">
+                <source>form.last_name.not_blank</source>
+                <target>The last name can't be blank.</target>
+            </trans-unit>
+            <trans-unit id="form.password.not_blank">
+                <source>form.password.not_blank</source>
+                <target>Please enter a password.</target>
+            </trans-unit>
+            <trans-unit id="email.unique">
+                <source>email.unique</source>
+                <target>There is already an account with this email.</target>
+            </trans-unit>
+            <trans-unit id="form.email.not_valid">
+                <source>form.email.not_valid</source>
                 <target>The email '{{ value }}' is not a valid email.</target>
             </trans-unit>
-            <trans-unit id="contact.message.not_blank">
-                <source>contact.message.not_blank</source>
+            <trans-unit id="form.message.not_blank">
+                <source>form.message.not_blank</source>
                 <target>The message can't be blank.</target>
             </trans-unit>
-            <trans-unit id="contact.message.min">
-                <source>contact.message.min</source>
+            <trans-unit id="form.message.min">
+                <source>form.message.min</source>
                 <target>The message is too short. It should have {{ limit }} characters or more.</target>
             </trans-unit>
-            <trans-unit id="contact.message.max">
-                <source>contact.message.max</source>
+            <trans-unit id="form.message.max">
+                <source>form.message.max</source>
                 <target>The message is too long. It should have {{ limit }} characters or less.</target>
             </trans-unit>
         </body>

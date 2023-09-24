@@ -106,7 +106,7 @@ dl, ol, ul {
 }
 
 .default-btn:hover, .default-btn:focus {
-    color: #ffffff;
+    color: #fff;
 }
 
 .default-btn:hover span, .default-btn:focus span {
@@ -251,6 +251,19 @@ a {
 a:hover {
     text-decoration: none;
     color: #5e87eb;
+}
+.link {
+    text-decoration: none;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+    outline: 0 !important;  
+    color: #5e87eb;
+    font-weight: 600;
+    line-height: 1.4;
+}
+.link:hover {
+    text-decoration: underline;
+    color: #000;    
 }
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
@@ -737,15 +750,15 @@ p:last-child {
         display: none;
     }
 }
-.contact-form textarea.form-control {
+.tech-form textarea.form-control {
     height: auto;
     padding-top: 15px;
     line-height: initial;
 }
-.contact-form .form-control.error {
+.tech-form .form-control.error {
     border-top: 3px solid #ea8b8b;
 }
-.contact-form .btn {
+.tech-form .btn {
     height: 50px;
     padding: 0 30px;
     font-weight: 600;
@@ -756,11 +769,12 @@ p:last-child {
     transition:all 0.90s ease 0s;
     box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12), 0 2px 4px -1px rgba(0, 0, 0, .2)
 }
-.contact-form .btn:hover, .contact-form .btn:focus {
+.tech-form .btn:hover,
+.tech-form .btn:focus {
     color: #fff;
     background-color: #172ea2;
 }
-.contact-form .form-control {
+.tech-form .form-control {
     font-size: 15px;
     width: 100%;
     padding: 10px 20px;
@@ -776,12 +790,12 @@ p:last-child {
     border-top: 3px solid #9a9a9b;
     transition: all 0.4s;
 }
-.contact-form .form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+.tech-form .form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: #333;
     opacity: 0.4; /* Firefox */
 }
-.contact-form input:focus,
-.contact-form textarea:focus {
+.tech-form input:focus,
+.tech-form textarea:focus {
     outline: none;
     border: none;
     -webkit-box-shadow: none;
@@ -812,7 +826,8 @@ p:last-child {
 .page-title-area.about,
 .page-title-area.policy,
 .page-title-area.terms,
-.page-title-area.contact
+.page-title-area.contact,
+.page-title-area.default,
 .page-title-area.questions {
     position: relative;
     z-index: 1;
@@ -844,6 +859,10 @@ p:last-child {
 .page-title-area.terms {
     background-image: linear-gradient(to left, rgba(77, 124, 238, 0.2), rgba(77, 124, 238, 0.2)), url(../img/page-title-bg.jpg);
 }
+.page-title-area.default {
+    background-image: linear-gradient(to bottom, rgba(77, 124, 238, 0.2), rgba(77, 124, 238, 0.2)), url(../img/default-bg.png);
+    height: 300px;
+}
 .page-title-content {
     text-align: center;
     margin-top: 45px;
@@ -862,6 +881,11 @@ p:last-child {
 .section-area {
     position: relative;
     padding: 100px 0;
+    z-index: 1;
+}
+.section-area.default {
+    position: relative;
+    padding: 50px 0 100px 0;
     z-index: 1;
 }
 .content-image {
