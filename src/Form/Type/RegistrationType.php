@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class RegistrationFormType extends AbstractType
+class RegistrationType extends AbstractType
 {
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -73,14 +73,18 @@ class RegistrationFormType extends AbstractType
                                 ]),
                     ],
                 ])
-//                ->add('agreeTerms', CheckboxType::class, [
-//                    'mapped' => false,
-//                    'constraints' => [
-//                        new IsTrue([
-//                            'message' => 'You should agree to our terms.',
-//                                ]),
-//                    ],
-//                ])
+                ->add('agreeTerms', CheckboxType::class, [
+                    'mapped' => false,
+                    'attr' => [
+                        'policy' => $options['policy'],
+                        'terms' => $options['terms'],
+                    ],
+                    'constraints' => [
+                        new IsTrue([
+                            'message' => 'You should agree to our <a href="{{ terms }}">Terms &amp; Conditions</a> and <a href="{{ policy }}">Private Policy</a>.',
+                                ]),
+                    ],
+                ])
                 ->add('plainPassword', PasswordType::class, [
                     'mapped' => false,
                     'attr' => ['autocomplete' => 'new-password'],
@@ -107,6 +111,8 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'policy' => 'policy',
+            'terms' => 'terms',
         ]);
     }
 }

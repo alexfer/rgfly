@@ -27,7 +27,7 @@ class ContactController extends AbstractController
             EntityManagerInterface $em,
             ValidatorInterface $validator,
     ): Response
-    {        
+    {
         $contact = new Contact();
 
         $form = $this->createForm(ContactType::class, $contact);
@@ -50,7 +50,7 @@ class ContactController extends AbstractController
                     'form' => $form,
         ]);
     }
-    
+
     /**
      * 
      * @return Response

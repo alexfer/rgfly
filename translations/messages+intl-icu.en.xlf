@@ -101,9 +101,9 @@
                 <source>title.contact_us</source>
                 <target>Contact Us</target>
             </trans-unit>
-            <trans-unit id="title.private_policy">
-                <source>title.private_policy</source>
-                <target>Private Policy</target>
+            <trans-unit id="title.privacy_policy">
+                <source>title.privacy_policy</source>
+                <target>Privacy Policy</target>
             </trans-unit>
             <trans-unit id="title.terms">
                 <source>title.terms</source>
@@ -184,9 +184,7 @@
             <trans-unit id="text.register.success.text_help">
                 <source>text.register.success.text_help</source>
                 <target>
-                    <![CDATA[
-                        You can log in by going to the page: <a class="link" href="{ app_login }">Sign In</a> using your email and password specified during registration.
-                    ]]>
+                    <![CDATA[You can log in by going to the page: <a class="link" href="{ app_login }">Sign In</a> using your email and password specified during registration.]]>
                 </target>
             </trans-unit>
             <trans-unit id="text.rquired">
@@ -205,6 +203,7 @@
                 <source>text.info.desc</source>
                 <target><![CDATA[Want to know more about our services?]]></target>
             </trans-unit>
+            
             <trans-unit id="text.about_us.header">
                 <source>text.about_us.header</source>
                 <target>Want to know more about us immediately?</target>
@@ -221,6 +220,30 @@
                     <![CDATA[We started as an internet agency and have increasingly grown to develop applications, mobile apps, platforms and products. For customers and with customers. During the growth we noticed that more and more companies were having trouble attracting personnel and so we received the first requests whether we wanted to help our customers with this. Because we already had our own nearshore location at that time, the idea arose to provide our customers with developers for the longer term, whom they could manage themselves. We then shifted our focus.]]>
                 </target>
             </trans-unit>
+            
+            <trans-unit id="text.contact_us.success">
+                <source>text.contact_us.success</source>
+                <target>Keep in touch.</target>
+            </trans-unit>
+            <trans-unit id="text.contact_us.success.header">
+                <source>text.contact_us.success.header</source>
+                <target>Feel free to send us a new message.</target>
+            </trans-unit>            
+            <trans-unit id="text.contact_us.success.short_desc">
+                <source>text.contact_us.success.short_desc</source>
+                <target>Your message has been sent successfully.</target>
+            </trans-unit>            
+            <trans-unit id="text.contact_us.success.long_desc">
+                <source>text.contact_us.success.long_desc</source>
+                <target>
+                    <![CDATA[Test text]]>
+                </target>
+            </trans-unit>
+            
+            <trans-unit id="label.agree_terms">
+                <source>label.agree_terms</source>
+                <target><![CDATA[Agree to our Terms & Conditions and Privacy Policy.]]></target>
+            </trans-unit>
             <trans-unit id="label.form.name">
                 <source>label.form.name</source>
                 <target>Your Name</target>
@@ -232,6 +255,10 @@
             <trans-unit id="label.form.last_name">
                 <source>label.form.last_name</source>
                 <target>Your Last Name</target>
+            </trans-unit>
+            <trans-unit id="form.agree_terms.help">
+                <source>form.agree_terms.help</source>
+                <target><![CDATA[more about our <a class="link" href="{ policy }">Privacy Policy</a> and <a class="link" href="{ terms }">Terms &amp; Cinditions</a>.]]></target>
             </trans-unit>
             <trans-unit id="form.first_name.help">
                 <source>form.first_name.help</source>

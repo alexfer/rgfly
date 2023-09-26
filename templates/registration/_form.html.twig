@@ -50,6 +50,16 @@
             <small class="form-text text-muted">{{ 'form.last_name.help'|trans({ '%min%': form.last_name.vars.attr.min, '%max%': form.last_name.vars.attr.max }) }}</small>
         </div>
     </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            {{ form_widget(form.agreeTerms) }}
+            {{ form_label(form.agreeTerms, 'label.agree_terms'|trans|raw) }}
+            <small class="form-text text-muted">{{ 'form.agree_terms.help'|trans({
+                '%policy%': url('policy'),
+                '%terms%': url('terms')
+            })|raw }}</small>
+        </div>
+    </div>    
     <div class="col-md-12 text-center my-4">
         {{ form_widget(form.send, { label: 'form.action.reidter' }) }}
     </div>
