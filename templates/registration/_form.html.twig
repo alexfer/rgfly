@@ -3,7 +3,7 @@
     <div class="alert alert-danger">
         <ul>
             {% for error in errors %}
-                <li>{{ error.message }}</li>
+                <li>{{ error.message|trans({'%policy%': path('policy'), '%terms%': path('terms')})|raw }}</li>
                 {% endfor %}           
         </ul>
     </div>
@@ -53,7 +53,7 @@
     <div class="col-md-12">
         <div class="form-group">
             {{ form_widget(form.agreeTerms) }}
-            {{ form_label(form.agreeTerms, 'label.agree_terms'|trans|raw) }}
+            {{ form_label(form.agreeTerms, 'label.agree_terms'|trans, {label_attr: {class: 'pl-2'}}) }} <span class="text-danger">*</span>
             <small class="form-text text-muted">{{ 'form.agree_terms.help'|trans({
                 '%policy%': url('policy'),
                 '%terms%': url('terms')
@@ -61,7 +61,7 @@
         </div>
     </div>    
     <div class="col-md-12 text-center my-4">
-        {{ form_widget(form.send, { label: 'form.action.reidter' }) }}
+        {{ form_widget(form.send, { label: 'form.action.register' }) }}
     </div>
 </div>
 {{ form_end(form) }}

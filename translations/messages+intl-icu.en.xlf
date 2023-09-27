@@ -223,7 +223,7 @@
             
             <trans-unit id="text.contact_us.success">
                 <source>text.contact_us.success</source>
-                <target>Keep in touch.</target>
+                <target>Let's keep in touch.</target>
             </trans-unit>
             <trans-unit id="text.contact_us.success.header">
                 <source>text.contact_us.success.header</source>
@@ -255,10 +255,10 @@
             <trans-unit id="label.form.last_name">
                 <source>label.form.last_name</source>
                 <target>Your Last Name</target>
-            </trans-unit>
+            </trans-unit>            
             <trans-unit id="form.agree_terms.help">
                 <source>form.agree_terms.help</source>
-                <target><![CDATA[more about our <a class="link" href="{ policy }">Privacy Policy</a> and <a class="link" href="{ terms }">Terms &amp; Cinditions</a>.]]></target>
+                <target><![CDATA[More about our <a class="link" target="_blank" href="{ policy }">Privacy Policy</a> and <a class="link" target="_blank" href="{ terms }">Terms &amp; Cinditions</a>.]]></target>
             </trans-unit>
             <trans-unit id="form.first_name.help">
                 <source>form.first_name.help</source>
@@ -304,17 +304,29 @@
                 <source>form.action.send</source>
                 <target>Send Message</target>
             </trans-unit>
-            <trans-unit id="form.action.reidter">
-                <source>form.action.reidter</source>
+            <trans-unit id="form.action.register">
+                <source>form.action.register</source>
                 <target>Register</target>
+            </trans-unit>
+            <trans-unit id="form.action.login">
+                <source>form.action.login</source>
+                <target>Sign In</target>
             </trans-unit>
             <trans-unit id="form.email.help">
                 <source>form.email.help</source>
                 <target>We'll never share your email with anyone else.</target>
             </trans-unit>
+            <trans-unit id="form.password.help">
+                <source>form.password.help</source>
+                <target>Security password.</target>
+            </trans-unit>
             <trans-unit id="label.form.password">
                 <source>label.form.password</source>
                 <target>Your password</target>
+            </trans-unit>
+            <trans-unit id="label.form.keep_me_logged_in">
+                <source>label.form.keep_me_logged_in</source>
+                <target>Keep me logged in</target>
             </trans-unit>
         </body>
     </file>

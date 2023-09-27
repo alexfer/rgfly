@@ -1,0 +1,49 @@
+{{ form_start(form, {attr: {class: 'tech-form', novalidate: 'novalidate'}}) }}
+{% if errors %}
+    <div class="alert alert-danger">
+        <ul>
+            {% for error in errors %}
+                <li>{{ error.message|trans|raw }}</li>
+                {% endfor %}           
+        </ul>
+    </div>
+{% elseif error %}
+    <div class="alert alert-danger">
+        {{ error.message }}
+    </div>
+{% else %}
+    <blockquote class="bg-light shadow-sm">
+        <p class="mb-0">
+            <i class="bi bi-exclamation-triangle"></i> 
+            {{ 'text.rquired'|trans|raw }}
+        </p>
+    </blockquote>
+{% endif %}
+<div class="form-row shadow-sm">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 px-5 pt-2">
+        <div class="form-group row">     
+            {% set username_error = form.username.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.username, 'label.form.email', {attr: {class: 'col-sm-2 col-form-label'}}) }} <span class="text-danger">*</span>
+            {{ form_widget(form.username, {attr: {class: username_error, placeholder: 'label.form.email'}}) }}
+            <small class="form-text text-muted">{{ 'form.email.help'|trans }}</small>
+        </div>
+        <div class="form-group row">     
+            {% set password_error = form.password.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.password, 'label.form.password') }} <span class="text-danger">*</span>
+            {{ form_widget(form.password, {attr: {class: password_error, placeholder: 'label.form.password'}}) }}
+            <small class="form-text text-muted">{{ 'form.password.help'|trans }}</small>
+        </div>
+        <div class="form-check pl-1">
+            <input class="form-check-input" type="checkbox" id="remember_me" name="_remember_me" checked>
+            <label class="form-check-label" for="remember_me">{{ 'label.form.keep_me_logged_in'|trans }}</label>
+        </div>
+    </div>  
+    <div class="col-md-2"></div>
+    <div class="col-md-12 text-center my-4">
+        <input type="hidden" name="_target_path" value="{{ path('app_index') }}"/>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        {{ form_widget(form.login, { label: 'form.action.login' }) }}
+    </div>
+</div>
+{{ form_end(form) }}

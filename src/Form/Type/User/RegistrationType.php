@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\Type;
+namespace App\Form\Type\User;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
@@ -11,11 +11,13 @@ use Symfony\Component\Form\Extension\Core\Type\{
     EmailType,
     TextType,
 };
+use Symfony\Component\Validator\Constraints\{
+    IsTrue,
+    Length,
+    NotBlank,
+};
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\IsTrue;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class RegistrationType extends AbstractType
 {
@@ -75,13 +77,9 @@ class RegistrationType extends AbstractType
                 ])
                 ->add('agreeTerms', CheckboxType::class, [
                     'mapped' => false,
-                    'attr' => [
-                        'policy' => $options['policy'],
-                        'terms' => $options['terms'],
-                    ],
                     'constraints' => [
                         new IsTrue([
-                            'message' => 'You should agree to our <a href="{{ terms }}">Terms &amp; Conditions</a> and <a href="{{ policy }}">Private Policy</a>.',
+                            'message' => 'form.message.agree_terms',
                                 ]),
                     ],
                 ])
@@ -102,7 +100,7 @@ class RegistrationType extends AbstractType
                 ])
                 ->add('send', SubmitType::class, [
                     'attr' => [
-                        'class' => 'btn btn-primary pull-left',
+                        'class' => 'btn btn-primary',
                     ],
         ]);
     }

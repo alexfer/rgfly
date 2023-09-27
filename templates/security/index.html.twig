@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'text.register'|trans }}{% endblock %}
+{% block title %}{{ 'text.login'|trans }}{% endblock %}
 
 {% block body %}
     <div class="page-title-area default">        
@@ -8,8 +8,8 @@
             <div class="d-table-cell">
                 <div class="container">
                     <div class="page-title-content">
-                        <h2>{{ 'text.register'|trans }}</h2>
-                        <p>{{ 'text.register.desc'|trans|raw }}</p>
+                        <h2>{{ 'text.login'|trans }}</h2>
+                        <p>{{ 'text.login.desc'|trans|raw }}</p>
                     </div>
                 </div>                
             </div>
@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="container">                    
-                        {{ include('registration/_form.html.twig') }}
+                        {{ include('security/_form.html.twig') }}
                     </div>
                 </div>            
             </div>

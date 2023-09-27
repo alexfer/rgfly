@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\Type\RegistrationType;
+use App\Form\Type\User\RegistrationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{
@@ -31,7 +31,14 @@ class RegistrationController extends AbstractController
             EntityManagerInterface $em,
     ): Response
     {
+        $securityContext = $this->container->get('security.authorization_checker');
+
+        if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            return $this->redirectToRoute('app_index');
+        }
+        
         $user = new User();
+
         $form = $this->createForm(RegistrationType::class, $user);
         $form->handleRequest($request);
 

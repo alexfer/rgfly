@@ -43,21 +43,24 @@
                             <a class="nav-link {{_route == 'contact'? 'faq': '' }}" href="{{ path('faq') }}">{{ 'title.questions'|trans }}</a>
                         </li>
                     </ul>
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
+                    <ul class="navbar-nav mr-0">
+                        <li class="nav-item">                            
                             <button class="btn btn-primary nav-link dropdown-toggle mr-auto" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-person-circle mx-2 text-lg"></i> {{ 'title.user.area'|trans }}
+                                <i class="bi bi-person-circle mx-2 text-lg"></i> {% if not app.user %} {{ 'title.user.area'|trans }}{% else %} {{ app.user.firstName }} {% endif %}
                             </button>
                             <ul class="dropdown-menu">
+                                {% if not app.user %}
                                 <li class="nav-item"> 
-                                    <a href="#" class="nav-link">{{ 'title.user.signin'|trans }}</a>
+                                    <a href="{{ path('app_login') }}" class="nav-link">{{ 'title.user.signin'|trans }}</a>
                                 </li>
                                 <li class="nav-item"> 
                                     <a href="{{ path('app_register') }}" class="nav-link">{{ 'title.user.signup'|trans }}</a>
-                                </li>                                
+                                </li>            
+                                {% else %}
                                 <li class="nav-item"> 
-                                    <a href="#" class="nav-link">{{ 'title.user.logoff'|trans }}</a>
+                                    <a href="{{ path('app_logout') }}" class="nav-link">{{ 'title.user.logoff'|trans }}</a>
                                 </li>
+                                {% endif %}
                             </ul>
                         </li>
                     </ul>                                                    
