@@ -40,7 +40,6 @@ class SecurityController extends AbstractController
                     'form' => $form->createView(),
                     'last_username' => $authenticationUtils->getLastUsername(),
                     'error' => $error,
-                    'errors' => $this->getErrorMessages($form),
         ]);
     }
 
