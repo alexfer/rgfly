@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\Type\User\RegistrationType;
+use App\Form\Type\User\DetailsType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{
@@ -36,13 +36,18 @@ class RegistrationController extends AbstractController
         if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             return $this->redirectToRoute('app_index');
         }
-        
-        $user = new User();
 
-        $form = $this->createForm(RegistrationType::class, $user);
+        $user = new User();
+        $details = new \App\Entity\UserDetails();
+
+        $form = $this->createForm(DetailsType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+//            $details->setFirstName($form->get('first_name')->getData())
+//                    ->setLastName($form->get('last_name')->getData());
+
             $user->setPassword(
                     $userPasswordHasher->hashPassword(
                             $user,
@@ -51,6 +56,12 @@ class RegistrationController extends AbstractController
             );
 
             $em->persist($user);
+
+            $details->setFirstName($form->get('first_name')->getData())
+                    ->setLastName($form->get('last_name')->getData())
+                    ->setUser($user);
+
+            $em->persist($details);
             $em->flush();
             // do anything else you need here, like send an email
 

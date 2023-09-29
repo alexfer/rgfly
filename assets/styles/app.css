@@ -833,7 +833,7 @@ p:last-child {
 .page-title-area.policy,
 .page-title-area.terms,
 .page-title-area.contact,
-.page-title-area.default,
+.page-title-area.user-area,
 .page-title-area.questions {
     position: relative;
     z-index: 1;
@@ -867,6 +867,10 @@ p:last-child {
 }
 .page-title-area.default {
     background-image: linear-gradient(to bottom, rgba(77, 124, 238, 0.2), rgba(77, 124, 238, 0.2)), url(../img/default-bg.png);
+    height: 300px;
+}
+.page-title-area.user-area {
+    background-image: linear-gradient(to bottom, rgba(77, 124, 238, 0.2), rgba(77, 124, 238, 0.2)), url(../img/user-area1.jpg);
     height: 300px;
 }
 .page-title-content {

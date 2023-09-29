@@ -2,65 +2,58 @@
 
 namespace App\Form\Type\User;
 
-use App\Entity\User;
+use App\Entity\{
+    User,
+    UserDetails,
+};
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{
-    CheckboxType,
-    PasswordType,
     SubmitType,
-    EmailType,
     TextType,
 };
 use Symfony\Component\Validator\Constraints\{
-    IsTrue,
     Length,
     NotBlank,
 };
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RegistrationType extends AbstractType
+class ProfileType extends AbstractType
 {
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('email', EmailType::class, [
+        $builder->add('first_name', TextType::class, [
                     'attr' => [
-                        'min' => User::CONSTRAINTS['email']['min'],
-                        'max' => User::CONSTRAINTS['email']['max'],
+                        'min' => User::CONSTRAINTS['first_name']['min'],
+                        'max' => User::CONSTRAINTS['first_name']['max'],
                     ],
                     'constraints' => [
                         new NotBlank([
-                            'message' => 'form.email.not_blank',
+                            'message' => 'form.first_name.not_blank',
                                 ]),
                         new Length([
-                            'min' => User::CONSTRAINTS['email']['min'],
+                            'min' => User::CONSTRAINTS['first_name']['min'],
                             'minMessage' => 'form.first_name.min',
-                            'max' => User::CONSTRAINTS['email']['max'],
+                            'max' => User::CONSTRAINTS['first_name']['max'],
                             'maxMessage' => 'form.first_name.max',
                                 ]),
                     ],
                 ])
-                ->add('agreeTerms', CheckboxType::class, [
-                    'mapped' => false,
-                    'constraints' => [
-                        new IsTrue([
-                            'message' => 'form.message.agree_terms',
-                                ]),
+                ->add('last_name', TextType::class, [
+                    'attr' => [
+                        'min' => User::CONSTRAINTS['last_name']['min'],
+                        'max' => User::CONSTRAINTS['last_name']['max'],
                     ],
-                ])
-                ->add('plainPassword', PasswordType::class, [
-                    'mapped' => false,
-                    'attr' => ['autocomplete' => 'new-password'],
                     'constraints' => [
                         new NotBlank([
-                            'message' => 'form.password.not_blank',
+                            'message' => 'form.last_name.not_blank',
                                 ]),
                         new Length([
-                            'min' => 6,
-                            'minMessage' => 'form.password.min',
-                            'max' => 4096,
-                            'maxMessage' => 'form.password.max',
+                            'min' => User::CONSTRAINTS['last_name']['min'],
+                            'minMessage' => 'form.last_name.min',
+                            'max' => User::CONSTRAINTS['last_name']['max'],
+                            'maxMessage' => 'form.last_name.max',
                                 ]),
                     ],
                 ])
@@ -74,7 +67,7 @@ class RegistrationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => UserDetails::class,
         ]);
     }
 }

@@ -91,7 +91,7 @@ class UserAuthenticator extends AbstractAuthenticator
                             if (!$user) {
                                 throw new UserNotFoundException();
                             }
-                            //$user->setIp($request->getClientIp());
+                            $user->setIp($request->getClientIp());
                             $this->entityManager->persist($user);
                             $this->entityManager->flush();
                             return $user;

@@ -46,33 +46,25 @@
                     <ul class="navbar-nav mr-0">
                         <li class="nav-item">                            
                             <button class="btn btn-primary nav-link dropdown-toggle mr-auto" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-person-circle mx-2 text-lg"></i> {% if not app.user %} {{ 'title.user.area'|trans }}{% else %} {{ app.user.firstName }} {% endif %}
+                                <i class="bi bi-person-circle mx-2 text-lg"></i> {% if not app.user %} {{ 'title.user.area'|trans }}{% else %}  {% endif %}
                             </button>
                             <ul class="dropdown-menu">
                                 {% if not app.user %}
-                                <li class="nav-item"> 
-                                    <a href="{{ path('app_login') }}" class="nav-link">{{ 'title.user.signin'|trans }}</a>
-                                </li>
-                                <li class="nav-item"> 
-                                    <a href="{{ path('app_register') }}" class="nav-link">{{ 'title.user.signup'|trans }}</a>
-                                </li>            
+                                    <li class="nav-item"> 
+                                        <a href="{{ path('app_login') }}" class="nav-link">{{ 'title.user.signin'|trans }}</a>
+                                    </li>
+                                    <li class="nav-item"> 
+                                        <a href="{{ path('app_register') }}" class="nav-link">{{ 'title.user.signup'|trans }}</a>
+                                    </li>            
                                 {% else %}
-                                <li class="nav-item"> 
-                                    <a href="{{ path('app_logout') }}" class="nav-link">{{ 'title.user.logoff'|trans }}</a>
-                                </li>
+                                    <li class="nav-item"> 
+                                        <a href="{{ path('app_profile') }}" class="nav-link">{{ 'title.user.profile'|trans }}</a>
+                                        <a href="{{ path('app_logout') }}" class="nav-link">{{ 'title.user.logoff'|trans }}</a>
+                                    </li>
                                 {% endif %}
                             </ul>
                         </li>
                     </ul>                                                    
-                    {#<div class="widget_search">
-                        <form class="search-form search-top">
-                            <label> <span class="screen-reader-text">{{ 'title.search_for'|trans }}:</span>
-                                <input type="search" class="search-field bg-light" placeholder="{{ 'title.search'|trans }}...">
-                            </label>
-                            <button type="submit"> <i class="fa fa-search"></i>
-                            </button>
-                        </form>
-                    </div>#}
                 </div>
             </div>              
         </nav>

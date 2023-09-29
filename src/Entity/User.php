@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\UserDetails;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
@@ -15,16 +16,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
 
     const CONSTRAINTS = [
-        'first_name' => [
-            'min' => 3,
-            'max' => 200,
-        ],
-        'last_name' => [
-            'min' => 2,
-            'max' => 200,
-        ],
         'email' => [
-            'min' => 4,
+            'min' => 5,
             'max' => 180,
         ],
     ];
@@ -34,23 +27,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\OneToOne(targetEntity: UserDetails::class, mappedBy: 'user', orphanRemoval: true, cascade: ['persist'])]
+    private ?UserDetails $details = null;
+
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $first_name = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $last_name = null;
 
     #[ORM\Column]
     private array $roles = [self::ROLE_USER];
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
     private ?string $password = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Assert\Ip]
+    private ?string $ip = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTime $created_at;
@@ -80,26 +71,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getFirstName(): ?string
+    public function getDetails(): ?UserDetails
     {
-        return $this->first_name;
+        return $this->details;
     }
 
-    public function setFirstName(string $first_name): static
+    public function setDetails(?UserDetails $details): self
     {
-        $this->first_name = $first_name;
+        $this->details = $details;
 
         return $this;
     }
 
-    public function getLastName(): ?string
+    public function getIp(): ?string
     {
-        return $this->last_name;
+        return $this->ip;
     }
 
-    public function setLastName(string $last_name): static
+    public function setIp(?string $ip): static
     {
-        $this->last_name = $last_name;
+        $this->ip = $ip;
 
         return $this;
     }
