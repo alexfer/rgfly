@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'text.dashboard'|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('sidebar') }}    
+{% endblock %}
+
+{% block body %}
+    <div class="page-title-area user-area">        
+        <div class="d-table">
+            <div class="d-table-cell">
+                <div class="container">
+                    <div class="page-title-content">
+                        <h2>{{ 'text.dashboard'|trans }}</h2>
+                        <p>{{ 'text.dashboard.desc'|trans|raw }}</p>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>    
+    <section class="section-area default py-0">
+        <div class="container">  
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="sidebar my-3">
+                        {% block sidebar %}
+                            {% include 'dashboard/sidebar.html.twig' %}
+                        {% endblock %}
+                    </div>
+                </div>    
+                <div class="col-md-9 my-3 bg-white">
+                    <div class="content l-0">
+                        <h2>{{ 'text.dashboard'|trans }}</h2>
+                        <p>Dashboard Content</p>
+                    </div>
+                </div>
+            </div>                
+        </div>                
+    </div>
+</section>
+{% endblock %}

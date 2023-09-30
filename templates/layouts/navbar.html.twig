@@ -46,7 +46,7 @@
                     <ul class="navbar-nav mr-0">
                         <li class="nav-item">                            
                             <button class="btn btn-primary nav-link dropdown-toggle mr-auto" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-person-circle mx-2 text-lg"></i> {% if not app.user %} {{ 'title.user.area'|trans }}{% else %}  {% endif %}
+                                <i class="bi bi-person-circle mx-2 text-lg"></i> {% if not app.user %} {{ 'title.user.area'|trans }}{% else %} {{ app.user.details.firstName }} {% endif %}
                             </button>
                             <ul class="dropdown-menu">
                                 {% if not app.user %}
@@ -58,6 +58,7 @@
                                     </li>            
                                 {% else %}
                                     <li class="nav-item"> 
+                                        <a href="{{ path('app_dashboard') }}" class="nav-link">{{ 'title.user.dasboard'|trans }}</a>
                                         <a href="{{ path('app_profile') }}" class="nav-link">{{ 'title.user.profile'|trans }}</a>
                                         <a href="{{ path('app_logout') }}" class="nav-link">{{ 'title.user.logoff'|trans }}</a>
                                     </li>
@@ -67,6 +68,6 @@
                     </ul>                                                    
                 </div>
             </div>              
-        </nav>
+        </nav>    
     </div>
 </div>

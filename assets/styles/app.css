@@ -118,7 +118,7 @@ dl, ol, ul {
     background-color: rgb(215, 215, 215, 0.17);
 }
 /**************************************
- ** - Preloader Area CSS
+ ** - Preloader Area
  **************************************/
 .preloader {
     position: fixed;
@@ -451,7 +451,6 @@ p:last-child {
     transition:all 0.90s ease 0s;
     box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12), 0 2px 4px -1px rgba(0, 0, 0, .2)
 }
-
 .tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li {
     padding: 0;
     border-bottom: 1px solid #f1f1f1;
@@ -459,7 +458,6 @@ p:last-child {
 .tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li:last-child {
     border-bottom: 0px solid transparent;
 }
-
 .tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li a {
     position: relative;
     color: #505060;
@@ -489,7 +487,9 @@ p:last-child {
     color: #696997;
 }
 
-.tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-menu li a:hover, .tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-menu li a:focus, .tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-menu li a.active {
+.tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-menu li a:hover, 
+.tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-menu li a:focus, 
+.tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-menu li a.active {
     color: #5e87eb;
 }
 

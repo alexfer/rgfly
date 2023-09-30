@@ -1,0 +1,41 @@
+<ul class="nav flex-column">
+    <li class="nav-item">        
+        <a class="nav-link {{_route == 'app_dashboard'? 'active': '' }}" href="{{ path('app_dashboard') }}">
+            <i class="bi bi-house"></i> 
+            {{ 'text.dashboard'|trans }}
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">
+            <i class="bi bi-person"></i> 
+            Users
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" data-toggle="collapse" data-target=".blog" aria-expanded="false" aria-controls="blog">
+            <i class="bi bi-person-workspace"></i>
+            Blog
+            <i class="bi bi-arrow-right-short arrow"></i>
+        </a>
+        <div class="collapse blog">
+            <a class="nav-link" href="#">
+                <i class="bi bi-arrow-right-short"></i>
+                List
+            </a>
+            <a class="nav-link" href="#">
+                <i class="bi bi-arrow-right-short"></i>
+                List
+            </a>
+            <a class="nav-link" href="#">
+                <i class="bi bi-arrow-right-short"></i>
+                List
+            </a>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ path('app_logout') }}">
+            <i class="bi bi-lock-fill"></i> 
+            Logout
+        </a>
+    </li>
+</ul>
