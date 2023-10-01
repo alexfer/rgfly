@@ -13,8 +13,9 @@
             <span>Online</span>
         </span>
     </div>
-</div>
-{% set _status = _route|split('_')[2] %}
+</div>        
+{% set _parts = _route|split('_') %}
+{% set _status = _parts[_parts|length == 2 ? 1 : 2] %}
 <ul class="nav flex-column py-2">    
     <li class="nav-item">        
         <a class="nav-link {{ _route == 'app_dashboard'? 'active': '' }}" href="{{ path('app_dashboard') }}">
