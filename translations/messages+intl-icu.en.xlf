@@ -69,17 +69,17 @@
                 <source>title.user.area</source>
                 <target>User Area</target>
             </trans-unit>
-            <trans-unit id="title.user.signin">
-                <source>title.user.signin</source>
-                <target>Sign In</target>
+            <trans-unit id="title.user.login">
+                <source>title.user.login</source>
+                <target>Login</target>
             </trans-unit>
-            <trans-unit id="title.user.signup">
-                <source>title.user.signup</source>
-                <target>Sign Up</target>
+            <trans-unit id="title.user.register">
+                <source>title.user.register</source>
+                <target>Register</target>
             </trans-unit>
             <trans-unit id="title.user.logoff">
                 <source>title.user.logoff</source>
-                <target>Log Off</target>
+                <target>Logout</target>
             </trans-unit>
             <trans-unit id="title.services">
                 <source>title.services</source>
@@ -167,7 +167,7 @@
             </trans-unit>
             <trans-unit id="text.register">
                 <source>text.register</source>
-                <target>Register</target>
+                <target>Registration a new member</target>
             </trans-unit>
             <trans-unit id="text.register.desc">
                 <source>text.register.desc</source>
@@ -184,7 +184,7 @@
             <trans-unit id="text.register.success.text_help">
                 <source>text.register.success.text_help</source>
                 <target>
-                    <![CDATA[You can log in by going to the page: <a class="link" href="{ app_login }">Sign In</a> using your email and password specified during registration.]]>
+                    <![CDATA[You can log in by going to the page: <a class="link" href="{ app_login }">Login</a> using your email and password specified during registration.]]>
                 </target>
             </trans-unit>
             <trans-unit id="text.rquired">
@@ -243,9 +243,25 @@
                 <source>text.dashboard</source>
                 <target>Dahboard</target>
             </trans-unit>
+            <trans-unit id="text.dashboard.desc">
+                <source>text.dashboard.desc</source>
+                <target>In this part you can manage your data.</target>
+            </trans-unit>
             <trans-unit id="text.profile">
                 <source>text.profile</source>
                 <target>Profile</target>
+            </trans-unit>
+            <trans-unit id="text.profile.desc">
+                <source>text.profile.desc</source>
+                <target>Your personal data</target>
+            </trans-unit>
+            <trans-unit id="text.login">
+                <source>text.login</source>
+                <target>Security Login</target>
+            </trans-unit>
+            <trans-unit id="text.login.desc">
+                <source>text.login.desc</source>
+                <target>Enter your email address and password below.</target>
             </trans-unit>
             
             <trans-unit id="label.agree_terms">
@@ -318,7 +334,7 @@
             </trans-unit>
             <trans-unit id="form.action.login">
                 <source>form.action.login</source>
-                <target>Sign In</target>
+                <target>Login</target>
             </trans-unit>
             <trans-unit id="form.email.help">
                 <source>form.email.help</source>

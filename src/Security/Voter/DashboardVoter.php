@@ -67,39 +67,39 @@ class DashboardVoter extends Voter
 
     /**
      * 
-     * @param GB $entry
+     * @param object $object
      * @param User $user
      * @return bool
      */
-    private function canView(GB $entry, User $user): bool
+    private function canView(object $object, User $user): bool
     {
         // if they can edit, they can view
-        if ($this->canEdit($entry, $user)) {
+        if ($this->canEdit($object, $user)) {
             return true;
         }
 
-        return !$entry->isPrivate();
+        return !$object->isPrivate();
     }
 
     /**
      * 
-     * @param GB $entry
+     * @param object $object
      * @param User $user
      * @return bool
      */
-    private function canEdit(GB $entry, User $user): bool
+    private function canEdit(object $object, User $user): bool
     {
-        return $user === $entry->getOwner();
+        return $user === $object->getOwner();
     }
 
     /**
      * 
-     * @param GB $entry
+     * @param object $object
      * @param User $user
      * @return bool
      */
-    private function canDelete(GB $entry, User $user): bool
+    private function canDelete(object $object, User $user): bool
     {
-        return $user === $entry->getOwner();
+        return $user === $object->getOwner();
     }
 }

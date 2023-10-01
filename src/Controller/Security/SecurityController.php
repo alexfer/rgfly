@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Security;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -8,12 +8,17 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Form\Form;
 use App\Form\Type\User\LoginType;
 
 class SecurityController extends AbstractController
 {
 
+    /**
+     * 
+     * @param Request $request
+     * @param AuthenticationUtils $authenticationUtils
+     * @return Response
+     */
     #[Route('/login', name: 'app_login', methods: ['GET', 'POST'])]
     public function login(
             Request $request,
@@ -41,26 +46,6 @@ class SecurityController extends AbstractController
                     'last_username' => $authenticationUtils->getLastUsername(),
                     'error' => $error,
         ]);
-    }
-
-    /**
-     * 
-     * @param Form $form
-     * @return array
-     */
-    public function getErrorMessages(Form $form): array
-    {
-
-        $errors = [];
-
-        foreach ($form->all() as $child) {
-            foreach ($child->getErrors() as $error) {
-                $name = $child->getName();
-                $errors[$name]['message'] = $error->getMessage();
-            }
-        }
-
-        return $errors;
     }
 
     /**

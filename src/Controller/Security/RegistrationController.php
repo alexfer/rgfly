@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Security;
 
 use App\Entity\User;
 use App\Form\Type\User\DetailsType;
@@ -45,9 +45,6 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-//            $details->setFirstName($form->get('first_name')->getData())
-//                    ->setLastName($form->get('last_name')->getData());
-
             $user->setPassword(
                     $userPasswordHasher->hashPassword(
                             $user,
@@ -63,7 +60,6 @@ class RegistrationController extends AbstractController
 
             $em->persist($details);
             $em->flush();
-            // do anything else you need here, like send an email
 
             return $this->redirectToRoute('app_register_success');
         }

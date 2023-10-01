@@ -8,12 +8,14 @@
             {{ 'text.dashboard'|trans }}
         </a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">
-            <i class="bi bi-person"></i> 
-            Users
-        </a>
-    </li>
+    {% if is_granted('ROLE_ADMIN') %}
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="bi bi-person"></i> 
+                Users
+            </a>
+        </li>
+    {% endif %}
     <li class="nav-item">
         <a class="nav-link" href="#" data-toggle="collapse" data-target=".blog" aria-expanded="false" aria-controls="blog">
             <i class="bi bi-person-workspace"></i>
