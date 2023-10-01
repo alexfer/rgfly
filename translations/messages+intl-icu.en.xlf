@@ -133,6 +133,46 @@
                 <source>title.subscribe</source>
                 <target>Subscribe</target>
             </trans-unit>
+            <trans-unit id="menu.dashboard">
+                <source>menu.dashboard</source>
+                <target>Dashboard</target>
+            </trans-unit>
+            <trans-unit id="menu.dashboard.users">
+                <source>menu.dashboard.users</source>
+                <target>Members</target>
+            </trans-unit>
+            <trans-unit id="menu.dashboard.faq">
+                <source>menu.dashboard.faq</source>
+                <target>Questions</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.summary">
+                <source>title.dashboard.summary</source>
+                <target>Summary</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.users">
+                <source>title.dashboard.users</source>
+                <target>Registered Users</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.faq">
+                <source>title.dashboard.faq</source>
+                <target>Questions</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.blog_overvie">
+                <source>title.dashboard.blog_overvie</source>
+                <target>Blog Overview</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.blog_create">
+                <source>title.dashboard.blog_create</source>
+                <target>Create New Blog</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.blog_approved">
+                <source>title.dashboard.blog_approved</source>
+                <target>Approved Blogs</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.blog_latest">
+                <source>title.dashboard.blog_latest</source>
+                <target>Latest Blogs</target>
+            </trans-unit>
             <trans-unit id="text.all_right_reserved">
                 <source>text.all_right_reserved</source>
                 <target>All Rights Reserved</target>

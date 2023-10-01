@@ -1,39 +1,67 @@
-<div class="sidenar-header">
-    sdf
+<div class="sidebar-header">
+    <div class="user-pic">
+        <img class="img-responsive img-rounded" src="https://secure.gravatar.com/avatar/d90848faeb283c55f07d2c47fec4e485?s=100&r=g&d=mm"
+             alt="User picture">
+    </div>
+    <div class="user-info">
+        <span class="user-name">{{ app.user.details.firstName }}
+            <strong>{{ app.user.details.lastName }}</strong>
+        </span>
+        <span class="user-role">{{ app.user.roles[0]|replace({'ROLE_': ''})|capitalize }}</span>
+        <span class="user-status">
+            <i class="bi bi-circle-fill"></i>
+            <span>Online</span>
+        </span>
+    </div>
 </div>
+{% set _status = _route|split('_')[2] %}
 <ul class="nav flex-column py-2">    
     <li class="nav-item">        
-        <a class="nav-link {{_route == 'app_dashboard'? 'active': '' }}" href="{{ path('app_dashboard') }}">
+        <a class="nav-link {{ _route == 'app_dashboard'? 'active': '' }}" href="{{ path('app_dashboard') }}">
             <i class="bi bi-house"></i> 
-            {{ 'text.dashboard'|trans }}
+            {{ 'menu.dashboard'|trans }}
         </a>
     </li>
     {% if is_granted('ROLE_ADMIN') %}
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link {{ _route == 'app_dashboard_user'? 'active': '' }}" href="{{ path('app_dashboard_user') }}">
                 <i class="bi bi-person"></i> 
-                Users
+                {{ 'menu.dashboard.users'|trans }}
+            </a>
+            <a class="nav-link {{ _route == 'app_dashboard_faq'? 'active': '' }}" href="{{ path('app_dashboard_faq') }}">
+                <i class="bi bi-person"></i> 
+                {{ 'menu.dashboard.faq'|trans }}
             </a>
         </li>
-    {% endif %}
+    {% endif %}    
     <li class="nav-item">
-        <a class="nav-link" href="#" data-toggle="collapse" data-target=".blog" aria-expanded="false" aria-controls="blog">
+        <a 
+            class="nav-link {{ _status == 'blog'? 'active': '' }}" 
+            href="#" 
+            data-toggle="collapse" 
+            data-target=".blog" 
+            aria-expanded="{{ _status == 'blog'? 'true': 'false'}}" 
+            aria-controls="blog">
             <i class="bi bi-person-workspace"></i>
             Blog
             <i class="bi bi-arrow-right-short arrow"></i>
         </a>
-        <div class="collapse blog">
-            <a class="nav-link" href="#">
+        <div class="collapse blog {{ _status == 'blog'? 'show': ''}}">
+            <a class="nav-link {{ _route == 'app_dashboard_blog'? 'active': '' }}" href="{{ path('app_dashboard_blog') }}">
                 <i class="bi bi-arrow-right-short"></i>
-                List
+                Owerview
             </a>
-            <a class="nav-link" href="#">
+            <a class="nav-link {{ _route == 'app_dashboard_blog_create'? 'active': '' }}" href="{{ path('app_dashboard_blog_create') }}">
                 <i class="bi bi-arrow-right-short"></i>
-                List
+                Create Blog
             </a>
-            <a class="nav-link" href="#">
+            <a class="nav-link {{ _route == 'app_dashboard_blog_approved'? 'active': '' }}" href="{{ path('app_dashboard_blog_approved') }}">
                 <i class="bi bi-arrow-right-short"></i>
-                List
+                Approved Blogs
+            </a>
+            <a class="nav-link {{ _route == 'app_dashboard_blog_latest'? 'active': '' }}" href="{{ path('app_dashboard_blog_latest') }}">
+                <i class="bi bi-arrow-right-short"></i>
+                New Blogs
             </a>
         </div>
     </li>

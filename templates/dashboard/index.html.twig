@@ -7,7 +7,7 @@
     {{ encore_entry_link_tags('sidebar') }}    
 {% endblock %}
 
-{% block body %}
+{% block body %}      
     <div class="page-title-area user-area">        
         <div class="d-table">
             <div class="d-table-cell">
@@ -32,13 +32,14 @@
                 </div>    
                 <div class="col-md-9 my-3 shadow-sm rounded">
                     <div class="flex-column content my-3">
-                        <h2>{{ 'text.dashboard'|trans }}</h2>
-                        <hr>
-                        <p>Dashboard Content</p>
+                        <h2>{% block title_content %}{% endblock %}</h2>
+                        <hr>                        
+                        {% block content %}
+                            {% include 'dashboard/content/index.html.twig'  %}
+                        {% endblock %}
                     </div>
                 </div>
             </div>                
         </div>                
-    </div>
-</section>
+    </section>
 {% endblock %}
