@@ -39,7 +39,7 @@
             </trans-unit>
             <trans-unit id="http_error_429.suggestion">
                 <source>http_error_429.suggestion</source>
-                <target><![CDATA[Your request limit has been reached. Please try again in 5 minutes or go back to the <a cass="link" href="{ url }">Homepage</a>.]]></target>
+                <target><![CDATA[Your request limit has been reached. Please try again in 5 minutes or go back to the <a class="link" href="{ url }">Homepage</a>.]]></target>
             </trans-unit>
             <trans-unit id="http_error_500.description">
                 <source>http_error_500.description</source>
@@ -238,6 +238,14 @@
                 <target>
                     <![CDATA[Test text]]>
                 </target>
+            </trans-unit>
+            <trans-unit id="text.dashboard">
+                <source>text.dashboard</source>
+                <target>Dahboard</target>
+            </trans-unit>
+            <trans-unit id="text.profile">
+                <source>text.profile</source>
+                <target>Profile</target>
             </trans-unit>
             
             <trans-unit id="label.agree_terms">

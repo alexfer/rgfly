@@ -22,7 +22,7 @@
     </div>    
     <section class="section-area default py-0">
         <div class="container">  
-            <div class="row">
+            <div class="d-flex">
                 <div class="col-md-3">
                     <div class="sidebar my-3">
                         {% block sidebar %}
@@ -30,9 +30,10 @@
                         {% endblock %}
                     </div>
                 </div>    
-                <div class="col-md-9 my-3 bg-white">
-                    <div class="content l-0">
+                <div class="col-md-9 my-3 shadow-sm rounded">
+                    <div class="flex-column content my-3">
                         <h2>{{ 'text.dashboard'|trans }}</h2>
+                        <hr>
                         <p>Dashboard Content</p>
                     </div>
                 </div>

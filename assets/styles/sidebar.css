@@ -1,11 +1,14 @@
 .sidebar {
-    height: 100vh;    
-    padding-top: 10px;
+    margin-bottom: 10px;
     background-color: #2e4053;
-    border-radius: 4px;
 }
-.sidebar .nav-item {
-    /*background-color: #0e1326;*/
+.content h2 {
+
+}
+.sidebar .sidebar-header {
+    border-top: 1px solid #3a3f48;
+    margin-right: 4px;
+    color: #5cb85c;
 }
 .sidebar .nav-item .nav-link {
     position: relative;
@@ -14,13 +17,14 @@
     font-weight: 500;
     padding: 10px 15px;
     text-transform: capitalize;
-    margin: 0;    
+    margin: 0;
+    border-top: 1px solid #3a3f48;
 }
 .sidebar .nav-item .nav-link i {
     margin-right: 4px;
     border-radius: 4px;
     background: #5d6d7e;
-    padding: 2px 5px;    
+    padding: 2px 5px;
 }
 .sidebar .nav-item .nav-link i.arrow {
     float: right;
