@@ -137,6 +137,30 @@
                 <source>menu.dashboard</source>
                 <target>Dashboard</target>
             </trans-unit>
+            <trans-unit id="menu.dashboard.overview">
+                <source>menu.dashboard.overview</source>
+                <target>Owerview</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.blog_overview">
+                <source>title.dashboard.blog_overview</source>
+                <target>Blog List</target>
+            </trans-unit>
+            <trans-unit id="menu.dashboard.create_blog">
+                <source>menu.dashboard.create_blog</source>
+                <target>Create Blog</target>
+            </trans-unit>
+            <trans-unit id="menu.dashboard.approved_blogs">
+                <source>menu.dashboard.approved_blogs</source>
+                <target>Approved Blogs</target>
+            </trans-unit>
+            <trans-unit id="menu.dashboard.latest_blogs">
+                <source>menu.dashboard.latest_blogs</source>
+                <target>New Blogs</target>
+            </trans-unit>
+            <trans-unit id="menu.dashboard.create_faq">
+                <source>menu.dashboard.create_faq</source>
+                <target>Create Qusestion</target>
+            </trans-unit>
             <trans-unit id="menu.dashboard.users">
                 <source>menu.dashboard.users</source>
                 <target>Members</target>

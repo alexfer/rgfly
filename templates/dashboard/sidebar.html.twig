@@ -25,14 +25,31 @@
     </li>
     {% if is_granted('ROLE_ADMIN') %}
         <li class="nav-item">
+            <a 
+                class="nav-link {{ _route == 'app_dashboard_faq'? 'active': '' }}" 
+                href="{{ path('app_dashboard_faq') }}"
+                data-toggle="collapse" 
+                data-target=".faq" 
+                aria-expanded="{{ _status == 'faq'? 'true': 'false'}}" 
+                aria-controls="faq">
+                <i class="bi bi-question"></i> 
+                {{ 'menu.dashboard.faq'|trans }}
+                <i class="bi bi-arrow-right-short arrow"></i>
+            </a>
+            <div class="collapse faq {{ _status == 'faq'? 'show': ''}}">
+                <a class="nav-link {{ _route == 'app_dashboard_faq'? 'active': '' }}" href="{{ path('app_dashboard_faq') }}">
+                    <i class="bi bi-arrow-right-short"></i>
+                    {{ 'menu.dashboard.overview'|trans }}
+                </a>
+                <a class="nav-link {{ _route == 'app_dashboard_faq_create'? 'active': '' }}" href="{{ path('app_dashboard_faq_create') }}">
+                    <i class="bi bi-arrow-right-short"></i>
+                    {{ 'menu.dashboard.create_faq'|trans }}
+                </a>
+            </div>
             <a class="nav-link {{ _route == 'app_dashboard_user'? 'active': '' }}" href="{{ path('app_dashboard_user') }}">
                 <i class="bi bi-person"></i> 
                 {{ 'menu.dashboard.users'|trans }}
-            </a>
-            <a class="nav-link {{ _route == 'app_dashboard_faq'? 'active': '' }}" href="{{ path('app_dashboard_faq') }}">
-                <i class="bi bi-person"></i> 
-                {{ 'menu.dashboard.faq'|trans }}
-            </a>
+            </a>            
         </li>
     {% endif %}    
     <li class="nav-item">
@@ -45,24 +62,25 @@
             aria-controls="blog">
             <i class="bi bi-person-workspace"></i>
             Blog
+            <span class="badge badge-pill badge-success mx-2">3</span>
             <i class="bi bi-arrow-right-short arrow"></i>
         </a>
         <div class="collapse blog {{ _status == 'blog'? 'show': ''}}">
-            <a class="nav-link {{ _route == 'app_dashboard_blog'? 'active': '' }}" href="{{ path('app_dashboard_blog') }}">
+            <a class="nav-link {{ _route == 'app_dashboard_blog'? 'active': '' }}" href="{{ path('app_dashboard_blog') }}">                
                 <i class="bi bi-arrow-right-short"></i>
-                Owerview
+                {{ 'menu.dashboard.overview'|trans }}                
             </a>
             <a class="nav-link {{ _route == 'app_dashboard_blog_create'? 'active': '' }}" href="{{ path('app_dashboard_blog_create') }}">
                 <i class="bi bi-arrow-right-short"></i>
-                Create Blog
+                {{ 'menu.dashboard.create_blog'|trans }}
             </a>
             <a class="nav-link {{ _route == 'app_dashboard_blog_approved'? 'active': '' }}" href="{{ path('app_dashboard_blog_approved') }}">
                 <i class="bi bi-arrow-right-short"></i>
-                Approved Blogs
+                {{ 'menu.dashboard.approved_blogs'|trans }}
             </a>
             <a class="nav-link {{ _route == 'app_dashboard_blog_latest'? 'active': '' }}" href="{{ path('app_dashboard_blog_latest') }}">
                 <i class="bi bi-arrow-right-short"></i>
-                New Blogs
+                {{ 'menu.dashboard.latest_blogs'|trans }}
             </a>
         </div>
     </li>

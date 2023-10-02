@@ -22,7 +22,7 @@ $(function () {
         $('.accordion-title').not($(this)).removeClass('active');
     });
 
-    $('a[aria-controls="blog"]').on('click', function (e) {
+    $('a[data-toggle="collapse"]').on('click', function (e) {
         e.preventDefault();
 
         let arrow = $(this).children('.arrow');

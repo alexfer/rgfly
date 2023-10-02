@@ -19,42 +19,34 @@ img {
     border-radius: 3px;
     box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12), 0 2px 4px -1px rgba(0, 0, 0, .2)
 }
-
 button {
     outline: 0 !important;
 }
-
 dl, ol, ul {
     padding: 0;
     margin: 0;
     list-style: none;
 }
-
 .d-table {
     width: 100%;
     height: 100%;
 }
-
 .d-table-cell {
     vertical-align: middle;
 }
-
 .ptb-100 {
     padding-top: 100px;
     padding-bottom: 100px;
 }
-
 .pb-50 {
     padding-bottom: 50px;
 }
 .pb-70 {
     padding-bottom: 70px;
 }
-
 .pb-100 {
     padding-bottom: 100px;
 }
-
 .pt-50 {
     padding-top: 50px;
 }
@@ -457,6 +449,10 @@ p:last-child {
 }
 .tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li:last-child {
     border-bottom: 0px solid transparent;
+}
+.tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li a i.bi {
+    font-size: 12px;
+    margin-right: 5px;
 }
 .tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li a {
     position: relative;

@@ -77,7 +77,8 @@
     background: #34495e;
     padding-left: 20px
 }
-.sidebar .blog .nav-link i {
+.sidebar .blog .nav-link i,
+.sidebar .faq .nav-link i {
     padding-right: 2px;
     padding-left: 15px;
     background: none;

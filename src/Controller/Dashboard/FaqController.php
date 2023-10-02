@@ -2,6 +2,7 @@
 
 namespace App\Controller\Dashboard;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +18,7 @@ class FaqController extends AbstractController
                     'data' => 'Questions content',
         ]);
     }
-    
+
     #[Route('/create', name: 'app_dashboard_faq_create')]
     public function create(): Response
     {

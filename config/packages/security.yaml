@@ -39,9 +39,9 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/(dashboard)(profile), roles: [ROLE_ADMIN, ROLE_USER] }
-#        - { path: ^/profile, roles: [ROLE_ADMIN, ROLE_USER] }
-    # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/dashboard/(faq)|(user), roles: [ROLE_ADMIN] }
+        - { path: ^/(dashboard)|(profile)/*, roles: [ROLE_ADMIN, ROLE_USER] }        
+
 
 when@test:
     security:
