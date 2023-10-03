@@ -1,0 +1,38 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% block title_content %}{{ 'title.dashboard.create_faq'|trans }}{% endblock %}
+
+{% block content %}
+    {{ form_start(form, {attr: {class: 'd-tech-form', novalidate: 'novalidate'}}) }}
+    {% if errors %}
+        <div class="alert alert-danger">
+            <ul>
+                {% for error in errors %}
+                    <li>{{ error.message|trans({'%policy%': path('policy'), '%terms%': path('terms')})|raw }}</li>
+                    {% endfor %}           
+            </ul>
+        </div>
+    {% else %}
+        <blockquote class="blockquote bg-light py-1 pl-3 shadow-sm">
+            <p class="mb-0">
+                <i class="bi bi-exclamation-triangle"></i> 
+                {{ 'text.rquired'|trans|raw }}
+            </p>
+        </blockquote>
+    {% endif %}
+    <div class="form-group">
+        {% set title_error = form.title.vars.errors|length ? 'form-control error' : 'form-control' %}
+        {{ form_label(form.title, 'label.form.faq.title') }} <span class="text-danger">*</span>
+        {{ form_widget(form.title, {attr: {class: title_error, placeholder: 'label.form.faq.title'}}) }}        
+    </div>
+    <div class="form-group">
+        {% set content_error = form.content.vars.errors|length ? 'form-control error' : 'form-control' %}
+        {{ form_label(form.content, 'label.form.faq.content') }} <span class="text-danger">*</span>
+        {{ form_widget(form.content, {attr: {class: content_error, rows: 6, placeholder: 'label.form.faq.content'}}) }}        
+    </div>
+    <div class="form-group">
+        {{ form_widget(form.visible) }}
+        {{ form_label(form.visible, 'label.form.faq.visible'|trans, {label_attr: {class: 'pl-2'}}) }}        
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

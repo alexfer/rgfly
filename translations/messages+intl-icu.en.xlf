@@ -181,6 +181,26 @@
                 <source>title.dashboard.faq</source>
                 <target>Questions</target>
             </trans-unit>
+            <trans-unit id="title.dashboard.create_faq">
+                <source>title.dashboard.create_faq</source>
+                <target>Create Question</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.edit_faq">
+                <source>title.dashboard.edit_faq</source>
+                <target>Change Question</target>
+            </trans-unit>
+            <trans-unit id="label.form.faq.title">
+                <source>label.form.faq.title</source>
+                <target>Title</target>
+            </trans-unit>
+            <trans-unit id="label.form.faq.content">
+                <source>label.form.faq.content</source>
+                <target>Content</target>
+            </trans-unit>
+            <trans-unit id="label.form.faq.visible">
+                <source>label.form.faq.visible</source>
+                <target>Published</target>
+            </trans-unit>
             <trans-unit id="title.dashboard.blog_overvie">
                 <source>title.dashboard.blog_overvie</source>
                 <target>Blog Overview</target>

@@ -2,28 +2,107 @@
 
 namespace App\Controller\Dashboard;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\FaqRepository;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Helper\HandleErrors;
+use App\Entity\Faq;
+use App\Form\Type\FaqType;
 
 #[Route('/dashboard/faq')]
 class FaqController extends AbstractController
 {
 
+    /**
+     * 
+     * @param FaqRepository $reposiroty
+     * @return Response
+     */
     #[Route('/', name: 'app_dashboard_faq')]
-    public function index(): Response
+    public function index(FaqRepository $reposiroty): Response
     {
         return $this->render('dashboard/content/faq/index.html.twig', [
-                    'data' => 'Questions content',
+                    'entries' => $reposiroty->findBy([], ['id' => 'desc']),
         ]);
     }
 
-    #[Route('/create', name: 'app_dashboard_faq_create')]
-    public function create(): Response
+    /**
+     * 
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param ValidatorInterface $validator
+     * @return Response
+     */
+    #[Route('/create', name: 'app_dashboard_faq_create', methods: ['GET', 'POST'])]
+    public function create(
+            Request $request,
+            EntityManagerInterface $em,
+            ValidatorInterface $validator,
+    ): Response
     {
-        return $this->render('dashboard/content/faq/index.html.twig', [
-                    'data' => 'Questions content',
+        $entry = new Faq();
+
+        $form = $this->createForm(FaqType::class, $entry);
+        $form->handleRequest($request);
+
+        $errors = null;
+
+        if ($request->isMethod('POST')) {
+            $errors = $validator->validate($entry);
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($entry);
+            $em->flush();
+
+            return $this->redirectToRoute('app_dashboard_faq_edit', ['id' => $entry->getId()]);
+        }
+
+        return $this->render('dashboard/content/faq/_form.html.twig', [
+                    'errors' => HandleErrors::getMessages($form),
+                    'form' => $form,
+        ]);
+    }
+
+    /**
+     * 
+     * @param Request $request
+     * @param Faq $entry
+     * @param EntityManagerInterface $em
+     * @param ValidatorInterface $validator
+     * @return Response
+     */
+    #[Route('/edit/{id}', name: 'app_dashboard_faq_edit', methods: ['GET', 'POST'])]
+    public function edit(
+            Request $request,
+            Faq $entry,
+            EntityManagerInterface $em,
+            ValidatorInterface $validator,
+    ): Response
+    {
+        $form = $this->createForm(FaqType::class, $entry);
+        $form->handleRequest($request);
+
+        $errors = null;
+
+        if ($request->isMethod('POST')) {
+            $errors = $validator->validate($entry);
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($entry);
+            $em->flush();
+
+            return $this->redirectToRoute('app_dashboard_faq_edit', ['id' => $entry->getId()]);
+        }
+
+        return $this->render('dashboard/content/faq/_form.html.twig', [
+                    'errors' => HandleErrors::getMessages($form),
+                    'form' => $form,
         ]);
     }
 }

@@ -50,6 +50,14 @@
                 <source>form.phone.not_valid</source>
                 <target>The phone number '{{ value }}' is not a valid. Please provide a valid phone number.</target>
             </trans-unit>
+            <trans-unit id="form.title.not_blank">
+                <source>form.title.not_blank</source>
+                <target>The title can't be blank.</target>
+            </trans-unit>
+            <trans-unit id="form.content.not_blank">
+                <source>form.content.not_blank</source>
+                <target>The content can't be blank.</target>
+            </trans-unit>
             <trans-unit id="form.email.not_blank">
                 <source>form.email.not_blank</source>
                 <target>The email can't be blank.</target>
@@ -85,6 +93,22 @@
             <trans-unit id="form.message.max">
                 <source>form.message.max</source>
                 <target>The message is too long. It should have {{ limit }} characters or less.</target>
+            </trans-unit>
+            <trans-unit id="form.title.min">
+                <source>form.title.min</source>
+                <target>The title is too short. It should have {{ limit }} characters or more.</target>
+            </trans-unit>
+            <trans-unit id="form.title.max">
+                <source>form.title.max</source>
+                <target>The title is too long. It should have {{ limit }} characters or less.</target>
+            </trans-unit>
+            <trans-unit id="form.content.min">
+                <source>form.content.min</source>
+                <target>The content is too short. It should have {{ limit }} characters or more.</target>
+            </trans-unit>
+            <trans-unit id="form.content.max">
+                <source>form.content.max</source>
+                <target>The content is too long. It should have {{ limit }} characters or less.</target>
             </trans-unit>
             <trans-unit id="form.message.agree_terms">
                 <source>form.message.agree_terms</source>

@@ -248,14 +248,14 @@ a:hover {
     text-decoration: none;
     -webkit-transition: 0.4s;
     transition: 0.4s;
-    outline: 0 !important;  
+    outline: 0 !important;
     color: #5e87eb;
     font-weight: 600;
     line-height: 1.4;
 }
 .link:hover {
     text-decoration: underline;
-    color: #000;    
+    color: #000;
 }
 blockquote i.bi {
     vertical-align: middle;
@@ -483,8 +483,8 @@ p:last-child {
     color: #696997;
 }
 
-.tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-menu li a:hover, 
-.tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-menu li a:focus, 
+.tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-menu li a:hover,
+.tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-menu li a:focus,
 .tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-menu li a.active {
     color: #5e87eb;
 }
@@ -752,13 +752,17 @@ p:last-child {
         display: none;
     }
 }
-.tech-form textarea.form-control {
+.tech-form textarea.form-control,
+.d-tech-form textarea.form-control {
     height: auto;
     padding-top: 15px;
     line-height: initial;
 }
 .tech-form .form-control.error {
     border-top: 3px solid #ea8b8b;
+}
+.d-tech-form .form-control.error {
+    border: 1px solid #ea8b8b;
 }
 .tech-form .btn {
     height: 50px;
@@ -776,7 +780,8 @@ p:last-child {
     color: #fff;
     background-color: #172ea2;
 }
-.tech-form .form-control {
+.tech-form .form-control,
+.d-tech-form .form-control {
     font-size: 15px;
     width: 100%;
     padding: 10px 20px;
@@ -792,17 +797,29 @@ p:last-child {
     border-top: 3px solid #9a9a9b;
     transition: all 0.4s;
 }
-.tech-form .form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+.d-tech-form .form-control {
+    border-radius: 4px;
+    border: 1px solid #9a9a9b;
+}
+.tech-form .form-control::placeholder,
+.d-tech-form .form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: #333;
     opacity: 0.4; /* Firefox */
 }
 .tech-form input:focus,
-.tech-form textarea:focus {
+.tech-form textarea:focus,
+.d-tech-form input:focus,
+.d-tech-form textarea:focus {
     outline: none;
     border: none;
     -webkit-box-shadow: none;
     box-shadow: none;
     border-top: 3px solid #004caa;
+}
+.d-tech-form input:focus,
+.d-tech-form textarea:focus {
+    border-top: 0;
+    border: 1px solid #004caa;
 }
 .home-area {
     overflow: hidden;
@@ -817,11 +834,6 @@ p:last-child {
     background-size: cover;
     background-position: center;
 }
-/**
-
-
-
-**/
 .page-title-area,
 .page-title-area.home,
 .page-title-area.info,
@@ -1146,6 +1158,16 @@ p:last-child {
 .copyright-area ul li:first-child {
     margin-left: 0;
 }
+.table .btn.btn-outline-lightning {
+    color: #5b6582;
+    background-color: transparent;
+    border-color: #5b6582;
+}
+.table .btn.btn-outline-lightning:hover {
+    color:#f0f3ff;
+    background-color:#5b6582;
+    border-color:#5b6582
+}
 /**************************************
  ** - Footer Area CSS
  **************************************/
@@ -1162,7 +1184,6 @@ p:last-child {
     background-size: cover;
     background-repeat: no-repeat;
 }
-
 .footer-area::before {
     content: "";
     position: absolute;
@@ -1175,11 +1196,9 @@ p:last-child {
     background-color: #5e87eb;
     background-image: linear-gradient(-135deg, #611bdd 0%, #5e87eb 100%);
 }
-
 .footer-heading {
     margin-bottom: 25px;
 }
-
 .footer-heading h3 {
     font-size: 20px;
     color: #fff;
@@ -1189,22 +1208,18 @@ p:last-child {
     border-bottom: 1px solid #fff;
     padding-bottom: 10px;
 }
-
 .single-footer-widget .footer-social {
     padding-left: 0;
     margin-bottom: 0;
     margin-top: 20px;
 }
-
 .single-footer-widget .footer-social li {
     display: inline-block;
     margin-right: 10px;
 }
-
 .single-footer-widget .footer-social li:last-child {
     margin-right: 0;
 }
-
 .single-footer-widget .footer-social i {
     display: inline-block;
     height: 38px;
@@ -1219,79 +1234,65 @@ p:last-child {
     transition: 0.4s;
     text-align: center;
 }
-
 .single-footer-widget .footer-social i:hover {
     background-color: #5e87eb;
     color: #ffffff;
     border: 1px solid #5e87eb;
 }
-
 .single-footer-widget p {
     font-size: 15px;
     color: #ececec;
     font-weight: 400;
 }
-
 .single-footer-widget .footer-heading {
     margin-bottom: 25px;
 }
-
 .single-footer-widget .footer-heading h3 {
     font-size: 20px;
     color: #ffffff;
     font-weight: 600;
     margin: 0 0 0 0;
 }
-
 .single-footer-widget .footer-quick-links {
     padding-left: 0;
     margin-bottom: 0;
 }
-
 .single-footer-widget .footer-quick-links li {
     list-style-type: none;
     padding-bottom: 18px;
 }
-
 .single-footer-widget .footer-quick-links li:last-child {
     padding-bottom: 0;
 }
-
 .single-footer-widget .footer-quick-links li a {
     display: inline-block;
     color: #ececec;
     font-size: 15px;
     font-weight: 400;
 }
-
 .single-footer-widget .footer-quick-links li a:hover {
     color: #fff;
     text-decoration: underline !important;
     -webkit-transition: 0.4s;
     transition: 0.4s;
 }
-
 .single-footer-widget .footer-info-contact {
     margin-bottom: 16px;
 }
-
 .single-footer-widget .footer-info-contact:last-child {
     margin-bottom: 0;
 }
-
 .single-footer-widget .footer-info-contact h3 {
     font-size: 16px;
     color: #fff;
     font-weight: 600;
     margin: 0 0 10px 0;
 }
-
 .single-footer-widget .footer-info-contact span {
     font-size: 15px;
     color: #ececec;
     font-weight: 400;
 }
-
 .single-footer-widget .footer-info-contact span a {
     font-size: 15px;
     color: #ececec;
@@ -1299,7 +1300,6 @@ p:last-child {
     -webkit-transition: 0.4s;
     transition: 0.4s;
 }
-
 .single-footer-widget .footer-info-contact span a:hover {
     color: #fff;
 }
