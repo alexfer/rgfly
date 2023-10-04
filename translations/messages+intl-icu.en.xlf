@@ -408,6 +408,18 @@
                 <source>label.form.message</source>
                 <target>Message</target>
             </trans-unit>
+            <trans-unit id="form.action.save">
+                <source>form.action.save</source>
+                <target>Save</target>
+            </trans-unit>
+            <trans-unit id="form.action.update">
+                <source>form.action.update</source>
+                <target>Update</target>
+            </trans-unit>
+            <trans-unit id="form.action.cancel">
+                <source>form.action.cancel</source>
+                <target>Cancel</target>
+            </trans-unit>
             <trans-unit id="form.action.send">
                 <source>form.action.send</source>
                 <target>Send Message</target>

@@ -41,7 +41,7 @@ class ContactType extends AbstractType
                 ])
                 ->add('send', SubmitType::class, [
                     'attr' => [
-                        'class' => 'btn btn-primary pull-left',
+                        'class' => 'btn btn-primary',
                     ],
                 ])
         ;

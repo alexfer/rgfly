@@ -73,7 +73,7 @@ dl, ol, ul {
     background-color: #5e87eb;
     -webkit-transition: 0.4s;
     transition: 0.4s;
-    border-radius: 30px;
+    border-radius: 5px;
     font-weight: 600;
     font-size: 15px;
     padding-left: 35px;
@@ -94,7 +94,7 @@ dl, ol, ul {
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     z-index: -1;
-    border-radius: 30px;
+    border-radius: 5px;
 }
 
 .default-btn:hover, .default-btn:focus {
@@ -764,7 +764,7 @@ p:last-child {
 .d-tech-form .form-control.error {
     border: 1px solid #ea8b8b;
 }
-.tech-form .btn {
+.tech-form .btn, .d-tech-form .btn {
     height: 50px;
     padding: 0 30px;
     font-weight: 600;
@@ -776,9 +776,21 @@ p:last-child {
     box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12), 0 2px 4px -1px rgba(0, 0, 0, .2)
 }
 .tech-form .btn:hover,
-.tech-form .btn:focus {
+.tech-form .btn:focus,
+.d-tech-form .btn:hover,
+.d-tech-form .btn:focus {
     color: #fff;
     background-color: #172ea2;
+}
+.d-tech-form .btn.btn-secondary {
+    color: #6e6e6e;
+    background-color: #ddd;
+    border: 1px solid #a0a0a0;
+}
+.d-tech-form .btn.btn-secondary:hover,
+.d-tech-form .btn.btn-secondary:focus {
+    color: #fff;
+    background-color: #636363;
 }
 .tech-form .form-control,
 .d-tech-form .form-control {
@@ -786,7 +798,7 @@ p:last-child {
     width: 100%;
     padding: 10px 20px;
     height: 52px;
-    color: #333;
+    color: #636363;
     border: none;
     border-left-width: medium;
     border-left-style: none;

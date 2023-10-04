@@ -59,9 +59,9 @@ class FaqType extends AbstractType
                 ->add('visible', CheckboxType::class, [
                     'mapped' => true,
                 ])
-                ->add('Save', SubmitType::class, [
+                ->add('save', SubmitType::class, [
                     'attr' => [
-                        'class' => 'btn btn-primary text-center',
+                        'class' => 'btn btn-primary shadow',
                     ],
                 ])
         ;
