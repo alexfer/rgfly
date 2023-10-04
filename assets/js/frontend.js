@@ -27,12 +27,20 @@ $(function () {
 
         let arrow = $(this).children('.arrow');
 
-        if (arrow.hasClass('bi-arrow-down-short')) {            
+        if (arrow.hasClass('bi-arrow-down-short')) {
             arrow.removeClass('bi-arrow-down-short').addClass('bi-arrow-right-short');
         } else {
             arrow.removeClass('bi-arrow-right-short').addClass('bi-arrow-down-short');
         }
-        
-        
     });
+
+    $('.delete-entry').on('click', function (e) {
+        let url = $(this).attr('data-url');
+        console.log(url);
+        $('.modal .confirm').attr('href', url);
+    });
+
+//    $('#modal-delete').on('shown.bs.modal', function () {
+//        console.log($(this));
+//    });
 });

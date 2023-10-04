@@ -420,6 +420,10 @@
                 <source>form.action.cancel</source>
                 <target>Cancel</target>
             </trans-unit>
+            <trans-unit id="form.action.close">
+                <source>form.action.close</source>
+                <target>Close</target>
+            </trans-unit>
             <trans-unit id="form.action.send">
                 <source>form.action.send</source>
                 <target>Send Message</target>

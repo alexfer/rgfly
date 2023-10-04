@@ -29,6 +29,14 @@ class FaqController extends AbstractController
                     'entries' => $reposiroty->findBy([], ['id' => 'desc']),
         ]);
     }
+    
+    #[Route('/delete/{id}', name: 'app_dashboard_faq_delete')]
+    public function delete(FaqRepository $reposiroty): Response
+    {
+        return $this->render('dashboard/content/faq/index.html.twig', [
+                    'entries' => $reposiroty->findBy([], ['id' => 'desc']),
+        ]);
+    }
 
     /**
      * 
