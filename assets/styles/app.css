@@ -1015,15 +1015,14 @@ p:last-child {
     color: #333;
     -webkit-transition: 0.5s;
     transition: 0.5s;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .faq-accordion .accordion .accordion-item .active.accordion-title i {
     color: #5e87eb;
 }
-
-.faq-accordion .accordion .accordion-item .accordion-title.active i::before {
-    content: "\f0d8";
+.faq-accordion .accordion .accordion-item .accordion-title.active i::before {    
+    content: "\F235";
 }
 
 .faq-accordion .accordion .accordion-item .accordion-content {

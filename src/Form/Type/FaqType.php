@@ -4,9 +4,9 @@ namespace App\Form\Type;
 
 use App\Entity\Faq;
 use Symfony\Component\Form\AbstractType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\Extension\Core\Type\{
     CheckboxType,
-    TextareaType,
     TextType,
     SubmitType,
 };
@@ -39,7 +39,7 @@ class FaqType extends AbstractType
                                 ]),
                     ],
                 ])
-                ->add('content', TextareaType::class, [
+                ->add('content', CKEditorType::class, [
                     'attr' => [
                         'min' => 100,
                         'max' => 65535,
@@ -57,11 +57,11 @@ class FaqType extends AbstractType
                     ],
                 ])
                 ->add('visible', CheckboxType::class, [
-                    'mapped' => true,                    
+                    'mapped' => true,
                 ])
                 ->add('Save', SubmitType::class, [
                     'attr' => [
-                        'class' => 'btn btn-primary pull-left',
+                        'class' => 'btn btn-primary text-center',
                     ],
                 ])
         ;

@@ -19,7 +19,7 @@ class FaqController extends AbstractController
     #[Route('/faq', name: 'faq')]
     public function index(EntityManagerInterface $em): Response
     {
-        $entries = $em->getRepository(Faq::class)->findAll();
+        $entries = $em->getRepository(Faq::class)->findAll([], ['id' => 'desc']);
 
         return $this->render('faq/index.html.twig', [
                     'entries' => $entries,

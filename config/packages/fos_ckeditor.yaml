@@ -1,0 +1,17 @@
+# Read the documentation: https://symfony.com/doc/current/bundles/FOSCKEditorBundle/index.html
+
+fos_ck_editor:
+    configs:
+        main_config:
+            toolbar: [
+                [ "Bold", "Italic", "Underline", "Strike", "Subscript", "Superscript" ], ["-"],
+                [ "Cut", "Copy", "Paste", "PasteText", "PasteFromWord"], ["-"],
+                [ "JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"  ], ["-"],
+                [ "Undo", "Redo" ], ["-"],
+                [ "CopyFormatting", "RemoveFormat" ], ["-"],
+                [ "Link", "Table", "HorizontalRule", "Smiley", "SpecialChar", "PageBreak" ], ["-"],
+                [ "Source", "-", "Save", "Anchor", "Maximize" ], ["-"],
+                ["About"],
+              ]
+    base_path: "bundles/fosckeditor"
+    js_path:   "bundles/fosckeditor/ckeditor.js"

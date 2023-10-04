@@ -24,7 +24,7 @@
                             <ul class="accordion">
                                 {% for entry in entries %}
                                     <li class="accordion-item">
-                                        <a class="accordion-title {{ loop.index == 1 ? 'active' : '' }}" href="#" data-toggle="accordion-content"> <i class="fa fa-caret-down"></i>
+                                        <a class="accordion-title {{ loop.index == 1 ? 'active' : '' }}" href="#" data-toggle="accordion-content"> <i class="bi bi-caret-down-fill"></i>
                                             {{ entry.title }}</a>
                                         <p class="accordion-content {{ loop.index == 1 ? 'show' : '' }}">{{ entry.content|raw }}</p>
                                     </li>
