@@ -4,7 +4,7 @@ fos_ck_editor:
     configs:
         main_config:
             toolbar: [
-                [ "Bold", "Italic", "Underline", "Strike", "Subscript", "Superscript" ], ["-"],
+                [ "Bold", "Italic", "Underline", "Strike", "Subscript", "Superscript", "TextColor" ], ["-"],
                 [ "Cut", "Copy", "Paste", "PasteText", "PasteFromWord"], ["-"],
                 [ "JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"  ], ["-"],
                 [ "Undo", "Redo" ], ["-"],

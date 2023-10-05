@@ -22,7 +22,7 @@ class BlogController extends AbstractController
     public function approved(): Response
     {
         return $this->render('dashboard/content/blog/approved.html.twig', [
-            'data' => 'Blog approved content',
+                    'data' => 'Blog approved content',
         ]);
     }
 
@@ -30,7 +30,7 @@ class BlogController extends AbstractController
     public function latest(): Response
     {
         return $this->render('dashboard/content/blog/latest.html.twig', [
-            'data' => 'Blog latest content',
+                    'data' => 'Blog latest content',
         ]);
     }
 
@@ -38,7 +38,7 @@ class BlogController extends AbstractController
     public function create(): Response
     {
         return $this->render('dashboard/content/blog/create.html.twig', [
-            'data' => 'Blog create form',
+                    'data' => 'Blog create form',
         ]);
     }
 }

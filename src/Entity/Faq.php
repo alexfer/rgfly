@@ -29,7 +29,7 @@ class Faq
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTime $deleted_at = null;
-    
+
     public function __construct()
     {
         $this->created_at = new \DateTime();
@@ -93,7 +93,7 @@ class Faq
         return $this->deleted_at;
     }
 
-    public function setDeleteddAt(\DateTime $deleted_at): static
+    public function setDeletedAt(\DateTime $deleted_at = null): static
     {
         $this->deleted_at = $deleted_at;
 

@@ -47,46 +47,46 @@
                         <li class="nav-item">                            
                             <button class="btn btn-primary nav-link dropdown-toggle mr-auto" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-person-circle mx-2 text-lg"></i> {% if not app.user %}
-                                    {{ 'title.user.area'|trans }}
+                                {{ 'title.user.area'|trans }}
                                 {% else %}
                                     {{ app.user.details.firstName }} {{ app.user.details.lastName }}
-                                {% endif %}
-                            </button>
-                            <ul class="dropdown-menu">
-                                {% if not app.user %}
-                                    <li class="nav-item"> 
-                                        <a href="{{ path('app_login') }}" class="nav-link">
-                                            <i class="bi bi-arrow-right-short"></i>
-                                            {{ 'title.user.login'|trans }}
-                                        </a>
-                                    </li>
-                                    <li class="nav-item"> 
-                                        <a href="{{ path('app_register') }}" class="nav-link">
-                                            <i class="bi bi-arrow-right-short"></i>
-                                            {{ 'title.user.register'|trans }}
-                                        </a>
-                                    </li>            
-                                {% else %}
-                                    <li class="nav-item"> 
-                                        <a href="{{ path('app_dashboard') }}" class="nav-link">
-                                            <i class="bi bi-arrow-right-short"></i>
-                                            {{ 'text.dashboard'|trans }}
-                                        </a>
-                                        <a href="{{ path('app_profile') }}" class="nav-link">
-                                            <i class="bi bi-arrow-right-short"></i>
-                                            {{ 'text.profile'|trans }}
-                                        </a>
-                                        <a href="{{ path('app_logout') }}" class="nav-link">
-                                            <i class="bi bi-arrow-right-short"></i>
-                                            {{ 'title.user.logoff'|trans }}
-                                        </a>
-                                    </li>
-                                {% endif %}
-                            </ul>
-                        </li>
-                    </ul>                                                    
-                </div>
-            </div>              
-        </nav>    
-    </div>
-</div>
+                                    {% endif %}
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        {% if not app.user %}
+                                            <li class="nav-item"> 
+                                                <a href="{{ path('app_login') }}" class="nav-link">
+                                                    <i class="bi bi-arrow-right-short"></i>
+                                                    {{ 'title.user.login'|trans }}
+                                                </a>
+                                            </li>
+                                            <li class="nav-item"> 
+                                                <a href="{{ path('app_register') }}" class="nav-link">
+                                                    <i class="bi bi-arrow-right-short"></i>
+                                                    {{ 'title.user.register'|trans }}
+                                                </a>
+                                            </li>            
+                                        {% else %}
+                                            <li class="nav-item"> 
+                                                <a href="{{ path('app_dashboard') }}" class="nav-link">
+                                                    <i class="bi bi-arrow-right-short"></i>
+                                                    {{ 'text.dashboard'|trans }}
+                                                </a>
+                                                <a href="{{ path('app_profile') }}" class="nav-link">
+                                                    <i class="bi bi-arrow-right-short"></i>
+                                                    {{ 'text.profile'|trans }}
+                                                </a>
+                                                <a href="{{ path('app_logout') }}" class="nav-link">
+                                                    <i class="bi bi-arrow-right-short"></i>
+                                                    {{ 'title.user.logoff'|trans }}
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            </ul>                                                    
+                        </div>
+                    </div>              
+                </nav>    
+            </div>
+        </div>

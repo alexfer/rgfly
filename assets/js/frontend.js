@@ -18,7 +18,7 @@ $(function () {
 
         $(this).toggleClass('active');
         $(this).next().slideToggle('slow');
-        $('.accordion-content').not($(this).next()).slideUp('slow');
+        $('.accordion-content').not($(this).next()).slideUp('toggle');
         $('.accordion-title').not($(this)).removeClass('active');
     });
 
@@ -35,12 +35,7 @@ $(function () {
     });
 
     $('.delete-entry').on('click', function (e) {
-        let url = $(this).attr('data-url');
-        console.log(url);
-        $('.modal .confirm').attr('href', url);
+        $('.modal input[name="_token"]').attr('value', $(this).attr('data-token'));
+        $('.modal .confirm').attr('action', $(this).attr('data-url'));
     });
-
-//    $('#modal-delete').on('shown.bs.modal', function () {
-//        console.log($(this));
-//    });
 });

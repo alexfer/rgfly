@@ -29,13 +29,36 @@ class FaqController extends AbstractController
                     'entries' => $reposiroty->findBy([], ['id' => 'desc']),
         ]);
     }
-    
-    #[Route('/delete/{id}', name: 'app_dashboard_faq_delete')]
-    public function delete(FaqRepository $reposiroty): Response
+
+    #[Route('/delete/{id}', name: 'app_dashboard_faq_delete', methods: ['POST'])]
+    public function delete(
+            Request $request,
+            Faq $entry,
+            EntityManagerInterface $em,
+    ): Response
     {
-        return $this->render('dashboard/content/faq/index.html.twig', [
-                    'entries' => $reposiroty->findBy([], ['id' => 'desc']),
-        ]);
+        if ($this->isCsrfTokenValid('delete', $request->get('_token'))) {
+            $date = new \DateTime('@' . strtotime('now'));
+            $entry->setDeletedAt($date)->setVisible(false);
+            $em->persist($entry);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('app_dashboard_faq');
+    }
+
+    #[Route('/restore/{id}', name: 'app_dashboard_faq_restore')]
+    public function restore(
+            Faq $entry,
+            EntityManagerInterface $em,
+    ): Response
+    {
+        $date = new \DateTime(null);
+        $entry->setDeletedAt(null);
+        $em->persist($entry);
+        $em->flush();
+
+        return $this->redirectToRoute('app_dashboard_faq');
     }
 
     /**
