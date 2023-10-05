@@ -786,6 +786,7 @@ p:last-child {
     color: #6e6e6e;
     background-color: #ddd;
     border: 1px solid #a0a0a0;
+    padding-top: 12px;
 }
 .d-tech-form .btn.btn-secondary:hover,
 .d-tech-form .btn.btn-secondary:focus {
