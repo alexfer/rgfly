@@ -14,7 +14,7 @@ class GoogleController extends AbstractController
     #[Route('/connect/google', name: 'google_start')]
     public function connectAction(ClientRegistry $clientRegistry)
     {
-        // will redirect to Facebook!
+        // will redirect to Google!
         return $clientRegistry
                         ->getClient('google') // key used in config/packages/knpu_oauth2_client.yaml
                         ->redirect([
@@ -35,7 +35,7 @@ class GoogleController extends AbstractController
         // leave this method blank and create a Guard authenticator
         // (read below)
 
-        /** @var \KnpU\OAuth2ClientBundle\Client\Provider\FacebookClient $client */
+        /** @var \KnpU\OAuth2ClientBundle\Client\Provider\GoogleClient $client */
         $client = $clientRegistry->getClient('google');
 
         try {

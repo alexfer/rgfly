@@ -37,8 +37,9 @@
     </div>    
 </div>  
 {{ form_end(form) }}
-<div class="form-row shadow-sm">
+<div class="form-row">
     <div class="col-md-12 text-center my-4">        
-        <a href="{{ path('google_start') }}" class="btn btn-success">Connect with Google</a>        
+        <a target="_blank" href="{{ path('google_start') }}" class="btn btn-success"><i class="bi bi-google mx-1"></i> Login with Google</a>        
+        <a target="_blank" href="{{ path('facebook_start') }}" class="btn btn-success"><i class="bi bi-facebook mx-1"></i> Login with Facebook</a>        
     </div>
 </div>

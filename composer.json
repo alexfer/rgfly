@@ -11,6 +11,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.16",
         "friendsofsymfony/ckeditor-bundle": "^2.4",
+        "hwi/oauth-bundle": "^2.0",
         "knpuniversity/oauth2-client-bundle": "^2.15",
         "league/oauth2-facebook": "^2.2",
         "league/oauth2-google": "^4.0",
