@@ -34,6 +34,11 @@
         <input type="hidden" name="_target_path" value="{{ path('app_index') }}"/>
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
         {{ form_widget(form.login, { label: 'form.action.login' }) }}
+    </div>    
+</div>  
+{{ form_end(form) }}
+<div class="form-row shadow-sm">
+    <div class="col-md-12 text-center my-4">        
+        <a href="{{ path('google_start') }}" class="btn btn-success">Connect with Google</a>        
     </div>
 </div>
-{{ form_end(form) }}

@@ -27,6 +27,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(type: 'string', unique: true, nullable: true)]
+    private $apiToken;
+
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    private $facebookId;
+
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    private $googleId;
+
     #[ORM\OneToOne(targetEntity: UserDetails::class, mappedBy: 'user', orphanRemoval: true, cascade: ['persist'])]
     private ?UserDetails $details = null;
 
@@ -57,6 +66,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setApiToken(string $apiToken)
+    {
+        $this->apiToken = $apiToken;
+    }
+
+    public function getFacebookId(): ?string
+    {
+        return $this->facebookId;
+    }
+
+    public function setFacebookId(string $facebookId): void
+    {
+        $this->facebookId = $facebookId;
+    }
+
+    public function getGoogleId(): ?string
+    {
+        return $this->googleId;
+    }
+
+    public function setGoogleId(string $googleId): void
+    {
+        $this->googleId = $googleId;
     }
 
     public function getEmail(): ?string
