@@ -10,6 +10,8 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
+        <div id="fb-root"></div>
+        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/uk_UA/sdk.js#xfbml=1&version=v18.0&appId=770139483043856" nonce="SM1h67Fs"></script>
         {% set _route = app.request.get('_route') %}
         <div class="preloader">
             <div class="d-table">

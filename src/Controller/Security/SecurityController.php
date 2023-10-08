@@ -19,7 +19,7 @@ class SecurityController extends AbstractController
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
      */
-    #[Route('/login', name: 'app_login', methods: ['GET', 'POST'])]
+    #[Route('/web/login', name: 'app_login', methods: ['GET', 'POST'])]
     public function login(
             Request $request,
             AuthenticationUtils $authenticationUtils,
@@ -32,7 +32,7 @@ class SecurityController extends AbstractController
         }
 
         $default = [
-            'username' => $authenticationUtils->getLastUsername(),
+            'email' => $authenticationUtils->getLastUsername(),
         ];
 
         $form = $this->createForm(LoginType::class, $default);
@@ -53,10 +53,23 @@ class SecurityController extends AbstractController
      * @return Response
      * @throws \Exception
      */
-    #[Route('/logout', name: 'app_logout')]
+    #[Route('/web/logout', name: 'app_logout')]
     public function logout(): Response
     {
         // controller can be blank: it will never be called!
         throw new \Exception('Don\'t forget to activate logout in security.yaml');
+    }
+
+    /**
+     * 
+     * @return Response
+     * @throws \Exception
+     */
+    #[Route('/login/error', name: 'app_login_error')]
+    public function error(Request $request): Response
+    {
+        return $this->render('security/error.html.twig', [
+                    'error' => $request->getSession()->get(Security::AUTHENTICATION_ERROR),
+        ]);
     }
 }

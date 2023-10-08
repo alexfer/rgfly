@@ -68,7 +68,7 @@ class UserAuthenticator extends AbstractAuthenticator
      */
     public function supports(Request $request): ?bool
     {
-        return ($request->getPathInfo() === '/login' && $request->isMethod('POST'));
+        return ($request->getPathInfo() === '/web/login' && $request->isMethod('POST'));
     }
 
     /**
@@ -80,7 +80,7 @@ class UserAuthenticator extends AbstractAuthenticator
     {
         $login = $request->request->all()['login'];
 
-        $email = $login['username'];
+        $email = $login['email'];
         $password = $login['password'];
         $token = $request->request->get('_csrf_token');
 
