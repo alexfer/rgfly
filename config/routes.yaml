@@ -3,8 +3,3 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
-facebook_login:
-    path: /login/facebook-check
-
-google_login:
-    path: /login/google-check

@@ -49,7 +49,11 @@
             <a class="nav-link {{ _route == 'app_dashboard_user'? 'active': '' }}" href="{{ path('app_dashboard_user') }}">
                 <i class="bi bi-person"></i> 
                 {{ 'menu.dashboard.users'|trans }}
-            </a>            
+            </a>
+            <a class="nav-link {{ _route == 'app_dashboard_contact'? 'active': '' }}" href="{{ path('app_dashboard_contact') }}">
+                <i class="bi bi-envelope-at"></i> 
+                {{ 'menu.dashboard.contacts'|trans }}
+            </a>
         </li>
     {% endif %}    
     <li class="nav-item">

@@ -11,6 +11,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Contact
 {
 
+    /**
+     * @var array
+     */
     const CONSTRAINTS = [
         'name' => [
             'min' => 3,
@@ -24,6 +27,17 @@ class Contact
             'min' => 100,
             'max' => 65535,
         ],
+    ];
+
+    /**
+     * @var array
+     */
+    const STATUS = [
+        'new' => 'New',
+        'draft' => 'Draft',
+        'seen' => 'SEEN',
+        'answered' => 'Answered',
+        'trashed' => 'Trashed',
     ];
 
     #[ORM\Id]
@@ -41,6 +55,9 @@ class Contact
         )]
     private ?string $name = null;
 
+    #[ORM\Column(options: ['default' => 'New'], type: "string", columnDefinition: "ENUM('New', 'Draft', 'Seen', 'Answered', 'Trashed')")]
+    private ?string $status;
+
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Regex(
                 pattern: "/^[0-9]*$/",
@@ -57,7 +74,7 @@ class Contact
         )]
     private ?string $subject = null;
 
-    #[ORM\Column(length: 65535)]
+    #[ORM\Column(type: Types::TEXT, length: 65535)]
     #[Assert\NotBlank(message: 'form.message.not_blank')]
     #[Assert\Length(
                 min: self::CONSTRAINTS['message']['min'],
@@ -78,11 +95,24 @@ class Contact
     public function __construct()
     {
         $this->created_at = new \DateTime();
+        $this->status = self::STATUS['new'];
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setNStatus(string $status): static
+    {
+        $this->status = $status;
+
+        return $this;
     }
 
     public function getName(): ?string

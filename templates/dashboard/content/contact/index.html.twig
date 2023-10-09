@@ -1,0 +1,47 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% block title_content %}{{ 'title.dashboard.contact'|trans }}{% endblock %}
+
+{% block content %}
+    <table class="table table-hover table-borderless">
+        <thead class="bg-secondary text-white">
+            <tr>
+                <th class="col-1 text-center" scope="col">#</th>
+                <th class="col-2" scope="col">Name</th>
+                <th class="col-6" scope="col">Subject</th>
+                <th class="col-1 text-center" scope="col">Status</th>
+                <th class="col-2 text-center" scope="col">Handle</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in entries %}
+                <tr>
+                    <th scope="row" class="text-center">{{ entry.id }}</th>
+                    <td>
+                        {{ entry.name }}
+                    </td>
+                    <td>
+                        {{ entry.subject }}
+                    </td>
+                    <td class="text-center">
+                        <span class="badge badge-info p-2">Status</span>
+                    </td>
+                    <td class="text-center">
+                        <a 
+                            class="btn btn-sm btn-outline-lightning rounded delete-entry" 
+                            data-token="{{ csrf_token('delete') }}" 
+                            data-url="{{ url('app_dashboard_contact_delete', {id: entry.id}) }}" 
+                            data-toggle="modal" 
+                            data-target="#modal-delete">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3" class="text-center text-info bg-grey">Results not found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,4 +1,4 @@
-{{ form_start(form, {attr: {class: 'tech-form'}}) }}
+{{ form_start(form, {attr: {class: 'tech-form', novalidate: 'novalidate'}}) }}
 {% if error %}
     <div class="alert alert-danger">
         {{ error.message }}
@@ -40,7 +40,7 @@
 <div class="form-row">
     <div class="col-md-12 text-center my-4">  
         {% for owner in hwi_oauth_resource_owners() %}
-            <a href="{{ hwi_oauth_login_url(owner) }}" class="btn btn-success"><i class="bi bi-{{ owner | trans({}, 'HWIOAuthBundle') }} mx-1"></i> Login with {{ owner | trans({}, 'HWIOAuthBundle') }}</a>        
+            <a href="{{ hwi_oauth_login_url(owner) }}" class="btn btn-outline-info"><i class="bi bi-{{ owner | trans({}, 'HWIOAuthBundle') }} mx-1"></i> Login with {{ owner | trans({}, 'HWIOAuthBundle') }}</a>        
         {% endfor %}
     </div>
 </div>

@@ -33,7 +33,7 @@ class Faq
     public function __construct()
     {
         $this->created_at = new \DateTime();
-    }
+}
 
     public function getId(): ?int
     {
@@ -93,7 +93,7 @@ class Faq
         return $this->deleted_at;
     }
 
-    public function setDeletedAt(\DateTime $deleted_at = null): static
+    public function setDeletedAt(\DateTime $deleted_at): static
     {
         $this->deleted_at = $deleted_at;
 

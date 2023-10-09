@@ -53,7 +53,6 @@ class FaqController extends AbstractController
             EntityManagerInterface $em,
     ): Response
     {
-        $date = new \DateTime(null);
         $entry->setDeletedAt(null);
         $em->persist($entry);
         $em->flush();

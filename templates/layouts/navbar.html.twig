@@ -56,28 +56,28 @@
                                         {% if not app.user %}
                                             <li class="nav-item"> 
                                                 <a href="{{ path('app_login') }}" class="nav-link">
-                                                    <i class="bi bi-arrow-right-short"></i>
+                                                    <i class="bi bi-caret-right-fill"></i>
                                                     {{ 'title.user.login'|trans }}
                                                 </a>
                                             </li>
                                             <li class="nav-item"> 
                                                 <a href="{{ path('app_register') }}" class="nav-link">
-                                                    <i class="bi bi-arrow-right-short"></i>
+                                                    <i class="bi bi-caret-right-fill"></i>
                                                     {{ 'title.user.register'|trans }}
                                                 </a>
                                             </li>            
                                         {% else %}
                                             <li class="nav-item"> 
                                                 <a href="{{ path('app_dashboard') }}" class="nav-link">
-                                                    <i class="bi bi-arrow-right-short"></i>
+                                                    <i class="bi bi-caret-right-fill"></i>
                                                     {{ 'text.dashboard'|trans }}
                                                 </a>
                                                 <a href="{{ path('app_profile') }}" class="nav-link">
-                                                    <i class="bi bi-arrow-right-short"></i>
+                                                    <i class="bi bi-caret-right-fill"></i>
                                                     {{ 'text.profile'|trans }}
                                                 </a>
                                                 <a href="{{ path('app_logout') }}" class="nav-link">
-                                                    <i class="bi bi-arrow-right-short"></i>
+                                                    <i class="bi bi-caret-right-fill"></i>
                                                     {{ 'title.user.logoff'|trans }}
                                                 </a>
                                             </li>
