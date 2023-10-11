@@ -132,7 +132,7 @@
             <trans-unit id="title.subscribe">
                 <source>title.subscribe</source>
                 <target>Subscribe</target>
-            </trans-unit>
+            </trans-unit>            
             <trans-unit id="menu.dashboard">
                 <source>menu.dashboard</source>
                 <target>Dashboard</target>
@@ -140,6 +140,14 @@
             <trans-unit id="menu.dashboard.overview">
                 <source>menu.dashboard.overview</source>
                 <target>Owerview</target>
+            </trans-unit>
+            <trans-unit id="menu.dashboard.contacts">
+                <source>menu.dashboard.contacts</source>
+                <target>Contacts</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.contact">
+                <source>title.dashboard.contact</source>
+                <target>Incoming Messages</target>
             </trans-unit>
             <trans-unit id="title.dashboard.blog_overview">
                 <source>title.dashboard.blog_overview</source>
@@ -188,6 +196,34 @@
             <trans-unit id="title.dashboard.edit_faq">
                 <source>title.dashboard.edit_faq</source>
                 <target>Change Question</target>
+            </trans-unit>
+            <trans-unit id="table.footer.not_found">
+                <source>table.footer.not_found</source>
+                <target>Results can't be found</target>
+            </trans-unit>
+            <trans-unit id="table.header.id">
+                <source>table.header.id</source>
+                <target>#</target>
+            </trans-unit>
+            <trans-unit id="table.header.title">
+                <source>table.header.title</source>
+                <target>Title</target>
+            </trans-unit>
+            <trans-unit id="table.header.status">
+                <source>table.header.status</source>
+                <target>Status</target>
+            </trans-unit>
+            <trans-unit id="table.header.name">
+                <source>table.header.name</source>
+                <target>Name</target>
+            </trans-unit>
+            <trans-unit id="table.header.subject">
+                <source>table.header.subject</source>
+                <target>Subject</target>
+            </trans-unit>
+            <trans-unit id="table.header.handle">
+                <source>table.header.handle</source>
+                <target>Handle</target>
             </trans-unit>
             <trans-unit id="label.form.faq.title">
                 <source>label.form.faq.title</source>

@@ -919,6 +919,10 @@ p:last-child {
     padding: 50px 0 100px 0;
     z-index: 1;
 }
+.section-area.default table {
+    border-radius: 15px;
+    /*border-top-left-radius: 15px;*/
+}
 .content-image {
     position: relative;
     text-align: center;
@@ -1034,7 +1038,7 @@ p:last-child {
 .faq-accordion .accordion .accordion-item .active.accordion-title i {
     color: #5e87eb;
 }
-.faq-accordion .accordion .accordion-item .accordion-title.active i::before {    
+.faq-accordion .accordion .accordion-item .accordion-title.active i::before {
     content: "\F235";
 }
 

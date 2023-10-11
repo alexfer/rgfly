@@ -37,10 +37,10 @@
     </div>
 </div>
 {{ form_end(form) }}
-<div class="form-row">
+{#<div class="form-row">
     <div class="col-md-12 text-center my-4">  
         {% for owner in hwi_oauth_resource_owners() %}
             <a href="{{ hwi_oauth_login_url(owner) }}" class="btn btn-outline-info"><i class="bi bi-{{ owner | trans({}, 'HWIOAuthBundle') }} mx-1"></i> Login with {{ owner | trans({}, 'HWIOAuthBundle') }}</a>        
         {% endfor %}
     </div>
-</div>
+</div>#}

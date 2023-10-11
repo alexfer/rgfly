@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ContactRepository;
 use App\Entity\Contact;
 
@@ -29,7 +30,8 @@ class ContactController extends AbstractController
     ): Response
     {
         if ($this->isCsrfTokenValid('delete', $request->get('_token'))) {
-            $em->remove($entry);
+            $entry->setStatus($entry::STATUS['trashed']);
+            $em->persist($entry);
             $em->flush();
         }
 
