@@ -14,6 +14,8 @@
                     <th class="col-2 text-center" scope="col">{{ 'table.header.handle'|trans }}</th>
                 </tr>
             </thead>
+            {#{% set _bage = [status.new => 'secondary', 'primary', 'info', 'success', 'warning'] %}
+            {{ dump(status) }}#}
             <tbody>
                 {% for entry in entries %}                                        
                     <tr>
@@ -25,24 +27,24 @@
                             {% if entry.status == 'Trashed' %}
                                 <del class="text-muted">{{ entry.subject }}</del>
                             {% else %}
-                                {{ entry.subject }}
+                                <a href="" class="link">{{ entry.subject }}</a>
                             {% endif %}                            
                         </td>
                         <td class="text-center">                            
-                                {% if entry.status == 'Trashed' %}
-                                    {% set _bage = 'secondary' %}
-                                {% elseif entry.status == 'New' %}
-                                    {% set _bage = 'primary' %}
-                                {% elseif entry.status == 'Draft' %}
-                                    {% set _bage = 'info' %}
-                                {% elseif entry.status == 'Seen' %}
-                                    {% set _bage = 'success' %}
-                                {% elseif entry.status == 'Answered' %}
-                                    {% set _bage = 'warning' %}    
-                                {% else %}
-                                    {% set _bage = 'dark' %}
-                            {% endif %}
-                            <span class="badge badge-{{ _bage }} p-2">{{ entry.status }}</span>
+                            {% if entry.status == 'Trashed' %}
+                                {% set _bage = 'secondary' %}
+                            {% elseif entry.status == 'New' %}
+                                {% set _bage = 'primary' %}
+                            {% elseif entry.status == 'Draft' %}
+                                {% set _bage = 'info' %}
+                            {% elseif entry.status == 'Seen' %}
+                                {% set _bage = 'success' %}
+                            {% elseif entry.status == 'Answered' %}
+                                {% set _bage = 'warning' %}    
+                            {% else %}
+                                {% set _bage = 'dark' %}
+                            {% endif %}                            
+                            <a href="#" class="badge badge-{{ _bage }} p-2">{{ entry.status }}</a>
                         </td>
                         <td class="text-center">
                             <a 

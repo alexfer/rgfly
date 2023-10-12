@@ -249,13 +249,13 @@ a:hover {
     -webkit-transition: 0.4s;
     transition: 0.4s;
     outline: 0 !important;
-    color: #5e87eb;
+    color: #0c7b8c;
     font-weight: 600;
     line-height: 1.4;
 }
 .link:hover {
     text-decoration: underline;
-    color: #000;
+    color: #5b6582;
 }
 blockquote i.bi {
     vertical-align: middle;

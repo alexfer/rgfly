@@ -35,7 +35,7 @@ class Contact
     const STATUS = [
         'new' => 'New',
         'draft' => 'Draft',
-        'seen' => 'SEEN',
+        'seen' => 'Seen',
         'answered' => 'Answered',
         'trashed' => 'Trashed',
     ];
