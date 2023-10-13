@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\{
     Request,
     Response,
 };
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Form;
@@ -22,6 +24,7 @@ class RegistrationController extends AbstractController
      * @param Request $request
      * @param UserPasswordHasherInterface $userPasswordHasher
      * @param EntityManagerInterface $em
+     * @param ParameterBagInterface $params
      * @return Response
      */
     #[Route('/register', name: 'app_register', methods: ['GET', 'POST'])]
@@ -29,6 +32,7 @@ class RegistrationController extends AbstractController
             Request $request,
             UserPasswordHasherInterface $userPasswordHasher,
             EntityManagerInterface $em,
+            ParameterBagInterface $params,
     ): Response
     {
         $securityContext = $this->container->get('security.authorization_checker');
@@ -61,13 +65,30 @@ class RegistrationController extends AbstractController
             $em->persist($details);
             $em->flush();
 
-            return $this->redirectToRoute('app_register_success');
+            if ($params->get('auto_login')) {
+                $this->authenticateUser($user);
+                return $this->redirectToRoute('app_dashboard');
+            }
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('registration/register.html.twig', [
                     'errors' => $this->getErrorMessages($form),
                     'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * 
+     * @param User $user
+     * @return void
+     */
+    private function authenticateUser(User $user): void
+    {
+        $providerKey = 'secured_area'; // your firewall name
+        $token = new UsernamePasswordToken($user, $providerKey, $user->getRoles());
+
+        $this->container->get('security.token_storage')->setToken($token);
     }
 
     /**

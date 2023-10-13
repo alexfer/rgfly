@@ -14,8 +14,7 @@
                     <th class="col-2 text-center" scope="col">{{ 'table.header.handle'|trans }}</th>
                 </tr>
             </thead>
-            {#{% set _bage = [status.new => 'secondary', 'primary', 'info', 'success', 'warning'] %}
-            {{ dump(status) }}#}
+            {#{% set _bage = [status.new => 'secondary', 'primary', 'info', 'success', 'warning'] %}#}            
             <tbody>
                 {% for entry in entries %}                                        
                     <tr>
@@ -27,7 +26,7 @@
                             {% if entry.status == 'Trashed' %}
                                 <del class="text-muted">{{ entry.subject }}</del>
                             {% else %}
-                                <a href="" class="link">{{ entry.subject }}</a>
+                                <a href="{{ path('app_dashboard_contact_review', {id: entry.id}) }}" class="link">{{ entry.subject }}</a>
                             {% endif %}                            
                         </td>
                         <td class="text-center">                            

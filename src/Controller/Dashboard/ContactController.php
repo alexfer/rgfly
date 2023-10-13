@@ -37,4 +37,18 @@ class ContactController extends AbstractController
 
         return $this->redirectToRoute('app_dashboard_contact');
     }
+
+    #[Route('/review/{id}', name: 'app_dashboard_contact_review', methods: ['GET', 'POST'])]
+    public function review(
+            Request $request,
+            Contact $entry,
+            EntityManagerInterface $em,
+    ): Response
+    {
+
+
+        return $this->render('dashboard/content/contact/review.html.twig', [
+                    'entry' => $entry,
+        ]);
+    }
 }

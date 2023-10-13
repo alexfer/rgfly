@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
+#[ORM\Table(name: 'contact')]
 class Contact
 {
 
@@ -35,8 +36,8 @@ class Contact
     const STATUS = [
         'new' => 'New',
         'draft' => 'Draft',
-        'seen' => 'Seen',
         'answered' => 'Answered',
+        'error' => 'Error',
         'trashed' => 'Trashed',
     ];
 
@@ -55,8 +56,11 @@ class Contact
         )]
     private ?string $name = null;
 
-    #[ORM\Column(options: ['default' => 'New'], type: "string", columnDefinition: "ENUM('New', 'Draft', 'Seen', 'Answered', 'Trashed')")]
+    #[ORM\Column(options: ['default' => 'New'], type: "string", columnDefinition: "ENUM('New', 'Draft', 'Answered', 'Error', 'Trashed')")]
     private ?string $status;
+
+    #[ORM\Column(type: Types::INTEGER)]
+    private ?int $answers;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Regex(
@@ -96,6 +100,7 @@ class Contact
     {
         $this->created_at = new \DateTime();
         $this->status = self::STATUS['new'];
+        $this->answers = 0;
     }
 
     public function getId(): ?int
@@ -111,6 +116,18 @@ class Contact
     public function setStatus(string $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getAnswers(): ?int
+    {
+        return $this->answers;
+    }
+
+    public function setAnswers(int $answers): static
+    {
+        $this->answers = $answers;
 
         return $this;
     }
