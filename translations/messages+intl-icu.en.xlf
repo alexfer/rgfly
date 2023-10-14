@@ -432,6 +432,18 @@
                 <source>label.form.phone</source>
                 <target>Your phone number</target>
             </trans-unit>
+            <trans-unit id="label.form.date_birth">
+                <source>label.form.date_birth</source>
+                <target>Date of birth</target>
+            </trans-unit>
+            <trans-unit id="label.form.about">
+                <source>label.form.about</source>
+                <target>About yourself</target>
+            </trans-unit>
+            <trans-unit id="label.form.picture">
+                <source>label.form.picture</source>
+                <target>Your profile picture</target>
+            </trans-unit>
             <trans-unit id="form.phone.help">
                 <source>form.phone.help</source>
                 <target>For instance should be like 3106398200.</target>

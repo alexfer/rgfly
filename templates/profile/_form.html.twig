@@ -1,1 +1,65 @@
-
+{{ form_start(form, {attr: {class: 'tech-form', novalidate: 'novalidate'}}) }}
+{% if errors %}
+    <div class="alert alert-danger">
+        <ul>
+            {% for error in errors %}
+                <li>{{ error.message|trans|raw }}</li>
+                {% endfor %}           
+        </ul>
+    </div>
+{% endif %}
+<div class="form-row">
+    <div class="col-md-6">
+        <div class="form-group">
+            {% set first_name_error = form.first_name.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.first_name, 'label.form.first_name') }} <span class="text-danger">*</span>
+            {{ form_widget(form.first_name, {attr: {class: first_name_error, placeholder: 'label.form.first_name'}}) }}
+            <small class="form-text text-muted">{{ 'form.first_name.help'|trans({ '%min%': form.first_name.vars.attr.min, '%max%': form.first_name.vars.attr.max }) }}</small>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            {% set last_name_error = form.last_name.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.last_name, 'label.form.last_name') }} <span class="text-danger">*</span>
+            {{ form_widget(form.last_name, {attr: {class: last_name_error, placeholder: 'label.form.last_name'}}) }}
+            <small class="form-text text-muted">{{ 'form.last_name.help'|trans({ '%min%': form.last_name.vars.attr.min, '%max%': form.last_name.vars.attr.max }) }}</small>
+        </div>
+    </div>
+</div>
+<div class="form-row">
+    <div class="col-md-6">
+        <div class="form-group">
+            {{ form_label(form.date_birth, 'label.form.date_birth') }}
+            {{ form_widget(form.date_birth, {attr: {class: 'form-control', placeholder: '2006-05-15'}}) }}            
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            {{ form_label(form.phone, 'label.form.phone') }}
+            {{ form_widget(form.phone, {attr: {class: 'form-control', placeholder: '3106398200'}}) }}            
+        </div>
+    </div>
+</div>
+<div class="form-row">
+    <div class="col-md-12">
+        <div class="form-group">
+            {{ form_label(form.about, 'label.form.about') }}
+            {{ form_widget(form.about, {attr: {class: 'form-control'}}) }}            
+        </div>
+    </div>
+    <div class="col-md-6 pt-4">
+        <div class="form-group">
+            <div class="custom-file">
+                {{ form_widget(form.picture, {attr: {class: 'custom-file-input'}}) }}
+                {{ form_label(form.picture, 'label.form.picture', {label_attr: {class: 'custom-file-label'}}) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 pt-3">
+        <img class="img-responsive img-rounded ml-5" src="https://secure.gravatar.com/avatar/d90848faeb283c55f07d2c47fec4e485?s=100&amp;r=g&amp;d=mm" alt="{{ app.user.details.firstName }} {{ app.user.details.lastName }}">
+    </div>
+    <div class="col-md-12 text-center my-4">
+        {{ form_widget(form.update, { label: 'form.action.update' }) }}
+    </div>
+</div>
+{{ form_end(form) }}

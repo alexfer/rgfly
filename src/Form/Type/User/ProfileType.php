@@ -2,14 +2,15 @@
 
 namespace App\Form\Type\User;
 
-use App\Entity\{
-    User,
-    UserDetails,
-};
+use App\Entity\UserDetails;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{
     SubmitType,
     TextType,
+    TelType,
+    TextareaType,
+    FileType,
+    DateType,
 };
 use Symfony\Component\Validator\Constraints\{
     Length,
@@ -25,39 +26,61 @@ class ProfileType extends AbstractType
     {
         $builder->add('first_name', TextType::class, [
                     'attr' => [
-                        'min' => User::CONSTRAINTS['first_name']['min'],
-                        'max' => User::CONSTRAINTS['first_name']['max'],
+                        'min' => UserDetails::CONSTRAINTS['first_name']['min'],
+                        'max' => UserDetails::CONSTRAINTS['first_name']['max'],
                     ],
                     'constraints' => [
                         new NotBlank([
                             'message' => 'form.first_name.not_blank',
                                 ]),
                         new Length([
-                            'min' => User::CONSTRAINTS['first_name']['min'],
+                            'min' => UserDetails::CONSTRAINTS['first_name']['min'],
                             'minMessage' => 'form.first_name.min',
-                            'max' => User::CONSTRAINTS['first_name']['max'],
+                            'max' => UserDetails::CONSTRAINTS['first_name']['max'],
                             'maxMessage' => 'form.first_name.max',
                                 ]),
                     ],
                 ])
                 ->add('last_name', TextType::class, [
                     'attr' => [
-                        'min' => User::CONSTRAINTS['last_name']['min'],
-                        'max' => User::CONSTRAINTS['last_name']['max'],
+                        'min' => UserDetails::CONSTRAINTS['last_name']['min'],
+                        'max' => UserDetails::CONSTRAINTS['last_name']['max'],
                     ],
                     'constraints' => [
                         new NotBlank([
                             'message' => 'form.last_name.not_blank',
                                 ]),
                         new Length([
-                            'min' => User::CONSTRAINTS['last_name']['min'],
+                            'min' => UserDetails::CONSTRAINTS['last_name']['min'],
                             'minMessage' => 'form.last_name.min',
-                            'max' => User::CONSTRAINTS['last_name']['max'],
+                            'max' => UserDetails::CONSTRAINTS['last_name']['max'],
                             'maxMessage' => 'form.last_name.max',
                                 ]),
                     ],
                 ])
-                ->add('send', SubmitType::class, [
+                ->add('picture', FileType::class, [
+                    'mapped' => false,
+                ])
+                ->add('phone', TelType::class, [])
+                ->add('date_birth', DateType::class, [
+                    'widget' => 'single_text'
+                ])
+                ->add('about', TextareaType::class, [
+                    'attr' => [
+                        'min' => UserDetails::CONSTRAINTS['about']['min'],
+                        'max' => UserDetails::CONSTRAINTS['about']['max'],
+                        'rows' => 6,
+                    ],
+                    'constraints' => [
+                        new Length([
+                            'min' => UserDetails::CONSTRAINTS['about']['min'],
+                            'minMessage' => 'form.about.min',
+                            'max' => UserDetails::CONSTRAINTS['about']['max'],
+                            'maxMessage' => 'form.about.max',
+                                ]),
+                    ],
+                ])
+                ->add('update', SubmitType::class, [
                     'attr' => [
                         'class' => 'btn btn-primary',
                     ],

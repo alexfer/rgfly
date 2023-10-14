@@ -6,7 +6,6 @@ use App\Entity\{
     UserDetails,
     User,
 };
-use App\Form\Type\User\UserType;
 use Symfony\Component\Validator\Constraints\{
     Length,
     NotBlank,

@@ -4,7 +4,7 @@ namespace App\Helper;
 
 use Symfony\Component\Form\Form;
 
-final class HandleErrors
+final class ErrorHandler
 {
 
     /**
@@ -12,7 +12,7 @@ final class HandleErrors
      * @param Form $form
      * @return array
      */
-    public static function getMessages(Form $form): array
+    public static function handleFormErrors(Form $form): array
     {
 
         $errors = [];

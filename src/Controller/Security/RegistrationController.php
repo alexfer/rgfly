@@ -3,6 +3,7 @@
 namespace App\Controller\Security;
 
 use App\Entity\User;
+use App\Entity\UserDetails;
 use App\Form\Type\User\DetailsType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,7 +15,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Form\Form;
+use App\Helper\ErrorHandler;
 
 class RegistrationController extends AbstractController
 {
@@ -42,7 +43,7 @@ class RegistrationController extends AbstractController
         }
 
         $user = new User();
-        $details = new \App\Entity\UserDetails();
+        $details = new UserDetails();
 
         $form = $this->createForm(DetailsType::class, $user);
         $form->handleRequest($request);
@@ -55,6 +56,8 @@ class RegistrationController extends AbstractController
                             $form->get('plainPassword')->getData()
                     )
             );
+            
+            $user->setIp($request->getClientIp());
 
             $em->persist($user);
 
@@ -69,11 +72,11 @@ class RegistrationController extends AbstractController
                 $this->authenticateUser($user);
                 return $this->redirectToRoute('app_dashboard');
             }
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_register_success');
         }
 
         return $this->render('registration/register.html.twig', [
-                    'errors' => $this->getErrorMessages($form),
+                    'errors' => ErrorHandler::handleFormErrors($form),
                     'form' => $form->createView(),
         ]);
     }
@@ -99,25 +102,5 @@ class RegistrationController extends AbstractController
     public function success(): Response
     {
         return $this->render('registration/success.html.twig', []);
-    }
-
-    /**
-     * 
-     * @param Form $form
-     * @return array
-     */
-    public function getErrorMessages(Form $form): array
-    {
-
-        $errors = [];
-
-        foreach ($form->all() as $child) {
-            foreach ($child->getErrors() as $error) {
-                $name = $child->getName();
-                $errors[$name]['message'] = $error->getMessage();
-            }
-        }
-
-        return $errors;
     }
 }
