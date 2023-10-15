@@ -264,6 +264,9 @@
             "./templates/base.html.twig"
         ]
     },
+    "symfony/ux-cropperjs": {
+        "version": "v2.12.0"
+    },
     "symfony/validator": {
         "version": "6.3",
         "recipe": {

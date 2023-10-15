@@ -63,7 +63,8 @@ class ProfileType extends AbstractType
                 ])
                 ->add('phone', TelType::class, [])
                 ->add('date_birth', DateType::class, [
-                    'widget' => 'single_text'
+                    'widget' => 'single_text',
+                    'format' => 'yyyy-MM-dd',
                 ])
                 ->add('about', TextareaType::class, [
                     'attr' => [

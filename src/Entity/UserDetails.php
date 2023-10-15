@@ -141,7 +141,7 @@ class UserDetails
 
     public function getPhone(): ?string
     {
-        return $this->about;
+        return $this->phone;
     }
 
     public function setPhone(string $phone): static

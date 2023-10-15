@@ -20,7 +20,7 @@ use App\Helper\ErrorHandler;
 class ProfileController extends AbstractController
 {
 
-    const PUBLIC_ATTACMENTS_DIR = '/public/usr/picture/';
+    const PUBLIC_ATTACMENTS_DIR = '/public/user/picture/';
 
     /**
      * 

@@ -56,7 +56,7 @@
         </div>
     </div>
     <div class="col-md-6 pt-3">
-        <img class="img-responsive img-rounded ml-5" src="https://secure.gravatar.com/avatar/d90848faeb283c55f07d2c47fec4e485?s=100&amp;r=g&amp;d=mm" alt="{{ app.user.details.firstName }} {{ app.user.details.lastName }}">
+        <img class="img-responsive img-rounded ml-5" src="{{ asset('img/user-picture.jpg') }}" alt="{{ app.user.details.firstName }} {{ app.user.details.lastName }}">
     </div>
     <div class="col-md-12 text-center my-4">
         {{ form_widget(form.update, { label: 'form.action.update' }) }}
