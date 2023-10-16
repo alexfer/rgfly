@@ -49,7 +49,7 @@ class CropperjsController extends AbstractController
         $croppedImage = null;
         $croppedThumbnail = null;
         if ($form->isSubmitted()) {
-            $form->addError(new FormError('🤩'));
+            $form->addError(new FormError('Error'));
             $croppedImage = sprintf('data:image/jpeg;base64,%s', base64_encode($crop->getCroppedImage()));
             $croppedThumbnail = sprintf('data:image/jpeg;base64,%s', base64_encode($crop->getCroppedThumbnail(100, 75)));
         }
