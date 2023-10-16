@@ -41,6 +41,7 @@ class CropperjsController extends AbstractController
                         'scalable' => false,
                         'zoomable' => false,
                     ],
+                    'attr' => ['data-controller' => 'cropper'],
                 ])
                 ->getForm();
 
