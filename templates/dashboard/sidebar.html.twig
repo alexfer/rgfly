@@ -1,7 +1,11 @@
 <div class="sidebar-header">
     <div class="user-pic">
-        <img class="img-responsive img-rounded" src="{{ asset('img/user-picture.jpg') }}"
-             alt="User picture">
+        {% for picture in app.user.details.attach|slice(0, 1) %}
+            {% set _picture = 'user/picture/' ~ app.user.id ~ '/' ~ picture.name %}
+            <img class="img-responsive img-rounded" src="{{ asset(_picture) | imagine_filter('user_thumb') }}" alt="{{ app.user.details.firstName }} {{ app.user.details.lastName }}">
+        {% else %}  
+            <img class="img-responsive img-rounded" src="{{ asset('img/user-picture.jpg') }}" alt="{{ app.user.details.firstName }} {{ app.user.details.lastName }}">
+        {% endfor %}
     </div>
     <div class="user-info">
         <span class="user-name">{{ app.user.details.firstName }}

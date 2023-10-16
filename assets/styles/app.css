@@ -761,6 +761,9 @@ p:last-child {
 .tech-form .form-control.error {
     border-top: 3px solid #ea8b8b;
 }
+.tech-form .picture-block {
+    height: 160px;
+}
 .d-tech-form .form-control.error {
     border: 1px solid #ea8b8b;
 }

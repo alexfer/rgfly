@@ -6,6 +6,7 @@
 parameters:
     hwi_oauth.connect.registration_form: ''
     auto_login: true
+    user_storage_dir: '%kernel.project_dir%/public/user'
 
 services:
     # default configuration for services in *this* file
