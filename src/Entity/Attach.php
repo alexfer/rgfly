@@ -17,6 +17,13 @@ class Attach
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
 
+    #[ORM\ManyToOne(targetEntity: UserDetails::class, inversedBy: 'file')]
+    #[ORM\JoinColumn(nullable: false, name: "relation_id", referencedColumnName: "id", onDelete: "CASCADE")]
+    private ?UserDetails $details = null;
+
+    #[ORM\Column(type: Types::INTEGER)]
+    private ?int $relation_id = null;
+
     #[ORM\Column(type: Types::STRING)]
     private string $name;
 
@@ -76,12 +83,24 @@ class Attach
         return $this;
     }
 
+    public function getRelationId(): ?int
+    {
+        return $this->relation_id;
+    }
+
+    public function setRelationId(int $relation_id): self
+    {
+        $this->relation_id = $relation_id;
+
+        return $this;
+    }
+
     public function getDetails(): ?UserDetails
     {
         return $this->details;
     }
 
-    public function setGB(UserDetails $details): self
+    public function setDetails(?UserDetails $details): self
     {
         $this->details = $details;
 

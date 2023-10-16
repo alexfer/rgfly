@@ -6,6 +6,10 @@ use App\Entity\{
     User,
     Attach,
 };
+use Doctrine\Common\Collections\{
+    ArrayCollection,
+    Collection,
+};
 use App\Repository\UserDetailsRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -58,11 +62,16 @@ class UserDetails
 
     #[ORM\Column]
     private ?int $user_id = null;
-    
+
+    #[ORM\OneToMany(targetEntity: Attach::class, mappedBy: 'details', orphanRemoval: true, cascade: ['persist'])]
+    #[ORM\OrderBy(['created_at' => 'DESC'])]
+    #[ORM\setMaxResults(1)]
+    private ?Collection $attach;
+
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $attach_id = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTime $date_birth = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -71,7 +80,9 @@ class UserDetails
     public function __construct()
     {
         $this->updated_at = new \DateTime();
+        $this->date_birth = new \DateTime('2005-01-01');
         $this->attach_id = 0;
+        $this->attach = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -103,18 +114,18 @@ class UserDetails
         return $this;
     }
 
-    public function getAttach(): ?Attach
+    public function getAttach(): Collection
     {
         return $this->attach;
     }
 
-    public function setAttach(int $attach): static
+    public function setAttach($attach): static
     {
         $this->attach = $attach;
 
         return $this;
     }
-    
+
     public function getAttachId(): ?int
     {
         return $this->attach_id;

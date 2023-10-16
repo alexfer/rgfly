@@ -56,8 +56,13 @@
         </div>
     </div>
     <div class="col-md-6 pt-3">
-        <img class="img-responsive img-rounded ml-5" src="{{ asset('img/user-picture.jpg') }}" alt="{{ app.user.details.firstName }} {{ app.user.details.lastName }}">
-    </div>
+        {% for picture in user.attach|slice(0, 1) %}
+            {% set _picture = 'user/picture/' ~ user.id ~ '/' ~ picture.name %}
+{#            <img class="img-responsive img-rounded ml-5" src="{{ asset(_picture) }}" style="height: 15%" alt="{{ user.firstName }} {{ user.lastName }}">#}
+        {% else %}  
+            <img class="img-responsive img-rounded ml-5" src="{{ asset('img/user-picture.jpg') }}" alt="{{ user.firstName }} {{ user.lastName }}">
+        {% endfor %}        
+    </div>  
     <div class="col-md-12 text-center my-4">
         {{ form_widget(form.update, { label: 'form.action.update' }) }}
     </div>

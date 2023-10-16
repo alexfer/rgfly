@@ -34,6 +34,24 @@ class FileUploader
 
     /**
      * 
+     * @return int|null
+     */
+    private function getSize(): ?int
+    {
+        return filesize($this->target);
+    }
+
+    /**
+     * 
+     * @return string|null
+     */
+    private function getMimeType(): ?string
+    {
+        return mime_content_type($this->target);
+    }
+
+    /**
+     * 
      * @param UploadedFile $file
      * @return self
      * @throws \Exception
@@ -56,30 +74,14 @@ class FileUploader
 
     /**
      * 
-     * @return int|null
-     */
-    private function getSize(): ?int
-    {
-        return filesize($this->target);
-    }
-
-    /**
-     * 
-     * @return string|null
-     */
-    private function getMimeType(): ?string
-    {
-        return mime_content_type($this->target);
-    }
-
-    /**
-     * 
+     * @param object|null $object
      * @return Attach|null
      */
-    public function handle(): ?Attach
+    public function handle(?object $object): ?Attach
     {
         $attach = new Attach();
-        $attach->setName($this->fileName)
+        $attach->setDetails($object)
+                ->setName($this->fileName)
                 ->setSize($this->getSize())
                 ->setMime($this->getMimeType());
 

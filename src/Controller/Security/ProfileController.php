@@ -47,7 +47,7 @@ class ProfileController extends AbstractController
                 $fileUploader = new FileUploader($this->getTargetDir($details->getUserId()), $slugger, $em);
 
                 try {
-                    $attach = $fileUploader->upload($file)->handle();
+                    $attach = $fileUploader->upload($file)->handle($details);
                 } catch (\Exception $ex) {
                     throw new \Exception($ex->getMessage());
                 }
@@ -63,6 +63,7 @@ class ProfileController extends AbstractController
 
         return $this->render('profile/profile.html.twig', [
                     'errors' => ErrorHandler::handleFormErrors($form),
+                    'user' => $details,
                     'form' => $form->createView(),
         ]);
     }

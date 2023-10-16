@@ -1,0 +1,47 @@
+<!-- https://ux.symfony.com/cropperjs -->
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>{% block title %}Techspace{% endblock %}</title>        
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        {% if croppedImage is null %}
+            {{ form_start(form) }}
+            <div class="row">
+                <div class="col-md-9">                    
+                    {{ form_widget(form) }}
+                </div>
+                <div class="col-md-3">
+                    <div id="cropper-preview" style="overflow: hidden;width: 200px;height: 200px;"></div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-dark mt-5" style="width: 100%;">Crop it!</button>
+            {{ form_end(form) }}
+        {% else %}
+            {# show the cropped image after submit! #}
+            <div class="row">
+                <div class="col-9">
+                    <figure class="figure">
+                        <img src="{{ croppedImage }}" class="figure-img img-fluid rounded" alt="Cropped image">
+                        <figcaption class="figure-caption">The cropped image.</figcaption>
+                    </figure>
+                </div>
+                <div class="col-3">
+                    <figure class="figure">
+                        <img src="{{ croppedThumbnail }}" class="figure-img img-fluid rounded" alt="Cropped thumbnail">
+                        <figcaption class="figure-caption">A thumbnail of the cropped image.</figcaption>
+                    </figure>
+                </div>
+            </div>
+        {% endif %}
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}        
+    </body>
+</html>
