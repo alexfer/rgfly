@@ -20,7 +20,6 @@
         "@hotwired/stimulus": "^3.2.2",
         "@popperjs/core": "^2.11.8",
         "@symfony/stimulus-bridge": "^3.2.2",
-        "@symfony/ux-cropperjs": "file:vendor/symfony/ux-cropperjs/assets",
         "@symfony/webpack-encore": "^4.4.0",
         "bootstrap": "^4.6.2",
         "cropperjs": "^1.5.9",

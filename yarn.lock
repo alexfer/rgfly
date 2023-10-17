@@ -1089,10 +1089,6 @@
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
-"@symfony/ux-cropperjs@file:vendor/symfony/ux-cropperjs/assets":
-  version "1.1.0"
-  resolved "file:vendor/symfony/ux-cropperjs/assets"
-
 "@symfony/webpack-encore@^4.4.0":
   version "4.4.0"
   resolved "https://registry.npmjs.org/@symfony/webpack-encore/-/webpack-encore-4.4.0.tgz"
