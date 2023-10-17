@@ -7,12 +7,17 @@ parameters:
     hwi_oauth.connect.registration_form: ''
     auto_login: true
     user_storage_dir: '%kernel.project_dir%/public/user'
+    app.notifications.email_sender: '%env(EMAIL_SENDER)%'
+    app.notifications.email_sender_name: '%env(EMAIL_SENDER_NAME)%'
 
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+#        bind:
+#            string $emailSender: '%app.notifications.email_sender%'
+#            string $emailSenderName: '%app.notifications.email_sender_name%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

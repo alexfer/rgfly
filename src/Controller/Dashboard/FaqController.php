@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\FaqRepository;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Helper\HandleErrors;
+use App\Helper\ErrorHandler;
 use App\Entity\Faq;
 use App\Form\Type\FaqType;
 
@@ -93,7 +93,7 @@ class FaqController extends AbstractController
         }
 
         return $this->render('dashboard/content/faq/_form.html.twig', [
-                    'errors' => HandleErrors::getMessages($form),
+                    'errors' => ErrorHandler::handleFormErrors($form),
                     'form' => $form,
         ]);
     }
@@ -131,7 +131,7 @@ class FaqController extends AbstractController
         }
 
         return $this->render('dashboard/content/faq/_form.html.twig', [
-                    'errors' => HandleErrors::getMessages($form),
+                    'errors' => ErrorHandler::handleFormErrors($form),
                     'form' => $form,
         ]);
     }

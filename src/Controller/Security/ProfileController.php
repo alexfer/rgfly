@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Form\Type\User\ProfileType;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\{
     Response,
@@ -20,7 +21,18 @@ use App\Helper\ErrorHandler;
 class ProfileController extends AbstractController
 {
 
-    const PUBLIC_ATTACMENTS_DIR = '/public/user/picture/';
+    const PUBLIC_USER_PICTURE_DIR = '/public/user/picture/';
+
+    /**
+     * 
+     * @var string|null
+     */
+    private ?string $storage;
+
+    public function __construct(ParameterBagInterface $params)
+    {
+        $this->storage = sprintf('%s/picture/', $params->get('user_storage_dir'));
+    }
 
     /**
      * 
@@ -70,11 +82,11 @@ class ProfileController extends AbstractController
 
     /**
      * 
-     * @param int|null $objectId
+     * @param int|null $id
      * @return string
      */
-    private function getTargetDir(?int $objectId): string
+    private function getTargetDir(?int $id): string
     {
-        return $this->getParameter('kernel.project_dir') . self::PUBLIC_ATTACMENTS_DIR . $objectId;
+        return $this->storage . $id;
     }
 }
