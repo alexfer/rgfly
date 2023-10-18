@@ -114,6 +114,10 @@
                 <source>form.message.agree_terms</source>
                 <target><![CDATA[You should agree to our <a href="%terms%" class="link" target="_blank">Terms &amp; Conditions</a> and <a href="%policy%" class="link" target="_blank">Privacy Policy</a>.]]></target>
             </trans-unit>
+            <trans-unit id="form.picture.not_valid_type">
+                <source>form.picture.not_valid_type</source>
+                <target>The mime type of the file is invalid ({{ type }}). Allowed mime types are {{ types }}.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

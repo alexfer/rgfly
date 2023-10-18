@@ -15,8 +15,10 @@ use Symfony\Component\Form\Extension\Core\Type\{
 use Symfony\Component\Validator\Constraints\{
     Length,
     NotBlank,
+    Regex,
 };
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProfileType extends AbstractType
@@ -60,8 +62,28 @@ class ProfileType extends AbstractType
                 ])
                 ->add('picture', FileType::class, [
                     'mapped' => false,
+                    'attr' => [
+                        'accept' => 'image/png, image/jpeg',
+                    ],
+                    'constraints' => [
+                        new Image([
+                            'maxSize' => '2M',
+                            'mimeTypes' => ['image/jpeg', 'image/png'],
+                            'mimeTypesMessage' => 'form.picture.not_valid_type',
+                                ]),
+                    ],
                 ])
-                ->add('phone', TelType::class, [])
+                ->add('phone', TelType::class, [
+                    'attr' => [
+                        'pattern' => "[+0-9]+$",
+                    ],
+                    'constraints' => [
+                        new Regex([
+                            'pattern' => "/[+0-9]+$/i",
+                            'message' => 'form.phone.not_valid',
+                                ]),
+                    ],
+                ])
                 ->add('date_birth', DateType::class, [
                     'widget' => 'single_text',
                     'format' => 'yyyy-MM-dd',

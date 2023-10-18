@@ -51,11 +51,10 @@ class UserDetails
     private ?string $last_name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\Regex(
-                pattern: "/^[0-9]*$/",
-                message: 'form.phone.not_valid',
-        )]
     private ?string $phone = null;
+
+    #[ORM\Column(length: 2, nullable: true)]
+    private ?string $country = null;
 
     #[ORM\Column(type: Types::TEXT, length: 65535, nullable: true)]
     private ?string $about = null;
@@ -158,6 +157,18 @@ class UserDetails
     public function setPhone(string $phone): static
     {
         $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(string $country): static
+    {
+        $this->country = $country;
 
         return $this;
     }
