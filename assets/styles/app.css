@@ -824,6 +824,7 @@ p:last-child {
 }
 .tech-form input:focus,
 .tech-form textarea:focus,
+.tech-form select:focus,
 .d-tech-form input:focus,
 .d-tech-form textarea:focus {
     outline: none;

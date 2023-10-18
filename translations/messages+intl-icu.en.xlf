@@ -399,6 +399,18 @@
             <trans-unit id="label.form.last_name">
                 <source>label.form.last_name</source>
                 <target>Your Last Name</target>
+            </trans-unit>
+            <trans-unit id="label.form.country">
+                <source>label.form.country</source>
+                <target>Your Country</target>
+            </trans-unit>
+            <trans-unit id="form.country.placeholder">
+                <source>form.country.placeholder</source>
+                <target>Choose your country</target>
+            </trans-unit>
+            <trans-unit id="label.form.city">
+                <source>label.form.city</source>
+                <target>Your City</target>
             </trans-unit>            
             <trans-unit id="form.agree_terms.help">
                 <source>form.agree_terms.help</source>

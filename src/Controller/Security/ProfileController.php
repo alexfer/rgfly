@@ -11,9 +11,8 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\{
     Response,
-    Request,
+    Request,    
 };
-use Symfony\Component\Intl\Countries;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\FileUploader;
 use App\Helper\ErrorHandler;
@@ -77,7 +76,6 @@ class ProfileController extends AbstractController
         return $this->render('profile/profile.html.twig', [
                     'errors' => ErrorHandler::handleFormErrors($form),
                     'user' => $details,
-                    'countries' => Countries::getNames($request->getLocale()),
                     'form' => $form->createView(),
         ]);
     }

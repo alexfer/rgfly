@@ -13,7 +13,6 @@ use Doctrine\Common\Collections\{
 use App\Repository\UserDetailsRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserDetailsRepository::class)]
 #[ORM\Table(name: 'user_details')]
@@ -55,6 +54,9 @@ class UserDetails
 
     #[ORM\Column(length: 2, nullable: true)]
     private ?string $country = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $city = null;
 
     #[ORM\Column(type: Types::TEXT, length: 65535, nullable: true)]
     private ?string $about = null;
@@ -169,6 +171,18 @@ class UserDetails
     public function setCountry(string $country): static
     {
         $this->country = $country;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): static
+    {
+        $this->city = $city;
 
         return $this;
     }

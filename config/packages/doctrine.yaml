@@ -7,8 +7,6 @@ doctrine:
         # server_version: ' 10.4.28-MariaDB'
         mapping_types:
             enum: string
-
-
         profiling_collect_backtrace: '%kernel.debug%'
     orm:
         auto_generate_proxy_classes: true

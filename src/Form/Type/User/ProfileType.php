@@ -11,11 +11,16 @@ use Symfony\Component\Form\Extension\Core\Type\{
     TextareaType,
     FileType,
     DateType,
+    ChoiceType,
 };
 use Symfony\Component\Validator\Constraints\{
     Length,
     NotBlank,
     Regex,
+};
+use Symfony\Component\Intl\{
+    Locale,
+    Countries,
 };
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Image;
@@ -87,6 +92,15 @@ class ProfileType extends AbstractType
                 ->add('date_birth', DateType::class, [
                     'widget' => 'single_text',
                     'format' => 'yyyy-MM-dd',
+                ])
+                ->add('city', TextType::class, [])
+                ->add('country', ChoiceType::class, [
+                    'placeholder' => 'form.country.placeholder',
+                    'label' => 'label.country',
+                    'required' => false,
+                    'multiple' => false,
+                    'expanded' => false,
+                    'choices' => \array_flip(Countries::getNames(Locale::getDefault())),
                 ])
                 ->add('about', TextareaType::class, [
                     'attr' => [
