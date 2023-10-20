@@ -9,7 +9,6 @@ use Symfony\Component\Form\Extension\Core\Type\{
     PasswordType,
     SubmitType,
     EmailType,
-    TextType,
 };
 use Symfony\Component\Validator\Constraints\{
     IsTrue,

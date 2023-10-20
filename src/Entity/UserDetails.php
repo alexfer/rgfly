@@ -189,7 +189,7 @@ class UserDetails
 
     public function getUpdatedAt(): ?\DateTime
     {
-        return $this->phone;
+        return $this->updated_at;
     }
 
     public function setUpdatedAt(\DateTime $updated_at): static

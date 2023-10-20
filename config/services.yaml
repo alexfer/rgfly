@@ -6,6 +6,9 @@
 parameters:
     hwi_oauth.connect.registration_form: ''
     auto_login: true
+    app.datetime_format: 'M d, Y H:i'
+    app.date_format: 'M d, Y'
+    locale: 'en'
     user_storage_dir: '%kernel.project_dir%/public/user'
     app.notifications.email_sender: '%env(EMAIL_SENDER)%'
     app.notifications.email_sender_name: '%env(EMAIL_SENDER_NAME)%'

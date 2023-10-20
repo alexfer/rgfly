@@ -927,6 +927,15 @@ p:last-child {
     border-radius: 15px;
     /*border-top-left-radius: 15px;*/
 }
+.section-area.default table tr {
+    border-bottom: 1px #eee solid;
+}
+.section-area.default table tr:last-child {
+    border-bottom: none;
+}
+.section-area.default table [data-toggle="tooltip"] {
+    cursor: pointer;
+}
 .content-image {
     position: relative;
     text-align: center;
@@ -1038,23 +1047,61 @@ p:last-child {
     transition: 0.5s;
     font-size: 14px;
 }
-
 .faq-accordion .accordion .accordion-item .active.accordion-title i {
     color: #5e87eb;
 }
 .faq-accordion .accordion .accordion-item .accordion-title.active i::before {
     content: "\F235";
 }
-
 .faq-accordion .accordion .accordion-item .accordion-content {
     display: none;
     font-size: 15px;
     padding-bottom: 20px;
     margin-bottom: 0;
 }
-
 .faq-accordion .accordion .accordion-item .accordion-content.show {
     display: block;
+}
+.user-info {
+    font-family: 'Cabin', sans-serif;
+}
+.user-info .image-container {
+    position: relative;
+}
+.user-info .image-container [type="file"] {
+    display: none;
+}
+.user-info .image-container .img-thumbnail {
+    width: 150px; 
+    height: 150px;
+}
+.user-info .image {
+    opacity: 1;
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: .5s ease;
+    backface-visibility: hidden;
+}
+.user-info .middle {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+}
+.user-info label {
+    font-weight:bold;    
+}
+.user-info .image-container:hover .image {
+    opacity: 0.3;
+}
+
+.user-info .image-container:hover .middle {
+    opacity: 0.9;
 }
 /**************************************
  ** - 00 - Footer Subscribe CSS

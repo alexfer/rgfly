@@ -17,6 +17,18 @@ liip_imagine:
 
                     # crop the input image, if required
                     mode: outbound
+        
+        user_profile:
+            filters:
+
+                # use and setup the "thumbnail" filter
+                thumbnail:
+
+                    # set the thumbnail size to "32x32" pixels
+                    size: [200, 200]
+
+                    # crop the input image, if required
+                    mode: outbound            
                     
         user_preview:
             filters:

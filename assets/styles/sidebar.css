@@ -32,6 +32,8 @@
 }
 .sidebar-header .user-info .user-name {
     color: #fff;
+    inline-size: 130px;
+    overflow-wrap: break-word;
 }
 
 .sidebar-header .user-info .user-status i {

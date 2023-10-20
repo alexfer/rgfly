@@ -217,6 +217,14 @@
                 <source>table.header.name</source>
                 <target>Name</target>
             </trans-unit>
+            <trans-unit id="table.header.user.created_at">
+                <source>table.header.user.created_at</source>
+                <target>Registered</target>
+            </trans-unit>
+            <trans-unit id="table.header.user.updated_at">
+                <source>table.header.user.updated_at</source>
+                <target>Lats Login</target>
+            </trans-unit>
             <trans-unit id="table.header.subject">
                 <source>table.header.subject</source>
                 <target>Subject</target>
@@ -224,6 +232,10 @@
             <trans-unit id="table.header.handle">
                 <source>table.header.handle</source>
                 <target>Handle</target>
+            </trans-unit>
+            <trans-unit id="tooltip.show.more">
+                <source>tooltip.show.more</source>
+                <target>Details about the</target>
             </trans-unit>
             <trans-unit id="label.form.faq.title">
                 <source>label.form.faq.title</source>

@@ -1,0 +1,145 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% block title_content %}{{ entry.details.firstName }} {{ entry.details.lastName }}{% endblock %}
+
+{% block content %}
+    <div class="card user-info">
+        <div class="card-body">
+            <div class="card-title mb-4">
+                <div class="d-flex justify-content-start">
+                    <div class="image-container">
+                        {% for picture in entry.details.attach|slice(0, 1) %}
+                            {% set _picture = 'user/picture/' ~ entry.id ~ '/' ~ picture.name %}
+                            <img id="imgProfile" class="img-thumbnail" src="{{ asset(_picture) | imagine_filter('user_profile') }}" />
+                        {% else %}  
+                            <img src="http://placehold.it/150x150" id="imgProfile" class="img-thumbnail" />
+                        {% endfor %}                        
+                        <div class="middle">
+                            <input type="button" class="btn btn-secondary" id="btnChangePicture" value="Change" />
+                            <input type="file" id="profilePicture" name="file" />
+                        </div>
+                    </div>
+                    <div class="userData ml-3">
+                        <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold"><a href="javascript:void(0);">{{ entry.details.firstName }} {{ entry.details.lastName }}</a></h2>
+                        <h6 class="d-block"><a href="javascript:void(0)">1,500</a> Video Uploads</h6>
+                        <h6 class="d-block"><a href="javascript:void(0)">300</a> Blog Posts</h6>
+                    </div>
+                    <div class="ml-auto">
+                        <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="basicInfo-tab" data-toggle="tab" href="#basicInfo" role="tab" aria-controls="basicInfo" aria-selected="true">Basic Info</a>
+                        </li>                        
+                        <li class="nav-item">
+                            <a class="nav-link" id="location-tab" data-toggle="tab" href="#location" role="tab" aria-controls="location" aria-selected="false">Location</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="security-tab" data-toggle="tab" href="#security" role="tab" aria-controls="security" aria-selected="false">Security</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="about-tab" data-toggle="tab" href="#about" role="tab" aria-controls="about" aria-selected="false">About</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content ml-1" id="tabs">
+                        <div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
+                            <div class="row">
+                                <div class="col-sm-3 col-md-2 col-5">
+                                    <label>First Name</label>
+                                </div>
+                                <div class="col-md-8 col-6">
+                                    {{ entry.details.firstName }}
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-3 col-md-2 col-5">
+                                    <label>Last Name</label>
+                                </div>
+                                <div class="col-md-8 col-6">
+                                    {{ entry.details.lastName }}
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-3 col-md-2 col-5">
+                                    <label>Phone Number</label>
+                                </div>
+                                <div class="col-md-8 col-6">
+                                    {{ entry.details.phone|default('n/a') }}
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-3 col-md-2 col-5">
+                                    <label>Birth Date</label>
+                                </div>
+                                <div class="col-md-8 col-6">
+                                    {{ entry.details.dateBirth|date(date_format)|default('n/a') }}
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-3 col-md-2 col-5">
+                                    <label>Registerd</label>
+                                </div>
+                                <div class="col-md-8 col-6">
+                                    {{ entry.createdAt|date(datetime_format) }}
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-3 col-md-2 col-5">
+                                    <label>Last Login</label>
+                                </div>
+                                <div class="col-md-8 col-6">
+                                    {{ entry.details.updatedAt|date(datetime_format) }}
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-3 col-md-2 col-5">
+                                    <label>IP address</label>
+                                </div>
+                                <div class="col-md-8 col-6">
+                                    {{ entry.ip }}
+                                </div>
+                            </div>
+                            <hr />
+                        </div>
+                        <div class="tab-pane fade" id="location" role="tabpanel" aria-labelledby="location-tab">
+                            <div class="row">
+                                <div class="col-sm-3 col-md-2 col-5">
+                                    <label>Country</label>
+                                </div>
+                                <div class="col-md-8 col-6">
+                                    {{ country | default('n/a') }}
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-3 col-md-2 col-5">
+                                    <label>City</label>
+                                </div>
+                                <div class="col-md-8 col-6">
+                                    {{ entry.details.city | default('n/a') }}
+                                </div>
+                            </div>
+                            <hr />
+                        </div>
+                        <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
+                            {% include 'dashboard/content/user/_form.html.twig' %}
+                        </div>        
+                        <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
+                            {{ entry.details.about | default('n/a') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
