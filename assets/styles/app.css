@@ -841,9 +841,11 @@ p:last-child {
 .service-message {
     position: fixed;
     z-index: 6;
-    min-width: 300px;
     top: 14px;
     right: 20px;
+}
+.service-message .toast {
+    width: 300px !important;
 }
 .service-message .toast .toast-body {
     color: #364870;

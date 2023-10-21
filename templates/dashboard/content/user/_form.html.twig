@@ -1,5 +1,4 @@
 {% set _message = app.flashes('success') %}
-{{ dump(_message) }}
 {{ form_start(form, {attr: {class: 'd-tech-form', action: path('app_dashboard_user_details', {id: entry.id, tab: 'security'}), novalidate: 'novalidate'}}) }}
 {% if errors %}
     <div class="alert alert-danger">
