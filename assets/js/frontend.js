@@ -12,6 +12,7 @@ $(window).on('scroll', function () {
     }
 });
 $(function () {
+    $('.toast').toast('hide');
 
     $('a[data-toggle="accordion-content"]').on('click', function (e) {
         e.preventDefault();

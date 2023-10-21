@@ -4,8 +4,11 @@ namespace App\Form\Type\User;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\{
+    PasswordType,
+    RepeatedType,
+    SubmitType,
+};
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\{
@@ -45,7 +48,7 @@ class ChangePasswordProfileType extends AbstractType
                     'invalid_message' => 'The password fields must match.',
                     'mapped' => false,
                 ])
-                ->add('send', SubmitType::class, [
+                ->add('change', SubmitType::class, [
                     'attr' => [
                         'class' => 'btn btn-primary',
                     ],

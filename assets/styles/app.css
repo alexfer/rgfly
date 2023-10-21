@@ -675,7 +675,7 @@ p:last-child {
     -webkit-transition: 0.4s;
     transition: 0.4s;
     position: absolute;
-    z-index: 999;
+    z-index: 3;
     left: 0;
     top: 0;
     width: 100%;
@@ -687,7 +687,7 @@ p:last-child {
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 999;
+    z-index: 3;
     -webkit-box-shadow: 0 2px 28px 0 rgba(0, 0, 0, 0.06);
     box-shadow: 0 2px 28px 0 rgba(0, 0, 0, 0.06);
     background: #ffffff !important;
@@ -740,7 +740,7 @@ p:last-child {
     .tech-responsive-nav .tech-logo {
         position: relative;
         width: 50%;
-        z-index: 999;
+        z-index: 4;
     }
     .tech-responsive-nav .tech-logo .white-logo {
         display: block;
@@ -837,6 +837,17 @@ p:last-child {
 .d-tech-form textarea:focus {
     border-top: 0;
     border: 1px solid #004caa;
+}
+.service-message {
+    position: fixed;
+    z-index: 6;
+    min-width: 300px;
+    top: 14px;
+    right: 20px;
+}
+.service-message .toast .toast-body {
+    color: #364870;
+    background-color: #cbd8f2;
 }
 .home-area {
     overflow: hidden;
@@ -1072,7 +1083,7 @@ p:last-child {
     display: none;
 }
 .user-info .image-container .img-thumbnail {
-    width: 150px; 
+    width: 150px;
     height: 150px;
 }
 .user-info .image {
@@ -1094,7 +1105,7 @@ p:last-child {
     text-align: center;
 }
 .user-info label {
-    font-weight:bold;    
+    font-weight:bold;
 }
 .user-info .image-container:hover .image {
     opacity: 0.3;

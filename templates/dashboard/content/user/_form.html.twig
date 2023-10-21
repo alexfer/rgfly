@@ -1,1 +1,20 @@
-_form
+
+{{ form_start(form, {attr: {class: 'd-tech-form', novalidate: 'novalidate'}}) }}
+<div class="form-group row">
+    {{ form_label(form.plainPassword.children.first, 'label.form.new_password', {label_attr: {class: 'col-sm-4 col-form-label'}}) }}
+    <div class="col-sm-8">
+        {{ form_widget(form.plainPassword.children.first, {attr: {class: 'form-control'}}) }}
+    </div>
+</div>
+<div class="form-group row">
+    {{ form_label(form.plainPassword.children.second, 'label.form.repeat_password', {label_attr: {class: 'col-sm-4 col-form-label'}}) }}
+    <div class="col-sm-8">
+        {{ form_widget(form.plainPassword.children.second, {attr: {class: 'form-control'}}) }}
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-sm-12 text-right mt-3">
+        {{ form_widget(form.change, { label: 'form.action.change' }) }}
+    </div>
+</div>
+{{ form_end(form) }}

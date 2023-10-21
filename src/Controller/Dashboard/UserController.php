@@ -2,8 +2,8 @@
 
 namespace App\Controller\Dashboard;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Form\Type\User\ChangePasswordProfileType;
 use Symfony\Component\HttpFoundation\{
     Response,
     Request,
@@ -32,9 +32,13 @@ class UserController extends AbstractController
     {
         $entry = $reposiroty->find($request->get('id'));
         $country = $entry->getDetails()->getCountry();
+        
+        $form = $this->createForm(ChangePasswordProfileType::class);
+        $form->handleRequest($request);
 
         return $this->render('dashboard/content/user/details.html.twig', [
                     'entry' => $entry,
+                    'form' => $form,
                     'country' => $country ? Countries::getNames(Locale::getDefault())[$country] : null,
         ]);
     }

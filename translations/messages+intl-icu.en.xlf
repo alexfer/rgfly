@@ -236,7 +236,15 @@
             <trans-unit id="tooltip.show.more">
                 <source>tooltip.show.more</source>
                 <target>Details about the</target>
+            </trans-unit>            
+            <trans-unit id="label.form.new_password">
+                <source>label.form.new_password</source>
+                <target>New password</target>
             </trans-unit>
+            <trans-unit id="label.form.repeat_password">
+                <source>label.form.repeat_password</source>
+                <target>Repeat Password</target>
+            </trans-unit>            
             <trans-unit id="label.form.faq.title">
                 <source>label.form.faq.title</source>
                 <target>Title</target>
@@ -249,6 +257,60 @@
                 <source>label.form.faq.visible</source>
                 <target>Published</target>
             </trans-unit>
+            
+            <trans-unit id="user.tab.summary">
+                <source>user.tab.summary</source>
+                <target>Summary</target>
+            </trans-unit>
+            <trans-unit id="user.tab.location">
+                <source>user.tab.location</source>
+                <target>Location</target>
+            </trans-unit>
+            <trans-unit id="user.tab.security">
+                <source>user.tab.security</source>
+                <target>Security</target>
+            </trans-unit>
+            <trans-unit id="user.tab.about">
+                <source>user.tab.about</source>
+                <target>About</target>
+            </trans-unit>
+            <trans-unit id="user.info.first_name">
+                <source>user.info.first_name</source>
+                <target>First Name</target>
+            </trans-unit>
+            <trans-unit id="user.info.last_name">
+                <source>user.info.last_name</source>
+                <target>Last Name</target>
+            </trans-unit>
+            <trans-unit id="user.info.phone_number">
+                <source>user.info.phone_number</source>
+                <target>Phone Number</target>
+            </trans-unit>
+            <trans-unit id="user.info.birth_date">
+                <source>user.info.birth_date</source>
+                <target>Birth Date</target>
+            </trans-unit>
+            <trans-unit id="user.info.registered">
+                <source>user.info.registered</source>
+                <target>Registered</target>
+            </trans-unit>
+            <trans-unit id="user.info.last_login">
+                <source>user.info.last_login</source>
+                <target>Last Login</target>
+            </trans-unit>
+            <trans-unit id="user.info.ip_address">
+                <source>user.info.ip_address</source>
+                <target>IP Address</target>
+            </trans-unit>
+            <trans-unit id="user.info.country">
+                <source>user.info.country</source>
+                <target>Country</target>
+            </trans-unit>
+            <trans-unit id="user.info.city">
+                <source>user.info.city</source>
+                <target>City</target>
+            </trans-unit>
+            
             <trans-unit id="title.dashboard.blog_overvie">
                 <source>title.dashboard.blog_overvie</source>
                 <target>Blog Overview</target>
@@ -507,6 +569,10 @@
             <trans-unit id="form.action.login">
                 <source>form.action.login</source>
                 <target>Login</target>
+            </trans-unit>
+            <trans-unit id="form.action.change">
+                <source>form.action.change</source>
+                <target>Change</target>
             </trans-unit>
             <trans-unit id="form.email.help">
                 <source>form.email.help</source>
