@@ -1,3 +1,5 @@
+{% set _message = app.flashes('success') %}
+{{ dump(_message) }}
 {{ form_start(form, {attr: {class: 'd-tech-form', action: path('app_dashboard_user_details', {id: entry.id, tab: 'security'}), novalidate: 'novalidate'}}) }}
 {% if errors %}
     <div class="alert alert-danger">
@@ -12,17 +14,20 @@
     {{ form_label(form.plainPassword.children.first, 'label.form.new_password', {label_attr: {class: 'col-sm-4 col-form-label'}}) }}
     <div class="col-sm-8">
         {{ form_widget(form.plainPassword.children.first, {attr: {class: 'form-control'}}) }}
+        <span class="text-danger">{{ form_errors(form.plainPassword.children.first) }}</span>
     </div>
 </div>
 <div class="form-group row">
     {{ form_label(form.plainPassword.children.second, 'label.form.repeat_password', {label_attr: {class: 'col-sm-4 col-form-label'}}) }}
     <div class="col-sm-8">
         {{ form_widget(form.plainPassword.children.second, {attr: {class: 'form-control'}}) }}
+        <span class="text-danger">{{ form_errors(form.plainPassword.children.second) }}</span>
     </div>
 </div>
+<input type="hidden" name="flash" value="{{ _message[0]|default([]|json_encode) }}">
 <div class="form-group row">
     <div class="col-sm-12 text-right mt-3">
         {{ form_widget(form.change, { label: 'form.action.change' }) }}
     </div>
 </div>
-{{ form_end(form) }}
+{{ form_end(form) }}    

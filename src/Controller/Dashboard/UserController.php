@@ -53,16 +53,10 @@ class UserController extends AbstractController
         $form = $this->createForm(ChangePasswordProfileType::class);
         $form->handleRequest($request);
 
-        $errors = null;
-
-        if ($request->isMethod('POST')) {
-            $errors = $validator->validate($entry);
-            //dd($errors);
-        }
-
         if ($form->isSubmitted() && $form->isValid()) {
             
-            return $this->redirectToRoute('app_dashboard_faq_edit', ['id' => $entry->getId(), 'tab' => 'security']);
+            $this->addFlash('success', json_encode(['message' => 'Password has been changed successfully.']));
+            return $this->redirectToRoute('app_dashboard_user_details', ['id' => $entry->getId(), 'tab' => 'security']);
         }
 
         return $this->render('dashboard/content/user/details.html.twig', [

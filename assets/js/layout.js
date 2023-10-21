@@ -14,6 +14,17 @@ $(window).on('scroll', function () {
 $(function () {
     $('.toast').toast('hide');
 
+    let flash = $('.d-tech-form input[name="flash"]').attr('value');
+
+    if (typeof flash !== 'undefined') {
+        let messages = $.parseJSON(flash);
+
+        if (messages.message !== undefined) {
+            $('.toast .toast-body').text(messages.message);
+            $('.toast').toast('show');
+        }
+    }
+
     $('a[data-toggle="accordion-content"]').on('click', function (e) {
         e.preventDefault();
 
@@ -69,7 +80,7 @@ $(function () {
         if (!$('#btnChangePicture').hasClass('changing')) {
             $('#profilePicture').click();
         } else {
-            // change
+            $('.toast').toast('show');
         }
     });
     $('#profilePicture').on('change', function () {

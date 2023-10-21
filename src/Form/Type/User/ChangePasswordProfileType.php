@@ -40,10 +40,13 @@ class ChangePasswordProfileType extends AbstractType
                                 'max' => 4096,
                                     ]),
                         ],
-                        'label' => 'New password',
                     ],
                     'second_options' => [
-                        'label' => 'Repeat Password',
+                        'constraints' => [
+                            new NotBlank([
+                                'message' => 'Please enter a confirmation password',
+                                    ]),
+                        ],
                     ],
                     'invalid_message' => 'The password fields must match.',
                     'mapped' => false,
