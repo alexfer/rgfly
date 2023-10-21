@@ -17,6 +17,7 @@
                         <div class="middle">
                             <input type="button" class="btn btn-secondary" id="btnChangePicture" value="{{ 'form.action.change'|trans }}" />
                             <input type="file" id="profilePicture" name="file" />
+                            <input type="hidden" name="route" id="route" value="{{ path('app_dashboard_user_change_picture', {id: entry.id}) }}">
                         </div>
                     </div>
                     <div class="userData ml-3">
@@ -134,7 +135,11 @@
                             {% include 'dashboard/content/user/_form.html.twig' %}
                         </div>        
                         <div class="tab-pane fade {{ _tab == 'about' ? 'show active' : null }}" id="about" role="tabpanel" aria-labelledby="about-tab">
-                            {{ entry.details.about|default('n/a') }}
+                            {% if  entry.details.about is not empty %}
+                                {{ entry.details.about|nl2br|raw }}
+                            {% else %}
+                                {{ ''|default('n/a') }}
+                            {% endif %}
                             <hr />
                         </div>
                     </div>

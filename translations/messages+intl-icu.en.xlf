@@ -345,6 +345,10 @@
                 <source>user.password.changed</source>
                 <target><![CDATA[User password has been changed successfully.]]></target>
             </trans-unit>
+            <trans-unit id="user.picture.changed">
+                <source>user.picture.changed</source>
+                <target><![CDATA[User picture has been changed successfully.]]></target>
+            </trans-unit>
             <trans-unit id="text.faq.header">
                 <source>text.faq.header</source>
                 <target>Direct answers to frequently asked questions</target>
