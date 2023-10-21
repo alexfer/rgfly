@@ -1,5 +1,13 @@
-
-{{ form_start(form, {attr: {class: 'd-tech-form', novalidate: 'novalidate'}}) }}
+{{ form_start(form, {attr: {class: 'd-tech-form', action: path('app_dashboard_user_details', {id: entry.id, tab: 'security'}), novalidate: 'novalidate'}}) }}
+{% if errors %}
+    <div class="alert alert-danger">
+        <ul>
+            {% for error in errors %}
+                <li>{{ error.message|trans({'%policy%': path('policy'), '%terms%': path('terms')})|raw }}</li>
+                {% endfor %}           
+        </ul>
+    </div>
+{% endif %}
 <div class="form-group row">
     {{ form_label(form.plainPassword.children.first, 'label.form.new_password', {label_attr: {class: 'col-sm-4 col-form-label'}}) }}
     <div class="col-sm-8">

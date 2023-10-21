@@ -31,7 +31,7 @@
                                 data-placement="top" 
                                 title="{{ 'tooltip.show.more'|trans }} {{ entry.details.firstName }}" 
                                 class="btn btn-sm btn-outline-lightning rounded" 
-                                href="{{ path('app_dashboard_user_details', {id: entry.id}) }}">
+                                href="{{ path('app_dashboard_user_details', {id: entry.id, tab: 'summary'}) }}">
                                 <i class="bi bi-person-circle"></i>
                             </a>
                         </td>

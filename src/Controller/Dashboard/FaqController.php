@@ -30,6 +30,13 @@ class FaqController extends AbstractController
         ]);
     }
 
+    /**
+     * 
+     * @param Request $request
+     * @param Faq $entry
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('/delete/{id}', name: 'app_dashboard_faq_delete', methods: ['POST'])]
     public function delete(
             Request $request,
@@ -47,6 +54,12 @@ class FaqController extends AbstractController
         return $this->redirectToRoute('app_dashboard_faq');
     }
 
+    /**
+     * 
+     * @param Faq $entry
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('/restore/{id}', name: 'app_dashboard_faq_restore')]
     public function restore(
             Faq $entry,

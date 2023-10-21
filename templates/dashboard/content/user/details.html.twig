@@ -30,23 +30,24 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12">
+                <div class="col-12">                    
+                    {% set _tab = app.request.get('tab')  %}
                     <ul class="nav nav-tabs nav-justified mb-4" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="summary-tab" data-toggle="tab" href="#summary" role="tab" aria-controls="summary" aria-selected="true">{{ 'user.tab.summary'|trans }}</a>
+                            <a class="nav-link {{ _tab == 'summary' ? 'active' : null }}" id="summary-tab" data-toggle="tab" href="#summary" role="tab" aria-controls="summary" aria-selected="true">{{ 'user.tab.summary'|trans }}</a>
                         </li>                        
                         <li class="nav-item">
-                            <a class="nav-link" id="location-tab" data-toggle="tab" href="#location" role="tab" aria-controls="location" aria-selected="false">{{ 'user.tab.location'|trans }}</a>
+                            <a class="nav-link {{ _tab == 'location' ? 'active' : null }}" id="location-tab" data-toggle="tab" href="#location" role="tab" aria-controls="location" aria-selected="false">{{ 'user.tab.location'|trans }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="security-tab" data-toggle="tab" href="#security" role="tab" aria-controls="security" aria-selected="false">{{ 'user.tab.security'|trans }}</a>
+                            <a class="nav-link {{ _tab == 'security' ? 'active' : null }}" id="security-tab" data-toggle="tab" href="#security" role="tab" aria-controls="security" aria-selected="false">{{ 'user.tab.security'|trans }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="about-tab" data-toggle="tab" href="#about" role="tab" aria-controls="about" aria-selected="false">{{ 'user.tab.about'|trans }}</a>
+                            <a class="nav-link{{ _tab == 'security' ? 'active' : null }}" id="about-tab" data-toggle="tab" href="#about" role="tab" aria-controls="about" aria-selected="false">{{ 'user.tab.about'|trans }}</a>
                         </li>
                     </ul>
                     <div class="tab-content ml-3" id="tabs">
-                        <div class="tab-pane fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
+                        <div class="tab-pane fade {{ _tab == 'summary' ? 'show active' : null }}" id="summary" role="tabpanel" aria-labelledby="summary-tab">
                             <div class="row">
                                 <div class="col-sm-3 col-md-2 col-5">
                                     <label>{{ 'user.info.first_name'|trans }}</label>
@@ -110,7 +111,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="location" role="tabpanel" aria-labelledby="location-tab">
+                        <div class="tab-pane fade {{ _tab == 'location' ? 'show active' : null }}" id="location" role="tabpanel" aria-labelledby="location-tab">
                             <div class="row">
                                 <div class="col-sm-3 col-md-2 col-5">
                                     <label>{{ 'user.info.country'|trans }}</label>
@@ -129,10 +130,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
+                        <div class="tab-pane fade {{ _tab == 'security' ? 'show active' : null }}" id="security" role="tabpanel" aria-labelledby="security-tab">
                             {% include 'dashboard/content/user/_form.html.twig' %}
                         </div>        
-                        <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
+                        <div class="tab-pane fade {{ _tab == 'about' ? 'show active' : null }}" id="about" role="tabpanel" aria-labelledby="about-tab">
                             {{ entry.details.about|default('n/a') }}
                             <hr />
                         </div>
