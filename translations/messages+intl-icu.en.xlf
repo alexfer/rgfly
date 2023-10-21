@@ -341,6 +341,10 @@
                     <![CDATA[Helping leading companies and tech startups strengthen<br />their teams is what we do and what we do best.]]>
                 </target>
             </trans-unit>
+            <trans-unit id="user.password.changed">
+                <source>user.password.changed</source>
+                <target><![CDATA[User password has been changed successfully.]]></target>
+            </trans-unit>
             <trans-unit id="text.faq.header">
                 <source>text.faq.header</source>
                 <target>Direct answers to frequently asked questions</target>

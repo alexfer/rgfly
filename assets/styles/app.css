@@ -847,6 +847,9 @@ p:last-child {
 .service-message .toast {
     width: 300px !important;
 }
+.service-message .fade {
+    transition: opacity 0.5s linear !important;
+}
 .service-message .toast .toast-body {
     color: #364870;
     background-color: #cbd8f2;

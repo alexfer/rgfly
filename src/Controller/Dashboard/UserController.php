@@ -3,7 +3,6 @@
 namespace App\Controller\Dashboard;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Form\Type\User\ChangePasswordProfileType;
 use App\Helper\ErrorHandler;
 use Symfony\Component\HttpFoundation\{
@@ -14,12 +13,16 @@ use Symfony\Component\Intl\{
     Locale,
     Countries,
 };
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\UserRepository;
 
 #[Route('/dashboard/user')]
 class UserController extends AbstractController
 {
+
     /**
      * 
      * @param UserRepository $reposiroty
@@ -37,14 +40,18 @@ class UserController extends AbstractController
      * 
      * @param Request $request
      * @param UserRepository $reposiroty
-     * @param ValidatorInterface $validator
+     * @param UserPasswordHasherInterface $passwordHasher
+     * @param EntityManagerInterface $em
+     * @param TranslatorInterface $translator
      * @return Response
      */
     #[Route('/details/{id}/{tab}', name: 'app_dashboard_user_details', methods: ['GET', 'POST'])]
     public function details(
             Request $request,
             UserRepository $reposiroty,
-            ValidatorInterface $validator,
+            UserPasswordHasherInterface $passwordHasher,
+            EntityManagerInterface $em,
+            TranslatorInterface $translator,
     ): Response
     {
         $entry = $reposiroty->find($request->get('id'));
@@ -54,8 +61,17 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
-            $this->addFlash('success', json_encode(['message' => 'Password has been changed successfully.']));
+
+            $encodedPassword = $passwordHasher->hashPassword(
+                    $entry,
+                    $form->get('plainPassword')->getData()
+            );
+
+            $entry->setPassword($encodedPassword);
+            $em->flush();
+
+            $this->addFlash('success', json_encode(['message' => $translator->trans('user.password.changed')]));
+
             return $this->redirectToRoute('app_dashboard_user_details', ['id' => $entry->getId(), 'tab' => 'security']);
         }
 
