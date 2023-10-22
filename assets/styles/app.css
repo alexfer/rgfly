@@ -875,6 +875,7 @@ p:last-child {
 .page-title-area.terms,
 .page-title-area.contact,
 .page-title-area.user-area,
+.page-title-area.request-password,
 .page-title-area.questions {
     position: relative;
     z-index: 1;
@@ -882,6 +883,10 @@ p:last-child {
     background-size: cover;
     background-repeat: no-repeat;
     height: 400px;
+}
+.page-title-area.request-password {
+    background-image: linear-gradient(to bottom, rgba(77, 124, 238, 0.2), rgba(77, 124, 238, 0.2)), url(../img/user-area1.jpg);
+    height: 120px;        
 }
 .page-title-area.home {
     background-image: linear-gradient(to top, rgba(77, 124, 238, 0.2), rgba(77, 124, 238, 0.2)), url(../img/home-bg1.jpg);
