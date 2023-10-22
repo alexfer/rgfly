@@ -161,8 +161,8 @@
                 <source>menu.dashboard.approved_blogs</source>
                 <target>Approved Blogs</target>
             </trans-unit>
-            <trans-unit id="menu.dashboard.latest_blogs">
-                <source>menu.dashboard.latest_blogs</source>
+            <trans-unit id="menu.dashboard.latest_blog">
+                <source>menu.dashboard.latest_blog</source>
                 <target>New Blogs</target>
             </trans-unit>
             <trans-unit id="menu.dashboard.create_faq">
@@ -311,20 +311,20 @@
                 <target>City</target>
             </trans-unit>
             
-            <trans-unit id="title.dashboard.blog_overvie">
-                <source>title.dashboard.blog_overvie</source>
+            <trans-unit id="menu.dashboard.overview.blog">
+                <source>menu.dashboard.overview.blog</source>
                 <target>Blog Overview</target>
             </trans-unit>
-            <trans-unit id="title.dashboard.blog_create">
-                <source>title.dashboard.blog_create</source>
+            <trans-unit id="menu.dashboard.create.blog">
+                <source>menu.dashboard.create.blog</source>
                 <target>Create New Blog</target>
             </trans-unit>
-            <trans-unit id="title.dashboard.blog_approved">
-                <source>title.dashboard.blog_approved</source>
+            <trans-unit id="menu.dashboard.approved.blog">
+                <source>menu.dashboard.approved.blog</source>
                 <target>Approved Blogs</target>
             </trans-unit>
-            <trans-unit id="title.dashboard.blog_latest">
-                <source>title.dashboard.blog_latest</source>
+            <trans-unit id="menu.dashboard.latest.blog">
+                <source>menu.dashboard.latest.blog</source>
                 <target>Latest Blogs</target>
             </trans-unit>
             <trans-unit id="text.all_right_reserved">
@@ -561,6 +561,14 @@
             <trans-unit id="form.action.cancel">
                 <source>form.action.cancel</source>
                 <target>Cancel</target>
+            </trans-unit>
+            <trans-unit id="form.action.confirm">
+                <source>form.action.confirm</source>
+                <target>Confirm</target>
+            </trans-unit>
+            <trans-unit id="form.action.discard_changes">
+                <source>form.action.discard_changes</source>
+                <target>Confirm</target>
             </trans-unit>
             <trans-unit id="form.action.close">
                 <source>form.action.close</source>

@@ -19,15 +19,13 @@
                 </div>                
             </div>
         </div>
-    </div>    
+    </div>                    
     <section class="section-area default py-0">
         <div class="container">  
             <div class="d-flex">
                 <div class="col-md-3">
-                    <div class="sidebar my-3">
-                        {% block sidebar %}
-                            {% include 'dashboard/sidebar.html.twig' %}
-                        {% endblock %}
+                    <div class="sidebar rounded my-3">
+                        {% include 'dashboard/sidebar.html.twig'  with {'navbar': navbar} %}
                     </div>
                 </div>    
                 <div class="col-md-9 my-3 shadow-sm bg-white rounded">                    
@@ -35,7 +33,7 @@
                         <h2>{% block title_content %}{{ 'text.dashboard'|trans }}{% endblock %}</h2>
                         <hr>                        
                         {% block content %}
-                            {% include 'dashboard/content/index.html.twig'  %}
+                            {% include 'dashboard/content/index.html.twig' %}
                         {% endblock %}
                     </div>
                 </div>

@@ -1078,6 +1078,9 @@ p:last-child {
 .faq-accordion .accordion .accordion-item .accordion-content.show {
     display: block;
 }
+.tab-content label {
+    color: #333;
+}
 .user-info {
     font-family: 'Cabin', sans-serif;
 }

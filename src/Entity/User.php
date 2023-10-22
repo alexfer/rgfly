@@ -47,6 +47,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTime $created_at;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTime $deleted_at = null;
+
     final public const ROLE_USER = 'ROLE_USER';
     final public const ROLE_ADMIN = 'ROLE_ADMIN';
 
@@ -148,7 +151,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCreatedAt(\DateTime $created_at): void
     {
         $this->created_at = $created_at;
-        //return $this;
+    }
+
+    public function getDeletedAt(): ?\DateTime
+    {
+        return $this->deleted_at;
+    }
+
+    public function setDeletedAt(\DateTime $deleted_at): static
+    {
+        $this->deleted_at = $deleted_at;
+
+        return $this;
     }
 
     /**

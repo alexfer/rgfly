@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\FaqRepository;
+use App\Service\DashboardNavbar;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Helper\ErrorHandler;
 use App\Entity\Faq;
@@ -25,7 +26,7 @@ class FaqController extends AbstractController
     #[Route('/', name: 'app_dashboard_faq')]
     public function index(FaqRepository $reposiroty): Response
     {
-        return $this->render('dashboard/content/faq/index.html.twig', [
+        return $this->render('dashboard/content/faq/index.html.twig', DashboardNavbar::build() + [
                     'entries' => $reposiroty->findBy([], ['id' => 'desc']),
         ]);
     }
@@ -105,7 +106,7 @@ class FaqController extends AbstractController
             return $this->redirectToRoute('app_dashboard_faq_edit', ['id' => $entry->getId()]);
         }
 
-        return $this->render('dashboard/content/faq/_form.html.twig', [
+        return $this->render('dashboard/content/faq/_form.html.twig', DashboardNavbar::build() + [
                     'errors' => ErrorHandler::handleFormErrors($form),
                     'form' => $form,
         ]);
@@ -143,7 +144,7 @@ class FaqController extends AbstractController
             return $this->redirectToRoute('app_dashboard_faq_edit', ['id' => $entry->getId()]);
         }
 
-        return $this->render('dashboard/content/faq/_form.html.twig', [
+        return $this->render('dashboard/content/faq/_form.html.twig', DashboardNavbar::build() + [
                     'errors' => ErrorHandler::handleFormErrors($form),
                     'form' => $form,
         ]);

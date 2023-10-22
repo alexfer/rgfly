@@ -60,37 +60,29 @@
             </a>
         </li>
     {% endif %}    
-    <li class="nav-item">
-        <a 
-            class="nav-link {{ _status == 'blog'? 'active': '' }}" 
-            href="#" 
-            data-toggle="collapse" 
-            data-target=".blog" 
-            aria-expanded="{{ _status == 'blog'? 'true': 'false'}}" 
-            aria-controls="blog">
-            <i class="bi bi-person-workspace"></i>
-            Blog
-            <span class="badge badge-pill badge-success mx-2">3</span>
-            <i class="bi bi-arrow-right-short arrow"></i>
-        </a>
-        <div class="collapse blog {{ _status == 'blog'? 'show': ''}}">
-            <a class="nav-link {{ _route == 'app_dashboard_blog'? 'active': '' }}" href="{{ path('app_dashboard_blog') }}">                
-                <i class="bi bi-arrow-right-short"></i>
-                {{ 'menu.dashboard.overview'|trans }}                
+    <li class="nav-item">        
+        {% for key, nav in navbar|sort %}
+            <a 
+                class="nav-link {{ _status == nav ? 'active': '' }}" 
+                href="#" 
+                data-toggle="collapse" 
+                data-target=".{{ key }}" 
+                aria-expanded="{{ _status == key ? 'true': 'false'}}" 
+                aria-controls="{{ key }}">
+                <i class="bi bi-person-workspace"></i>
+                {{ key|replace({'_': ' '})|capitalize }}
+                <span class="badge badge-pill badge-success mx-2">3</span>
+                <i class="bi bi-arrow-right-short arrow"></i>
             </a>
-            <a class="nav-link {{ _route == 'app_dashboard_blog_create'? 'active': '' }}" href="{{ path('app_dashboard_blog_create') }}">
-                <i class="bi bi-arrow-right-short"></i>
-                {{ 'menu.dashboard.create_blog'|trans }}
-            </a>
-            <a class="nav-link {{ _route == 'app_dashboard_blog_approved'? 'active': '' }}" href="{{ path('app_dashboard_blog_approved') }}">
-                <i class="bi bi-arrow-right-short"></i>
-                {{ 'menu.dashboard.approved_blogs'|trans }}
-            </a>
-            <a class="nav-link {{ _route == 'app_dashboard_blog_latest'? 'active': '' }}" href="{{ path('app_dashboard_blog_latest') }}">
-                <i class="bi bi-arrow-right-short"></i>
-                {{ 'menu.dashboard.latest_blogs'|trans }}
-            </a>
-        </div>
+            <div class="collapse {{ key }} {{ _status == key ? 'show': ''}}">
+                {% for message, route in childrens[key] %}
+                    <a class="nav-link {{ _route == route ? 'active' : '' }}" href="{{ path(route) }}">
+                        <i class="bi bi-arrow-right-short"></i>
+                        {{ message|trans }}
+                    </a>
+                {% endfor %}
+            </div>
+        {% endfor %}        
     </li>
     <li class="nav-item">
         <a class="nav-link" href="{{ path('app_logout') }}">

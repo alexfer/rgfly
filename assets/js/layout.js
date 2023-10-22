@@ -63,10 +63,12 @@ $(function () {
     });
 
     let imgSrc = $('#imgProfile').attr('src');
+    let changeBtn = $('#btnChangePicture').attr('value');
+    
     function readURL(input) {
 
         if (input.files && input.files[0]) {
-            var reader = new FileReader();
+            let reader = new FileReader();
 
             reader.onload = function (e) {
                 $('#imgProfile').attr('src', e.target.result);
@@ -94,8 +96,7 @@ $(function () {
                 processData: false,
                 success: function (response) {
                     if (response !== 0) {
-                        $('#btnChangePicture').removeClass('changing');
-                        $('#btnChangePicture').attr('value', 'Change');
+                        $('#btnChangePicture').removeClass('changing').attr('value', changeBtn);
                         $('#btnDiscard').hide();
                         $('#imgProfile').attr('src', response.picture);
                         $('.toast .toast-body').text(response.message);
@@ -107,14 +108,12 @@ $(function () {
     });
     $('#profilePicture').on('change', function () {
         readURL(this);
-        $('#btnChangePicture').addClass('changing');
-        $('#btnChangePicture').attr('value', 'Confirm');
+        $('#btnChangePicture').attr('value', $('#btnChangePicture').attr('data-confirm')).addClass('changing');
         $('#btnDiscard').removeClass('d-none');
-        // $('#imgProfile').attr('src', '');
     });
+    
     $('#btnDiscard').on('click', function () {        
-        $('#btnChangePicture').removeClass('changing');
-        $('#btnChangePicture').attr('value', 'Change');
+        $('#btnChangePicture').removeClass('changing').attr('value', changeBtn);
         $('#btnDiscard').addClass('d-none');
         $('#imgProfile').attr('src', imgSrc);
         $('#profilePicture').val('');        

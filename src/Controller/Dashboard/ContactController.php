@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ContactRepository;
+use App\Service\DashboardNavbar;
 use App\Entity\Contact;
 
 #[Route('/dashboard/contact')]
@@ -17,7 +18,7 @@ class ContactController extends AbstractController
     #[Route('/', name: 'app_dashboard_contact')]
     public function index(ContactRepository $reposiroty): Response
     {
-        return $this->render('dashboard/content/contact/index.html.twig', [
+        return $this->render('dashboard/content/contact/index.html.twig', DashboardNavbar::build() + [
                     'entries' => $reposiroty->findBy([], ['id' => 'desc']),
         ]);
     }
@@ -47,7 +48,7 @@ class ContactController extends AbstractController
     {
 
 
-        return $this->render('dashboard/content/contact/review.html.twig', [
+        return $this->render('dashboard/content/contact/review.html.twig', DashboardNavbar::build() + [
                     'entry' => $entry,
         ]);
     }

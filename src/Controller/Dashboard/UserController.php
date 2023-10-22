@@ -18,6 +18,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Service\FileUploader;
+use App\Service\DashboardNavbar;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\{
@@ -35,7 +36,6 @@ class UserController extends AbstractController
      * @var string|null
      */
     private ?string $storage;
-    
     private ?string $cacheUrl;
 
     /**
@@ -55,7 +55,7 @@ class UserController extends AbstractController
     #[Route('/', name: 'app_dashboard_user', methods: ['GET'])]
     public function index(UserRepository $repository): Response
     {
-        return $this->render('dashboard/content/user/index.html.twig', [
+        return $this->render('dashboard/content/user/index.html.twig', DashboardNavbar::build() + [
                     'entries' => $repository->findBy([], ['id' => 'desc']),
         ]);
     }
@@ -98,7 +98,7 @@ class UserController extends AbstractController
         $em->persist($entry);
         $em->flush();
         $url = sprintf('user/picture/%d/%s', $request->get('id'), $attach->getName());
-        $picture = $cacheManager->getBrowserPath(parse_url($url, PHP_URL_PATH), 'user_profile', [], null);
+        $picture = $cacheManager->getBrowserPath(parse_url($url, PHP_URL_PATH), 'user_preview', [], null);
 
         return $this->json(['message' => $translator->trans('user.picture.changed'), 'picture' => $picture]);
     }
@@ -142,7 +142,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('app_dashboard_user_details', ['id' => $entry->getId(), 'tab' => 'security']);
         }
 
-        return $this->render('dashboard/content/user/details.html.twig', [
+        return $this->render('dashboard/content/user/details.html.twig', DashboardNavbar::build() + [
                     'entry' => $entry,
                     'form' => $form,
                     'errors' => ErrorHandler::handleFormErrors($form),

@@ -1,5 +1,5 @@
 {% set _message = app.flashes('success') %}
-{{ form_start(form, {attr: {class: 'd-tech-form', action: path('app_dashboard_user_details', {id: entry.id, tab: 'security'}), novalidate: 'novalidate'}}) }}
+{{ form_start(form, {attr: {class: 'd-tech-form mt-5', action: path('app_dashboard_user_details', {id: entry.id, tab: 'security'}), novalidate: 'novalidate'}}) }}
 {% if errors %}
     <div class="alert alert-danger">
         <ul>
