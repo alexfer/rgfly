@@ -149,9 +149,37 @@
                 <source>title.dashboard.contact</source>
                 <target>Incoming Messages</target>
             </trans-unit>
-            <trans-unit id="title.dashboard.blog_overview">
-                <source>title.dashboard.blog_overview</source>
-                <target>Blog List</target>
+            <trans-unit id="title.dashboard.overview_articles">
+                <source>title.dashboard.overview_articles</source>
+                <target>Articles Overview</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.overview_gallery">
+                <source>title.dashboard.overview_gallery</source>
+                <target>Gallery Overview</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.overview_other">
+                <source>title.dashboard.overview_other</source>
+                <target>Other Entries Overview</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.overview_news">
+                <source>title.dashboard.overview_news</source>
+                <target>Overview</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.overview_blog">
+                <source>title.dashboard.overview_blog</source>
+                <target>Blog Overview</target>
+            </trans-unit>
+            <trans-unit id="menu.dashboard.oveview_gallery">
+                <source>menu.dashboard.oveview_gallery</source>
+                <target>Overwie</target>
+            </trans-unit>
+            <trans-unit id="menu.dashboard.oveview_articles">
+                <source>menu.dashboard.oveview_articles</source>
+                <target>Overwie</target>
+            </trans-unit>
+            <trans-unit id="menu.dashboard.oveview_news">
+                <source>menu.dashboard.oveview_news</source>
+                <target>Overwie</target>
             </trans-unit>
             <trans-unit id="menu.dashboard.create_blog">
                 <source>menu.dashboard.create_blog</source>

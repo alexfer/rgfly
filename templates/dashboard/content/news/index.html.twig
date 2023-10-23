@@ -1,9 +1,9 @@
 {% extends 'dashboard/index.html.twig' %}
 
-{% set _title_extend = 'title.dashboard.overview_blog'|trans %}
+{% set _title_extend = 'title.dashboard.overview_news'|trans %}
 {% block title_extend %}{{ _title_extend }} - {% endblock %}
 {% block title_content %}{{ _title_extend }}{% endblock %}
 
 {% block content %}
-    <p>{{ data }}</p>
+    {{ data }}
 {% endblock %}

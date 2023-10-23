@@ -36,7 +36,6 @@ class UserController extends AbstractController
      * @var string|null
      */
     private ?string $storage;
-    private ?string $cacheUrl;
 
     /**
      * 
