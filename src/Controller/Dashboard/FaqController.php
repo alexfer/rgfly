@@ -18,6 +18,8 @@ use App\Form\Type\FaqType;
 class FaqController extends AbstractController
 {
 
+    use DashboardNavbar;
+
     /**
      * 
      * @param FaqRepository $reposiroty
@@ -26,7 +28,7 @@ class FaqController extends AbstractController
     #[Route('/', name: 'app_dashboard_faq')]
     public function index(FaqRepository $reposiroty): Response
     {
-        return $this->render('dashboard/content/faq/index.html.twig', DashboardNavbar::build() + [
+        return $this->render('dashboard/content/faq/index.html.twig', $this->build() + [
                     'entries' => $reposiroty->findBy([], ['id' => 'desc']),
         ]);
     }
@@ -106,7 +108,7 @@ class FaqController extends AbstractController
             return $this->redirectToRoute('app_dashboard_faq_edit', ['id' => $entry->getId()]);
         }
 
-        return $this->render('dashboard/content/faq/_form.html.twig', DashboardNavbar::build() + [
+        return $this->render('dashboard/content/faq/_form.html.twig', $this->build() + [
                     'errors' => ErrorHandler::handleFormErrors($form),
                     'form' => $form,
         ]);
@@ -144,7 +146,7 @@ class FaqController extends AbstractController
             return $this->redirectToRoute('app_dashboard_faq_edit', ['id' => $entry->getId()]);
         }
 
-        return $this->render('dashboard/content/faq/_form.html.twig', DashboardNavbar::build() + [
+        return $this->render('dashboard/content/faq/_form.html.twig', $this->build() + [
                     'errors' => ErrorHandler::handleFormErrors($form),
                     'form' => $form,
         ]);

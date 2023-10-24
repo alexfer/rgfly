@@ -10,6 +10,8 @@ use App\Service\DashboardNavbar;
 class IndexController extends AbstractController
 {
 
+    use DashboardNavbar;
+
     /**
      * 
      * @return Response
@@ -17,6 +19,6 @@ class IndexController extends AbstractController
     #[Route('/dashboard', name: 'app_dashboard')]
     public function index(): Response
     {
-        return $this->render('dashboard/content/index.html.twig', DashboardNavbar::build());
+        return $this->render('dashboard/content/index.html.twig', $this->build());
     }
 }

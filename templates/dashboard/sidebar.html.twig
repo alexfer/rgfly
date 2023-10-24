@@ -71,7 +71,7 @@
                 aria-controls="{{ key }}">
                 <i class="bi bi-person-workspace"></i>
                 {{ key|replace({'_': ' '})|capitalize }}
-                <span class="badge badge-pill badge-success mx-2">3</span>
+                <span class="badge badge-pill badge-success mx-2">{{ count[key] }}</span>
                 <i class="bi bi-arrow-right-short arrow"></i>
             </a>
             <div class="collapse {{ key }} {{ _status == key ? 'show': ''}}">

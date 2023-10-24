@@ -30,6 +30,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 #[Route('/dashboard/user')]
 class UserController extends AbstractController
 {
+    use DashboardNavbar;
 
     /**
      * 
@@ -54,7 +55,7 @@ class UserController extends AbstractController
     #[Route('/', name: 'app_dashboard_user', methods: ['GET'])]
     public function index(UserRepository $repository): Response
     {
-        return $this->render('dashboard/content/user/index.html.twig', DashboardNavbar::build() + [
+        return $this->render('dashboard/content/user/index.html.twig', $this->build() + [
                     'entries' => $repository->findBy([], ['id' => 'desc']),
         ]);
     }
@@ -141,7 +142,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('app_dashboard_user_details', ['id' => $entry->getId(), 'tab' => 'security']);
         }
 
-        return $this->render('dashboard/content/user/details.html.twig', DashboardNavbar::build() + [
+        return $this->render('dashboard/content/user/details.html.twig', $this->build() + [
                     'entry' => $entry,
                     'form' => $form,
                     'errors' => ErrorHandler::handleFormErrors($form),

@@ -11,6 +11,8 @@ use App\Service\DashboardNavbar;
 class BlogController extends AbstractController
 {
 
+    use DashboardNavbar;
+
     const CHILDRENS = [
         'blog' => [
             'menu.dashboard.overview.blog' => 'app_dashboard_blog',
@@ -32,7 +34,8 @@ class BlogController extends AbstractController
     #[Route('/', name: self::CHILDRENS['blog']['menu.dashboard.overview.blog'])]
     public function index(): Response
     {
-        return $this->render('dashboard/content/blog/index.html.twig', DashboardNavbar::build() + [
+        return $this->render('dashboard/content/blog/index.html.twig', $this->build() + [
+                    'count' => 0,
                     'data' => 'Blog overview content',
         ]);
     }
@@ -40,7 +43,7 @@ class BlogController extends AbstractController
     #[Route('/approved', name: self::CHILDRENS['blog']['menu.dashboard.approved.blog'])]
     public function approved(): Response
     {
-        return $this->render('dashboard/content/blog/approved.html.twig', DashboardNavbar::build() + [
+        return $this->render('dashboard/content/blog/approved.html.twig', $this->build() + [
                     'data' => 'Blog approved content',
         ]);
     }
@@ -48,7 +51,7 @@ class BlogController extends AbstractController
     #[Route('/latest', name: self::CHILDRENS['blog']['menu.dashboard.latest.blog'])]
     public function latest(): Response
     {
-        return $this->render('dashboard/content/blog/latest.html.twig', DashboardNavbar::build() + [
+        return $this->render('dashboard/content/blog/latest.html.twig', $this->build() + [
                     'data' => 'Blog latest content',
         ]);
     }
@@ -56,7 +59,7 @@ class BlogController extends AbstractController
     #[Route('/create', name: self::CHILDRENS['blog']['menu.dashboard.create.blog'])]
     public function create(): Response
     {
-        return $this->render('dashboard/content/blog/create.html.twig', DashboardNavbar::build() + [
+        return $this->render('dashboard/content/blog/create.html.twig', $this->build() + [
                     'data' => 'Blog create form',
         ]);
     }

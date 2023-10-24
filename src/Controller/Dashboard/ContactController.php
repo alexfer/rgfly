@@ -14,15 +14,29 @@ use App\Entity\Contact;
 #[Route('/dashboard/contact')]
 class ContactController extends AbstractController
 {
+    
+    use DashboardNavbar;
 
+    /**
+     * 
+     * @param ContactRepository $reposiroty
+     * @return Response
+     */
     #[Route('/', name: 'app_dashboard_contact')]
     public function index(ContactRepository $reposiroty): Response
     {
-        return $this->render('dashboard/content/contact/index.html.twig', DashboardNavbar::build() + [
+        return $this->render('dashboard/content/contact/index.html.twig', $this->build() + [
                     'entries' => $reposiroty->findBy([], ['id' => 'desc']),
         ]);
     }
 
+    /**
+     * 
+     * @param Request $request
+     * @param Contact $entry
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('/delete/{id}', name: 'app_dashboard_contact_delete', methods: ['POST'])]
     public function delete(
             Request $request,
@@ -39,6 +53,13 @@ class ContactController extends AbstractController
         return $this->redirectToRoute('app_dashboard_contact');
     }
 
+    /**
+     * 
+     * @param Request $request
+     * @param Contact $entry
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('/review/{id}', name: 'app_dashboard_contact_review', methods: ['GET', 'POST'])]
     public function review(
             Request $request,
@@ -48,7 +69,7 @@ class ContactController extends AbstractController
     {
 
 
-        return $this->render('dashboard/content/contact/review.html.twig', DashboardNavbar::build() + [
+        return $this->render('dashboard/content/contact/review.html.twig', $this->build() + [
                     'entry' => $entry,
         ]);
     }
