@@ -1,6 +1,8 @@
 {% extends 'dashboard/index.html.twig' %}
 
-{% block title_content %}{{ 'title.dashboard.contact'|trans }}{% endblock %}
+{% set _title_extend = 'title.dashboard.contsct'|trans %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}{{ _title_extend }}{% endblock %}
 
 {% block content %}
     <div class="table-responsive card">

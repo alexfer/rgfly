@@ -1,6 +1,12 @@
 {% extends 'dashboard/index.html.twig' %}
 
-{% block title_content %}{{ 'title.dashboard.create_faq'|trans }}{% endblock %}
+{% if form.vars.data.id %}
+    {% set _title_extend = 'title.dashboard.change_faq'|trans %}
+{% else %}
+    {% set _title_extend = 'title.dashboard.create_faq'|trans %}
+{% endif %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}{{ _title_extend }}{% endblock %}
 
 {% block content %}
     {{ form_start(form, {attr: {class: 'd-tech-form', novalidate: 'novalidate'}}) }}

@@ -181,16 +181,20 @@
                 <source>menu.dashboard.oveview_news</source>
                 <target>Overwie</target>
             </trans-unit>
-            <trans-unit id="menu.dashboard.create_blog">
-                <source>menu.dashboard.create_blog</source>
+            <trans-unit id="menu.dashboard.overview.blogs">
+                <source>menu.dashboard.overview.blogs</source>
+                <target>Overview</target>
+            </trans-unit>
+            <trans-unit id="menu.dashboard.create.blog">
+                <source>menu.dashboard.create.blog</source>
                 <target>Create Blog</target>
             </trans-unit>
-            <trans-unit id="menu.dashboard.approved_blogs">
-                <source>menu.dashboard.approved_blogs</source>
+            <trans-unit id="menu.dashboard.approved.blogs">
+                <source>menu.dashboard.approved.blogs</source>
                 <target>Approved Blogs</target>
             </trans-unit>
-            <trans-unit id="menu.dashboard.latest_blog">
-                <source>menu.dashboard.latest_blog</source>
+            <trans-unit id="menu.dashboard.latest.blogs">
+                <source>menu.dashboard.latest.blogs</source>
                 <target>New Blogs</target>
             </trans-unit>
             <trans-unit id="menu.dashboard.create_faq">
@@ -220,6 +224,10 @@
             <trans-unit id="title.dashboard.create_faq">
                 <source>title.dashboard.create_faq</source>
                 <target>Create Question</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.change_faq">
+                <source>title.dashboard.change_faq</source>
+                <target>Change Question</target>
             </trans-unit>
             <trans-unit id="title.dashboard.edit_faq">
                 <source>title.dashboard.edit_faq</source>
@@ -339,20 +347,20 @@
                 <target>City</target>
             </trans-unit>
             
-            <trans-unit id="menu.dashboard.overview.blog">
-                <source>menu.dashboard.overview.blog</source>
+            <trans-unit id="title.dashboard.overview.blog">
+                <source>title.dashboard.overview.blog</source>
                 <target>Blog Overview</target>
             </trans-unit>
-            <trans-unit id="menu.dashboard.create.blog">
-                <source>menu.dashboard.create.blog</source>
+            <trans-unit id="title.dashboard.create_blog">
+                <source>title.dashboard.create_blog</source>
                 <target>Create New Blog</target>
             </trans-unit>
-            <trans-unit id="menu.dashboard.approved.blog">
-                <source>menu.dashboard.approved.blog</source>
+            <trans-unit id="title.dashboard.approved_blogs">
+                <source>title.dashboard.approved_blogs</source>
                 <target>Approved Blogs</target>
             </trans-unit>
-            <trans-unit id="menu.dashboard.latest.blog">
-                <source>menu.dashboard.latest.blog</source>
+            <trans-unit id="title.dashboard.latest_blogs">
+                <source>title.dashboard.latest_blogs</source>
                 <target>Latest Blogs</target>
             </trans-unit>
             <trans-unit id="text.all_right_reserved">

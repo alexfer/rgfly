@@ -15,10 +15,10 @@ class BlogController extends AbstractController
 
     const CHILDRENS = [
         'blog' => [
-            'menu.dashboard.overview.blog' => 'app_dashboard_blog',
+            'menu.dashboard.overview.blogs' => 'app_dashboard_blog',
             'menu.dashboard.create.blog' => 'app_dashboard_create_blog',
-            'menu.dashboard.latest.blog' => 'app_dashboard_latest_blog',
-            'menu.dashboard.approved.blog' => 'app_dashboard_approved_blog',
+            'menu.dashboard.latest.blogs' => 'app_dashboard_latest_blog',
+            'menu.dashboard.approved.blogs' => 'app_dashboard_approved_blog',
         ],
     ];
 
@@ -31,7 +31,7 @@ class BlogController extends AbstractController
         return CHILDRENS;
     }
 
-    #[Route('/', name: self::CHILDRENS['blog']['menu.dashboard.overview.blog'])]
+    #[Route('', name: self::CHILDRENS['blog']['menu.dashboard.overview.blogs'])]
     public function index(): Response
     {
         return $this->render('dashboard/content/blog/index.html.twig', $this->build() + [
@@ -40,7 +40,7 @@ class BlogController extends AbstractController
         ]);
     }
 
-    #[Route('/approved', name: self::CHILDRENS['blog']['menu.dashboard.approved.blog'])]
+    #[Route('/approved', name: self::CHILDRENS['blog']['menu.dashboard.approved.blogs'])]
     public function approved(): Response
     {
         return $this->render('dashboard/content/blog/approved.html.twig', $this->build() + [
@@ -48,7 +48,7 @@ class BlogController extends AbstractController
         ]);
     }
 
-    #[Route('/latest', name: self::CHILDRENS['blog']['menu.dashboard.latest.blog'])]
+    #[Route('/latest', name: self::CHILDRENS['blog']['menu.dashboard.latest.blogs'])]
     public function latest(): Response
     {
         return $this->render('dashboard/content/blog/latest.html.twig', $this->build() + [
