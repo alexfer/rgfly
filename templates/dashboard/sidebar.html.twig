@@ -18,8 +18,9 @@
         </span>
     </div>
 </div>        
-{% set _parts = _route|split('_') %}
-{% set _status = _parts[_parts|length == 2 ? 1 : 2] %}
+{% set _part = _route|split('_')|last %}
+{#{% set _part = _parts[_parts|length == 2 ? 1 : 2] %}
+{{ dump(_parts|last) }}#}
 <ul class="nav flex-column py-2">    
     <li class="nav-item">        
         <a class="nav-link {{ _route == 'app_dashboard'? 'active': '' }}" href="{{ path('app_dashboard') }}">
@@ -34,18 +35,18 @@
                 href="{{ path('app_dashboard_faq') }}"
                 data-toggle="collapse" 
                 data-target=".faq" 
-                aria-expanded="{{ _status == 'faq'? 'true': 'false'}}" 
+                aria-expanded="{{ _part == 'faq'? 'true': 'false'}}" 
                 aria-controls="faq">
                 <i class="bi bi-question"></i> 
                 {{ 'menu.dashboard.faq'|trans }}
                 <i class="bi bi-arrow-right-short arrow"></i>
             </a>
-            <div class="collapse faq {{ _status == 'faq'? 'show': ''}}">
+            <div class="collapse faq {{_part == 'faq'? 'show': ''}}">
                 <a class="nav-link {{ _route == 'app_dashboard_faq'? 'active': '' }}" href="{{ path('app_dashboard_faq') }}">
                     <i class="bi bi-arrow-right-short"></i>
                     {{ 'menu.dashboard.overview'|trans }}
                 </a>
-                <a class="nav-link {{ _route == 'app_dashboard_faq_create'? 'active': '' }}" href="{{ path('app_dashboard_faq_create') }}">
+                <a class="nav-link {{ _route == 'app_dashboard_create_faq'? 'active': '' }}" href="{{ path('app_dashboard_create_faq') }}">
                     <i class="bi bi-arrow-right-short"></i>
                     {{ 'menu.dashboard.create_faq'|trans }}
                 </a>
@@ -60,21 +61,21 @@
             </a>
         </li>
     {% endif %}    
-    <li class="nav-item">        
+    <li class="nav-item">
         {% for key, nav in navbar|sort %}
             <a 
-                class="nav-link {{ _status == nav ? 'active': '' }}" 
+                class="nav-link {{ _part == nav ? 'active': '' }}" 
                 href="#" 
                 data-toggle="collapse" 
                 data-target=".{{ key }}" 
-                aria-expanded="{{ _status == key ? 'true': 'false'}}" 
+                aria-expanded="{{ _part == key ? 'true': 'false'}}" 
                 aria-controls="{{ key }}">
                 <i class="bi bi-person-workspace"></i>
                 {{ key|replace({'_': ' '})|capitalize }}
-                <span class="badge badge-pill badge-success mx-2">{{ count[key] }}</span>
-                <i class="bi bi-arrow-right-short arrow"></i>
+                <i class="bi bi-arrow-right-short arrow float-right"></i>
+                <span class="badge badge-pill badge-secondary mt-1 float-right">{{ count[key] }}</span>                
             </a>
-            <div class="collapse {{ key }} {{ _status == key ? 'show': ''}}">
+            <div class="collapse {{ key }} {{ _part == key ? 'show': ''}}">
                 {% for message, route in childrens[key] %}
                     <a class="nav-link {{ _route == route ? 'active' : '' }}" href="{{ path(route) }}">
                         <i class="bi bi-arrow-right-short"></i>

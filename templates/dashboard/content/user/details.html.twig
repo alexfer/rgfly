@@ -17,7 +17,7 @@
                         <div class="middle">
                             <input type="button" class="btn btn-secondary" id="btnChangePicture" data-confirm="{{ 'form.action.confirm'|trans }}" value="{{ 'form.action.change'|trans }}" />
                             <input type="file" id="profilePicture" name="file" />
-                            <input type="hidden" name="route" id="route" value="{{ path('app_dashboard_user_change_picture', {id: entry.id}) }}">
+                            <input type="hidden" name="route" id="route" value="{{ path('app_dashboard_change_picture_user', {id: entry.id}) }}">
                         </div>
                     </div>
                     <div class="userData ml-3">

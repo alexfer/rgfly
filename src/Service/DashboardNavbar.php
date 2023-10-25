@@ -12,7 +12,7 @@ trait DashboardNavbar
      * 
      * @var EntryRepository
      */
-    private EntryRepository $repository;
+    private ?EntryRepository $repository = null;
 
     /**
      * 
@@ -39,7 +39,7 @@ trait DashboardNavbar
                 $count[$key] = $this->repository->count([
                     'type' => $key,
                     'deleted_at' => null,
-                    ]);
+                ]);
             }
         }
 

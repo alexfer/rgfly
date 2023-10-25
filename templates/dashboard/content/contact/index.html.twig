@@ -26,7 +26,7 @@
                             {% if entry.status == 'Trashed' %}
                                 <del class="text-muted">{{ entry.subject }}</del>
                             {% else %}
-                                <a href="{{ path('app_dashboard_contact_review', {id: entry.id}) }}" class="link">{{ entry.subject }}</a>
+                                <a href="{{ path('app_dashboard_review_contact', {id: entry.id}) }}" class="link">{{ entry.subject }}</a>
                             {% endif %}                            
                         </td>
                         <td class="text-center">                            
@@ -49,7 +49,7 @@
                             <a 
                                 class="btn btn-sm btn-outline-lightning rounded delete-entry" 
                                 data-token="{{ csrf_token('delete') }}" 
-                                data-url="{{ url('app_dashboard_contact_delete', {id: entry.id}) }}" 
+                                data-url="{{ url('app_dashboard_delete_contact', {id: entry.id}) }}" 
                                 data-toggle="modal" 
                                 data-target="#modal-delete">
                                 <i class="bi bi-trash"></i>

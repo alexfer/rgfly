@@ -22,7 +22,7 @@ class ContactController extends AbstractController
      * @param ContactRepository $reposiroty
      * @return Response
      */
-    #[Route('/', name: 'app_dashboard_contact')]
+    #[Route('', name: 'app_dashboard_contact')]
     public function index(ContactRepository $reposiroty): Response
     {
         return $this->render('dashboard/content/contact/index.html.twig', $this->build() + [
@@ -37,7 +37,7 @@ class ContactController extends AbstractController
      * @param EntityManagerInterface $em
      * @return Response
      */
-    #[Route('/delete/{id}', name: 'app_dashboard_contact_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'app_dashboard_delete_contact', methods: ['POST'])]
     public function delete(
             Request $request,
             Contact $entry,
@@ -60,7 +60,7 @@ class ContactController extends AbstractController
      * @param EntityManagerInterface $em
      * @return Response
      */
-    #[Route('/review/{id}', name: 'app_dashboard_contact_review', methods: ['GET', 'POST'])]
+    #[Route('/review/{id}', name: 'app_dashboard_review_contact', methods: ['GET', 'POST'])]
     public function review(
             Request $request,
             Contact $entry,

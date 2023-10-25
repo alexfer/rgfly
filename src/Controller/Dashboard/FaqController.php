@@ -25,7 +25,7 @@ class FaqController extends AbstractController
      * @param FaqRepository $reposiroty
      * @return Response
      */
-    #[Route('/', name: 'app_dashboard_faq')]
+    #[Route('', name: 'app_dashboard_faq')]
     public function index(FaqRepository $reposiroty): Response
     {
         return $this->render('dashboard/content/faq/index.html.twig', $this->build() + [
@@ -40,7 +40,7 @@ class FaqController extends AbstractController
      * @param EntityManagerInterface $em
      * @return Response
      */
-    #[Route('/delete/{id}', name: 'app_dashboard_faq_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'app_dashboard_delete_faq', methods: ['POST'])]
     public function delete(
             Request $request,
             Faq $entry,
@@ -63,7 +63,7 @@ class FaqController extends AbstractController
      * @param EntityManagerInterface $em
      * @return Response
      */
-    #[Route('/restore/{id}', name: 'app_dashboard_faq_restore')]
+    #[Route('/restore/{id}', name: 'app_dashboard_restore_faq')]
     public function restore(
             Faq $entry,
             EntityManagerInterface $em,
@@ -83,7 +83,7 @@ class FaqController extends AbstractController
      * @param ValidatorInterface $validator
      * @return Response
      */
-    #[Route('/create', name: 'app_dashboard_faq_create', methods: ['GET', 'POST'])]
+    #[Route('/create', name: 'app_dashboard_create_faq', methods: ['GET', 'POST'])]
     public function create(
             Request $request,
             EntityManagerInterface $em,
@@ -105,7 +105,7 @@ class FaqController extends AbstractController
             $em->persist($entry);
             $em->flush();
 
-            return $this->redirectToRoute('app_dashboard_faq_edit', ['id' => $entry->getId()]);
+            return $this->redirectToRoute('app_dashboard_edit_faq', ['id' => $entry->getId()]);
         }
 
         return $this->render('dashboard/content/faq/_form.html.twig', $this->build() + [
@@ -122,7 +122,7 @@ class FaqController extends AbstractController
      * @param ValidatorInterface $validator
      * @return Response
      */
-    #[Route('/edit/{id}', name: 'app_dashboard_faq_edit', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}', name: 'app_dashboard_edit_faq', methods: ['GET', 'POST'])]
     public function edit(
             Request $request,
             Faq $entry,
@@ -143,7 +143,7 @@ class FaqController extends AbstractController
             $em->persist($entry);
             $em->flush();
 
-            return $this->redirectToRoute('app_dashboard_faq_edit', ['id' => $entry->getId()]);
+            return $this->redirectToRoute('app_dashboard_edit_faq', ['id' => $entry->getId()]);
         }
 
         return $this->render('dashboard/content/faq/_form.html.twig', $this->build() + [

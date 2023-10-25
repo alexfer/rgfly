@@ -30,26 +30,12 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 #[Route('/dashboard/user')]
 class UserController extends AbstractController
 {
+
     use DashboardNavbar;
 
     /**
      * 
-     * @var string|null
-     */
-    private ?string $storage;
-
-    /**
-     * 
-     * @param ParameterBagInterface $params
-     */
-    public function __construct(ParameterBagInterface $params)
-    {
-        $this->storage = sprintf('%s/picture/', $params->get('user_storage_dir'));
-    }
-
-    /**
-     * 
-     * @param UserRepository $reposiroty
+     * @param UserRepository $repository
      * @return Response
      */
     #[Route('/', name: 'app_dashboard_user', methods: ['GET'])]
@@ -70,21 +56,22 @@ class UserController extends AbstractController
      * @return Response
      * @throws \Exception
      */
-    #[Route('/details/{id}/change-picture', name: 'app_dashboard_user_change_picture', methods: ['POST'])]
+    #[Route('/details/{id}/change-picture', name: 'app_dashboard_change_picture_user', methods: ['POST'])]
     public function changePicture(
             Request $request,
             TranslatorInterface $translator,
             EntityManagerInterface $em,
             UserDetailsRepository $repository,
             SluggerInterface $slugger,
-            CacheManager $cacheManager
+            CacheManager $cacheManager,
+            ParameterBagInterface $params,
     ): Response
     {
         $entry = $repository->find($request->get('id'));
         $file = $request->files->get('file');
 
         if ($file) {
-            $fileUploader = new FileUploader($this->getTargetDir($entry->getId()), $slugger, $em);
+            $fileUploader = new FileUploader($this->getTargetDir($entry->getId(), $params), $slugger, $em);
 
             try {
                 $attach = $fileUploader->upload($file)->handle($entry);
@@ -112,7 +99,7 @@ class UserController extends AbstractController
      * @param TranslatorInterface $translator
      * @return Response
      */
-    #[Route('/details/{id}/{tab}', name: 'app_dashboard_user_details', methods: ['GET', 'POST'])]
+    #[Route('/details/{id}/{tab}', name: 'app_dashboard_details_user', methods: ['GET', 'POST'])]
     public function details(
             Request $request,
             UserRepository $repository,
@@ -139,7 +126,7 @@ class UserController extends AbstractController
 
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.password.changed')]));
 
-            return $this->redirectToRoute('app_dashboard_user_details', ['id' => $entry->getId(), 'tab' => 'security']);
+            return $this->redirectToRoute('app_dashboard_details_user', ['id' => $entry->getId(), 'tab' => 'security']);
         }
 
         return $this->render('dashboard/content/user/details.html.twig', $this->build() + [
@@ -153,10 +140,11 @@ class UserController extends AbstractController
     /**
      * 
      * @param int|null $id
+     * @param ParameterBagInterface $params
      * @return string
      */
-    private function getTargetDir(?int $id): string
+    private function getTargetDir(?int $id, ParameterBagInterface $params): string
     {
-        return $this->storage . $id;
+        return sprintf('%s/picture/', $params->get('user_storage_dir')) . $id;
     }
 }
