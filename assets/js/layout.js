@@ -25,6 +25,12 @@ $(function () {
         }
     }
 
+    $('ul[role="tablist"] a[data-toggle="tab"]').on('click', function(e) {
+        e.preventDefault();
+        let location = $(this).attr('aria-controls');        
+        window.history.replaceState({}, '', location);      
+    });
+
     $('a[data-toggle="accordion-content"]').on('click', function (e) {
         e.preventDefault();
 
