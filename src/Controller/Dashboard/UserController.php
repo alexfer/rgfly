@@ -38,7 +38,7 @@ class UserController extends AbstractController
      * @param UserRepository $repository
      * @return Response
      */
-    #[Route('/', name: 'app_dashboard_user', methods: ['GET'])]
+    #[Route('', name: 'app_dashboard_user', methods: ['GET'])]
     public function index(UserRepository $repository): Response
     {
         return $this->render('dashboard/content/user/index.html.twig', $this->build() + [

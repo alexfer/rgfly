@@ -14,7 +14,7 @@ use App\Entity\Contact;
 #[Route('/dashboard/contact')]
 class ContactController extends AbstractController
 {
-    
+
     use DashboardNavbar;
 
     /**

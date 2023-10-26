@@ -19,7 +19,7 @@ class NewsController extends AbstractController
         ],
     ];
 
-    #[Route('/', name: self::CHILDRENS['news']['menu.dashboard.oveview_news'])]
+    #[Route('', name: self::CHILDRENS['news']['menu.dashboard.oveview_news'])]
     public function index(): Response
     {
         return $this->render('dashboard/content/news/index.html.twig', $this->build() + [

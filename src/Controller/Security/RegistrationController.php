@@ -56,7 +56,7 @@ class RegistrationController extends AbstractController
                             $form->get('plainPassword')->getData()
                     )
             );
-            
+
             $user->setIp($request->getClientIp());
 
             $em->persist($user);

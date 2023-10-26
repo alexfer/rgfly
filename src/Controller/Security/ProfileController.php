@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\{
     Response,
-    Request,    
+    Request,
 };
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\FileUploader;
