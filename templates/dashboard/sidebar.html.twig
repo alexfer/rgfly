@@ -42,20 +42,26 @@
                 <i class="bi bi-arrow-right-short arrow"></i>
             </a>
             <div class="collapse faq {{_part == 'faq'? 'show': ''}}">
-                <a class="nav-link {{ _route == 'app_dashboard_faq'? 'active': '' }}" href="{{ path('app_dashboard_faq') }}">
+                <a 
+                    class="nav-link {{ _route == 'app_dashboard_faq' ? 'active' : '' }}" 
+                    href="{{ path('app_dashboard_faq') }}">
                     <i class="bi bi-arrow-right-short"></i>
                     {{ 'menu.dashboard.overview'|trans }}
                 </a>
-                <a class="nav-link {{ _route == 'app_dashboard_create_faq'? 'active': '' }}" href="{{ path('app_dashboard_create_faq') }}">
+                <a 
+                    class="nav-link {{ _route == 'app_dashboard_create_faq' ? 'active' : '' }}" 
+                    href="{{ path('app_dashboard_create_faq') }}">
                     <i class="bi bi-arrow-right-short"></i>
                     {{ 'menu.dashboard.create_faq'|trans }}
                 </a>
             </div>
-            <a class="nav-link {{ _route == 'app_dashboard_user'? 'active': '' }}" href="{{ path('app_dashboard_user') }}">
+            <a 
+                class="nav-link {{ _route in ['app_dashboard_user', 'app_dashboard_details_user'] ? 'active' : '' }}" 
+                href="{{ path('app_dashboard_user') }}">
                 <i class="bi bi-person"></i> 
                 {{ 'menu.dashboard.users'|trans }}
             </a>
-            <a class="nav-link {{ _route == 'app_dashboard_contact'? 'active': '' }}" href="{{ path('app_dashboard_contact') }}">
+            <a class="nav-link {{ _route == 'app_dashboard_contact' ? 'active' : '' }}" href="{{ path('app_dashboard_contact') }}">
                 <i class="bi bi-envelope-at"></i> 
                 {{ 'menu.dashboard.contacts'|trans }}
             </a>
@@ -73,7 +79,7 @@
                 <i class="bi bi-person-workspace"></i>
                 {{ key|replace({'_': ' '})|capitalize }}
                 <i class="bi bi-arrow-right-short arrow float-right"></i>
-                <span class="badge badge-pill badge-secondary mt-1 float-right">{{ count[key] }}</span>                
+                <span class="badge badge-pill badge-info mt-1 float-right">{{ count[key] }}</span>                
             </a>
             <div class="collapse {{ key }} {{ _part == key ? 'show': ''}}">
                 {% for message, route in childrens[key] %}

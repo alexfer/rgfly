@@ -14,7 +14,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class RequestTokenCleanupCommand extends Command
 {
 
-    const PERFORM = 'perform';
+    final const PERFORM = 'perform';
 
     /**
      * 
@@ -66,7 +66,7 @@ class RequestTokenCleanupCommand extends Command
             return Command::INVALID;
         }
 
-        $io->success(sprintf('Deleted "%d" old request tokens.', $count));
+        $io->success(sprintf('Deleted %d old request tokens.', $count));
         return Command::SUCCESS;
     }
 }
