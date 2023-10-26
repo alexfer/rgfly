@@ -47,7 +47,7 @@ class RequestTokenCleanupCommand extends Command
         $now = new \DateTime();
 
         $count = 0;
-        $execute = true;
+        $perform = false;
 
         if ($input->getOption(self::PERFORM)) {
             $io->note('performing...');
@@ -58,17 +58,15 @@ class RequestTokenCleanupCommand extends Command
                     ->setParameter('expiresAt', $now->format('Y-m-d H:i'));
 
             $count = $result->getQuery()->getSingleScalarResult();
-        } else {
-            $execute = false;
+            $perform = true;
         }
 
-        if (!$execute) {
+        if (!$perform) {
             $io->warning(sprintf('Invalid optitons. Use [--%s] option', self::PERFORM));
             return Command::INVALID;
-        } else {
-            $io->success(sprintf('Deleted "%d" old request tokens.', $count));
         }
 
+        $io->success(sprintf('Deleted "%d" old request tokens.', $count));
         return Command::SUCCESS;
     }
 }
