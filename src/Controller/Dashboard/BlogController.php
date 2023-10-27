@@ -4,9 +4,13 @@ namespace App\Controller\Dashboard;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\Dashboard;
+use App\Helper\ErrorHandler;
+use App\Entity\Entry;
 use App\Repository\EntryRepository;
+use App\Form\Type\Dashboard\EntryDetailsType;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route('/dashboard/blog')]
@@ -34,10 +38,18 @@ class BlogController extends AbstractController
     }
 
     #[Route('/create', name: self::CHILDRENS['blog']['menu.dashboard.create.blog'])]
-    public function create(UserInterface $user): Response
+    public function create(
+            Request $request,
+            UserInterface $user,
+    ): Response
     {
-        return $this->render('dashboard/content/blog/create.html.twig', $this->build($user) + [
-                    'data' => 'Blog create form',
+        $entry = new Entry();
+
+        $form = $this->createForm(EntryDetailsType::class, $entry);
+        $form->handleRequest($request);
+
+        return $this->render('dashboard/content/blog/_form.html.twig', $this->build($user) + [
+                    'form' => $form,
         ]);
     }
 }
