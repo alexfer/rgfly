@@ -257,6 +257,14 @@
                 <source>table.header.user.created_at</source>
                 <target>Registered</target>
             </trans-unit>
+            <trans-unit id="table.header.created_at">
+                <source>table.header.created_at</source>
+                <target>Created</target>
+            </trans-unit>
+            <trans-unit id="table.header.author">
+                <source>table.header.author</source>
+                <target>Author</target>
+            </trans-unit>
             <trans-unit id="table.header.user.updated_at">
                 <source>table.header.user.updated_at</source>
                 <target>Lats Login</target>
@@ -621,6 +629,10 @@
             <trans-unit id="form.action.login">
                 <source>form.action.login</source>
                 <target>Login</target>
+            </trans-unit>
+            <trans-unit id="form.action.logout">
+                <source>form.action.logout</source>
+                <target>Logout</target>
             </trans-unit>
             <trans-unit id="form.action.change">
                 <source>form.action.change</source>

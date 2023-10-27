@@ -8,14 +8,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ContactRepository;
-use App\Service\DashboardNavbar;
+use App\Service\Dashboard;
 use App\Entity\Contact;
 
 #[Route('/dashboard/contact')]
 class ContactController extends AbstractController
 {
 
-    use DashboardNavbar;
+    use Dashboard;
 
     /**
      * 

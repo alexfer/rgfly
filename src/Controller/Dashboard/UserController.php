@@ -18,7 +18,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Service\FileUploader;
-use App\Service\DashboardNavbar;
+use App\Service\Dashboard;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\{
@@ -31,7 +31,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 class UserController extends AbstractController
 {
 
-    use DashboardNavbar;
+    use Dashboard;
 
     /**
      * 

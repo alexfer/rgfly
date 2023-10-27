@@ -19,8 +19,6 @@
     </div>
 </div>        
 {% set _part = _route|split('_')|last %}
-{#{% set _part = _parts[_parts|length == 2 ? 1 : 2] %}
-{{ dump(_parts|last) }}#}
 <ul class="nav flex-column py-2">    
     <li class="nav-item">        
         <a class="nav-link {{ _route == 'app_dashboard'? 'active': '' }}" href="{{ path('app_dashboard') }}">
@@ -94,7 +92,7 @@
     <li class="nav-item">
         <a class="nav-link" href="{{ path('app_logout') }}">
             <i class="bi bi-lock-fill"></i> 
-            Logout
+            {{ 'form.action.logout'|trans }}
         </a>
     </li>
 </ul>

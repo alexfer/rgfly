@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\FaqRepository;
-use App\Service\DashboardNavbar;
+use App\Service\Dashboard;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Helper\ErrorHandler;
 use App\Entity\Faq;
@@ -18,7 +18,7 @@ use App\Form\Type\FaqType;
 class FaqController extends AbstractController
 {
 
-    use DashboardNavbar;
+    use Dashboard;
 
     /**
      * 

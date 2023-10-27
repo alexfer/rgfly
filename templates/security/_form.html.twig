@@ -24,10 +24,12 @@
             {{ form_widget(form.password, {attr: {class: 'form-control', placeholder: 'label.form.password'}}) }}
             <small class="form-text text-muted">{{ 'form.password.help'|trans }}</small>
         </div>
+        {# Temporary disabled
         <div class="form-check pl-1">
-            <input class="form-check-input" type="checkbox" id="remember_me" name="_remember_me" checked>
-            <label class="form-check-label" for="remember_me">{{ 'label.form.keep_me_logged_in'|trans }}</label>
+            <input class="form-check-input" type="checkbox" id="remember_me" name="_remember_me" checked>            
+            <label class="form-check-label" for="remember_me">{{ 'label.form.keep_me_logged_in'|trans }}</label>            
         </div>
+        #}
     </div>  
     <div class="col-md-2"></div>
     <div class="col-md-12 text-center my-4">

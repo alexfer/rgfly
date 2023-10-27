@@ -3,7 +3,7 @@
 namespace App\Security\Voter;
 
 use App\Entity\{
-    GB,
+    Entry,
     User,
 };
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -28,7 +28,7 @@ class DashboardVoter extends Voter
             return false;
         }
 
-        if (!$subject instanceof GB) {
+        if (!$subject instanceof Entry) {
             return false;
         }
 
