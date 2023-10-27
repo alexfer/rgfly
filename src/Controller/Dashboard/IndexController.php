@@ -16,6 +16,7 @@ class IndexController extends AbstractController
 
     /**
      * 
+     * @param UserInterface $user
      * @return Response
      */
     #[Route('', name: 'app_dashboard')]

@@ -21,6 +21,7 @@ use App\Service\FileUploader;
 use App\Service\Dashboard;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use App\Repository\{
     UserDetailsRepository,
     UserRepository,
@@ -36,12 +37,16 @@ class UserController extends AbstractController
     /**
      * 
      * @param UserRepository $repository
+     * @param UserInterface $user
      * @return Response
      */
     #[Route('', name: 'app_dashboard_user', methods: ['GET'])]
-    public function index(UserRepository $repository): Response
+    public function index(
+            UserRepository $repository,
+            UserInterface $user,
+    ): Response
     {
-        return $this->render('dashboard/content/user/index.html.twig', $this->build() + [
+        return $this->render('dashboard/content/user/index.html.twig', $this->build($user) + [
                     'entries' => $repository->findBy([], ['id' => 'desc']),
         ]);
     }
@@ -94,6 +99,7 @@ class UserController extends AbstractController
      * 
      * @param Request $request
      * @param UserRepository $repository
+     * @param UserInterface $user
      * @param UserPasswordHasherInterface $passwordHasher
      * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
@@ -103,6 +109,7 @@ class UserController extends AbstractController
     public function details(
             Request $request,
             UserRepository $repository,
+            UserInterface $user,
             UserPasswordHasherInterface $passwordHasher,
             EntityManagerInterface $em,
             TranslatorInterface $translator,
@@ -129,7 +136,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('app_dashboard_details_user', ['id' => $entry->getId(), 'tab' => 'security']);
         }
 
-        return $this->render('dashboard/content/user/details.html.twig', $this->build() + [
+        return $this->render('dashboard/content/user/details.html.twig', $this->build($user) + [
                     'entry' => $entry,
                     'form' => $form,
                     'errors' => ErrorHandler::handleFormErrors($form),

@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\FaqRepository;
 use App\Service\Dashboard;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Helper\ErrorHandler;
 use App\Entity\Faq;
@@ -23,12 +24,16 @@ class FaqController extends AbstractController
     /**
      * 
      * @param FaqRepository $reposiroty
+     * @param UserInterface $user
      * @return Response
      */
     #[Route('', name: 'app_dashboard_faq')]
-    public function index(FaqRepository $reposiroty): Response
+    public function index(
+            FaqRepository $reposiroty,
+            UserInterface $user,
+    ): Response
     {
-        return $this->render('dashboard/content/faq/index.html.twig', $this->build() + [
+        return $this->render('dashboard/content/faq/index.html.twig', $this->build($user) + [
                     'entries' => $reposiroty->findBy([], ['id' => 'desc']),
         ]);
     }
@@ -81,6 +86,7 @@ class FaqController extends AbstractController
      * @param Request $request
      * @param EntityManagerInterface $em
      * @param ValidatorInterface $validator
+     * @param UserInterface $user
      * @return Response
      */
     #[Route('/create', name: 'app_dashboard_create_faq', methods: ['GET', 'POST'])]
@@ -88,6 +94,7 @@ class FaqController extends AbstractController
             Request $request,
             EntityManagerInterface $em,
             ValidatorInterface $validator,
+            UserInterface $user,
     ): Response
     {
         $entry = new Faq();
@@ -108,7 +115,7 @@ class FaqController extends AbstractController
             return $this->redirectToRoute('app_dashboard_edit_faq', ['id' => $entry->getId()]);
         }
 
-        return $this->render('dashboard/content/faq/_form.html.twig', $this->build() + [
+        return $this->render('dashboard/content/faq/_form.html.twig', $this->build($user) + [
                     'errors' => ErrorHandler::handleFormErrors($form),
                     'form' => $form,
         ]);
@@ -120,6 +127,7 @@ class FaqController extends AbstractController
      * @param Faq $entry
      * @param EntityManagerInterface $em
      * @param ValidatorInterface $validator
+     * @param UserInterface $user
      * @return Response
      */
     #[Route('/edit/{id}', name: 'app_dashboard_edit_faq', methods: ['GET', 'POST'])]
@@ -128,6 +136,7 @@ class FaqController extends AbstractController
             Faq $entry,
             EntityManagerInterface $em,
             ValidatorInterface $validator,
+            UserInterface $user,
     ): Response
     {
         $form = $this->createForm(FaqType::class, $entry);
@@ -146,7 +155,7 @@ class FaqController extends AbstractController
             return $this->redirectToRoute('app_dashboard_edit_faq', ['id' => $entry->getId()]);
         }
 
-        return $this->render('dashboard/content/faq/_form.html.twig', $this->build() + [
+        return $this->render('dashboard/content/faq/_form.html.twig', $this->build($user) + [
                     'errors' => ErrorHandler::handleFormErrors($form),
                     'form' => $form,
         ]);
