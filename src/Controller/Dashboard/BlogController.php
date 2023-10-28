@@ -65,7 +65,41 @@ class BlogController extends AbstractController
             $em->persist($details);
             $em->flush();
 
-            return $this->redirectToRoute('app_dashboard_blog');
+            return $this->redirectToRoute('app_dashboard_edit_blog', ['id' => $entry->getId()]);
+        }
+
+        return $this->render('dashboard/content/blog/_form.html.twig', $this->build($user) + [
+                'form' => $form,
+            ]);
+    }
+
+    #[Route('/edit/{id}', name: 'app_dashboard_edit_blog', methods: ['GET', 'POST'])]
+    public function edit(
+        Request                $request,
+        Entry                  $entry,
+        EntityManagerInterface $em,
+        UserInterface          $user,
+    ): Response
+    {
+        $form = $this->createForm(EntryDetailsType::class, $entry);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $entry->setStatus($form->get('status')->getData());
+            $em->persist($entry);
+            $em->flush();
+
+            $details = $entry->getDetails();
+
+            $details->setTitle($form->get('title')->getData())
+                ->setContent($form->get('content')->getData())
+                ->setEntry($entry);
+
+            $em->persist($details);
+            $em->flush();
+
+            return $this->redirectToRoute('app_dashboard_edit_blog', ['id' => $entry->getId()]);
         }
 
         return $this->render('dashboard/content/blog/_form.html.twig', $this->build($user) + [

@@ -11,11 +11,14 @@
             </trans-unit>
             <trans-unit id="http_error.description">
                 <source>http_error.description</source>
-                <target>There was an unknown error (HTTP { status_code, number }) that prevented to complete your request.</target>
+                <target>There was an unknown error (HTTP { status_code, number }) that prevented to complete your
+                    request.
+                </target>
             </trans-unit>
             <trans-unit id="http_error.suggestion">
                 <source>http_error.suggestion</source>
-                <target><![CDATA[Try loading this page again in some minutes or go back to the <a cass="link" href="{ url }">Homepage</a>.]]></target>
+                <target>
+                    <![CDATA[Try loading this page again in some minutes or go back to the <a cass="link" href="{ url }">Homepage</a>.]]></target>
             </trans-unit>
             <trans-unit id="http_error_403.description">
                 <source>http_error_403.description</source>
@@ -31,7 +34,8 @@
             </trans-unit>
             <trans-unit id="http_error_404.suggestion">
                 <source>http_error_404.suggestion</source>
-                <target><![CDATA[Check out any misspelling in the URL or go back to the <a cass="link" href="{ url }">Homepage</a>.]]></target>
+                <target>
+                    <![CDATA[Check out any misspelling in the URL or go back to the <a cass="link" href="{ url }">Homepage</a>.]]></target>
             </trans-unit>
             <trans-unit id="http_error_429.description">
                 <source>http_error_429.description</source>
@@ -39,7 +43,8 @@
             </trans-unit>
             <trans-unit id="http_error_429.suggestion">
                 <source>http_error_429.suggestion</source>
-                <target><![CDATA[Your request limit has been reached. Please try again in 5 minutes or go back to the <a class="link" href="{ url }">Homepage</a>.]]></target>
+                <target>
+                    <![CDATA[Your request limit has been reached. Please try again in 5 minutes or go back to the <a class="link" href="{ url }">Homepage</a>.]]></target>
             </trans-unit>
             <trans-unit id="http_error_500.description">
                 <source>http_error_500.description</source>
@@ -47,7 +52,8 @@
             </trans-unit>
             <trans-unit id="http_error_500.suggestion">
                 <source>http_error_500.suggestion</source>
-                <target><![CDATA[Try loading this page again in some minutes or go back to the <a cass="link" href="{ url }">Homepage</a>.]]></target>
+                <target>
+                    <![CDATA[Try loading this page again in some minutes or go back to the <a cass="link" href="{ url }">Homepage</a>.]]></target>
             </trans-unit>
             <trans-unit id="title.questions">
                 <source>title.questions</source>
@@ -132,7 +138,7 @@
             <trans-unit id="title.subscribe">
                 <source>title.subscribe</source>
                 <target>Subscribe</target>
-            </trans-unit>            
+            </trans-unit>
             <trans-unit id="menu.dashboard">
                 <source>menu.dashboard</source>
                 <target>Dashboard</target>
@@ -280,7 +286,7 @@
             <trans-unit id="tooltip.show.more">
                 <source>tooltip.show.more</source>
                 <target>Details about the</target>
-            </trans-unit>            
+            </trans-unit>
             <trans-unit id="label.form.new_password">
                 <source>label.form.new_password</source>
                 <target>New password</target>
@@ -288,10 +294,14 @@
             <trans-unit id="label.form.repeat_password">
                 <source>label.form.repeat_password</source>
                 <target>Repeat Password</target>
-            </trans-unit>            
+            </trans-unit>
             <trans-unit id="label.form.title">
                 <source>label.form.title</source>
                 <target>Title</target>
+            </trans-unit>
+            <trans-unit id="label.form.status">
+                <source>label.form.status</source>
+                <target>Status</target>
             </trans-unit>
             <trans-unit id="label.form.content">
                 <source>label.form.content</source>
@@ -301,7 +311,7 @@
                 <source>label.form.visible</source>
                 <target>Published</target>
             </trans-unit>
-            
+
             <trans-unit id="user.tab.summary">
                 <source>user.tab.summary</source>
                 <target>Summary</target>
@@ -354,7 +364,7 @@
                 <source>user.info.city</source>
                 <target>City</target>
             </trans-unit>
-            
+
             <trans-unit id="title.dashboard.overview.blog">
                 <source>title.dashboard.overview.blog</source>
                 <target>Blog Overview</target>
@@ -362,6 +372,10 @@
             <trans-unit id="title.dashboard.create_blog">
                 <source>title.dashboard.create_blog</source>
                 <target>Create New Blog</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.cahnge_blog">
+                <source>title.dashboard.cahnge_blog</source>
+                <target>Edit Blog</target>
             </trans-unit>
             <trans-unit id="title.dashboard.approved_blogs">
                 <source>title.dashboard.approved_blogs</source>
@@ -435,11 +449,13 @@
             </trans-unit>
             <trans-unit id="text.rquired">
                 <source>text.rquired</source>
-                <target><![CDATA[All fields marked with <span class="text-danger">*</span> are required and must be filled.]]></target>
+                <target>
+                    <![CDATA[All fields marked with <span class="text-danger">*</span> are required and must be filled.]]></target>
             </trans-unit>
             <trans-unit id="text.desc">
                 <source>text.desc</source>
-                <target><![CDATA[Leave your information using the form below and<br>we will contact you within 1 business day.]]></target>
+                <target>
+                    <![CDATA[Leave your information using the form below and<br>we will contact you within 1 business day.]]></target>
             </trans-unit>
             <trans-unit id="text.info.header">
                 <source>text.info.header</source>
@@ -449,7 +465,7 @@
                 <source>text.info.desc</source>
                 <target><![CDATA[Want to know more about our services?]]></target>
             </trans-unit>
-            
+
             <trans-unit id="text.about_us.header">
                 <source>text.about_us.header</source>
                 <target>Want to know more about us immediately?</target>
@@ -466,7 +482,7 @@
                     <![CDATA[We started as an internet agency and have increasingly grown to develop applications, mobile apps, platforms and products. For customers and with customers. During the growth we noticed that more and more companies were having trouble attracting personnel and so we received the first requests whether we wanted to help our customers with this. Because we already had our own nearshore location at that time, the idea arose to provide our customers with developers for the longer term, whom they could manage themselves. We then shifted our focus.]]>
                 </target>
             </trans-unit>
-            
+
             <trans-unit id="text.contact_us.success">
                 <source>text.contact_us.success</source>
                 <target>Let's keep in touch.</target>
@@ -474,11 +490,11 @@
             <trans-unit id="text.contact_us.success.header">
                 <source>text.contact_us.success.header</source>
                 <target>Feel free to send us a new message.</target>
-            </trans-unit>            
+            </trans-unit>
             <trans-unit id="text.contact_us.success.short_desc">
                 <source>text.contact_us.success.short_desc</source>
                 <target>Your message has been sent successfully.</target>
-            </trans-unit>            
+            </trans-unit>
             <trans-unit id="text.contact_us.success.long_desc">
                 <source>text.contact_us.success.long_desc</source>
                 <target>
@@ -509,7 +525,7 @@
                 <source>text.login.desc</source>
                 <target>Enter your email address and password below.</target>
             </trans-unit>
-            
+
             <trans-unit id="label.agree_terms">
                 <source>label.agree_terms</source>
                 <target><![CDATA[Agree to our Terms & Conditions and Privacy Policy.]]></target>
@@ -537,10 +553,11 @@
             <trans-unit id="label.form.city">
                 <source>label.form.city</source>
                 <target>Your City</target>
-            </trans-unit>            
+            </trans-unit>
             <trans-unit id="form.agree_terms.help">
                 <source>form.agree_terms.help</source>
-                <target><![CDATA[More about our <a class="link" target="_blank" href="{ policy }">Privacy Policy</a> and <a class="link" target="_blank" href="{ terms }">Terms &amp; Cinditions</a>.]]></target>
+                <target>
+                    <![CDATA[More about our <a class="link" target="_blank" href="{ policy }">Privacy Policy</a> and <a class="link" target="_blank" href="{ terms }">Terms &amp; Cinditions</a>.]]></target>
             </trans-unit>
             <trans-unit id="form.first_name.help">
                 <source>form.first_name.help</source>

@@ -3,6 +3,7 @@
 namespace App\Form\Type\Dashboard;
 
 use App\Entity\Entry;
+use App\Entity\EntryDetails;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{SubmitType, TextType,};
@@ -13,10 +14,17 @@ use Symfony\Component\Validator\Constraints\{Length, NotBlank,};
 class EntryDetailsType extends AbstractType
 {
 
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        //dd($options);
         $builder->add('title', TextType::class, [
             'mapped' => false,
+            'data' => $options['data']?->getDetails()?->getTitle(),
             'attr' => [
                 'min' => 10,
                 'max' => 250,
@@ -35,6 +43,7 @@ class EntryDetailsType extends AbstractType
         ])
             ->add('content', CKEditorType::class, [
                 'mapped' => false,
+                'data' => $options['data']?->getDetails()?->getContent(),
                 'attr' => [
                     'min' => 100,
                     'max' => 65535,
@@ -58,6 +67,10 @@ class EntryDetailsType extends AbstractType
             ]);
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -65,6 +78,9 @@ class EntryDetailsType extends AbstractType
         ]);
     }
 
+    /**
+     * @return string|null
+     */
     public function getParent(): ?string
     {
         return EntryType::class;
