@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EntryRepository::class)]
 #[ORM\Table(name: 'entry')]
+#[ORM\Index(columns: ['status', 'type'], name: 'idx')]
 class Entry
 {
 
@@ -24,6 +25,11 @@ class Entry
         'Article' => 'article',
         'News' => 'news',
         'Gallery' => 'gallery',
+    ];
+    const STATUS = [
+        'Draft' => 'draft',
+        'Published' => 'published',
+        'Trashed' => 'trashed',
     ];
 
     #[ORM\Id]
@@ -44,6 +50,9 @@ class Entry
     #[ORM\Column(type: Types::STRING, columnDefinition: "ENUM('blog', 'article', 'news', 'other')")]
     private ?string $type = null;
 
+    #[ORM\Column(type: Types::STRING, columnDefinition: "ENUM('draft', 'published', 'trashed')")]
+    private ?string $status = null;
+
     #[ORM\Column]
     private ?int $comments = null;
 
@@ -61,6 +70,7 @@ class Entry
         $this->created_at = new \DateTime();
         $this->updated_at = new \DateTime();
         $this->type = self::TYPE['Other'];
+        $this->status = self::STATUS['Draft'];
         $this->comments = 0;
     }
 
@@ -101,6 +111,18 @@ class Entry
     public function setType(string $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }
