@@ -257,6 +257,18 @@ a:hover {
     text-decoration: underline;
     color: #5b6582;
 }
+.link-secondary {
+    text-decoration: underline;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+    outline: 0 !important;
+    color: #5b6582;
+    line-height: 1.4;
+}
+.link-secondary:hover {
+    text-decoration: none;
+    color: #5e87eb;
+}
 blockquote i.bi {
     vertical-align: middle;
     font-size: 2.5rem;

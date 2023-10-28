@@ -7,8 +7,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\Dashboard;
-use App\Helper\ErrorHandler;
-use App\Entity\Entry;
+use App\Entity\{
+    Entry,
+    EntryDetails,
+};
+use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\EntryRepository;
 use App\Form\Type\Dashboard\EntryDetailsType;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -41,12 +44,32 @@ class BlogController extends AbstractController
     public function create(
             Request $request,
             UserInterface $user,
+            EntityManagerInterface $em,
     ): Response
     {
         $entry = new Entry();
+        $details = new EntryDetails();
 
         $form = $this->createForm(EntryDetailsType::class, $entry);
         $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $entry->setType('blog')
+                    ->setUser($user);
+
+            $em->persist($entry);
+            $em->flush();
+
+            $details->setTitle($form->get('title')->getData())
+                    ->setContent($form->get('content')->getData())
+                    ->setEntry($entry);
+
+            $em->persist($details);
+            $em->flush();
+
+            return $this->redirectToRoute('app_dashboard_blog');
+        }
 
         return $this->render('dashboard/content/blog/_form.html.twig', $this->build($user) + [
                     'form' => $form,

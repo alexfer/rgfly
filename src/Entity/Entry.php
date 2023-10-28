@@ -61,6 +61,7 @@ class Entry
         $this->created_at = new \DateTime();
         $this->updated_at = new \DateTime();
         $this->type = self::TYPE['Other'];
+        $this->comments = 0;
     }
 
     public function getId(): ?int

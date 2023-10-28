@@ -3,7 +3,6 @@
 namespace App\Controller\Dashboard;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,7 +10,6 @@ use App\Repository\FaqRepository;
 use App\Service\Dashboard;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Helper\ErrorHandler;
 use App\Entity\Faq;
 use App\Form\Type\FaqType;
 
@@ -85,7 +83,6 @@ class FaqController extends AbstractController
      * 
      * @param Request $request
      * @param EntityManagerInterface $em
-     * @param ValidatorInterface $validator
      * @param UserInterface $user
      * @return Response
      */
@@ -93,7 +90,6 @@ class FaqController extends AbstractController
     public function create(
             Request $request,
             EntityManagerInterface $em,
-            ValidatorInterface $validator,
             UserInterface $user,
     ): Response
     {
@@ -101,12 +97,6 @@ class FaqController extends AbstractController
 
         $form = $this->createForm(FaqType::class, $entry);
         $form->handleRequest($request);
-
-        $errors = null;
-
-        if ($request->isMethod('POST')) {
-            $errors = $validator->validate($entry);
-        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($entry);
@@ -116,7 +106,6 @@ class FaqController extends AbstractController
         }
 
         return $this->render('dashboard/content/faq/_form.html.twig', $this->build($user) + [
-                    'errors' => ErrorHandler::handleFormErrors($form),
                     'form' => $form,
         ]);
     }
@@ -126,7 +115,6 @@ class FaqController extends AbstractController
      * @param Request $request
      * @param Faq $entry
      * @param EntityManagerInterface $em
-     * @param ValidatorInterface $validator
      * @param UserInterface $user
      * @return Response
      */
@@ -135,18 +123,11 @@ class FaqController extends AbstractController
             Request $request,
             Faq $entry,
             EntityManagerInterface $em,
-            ValidatorInterface $validator,
             UserInterface $user,
     ): Response
     {
         $form = $this->createForm(FaqType::class, $entry);
         $form->handleRequest($request);
-
-        $errors = null;
-
-        if ($request->isMethod('POST')) {
-            $errors = $validator->validate($entry);
-        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($entry);
@@ -156,7 +137,6 @@ class FaqController extends AbstractController
         }
 
         return $this->render('dashboard/content/faq/_form.html.twig', $this->build($user) + [
-                    'errors' => ErrorHandler::handleFormErrors($form),
                     'form' => $form,
         ]);
     }

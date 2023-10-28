@@ -289,16 +289,16 @@
                 <source>label.form.repeat_password</source>
                 <target>Repeat Password</target>
             </trans-unit>            
-            <trans-unit id="label.form.faq.title">
-                <source>label.form.faq.title</source>
+            <trans-unit id="label.form.title">
+                <source>label.form.title</source>
                 <target>Title</target>
             </trans-unit>
-            <trans-unit id="label.form.faq.content">
-                <source>label.form.faq.content</source>
+            <trans-unit id="label.form.content">
+                <source>label.form.content</source>
                 <target>Content</target>
             </trans-unit>
-            <trans-unit id="label.form.faq.visible">
-                <source>label.form.faq.visible</source>
+            <trans-unit id="label.form.visible">
+                <source>label.form.visible</source>
                 <target>Published</target>
             </trans-unit>
             

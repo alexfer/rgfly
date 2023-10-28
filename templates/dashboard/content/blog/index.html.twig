@@ -11,7 +11,11 @@
                 <tr>
                     <th class="col-1 text-center" scope="col">{{ 'table.header.id'|trans }}</th>
                     <th class="col-4" scope="col">{{ 'table.header.title'|trans }}</th>
-                    <th class="col-4" scope="col">{{ 'table.header.author'|trans }}</th>
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <th class="col-4" scope="col">{{ 'table.header.author'|trans }}</th>
+                        {% else %}
+                        <th class="col-4" scope="col">{{ 'table.header.status'|trans }}</th>
+                        {% endif %}
                     <th class="col-2 text-center" scope="col">{{ 'table.header.created_at'|trans }}</th>
                     <th class="col-1 text-center" scope="col">{{ 'table.header.handle'|trans }}</th>
                 </tr>
@@ -20,9 +24,32 @@
                 {% for entry in entries %}
                     <tr>
                         <th scope="row" class="text-center">{{ entry.id }}</th>
-                        <td>{{ entry.details.title }}</td>
-                        <td>{{ entry.user.details.firstName }} {{ entry.user.details.lastName }}</td>
-                        <td class="text-center">{{ entry.createdAt|date(date_format) }}</td>
+                        <td>
+                            <a 
+                                data-toggle="tooltip" 
+                                data-placement="top" 
+                                class="link" 
+                                title="{{ entry.details.title }}" 
+                                href="#">
+                                {{ entry.details.title|length > 30 ? entry.details.title|slice(0, 30) ~ '...' : entry.details.title }}
+                            </a>
+                        </td>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <td>
+                                <a class="link-secondary" href="{{ path('app_dashboard_details_user', {id: entry.user.id, tab: 'summary'}) }}">{{ entry.user.details.firstName }}</a>
+                            </td>
+                        {% else %}
+                            <td>Status</td>
+                        {% endif %}
+                        <td class="text-center">
+                            <span 
+                                class="text-muted" 
+                                data-toggle="tooltip" 
+                                data-placement="top" 
+                                title="{{ entry.createdAt|date(datetime_format) }}">
+                                {{ entry.createdAt|date(date_format) }}
+                            </span>
+                        </td>
                         <td class="text-center"><i class="bi bi-person-circle"></i></td>
                     </tr>
                 {% else %}
