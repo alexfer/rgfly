@@ -2,38 +2,38 @@
 
 namespace App\Service;
 
+use App\Entity\Attach;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Entity\Attach;
 
 class FileUploader
 {
 
     /**
-     * 
+     *
      * @var string|null
      */
     private ?string $target;
 
     /**
-     * 
+     *
      * @param string $targetDirectory
      * @param SluggerInterface $slugger
      * @param EntityManagerInterface $em
      */
     public function __construct(
-            private string $targetDirectory,
-            private SluggerInterface $slugger,
-            private EntityManagerInterface $em,
+        private string                 $targetDirectory,
+        private SluggerInterface       $slugger,
+        private EntityManagerInterface $em,
     )
     {
-        
+
     }
 
     /**
-     * 
+     *
      * @return int|null
      */
     private function getSize(): ?int
@@ -42,7 +42,7 @@ class FileUploader
     }
 
     /**
-     * 
+     *
      * @return string|null
      */
     private function getMimeType(): ?string
@@ -51,7 +51,7 @@ class FileUploader
     }
 
     /**
-     * 
+     *
      * @param UploadedFile $file
      * @return self
      * @throws \Exception
@@ -73,7 +73,7 @@ class FileUploader
     }
 
     /**
-     * 
+     *
      * @param object|null $object
      * @return Attach|null
      */
@@ -81,9 +81,9 @@ class FileUploader
     {
         $attach = new Attach();
         $attach->setDetails($object)
-                ->setName($this->fileName)
-                ->setSize($this->getSize())
-                ->setMime($this->getMimeType());
+            ->setName($this->fileName)
+            ->setSize($this->getSize())
+            ->setMime($this->getMimeType());
 
         $this->em->persist($attach);
         $this->em->flush();
@@ -91,7 +91,7 @@ class FileUploader
     }
 
     /**
-     * 
+     *
      * @return string
      */
     public function getTargetDirectory(): string

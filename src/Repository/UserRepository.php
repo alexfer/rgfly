@@ -22,7 +22,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 {
 
     /**
-     * 
+     *
      * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
@@ -32,15 +32,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
-     * 
+     *
      * @param PasswordAuthenticatedUserInterface $user
      * @param string $newHashedPassword
      * @return void
      * @throws UnsupportedUserException
      */
     public function upgradePassword(
-            PasswordAuthenticatedUserInterface $user,
-            string $newHashedPassword,
+        PasswordAuthenticatedUserInterface $user,
+        string                             $newHashedPassword,
     ): void
     {
         if (!$user instanceof User) {
@@ -53,7 +53,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
-     * 
+     *
      * @param string $email
      * @return User|null
      */
@@ -62,7 +62,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $entityManager = $this->getEntityManager();
 
         return $entityManager->createQuery('SELECT u FROM App\Entity\User u WHERE u.email = :query')
-                        ->setParameter('query', $email)
-                        ->getOneOrNullResult();
+            ->setParameter('query', $email)
+            ->getOneOrNullResult();
     }
 }

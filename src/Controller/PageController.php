@@ -11,7 +11,7 @@ class PageController extends AbstractController
 {
 
     /**
-     * 
+     *
      * @param Request $request
      * @return Response
      */
@@ -24,7 +24,7 @@ class PageController extends AbstractController
         $template = $request->attributes->get('_route');
 
         return $this->render('pages/' . $template . '.html.twig', [
-                    'data' => [],
+            'data' => [],
         ]);
     }
 }

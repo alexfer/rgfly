@@ -3,9 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AttachRepository;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
-use App\Entity\UserDetails;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AttachRepository::class)]
 #[ORM\Table(name: 'file')]

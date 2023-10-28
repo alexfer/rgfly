@@ -4,22 +4,19 @@ namespace App\Controller;
 
 use App\Entity\Contact;
 use App\Form\Type\ContactType;
-use Symfony\Component\Mime\Email;
-use Symfony\Component\Mime\Address;
-use Symfony\Component\Mailer\MailerInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 class ContactController extends AbstractController
 {
 
     /**
-     * 
+     *
      * @param Request $request
      * @param EntityManagerInterface $em
      * @param ValidatorInterface $validator
@@ -27,10 +24,10 @@ class ContactController extends AbstractController
      */
     #[Route('/contact', name: 'contact', methods: ['GET', 'POST'])]
     public function index(
-            Request $request,
-            EntityManagerInterface $em,
-            ValidatorInterface $validator,
-            MailerInterface $mailer,
+        Request                $request,
+        EntityManagerInterface $em,
+        ValidatorInterface     $validator,
+        MailerInterface        $mailer,
     ): Response
     {
         $contact = new Contact();
@@ -68,13 +65,13 @@ class ContactController extends AbstractController
         }
 
         return $this->render('contact/index.html.twig', [
-                    'errors' => $errors,
-                    'form' => $form,
+            'errors' => $errors,
+            'form' => $form,
         ]);
     }
 
     /**
-     * 
+     *
      * @return Response
      */
     #[Route('/contact/success', name: 'contact_success')]

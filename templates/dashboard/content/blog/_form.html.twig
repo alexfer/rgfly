@@ -17,9 +17,10 @@
         {{ form_widget(form.content, {attr: {class: content_error, rows: 6, placeholder: 'label.form.content'}}) }}
         <sm class="text-danger">{{ form_errors(form.content) }}</sm>
     </div>
-    <div class="form-group text-center my-4">        
+    <div class="form-group text-center my-4">
         {{ form_widget(form.save, { label: form.vars.data.id ? 'form.action.update' : 'form.action.save'}) }}
-        <a type="button" href="{{ url('app_dashboard_blog') }}" class="btn btn-secondary shadow shadow-sm">{{ 'form.action.cancel'|trans }}</a>
+        <a type="button" href="{{ url('app_dashboard_blog') }}"
+           class="btn btn-secondary shadow shadow-sm">{{ 'form.action.cancel'|trans }}</a>
     </div>
     {{ form_end(form) }}
 {% endblock %}

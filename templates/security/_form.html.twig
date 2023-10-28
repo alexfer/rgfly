@@ -6,7 +6,7 @@
 {% else %}
     <blockquote class="bg-light shadow-sm">
         <p class="mb-0">
-            <i class="bi bi-exclamation-triangle"></i> 
+            <i class="bi bi-exclamation-triangle"></i>
             {{ 'text.rquired'|trans|raw }}
         </p>
     </blockquote>
@@ -14,12 +14,13 @@
 <div class="form-row shadow-sm">
     <div class="col-md-2"></div>
     <div class="col-md-8 px-5 pt-2">
-        <div class="form-group row">                 
-            {{ form_label(form.email, 'label.form.email', {attr: {class: 'col-sm-2 col-form-label'}}) }} <span class="text-danger">*</span>
+        <div class="form-group row">
+            {{ form_label(form.email, 'label.form.email', {attr: {class: 'col-sm-2 col-form-label'}}) }} <span
+                    class="text-danger">*</span>
             {{ form_widget(form.email, {attr: {value: last_username, class: 'form-control', placeholder: 'label.form.email'}}) }}
             <small class="form-text text-muted">{{ 'form.email.help'|trans }}</small>
         </div>
-        <div class="form-group row">                 
+        <div class="form-group row">
             {{ form_label(form.password, 'label.form.password') }} <span class="text-danger">*</span>
             {{ form_widget(form.password, {attr: {class: 'form-control', placeholder: 'label.form.password'}}) }}
             <small class="form-text text-muted">{{ 'form.password.help'|trans }}</small>
@@ -30,7 +31,7 @@
             <label class="form-check-label" for="remember_me">{{ 'label.form.keep_me_logged_in'|trans }}</label>            
         </div>
         #}
-    </div>  
+    </div>
     <div class="col-md-2"></div>
     <div class="col-md-12 text-center my-4">
         <input type="hidden" name="_target_path" value="{{ path('app_index') }}"/>
@@ -39,10 +40,10 @@
     </div>
 </div>
 {{ form_end(form) }}
-{#<div class="form-row">
+{# <div class="form-row">
     <div class="col-md-12 text-center my-4">  
         {% for owner in hwi_oauth_resource_owners() %}
             <a href="{{ hwi_oauth_login_url(owner) }}" class="btn btn-outline-info"><i class="bi bi-{{ owner | trans({}, 'HWIOAuthBundle') }} mx-1"></i> Login with {{ owner | trans({}, 'HWIOAuthBundle') }}</a>        
         {% endfor %}
     </div>
-</div>#}
+</div> #}

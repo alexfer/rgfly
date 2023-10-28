@@ -2,10 +2,10 @@
 
 namespace App\EventSubscriber;
 
-use Symfony\Component\HttpKernel\Event\RequestEvent;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
 
 class RateLimiterSubscriber implements EventSubscriberInterface
 {
@@ -21,7 +21,7 @@ class RateLimiterSubscriber implements EventSubscriberInterface
     private array $exclude = [];
 
     /**
-     * 
+     *
      * @param RateLimiterFactory $anonymousAppLimiter
      */
     public function __construct(RateLimiterFactory $anonymousAppLimiter)
@@ -30,7 +30,7 @@ class RateLimiterSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public static function getSubscribedEvents(): array
@@ -41,7 +41,7 @@ class RateLimiterSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * 
+     *
      * @param RequestEvent $event
      * @return void
      * @throws TooManyRequestsHttpException

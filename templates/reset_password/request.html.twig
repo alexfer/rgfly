@@ -12,15 +12,16 @@
             {{ form_start(requestForm, {attr: {class: 'tech-form'}}) }}
             <div class="row">
                 <div class="col-lg-2 col-md-2"></div>
-                <div class="col-lg-8 col-md-8">                    
+                <div class="col-lg-8 col-md-8">
                     <h3 class="mb-3">Reset your password</h3>
-                    <div class="mb-5">Enter your email address, and we will send you a link to reset your password.</div>
+                    <div class="mb-5">Enter your email address, and we will send you a link to reset your password.
+                    </div>
                     <div class="form-group row">
                         {{ form_label(requestForm.email, 'label.form.email', {label_attr: {class: 'col-sm-3 col-form-label mt-2 text-info'}}) }}
                         <div class="col-sm-9">
-                            {{ form_widget(requestForm.email, {attr: {class: 'form-control'}}) }}                            
-                        </div>                        
-                    </div>                                                                                
+                            {{ form_widget(requestForm.email, {attr: {class: 'form-control'}}) }}
+                        </div>
+                    </div>
                 </div>
                 <div class="col-lg-2 col-md-2"></div>
             </div>
@@ -37,6 +38,6 @@
             </div>
         </div>
         {{ form_end(requestForm) }}
-    </div>
-</section>
+        </div>
+    </section>
 {% endblock %}

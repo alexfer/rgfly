@@ -2,20 +2,17 @@
 
 namespace App\Controller\Security;
 
-use App\Repository\UserDetailsRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Form\Type\User\ProfileType;
-use Symfony\Component\Security\Core\User\UserInterface;
+use App\Helper\ErrorHandler;
+use App\Repository\UserDetailsRepository;
+use App\Service\FileUploader;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\HttpFoundation\{
-    Response,
-    Request,
-};
+use Symfony\Component\HttpFoundation\{Request, Response,};
 use Symfony\Component\Routing\Annotation\Route;
-use App\Service\FileUploader;
-use App\Helper\ErrorHandler;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Security("is_granted('ROLE_ADMIN') and is_granted('ROLE_USER_USER')")]
 class ProfileController extends AbstractController
@@ -24,7 +21,7 @@ class ProfileController extends AbstractController
     const PUBLIC_USER_PICTURE_DIR = '/public/user/picture/';
 
     /**
-     * 
+     *
      * @var string|null
      */
     private ?string $storage;
@@ -35,16 +32,16 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * 
+     *
      * @return Response
      */
     #[Route('/profile', name: 'app_profile')]
     public function index(
-            Request $request,
-            UserInterface $user,
-            SluggerInterface $slugger,
-            EntityManagerInterface $em,
-            UserDetailsRepository $repository,
+        Request                $request,
+        UserInterface          $user,
+        SluggerInterface       $slugger,
+        EntityManagerInterface $em,
+        UserDetailsRepository  $repository,
     ): Response
     {
         $details = $repository->find($user->getId());
@@ -74,14 +71,14 @@ class ProfileController extends AbstractController
         }
 
         return $this->render('profile/profile.html.twig', [
-                    'errors' => ErrorHandler::handleFormErrors($form),
-                    'user' => $details,
-                    'form' => $form->createView(),
+            'errors' => ErrorHandler::handleFormErrors($form),
+            'user' => $details,
+            'form' => $form->createView(),
         ]);
     }
 
     /**
-     * 
+     *
      * @param int|null $id
      * @return string
      */

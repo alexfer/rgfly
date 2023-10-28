@@ -5,7 +5,7 @@
         <ul>
             {% for error in errors %}
                 <li>{{ error.message|trans({'%policy%': path('policy'), '%terms%': path('terms')})|raw }}</li>
-                {% endfor %}           
+            {% endfor %}
         </ul>
     </div>
 {% endif %}

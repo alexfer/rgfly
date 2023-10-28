@@ -2,27 +2,27 @@
 
 namespace App\Controller\Security;
 
+use App\Form\Type\User\LoginType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Security;
-use App\Form\Type\User\LoginType;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
 
     /**
-     * 
+     *
      * @param Request $request
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
      */
     #[Route('/web/login', name: 'app_login', methods: ['GET', 'POST'])]
     public function login(
-            Request $request,
-            AuthenticationUtils $authenticationUtils,
+        Request             $request,
+        AuthenticationUtils $authenticationUtils,
     ): Response
     {
         $securityContext = $this->container->get('security.authorization_checker');
@@ -42,14 +42,14 @@ class SecurityController extends AbstractController
         $request->getSession()->clear();
 
         return $this->render('security/index.html.twig', [
-                    'form' => $form->createView(),
-                    'last_username' => $authenticationUtils->getLastUsername(),
-                    'error' => $error,
+            'form' => $form->createView(),
+            'last_username' => $authenticationUtils->getLastUsername(),
+            'error' => $error,
         ]);
     }
 
     /**
-     * 
+     *
      * @return Response
      * @throws \Exception
      */
@@ -61,7 +61,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * 
+     *
      * @return Response
      * @throws \Exception
      */
@@ -69,7 +69,7 @@ class SecurityController extends AbstractController
     public function error(Request $request): Response
     {
         return $this->render('security/error.html.twig', [
-                    'error' => $request->getSession()->get(Security::AUTHENTICATION_ERROR),
+            'error' => $request->getSession()->get(Security::AUTHENTICATION_ERROR),
         ]);
     }
 }

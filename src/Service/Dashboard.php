@@ -10,22 +10,22 @@ trait Dashboard
 {
 
     /**
-     * 
+     *
      * @var EntryRepository
      */
     private ?EntryRepository $repository = null;
 
     /**
-     * 
+     *
      * @param EntryRepository $repository
      */
     public function __construct(EntryRepository $repository)
     {
         $this->repository = $repository;
     }
-    
+
     /**
-     * 
+     *
      * @param UserInterface $user
      * @param array|null $criteria
      * @return array
@@ -34,7 +34,7 @@ trait Dashboard
     {
         $securityContext = $this->container->get('security.authorization_checker');
 
-        $options = [            
+        $options = [
             'user_id' => $user->getId(),
         ];
 
@@ -50,7 +50,7 @@ trait Dashboard
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function build(UserInterface $user): array

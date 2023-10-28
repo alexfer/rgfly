@@ -2,10 +2,7 @@
 
 namespace App\Security\Voter;
 
-use App\Entity\{
-    Entry,
-    User,
-};
+use App\Entity\{Entry, User,};
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
@@ -17,7 +14,7 @@ class DashboardVoter extends Voter
     const EDIT = 'edit';
 
     /**
-     * 
+     *
      * @param string $attribute
      * @param mixed $subject
      * @return bool
@@ -36,7 +33,7 @@ class DashboardVoter extends Voter
     }
 
     /**
-     * 
+     *
      * @param string $attribute
      * @param mixed $subject
      * @param TokenInterface $token
@@ -66,7 +63,7 @@ class DashboardVoter extends Voter
     }
 
     /**
-     * 
+     *
      * @param object $object
      * @param User $user
      * @return bool
@@ -82,7 +79,7 @@ class DashboardVoter extends Voter
     }
 
     /**
-     * 
+     *
      * @param object $object
      * @param User $user
      * @return bool
@@ -93,7 +90,7 @@ class DashboardVoter extends Voter
     }
 
     /**
-     * 
+     *
      * @param object $object
      * @param User $user
      * @return bool

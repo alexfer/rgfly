@@ -8,41 +8,43 @@
     <div class="table-responsive card">
         <table class="table table-hover table-borderless">
             <thead class="bg-secondary text-white">
-                <tr>
-                    <th class="col-1 text-center" scope="col">{{ 'table.header.id'|trans }}</th>
-                    <th class="col-6" scope="col">{{ 'table.header.name'|trans }}</th>
-                    <th class="col-2 text-center" scope="col">{{ 'table.header.user.created_at'|trans }}</th>
-                    <th class="col-2 text-center" scope="col">{{ 'table.header.user.updated_at'|trans }}</th>
-                    <th class="col-1 text-center" scope="col">{{ 'table.header.handle'|trans }}</th>
-                </tr>
+            <tr>
+                <th class="col-1 text-center" scope="col">{{ 'table.header.id'|trans }}</th>
+                <th class="col-6" scope="col">{{ 'table.header.name'|trans }}</th>
+                <th class="col-2 text-center" scope="col">{{ 'table.header.user.created_at'|trans }}</th>
+                <th class="col-2 text-center" scope="col">{{ 'table.header.user.updated_at'|trans }}</th>
+                <th class="col-1 text-center" scope="col">{{ 'table.header.handle'|trans }}</th>
+            </tr>
             </thead>
             <tbody>
-                {% for entry in entries %}
-                    <tr>
-                        <th scope="row" class="text-center">{{ entry.id }}</th>
-                        <td>{{ entry.details.firstName }} {{ entry.details.lastName }}</td>
-                        <td class="text-center">
-                            <small data-toggle="tooltip" data-placement="top" title="{{ entry.createdAt|date(datetime_format) }}" class="text-muted">{{ entry.createdAt|date(date_format) }}</small>
-                        </td>
-                        <td class="text-center">
-                            <small class="text-muted">{{ entry.details.updatedAt|date(datetime_format) }}</small>
-                        </td>
-                        <td class="text-center">
-                            <a 
-                                data-toggle="tooltip" 
-                                data-placement="top" 
-                                title="{{ 'tooltip.show.more'|trans }} {{ entry.details.firstName }}" 
-                                class="btn btn-sm btn-outline-lightning rounded" 
+            {% for entry in entries %}
+                <tr>
+                    <th scope="row" class="text-center">{{ entry.id }}</th>
+                    <td>{{ entry.details.firstName }} {{ entry.details.lastName }}</td>
+                    <td class="text-center">
+                        <small data-toggle="tooltip" data-placement="top"
+                               title="{{ entry.createdAt|date(datetime_format) }}"
+                               class="text-muted">{{ entry.createdAt|date(date_format) }}</small>
+                    </td>
+                    <td class="text-center">
+                        <small class="text-muted">{{ entry.details.updatedAt|date(datetime_format) }}</small>
+                    </td>
+                    <td class="text-center">
+                        <a
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title="{{ 'tooltip.show.more'|trans }} {{ entry.details.firstName }}"
+                                class="btn btn-sm btn-outline-lightning rounded"
                                 href="{{ path('app_dashboard_details_user', {id: entry.id, tab: 'summary'}) }}">
-                                <i class="bi bi-person-circle"></i>
-                            </a>
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="5" class="text-center text-info bg-white">{{ 'table.footer.not_found'|trans }}</td>
-                    </tr>    
-                {% endfor %}
+                            <i class="bi bi-person-circle"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center text-info bg-white">{{ 'table.footer.not_found'|trans }}</td>
+                </tr>
+            {% endfor %}
             </tbody>
         </table>
     </div>

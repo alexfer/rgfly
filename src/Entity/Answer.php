@@ -2,10 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\{
-    Contact,
-    User,
-};
 use App\Repository\AnswerRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;

@@ -49,11 +49,11 @@ class Contact
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'form.name.not_blank')]
     #[Assert\Length(
-                min: self::CONSTRAINTS['name']['min'],
-                minMessage: 'form.name.min',
-                max: self::CONSTRAINTS['name']['max'],
-                maxMessage: 'form.name.max',
-        )]
+        min: self::CONSTRAINTS['name']['min'],
+        minMessage: 'form.name.min',
+        max: self::CONSTRAINTS['name']['max'],
+        maxMessage: 'form.name.max',
+    )]
     private ?string $name = null;
 
     #[ORM\Column(options: ['default' => 'New'], type: "string", columnDefinition: "ENUM('New', 'Draft', 'Answered', 'Error', 'Trashed')")]
@@ -64,28 +64,28 @@ class Contact
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Regex(
-                pattern: "/[+0-9]+$/i",
-                message: 'form.phone.not_valid',
-        )]
+        pattern: "/[+0-9]+$/i",
+        message: 'form.phone.not_valid',
+    )]
     private ?string $phone = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(
-                min: self::CONSTRAINTS['subject']['min'],
-                minMessage: 'form.subject.min',
-                max: self::CONSTRAINTS['subject']['max'],
-                maxMessage: 'form.subject.max',
-        )]
+        min: self::CONSTRAINTS['subject']['min'],
+        minMessage: 'form.subject.min',
+        max: self::CONSTRAINTS['subject']['max'],
+        maxMessage: 'form.subject.max',
+    )]
     private ?string $subject = null;
 
     #[ORM\Column(type: Types::TEXT, length: 65535)]
     #[Assert\NotBlank(message: 'form.message.not_blank')]
     #[Assert\Length(
-                min: self::CONSTRAINTS['message']['min'],
-                minMessage: 'form.message.min',
-                max: self::CONSTRAINTS['message']['max'],
-                maxMessage: 'form.message.max',
-        )]
+        min: self::CONSTRAINTS['message']['min'],
+        minMessage: 'form.message.min',
+        max: self::CONSTRAINTS['message']['max'],
+        maxMessage: 'form.message.max',
+    )]
     private ?string $message = null;
 
     #[ORM\Column(length: 255)]

@@ -2,10 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\{
-    EntryDetails,
-    User,
-};
 use App\Repository\EntryRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;

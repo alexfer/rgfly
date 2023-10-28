@@ -23,7 +23,7 @@ class ResetPasswordRequestRepository extends ServiceEntityRepository implements 
     use ResetPasswordRequestRepositoryTrait;
 
     /**
-     * 
+     *
      * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
@@ -32,7 +32,7 @@ class ResetPasswordRequestRepository extends ServiceEntityRepository implements 
     }
 
     /**
-     * 
+     *
      * @param object $user
      * @param \DateTimeInterface $expiresAt
      * @param string $selector
@@ -40,10 +40,10 @@ class ResetPasswordRequestRepository extends ServiceEntityRepository implements 
      * @return ResetPasswordRequestInterface
      */
     public function createResetPasswordRequest(
-            object $user,
-            \DateTimeInterface $expiresAt,
-            string $selector,
-            string $hashedToken,
+        object             $user,
+        \DateTimeInterface $expiresAt,
+        string             $selector,
+        string             $hashedToken,
     ): ResetPasswordRequestInterface
     {
         return new ResetPasswordRequest($user, $expiresAt, $selector, $hashedToken);

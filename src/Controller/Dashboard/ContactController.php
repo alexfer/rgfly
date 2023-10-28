@@ -2,15 +2,15 @@
 
 namespace App\Controller\Dashboard;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use App\Entity\Contact;
 use App\Repository\ContactRepository;
 use App\Service\Dashboard;
-use App\Entity\Contact;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route('/dashboard/contact')]
 class ContactController extends AbstractController
@@ -19,24 +19,24 @@ class ContactController extends AbstractController
     use Dashboard;
 
     /**
-     * 
+     *
      * @param ContactRepository $reposiroty
      * @param UserInterface $user
      * @return Response
      */
     #[Route('', name: 'app_dashboard_contact')]
     public function index(
-            ContactRepository $reposiroty,
-            UserInterface $user,
+        ContactRepository $reposiroty,
+        UserInterface     $user,
     ): Response
     {
         return $this->render('dashboard/content/contact/index.html.twig', $this->build($user) + [
-                    'entries' => $reposiroty->findBy([], ['id' => 'desc']),
-        ]);
+                'entries' => $reposiroty->findBy([], ['id' => 'desc']),
+            ]);
     }
 
     /**
-     * 
+     *
      * @param Request $request
      * @param Contact $entry
      * @param EntityManagerInterface $em
@@ -44,9 +44,9 @@ class ContactController extends AbstractController
      */
     #[Route('/delete/{id}', name: 'app_dashboard_delete_contact', methods: ['POST'])]
     public function delete(
-            Request $request,
-            Contact $entry,
-            EntityManagerInterface $em,
+        Request                $request,
+        Contact                $entry,
+        EntityManagerInterface $em,
     ): Response
     {
         if ($this->isCsrfTokenValid('delete', $request->get('_token'))) {
@@ -59,7 +59,7 @@ class ContactController extends AbstractController
     }
 
     /**
-     * 
+     *
      * @param Request $request
      * @param Contact $entry
      * @param EntityManagerInterface $em
@@ -68,16 +68,16 @@ class ContactController extends AbstractController
      */
     #[Route('/review/{id}', name: 'app_dashboard_review_contact', methods: ['GET', 'POST'])]
     public function review(
-            Request $request,
-            Contact $entry,
-            EntityManagerInterface $em,
-            UserInterface $user,
+        Request                $request,
+        Contact                $entry,
+        EntityManagerInterface $em,
+        UserInterface          $user,
     ): Response
     {
 
 
         return $this->render('dashboard/content/contact/review.html.twig', $this->build($user) + [
-                    'entry' => $entry,
-        ]);
+                'entry' => $entry,
+            ]);
     }
 }

@@ -11,42 +11,50 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
     <div class="tech-nav">
         <nav class="navbar navbar-expand-md navbar-light">
             <div class="container">
                 <a class="navbar-brand" href="{{ path('app_index') }}">
                     <span class="black-logo text-dark">TECHSPACE</span>
-                    <span class="white-logo text-white">TECHSPACE</span>                            
+                    <span class="white-logo text-white">TECHSPACE</span>
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#tech-navbar" aria-controls="tech-navbar" aria-expanded="false">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#tech-navbar"
+                        aria-controls="tech-navbar" aria-expanded="false">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link {{ _route == 'app_index'? 'active': '' }}" href="{{ path('app_index') }}">{{ 'title.home'|trans }}</a>
+                            <a class="nav-link {{ _route == 'app_index'? 'active': '' }}"
+                               href="{{ path('app_index') }}">{{ 'title.home'|trans }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ _route == 'about'? 'active': '' }}" href="{{ path('about') }}">{{ 'title.about_us'|trans }}</a>
+                            <a class="nav-link {{ _route == 'about'? 'active': '' }}"
+                               href="{{ path('about') }}">{{ 'title.about_us'|trans }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ _route == 'faq'? 'active': '' }}" href="{{ path('faq') }}">{{ 'title.questions'|trans }}</a>
+                            <a class="nav-link {{ _route == 'faq'? 'active': '' }}"
+                               href="{{ path('faq') }}">{{ 'title.questions'|trans }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ _route == 'service'? 'active': '' }}" href="{{ path('service') }}">{{ 'title.service'|trans }}</a>
+                            <a class="nav-link {{ _route == 'service'? 'active': '' }}"
+                               href="{{ path('service') }}">{{ 'title.service'|trans }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ _route == 'contact'? 'active': '' }}" href="{{ path('contact') }}">{{ 'title.contact_us'|trans }}</a>
+                            <a class="nav-link {{ _route == 'contact'? 'active': '' }}"
+                               href="{{ path('contact') }}">{{ 'title.contact_us'|trans }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ _route == 'contact'? 'faq': '' }}" href="{{ path('faq') }}">{{ 'title.questions'|trans }}</a>
+                            <a class="nav-link {{ _route == 'contact'? 'faq': '' }}"
+                               href="{{ path('faq') }}">{{ 'title.questions'|trans }}</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav mr-0">
                         <li class="nav-item">
-                            <button class="btn btn-primary nav-link dropdown-toggle mr-auto" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-person-circle mx-2 text-lg"></i> 
+                            <button class="btn btn-primary nav-link dropdown-toggle mr-auto" id="userMenu" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle mx-2 text-lg"></i>
                                 {% if not app.user %}
                                     {{ 'title.user.area'|trans }}
                                 {% else %}
@@ -55,20 +63,20 @@
                             </button>
                             <ul class="dropdown-menu">
                                 {% if not app.user %}
-                                    <li class="nav-item"> 
+                                    <li class="nav-item">
                                         <a href="{{ path('app_login') }}" class="nav-link">
                                             <i class="bi bi-caret-right-fill"></i>
                                             {{ 'title.user.login'|trans }}
                                         </a>
                                     </li>
-                                    <li class="nav-item"> 
+                                    <li class="nav-item">
                                         <a href="{{ path('app_register') }}" class="nav-link">
                                             <i class="bi bi-caret-right-fill"></i>
                                             {{ 'title.user.register'|trans }}
                                         </a>
-                                    </li>            
+                                    </li>
                                 {% else %}
-                                    <li class="nav-item"> 
+                                    <li class="nav-item">
                                         <a href="{{ path('app_dashboard') }}" class="nav-link">
                                             <i class="bi bi-caret-right-fill"></i>
                                             {{ 'text.dashboard'|trans }}

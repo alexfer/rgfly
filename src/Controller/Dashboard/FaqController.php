@@ -2,16 +2,16 @@
 
 namespace App\Controller\Dashboard;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\FaqRepository;
-use App\Service\Dashboard;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Faq;
 use App\Form\Type\FaqType;
+use App\Repository\FaqRepository;
+use App\Service\Dashboard;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route('/dashboard/faq')]
 class FaqController extends AbstractController
@@ -20,24 +20,24 @@ class FaqController extends AbstractController
     use Dashboard;
 
     /**
-     * 
+     *
      * @param FaqRepository $reposiroty
      * @param UserInterface $user
      * @return Response
      */
     #[Route('', name: 'app_dashboard_faq')]
     public function index(
-            FaqRepository $reposiroty,
-            UserInterface $user,
+        FaqRepository $reposiroty,
+        UserInterface $user,
     ): Response
     {
         return $this->render('dashboard/content/faq/index.html.twig', $this->build($user) + [
-                    'entries' => $reposiroty->findBy([], ['id' => 'desc']),
-        ]);
+                'entries' => $reposiroty->findBy([], ['id' => 'desc']),
+            ]);
     }
 
     /**
-     * 
+     *
      * @param Request $request
      * @param Faq $entry
      * @param EntityManagerInterface $em
@@ -45,9 +45,9 @@ class FaqController extends AbstractController
      */
     #[Route('/delete/{id}', name: 'app_dashboard_delete_faq', methods: ['POST'])]
     public function delete(
-            Request $request,
-            Faq $entry,
-            EntityManagerInterface $em,
+        Request                $request,
+        Faq                    $entry,
+        EntityManagerInterface $em,
     ): Response
     {
         if ($this->isCsrfTokenValid('delete', $request->get('_token'))) {
@@ -61,15 +61,15 @@ class FaqController extends AbstractController
     }
 
     /**
-     * 
+     *
      * @param Faq $entry
      * @param EntityManagerInterface $em
      * @return Response
      */
     #[Route('/restore/{id}', name: 'app_dashboard_restore_faq')]
     public function restore(
-            Faq $entry,
-            EntityManagerInterface $em,
+        Faq                    $entry,
+        EntityManagerInterface $em,
     ): Response
     {
         $entry->setDeletedAt(null);
@@ -80,7 +80,7 @@ class FaqController extends AbstractController
     }
 
     /**
-     * 
+     *
      * @param Request $request
      * @param EntityManagerInterface $em
      * @param UserInterface $user
@@ -88,9 +88,9 @@ class FaqController extends AbstractController
      */
     #[Route('/create', name: 'app_dashboard_create_faq', methods: ['GET', 'POST'])]
     public function create(
-            Request $request,
-            EntityManagerInterface $em,
-            UserInterface $user,
+        Request                $request,
+        EntityManagerInterface $em,
+        UserInterface          $user,
     ): Response
     {
         $entry = new Faq();
@@ -106,12 +106,12 @@ class FaqController extends AbstractController
         }
 
         return $this->render('dashboard/content/faq/_form.html.twig', $this->build($user) + [
-                    'form' => $form,
-        ]);
+                'form' => $form,
+            ]);
     }
 
     /**
-     * 
+     *
      * @param Request $request
      * @param Faq $entry
      * @param EntityManagerInterface $em
@@ -120,10 +120,10 @@ class FaqController extends AbstractController
      */
     #[Route('/edit/{id}', name: 'app_dashboard_edit_faq', methods: ['GET', 'POST'])]
     public function edit(
-            Request $request,
-            Faq $entry,
-            EntityManagerInterface $em,
-            UserInterface $user,
+        Request                $request,
+        Faq                    $entry,
+        EntityManagerInterface $em,
+        UserInterface          $user,
     ): Response
     {
         $form = $this->createForm(FaqType::class, $entry);
@@ -137,7 +137,7 @@ class FaqController extends AbstractController
         }
 
         return $this->render('dashboard/content/faq/_form.html.twig', $this->build($user) + [
-                    'form' => $form,
-        ]);
+                'form' => $form,
+            ]);
     }
 }

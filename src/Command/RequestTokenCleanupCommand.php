@@ -17,11 +17,11 @@ class RequestTokenCleanupCommand extends Command
     final const PERFORM = 'perform';
 
     /**
-     * 
+     *
      * @param ResetPasswordRequestRepository $repository
      */
     public function __construct(
-            private ResetPasswordRequestRepository $repository,
+        private ResetPasswordRequestRepository $repository,
     )
     {
         parent::__construct();
@@ -33,14 +33,14 @@ class RequestTokenCleanupCommand extends Command
     }
 
     /**
-     * 
+     *
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int
      */
     protected function execute(
-            InputInterface $input,
-            OutputInterface $output,
+        InputInterface  $input,
+        OutputInterface $output,
     ): int
     {
         $io = new SymfonyStyle($input, $output);
@@ -52,10 +52,10 @@ class RequestTokenCleanupCommand extends Command
         if ($input->getOption(self::PERFORM)) {
             $io->note('performing...');
             $result = $this->repository
-                    ->createQueryBuilder('rt')
-                    ->delete()
-                    ->where('rt.expiresAt < :expiresAt')
-                    ->setParameter('expiresAt', $now->format('Y-m-d H:i'));
+                ->createQueryBuilder('rt')
+                ->delete()
+                ->where('rt.expiresAt < :expiresAt')
+                ->setParameter('expiresAt', $now->format('Y-m-d H:i'));
 
             $count = $result->getQuery()->getSingleScalarResult();
             $perform = true;

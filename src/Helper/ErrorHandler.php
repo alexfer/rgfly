@@ -8,7 +8,7 @@ final class ErrorHandler
 {
 
     /**
-     * 
+     *
      * @param Form $form
      * @return array
      */

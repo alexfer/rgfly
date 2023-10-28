@@ -8,11 +8,7 @@ use App\Form\Type\User\ResetPasswordRequestFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\{
-    RedirectResponse,
-    Request,
-    Response,
-};
+use Symfony\Component\HttpFoundation\{RedirectResponse, Request, Response,};
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -29,16 +25,16 @@ class ResetPasswordController extends AbstractController
     use ResetPasswordControllerTrait;
 
     /**
-     * 
+     *
      * @param ResetPasswordHelperInterface $resetPasswordHelper
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(
-            private ResetPasswordHelperInterface $resetPasswordHelper,
-            private EntityManagerInterface $entityManager
+        private ResetPasswordHelperInterface $resetPasswordHelper,
+        private EntityManagerInterface       $entityManager
     )
     {
-        
+
     }
 
     /**
@@ -46,9 +42,9 @@ class ResetPasswordController extends AbstractController
      */
     #[Route('/', name: 'app_forgot_password_request')]
     public function request(
-            Request $request,
-            MailerInterface $mailer,
-            TranslatorInterface $translator,
+        Request             $request,
+        MailerInterface     $mailer,
+        TranslatorInterface $translator,
     ): Response
     {
         $form = $this->createForm(ResetPasswordRequestFormType::class);
@@ -56,14 +52,14 @@ class ResetPasswordController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->processSendingPasswordResetEmail(
-                            $form->get('email')->getData(),
-                            $mailer,
-                            $translator
+                $form->get('email')->getData(),
+                $mailer,
+                $translator
             );
         }
 
         return $this->render('reset_password/request.html.twig', [
-                    'requestForm' => $form->createView(),
+            'requestForm' => $form->createView(),
         ]);
     }
 
@@ -80,7 +76,7 @@ class ResetPasswordController extends AbstractController
         }
 
         return $this->render('reset_password/check_email.html.twig', [
-                    'resetToken' => $resetToken,
+            'resetToken' => $resetToken,
         ]);
     }
 
@@ -107,9 +103,9 @@ class ResetPasswordController extends AbstractController
             $user = $this->resetPasswordHelper->validateTokenAndFetchUser($token);
         } catch (ResetPasswordExceptionInterface $e) {
             $this->addFlash('reset_password_error', sprintf(
-                            '%s - %s',
-                            $translator->trans(ResetPasswordExceptionInterface::MESSAGE_PROBLEM_VALIDATE, [], 'ResetPasswordBundle'),
-                            $translator->trans($e->getReason(), [], 'ResetPasswordBundle')
+                '%s - %s',
+                $translator->trans(ResetPasswordExceptionInterface::MESSAGE_PROBLEM_VALIDATE, [], 'ResetPasswordBundle'),
+                $translator->trans($e->getReason(), [], 'ResetPasswordBundle')
             ));
 
             return $this->redirectToRoute('app_forgot_password_request');
@@ -125,8 +121,8 @@ class ResetPasswordController extends AbstractController
 
             // Encode(hash) the plain password, and set it.
             $encodedPassword = $passwordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
+                $user,
+                $form->get('plainPassword')->getData()
             );
 
             $user->setPassword($encodedPassword);
@@ -139,14 +135,14 @@ class ResetPasswordController extends AbstractController
         }
 
         return $this->render('reset_password/reset.html.twig', [
-                    'resetForm' => $form->createView(),
+            'resetForm' => $form->createView(),
         ]);
     }
 
     private function processSendingPasswordResetEmail(
-            string $emailFormData,
-            MailerInterface $mailer,
-            TranslatorInterface $translator,
+        string              $emailFormData,
+        MailerInterface     $mailer,
+        TranslatorInterface $translator,
     ): RedirectResponse
     {
         $user = $this->entityManager->getRepository(User::class)->findOneBy([
@@ -166,23 +162,22 @@ class ResetPasswordController extends AbstractController
             // Caution: This may reveal if a user is registered or not.
             //
             $this->addFlash('reset_password_error', sprintf(
-                            '%s - %s',
-                            $translator->trans(ResetPasswordExceptionInterface::MESSAGE_PROBLEM_HANDLE, [], 'ResetPasswordBundle'),
-                            $translator->trans($e->getReason(), [], 'ResetPasswordBundle')
+                '%s - %s',
+                $translator->trans(ResetPasswordExceptionInterface::MESSAGE_PROBLEM_HANDLE, [], 'ResetPasswordBundle'),
+                $translator->trans($e->getReason(), [], 'ResetPasswordBundle')
             ));
 
             return $this->redirectToRoute('app_check_email');
         }
 
         $email = (new TemplatedEmail())
-                ->from(new Address('no-reply@gmail.com', 'Techspace Notification'))
-                ->to($user->getEmail())
-                ->subject('Your password reset request')
-                ->htmlTemplate('reset_password/email.html.twig')
-                ->context([
-            'resetToken' => $resetToken,
-                ])
-        ;
+            ->from(new Address('no-reply@gmail.com', 'Techspace Notification'))
+            ->to($user->getEmail())
+            ->subject('Your password reset request')
+            ->htmlTemplate('reset_password/email.html.twig')
+            ->context([
+                'resetToken' => $resetToken,
+            ]);
 
         $mailer->send($email);
 

@@ -10,46 +10,63 @@
                     <div class="image-container">
                         {% for picture in entry.details.attach|slice(0, 1) %}
                             {% set _picture = 'user/picture/' ~ entry.id ~ '/' ~ picture.name %}
-                            <img id="imgProfile" class="img-thumbnail" src="{{ asset(_picture) | imagine_filter('user_preview') }}" />
-                        {% else %}  
-                            <img src="http://placehold.it/150x150" id="imgProfile" class="img-thumbnail" />
-                        {% endfor %}                        
+                            <img id="imgProfile" class="img-thumbnail"
+                                 src="{{ asset(_picture) | imagine_filter('user_preview') }}"/>
+                        {% else %}
+                            <img src="http://placehold.it/150x150" id="imgProfile" class="img-thumbnail"/>
+                        {% endfor %}
                         <div class="middle">
-                            <input type="button" class="btn btn-secondary" id="btnChangePicture" data-confirm="{{ 'form.action.confirm'|trans }}" value="{{ 'form.action.change'|trans }}" />
-                            <input type="file" id="profilePicture" name="file" />
-                            <input type="hidden" name="route" id="route" value="{{ path('app_dashboard_change_picture_user', {id: entry.id}) }}">
+                            <input type="button" class="btn btn-secondary" id="btnChangePicture"
+                                   data-confirm="{{ 'form.action.confirm'|trans }}"
+                                   value="{{ 'form.action.change'|trans }}"/>
+                            <input type="file" id="profilePicture" name="file"/>
+                            <input type="hidden" name="route" id="route"
+                                   value="{{ path('app_dashboard_change_picture_user', {id: entry.id}) }}">
                         </div>
                     </div>
                     <div class="userData ml-3">
-                        <h5 class="d-block"><a href="javascript:void(0);">{{ entry.details.firstName }} {{ entry.details.lastName }}</a></h5>
+                        <h5 class="d-block"><a
+                                    href="javascript:void(0);">{{ entry.details.firstName }} {{ entry.details.lastName }}</a>
+                        </h5>
                         <h6 class="d-block"><a href="javascript:void(0)">1,500</a> Video Uploads</h6>
                         <h6 class="d-block"><a href="javascript:void(0)">300</a> Blog Posts</h6>
-                        <h6 class="d-block"><a class="link" href="mailto:{{ entry.email }}"><i class="bi bi-envelope-fill pr-2"></i> {{ entry.email }}</a></h6>
+                        <h6 class="d-block"><a class="link" href="mailto:{{ entry.email }}"><i
+                                        class="bi bi-envelope-fill pr-2"></i> {{ entry.email }}</a></h6>
                     </div>
                     <div class="ml-auto">
-                        <input type="button" class="btn btn-sm btn-secondary d-none" id="btnDiscard" value="{{ 'form.action.cancel'|trans }}" />
+                        <input type="button" class="btn btn-sm btn-secondary d-none" id="btnDiscard"
+                               value="{{ 'form.action.cancel'|trans }}"/>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-12">                    
-                    {% set _tab = app.request.get('tab')  %}
+                <div class="col-12">
+                    {% set _tab = app.request.get('tab') %}
                     <ul class="nav nav-tabs nav-justified mb-4" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link {{ _tab == 'summary' ? 'active' : null }}" id="summary-tab" data-toggle="tab" href="#summary" role="tab" aria-controls="summary" aria-selected="true">{{ 'user.tab.summary'|trans }}</a>
-                        </li>                        
-                        <li class="nav-item">
-                            <a class="nav-link {{ _tab == 'location' ? 'active' : null }}" id="location-tab" data-toggle="tab" href="#location" role="tab" aria-controls="location" aria-selected="false">{{ 'user.tab.location'|trans }}</a>
+                            <a class="nav-link {{ _tab == 'summary' ? 'active' : null }}" id="summary-tab"
+                               data-toggle="tab" href="#summary" role="tab" aria-controls="summary"
+                               aria-selected="true">{{ 'user.tab.summary'|trans }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ _tab == 'security' ? 'active' : null }}" id="security-tab" data-toggle="tab" href="#security" role="tab" aria-controls="security" aria-selected="false">{{ 'user.tab.security'|trans }}</a>
+                            <a class="nav-link {{ _tab == 'location' ? 'active' : null }}" id="location-tab"
+                               data-toggle="tab" href="#location" role="tab" aria-controls="location"
+                               aria-selected="false">{{ 'user.tab.location'|trans }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ _tab == 'about' ? 'active' : null }}" id="about-tab" data-toggle="tab" href="#about" role="tab" aria-controls="about" aria-selected="false">{{ 'user.tab.about'|trans }}</a>
+                            <a class="nav-link {{ _tab == 'security' ? 'active' : null }}" id="security-tab"
+                               data-toggle="tab" href="#security" role="tab" aria-controls="security"
+                               aria-selected="false">{{ 'user.tab.security'|trans }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ _tab == 'about' ? 'active' : null }}" id="about-tab" data-toggle="tab"
+                               href="#about" role="tab" aria-controls="about"
+                               aria-selected="false">{{ 'user.tab.about'|trans }}</a>
                         </li>
                     </ul>
                     <div class="tab-content ml-3" id="tabs">
-                        <div class="tab-pane fade {{ _tab == 'summary' ? 'show active' : null }}" id="summary" role="tabpanel" aria-labelledby="summary-tab">
+                        <div class="tab-pane fade {{ _tab == 'summary' ? 'show active' : null }}" id="summary"
+                             role="tabpanel" aria-labelledby="summary-tab">
                             <div class="row">
                                 <div class="col-sm-3 col-md-2 col-5">
                                     <label>{{ 'user.info.first_name'|trans }}</label>
@@ -58,7 +75,7 @@
                                     {{ entry.details.firstName }}
                                 </div>
                             </div>
-                            <hr />
+                            <hr/>
                             <div class="row">
                                 <div class="col-sm-3 col-md-2 col-5">
                                     <label>{{ 'user.info.last_name'|trans }}</label>
@@ -67,7 +84,7 @@
                                     {{ entry.details.lastName }}
                                 </div>
                             </div>
-                            <hr />
+                            <hr/>
                             <div class="row">
                                 <div class="col-sm-3 col-md-2 col-5">
                                     <label>{{ 'user.info.phone_number'|trans }}</label>
@@ -76,7 +93,7 @@
                                     {{ entry.details.phone|default('n/a') }}
                                 </div>
                             </div>
-                            <hr />
+                            <hr/>
                             <div class="row">
                                 <div class="col-sm-3 col-md-2 col-5">
                                     <label>{{ 'user.info.birth_date'|trans }}</label>
@@ -85,7 +102,7 @@
                                     {{ entry.details.dateBirth|date(date_format)|default('n/a') }}
                                 </div>
                             </div>
-                            <hr />
+                            <hr/>
                             <div class="row">
                                 <div class="col-sm-3 col-md-2 col-5">
                                     <label>{{ 'user.info.registered'|trans }}</label>
@@ -94,7 +111,7 @@
                                     {{ entry.createdAt|date(datetime_format) }}
                                 </div>
                             </div>
-                            <hr />
+                            <hr/>
                             <div class="row">
                                 <div class="col-sm-3 col-md-2 col-5">
                                     <label>{{ 'user.info.last_login'|trans }}</label>
@@ -103,7 +120,7 @@
                                     {{ entry.details.updatedAt|date(datetime_format) }}
                                 </div>
                             </div>
-                            <hr />
+                            <hr/>
                             <div class="row">
                                 <div class="col-sm-3 col-md-2 col-5">
                                     <label>{{ 'user.info.ip_address'|trans }}</label>
@@ -113,7 +130,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade {{ _tab == 'location' ? 'show active' : null }}" id="location" role="tabpanel" aria-labelledby="location-tab">
+                        <div class="tab-pane fade {{ _tab == 'location' ? 'show active' : null }}" id="location"
+                             role="tabpanel" aria-labelledby="location-tab">
                             <div class="row">
                                 <div class="col-sm-3 col-md-2 col-5">
                                     <label>{{ 'user.info.country'|trans }}</label>
@@ -122,7 +140,7 @@
                                     {{ country|default('n/a') }}
                                 </div>
                             </div>
-                            <hr />
+                            <hr/>
                             <div class="row">
                                 <div class="col-sm-3 col-md-2 col-5">
                                     <label>{{ 'user.info.city'|trans }}</label>
@@ -132,16 +150,18 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade {{ _tab == 'security' ? 'show active' : null }}" id="security" role="tabpanel" aria-labelledby="security-tab">
+                        <div class="tab-pane fade {{ _tab == 'security' ? 'show active' : null }}" id="security"
+                             role="tabpanel" aria-labelledby="security-tab">
                             {% include 'dashboard/content/user/_form.html.twig' %}
-                        </div>        
-                        <div class="tab-pane fade {{ _tab == 'about' ? 'show active' : null }}" id="about" role="tabpanel" aria-labelledby="about-tab">
+                        </div>
+                        <div class="tab-pane fade {{ _tab == 'about' ? 'show active' : null }}" id="about"
+                             role="tabpanel" aria-labelledby="about-tab">
                             {% if  entry.details.about is not empty %}
                                 {{ entry.details.about|nl2br|raw }}
                             {% else %}
                                 {{ ''|default('n/a') }}
                             {% endif %}
-                            <hr />
+                            <hr/>
                         </div>
                     </div>
                 </div>

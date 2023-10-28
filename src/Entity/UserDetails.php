@@ -2,15 +2,8 @@
 
 namespace App\Entity;
 
-use App\Entity\{
-    User,
-    Attach,
-};
-use Doctrine\Common\Collections\{
-    ArrayCollection,
-    Collection,
-};
 use App\Repository\UserDetailsRepository;
+use Doctrine\Common\Collections\{ArrayCollection, Collection,};
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 

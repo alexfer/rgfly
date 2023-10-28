@@ -2,10 +2,10 @@
 
 namespace App\Controller\Dashboard;
 
+use App\Service\Dashboard;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Service\Dashboard;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route('/dashboard')]
@@ -15,7 +15,7 @@ class IndexController extends AbstractController
     use Dashboard;
 
     /**
-     * 
+     *
      * @param UserInterface $user
      * @return Response
      */

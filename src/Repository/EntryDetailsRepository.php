@@ -18,7 +18,7 @@ class EntryDetailsRepository extends ServiceEntityRepository
 {
 
     /**
-     * 
+     *
      * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
