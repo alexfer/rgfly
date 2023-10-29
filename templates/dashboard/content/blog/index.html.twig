@@ -27,10 +27,10 @@
                     <td>
                         <a
                                 data-toggle="tooltip"
-                                data-placement="top"
+                                data-placement="bottom"
                                 class="link"
                                 title="{{ entry.details.title }}"
-                                href="#">
+                                href="{{ path('app_dashboard_edit_blog', {id: entry.id}) }}">
                             {{ entry.details.title|length > 30 ? entry.details.title|slice(0, 30) ~ '...' : entry.details.title }}
                         </a>
                     </td>
