@@ -5,6 +5,7 @@ namespace App\Security\Voter;
 use App\Entity\{Entry, User,};
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use Symfony\Component\Security\Core\Security;
 
 class DashboardVoter extends Voter
 {
@@ -12,6 +13,13 @@ class DashboardVoter extends Voter
     const DELETE = 'delete';
     const VIEW = 'view';
     const EDIT = 'edit';
+
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
 
     /**
      *
@@ -55,20 +63,20 @@ class DashboardVoter extends Voter
         $entry = $subject;
 
         return match ($attribute) {
-            self::DELETE => $entry->canDelete($entry, $user),
-            self::VIEW => $entry->canView($entry, $user),
-            self::EDIT => $entry->canEdit($entry, $user),
+            self::DELETE => $this->canDelete($entry, $user),
+            self::VIEW => $this->canView($entry, $user),
+            self::EDIT => $this->canEdit($entry, $user),
             default => throw new \LogicException('This code should not be reached!')
         };
     }
 
     /**
      *
-     * @param object $object
+     * @param Entry $object
      * @param User $user
      * @return bool
      */
-    private function canView(object $object, User $user): bool
+    private function canView(Entry $object, User $user): bool
     {
         // if they can edit, they can view
         if ($this->canEdit($object, $user)) {
@@ -80,23 +88,23 @@ class DashboardVoter extends Voter
 
     /**
      *
-     * @param object $object
+     * @param Entry $object
      * @param User $user
      * @return bool
      */
-    private function canEdit(object $object, User $user): bool
+    private function canEdit(Entry $object, User $user): bool
     {
-        return $user === $object->getOwner();
+        return $user === $object->getUser();
     }
 
     /**
      *
-     * @param object $object
+     * @param Entry $object
      * @param User $user
      * @return bool
      */
-    private function canDelete(object $object, User $user): bool
+    private function canDelete(Entry $object, User $user): bool
     {
-        return $user === $object->getOwner();
+        return $user === $object->getUser();
     }
 }

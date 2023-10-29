@@ -12,6 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+
+//use App\Security\Voter\DashboardVoter;
 
 
 #[Route('/dashboard/blog')]
@@ -77,6 +80,7 @@ class BlogController extends AbstractController
     }
 
     #[Route('/edit/{id}', name: 'app_dashboard_edit_blog', methods: ['GET', 'POST'])]
+    #[IsGranted('edit', 'entry')]
     public function edit(
         Request                $request,
         Entry                  $entry,

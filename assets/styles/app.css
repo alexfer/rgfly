@@ -62,6 +62,24 @@ dl, ol, ul {
 .section-padding {
     padding: 100px 0;
 }
+.color-trashed {
+    color: rgba(0, 0, 0, .75);
+}
+.color-published {
+    color: rgba(94, 116, 244, 0.75);
+}
+.color-draft {
+    color: rgba(255, 113, 113, 0.75);
+}
+.bg-trashed {
+    background-color: rgba(0, 0, 0, .14);
+}
+.bg-published {
+    background-color: rgba(94, 116, 244, 0.21);
+}
+.bg-draft {
+    background-color: rgba(255, 113, 113, 0.21);
+}
 .default-btn {
     border: none;
     position: relative;

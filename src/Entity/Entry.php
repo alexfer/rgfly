@@ -75,6 +75,11 @@ class Entry
         return $this->id;
     }
 
+    public function isPrivate(): bool
+    {
+        return true;
+    }
+
     public function getDetails(): ?EntryDetails
     {
         return $this->details;

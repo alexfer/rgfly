@@ -5,16 +5,21 @@
 {% block title_content %}{{ _title_extend }}{% endblock %}
 
 {% block content %}
+    <div class="mb-3 text-right">
+        <span class="bi bi-circle-fill mr-1 color-trashed"></span><small class="text-muted">Trashed</small>
+        <span class="bi bi-circle-fill mr-1 ml-3 color-published"></span><small class="text-muted">Published</small>
+        <span class="bi bi-circle-fill mr-1 ml-3 color-draft"></span><small class="text-muted">Draft</small>
+    </div>
     <div class="table-responsive card">
         <table class="table table-hover table-borderless">
             <thead class="bg-secondary text-white">
             <tr>
                 <th class="col-1 text-center" scope="col">{{ 'table.header.id'|trans }}</th>
-                <th class="col-4" scope="col">{{ 'table.header.title'|trans }}</th>
+                <th class="col-5" scope="col">{{ 'table.header.title'|trans }}</th>
                 {% if is_granted('ROLE_ADMIN') %}
-                    <th class="col-4" scope="col">{{ 'table.header.author'|trans }}</th>
+                    <th class="col-3" scope="col">{{ 'table.header.author'|trans }}</th>
                 {% else %}
-                    <th class="col-4" scope="col">{{ 'table.header.status'|trans }}</th>
+                    <th class="col-3" scope="col">{{ 'table.header.status'|trans }}</th>
                 {% endif %}
                 <th class="col-2 text-center" scope="col">{{ 'table.header.created_at'|trans }}</th>
                 <th class="col-1 text-center" scope="col">{{ 'table.header.handle'|trans }}</th>
@@ -23,7 +28,7 @@
             <tbody>
             {% for entry in entries %}
                 <tr>
-                    <th scope="row" class="text-center">{{ entry.id }}</th>
+                    <th scope="row" class="text-center text-muted bg-{{ entry.status }}">{{ entry.id }}</th>
                     <td>
                         <a
                                 data-toggle="tooltip"
@@ -40,7 +45,7 @@
                                href="{{ path('app_dashboard_details_user', {id: entry.user.id, tab: 'summary'}) }}">{{ entry.user.details.firstName }}</a>
                         </td>
                     {% else %}
-                        <td>Status</td>
+                        <td class="color-{{ entry.status }}">{{ entry.status|capitalize }}</td>
                     {% endif %}
                     <td class="text-center">
                             <span
