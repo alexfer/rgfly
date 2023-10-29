@@ -17,18 +17,20 @@ class NewsController extends AbstractController
 
     const CHILDRENS = [
         'news' => [
-            'menu.dashboard.oveview_news' => 'app_dashboard_news',
+            'menu.dashboard.overview_news' => 'app_dashboard_news',
         ],
     ];
 
-    #[Route('', name: self::CHILDRENS['news']['menu.dashboard.oveview_news'])]
+    #[Route('', name: self::CHILDRENS['news']['menu.dashboard.overview_news'])]
     public function index(
-        EntryRepository $reposiroty,
+        EntryRepository $repository,
         UserInterface   $user,
     ): Response
     {
-        return $this->render('dashboard/content/blog/index.html.twig', $this->build($user) + [
-                'entries' => $reposiroty->findBy($this->criteria($user, ['type' => 'news']), ['id' => 'desc']),
+        $entries = $repository->findBy($this->criteria($user, ['type' => 'news']), ['id' => 'desc']);
+
+        return $this->render('dashboard/content/news/index.html.twig', $this->build($user) + [
+                'entries' => $entries,
             ]);
     }
 }

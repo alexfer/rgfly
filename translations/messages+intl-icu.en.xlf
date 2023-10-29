@@ -145,7 +145,7 @@
             </trans-unit>
             <trans-unit id="menu.dashboard.overview">
                 <source>menu.dashboard.overview</source>
-                <target>Owerview</target>
+                <target>Overview</target>
             </trans-unit>
             <trans-unit id="menu.dashboard.contacts">
                 <source>menu.dashboard.contacts</source>
@@ -169,39 +169,31 @@
             </trans-unit>
             <trans-unit id="title.dashboard.overview_news">
                 <source>title.dashboard.overview_news</source>
-                <target>Overview</target>
+                <target>News Overview</target>
             </trans-unit>
             <trans-unit id="title.dashboard.overview_blog">
                 <source>title.dashboard.overview_blog</source>
                 <target>Blog Overview</target>
             </trans-unit>
-            <trans-unit id="menu.dashboard.oveview_gallery">
-                <source>menu.dashboard.oveview_gallery</source>
-                <target>Overwie</target>
+            <trans-unit id="menu.dashboard.overview_gallery">
+                <source>menu.dashboard.overview_gallery</source>
+                <target>Overview</target>
             </trans-unit>
-            <trans-unit id="menu.dashboard.oveview_articles">
-                <source>menu.dashboard.oveview_articles</source>
-                <target>Overwie</target>
+            <trans-unit id="menu.dashboard.overview_articles">
+                <source>menu.dashboard.overview_articles</source>
+                <target>Overview</target>
             </trans-unit>
-            <trans-unit id="menu.dashboard.oveview_news">
-                <source>menu.dashboard.oveview_news</source>
-                <target>Overwie</target>
+            <trans-unit id="menu.dashboard.overview_news">
+                <source>menu.dashboard.overview_news</source>
+                <target>Overview</target>
             </trans-unit>
-            <trans-unit id="menu.dashboard.overview.blogs">
-                <source>menu.dashboard.overview.blogs</source>
+            <trans-unit id="menu.dashboard.overview.blog">
+                <source>menu.dashboard.overview.blog</source>
                 <target>Overview</target>
             </trans-unit>
             <trans-unit id="menu.dashboard.create.blog">
                 <source>menu.dashboard.create.blog</source>
                 <target>Create Blog</target>
-            </trans-unit>
-            <trans-unit id="menu.dashboard.approved.blogs">
-                <source>menu.dashboard.approved.blogs</source>
-                <target>Approved Blogs</target>
-            </trans-unit>
-            <trans-unit id="menu.dashboard.latest.blogs">
-                <source>menu.dashboard.latest.blogs</source>
-                <target>New Blogs</target>
             </trans-unit>
             <trans-unit id="menu.dashboard.create_faq">
                 <source>menu.dashboard.create_faq</source>
@@ -369,12 +361,16 @@
                 <source>title.dashboard.overview.blog</source>
                 <target>Blog Overview</target>
             </trans-unit>
+            <trans-unit id="title.dashboard.overview.news">
+                <source>title.dashboard.overview.news</source>
+                <target>News Overview</target>
+            </trans-unit>
             <trans-unit id="title.dashboard.create_blog">
                 <source>title.dashboard.create_blog</source>
                 <target>Create New Blog</target>
             </trans-unit>
-            <trans-unit id="title.dashboard.cahnge_blog">
-                <source>title.dashboard.cahnge_blog</source>
+            <trans-unit id="title.dashboard.change_blog">
+                <source>title.dashboard.change_blog</source>
                 <target>Edit Blog</target>
             </trans-unit>
             <trans-unit id="title.dashboard.approved_blogs">

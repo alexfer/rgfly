@@ -8,13 +8,10 @@ use App\Repository\EntryRepository;
 use App\Service\Dashboard;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\{Request, Response,};
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-
-//use App\Security\Voter\DashboardVoter;
 
 
 #[Route('/dashboard/blog')]
@@ -25,12 +22,12 @@ class BlogController extends AbstractController
 
     const CHILDRENS = [
         'blog' => [
-            'menu.dashboard.overview.blogs' => 'app_dashboard_blog',
+            'menu.dashboard.overview.blog' => 'app_dashboard_blog',
             'menu.dashboard.create.blog' => 'app_dashboard_create_blog',
         ],
     ];
 
-    #[Route('', name: self::CHILDRENS['blog']['menu.dashboard.overview.blogs'])]
+    #[Route('', name: self::CHILDRENS['blog']['menu.dashboard.overview.blog'])]
     public function index(
         EntryRepository $repository,
         UserInterface   $user,
@@ -93,7 +90,10 @@ class BlogController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $entry->setStatus($form->get('status')->getData())->setUpdatedAt(new \DateTime());
+            $entry->setStatus($form->get('status')->getData())
+                ->setUpdatedAt(new \DateTime())
+                ->setDeletedAt($form->get('status')->getData() == 'trashed' ? new \DateTime() : null);
+
             $em->persist($entry);
             $em->flush();
 
