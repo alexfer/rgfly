@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use App\Utils\Paginator;
+
 
 #[Route('/dashboard/blog')]
 class BlogController extends AbstractController
@@ -29,14 +29,14 @@ class BlogController extends AbstractController
 
     #[Route('', name: self::CHILDRENS['blog']['menu.dashboard.overview.blogs'])]
     public function index(
-        EntryRepository $reposiroty,
+        EntryRepository $repository,
         UserInterface   $user,
     ): Response
     {
-        $query = $reposiroty->findBy($this->criteria($user, ['type' => 'blog']), ['id' => 'desc']);
+        $entries = $repository->findBy($this->criteria($user, ['type' => 'blog']), ['id' => 'desc']);
 
         return $this->render('dashboard/content/blog/index.html.twig', $this->build($user) + [
-                'entries' => $reposiroty->findBy($this->criteria($user, ['type' => 'blog']), ['id' => 'desc']),
+                'entries' => $entries,
             ]);
     }
 
