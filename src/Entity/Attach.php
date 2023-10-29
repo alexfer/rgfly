@@ -2,12 +2,15 @@
 
 namespace App\Entity;
 
+use App\Entity\UserDetails;
 use App\Repository\AttachRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AttachRepository::class)]
-#[ORM\Table(name: 'file')]
+#[ORM\Table(name: 'attach')]
 class Attach
 {
 
@@ -16,12 +19,9 @@ class Attach
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: UserDetails::class, inversedBy: 'file')]
-    #[ORM\JoinColumn(nullable: false, name: "relation_id", referencedColumnName: "id", onDelete: "CASCADE")]
-    private ?UserDetails $details = null;
-
-    #[ORM\Column(type: Types::INTEGER)]
-    private ?int $relation_id = null;
+    #[ORM\ManyToOne(targetEntity: UserDetails::class, inversedBy: 'attach')]
+    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
+    private ?UserDetails $user = null;
 
     #[ORM\Column(type: Types::STRING)]
     private string $name;
@@ -35,22 +35,36 @@ class Attach
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private \DateTime $created_at;
 
+    #[ORM\OneToMany(mappedBy: 'attach', targetEntity: EntryAttachment::class)]
+    private Collection $entryAttachments;
+
     public function __construct()
     {
         $this->created_at = new \DateTime();
         $this->size = 0;
+        $this->entryAttachments = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return $this
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -58,11 +72,18 @@ class Attach
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getMime(): ?string
     {
         return $this->mime;
     }
 
+    /**
+     * @param string $mime
+     * @return $this
+     */
     public function setMime(string $mime): self
     {
         $this->mime = $mime;
@@ -70,11 +91,18 @@ class Attach
         return $this;
     }
 
+    /**
+     * @return int|null
+     */
     public function getSize(): ?int
     {
         return $this->size;
     }
 
+    /**
+     * @param int $size
+     * @return $this
+     */
     public function setSize(int $size): self
     {
         $this->size = $size;
@@ -82,26 +110,51 @@ class Attach
         return $this;
     }
 
-    public function getRelationId(): ?int
+    /**
+     * @return UserDetails
+     */
+    public function getUser(): UserDetails
     {
-        return $this->relation_id;
+        return $this->user;
     }
 
-    public function setRelationId(int $relation_id): self
+    /**
+     * @param UserDetails $user
+     * @return $this
+     */
+    public function setUser(UserDetails $user): self
     {
-        $this->relation_id = $relation_id;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getDetails(): ?UserDetails
+    /**
+     * @return Collection<int, EntryAttachment>
+     */
+    public function getEntryAttachments(): Collection
     {
-        return $this->details;
+        return $this->entryAttachments;
     }
 
-    public function setDetails(?UserDetails $details): self
+    public function addEntryAttachment(EntryAttachment $entryAttachment): static
     {
-        $this->details = $details;
+        if (!$this->entryAttachments->contains($entryAttachment)) {
+            $this->entryAttachments->add($entryAttachment);
+            $entryAttachment->setAttach($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntryAttachment(EntryAttachment $entryAttachment): static
+    {
+        if ($this->entryAttachments->removeElement($entryAttachment)) {
+            // set the owning side to null (unless already changed)
+            if ($entryAttachment->getAttach() === $this) {
+                $entryAttachment->setAttach(null);
+            }
+        }
 
         return $this;
     }

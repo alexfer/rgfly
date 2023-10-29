@@ -27,8 +27,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(targetEntity: UserDetails::class, mappedBy: 'user', orphanRemoval: true, cascade: ['persist'])]
-    private ?UserDetails $details = null;
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserDetails::class, cascade: ['persist'], orphanRemoval: true)]
+    private ?UserDetails $userDetails = null;
 
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
@@ -40,7 +40,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\Ip]
     private ?string $ip = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
@@ -74,14 +73,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getDetails(): ?UserDetails
+    /**
+     * @return UserDetails|null
+     */
+    public function getUserDetails(): ?UserDetails
     {
-        return $this->details;
+        return $this->userDetails;
     }
 
-    public function setDetails(?UserDetails $details): self
+    public function setUserDetails(?UserDetails $userDetails): static
     {
-        $this->details = $details;
+        // unset the owning side of the relation if necessary
+        if ($userDetails === null && $this->userDetails !== null) {
+            $this->userDetails->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($userDetails !== null && $userDetails->getUser() !== $this) {
+            $userDetails->setUser($this);
+        }
+
+        $this->userDetails = $userDetails;
 
         return $this;
     }
@@ -120,7 +132,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): static
+    public function setRoles(array $roles): self
     {
         $this->roles = $roles;
 
@@ -135,7 +147,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(string $password): self
     {
         $this->password = $password;
 
@@ -147,9 +159,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTime $created_at): void
+    public function setCreatedAt(\DateTime $created_at): self
     {
         $this->created_at = $created_at;
+
+        return $this;
     }
 
     public function getDeletedAt(): ?\DateTime
@@ -157,7 +171,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->deleted_at;
     }
 
-    public function setDeletedAt(\DateTime $deleted_at): static
+    public function setDeletedAt(?\DateTime $deleted_at): self
     {
         $this->deleted_at = $deleted_at;
 

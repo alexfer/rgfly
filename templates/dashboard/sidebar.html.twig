@@ -1,17 +1,17 @@
 <div class="sidebar-header">
     <div class="user-pic">
-        {% for picture in app.user.details.attach|slice(0, 1) %}
-            {% set _picture = 'user/picture/' ~ app.user.id ~ '/' ~ picture.name %}
-            <img class="img-responsive img-rounded" src="{{ asset(_picture) | imagine_filter('user_thumb') }}"
-                 alt="{{ app.user.details.firstName }} {{ app.user.details.lastName }}">
-        {% else %}
-            <img class="img-responsive img-rounded" src="{{ asset('img/user-picture.jpg') }}"
-                 alt="{{ app.user.details.firstName }} {{ app.user.details.lastName }}">
-        {% endfor %}
+{#        {% for picture in app.user.userDetails.attach|slice(0, 1) %}#}
+{#            {% set _picture = 'user/picture/' ~ app.user.id ~ '/' ~ picture.name %}#}
+{#            <img class="img-responsive img-rounded" src="{{ asset(_picture) | imagine_filter('user_thumb') }}"#}
+{#                 alt="{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}">#}
+{#        {% else %}#}
+{#            <img class="img-responsive img-rounded" src="{{ asset('img/user-picture.jpg') }}"#}
+{#                 alt="{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}">#}
+{#        {% endfor %}#}
     </div>
     <div class="user-info">
-        <span class="user-name">{{ app.user.details.firstName }}
-            <strong>{{ app.user.details.lastName }}</strong>
+        <span class="user-name">{{ app.user.userDetails.firstName }}
+            <strong>{{ app.user.userDetails.lastName }}</strong>
         </span>
         <span class="user-role">{{ app.user.roles[0]|replace({'ROLE_': ''})|capitalize }}</span>
         <span class="user-status">
@@ -83,7 +83,7 @@
                 <span class="badge badge-pill badge-info mt-1 float-right">{{ count[key] }}</span>
             </a>
             <div class="collapse {{ key }} {{ _part == key ? 'show': '' }}">
-                {% for message, route in childrens[key] %}
+                {% for message, route in children[key] %}
                     <a class="nav-link {{ _route == route ? 'active' : '' }}" href="{{ path(route) }}">
                         <i class="bi bi-arrow-right-short"></i>
                         {{ message|trans }}

@@ -11,17 +11,12 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(columns: ['content'], flags: ['fulltext'])]
 class EntryDetails
 {
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $entry_id = null;
-
-    #[ORM\ManyToOne(targetEntity: Entry::class)]
-    #[ORM\JoinColumn(nullable: false, name: "entry_id", referencedColumnName: "id", onDelete: "CASCADE")]
+    #[ORM\OneToOne(inversedBy: 'entryDetails', cascade: ['persist', 'remove'])]
     private ?Entry $entry = null;
 
     #[ORM\Column(type: Types::STRING, length: 255)]
@@ -35,35 +30,18 @@ class EntryDetails
         return $this->id;
     }
 
-    public function getEntry(): ?Entry
-    {
-        return $this->entry;
-    }
-
-    public function setEntry(?Entry $entry): self
-    {
-        $this->entry = $entry;
-
-        return $this;
-    }
-
-    public function getEntryId(): ?int
-    {
-        return $this->entry_id;
-    }
-
-    public function setEntryId(int $entry_id): static
-    {
-        $this->entry_id = $entry_id;
-
-        return $this;
-    }
-
+    /**
+     * @return string|null
+     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
+    /**
+     * @param string $title
+     * @return $this
+     */
     public function setTitle(string $title): static
     {
         $this->title = $title;
@@ -71,15 +49,35 @@ class EntryDetails
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getContent(): ?string
     {
         return $this->content;
     }
 
+    /**
+     * @param string $content
+     * @return $this
+     */
     public function setContent(string $content): static
     {
         $this->content = $content;
 
         return $this;
     }
+
+    public function getEntry(): ?Entry
+    {
+        return $this->entry;
+    }
+
+    public function setEntry(?Entry $entry): static
+    {
+        $this->entry = $entry;
+
+        return $this;
+    }
+
 }

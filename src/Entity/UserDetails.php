@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserDetailsRepository;
+use App\Entity\User;
+use \App\Entity\Attach;
 use Doctrine\Common\Collections\{ArrayCollection, Collection,};
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -33,7 +35,7 @@ class UserDetails
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable: false, name: "user_id", referencedColumnName: "id", onDelete: "CASCADE")]
+    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     private ?User $user = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -54,16 +56,10 @@ class UserDetails
     #[ORM\Column(type: Types::TEXT, length: 65535, nullable: true)]
     private ?string $about = null;
 
-    #[ORM\Column]
-    private ?int $user_id = null;
-
-    #[ORM\OneToMany(targetEntity: Attach::class, mappedBy: 'details', orphanRemoval: true, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'attach', targetEntity: Attach::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(name: "attach_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     #[ORM\OrderBy(['created_at' => 'DESC'])]
-    #[ORM\setMaxResults(1)]
     private ?Collection $attach;
-
-    #[ORM\Column(type: Types::INTEGER)]
-    private ?int $attach_id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTime $date_birth = null;
@@ -75,7 +71,6 @@ class UserDetails
     {
         $this->updated_at = new \DateTime();
         $this->date_birth = new \DateTime('2005-01-01');
-        $this->attach_id = 0;
         $this->attach = new ArrayCollection();
     }
 
@@ -108,12 +103,12 @@ class UserDetails
         return $this;
     }
 
-    public function getAttach(): Collection
+    public function getAttach(): ?Collection
     {
         return $this->attach;
     }
 
-    public function setAttach($attach): static
+    public function setAttach(Collection $attach): static
     {
         $this->attach = $attach;
 
@@ -188,18 +183,6 @@ class UserDetails
     public function setUpdatedAt(\DateTime $updated_at): static
     {
         $this->updated_at = $updated_at;
-
-        return $this;
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->user_id;
-    }
-
-    public function setUserId(int $user_id): static
-    {
-        $this->user_id = $user_id;
 
         return $this;
     }

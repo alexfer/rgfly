@@ -11,7 +11,7 @@ trait Dashboard
 
     /**
      *
-     * @var EntryRepository
+     * @var EntryRepository|null
      */
     private ?EntryRepository $repository = null;
 
@@ -35,7 +35,7 @@ trait Dashboard
         $securityContext = $this->container->get('security.authorization_checker');
 
         $options = [
-            'user_id' => $user->getId(),
+            'user' => $user,
         ];
 
         if ($criteria && \count($criteria)) {
@@ -43,25 +43,25 @@ trait Dashboard
         }
 
         if ($securityContext->isGranted('ROLE_ADMIN')) {
-            unset($options['user_id']);
+            unset($options['user']);
         }
 
         return $options;
     }
 
     /**
-     *
-     * @return array
+     * @param UserInterface $user
+     * @return array[]
      */
     public function build(UserInterface $user): array
     {
-        $navbar = $childrens = $count = [];
+        $navbar = $children = $count = [];
         foreach (\array_flip(Entry::TYPE) as $key => $class) {
             $class = sprintf('\App\Controller\Dashboard\%sController', $class);
             if (\class_exists($class)) {
 
                 $navbar[$key] = $class;
-                $childrens[$key] = $class::CHILDRENS[$key];
+                $children[$key] = $class::CHILDRENS[$key];
                 $count[$key] = $this->repository->count($this->criteria($user, [
                     'type' => $key,
                     'deleted_at' => null,
@@ -71,7 +71,7 @@ trait Dashboard
 
         return [
             'navbar' => $navbar,
-            'childrens' => $childrens,
+            'children' => $children,
             'count' => $count,
         ];
     }

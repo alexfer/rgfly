@@ -3,7 +3,7 @@
 namespace App\Form\Type\Dashboard;
 
 use App\Entity\Entry;
-use App\Entity\EntryDetails;
+use App\Entity\EntryDetailsOld;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{SubmitType, TextType,};
