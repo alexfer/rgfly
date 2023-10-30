@@ -43,7 +43,7 @@ class SecurityController extends AbstractController
 
         return $this->render('security/index.html.twig', [
             'form' => $form->createView(),
-            'last_username' => $authenticationUtils->getLastUsername(),
+            'last_username' => $default['email'],
             'error' => $error,
         ]);
     }

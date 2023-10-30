@@ -82,6 +82,7 @@ $(function () {
             reader.readAsDataURL(input.files[0]);
         }
     }
+
     $('#btnChangePicture').on('click', function () {
 
         if (!$('#btnChangePicture').hasClass('changing')) {
@@ -111,6 +112,7 @@ $(function () {
             });
         }
     });
+
     $('#profilePicture').on('change', function () {
         readURL(this);
         $('#btnChangePicture').attr('value', $('#btnChangePicture').attr('data-confirm')).addClass('changing');
