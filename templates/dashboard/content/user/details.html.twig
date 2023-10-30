@@ -1,6 +1,6 @@
 {% extends 'dashboard/index.html.twig' %}
 
-{% block title_content %}{{ entry.details.firstName }} {{ entry.details.lastName }}{% endblock %}
+{% block title_content %}{{ entry.userDetails.firstName }} {{ entry.userDetails.lastName }}{% endblock %}
 
 {% block content %}
     <div class="card user-info">
@@ -8,7 +8,7 @@
             <div class="card-title mb-4">
                 <div class="d-flex justify-content-start">
                     <div class="image-container">
-                        {% for picture in entry.details.attach|slice(0, 1) %}
+                        {% for picture in entry.userDetails.attach|slice(0, 1) %}
                             {% set _picture = 'user/picture/' ~ entry.id ~ '/' ~ picture.name %}
                             <img id="imgProfile" class="img-thumbnail"
                                  src="{{ asset(_picture) | imagine_filter('user_preview') }}"/>
@@ -26,7 +26,7 @@
                     </div>
                     <div class="userData ml-3">
                         <h5 class="d-block"><a
-                                    href="javascript:void(0);">{{ entry.details.firstName }} {{ entry.details.lastName }}</a>
+                                    href="javascript:void(0);">{{ entry.userDetails.firstName }} {{ entry.userDetails.lastName }}</a>
                         </h5>
                         <h6 class="d-block"><a href="javascript:void(0)">1,500</a> Video Uploads</h6>
                         <h6 class="d-block"><a href="javascript:void(0)">300</a> Blog Posts</h6>
@@ -72,7 +72,7 @@
                                     <label>{{ 'user.info.first_name'|trans }}</label>
                                 </div>
                                 <div class="col-md-8 col-6">
-                                    {{ entry.details.firstName }}
+                                    {{ entry.userDetails.firstName }}
                                 </div>
                             </div>
                             <hr/>
@@ -81,7 +81,7 @@
                                     <label>{{ 'user.info.last_name'|trans }}</label>
                                 </div>
                                 <div class="col-md-8 col-6">
-                                    {{ entry.details.lastName }}
+                                    {{ entry.userDetails.lastName }}
                                 </div>
                             </div>
                             <hr/>
@@ -90,7 +90,7 @@
                                     <label>{{ 'user.info.phone_number'|trans }}</label>
                                 </div>
                                 <div class="col-md-8 col-6">
-                                    {{ entry.details.phone|default('n/a') }}
+                                    {{ entry.userDetails.phone|default('n/a') }}
                                 </div>
                             </div>
                             <hr/>
@@ -99,7 +99,7 @@
                                     <label>{{ 'user.info.birth_date'|trans }}</label>
                                 </div>
                                 <div class="col-md-8 col-6">
-                                    {{ entry.details.dateBirth|date(date_format)|default('n/a') }}
+                                    {{ entry.userDetails.dateBirth|date(date_format)|default('n/a') }}
                                 </div>
                             </div>
                             <hr/>
@@ -117,7 +117,7 @@
                                     <label>{{ 'user.info.last_login'|trans }}</label>
                                 </div>
                                 <div class="col-md-8 col-6">
-                                    {{ entry.details.updatedAt|date(datetime_format) }}
+                                    {{ entry.userDetails.updatedAt|date(datetime_format) }}
                                 </div>
                             </div>
                             <hr/>
@@ -126,7 +126,7 @@
                                     <label>{{ 'user.info.ip_address'|trans }}</label>
                                 </div>
                                 <div class="col-md-8 col-6">
-                                    {{ entry.ip|default('n/a') }}
+                                    {{ entry.ip|default('0.0.0.0') }}
                                 </div>
                             </div>
                         </div>
@@ -146,7 +146,7 @@
                                     <label>{{ 'user.info.city'|trans }}</label>
                                 </div>
                                 <div class="col-md-8 col-6">
-                                    {{ entry.details.city|default('n/a') }}
+                                    {{ entry.userDetails.city|default('n/a') }}
                                 </div>
                             </div>
                         </div>
@@ -156,8 +156,8 @@
                         </div>
                         <div class="tab-pane fade {{ _tab == 'about' ? 'show active' : null }}" id="about"
                              role="tabpanel" aria-labelledby="about-tab">
-                            {% if  entry.details.about is not empty %}
-                                {{ entry.details.about|nl2br|raw }}
+                            {% if  entry.userDetails.about is not empty %}
+                                {{ entry.userDetails.about|nl2br|raw }}
                             {% else %}
                                 {{ ''|default('n/a') }}
                             {% endif %}

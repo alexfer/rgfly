@@ -20,20 +20,20 @@
             {% for entry in entries %}
                 <tr>
                     <th scope="row" class="text-center">{{ entry.id }}</th>
-                    <td>{{ entry.details.firstName }} {{ entry.details.lastName }}</td>
+                    <td>{{ entry.userDetails.firstName }} {{ entry.userDetails.lastName }}</td>
                     <td class="text-center">
                         <small data-toggle="tooltip" data-placement="top"
                                title="{{ entry.createdAt|date(datetime_format) }}"
                                class="text-muted">{{ entry.createdAt|date(date_format) }}</small>
                     </td>
                     <td class="text-center">
-                        <small class="text-muted">{{ entry.details.updatedAt|date(datetime_format) }}</small>
+                        <small class="text-muted">{{ entry.userDetails.updatedAt|date(datetime_format) }}</small>
                     </td>
                     <td class="text-center">
                         <a
                                 data-toggle="tooltip"
                                 data-placement="top"
-                                title="{{ 'tooltip.show.more'|trans }} {{ entry.details.firstName }}"
+                                title="{{ 'tooltip.show.more'|trans }} {{ entry.userDetails.firstName }}"
                                 class="btn btn-sm btn-outline-lightning rounded"
                                 href="{{ path('app_dashboard_details_user', {id: entry.id, tab: 'summary'}) }}">
                             <i class="bi bi-person-circle"></i>

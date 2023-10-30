@@ -4,7 +4,7 @@ namespace App\Controller\Dashboard;
 
 use App\Form\Type\User\ChangePasswordProfileType;
 use App\Helper\ErrorHandler;
-use App\Repository\{OldUserDetailsRepository, UserRepository,};
+use App\Repository\{UserDetailsRepository, UserRepository,};
 use App\Service\Dashboard;
 use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
@@ -47,7 +47,7 @@ class UserController extends AbstractController
      * @param Request $request
      * @param TranslatorInterface $translator
      * @param EntityManagerInterface $em
-     * @param UserRepository $repository
+     * @param UserDetailsRepository $repository
      * @param SluggerInterface $slugger
      * @return Response
      * @throws \Exception
@@ -57,7 +57,7 @@ class UserController extends AbstractController
         Request                  $request,
         TranslatorInterface      $translator,
         EntityManagerInterface   $em,
-        OldUserDetailsRepository $repository,
+        UserDetailsRepository $repository,
         SluggerInterface         $slugger,
         CacheManager             $cacheManager,
         ParameterBagInterface    $params,
@@ -75,11 +75,12 @@ class UserController extends AbstractController
                 throw new \Exception($ex->getMessage());
             }
 
-            $entry->setAttachId($attach->getId());
+            $entry->addAttach($attach);
         }
 
         $em->persist($entry);
         $em->flush();
+
         $url = sprintf('user/picture/%d/%s', $request->get('id'), $attach->getName());
         $picture = $cacheManager->getBrowserPath(parse_url($url, PHP_URL_PATH), 'user_preview', [], null);
 
@@ -107,7 +108,7 @@ class UserController extends AbstractController
     ): Response
     {
         $entry = $repository->find($request->get('id'));
-        $country = $entry->getDetails()->getCountry();
+        $country = $entry->getUserDetails()->getCountry();
 
         $form = $this->createForm(ChangePasswordProfileType::class);
         $form->handleRequest($request);

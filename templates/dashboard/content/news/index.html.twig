@@ -20,8 +20,8 @@
             {% for entry in entries %}
                 <tr>
                     <th scope="row" class="text-center">{{ entry.id }}</th>
-                    <td>{{ entry.details.title }}</td>
-                    <td>{{ entry.user.details.firstName }} {{ entry.user.details.lastName }}</td>
+                    <td>{{ entry.entryDetails.title }}</td>
+                    <td>{{ entry.user.userDetails.firstName }} {{ entry.user.userDetails.lastName }}</td>
                     <td class="text-center">{{ entry.createdAt|date(date_format) }}</td>
                     <td class="text-center"><i class="bi bi-person-circle"></i></td>
                 </tr>

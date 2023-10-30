@@ -24,7 +24,7 @@ class EntryDetailsType extends AbstractType
         //dd($options);
         $builder->add('title', TextType::class, [
             'mapped' => false,
-            'data' => $options['data']?->getDetails()?->getTitle(),
+            'data' => $options['data']?->getEntryDetails()?->getTitle(),
             'attr' => [
                 'min' => 10,
                 'max' => 250,
@@ -43,7 +43,7 @@ class EntryDetailsType extends AbstractType
         ])
             ->add('content', CKEditorType::class, [
                 'mapped' => false,
-                'data' => $options['data']?->getDetails()?->getContent(),
+                'data' => $options['data']?->getEntryDetails()?->getContent(),
                 'attr' => [
                     'min' => 100,
                     'max' => 65535,

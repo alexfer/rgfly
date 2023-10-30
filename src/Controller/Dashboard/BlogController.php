@@ -2,7 +2,7 @@
 
 namespace App\Controller\Dashboard;
 
-use App\Entity\{Entry, EntryDetailsOld,};
+use App\Entity\{Entry, EntryDetails, EntryDetailsOld};
 use App\Form\Type\Dashboard\EntryDetailsType;
 use App\Repository\EntryRepository;
 use App\Service\Dashboard;
@@ -48,7 +48,7 @@ class BlogController extends AbstractController
     ): Response
     {
         $entry = new Entry();
-        $details = new EntryDetailsOld();
+        $details = new EntryDetails();
 
         $form = $this->createForm(EntryDetailsType::class, $entry);
         $form->handleRequest($request);
@@ -97,7 +97,7 @@ class BlogController extends AbstractController
             $em->persist($entry);
             $em->flush();
 
-            $details = $entry->getDetails();
+            $details = $entry->getEntryDetails();
 
             $details->setTitle($form->get('title')->getData())
                 ->setContent($form->get('content')->getData())

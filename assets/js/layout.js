@@ -62,8 +62,7 @@ $(function () {
             delay: {
                 'show': 100,
                 'hide': 400
-            },
-            placement: 'top'
+            }
         };
         $('[data-toggle="tooltip"]').tooltip(options);
     });
