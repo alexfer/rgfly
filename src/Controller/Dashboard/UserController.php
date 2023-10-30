@@ -4,7 +4,7 @@ namespace App\Controller\Dashboard;
 
 use App\Form\Type\User\ChangePasswordProfileType;
 use App\Helper\ErrorHandler;
-use App\Repository\{UserDetailsRepository, UserRepository,};
+use App\Repository\{OldUserDetailsRepository, UserRepository,};
 use App\Service\Dashboard;
 use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
@@ -54,13 +54,13 @@ class UserController extends AbstractController
      */
     #[Route('/details/{id}/change-picture', name: 'app_dashboard_change_picture_user', methods: ['POST'])]
     public function changePicture(
-        Request                $request,
-        TranslatorInterface    $translator,
-        EntityManagerInterface $em,
-        UserDetailsRepository  $repository,
-        SluggerInterface       $slugger,
-        CacheManager           $cacheManager,
-        ParameterBagInterface  $params,
+        Request                  $request,
+        TranslatorInterface      $translator,
+        EntityManagerInterface   $em,
+        OldUserDetailsRepository $repository,
+        SluggerInterface         $slugger,
+        CacheManager             $cacheManager,
+        ParameterBagInterface    $params,
     ): Response
     {
         $entry = $repository->find($request->get('id'));

@@ -27,9 +27,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserDetails::class, cascade: ['persist'], orphanRemoval: true)]
-    private ?UserDetails $userDetails = null;
-
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
@@ -47,6 +44,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTime $deleted_at = null;
+
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?UserDetails $userDetails = null;
 
     final public const ROLE_USER = 'ROLE_USER';
     final public const ROLE_ADMIN = 'ROLE_ADMIN';
@@ -69,31 +69,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * @return UserDetails|null
-     */
-    public function getUserDetails(): ?UserDetails
-    {
-        return $this->userDetails;
-    }
-
-    public function setUserDetails(?UserDetails $userDetails): static
-    {
-        // unset the owning side of the relation if necessary
-        if ($userDetails === null && $this->userDetails !== null) {
-            $this->userDetails->setUser(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($userDetails !== null && $userDetails->getUser() !== $this) {
-            $userDetails->setUser($this);
-        }
-
-        $this->userDetails = $userDetails;
 
         return $this;
     }
@@ -185,5 +160,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getUserDetails(): ?UserDetails
+    {
+        return $this->userDetails;
+    }
+
+    public function setUserDetails(?UserDetails $userDetails): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($userDetails === null && $this->userDetails !== null) {
+            $this->userDetails->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($userDetails !== null && $userDetails->getUser() !== $this) {
+            $userDetails->setUser($this);
+        }
+
+        $this->userDetails = $userDetails;
+
+        return $this;
     }
 }

@@ -3,9 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserDetailsRepository;
-use App\Entity\User;
-use \App\Entity\Attach;
-use Doctrine\Common\Collections\{ArrayCollection, Collection,};
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -13,7 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'user_details')]
 class UserDetails
 {
-
     const CONSTRAINTS = [
         'first_name' => [
             'min' => 3,
@@ -34,9 +32,11 @@ class UserDetails
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
+    #[ORM\OneToOne(inversedBy: 'userDetails', cascade: ['persist', 'remove'])]
     private ?User $user = null;
+
+    #[ORM\OneToMany(mappedBy: 'userDetails', targetEntity: Attach::class)]
+    private Collection $attach;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $first_name = null;
@@ -56,11 +56,6 @@ class UserDetails
     #[ORM\Column(type: Types::TEXT, length: 65535, nullable: true)]
     private ?string $about = null;
 
-    #[ORM\OneToMany(mappedBy: 'attach', targetEntity: Attach::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(name: "attach_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
-    #[ORM\OrderBy(['created_at' => 'DESC'])]
-    private ?Collection $attach;
-
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTime $date_birth = null;
 
@@ -77,6 +72,48 @@ class UserDetails
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Attach>
+     */
+    public function getAttach(): Collection
+    {
+        return $this->attach;
+    }
+
+    public function addAttach(Attach $attach): static
+    {
+        if (!$this->attach->contains($attach)) {
+            $this->attach->add($attach);
+            $attach->setUserDetails($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAttach(Attach $attach): static
+    {
+        if ($this->attach->removeElement($attach)) {
+            // set the owning side to null (unless already changed)
+            if ($attach->getUserDetails() === $this) {
+                $attach->setUserDetails(null);
+            }
+        }
+
+        return $this;
     }
 
     public function getFirstName(): ?string
@@ -103,48 +140,12 @@ class UserDetails
         return $this;
     }
 
-    public function getAttach(): ?Collection
-    {
-        return $this->attach;
-    }
-
-    public function setAttach(Collection $attach): static
-    {
-        $this->attach = $attach;
-
-        return $this;
-    }
-
-    public function getAttachId(): ?int
-    {
-        return $this->attach_id;
-    }
-
-    public function setAttachId(int $attach_id): static
-    {
-        $this->attach_id = $attach_id;
-
-        return $this;
-    }
-
-    public function getAbout(): ?string
-    {
-        return $this->about;
-    }
-
-    public function setAbout(string $about): static
-    {
-        $this->about = $about;
-
-        return $this;
-    }
-
     public function getPhone(): ?string
     {
         return $this->phone;
     }
 
-    public function setPhone(string $phone): static
+    public function setPhone(?string $phone): static
     {
         $this->phone = $phone;
 
@@ -156,7 +157,7 @@ class UserDetails
         return $this->country;
     }
 
-    public function setCountry(string $country): static
+    public function setCountry(?string $country): static
     {
         $this->country = $country;
 
@@ -168,9 +169,33 @@ class UserDetails
         return $this->city;
     }
 
-    public function setCity(string $city): static
+    public function setCity(?string $city): static
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    public function getAbout(): ?string
+    {
+        return $this->about;
+    }
+
+    public function setAbout(?string $about): static
+    {
+        $this->about = $about;
+
+        return $this;
+    }
+
+    public function getDateBirth(): ?\DateTime
+    {
+        return $this->date_birth;
+    }
+
+    public function setDateBirth(?\DateTime $date_birth): static
+    {
+        $this->date_birth = $date_birth;
 
         return $this;
     }
@@ -183,30 +208,6 @@ class UserDetails
     public function setUpdatedAt(\DateTime $updated_at): static
     {
         $this->updated_at = $updated_at;
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    public function getDateBirth(): ?\DateTime
-    {
-        return $this->date_birth;
-    }
-
-    public function setDateBirth(\DateTime $date_birth): static
-    {
-        $this->date_birth = $date_birth;
 
         return $this;
     }

@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\UserDetails;
 use App\Repository\AttachRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,10 +18,6 @@ class Attach
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: UserDetails::class, inversedBy: 'attach')]
-    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
-    private ?UserDetails $user = null;
-
     #[ORM\Column(type: Types::STRING)]
     private string $name;
 
@@ -33,10 +28,13 @@ class Attach
     private ?int $size = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private \DateTime $created_at;
+    protected \DateTime $created_at;
 
     #[ORM\OneToMany(mappedBy: 'attach', targetEntity: EntryAttachment::class)]
     private Collection $entryAttachments;
+
+    #[ORM\ManyToOne(inversedBy: 'attach')]
+    private ?UserDetails $userDetails = null;
 
     public function __construct()
     {
@@ -111,25 +109,6 @@ class Attach
     }
 
     /**
-     * @return UserDetails
-     */
-    public function getUser(): UserDetails
-    {
-        return $this->user;
-    }
-
-    /**
-     * @param UserDetails $user
-     * @return $this
-     */
-    public function setUser(UserDetails $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, EntryAttachment>
      */
     public function getEntryAttachments(): Collection
@@ -155,6 +134,18 @@ class Attach
                 $entryAttachment->setAttach(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUserDetails(): ?UserDetails
+    {
+        return $this->userDetails;
+    }
+
+    public function setUserDetails(?UserDetails $userDetails): static
+    {
+        $this->userDetails = $userDetails;
 
         return $this;
     }

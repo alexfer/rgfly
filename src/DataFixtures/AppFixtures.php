@@ -63,7 +63,7 @@ class AppFixtures extends Fixture
     private function getUserData(): array
     {
         return [
-            ['7212104', 'alexandershtyher@gmai.com', [User::ROLE_ADMIN], '0.0.0.0'],
+            ['7212104', 'alexandershtyher@gmail.com', [User::ROLE_ADMIN], '0.0.0.0'],
             ['7212104', 'autoportal@email.ua', [User::ROLE_USER], '0.0.0.0'],
             ['7212104', 'alexfer@online.ua', [User::ROLE_USER], '0.0.0.0'],
             ['joanna', 'joanna@example.com', [User::ROLE_USER], '0.0.0.0'],

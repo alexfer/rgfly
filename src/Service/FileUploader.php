@@ -80,7 +80,7 @@ class FileUploader
     public function handle(?object $object): ?Attach
     {
         $attach = new Attach();
-        $attach->setDetails($object)
+        $attach->setUserDetails($object)
             ->setName($this->fileName)
             ->setSize($this->getSize())
             ->setMime($this->getMimeType());

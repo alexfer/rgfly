@@ -37,11 +37,11 @@ class ProfileController extends AbstractController
      */
     #[Route('/profile', name: 'app_profile')]
     public function index(
-        Request                $request,
-        UserInterface          $user,
-        SluggerInterface       $slugger,
-        EntityManagerInterface $em,
-        UserDetailsRepository  $repository,
+        Request                  $request,
+        UserInterface            $user,
+        SluggerInterface         $slugger,
+        EntityManagerInterface   $em,
+        UserDetailsRepository $repository,
     ): Response
     {
         $details = $repository->find($user->getId());
@@ -53,7 +53,7 @@ class ProfileController extends AbstractController
             $file = $form->get('picture')->getData();
 
             if ($file) {
-                $fileUploader = new FileUploader($this->getTargetDir($details->getUserId()), $slugger, $em);
+                $fileUploader = new FileUploader($this->getTargetDir($user->getId()), $slugger, $em);
 
                 try {
                     $attach = $fileUploader->upload($file)->handle($details);
@@ -61,7 +61,7 @@ class ProfileController extends AbstractController
                     throw new \Exception($ex->getMessage());
                 }
 
-                $details->setAttachId($attach->getId());
+                $details->addAttach($attach);
             }
 
             $em->persist($details);

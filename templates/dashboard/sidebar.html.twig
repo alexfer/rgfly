@@ -1,13 +1,13 @@
 <div class="sidebar-header">
     <div class="user-pic">
-{#        {% for picture in app.user.userDetails.attach|slice(0, 1) %}#}
-{#            {% set _picture = 'user/picture/' ~ app.user.id ~ '/' ~ picture.name %}#}
-{#            <img class="img-responsive img-rounded" src="{{ asset(_picture) | imagine_filter('user_thumb') }}"#}
-{#                 alt="{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}">#}
-{#        {% else %}#}
-{#            <img class="img-responsive img-rounded" src="{{ asset('img/user-picture.jpg') }}"#}
-{#                 alt="{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}">#}
-{#        {% endfor %}#}
+        {% for picture in app.user.userDetails.attach|slice(0, 1) %}
+            {% set _picture = 'user/picture/' ~ app.user.id ~ '/' ~ picture.name %}
+            <img class="img-responsive img-rounded" src="{{ asset(_picture) | imagine_filter('user_thumb') }}"
+                 alt="{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}">
+        {% else %}
+            <img class="img-responsive img-rounded" src="{{ asset('img/user-picture.jpg') }}"
+                 alt="{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}">
+        {% endfor %}
     </div>
     <div class="user-info">
         <span class="user-name">{{ app.user.userDetails.firstName }}

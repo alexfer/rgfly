@@ -3,7 +3,7 @@
 namespace App\Controller\Security;
 
 use App\Entity\User;
-use App\Entity\UserDetails;
+use App\Entity\OldUserDetails;
 use App\Form\Type\User\DetailsType;
 use App\Helper\ErrorHandler;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,7 +40,7 @@ class RegistrationController extends AbstractController
         }
 
         $user = new User();
-        $details = new UserDetails();
+        $details = new OldUserDetails();
 
         $form = $this->createForm(DetailsType::class, $user);
         $form->handleRequest($request);
