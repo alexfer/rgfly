@@ -24,34 +24,34 @@ class ProfileType extends AbstractType
     {
         $builder->add('first_name', TextType::class, [
             'attr' => [
-                'min' => UserDetails::CONSTRAINTS['first_name']['min'],
-                'max' => UserDetails::CONSTRAINTS['first_name']['max'],
+                'min' => 3,
+                'max' => 200,
             ],
             'constraints' => [
                 new NotBlank([
                     'message' => 'form.first_name.not_blank',
                 ]),
                 new Length([
-                    'min' => UserDetails::CONSTRAINTS['first_name']['min'],
+                    'min' => 3,
                     'minMessage' => 'form.first_name.min',
-                    'max' => UserDetails::CONSTRAINTS['first_name']['max'],
+                    'max' => 200,
                     'maxMessage' => 'form.first_name.max',
                 ]),
             ],
         ])
             ->add('last_name', TextType::class, [
                 'attr' => [
-                    'min' => UserDetails::CONSTRAINTS['last_name']['min'],
-                    'max' => UserDetails::CONSTRAINTS['last_name']['max'],
+                    'min' => 2,
+                    'max' => 200,
                 ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'form.last_name.not_blank',
                     ]),
                     new Length([
-                        'min' => UserDetails::CONSTRAINTS['last_name']['min'],
+                        'min' => 2,
                         'minMessage' => 'form.last_name.min',
-                        'max' => UserDetails::CONSTRAINTS['last_name']['max'],
+                        'max' =>200,
                         'maxMessage' => 'form.last_name.max',
                     ]),
                 ],
@@ -95,15 +95,15 @@ class ProfileType extends AbstractType
             ])
             ->add('about', TextareaType::class, [
                 'attr' => [
-                    'min' => UserDetails::CONSTRAINTS['about']['min'],
-                    'max' => UserDetails::CONSTRAINTS['about']['max'],
+                    'min' => 100,
+                    'max' => 65535,
                     'rows' => 6,
                 ],
                 'constraints' => [
                     new Length([
-                        'min' => UserDetails::CONSTRAINTS['about']['min'],
+                        'min' => 100,
                         'minMessage' => 'form.about.min',
-                        'max' => UserDetails::CONSTRAINTS['about']['max'],
+                        'max' => 65535,
                         'maxMessage' => 'form.about.max',
                     ]),
                 ],

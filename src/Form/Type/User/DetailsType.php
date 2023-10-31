@@ -2,7 +2,7 @@
 
 namespace App\Form\Type\User;
 
-use App\Entity\{User, UserDetails,};
+use App\Entity\{User,};
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,17 +17,17 @@ class DetailsType extends AbstractType
         $builder->add('first_name', TextType::class, [
             'mapped' => false,
             'attr' => [
-                'min' => UserDetails::CONSTRAINTS['first_name']['min'],
-                'max' => UserDetails::CONSTRAINTS['first_name']['max'],
+                'min' => 3,
+                'max' => 200,
             ],
             'constraints' => [
                 new NotBlank([
                     'message' => 'form.first_name.not_blank',
                 ]),
                 new Length([
-                    'min' => UserDetails::CONSTRAINTS['first_name']['min'],
+                    'min' => 3,
                     'minMessage' => 'form.first_name.min',
-                    'max' => UserDetails::CONSTRAINTS['first_name']['max'],
+                    'max' => 200,
                     'maxMessage' => 'form.first_name.max',
                 ]),
             ],
@@ -35,17 +35,17 @@ class DetailsType extends AbstractType
             ->add('last_name', TextType::class, [
                 'mapped' => false,
                 'attr' => [
-                    'min' => UserDetails::CONSTRAINTS['last_name']['min'],
-                    'max' => UserDetails::CONSTRAINTS['last_name']['max'],
+                    'min' => 2,
+                    'max' => 200,
                 ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'form.last_name.not_blank',
                     ]),
                     new Length([
-                        'min' => UserDetails::CONSTRAINTS['last_name']['min'],
+                        'min' => 2,
                         'minMessage' => 'form.last_name.min',
-                        'max' => UserDetails::CONSTRAINTS['last_name']['max'],
+                        'max' => 200,
                         'maxMessage' => 'form.last_name.max',
                     ]),
                 ],

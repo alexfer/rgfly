@@ -14,14 +14,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[UniqueEntity(fields: ['email'], message: 'email.unique')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-
-    const CONSTRAINTS = [
-        'email' => [
-            'min' => 5,
-            'max' => 180,
-        ],
-    ];
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

@@ -16,17 +16,17 @@ class RegistrationType extends AbstractType
     {
         $builder->add('email', EmailType::class, [
             'attr' => [
-                'min' => User::CONSTRAINTS['email']['min'],
-                'max' => User::CONSTRAINTS['email']['max'],
+                'min' => 5,
+                'max' => 180,
             ],
             'constraints' => [
                 new NotBlank([
                     'message' => 'form.email.not_blank',
                 ]),
                 new Length([
-                    'min' => User::CONSTRAINTS['email']['min'],
+                    'min' => 5,
                     'minMessage' => 'form.first_name.min',
-                    'max' => User::CONSTRAINTS['email']['max'],
+                    'max' => 180,
                     'maxMessage' => 'form.first_name.max',
                 ]),
             ],

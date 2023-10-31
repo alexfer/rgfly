@@ -12,21 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'user_details')]
 class UserDetails
 {
-    const CONSTRAINTS = [
-        'first_name' => [
-            'min' => 3,
-            'max' => 200,
-        ],
-        'last_name' => [
-            'min' => 2,
-            'max' => 200,
-        ],
-        'about' => [
-            'min' => 100,
-            'max' => 65535,
-        ],
-    ];
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
