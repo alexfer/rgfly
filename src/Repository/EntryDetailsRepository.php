@@ -2,17 +2,17 @@
 
 namespace App\Repository;
 
-use App\Entity\EntryDetailsOld;
+use App\Entity\EntryDetails;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<EntryDetailsOld>
+ * @extends ServiceEntityRepository<EntryDetails>
  *
- * @method EntryDetailsOld|null find($id, $lockMode = null, $lockVersion = null)
- * @method EntryDetailsOld|null findOneBy(array $criteria, array $orderBy = null)
- * @method EntryDetailsOld[]    findAll()
- * @method EntryDetailsOld[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method EntryDetails|null find($id, $lockMode = null, $lockVersion = null)
+ * @method EntryDetails|null findOneBy(array $criteria, array $orderBy = null)
+ * @method EntryDetails[]    findAll()
+ * @method EntryDetails[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class EntryDetailsRepository extends ServiceEntityRepository
 {
@@ -23,6 +23,6 @@ class EntryDetailsRepository extends ServiceEntityRepository
      */
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, EntryDetailsOld::class);
+        parent::__construct($registry, EntryDetails::class);
     }
 }

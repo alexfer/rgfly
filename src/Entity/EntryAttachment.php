@@ -23,6 +23,7 @@ class EntryAttachment
     {
         return $this->id;
     }
+
     public function getAttach(): ?Attach
     {
         return $this->attach;

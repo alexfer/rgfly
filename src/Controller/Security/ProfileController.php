@@ -7,6 +7,7 @@ use App\Helper\ErrorHandler;
 use App\Repository\UserDetailsRepository;
 use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\{Request, Response,};
@@ -37,11 +38,11 @@ class ProfileController extends AbstractController
      */
     #[Route('/profile', name: 'app_profile')]
     public function index(
-        Request                  $request,
-        UserInterface            $user,
-        SluggerInterface         $slugger,
-        EntityManagerInterface   $em,
-        UserDetailsRepository $repository,
+        Request                $request,
+        UserInterface          $user,
+        SluggerInterface       $slugger,
+        EntityManagerInterface $em,
+        UserDetailsRepository  $repository,
     ): Response
     {
         $details = $repository->find($user->getId());
@@ -57,8 +58,8 @@ class ProfileController extends AbstractController
 
                 try {
                     $attach = $fileUploader->upload($file)->handle($details);
-                } catch (\Exception $ex) {
-                    throw new \Exception($ex->getMessage());
+                } catch (Exception $ex) {
+                    throw new Exception($ex->getMessage());
                 }
 
                 $details->addAttach($attach);

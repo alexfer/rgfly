@@ -3,6 +3,7 @@
 namespace App\Security\Voter;
 
 use App\Entity\{Entry, User,};
+use LogicException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;
@@ -66,7 +67,7 @@ class DashboardVoter extends Voter
             self::DELETE => $this->canDelete($entry, $user),
             self::VIEW => $this->canView($entry, $user),
             self::EDIT => $this->canEdit($entry, $user),
-            default => throw new \LogicException('This code should not be reached!')
+            default => throw new LogicException('This code should not be reached!')
         };
     }
 

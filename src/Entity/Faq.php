@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\FaqRepository;
+use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -26,14 +27,14 @@ class Faq
     private ?int $visible = 0;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTime $created_at = null;
+    private ?DateTime $created_at = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTime $deleted_at = null;
+    private ?DateTime $deleted_at = null;
 
     public function __construct()
     {
-        $this->created_at = new \DateTime();
+        $this->created_at = new DateTime();
     }
 
     public function getId(): ?int
@@ -77,24 +78,24 @@ class Faq
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTime
+    public function getCreatedAt(): ?DateTime
     {
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTime $created_at): static
+    public function setCreatedAt(DateTime $created_at): static
     {
         $this->created_at = $created_at;
 
         return $this;
     }
 
-    public function getDeletedAt(): ?\DateTime
+    public function getDeletedAt(): ?DateTime
     {
         return $this->deleted_at;
     }
 
-    public function setDeletedAt(\DateTime $deleted_at): static
+    public function setDeletedAt(DateTime $deleted_at): static
     {
         $this->deleted_at = $deleted_at;
 

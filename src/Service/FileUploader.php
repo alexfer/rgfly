@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Attach;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -54,7 +55,7 @@ class FileUploader
      *
      * @param UploadedFile $file
      * @return self
-     * @throws \Exception
+     * @throws Exception
      */
     public function upload(UploadedFile $file): self
     {
@@ -65,7 +66,7 @@ class FileUploader
         try {
             $target = $file->move($this->getTargetDirectory(), $this->fileName);
         } catch (FileException $e) {
-            throw new \Exception($e->getMessage());
+            throw new Exception($e->getMessage());
         }
 
         $this->target = $target;

@@ -16,6 +16,7 @@ use Symfony\Component\Intl\{Countries, Locale,};
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\{Length, NotBlank, Regex,};
 use Symfony\Component\Validator\Constraints\Image;
+use function array_flip;
 
 class ProfileType extends AbstractType
 {
@@ -51,7 +52,7 @@ class ProfileType extends AbstractType
                     new Length([
                         'min' => 2,
                         'minMessage' => 'form.last_name.min',
-                        'max' =>200,
+                        'max' => 200,
                         'maxMessage' => 'form.last_name.max',
                     ]),
                 ],
@@ -91,7 +92,7 @@ class ProfileType extends AbstractType
                 'required' => false,
                 'multiple' => false,
                 'expanded' => false,
-                'choices' => \array_flip(Countries::getNames(Locale::getDefault())),
+                'choices' => array_flip(Countries::getNames(Locale::getDefault())),
             ])
             ->add('about', TextareaType::class, [
                 'attr' => [

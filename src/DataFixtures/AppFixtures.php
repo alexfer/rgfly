@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use DateTime;
 use App\Entity\{User, UserDetails,};
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -41,7 +42,7 @@ class AppFixtures extends Fixture
             $user->setEmail($email);
             $user->setRoles($roles);
             $user->setIp($ip);
-            $user->setCreatedAt(new \DateTime());
+            $user->setCreatedAt(new DateTime());
             $user->setDeletedAt(null);
 
             $manager->persist($user);

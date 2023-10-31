@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\AttachRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -28,7 +29,7 @@ class Attach
     private ?int $size = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    protected \DateTime $created_at;
+    protected DateTime $created_at;
 
     #[ORM\OneToMany(mappedBy: 'attach', targetEntity: EntryAttachment::class)]
     private Collection $entryAttachments;
@@ -38,7 +39,7 @@ class Attach
 
     public function __construct()
     {
-        $this->created_at = new \DateTime();
+        $this->created_at = new DateTime();
         $this->size = 0;
         $this->entryAttachments = new ArrayCollection();
     }

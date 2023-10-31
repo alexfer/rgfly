@@ -2,7 +2,8 @@
 
 namespace App\Controller\Dashboard;
 
-use App\Entity\{Entry, EntryDetails, EntryDetailsOld};
+use DateTime;
+use App\Entity\{Entry, EntryDetails};
 use App\Form\Type\Dashboard\EntryDetailsType;
 use App\Repository\EntryRepository;
 use App\Service\Dashboard;
@@ -91,8 +92,8 @@ class BlogController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $entry->setStatus($form->get('status')->getData())
-                ->setUpdatedAt(new \DateTime())
-                ->setDeletedAt($form->get('status')->getData() == 'trashed' ? new \DateTime() : null);
+                ->setUpdatedAt(new DateTime())
+                ->setDeletedAt($form->get('status')->getData() == 'trashed' ? new DateTime() : null);
 
             $em->persist($entry);
             $em->flush();

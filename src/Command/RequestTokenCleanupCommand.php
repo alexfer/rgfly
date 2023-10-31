@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Repository\ResetPasswordRequestRepository;
+use DateTime;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -44,7 +45,7 @@ class RequestTokenCleanupCommand extends Command
     ): int
     {
         $io = new SymfonyStyle($input, $output);
-        $now = new \DateTime();
+        $now = new DateTime();
 
         $count = 0;
         $perform = false;

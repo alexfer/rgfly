@@ -2,8 +2,8 @@
 
 namespace App\Controller\Security;
 
+use App\Entity\UserDetails;
 use App\Entity\User;
-use App\Entity\OldUserDetails;
 use App\Form\Type\User\DetailsType;
 use App\Helper\ErrorHandler;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,7 +40,7 @@ class RegistrationController extends AbstractController
         }
 
         $user = new User();
-        $details = new OldUserDetails();
+        $details = new UserDetails();
 
         $form = $this->createForm(DetailsType::class, $user);
         $form->handleRequest($request);
@@ -73,7 +73,6 @@ class RegistrationController extends AbstractController
         }
 
         return $this->render('registration/register.html.twig', [
-            'errors' => ErrorHandler::handleFormErrors($form),
             'form' => $form->createView(),
         ]);
     }

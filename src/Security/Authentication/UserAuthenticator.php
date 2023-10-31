@@ -3,6 +3,7 @@
 namespace App\Security\Authentication;
 
 use App\Repository\UserRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -91,7 +92,7 @@ class UserAuthenticator extends AbstractAuthenticator
                     throw new UserNotFoundException();
                 }
                 $user->setIp($request->getClientIp());
-                $user->getUserDetails()->setUpdatedAt(new \DateTime());
+                $user->getUserDetails()->setUpdatedAt(new DateTime());
                 $this->entityManager->persist($user);
                 $this->entityManager->flush();
                 return $user;

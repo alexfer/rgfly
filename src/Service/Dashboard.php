@@ -5,6 +5,10 @@ namespace App\Service;
 use App\Entity\Entry;
 use App\Repository\EntryRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
+use function array_flip;
+use function array_merge;
+use function class_exists;
+use function count;
 
 trait Dashboard
 {
@@ -38,8 +42,8 @@ trait Dashboard
             'user' => $user,
         ];
 
-        if ($criteria && \count($criteria)) {
-            $options = \array_merge($options, $criteria);
+        if ($criteria && count($criteria)) {
+            $options = array_merge($options, $criteria);
         }
 
         if ($securityContext->isGranted('ROLE_ADMIN')) {
@@ -56,9 +60,9 @@ trait Dashboard
     public function build(UserInterface $user): array
     {
         $navbar = $children = $count = [];
-        foreach (\array_flip(Entry::TYPE) as $key => $class) {
+        foreach (array_flip(Entry::TYPE) as $key => $class) {
             $class = sprintf('\App\Controller\Dashboard\%sController', $class);
-            if (\class_exists($class)) {
+            if (class_exists($class)) {
 
                 $navbar[$key] = $class;
                 $children[$key] = $class::CHILDRENS[$key];

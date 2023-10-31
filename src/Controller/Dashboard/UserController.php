@@ -4,6 +4,7 @@ namespace App\Controller\Dashboard;
 
 use App\Form\Type\User\ChangePasswordProfileType;
 use App\Helper\ErrorHandler;
+use Exception;
 use App\Repository\{UserDetailsRepository, UserRepository,};
 use App\Service\Dashboard;
 use App\Service\FileUploader;
@@ -50,17 +51,17 @@ class UserController extends AbstractController
      * @param UserDetailsRepository $repository
      * @param SluggerInterface $slugger
      * @return Response
-     * @throws \Exception
+     * @throws Exception
      */
     #[Route('/details/{id}/change-picture', name: 'app_dashboard_change_picture_user', methods: ['POST'])]
     public function changePicture(
-        Request                  $request,
-        TranslatorInterface      $translator,
-        EntityManagerInterface   $em,
-        UserDetailsRepository $repository,
-        SluggerInterface         $slugger,
-        CacheManager             $cacheManager,
-        ParameterBagInterface    $params,
+        Request                $request,
+        TranslatorInterface    $translator,
+        EntityManagerInterface $em,
+        UserDetailsRepository  $repository,
+        SluggerInterface       $slugger,
+        CacheManager           $cacheManager,
+        ParameterBagInterface  $params,
     ): Response
     {
         $entry = $repository->find($request->get('id'));
@@ -71,8 +72,8 @@ class UserController extends AbstractController
 
             try {
                 $attach = $fileUploader->upload($file)->handle($entry);
-            } catch (\Exception $ex) {
-                throw new \Exception($ex->getMessage());
+            } catch (Exception $ex) {
+                throw new Exception($ex->getMessage());
             }
 
             $entry->addAttach($attach);

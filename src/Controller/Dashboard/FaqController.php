@@ -6,6 +6,7 @@ use App\Entity\Faq;
 use App\Form\Type\FaqType;
 use App\Repository\FaqRepository;
 use App\Service\Dashboard;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,7 +52,7 @@ class FaqController extends AbstractController
     ): Response
     {
         if ($this->isCsrfTokenValid('delete', $request->get('_token'))) {
-            $date = new \DateTime('@' . strtotime('now'));
+            $date = new DateTime('@' . strtotime('now'));
             $entry->setDeletedAt($date)->setVisible(false);
             $em->persist($entry);
             $em->flush();

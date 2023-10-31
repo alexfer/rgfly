@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserDetailsRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -42,15 +43,15 @@ class UserDetails
     private ?string $about = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTime $date_birth = null;
+    private ?DateTime $date_birth = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTime $updated_at = null;
+    private ?DateTime $updated_at = null;
 
     public function __construct()
     {
-        $this->updated_at = new \DateTime();
-        $this->date_birth = new \DateTime('2005-01-01');
+        $this->updated_at = new DateTime();
+        $this->date_birth = new DateTime('2005-01-01');
         $this->attach = new ArrayCollection();
     }
 
@@ -173,24 +174,24 @@ class UserDetails
         return $this;
     }
 
-    public function getDateBirth(): ?\DateTime
+    public function getDateBirth(): ?DateTime
     {
         return $this->date_birth;
     }
 
-    public function setDateBirth(?\DateTime $date_birth): static
+    public function setDateBirth(?DateTime $date_birth): static
     {
         $this->date_birth = $date_birth;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTime
+    public function getUpdatedAt(): ?DateTime
     {
         return $this->updated_at;
     }
 
-    public function setUpdatedAt(\DateTime $updated_at): static
+    public function setUpdatedAt(DateTime $updated_at): static
     {
         $this->updated_at = $updated_at;
 

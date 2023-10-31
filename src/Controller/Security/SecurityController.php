@@ -3,6 +3,7 @@
 namespace App\Controller\Security;
 
 use App\Form\Type\User\LoginType;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,19 +52,19 @@ class SecurityController extends AbstractController
     /**
      *
      * @return Response
-     * @throws \Exception
+     * @throws Exception
      */
     #[Route('/web/logout', name: 'app_logout')]
     public function logout(): Response
     {
         // controller can be blank: it will never be called!
-        throw new \Exception('Don\'t forget to activate logout in security.yaml');
+        throw new Exception('Don\'t forget to activate logout in security.yaml');
     }
 
     /**
      *
      * @return Response
-     * @throws \Exception
+     * @throws Exception
      */
     #[Route('/login/error', name: 'app_login_error')]
     public function error(Request $request): Response

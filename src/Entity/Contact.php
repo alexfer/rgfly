@@ -3,9 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\ContactRepository;
+use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 #[ORM\Table(name: 'contact')]
@@ -37,7 +37,7 @@ class Contact
     private ?int $answers;
 
     #[ORM\Column(length: 255, nullable: true)]
-     private ?string $phone = null;
+    private ?string $phone = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $subject = null;
@@ -49,11 +49,11 @@ class Contact
     private ?string $email = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTime $created_at = null;
+    private ?DateTime $created_at = null;
 
     public function __construct()
     {
-        $this->created_at = new \DateTime();
+        $this->created_at = new DateTime();
         $this->status = self::STATUS['new'];
         $this->answers = 0;
     }
@@ -145,12 +145,12 @@ class Contact
         return $this->email;
     }
 
-    public function getCreatedAt(): ?\DateTime
+    public function getCreatedAt(): ?DateTime
     {
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTime $created_at): static
+    public function setCreatedAt(DateTime $created_at): static
     {
         $this->created_at = $created_at;
 

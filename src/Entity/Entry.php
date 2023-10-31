@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Entity\EntryDetails;
 use App\Repository\EntryRepository;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -25,7 +26,7 @@ class Entry
         'News' => 'news',
         'Gallery' => 'gallery',
     ];
-    
+
     const STATUS = [
         'Draft' => 'draft',
         'Published' => 'published',
@@ -53,21 +54,21 @@ class Entry
     private ?int $comments = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $created_at = null;
+    private ?DateTimeInterface $created_at = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $updated_at = null;
+    private ?DateTimeInterface $updated_at = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $deleted_at = null;
+    private ?DateTimeInterface $deleted_at = null;
 
     #[ORM\OneToMany(mappedBy: 'details', targetEntity: EntryAttachment::class)]
     private Collection $entryAttachments;
 
     public function __construct()
     {
-        $this->created_at = new \DateTime();
-        $this->updated_at = new \DateTime();
+        $this->created_at = new DateTime();
+        $this->updated_at = new DateTime();
         $this->type = self::TYPE['Other'];
         $this->status = self::STATUS['Draft'];
         $this->comments = 0;
@@ -167,18 +168,18 @@ class Entry
     }
 
     /**
-     * @return \DateTime|null
+     * @return DateTime|null
      */
-    public function getCreatedAt(): ?\DateTime
+    public function getCreatedAt(): ?DateTime
     {
         return $this->created_at;
     }
 
     /**
-     * @param \DateTimeInterface $created_at
+     * @param DateTimeInterface $created_at
      * @return $this
      */
-    public function setCreatedAt(\DateTimeInterface $created_at): static
+    public function setCreatedAt(DateTimeInterface $created_at): static
     {
         $this->created_at = $created_at;
 
@@ -186,18 +187,18 @@ class Entry
     }
 
     /**
-     * @return \DateTimeInterface|null
+     * @return DateTimeInterface|null
      */
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updated_at;
     }
 
     /**
-     * @param \DateTimeInterface $updated_at
+     * @param DateTimeInterface $updated_at
      * @return $this
      */
-    public function setUpdatedAt(\DateTimeInterface $updated_at): static
+    public function setUpdatedAt(DateTimeInterface $updated_at): static
     {
         $this->updated_at = $updated_at;
 
@@ -205,18 +206,18 @@ class Entry
     }
 
     /**
-     * @return \DateTimeInterface|null
+     * @return DateTimeInterface|null
      */
-    public function getDeletedAt(): ?\DateTimeInterface
+    public function getDeletedAt(): ?DateTimeInterface
     {
         return $this->deleted_at;
     }
 
     /**
-     * @param \DateTimeInterface|null $deleted_at
+     * @param DateTimeInterface|null $deleted_at
      * @return $this
      */
-    public function setDeletedAt(?\DateTimeInterface $deleted_at): static
+    public function setDeletedAt(?DateTimeInterface $deleted_at): static
     {
         $this->deleted_at = $deleted_at;
 

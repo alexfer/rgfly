@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -32,10 +33,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $ip = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTime $created_at;
+    private ?DateTime $created_at;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTime $deleted_at = null;
+    private ?DateTime $deleted_at = null;
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?UserDetails $userDetails = null;
@@ -45,7 +46,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->created_at = new \DateTime();
+        $this->created_at = new DateTime();
     }
 
     public function getId(): ?int
@@ -121,24 +122,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): DateTime
     {
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTime $created_at): self
+    public function setCreatedAt(DateTime $created_at): self
     {
         $this->created_at = $created_at;
 
         return $this;
     }
 
-    public function getDeletedAt(): ?\DateTime
+    public function getDeletedAt(): ?DateTime
     {
         return $this->deleted_at;
     }
 
-    public function setDeletedAt(?\DateTime $deleted_at): self
+    public function setDeletedAt(?DateTime $deleted_at): self
     {
         $this->deleted_at = $deleted_at;
 
