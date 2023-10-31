@@ -96,7 +96,10 @@ class UserAuthenticator extends AbstractAuthenticator
                 $this->entityManager->flush();
                 return $user;
             }),
-            new PasswordCredentials($password), [new CsrfTokenBadge('authenticate', $token), new RememberMeBadge(),]
+            new PasswordCredentials($password), [
+                new CsrfTokenBadge('authenticate', $token),
+                new RememberMeBadge(),
+            ]
         );
     }
 

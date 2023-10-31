@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ContactController extends AbstractController
 {
@@ -19,14 +18,12 @@ class ContactController extends AbstractController
      *
      * @param Request $request
      * @param EntityManagerInterface $em
-     * @param ValidatorInterface $validator
      * @return Response
      */
     #[Route('/contact', name: 'contact', methods: ['GET', 'POST'])]
     public function index(
         Request                $request,
         EntityManagerInterface $em,
-        ValidatorInterface     $validator,
         MailerInterface        $mailer,
     ): Response
     {
@@ -34,11 +31,6 @@ class ContactController extends AbstractController
 
         $form = $this->createForm(ContactType::class, $contact);
         $form->handleRequest($request);
-
-        $errors = null;
-        if ($request->isMethod('POST')) {
-            $errors = $validator->validate($contact);
-        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($contact);
@@ -65,7 +57,6 @@ class ContactController extends AbstractController
         }
 
         return $this->render('contact/index.html.twig', [
-            'errors' => $errors,
             'form' => $form,
         ]);
     }
