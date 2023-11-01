@@ -69,7 +69,7 @@ class UserController extends AbstractController
 
         if ($file) {
             $fileUploader = new FileUploader($this->getTargetDir($entry->getId(), $params), $slugger, $em);
-            $fileUploader->
+
             try {
                 $attach = $fileUploader->upload($file)->handle($entry);
             } catch (Exception $ex) {
