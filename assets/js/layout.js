@@ -90,10 +90,13 @@ $(function () {
         } else {
             let form_data = new FormData();
             let url = $('#route').attr('value');
+            let loading = $('#loading');
+            let btnChange = $('#btnChangePicture');
             let files = $('#profilePicture')[0].files[0];
 
             form_data.append('file', files);
-
+            btnChange.hide();
+            loading.show();
             $.ajax({
                 url: url,
                 type: 'post',
@@ -101,26 +104,30 @@ $(function () {
                 contentType: false,
                 processData: false,
                 success: function (response) {
+                    btnChange.show();
+                    loading.hide();
                     if (response !== 0) {
-                        $('#btnChangePicture').removeClass('changing').attr('value', changeBtn);
+                        btnChange.html(btnChange.attr('data-change')).removeClass('changing').show();
                         $('#btnDiscard').hide();
                         $('#imgProfile').attr('src', response.picture);
                         $('.toast .toast-body').text(response.message);
                         $('.toast').toast('show');
                     }
-                }
+                },
             });
         }
     });
 
     $('#profilePicture').on('change', function () {
         readURL(this);
-        $('#btnChangePicture').attr('value', $('#btnChangePicture').attr('data-confirm')).addClass('changing');
+        let btnChange = $('#btnChangePicture');
+        btnChange.html(btnChange.attr('data-confirm')).addClass('changing');
         $('#btnDiscard').removeClass('d-none');
     });
     
-    $('#btnDiscard').on('click', function () {        
-        $('#btnChangePicture').removeClass('changing').attr('value', changeBtn);
+    $('#btnDiscard').on('click', function () {
+        let btnChange = $('#btnChangePicture');
+        btnChange.html(btnChange.attr('data-change')).removeClass('changing');
         $('#btnDiscard').addClass('d-none');
         $('#imgProfile').attr('src', imgSrc);
         $('#profilePicture').val('');        

@@ -82,7 +82,7 @@ class UserController extends AbstractController
         $em->persist($entry);
         $em->flush();
 
-        $url = sprintf('user/picture/%d/%s', $request->get('id'), $attach->getName());
+        $url = "user/picture/{$request->get('id')}/{$attach->getName()}";
         $picture = $cacheManager->getBrowserPath(parse_url($url, PHP_URL_PATH), 'user_preview', [], null);
 
         return $this->json(['message' => $translator->trans('user.picture.changed'), 'picture' => $picture]);
@@ -132,7 +132,6 @@ class UserController extends AbstractController
         return $this->render('dashboard/content/user/details.html.twig', $this->build($user) + [
                 'entry' => $entry,
                 'form' => $form,
-                'errors' => ErrorHandler::handleFormErrors($form),
                 'country' => $country ? Countries::getNames(Locale::getDefault())[$country] : null,
             ]);
     }

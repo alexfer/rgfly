@@ -11,11 +11,11 @@ use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\{Request, Response,};
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-#[Security("is_granted('ROLE_ADMIN') and is_granted('ROLE_USER_USER')")]
 class ProfileController extends AbstractController
 {
 
@@ -36,7 +36,7 @@ class ProfileController extends AbstractController
      *
      * @return Response
      */
-    #[Route('/profile', name: 'app_profile')]
+    #[Route('/profile', name: 'app_profile', methods: ['GET', 'POST'])]
     public function index(
         Request                $request,
         UserInterface          $user,
@@ -64,6 +64,8 @@ class ProfileController extends AbstractController
 
                 $details->addAttach($attach);
             }
+            $details->setFirstName($form->get('first_name')->getData());
+            $details->setLastName($form->get('last_name')->getData());
 
             $em->persist($details);
             $em->flush();
@@ -72,9 +74,7 @@ class ProfileController extends AbstractController
         }
 
         return $this->render('profile/profile.html.twig', [
-            'errors' => ErrorHandler::handleFormErrors($form),
-            'user' => $details,
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 

@@ -24,6 +24,8 @@ class ProfileType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('first_name', TextType::class, [
+            'mapped' => false,
+            'data' => $options['data']?->getFirstName(),
             'attr' => [
                 'min' => 3,
                 'max' => 200,
@@ -41,6 +43,8 @@ class ProfileType extends AbstractType
             ],
         ])
             ->add('last_name', TextType::class, [
+                'mapped' => false,
+                'data' => $options['data']?->getLastName(),
                 'attr' => [
                     'min' => 2,
                     'max' => 200,

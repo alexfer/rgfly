@@ -1,20 +1,20 @@
-{% if errors %}
+{{ form_start(form, {attr: {class: 'tech-form', novalidate: 'novalidate'}}) }}
+{% if form_errors(form) %}
     <div class="alert alert-danger">
-        <ul>
-            {% for error in errors %}
-                <li>{{ error.message|trans|raw }}</li>
-            {% endfor %}
-        </ul>
+        {{ form_errors(form) }}
     </div>
 {% endif %}
-{{ form_start(form, {attr: {class: 'tech-form', novalidate: 'novalidate'}}) }}
 <div class="form-row">
     <div class="col-md-6">
         <div class="form-group">
             {% set first_name_error = form.first_name.vars.errors|length ? 'form-control error' : 'form-control' %}
             {{ form_label(form.first_name, 'label.form.first_name') }} <span class="text-danger">*</span>
             {{ form_widget(form.first_name, {attr: {class: first_name_error, placeholder: 'label.form.first_name'}}) }}
-            <small class="form-text text-muted">{{ 'form.first_name.help'|trans({ '%min%': form.first_name.vars.attr.min, '%max%': form.first_name.vars.attr.max }) }}</small>
+            {% if form_errors(form.first_name) %}
+                <small class="text-danger">{{ form_errors(form.first_name) }}</small>
+            {% else %}
+                <small class="form-text text-muted">{{ 'form.first_name.help'|trans({ '%min%': form.first_name.vars.attr.min, '%max%': form.first_name.vars.attr.max }) }}</small>
+            {% endif %}
         </div>
     </div>
     <div class="col-md-6">
@@ -22,7 +22,11 @@
             {% set last_name_error = form.last_name.vars.errors|length ? 'form-control error' : 'form-control' %}
             {{ form_label(form.last_name, 'label.form.last_name') }} <span class="text-danger">*</span>
             {{ form_widget(form.last_name, {attr: {class: last_name_error, placeholder: 'label.form.last_name'}}) }}
-            <small class="form-text text-muted">{{ 'form.last_name.help'|trans({ '%min%': form.last_name.vars.attr.min, '%max%': form.last_name.vars.attr.max }) }}</small>
+            {% if form_errors(form.last_name) %}
+                <small class="text-danger">{{ form_errors(form.last_name) }}</small>
+            {% else %}
+                <small class="form-text text-muted">{{ 'form.last_name.help'|trans({ '%min%': form.last_name.vars.attr.min, '%max%': form.last_name.vars.attr.max }) }}</small>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -35,9 +39,14 @@
     </div>
     <div class="col-md-6">
         <div class="form-group">
+            {% set phone_error = form.phone.vars.errors|length ? 'form-control error' : 'form-control' %}
             {{ form_label(form.phone, 'label.form.phone') }}
-            {{ form_widget(form.phone, {attr: {class: 'form-control', placeholder: '3106398200'}}) }}
-            <small class="form-text text-muted">{{ 'form.phone.help'|trans }}</small>
+            {{ form_widget(form.phone, {attr: {class: phone_error, placeholder: '+3106398200'}}) }}
+            {% if form_errors(form.phone) %}
+                <small class="text-danger">{{ form_errors(form.phone) }}</small>
+            {% else %}
+                <small class="form-text text-muted">{{ 'form.phone.help'|trans }}</small>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -58,12 +67,16 @@
 <div class="form-row">
     <div class="col-md-12">
         <div class="form-group">
+            {% set about_error = form.about.vars.errors|length ? 'form-control error' : 'form-control' %}
             {{ form_label(form.about, 'label.form.about') }}
-            {{ form_widget(form.about, {attr: {class: 'form-control'}}) }}
+            {{ form_widget(form.about, {attr: {class: about_error}}) }}
+            {% if form_errors(form.about) %}
+                <small class="text-danger">{{ form_errors(form.about) }}</small>
+            {% endif %}
         </div>
     </div>
 </div>
-<!-- Temprary solution -->
+<!-- Temporary solution -->
 <div class="picture-block">
     <div class="form-row">
         <div class="col-sm mh-25">
@@ -75,14 +88,14 @@
             </div>
         </div>
         <div class="col-sm mh-25">
-            {% for picture in user.attach|slice(0, 1) %}
-                {% set _picture = 'user/picture/' ~ user.id ~ '/' ~ picture.name %}
+            {% for picture in app.user.userDetails.attach|slice(0, 1) %}
+                {% set _picture = 'user/picture/' ~ app.user.id ~ '/' ~ picture.name %}
                 <img class="img-responsive img-rounded ml-5"
                      src="{{ asset(_picture) | imagine_filter('user_preview') }}"
-                     alt="{{ user.firstName }} {{ user.lastName }}">
+                     alt="{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}">
             {% else %}
                 <img class="img-responsive img-rounded ml-5" src="{{ asset('img/user-picture.jpg') }}"
-                     alt="{{ user.firstName }} {{ user.lastName }}">
+                     alt="{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}">
             {% endfor %}
         </div>
     </div>
