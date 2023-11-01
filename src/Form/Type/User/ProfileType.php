@@ -68,7 +68,7 @@ class ProfileType extends AbstractType
                 ],
                 'constraints' => [
                     new Image([
-                        'maxSize' => '2M',
+                        'maxSize' => ini_get('post_max_size'),
                         'mimeTypes' => ['image/jpeg', 'image/png'],
                         'mimeTypesMessage' => 'form.picture.not_valid_type',
                     ]),

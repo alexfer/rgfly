@@ -7,7 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{CheckboxType, EmailType, PasswordType, SubmitType,};
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\{IsTrue, Length, NotBlank,};
+use Symfony\Component\Validator\Constraints\{Email, IsTrue, Length, NotBlank};
 
 class RegistrationType extends AbstractType
 {
@@ -23,12 +23,9 @@ class RegistrationType extends AbstractType
                 new NotBlank([
                     'message' => 'form.email.not_blank',
                 ]),
-                new Length([
-                    'min' => 5,
-                    'minMessage' => 'form.first_name.min',
-                    'max' => 180,
-                    'maxMessage' => 'form.first_name.max',
-                ]),
+                new Email(
+                    message: 'form.email.not_valid'
+                ),
             ],
         ])
             ->add('agreeTerms', CheckboxType::class, [

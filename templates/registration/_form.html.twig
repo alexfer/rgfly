@@ -1,19 +1,8 @@
 {{ form_start(form, {attr: {class: 'tech-form', novalidate: 'novalidate'}}) }}
-{% if errors %}
+{% if form_errors(form) %}
     <div class="alert alert-danger">
-        <ul>
-            {% for error in errors %}
-                <li>{{ error.message|trans({'%policy%': path('policy'), '%terms%': path('terms')})|raw }}</li>
-            {% endfor %}
-        </ul>
+        {{ form_errors(form) }}
     </div>
-{% else %}
-    <blockquote class="blockquote bg-light py-1 pl-3 shadow-sm">
-        <p class="mb-0">
-            <i class="bi bi-exclamation-triangle"></i>
-            {{ 'text.rquired'|trans|raw }}
-        </p>
-    </blockquote>
 {% endif %}
 <div class="form-row">
     <div class="col-md-6">
@@ -21,7 +10,11 @@
             {% set email_error = form.email.vars.errors|length ? 'form-control error' : 'form-control' %}
             {{ form_label(form.email, 'label.form.email') }} <span class="text-danger">*</span>
             {{ form_widget(form.email, {attr: {class: email_error, placeholder: 'label.form.email'}}) }}
-            <small class="form-text text-muted">{{ 'form.email.help'|trans }}</small>
+            {% if form_errors(form.email) %}
+                <small class="text-danger">{{ form_errors(form.email) }}</small>
+            {% else %}
+                <small class="form-text text-muted">{{ 'form.email.help'|trans }}</small>
+            {% endif %}
         </div>
     </div>
     <div class="col-md-6">
@@ -29,7 +22,11 @@
             {% set password_error = form.plainPassword.vars.errors|length ? 'form-control error' : 'form-control' %}
             {{ form_label(form.plainPassword, 'label.form.password') }} <span class="text-danger">*</span>
             {{ form_widget(form.plainPassword, {attr: {class: password_error, placeholder: 'label.form.password'}}) }}
-            <small class="form-text text-muted">{{ 'form.password.help'|trans }}</small>
+            {% if form_errors(form.plainPassword) %}
+                <small class="text-danger">{{ form_errors(form.plainPassword) }}</small>
+            {% else %}
+                <small class="form-text text-muted">{{ 'form.password.help'|trans }}</small>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -39,7 +36,11 @@
             {% set first_name_error = form.first_name.vars.errors|length ? 'form-control error' : 'form-control' %}
             {{ form_label(form.first_name, 'label.form.first_name') }} <span class="text-danger">*</span>
             {{ form_widget(form.first_name, {attr: {class: first_name_error, placeholder: 'label.form.first_name'}}) }}
-            <small class="form-text text-muted">{{ 'form.first_name.help'|trans({ '%min%': form.first_name.vars.attr.min, '%max%': form.first_name.vars.attr.max }) }}</small>
+            {% if form_errors(form.first_name) %}
+                <small class="text-danger">{{ form_errors(form.first_name) }}</small>
+            {% else %}
+                <small class="form-text text-muted">{{ 'form.first_name.help'|trans({ '%min%': form.first_name.vars.attr.min, '%max%': form.first_name.vars.attr.max }) }}</small>
+            {% endif %}
         </div>
     </div>
     <div class="col-md-6">
@@ -47,7 +48,11 @@
             {% set last_name_error = form.last_name.vars.errors|length ? 'form-control error' : 'form-control' %}
             {{ form_label(form.last_name, 'label.form.last_name') }} <span class="text-danger">*</span>
             {{ form_widget(form.last_name, {attr: {class: last_name_error, placeholder: 'label.form.last_name'}}) }}
-            <small class="form-text text-muted">{{ 'form.last_name.help'|trans({ '%min%': form.last_name.vars.attr.min, '%max%': form.last_name.vars.attr.max }) }}</small>
+            {% if form_errors(form.last_name) %}
+                <small class="text-danger">{{ form_errors(form.last_name) }}</small>
+            {% else %}
+                <small class="form-text text-muted">{{ 'form.last_name.help'|trans({ '%min%': form.last_name.vars.attr.min, '%max%': form.last_name.vars.attr.max }) }}</small>
+            {% endif %}
         </div>
     </div>
     <div class="col-md-12">
@@ -55,10 +60,14 @@
             {{ form_widget(form.agreeTerms) }}
             {{ form_label(form.agreeTerms, 'label.agree_terms'|trans, {label_attr: {class: 'pl-2'}}) }} <span
                     class="text-danger">*</span>
-            <small class="form-text text-muted">{{ 'form.agree_terms.help'|trans({
-                    '%policy%': url('policy'),
-                    '%terms%': url('terms')
-                })|raw }}</small>
+            {% if form_errors(form.agreeTerms) %}
+                <small class="text-danger">{{ form_errors(form.agreeTerms) }}</small>
+            {% else %}
+                <small class="form-text text-muted">{{ 'form.agree_terms.help'|trans({
+                        '%policy%': url('policy'),
+                        '%terms%': url('terms')
+                    })|raw }}</small>
+            {% endif %}
         </div>
     </div>
     <div class="col-md-12 text-center my-4">
