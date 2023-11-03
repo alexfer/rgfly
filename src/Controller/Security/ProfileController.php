@@ -78,7 +78,7 @@ class ProfileController extends AbstractController
             } catch (Exception $ex) {
                 throw new Exception($ex->getMessage());
             }
-
+            $details->getUser()->setAttach($attach);
             $details->addAttach($attach);
         }
 
@@ -126,6 +126,7 @@ class ProfileController extends AbstractController
                     throw new Exception($ex->getMessage());
                 }
 
+                $details->getUser()->setAttach($attach);
                 $details->addAttach($attach);
             }
             $details->setFirstName($form->get('first_name')->getData());

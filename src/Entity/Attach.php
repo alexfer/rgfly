@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\AttachRepository;
+use App\Entity\User;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -36,6 +37,9 @@ class Attach
 
     #[ORM\ManyToOne(inversedBy: 'attach')]
     private ?UserDetails $userDetails = null;
+
+    #[ORM\OneToOne(mappedBy: 'attach', cascade: ['persist', 'remove'])]
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -147,6 +151,28 @@ class Attach
     public function setUserDetails(?UserDetails $userDetails): static
     {
         $this->userDetails = $userDetails;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setTest(?User $user): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($user === null && $this->user !== null) {
+            $this->user->setAttach(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($user !== null && $user->getAttach() !== $this) {
+            $user->setAttach($this);
+        }
+
+        $this->user = $user;
 
         return $this;
     }

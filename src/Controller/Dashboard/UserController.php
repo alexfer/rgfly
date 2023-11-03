@@ -76,6 +76,7 @@ class UserController extends AbstractController
                 throw new Exception($ex->getMessage());
             }
 
+            $entry->getUser()->setAttach($attach);
             $entry->addAttach($attach);
         }
 
