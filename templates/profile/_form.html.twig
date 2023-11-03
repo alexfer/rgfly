@@ -77,28 +77,63 @@
     </div>
 </div>
 <!-- Temporary solution -->
-<div class="picture-block">
-    <div class="form-row">
-        <div class="col-sm mh-25">
-            <div class="form-group">
-                <div class="custom-file">
-                    {{ form_widget(form.picture, {attr: {class: 'custom-file-input'}}) }}
-                    {{ form_label(form.picture, 'label.form.picture', {label_attr: {class: 'custom-file-label'}}) }}
-                    <small class="text-danger">{{ form_errors(form.picture) }}</small>
-                </div>
+<div class="card mb-5">
+    <div class="card-header">Your pictures</div>
+    <div class="card-body">
+        <ul class="nav nav-pills pictures" id="pills-tab" role="tablist">
+            <div class="wrapper">
+                <li class="nav-item">
+                    <a class="bg-light nav-link p-2 m-1"
+                       id="pills-new-tab"
+                       data-toggle="pill"
+                       href="#pills-new"
+                       role="tab"
+                       aria-controls="pills-new"
+                       aria-selected="true">
+                        <div class="spinner-grow" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <img class="img-responsive img-rounded ml-1" src="{{ asset('img/user-picture.jpg') }}"
+                             width="100" height="100"/>
+                    </a>
+                </li>
+            </div>
+            {% for key, picture in app.user.userDetails.attach %}
+                <li class=nav-item">
+                    {% set _picture = 'user/picture/' ~ app.user.id ~ '/' ~ picture.name %}
+                    <a class="bg-light nav-link p-2 m-1"
+                       id="pills-{{ key }}-tab"
+                       data-toggle="pill"
+                       href="#pills-{{ key }}"
+                       role="tab"
+                       aria-controls="pills-{{ key }}"
+                       aria-selected="{% if not key %}true{% else %}false{% endif %}">
+                        <img class="img-responsive img-rounded"
+                             src="{{ asset(_picture) | imagine_filter('user_thumb') }}"
+                             alt="{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}">
+                    </a>
+                </li>
+            {% else %}
+                <li class="nav-item blank">
+                    <img class="img-responsive img-rounded ml-1" src="{{ asset('http://placehold.it/150x150') }}" alt="{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}">
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="card-footer">
+        <div class="input-group">
+            <div class="custom-file">
+                {{ form_widget(form.picture, {attr: {class: 'custom-file-input', 'aria-describedby': 'picture' }}) }}
+                {{ form_label(form.picture, 'label.form.picture', {label_attr: {class: 'custom-file-label', 'data-label': 'label.form.picture'|trans}}) }}
+                <small class="text-danger">{{ form_errors(form.picture) }}</small>
+            </div>
+            <div class="input-group-append">
+                <button class="btn btn-outline-info" data-url="{{ path('app_profile_attach') }}" type="button"
+                        id="attach"><i class="bi bi-image-fill pr-2"></i>Attach
+                </button>
             </div>
         </div>
-        <div class="col-sm mh-25">
-            {% for picture in app.user.userDetails.attach|slice(0, 1) %}
-                {% set _picture = 'user/picture/' ~ app.user.id ~ '/' ~ picture.name %}
-                <img class="img-responsive img-rounded ml-5"
-                     src="{{ asset(_picture) | imagine_filter('user_preview') }}"
-                     alt="{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}">
-            {% else %}
-                <img class="img-responsive img-rounded ml-5" src="{{ asset('img/user-picture.jpg') }}"
-                     alt="{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}">
-            {% endfor %}
-        </div>
+        <small class="d-block picture-info text-monospace mt-1"></small>
     </div>
 </div>
 <div class="form-row">

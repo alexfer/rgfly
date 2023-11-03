@@ -13,12 +13,15 @@
                         </div>
                         {% for picture in entry.userDetails.attach|slice(0, 1) %}
                             {% set _picture = 'user/picture/' ~ entry.id ~ '/' ~ picture.name %}
-                            <img id="imgProfile" class="img-thumbnail" src="{{ asset(_picture) | imagine_filter('user_preview') }}"/>
+                            <img id="imgProfile" class="img-thumbnail"
+                                 src="{{ asset(_picture) | imagine_filter('user_preview') }}"/>
                         {% else %}
                             <img src="http://placehold.it/150x150" id="imgProfile" class="img-thumbnail"/>
                         {% endfor %}
                         <div class="middle">
-                            <button type="button" class="btn btn-info" id="btnChangePicture" data-change="{{ 'form.action.change'|trans }}" data-confirm="{{ 'form.action.confirm'|trans }}">
+                            <button type="button" class="btn btn-info" id="btnChangePicture"
+                                    data-change="{{ 'form.action.change'|trans }}"
+                                    data-confirm="{{ 'form.action.confirm'|trans }}">
                                 {{ 'form.action.change'|trans }}
                             </button>
                             <input type="file" id="profilePicture" name="file"/>
@@ -32,10 +35,12 @@
                         </h5>
                         <h6 class="d-block"><a class="link" href="">1,500</a> Video Uploads</h6>
                         <h6 class="d-block"><a class="link" href="">300</a> Blog Posts</h6>
-                        <h6 class="d-block"><a class="link" href="mailto:{{ entry.email }}"><i class="bi bi-envelope-fill pr-2"></i> {{ entry.email }}</a></h6>
+                        <h6 class="d-block"><a class="link" href="mailto:{{ entry.email }}"><i
+                                        class="bi bi-envelope-fill pr-2"></i> {{ entry.email }}</a></h6>
                     </div>
                     <div class="ml-auto">
-                        <input type="button" class="btn btn-sm btn-info d-none" id="btnDiscard" value="{{ 'form.action.cancel'|trans }}"/>
+                        <input type="button" class="btn btn-sm btn-info d-none" id="btnDiscard"
+                               value="{{ 'form.action.cancel'|trans }}"/>
                     </div>
                 </div>
             </div>

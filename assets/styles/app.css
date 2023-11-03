@@ -876,10 +876,6 @@ p:last-child {
     border-top: 3px solid #ea8b8b;
 }
 
-.tech-form .picture-block {
-    height: 160px;
-}
-
 .d-tech-form .form-control.error {
     border: 1px solid #ea8b8b;
 }
@@ -894,6 +890,16 @@ p:last-child {
     border: 1px solid transparent;
     transition: all 0.90s ease 0s;
     box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12), 0 2px 4px -1px rgba(0, 0, 0, .2)
+}
+
+.tech-form .btn-outline-info {
+    color: #6e6e6e;
+    background-color: #ddd;
+    border: 1px solid #a0a0a0;
+    height: auto;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
 }
 
 .tech-form .btn:hover,
@@ -956,6 +962,16 @@ p:last-child {
     -webkit-box-shadow: none;
     box-shadow: none;
     border-top: 3px solid #004caa;
+}
+
+.tech-form ul.pictures div.wrapper {
+    display: none;
+}
+
+.tech-form ul.pictures .nav-link .spinner-grow {
+    position: absolute;
+    margin-top: 36px;
+    margin-left: 36px;
 }
 
 .d-tech-form input:focus,
