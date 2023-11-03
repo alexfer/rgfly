@@ -120,7 +120,8 @@ $(function () {
                             $('.toast').toast('show');
                             let wrapper = $('.tech-form .pictures .wrapper');
                             wrapper.find('img').attr('src', response.picture);
-                            wrapper.after(wrapper.html().fadeOut('slow'));
+                            wrapper.after(wrapper.html());
+                            $('.tech-form .pictures a.first').toggleClass('inactive').removeClass('first');
                         }
                     },
                     complete: function () {
@@ -141,7 +142,6 @@ $(function () {
         let file = this.files[0];
         info.html(file.name + ', ' + formatBytes(file.size) + ', ' + file.type);
         profile.html(file.name);
-        console.log(file);
         upload(file);
     });
 

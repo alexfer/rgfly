@@ -974,6 +974,14 @@ p:last-child {
     margin-left: 36px;
 }
 
+.tech-form ul.pictures .nav-link.inactive img {
+    opacity: 0.4;
+}
+
+.tech-form ul.pictures .nav-link.active img {
+    opacity: 1 !important;
+}
+
 .d-tech-form input:focus,
 .d-tech-form textarea:focus {
     border-top: 0;
