@@ -5,7 +5,6 @@ namespace App\Controller\Security;
 use App\Entity\UserDetails;
 use App\Entity\User;
 use App\Form\Type\User\DetailsType;
-use App\Helper\ErrorHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;

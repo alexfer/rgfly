@@ -7,10 +7,11 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{ChoiceType,
     DateType,
     FileType,
+    HiddenType,
     SubmitType,
     TelType,
     TextareaType,
-    TextType,};
+    TextType};
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Intl\{Countries, Locale,};
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -112,6 +113,10 @@ class ProfileType extends AbstractType
                         'maxMessage' => 'form.about.max',
                     ]),
                 ],
+            ])
+            ->add('attach', HiddenType::class, [
+                'mapped' => false,
+                'data' => $options['data']?->getUser()?->getAttach()?->getId(),
             ])
             ->add('update', SubmitType::class, [
                 'attr' => [

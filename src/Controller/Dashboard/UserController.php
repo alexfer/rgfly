@@ -3,7 +3,6 @@
 namespace App\Controller\Dashboard;
 
 use App\Form\Type\User\ChangePasswordProfileType;
-use App\Helper\ErrorHandler;
 use Exception;
 use App\Repository\{UserDetailsRepository, UserRepository,};
 use App\Service\Dashboard;
