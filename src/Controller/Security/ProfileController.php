@@ -2,6 +2,7 @@
 
 namespace App\Controller\Security;
 
+use App\Entity\UserDetails;
 use App\Form\Type\User\ProfileType;
 use App\Repository\AttachRepository;
 use App\Repository\UserDetailsRepository;
@@ -29,19 +30,32 @@ class ProfileController extends AbstractController
      */
     private ?string $storage;
 
+    /**
+     * @param ParameterBagInterface $params
+     */
     public function __construct(ParameterBagInterface $params)
     {
         $this->storage = sprintf('%s/picture/', $params->get('user_storage_dir'));
     }
 
+    /**
+     * @param Request $request
+     * @param UserDetailsRepository $repository
+     * @return UserDetails|null
+     */
     private function getRepository(
         Request               $request,
         UserDetailsRepository $repository,
-    ): object
+    ): ?UserDetails
     {
         return $repository->find($request->get('id'));
     }
 
+    /**
+     * @param Request $request
+     * @param string $key
+     * @return string
+     */
     private function getFile(Request $request, string $key): string
     {
         return $request->files->get($key);

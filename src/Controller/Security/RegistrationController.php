@@ -6,6 +6,8 @@ use App\Entity\UserDetails;
 use App\Entity\User;
 use App\Form\Type\User\DetailsType;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\{Request, Response,};
@@ -17,12 +19,13 @@ class RegistrationController extends AbstractController
 {
 
     /**
-     *
      * @param Request $request
      * @param UserPasswordHasherInterface $userPasswordHasher
      * @param EntityManagerInterface $em
      * @param ParameterBagInterface $params
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/register', name: 'app_register', methods: ['GET', 'POST'])]
     public function register(
@@ -77,9 +80,10 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     *
      * @param User $user
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function authenticateUser(User $user): void
     {

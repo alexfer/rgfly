@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{RedirectResponse, Request, Response,};
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -65,6 +66,7 @@ class ResetPasswordController extends AbstractController
 
     /**
      * Confirmation page after a user has requested a password reset.
+     * @return Response
      */
     #[Route('/check-email', name: 'app_check_email')]
     public function checkEmail(): Response
@@ -82,6 +84,11 @@ class ResetPasswordController extends AbstractController
 
     /**
      * Validates and process the reset URL that the user clicked in their email.
+     * @param Request $request
+     * @param UserPasswordHasherInterface $passwordHasher
+     * @param TranslatorInterface $translator
+     * @param string|null $token
+     * @return Response
      */
     #[Route('/reset/{token}', name: 'app_reset_password')]
     public function reset(Request $request, UserPasswordHasherInterface $passwordHasher, TranslatorInterface $translator, string $token = null): Response
@@ -139,6 +146,13 @@ class ResetPasswordController extends AbstractController
         ]);
     }
 
+    /**
+     * @param string $emailFormData
+     * @param MailerInterface $mailer
+     * @param TranslatorInterface $translator
+     * @return RedirectResponse
+     * @throws TransportExceptionInterface
+     */
     private function processSendingPasswordResetEmail(
         string              $emailFormData,
         MailerInterface     $mailer,

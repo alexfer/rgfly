@@ -5,7 +5,7 @@ namespace App\Controller\Dashboard;
 use App\Form\Type\User\ChangePasswordProfileType;
 use Exception;
 use App\Repository\{UserDetailsRepository, UserRepository,};
-use App\Service\Dashboard;
+use App\Service\Navbar;
 use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
@@ -23,7 +23,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class UserController extends AbstractController
 {
 
-    use Dashboard;
+    use Navbar;
 
     /**
      *
@@ -43,12 +43,13 @@ class UserController extends AbstractController
     }
 
     /**
-     *
      * @param Request $request
      * @param TranslatorInterface $translator
      * @param EntityManagerInterface $em
      * @param UserDetailsRepository $repository
      * @param SluggerInterface $slugger
+     * @param CacheManager $cacheManager
+     * @param ParameterBagInterface $params
      * @return Response
      * @throws Exception
      */

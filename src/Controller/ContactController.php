@@ -15,9 +15,9 @@ class ContactController extends AbstractController
 {
 
     /**
-     *
      * @param Request $request
      * @param EntityManagerInterface $em
+     * @param MailerInterface $mailer
      * @return Response
      */
     #[Route('/contact', name: 'contact', methods: ['GET', 'POST'])]

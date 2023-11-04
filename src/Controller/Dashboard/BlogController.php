@@ -6,7 +6,7 @@ use DateTime;
 use App\Entity\{Entry, EntryDetails};
 use App\Form\Type\Dashboard\EntryDetailsType;
 use App\Repository\EntryRepository;
-use App\Service\Dashboard;
+use App\Service\Navbar;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response,};
@@ -14,21 +14,20 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-
 #[Route('/dashboard/blog')]
 class BlogController extends AbstractController
 {
 
-    use Dashboard;
+    use Navbar;
 
-    const CHILDRENS = [
+    const CHILDREN = [
         'blog' => [
             'menu.dashboard.overview.blog' => 'app_dashboard_blog',
             'menu.dashboard.create.blog' => 'app_dashboard_create_blog',
         ],
     ];
 
-    #[Route('', name: self::CHILDRENS['blog']['menu.dashboard.overview.blog'])]
+    #[Route('', name: self::CHILDREN['blog']['menu.dashboard.overview.blog'])]
     public function index(
         EntryRepository $repository,
         UserInterface   $user,
@@ -41,7 +40,7 @@ class BlogController extends AbstractController
             ]);
     }
 
-    #[Route('/create', name: self::CHILDRENS['blog']['menu.dashboard.create.blog'])]
+    #[Route('/create', name: self::CHILDREN['blog']['menu.dashboard.create.blog'])]
     public function create(
         Request                $request,
         UserInterface          $user,

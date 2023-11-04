@@ -5,9 +5,10 @@ namespace App\Controller\Dashboard;
 use App\Entity\Faq;
 use App\Form\Type\FaqType;
 use App\Repository\FaqRepository;
-use App\Service\Dashboard;
+use App\Service\Navbar;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +19,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class FaqController extends AbstractController
 {
 
-    use Dashboard;
+    use Navbar;
 
     /**
      *
@@ -38,11 +39,11 @@ class FaqController extends AbstractController
     }
 
     /**
-     *
      * @param Request $request
      * @param Faq $entry
      * @param EntityManagerInterface $em
      * @return Response
+     * @throws Exception
      */
     #[Route('/delete/{id}', name: 'app_dashboard_delete_faq', methods: ['POST'])]
     public function delete(

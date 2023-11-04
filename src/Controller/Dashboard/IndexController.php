@@ -2,7 +2,7 @@
 
 namespace App\Controller\Dashboard;
 
-use App\Service\Dashboard;
+use App\Service\Navbar;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class IndexController extends AbstractController
 {
 
-    use Dashboard;
+    use Navbar;
 
     /**
      *

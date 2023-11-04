@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Repository\ResetPasswordRequestRepository;
 use DateTime;
+use Doctrine\ORM\{NonUniqueResultException, NoResultException,};
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,22 +23,23 @@ class RequestTokenCleanupCommand extends Command
      * @param ResetPasswordRequestRepository $repository
      */
     public function __construct(
-        private ResetPasswordRequestRepository $repository,
+        private readonly ResetPasswordRequestRepository $repository,
     )
     {
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->addOption(self::PERFORM, null, InputOption::VALUE_NONE, 'Execute');
     }
 
     /**
-     *
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     protected function execute(
         InputInterface  $input,
@@ -63,7 +65,7 @@ class RequestTokenCleanupCommand extends Command
         }
 
         if (!$perform) {
-            $io->warning(sprintf('Invalid optitons. Use [--%s] option', self::PERFORM));
+            $io->warning(sprintf('Invalid options. Use [--%s] option', self::PERFORM));
             return Command::INVALID;
         }
 

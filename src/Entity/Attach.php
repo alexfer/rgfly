@@ -160,7 +160,7 @@ class Attach
         return $this->user;
     }
 
-    public function setTest(?User $user): static
+    public function setUser(?User $user): static
     {
         // unset the owning side of the relation if necessary
         if ($user === null && $this->user !== null) {

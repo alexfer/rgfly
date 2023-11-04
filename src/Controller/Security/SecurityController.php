@@ -4,6 +4,8 @@ namespace App\Controller\Security;
 
 use App\Form\Type\User\LoginType;
 use Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,12 +15,12 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-
     /**
-     *
      * @param Request $request
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/web/login', name: 'app_login', methods: ['GET', 'POST'])]
     public function login(
@@ -62,9 +64,8 @@ class SecurityController extends AbstractController
     }
 
     /**
-     *
+     * @param Request $request
      * @return Response
-     * @throws Exception
      */
     #[Route('/login/error', name: 'app_login_error')]
     public function error(Request $request): Response

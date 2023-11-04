@@ -4,13 +4,15 @@ namespace App\Service;
 
 use App\Entity\Entry;
 use App\Repository\EntryRepository;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use function array_flip;
 use function array_merge;
 use function class_exists;
 use function count;
 
-trait Dashboard
+trait Navbar
 {
 
     /**
@@ -29,10 +31,11 @@ trait Dashboard
     }
 
     /**
-     *
      * @param UserInterface $user
      * @param array|null $criteria
-     * @return array
+     * @return UserInterface[]
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function criteria(UserInterface $user, ?array $criteria = null): array
     {
@@ -56,6 +59,8 @@ trait Dashboard
     /**
      * @param UserInterface $user
      * @return array[]
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function build(UserInterface $user): array
     {
@@ -65,7 +70,7 @@ trait Dashboard
             if (class_exists($class)) {
 
                 $navbar[$key] = $class;
-                $children[$key] = $class::CHILDRENS[$key];
+                $children[$key] = $class::CHILDREN[$key];
                 $count[$key] = $this->repository->count($this->criteria($user, [
                     'type' => $key,
                     'deleted_at' => null,

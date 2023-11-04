@@ -4,7 +4,7 @@ namespace App\Controller\Dashboard;
 
 use App\Entity\Contact;
 use App\Repository\ContactRepository;
-use App\Service\Dashboard;
+use App\Service\Navbar;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class ContactController extends AbstractController
 {
 
-    use Dashboard;
+    use Navbar;
 
     /**
      *
@@ -74,8 +74,6 @@ class ContactController extends AbstractController
         UserInterface          $user,
     ): Response
     {
-
-
         return $this->render('dashboard/content/contact/review.html.twig', $this->build($user) + [
                 'entry' => $entry,
             ]);

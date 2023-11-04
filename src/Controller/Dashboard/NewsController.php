@@ -3,7 +3,7 @@
 namespace App\Controller\Dashboard;
 
 use App\Repository\EntryRepository;
-use App\Service\Dashboard;
+use App\Service\Navbar;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,15 +13,20 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class NewsController extends AbstractController
 {
 
-    use Dashboard;
+    use Navbar;
 
-    const CHILDRENS = [
+    const CHILDREN = [
         'news' => [
             'menu.dashboard.overview_news' => 'app_dashboard_news',
         ],
     ];
 
-    #[Route('', name: self::CHILDRENS['news']['menu.dashboard.overview_news'])]
+    /**
+     * @param EntryRepository $repository
+     * @param UserInterface $user
+     * @return Response
+     */
+    #[Route('', name: self::CHILDREN['news']['menu.dashboard.overview_news'])]
     public function index(
         EntryRepository $repository,
         UserInterface   $user,
