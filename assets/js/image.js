@@ -128,6 +128,9 @@ $(function () {
                         $('.toast').toast('show');
                     }
                 },
+                complete: function () {
+                    $('.toast').toast('show');
+                }
             });
         }
     });

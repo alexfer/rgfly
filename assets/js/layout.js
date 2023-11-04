@@ -66,6 +66,4 @@ $(function () {
         };
         $('[data-toggle="tooltip"]').tooltip(options);
     });
-
-    // Pictures handlers
 });
