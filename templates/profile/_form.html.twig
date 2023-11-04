@@ -112,6 +112,11 @@
                              src="{{ asset(_picture) | imagine_filter('user_thumb') }}"
                              alt="{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}">
                     </a>
+                    {% if key %}
+                    <div class="text-right">
+                        <small>{{ picture.size|format_bytes }}</small> <i data-url="{{ path('app_profile_attach_setup') }}" data-id="{{ picture.id }}" class="bi bi-trash-fill trash"></i>
+                    </div>
+                    {% endif %}
                 </li>
             {% else %}
                 <li class="nav-item blank">

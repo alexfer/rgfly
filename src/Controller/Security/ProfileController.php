@@ -3,11 +3,15 @@
 namespace App\Controller\Security;
 
 use App\Form\Type\User\ProfileType;
+use App\Repository\AttachRepository;
 use App\Repository\UserDetailsRepository;
+use App\Repository\UserRepository;
 use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\{Request, Response,};
@@ -18,8 +22,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProfileController extends AbstractController
 {
-
-    const PUBLIC_USER_PICTURE_DIR = '/public/user/picture/';
 
     /**
      *
@@ -47,15 +49,53 @@ class ProfileController extends AbstractController
 
     /**
      * @param Request $request
+     * @param UserRepository $repository
+     * @param TranslatorInterface $translator
+     * @param AttachRepository $attach
+     * @param EntityManagerInterface $em
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws Exception
+     */
+    #[Route('/profile/attach/setup', name: 'app_profile_attach_setup', methods: ['POST'])]
+    public function setup(
+        Request                $request,
+        UserRepository         $repository,
+        TranslatorInterface    $translator,
+        AttachRepository       $attach,
+        EntityManagerInterface $em,
+    ): Response
+    {
+        try {
+            $user = $this->container->get('security.token_storage')->getToken()->getUser();
+        } catch (NotFoundExceptionInterface $ex) {
+            throw new Exception($ex);
+        }
+
+        $attachment = $attach->find($request->get('id'));
+        $owner = $repository->find($user->getId());
+        $owner->setAttach($attachment);
+
+        $em->persist($owner);
+        $em->flush();
+
+        return $this->json(['message' => $translator->trans('user.picture.setup')]);
+    }
+
+    /**
+     * @param Request $request
      * @param TranslatorInterface $translator
      * @param EntityManagerInterface $em
      * @param UserDetailsRepository $repository
+     * @param UserInterface $user
      * @param SluggerInterface $slugger
      * @param CacheManager $cacheManager
      * @param ParameterBagInterface $params
      * @return Response
+     * @throws Exception
      */
-    #[Route('/profile/attach', name: 'app_profile_attach', methods: ['GET', 'POST'])]
+    #[Route('/profile/attach', name: 'app_profile_attach', methods: ['POST'])]
     public function attach(
         Request                $request,
         TranslatorInterface    $translator,

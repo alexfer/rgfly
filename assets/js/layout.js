@@ -67,6 +67,29 @@ $(function () {
         $('[data-toggle="tooltip"]').tooltip(options);
     });
 
+    // Pictures handlers
+    $('#pills-tab .nav-link').on('click', function (e) {
+        e.preventDefault();
+        let nav = $(this);
+        let id = nav.next().children('i').attr('data-id');
+        let url = nav.next().children('i').attr('data-url');
+        let first = $('.tech-form .pictures li:nth-child(2)').children().children('img');
+        let current = nav.children('img');
+
+        if (typeof id !== 'undefined') {
+            $.post(url, {id: id}, function (response) {
+                $('.toast .toast-body').text(response.message);
+            }).fail(function () {
+                $('.toast .toast-body').text('Something went wrong');
+            }).always(function () {
+                $('.toast').toast('show');
+            });
+
+            first.attr('src', current.attr('src'));
+            current.attr('src', first.attr('src'));
+        }
+    });
+
     let readURL = function (input) {
 
         if (input.files && input.files[0]) {
@@ -86,7 +109,6 @@ $(function () {
         const k = 1024
         const dm = decimals < 0 ? 0 : decimals
         const sizes = ['Bytes', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
-
         const i = Math.floor(Math.log(bytes) / Math.log(k))
 
         return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`

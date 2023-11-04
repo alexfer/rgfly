@@ -978,13 +978,19 @@ p:last-child {
     opacity: 0.4;
 }
 
+.tech-form .pictures i.trash {
+    padding-right: 10px;
+    padding-left: 10px;
+    cursor: pointer;
+}
+
 .tech-form ul.pictures .nav-link.active img {
     opacity: 1 !important;
 }
 
 .d-tech-form input:focus,
 .d-tech-form textarea:focus {
-    border-top: 0;
+    /*border-top: 0;*/
     border: 1px solid #004caa;
 }
 
