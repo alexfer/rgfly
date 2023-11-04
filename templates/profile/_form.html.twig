@@ -99,7 +99,7 @@
                 </li>
             </div>
             {% for key, picture in app.user.userDetails.attach %}
-                <li class=nav-item">
+                <li class="nav-item">
                     {% set _picture = 'user/picture/' ~ app.user.id ~ '/' ~ picture.name %}
                     <a class="bg-light nav-link p-2 m-1 {% if not key %}first{% else %}inactive{% endif %}"
                        id="pills-{{ picture.id }}-tab"

@@ -10,9 +10,9 @@
             <thead class="bg-secondary text-white">
             <tr>
                 <th class="col-1 text-center" scope="col">{{ 'table.header.id'|trans }}</th>
-                <th class="col-6" scope="col">{{ 'table.header.name'|trans }}</th>
-                <th class="col-2 text-center" scope="col">{{ 'table.header.user.created_at'|trans }}</th>
-                <th class="col-2 text-center" scope="col">{{ 'table.header.user.updated_at'|trans }}</th>
+                <th class="col-4" scope="col">{{ 'table.header.name'|trans }}</th>
+                <th class="col-3 text-center" scope="col">{{ 'table.header.user.created_at'|trans }}</th>
+                <th class="col-3 text-center" scope="col">{{ 'table.header.user.updated_at'|trans }}</th>
                 <th class="col-1 text-center" scope="col">{{ 'table.header.handle'|trans }}</th>
             </tr>
             </thead>
@@ -20,7 +20,10 @@
             {% for entry in entries %}
                 <tr>
                     <th scope="row" class="text-center">{{ entry.id }}</th>
-                    <td>{{ entry.userDetails.firstName }} {{ entry.userDetails.lastName }}</td>
+                    <td>
+                        <a class="link"
+                           href="{{ path('app_dashboard_details_user', {id: entry.id, tab: 'summary'}) }}">{{ entry.userDetails.firstName }} {{ entry.userDetails.lastName }}</a>
+                    </td>
                     <td class="text-center">
                         <small data-toggle="tooltip" data-placement="top"
                                title="{{ entry.createdAt|date(datetime_format) }}"

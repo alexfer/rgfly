@@ -64,23 +64,23 @@ class UserController extends AbstractController
         ParameterBagInterface  $params,
     ): Response
     {
-        $entry = $repository->find($request->get('id'));
+        $user = $repository->find($request->get('id'));
         $file = $request->files->get('file');
 
         if ($file) {
-            $fileUploader = new FileUploader($this->getTargetDir($entry->getId(), $params), $slugger, $em);
+            $fileUploader = new FileUploader($this->getTargetDir($user->getId(), $params), $slugger, $em);
 
             try {
-                $attach = $fileUploader->upload($file)->handle($entry);
+                $attach = $fileUploader->upload($file)->handle($user);
             } catch (Exception $ex) {
                 throw new Exception($ex->getMessage());
             }
 
-            $entry->getUser()->setAttach($attach);
-            $entry->addAttach($attach);
+            $user->getUser()->setAttach($attach);
+            $user->addAttach($attach);
         }
 
-        $em->persist($entry);
+        $em->persist($user);
         $em->flush();
 
         $url = "user/picture/{$request->get('id')}/{$attach->getName()}";

@@ -44,3 +44,7 @@
     </section>
     {% include 'dashboard/layouts/modal.html.twig' %}
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('image') }}
+{% endblock %}
