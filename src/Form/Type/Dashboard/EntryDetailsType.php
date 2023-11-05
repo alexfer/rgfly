@@ -3,7 +3,6 @@
 namespace App\Form\Type\Dashboard;
 
 use App\Entity\Entry;
-use App\Entity\EntryDetails;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{SubmitType, TextType,};
@@ -21,7 +20,6 @@ class EntryDetailsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        //dd($options);
         $builder->add('title', TextType::class, [
             'mapped' => false,
             'data' => $options['data']?->getEntryDetails()?->getTitle(),

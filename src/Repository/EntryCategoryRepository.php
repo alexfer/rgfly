@@ -21,6 +21,16 @@ class EntryCategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, EntryCategory::class);
     }
 
+    public function removeEntryCategory(int|string $entry)
+    {
+        return $this->createQueryBuilder('c')
+            ->delete()
+            ->where('c.entry = :entry')
+            ->setParameter('entry', $entry)
+            ->getQuery()
+            ->execute();
+    }
+
 //    /**
 //     * @return EntryCategory[] Returns an array of EntryCategory objects
 //     */
