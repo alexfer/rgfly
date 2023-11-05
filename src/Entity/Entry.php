@@ -65,6 +65,9 @@ class Entry
     #[ORM\OneToMany(mappedBy: 'details', targetEntity: EntryAttachment::class)]
     private Collection $entryAttachments;
 
+    #[ORM\OneToMany(mappedBy: 'entry', targetEntity: EntryCategory::class)]
+    private Collection $entryCategories;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
@@ -73,6 +76,7 @@ class Entry
         $this->status = self::STATUS['Draft'];
         $this->comments = 0;
         $this->entryAttachments = new ArrayCollection();
+        $this->entryCategories = new ArrayCollection();
     }
 
     /**
@@ -275,6 +279,36 @@ class Entry
         }
 
         $this->entryDetails = $entryDetails;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EntryCategory>
+     */
+    public function getEntryCategories(): Collection
+    {
+        return $this->entryCategories;
+    }
+
+    public function addEntryCategory(EntryCategory $entryCategory): static
+    {
+        if (!$this->entryCategories->contains($entryCategory)) {
+            $this->entryCategories->add($entryCategory);
+            $entryCategory->setEntry($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntryCategory(EntryCategory $entryCategory): static
+    {
+        if ($this->entryCategories->removeElement($entryCategory)) {
+            // set the owning side to null (unless already changed)
+            if ($entryCategory->getEntry() === $this) {
+                $entryCategory->setEntry(null);
+            }
+        }
 
         return $this;
     }

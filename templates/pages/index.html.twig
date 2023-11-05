@@ -1,33 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello PageController!{% endblock %}
+{% block title %}Techspace - {{ 'text.home.header'|trans }}{% endblock %}
 
 {% block body %}
-    <style>
-        .example-wrapper {
-            margin: 1em auto;
-            max-width: 800px;
-            width: 95%;
-            font: 18px/1.5 sans-serif;
-        }
-
-        .example-wrapper code {
-            background: #F5F5F5;
-            padding: 2px 6px;
-        }
-    </style>
-
-    <div class="example-wrapper">
-        <h1>Hello {{ controller_name }}! ✅</h1>
-
-        This friendly message is coming from:
-        <ul>
-            <li>Your controller at <code><a
-                            href="{{ 'D:/development/project/symfony-demo/src/Controller/PageController.php'|file_link(0) }}">src/Controller/PageContrillerController.php</a></code>
-            </li>
-            <li>Your template at <code><a
-                            href="{{ 'D:/development/project/symfony-demo/templates/pages/index.html.twig'|file_link(0) }}">templates/pages/index.html.twig</a></code>
-            </li>
-        </ul>
+    <div class="page-title-area home">
+        <div class="d-table">
+            <div class="d-table-cell">
+                <div class="container">
+                    <div class="page-title-content">
+                        <h2>{{ 'text.home.header'|trans }}</h2>
+                        <p>{{ 'text.home.desc'|trans|raw }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-title-area home-area">
+        <div class="d-table">
+            <div class="d-table-cell">
+                <div class="container">
+                    <div class="page-title-content">
+                        <h2>Home Block</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

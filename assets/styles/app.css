@@ -437,18 +437,11 @@ p:last-child {
 }
 
 .tech-nav {
-    background-color: transparent;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    padding-right: 0;
-    padding-left: 0;
+    padding: 5px 0;
 }
 
 .tech-nav .navbar {
-    padding-right: 0;
-    padding-top: 0;
-    padding-left: 0;
-    padding-bottom: 0;
+    padding: 0;
 }
 
 .tech-nav .navbar ul {
@@ -469,14 +462,14 @@ p:last-child {
     padding-right: 0;
 }
 
-.tech-nav.index-navber .navbar .navbar-nav .nav-item a {
+.tech-nav.index-navbar .navbar .navbar-nav .nav-item a {
     color: #555;
 }
 
 .tech-nav .navbar .navbar-nav .nav-item a {
     font-size: 15.5px;
     font-weight: 500;
-    color: #fff;
+    color: #dad9d9;
     text-transform: capitalize;
     padding-left: 0;
     padding-right: 0;
@@ -486,11 +479,10 @@ p:last-child {
     margin-right: 15px;
 }
 
-/*
 .tech-nav .navbar .navbar-nav .nav-item a:hover, .tech-nav .navbar .navbar-nav .nav-item a:focus, .tech-nav .navbar .navbar-nav .nav-item a.active {
-        color: #5e87eb;
+        color: #ffffff;
 }
-*/
+
 .tech-nav .navbar .navbar-nav .nav-item a i {
     font-size: 10px;
     position: relative;
@@ -1043,7 +1035,7 @@ p:last-child {
     background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
-    height: 400px;
+    height: 300px;
 }
 
 .page-title-area.request-password {
@@ -1088,7 +1080,7 @@ p:last-child {
 
 .page-title-area.user-area {
     background-image: linear-gradient(to bottom, rgba(77, 124, 238, 0.2), rgba(77, 124, 238, 0.2)), url(../img/user-area1.jpg);
-    height: 300px;
+    height: 230px;
 }
 
 .page-title-content {
