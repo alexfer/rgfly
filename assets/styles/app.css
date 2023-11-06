@@ -863,6 +863,13 @@ p:last-child {
     padding-top: 15px;
     line-height: initial;
 }
+.d-tech-form .form-title {
+    color: #4e5768;
+    font-size: 17px;
+}
+.d-tech-form .form-title:hover {
+    color: #5e87eb;
+}
 
 .tech-form .form-control.error {
     border-top: 3px solid #ea8b8b;

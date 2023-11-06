@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\{Request, Response,};
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/dashboard/blog')]
 class BlogController extends AbstractController
@@ -67,6 +68,7 @@ class BlogController extends AbstractController
         EntityManagerInterface $em,
         CategoryRepository     $category,
         CategoryRepository     $categoryRepository,
+        SluggerInterface       $slugger,
     ): Response
     {
         $entry = new Entry();
@@ -82,12 +84,15 @@ class BlogController extends AbstractController
             if ($requestCategory) {
                 foreach ($requestCategory as $key => $value) {
                     $entryCategory = new EntryCategory();
-                    $entryCategory->setEntry($entry)->setCategory($categoryRepository->findOneBy(['id' => $key]));
+                    $entryCategory->setEntry($entry)
+                        ->setCategory($categoryRepository->findOneBy(['id' => $key]));
                     $em->persist($entryCategory);
                 }
             }
 
-            $entry->setType('blog')->setUser($user);
+            $entry->setType('blog')
+                ->setSlug($slugger->slug($form->get('title')->getData()))
+                ->setUser($user);
             $em->persist($entry);
             $em->flush();
 
