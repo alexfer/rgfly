@@ -25,9 +25,9 @@ class CategorySlugGenerateCommand extends Command
      */
     public function __construct(SluggerInterface $slugger, CategoryRepository $repository)
     {
-        parent::__construct();
         $this->repository = $repository;
         $this->slugger = $slugger;
+        parent::__construct();
     }
 
     /**
@@ -58,13 +58,9 @@ class CategorySlugGenerateCommand extends Command
             $qb->update()
                 ->set('c.slug', sprintf("'%s'", $this->slugger->slug($category['name'])->lower()))
                 ->where('c.id = :id')
-                ->setParameter('id',  $category['id'])
+                ->setParameter('id', $category['id'])
                 ->getQuery()
                 ->execute();
-
-            print $category['name'] . PHP_EOL;
-            print $category['id'] . PHP_EOL;
-
         }
 
         $io->success(sprintf('Generated %d slugs.', count($result)));

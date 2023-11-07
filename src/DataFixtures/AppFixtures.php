@@ -61,10 +61,10 @@ class AppFixtures extends Fixture
 
     private function loadCategories(ObjectManager $manager): void
     {
-        foreach ($this->getCategoryData() as [$name, $order]) {
+        foreach ($this->getCategoryData() as [$name, $position]) {
             $category = new Category();
             $category->setName($name);
-            $category->setOrder($order);
+            $category->setPosition($position);
             $category->setCreatedAt(new DateTime());
             $category->setDeletedAt(null);
             $manager->persist($category);
@@ -109,7 +109,7 @@ class AppFixtures extends Fixture
     {
         return [
             ['Main', 1],
-            ['Back-end development'],
+            ['Back-end development', 2],
             ['Databases', 3],
             ['Architecture', 4],
             ['UX and UI design', 5],

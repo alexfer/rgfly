@@ -26,7 +26,7 @@ class Category
     private ?string $name = null;
 
     #[ORM\Column]
-    private ?int $order = null;
+    private ?int $position = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created_at = null;
@@ -79,14 +79,14 @@ class Category
         return $this;
     }
 
-    public function getOrder(): ?int
+    public function getPosition(): ?int
     {
-        return $this->order;
+        return $this->position;
     }
 
-    public function setOrder(int $order): static
+    public function setPosition(int $position): static
     {
-        $this->order = $order;
+        $this->position = $position;
 
         return $this;
     }

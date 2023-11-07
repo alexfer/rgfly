@@ -5,11 +5,12 @@
 {% block title_content %}{{ _title_extend }}{% endblock %}
 {% block content %}
     {{ form_start(form, {attr: {class: 'd-tech-form', novalidate: 'novalidate'}}) }}
+    {{ dump(form_errors(form)) }}
     <div class="form-group">
-        {% set title_error = form.children.title.vars.errors|length ? 'form-control error' : 'form-control' %}
-        {{ form_label(form.children.title, 'label.form.title') }} <span class="text-danger">*</span>
-        {{ form_widget(form.children.title, {attr: {class: title_error, placeholder: 'label.form.title'}}) }}
-        <sm class="text-danger">{{ form_errors(form.children.title) }}</sm>
+        {% set title_error = form.title.vars.errors|length ? 'form-control error' : 'form-control' %}
+        {{ form_label(form.title, 'label.form.title') }} <span class="text-danger">*</span>
+        {{ form_widget(form.title, {attr: {class: title_error, placeholder: 'label.form.title'}}) }}
+        <sm class="text-danger">{{ form_errors(form.title) }}</sm>
     </div>
 {#    {{ dump(form.vars.data) }}#}
     <div class="form-group mt-3">

@@ -26,7 +26,11 @@ class EntryType extends AbstractType
             'expanded' => false,
             'choices' => Entry::STATUS,
             'data' => $options['data']?->getStatus(),
-        ]);
+        ])
+//            ->add('slug', HiddenType::class, [
+//            'required' => false,
+//        ])
+        ;
     }
 
     /**

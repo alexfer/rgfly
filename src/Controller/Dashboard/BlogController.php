@@ -108,7 +108,7 @@ class BlogController extends AbstractController
 
         return $this->render('dashboard/content/blog/_form.html.twig', $this->build($user) + [
                 'form' => $form,
-                'categories' => $category->findBy([], ['order' => 'asc']),
+                'categories' => $category->findBy([], ['position' => 'asc']),
             ]);
     }
 
@@ -171,7 +171,7 @@ class BlogController extends AbstractController
 
         return $this->render('dashboard/content/blog/_form.html.twig', $this->build($user) + [
                 'form' => $form,
-                'categories' => $categoryRepository->findBy([], ['order' => 'asc']),
+                'categories' => $categoryRepository->findBy([], ['position' => 'asc']),
             ]);
     }
 }

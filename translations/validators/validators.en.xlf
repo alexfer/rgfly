@@ -86,8 +86,8 @@
                 <source>email.unique</source>
                 <target>There is already an account with this email.</target>
             </trans-unit>
-            <trans-unit id="slug.unique">
-                <source>slug.unique</source>
+            <trans-unit id="title.unique">
+                <source>title.unique</source>
                 <target>There is already an entry with the same key information.</target>
             </trans-unit>
             <trans-unit id="form.email.not_valid">

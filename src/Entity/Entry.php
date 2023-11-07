@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EntryRepository::class)]
 #[ORM\Table(name: 'entry')]
@@ -40,7 +41,7 @@ class Entry
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::STRING, unique: true, nullable: true)]
+    #[ORM\Column(name: 'slug', type: Types::STRING, unique: true, nullable: true)]
     private ?string $slug = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist', 'remove'])]

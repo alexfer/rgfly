@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\EntryDetailsRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: EntryDetailsRepository::class)]
 #[ORM\Table(name: 'entry_details')]
