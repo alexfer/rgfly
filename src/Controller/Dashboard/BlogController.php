@@ -88,7 +88,7 @@ class BlogController extends AbstractController
         if ($title) {
             try {
                 $entry->setType('blog')
-                    ->setSlug($slugger->slug($title))
+                    ->setSlug($slugger->slug($title)->lower())
                     ->setUser($user);
                 $em->persist($entry);
                 $em->flush();
