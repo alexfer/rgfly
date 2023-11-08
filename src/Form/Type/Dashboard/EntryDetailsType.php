@@ -38,7 +38,6 @@ class EntryDetailsType extends AbstractType
                     'max' => 250,
                     'maxMessage' => 'form.title.max',
                 ]),
-                new UniqueEntity(['title', 'slug'], 'slug.unique'),
             ],
         ])
             ->add('content', CKEditorType::class, [
@@ -75,9 +74,6 @@ class EntryDetailsType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Entry::class,
-//            'constraints' => [
-//                new UniqueEntity(fields: ['title'], message: 'slug.unique'),
-//            ],
         ]);
     }
 

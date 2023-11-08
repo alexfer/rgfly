@@ -9,6 +9,7 @@ use App\Repository\EntryCategoryRepository;
 use App\Repository\EntryRepository;
 use App\Service\Navbar;
 use DateTime;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -18,6 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/dashboard/blog')]
 class BlogController extends AbstractController
@@ -57,6 +59,8 @@ class BlogController extends AbstractController
      * @param EntityManagerInterface $em
      * @param CategoryRepository $category
      * @param CategoryRepository $categoryRepository
+     * @param SluggerInterface $slugger
+     * @param TranslatorInterface $translator
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -69,6 +73,7 @@ class BlogController extends AbstractController
         CategoryRepository     $category,
         CategoryRepository     $categoryRepository,
         SluggerInterface       $slugger,
+        TranslatorInterface    $translator,
     ): Response
     {
         $entry = new Entry();
@@ -77,7 +82,22 @@ class BlogController extends AbstractController
         $form = $this->createForm(EntryDetailsType::class, $entry);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        $error = null;
+        $title = $form->get('title')->getData();
+
+        if ($title) {
+            try {
+                $entry->setType('blog')
+                    ->setSlug($slugger->slug($title))
+                    ->setUser($user);
+                $em->persist($entry);
+                $em->flush();
+            } catch (UniqueConstraintViolationException $e) {
+                $error = $translator->trans('slug.unique', [], 'validators');
+            }
+        }
+
+        if ($form->isSubmitted() && $form->isValid() && !$error) {
 
             $requestCategory = $request->get('category');
 
@@ -90,12 +110,6 @@ class BlogController extends AbstractController
                 }
             }
 
-            $entry->setType('blog')
-                ->setSlug($slugger->slug($form->get('title')->getData()))
-                ->setUser($user);
-            $em->persist($entry);
-            $em->flush();
-
             $details->setTitle($form->get('title')->getData())
                 ->setContent($form->get('content')->getData())
                 ->setEntry($entry);
@@ -103,11 +117,14 @@ class BlogController extends AbstractController
             $em->persist($details);
             $em->flush();
 
+            $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
+
             return $this->redirectToRoute('app_dashboard_edit_blog', ['id' => $entry->getId()]);
         }
 
         return $this->render('dashboard/content/blog/_form.html.twig', $this->build($user) + [
                 'form' => $form,
+                'error' => $error,
                 'categories' => $category->findBy([], ['position' => 'asc']),
             ]);
     }
@@ -119,6 +136,7 @@ class BlogController extends AbstractController
      * @param UserInterface $user
      * @param EntryCategoryRepository $entryCategoryRepository
      * @param CategoryRepository $categoryRepository
+     * @param TranslatorInterface $translator
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -132,6 +150,7 @@ class BlogController extends AbstractController
         UserInterface           $user,
         EntryCategoryRepository $entryCategoryRepository,
         CategoryRepository      $categoryRepository,
+        TranslatorInterface     $translator,
     ): Response
     {
         $form = $this->createForm(EntryDetailsType::class, $entry);
@@ -166,11 +185,14 @@ class BlogController extends AbstractController
             $em->persist($details);
             $em->flush();
 
+            $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.updated')]));
+
             return $this->redirectToRoute('app_dashboard_edit_blog', ['id' => $entry->getId()]);
         }
 
         return $this->render('dashboard/content/blog/_form.html.twig', $this->build($user) + [
                 'form' => $form,
+                'error' => null,
                 'categories' => $categoryRepository->findBy([], ['position' => 'asc']),
             ]);
     }

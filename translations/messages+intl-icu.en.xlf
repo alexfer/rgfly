@@ -399,6 +399,18 @@
                 <source>user.password.changed</source>
                 <target><![CDATA[User password has been changed successfully.]]></target>
             </trans-unit>
+            <trans-unit id="user.entry.preview">
+                <source>user.entry.preview</source>
+                <target>Preview</target>
+            </trans-unit>
+            <trans-unit id="user.entry.updated">
+                <source>user.entry.updated</source>
+                <target><![CDATA[Entry has been updated successfully.]]></target>
+            </trans-unit>
+            <trans-unit id="user.entry.created">
+                <source>user.entry.created</source>
+                <target><![CDATA[Entry has been created successfully.]]></target>
+            </trans-unit>
             <trans-unit id="user.picture.changed">
                 <source>user.picture.changed</source>
                 <target><![CDATA[User picture has been changed successfully.]]></target>

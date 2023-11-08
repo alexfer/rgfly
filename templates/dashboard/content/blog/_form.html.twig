@@ -1,20 +1,30 @@
 {% extends 'dashboard/index.html.twig' %}
 
+{% set _message = app.flashes('success') %}
 {% set _title_extend = form.vars.data.id ? 'title.dashboard.change_blog'|trans : 'title.dashboard.create_blog'|trans %}
 {% block title_extend %}{{ _title_extend }} - {% endblock %}
-{% block title_content %}{{ _title_extend }}{% endblock %}
+{% block title_content %}
+    {{ _title_extend }}
+    {% if form.vars.data.id %}
+        <a class="btn btn btn-outline-info float-right mt-1" href="/blog/{{ form.vars.data.slug }}">{{ 'user.entry.preview'|trans }}</a>
+    {% endif %}
+{% endblock %}
 {% block content %}
     {{ form_start(form, {attr: {class: 'd-tech-form', novalidate: 'novalidate'}}) }}
-    {{ dump(form_errors(form)) }}
+    {% if form_errors(form) %}
+        <div class="alert alert-danger">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
     <div class="form-group">
-        {% set title_error = form.title.vars.errors|length ? 'form-control error' : 'form-control' %}
+        {% set title_error = form.title.vars.errors|length or error ? 'form-control error' : 'form-control' %}
         {{ form_label(form.title, 'label.form.title') }} <span class="text-danger">*</span>
         {{ form_widget(form.title, {attr: {class: title_error, placeholder: 'label.form.title'}}) }}
-        <sm class="text-danger">{{ form_errors(form.title) }}</sm>
+        <sm class="text-danger">{{ error ? error : form_errors(form.title) }}</sm>
     </div>
-{#    {{ dump(form.vars.data) }}#}
     <div class="form-group mt-3">
-        <a class="form-title card card-header" data-toggle="collapse" href="#categories" role="button" aria-expanded="false"
+        <a class="form-title card card-header" data-toggle="collapse" href="#categories" role="button"
+           aria-expanded="false"
            aria-controls="categories">Categories</a>
         <div class="collapse mt-2 active" id="categories">
             <div class="card card-body">
@@ -46,6 +56,7 @@
         {{ form_widget(form.status, {attr: {class: status_error, disabled: form.vars.data.id ? false : true}}) }}
         <sm class="text-danger">{{ form_errors(form.status) }}</sm>
     </div>
+    <input type="hidden" name="flash" value="{{ _message[0]|default([]|json_encode) }}">
     <div class="form-group text-center my-4">
         {{ form_widget(form.save, { label: form.vars.data.id ? 'form.action.update' : 'form.action.save'}) }}
         <a type="button" href="{{ url('app_dashboard_blog') }}"

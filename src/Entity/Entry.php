@@ -15,7 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: EntryRepository::class)]
 #[ORM\Table(name: 'entry')]
 #[ORM\Index(columns: ['status', 'type'], name: 'idx')]
-#[UniqueEntity(fields: ['slug'], message: 'slug.unique')]
 class Entry
 {
 
