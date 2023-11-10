@@ -23,6 +23,69 @@ img {
     box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12), 0 2px 4px -1px rgba(0, 0, 0, .2)
 }
 
+.blog-block .blog-img-block {
+    height: 180px;
+    white-space: nowrap;
+    transition: 0.5s;
+    overflow: hidden;
+}
+
+.blog-block img.blog-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0;
+    box-shadow: none;
+    transition: transform .4s;
+}
+
+.blog-block img.blog-img:hover {
+    opacity: 1;
+    -webkit-transform: scale(1.03);
+    -ms-transform: scale(1.03);
+    -o-transform: scale(1.03);
+    transform: scale(1.03);
+    transition: 0.5s;
+}
+
+.blog-block .card .card-footer {
+    border-top: 0;
+}
+
+.blog-block .card .card-footer ul li {
+    display: inline-block;
+}
+
+.blog-block .card .card-footer ul li:first-child {
+    display: block;
+    float: left;
+    padding-right: 15px;
+}
+
+.blog-block .card .card-footer ul li:first-child i {
+    margin-right: 5px;
+}
+
+.blog-block .card .card-footer ul li a {
+    font-size: 16px;
+    color: rgba(32, 52, 170, 0.87);
+    margin-left: 2px;
+}
+
+.blog-block .card .card-footer ul li a:hover {
+    color: rgba(21, 33, 109, 0.87);
+}
+
+.blog-block .card .card-body a {
+    max-height: 70px;
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(4, 83, 94, 0.85);
+}
+
+.blog-block.card .card-body a:hover {
+    color: rgba(12, 123, 140, 0.7);
+}
+
 button {
     outline: 0 !important;
 }
@@ -480,7 +543,7 @@ p:last-child {
 }
 
 .tech-nav .navbar .navbar-nav .nav-item a:hover, .tech-nav .navbar .navbar-nav .nav-item a:focus, .tech-nav .navbar .navbar-nav .nav-item a.active {
-        color: #ffffff;
+    color: #ffffff;
 }
 
 .tech-nav .navbar .navbar-nav .nav-item a i {
@@ -863,10 +926,12 @@ p:last-child {
     padding-top: 15px;
     line-height: initial;
 }
+
 .d-tech-form .form-title {
     color: #4e5768;
     font-size: 17px;
 }
+
 .d-tech-form .form-title:hover {
     color: #5e87eb;
 }
@@ -1036,6 +1101,7 @@ p:last-child {
 .page-title-area.contact,
 .page-title-area.user-area,
 .page-title-area.request-password,
+.page-title-area.request-blog,
 .page-title-area.questions {
     position: relative;
     z-index: 1;
@@ -1048,6 +1114,11 @@ p:last-child {
 .page-title-area.request-password {
     background-image: linear-gradient(to bottom, rgba(77, 124, 238, 0.2), rgba(77, 124, 238, 0.2)), url(../img/user-area1.jpg);
     height: 120px;
+}
+
+.page-title-area.blog {
+    background-image: linear-gradient(to right, rgba(77, 124, 238, 0.4), rgba(77, 124, 238, 0.4)), url(../img/blog-6.jpg);
+    height: 200px;
 }
 
 .page-title-area.home {
