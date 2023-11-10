@@ -31,6 +31,12 @@
                             <div class="card-footer text-right">
                                 <ul>
                                     <li>
+                                        <a target="_blank" href="{{ asset('https://www.facebook.com/AlexanderShtyher/') }}">
+                                            @{{ entry.user.userDetails.firstName }}
+                                        </a>
+                                        <i class="bi bi-person-fill"></i>
+                                    </li>
+                                    <li>
                                         <i class="text-muted bi bi-calendar-date"></i> <small>{{ entry.createdAt|date(date_format) }}</small>
                                     </li>
                                     <li>
@@ -46,11 +52,6 @@
                                     <li>
                                         <a href="">
                                             <i class="bi bi-instagram"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="">
-                                            <i class="bi bi-pinterest"></i>
                                         </a>
                                     </li>
                                 </ul>

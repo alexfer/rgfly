@@ -3,15 +3,22 @@
 fos_ck_editor:
     configs:
         main_config:
+            language: uk
+            extraPlugins: "youtube"
             toolbar: [
-                [ "Bold", "Italic", "Underline", "Strike", "Subscript", "Superscript", "TextColor" ], ["-"],
-                [ "Cut", "Copy", "Paste", "PasteText", "PasteFromWord"], ["-"],
-                [ "JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"  ], ["-"],
-                [ "Undo", "Redo" ], ["-"],
-                [ "CopyFormatting", "RemoveFormat" ], ["-"],
-                [ "Link", "Table", "HorizontalRule", "Smiley", "SpecialChar", "PageBreak" ], ["-"],
-                [ "Source", "-", "Save", "Anchor", "Maximize" ], ["-"],
+                ["FontSize", "Bold", "Italic", "Underline", "Strike", "Subscript", "Superscript", "TextColor"], ["-"],
+                ["Cut", "Copy", "Paste", "PasteText", "PasteFromWord"], ["-"],
+                ["JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"], ["-"],
+                ["Undo", "Redo" ], ["-"],
+                ["CopyFormatting", "RemoveFormat"], ["-"],
+                ["Link", "Table", "HorizontalRule", "Smiley", "SpecialChar", "PageBreak"], ["-"],
+                ["Source", "-", "Save", "Anchor", "Maximize"]
+                ["Youtube"], ["-"],
                 ["About"],
               ]
+    plugins:
+        youtube:
+            path: "ckeeditor/plugins/youtube/"
+            filename: "plugin.js"
     base_path: "bundles/fosckeditor"
     js_path:   "bundles/fosckeditor/ckeditor.js"

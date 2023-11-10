@@ -4,9 +4,8 @@ namespace App\Form\Type\Dashboard;
 
 use App\Entity\Entry;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\{HiddenType, SubmitType, TextType};
+use Symfony\Component\Form\Extension\Core\Type\{SubmitType, TextType,};
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\{Length, NotBlank,};
