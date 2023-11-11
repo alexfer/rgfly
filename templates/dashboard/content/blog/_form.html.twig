@@ -6,7 +6,7 @@
 {% block title_content %}
     {{ _title_extend }}
     {% if form.vars.data.id %}
-        <a target="_blank" class="btn btn btn-outline-info float-right mt-1" href="{{ path('app_blog') }}?{{ form.vars.data.slug }}">{{ 'user.entry.preview'|trans }}</a>
+        <a target="_blank" class="btn btn btn-outline-info float-right mt-1" href="{{ path('app_blog_view', {slug: form.vars.data.slug}) }}">{{ 'user.entry.preview'|trans }}</a>
     {% endif %}
 {% endblock %}
 {% block content %}

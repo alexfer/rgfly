@@ -22,7 +22,9 @@ class BlogController extends AbstractController
 
     #[Route('/{slug}', name: 'app_blog_view')]
     public function view(Request $request, EntryRepository $repository) {
-        $entry = $repository->findBy(['slug' => $request->get('slug')]);
+
+        $entry = $repository->findOneBy(['slug' => $request->get('slug')]);
+
         return $this->render('blog/view.html.twig', [
             'entry' => $entry,
         ]);

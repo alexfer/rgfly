@@ -5,6 +5,7 @@ fos_ck_editor:
         main_config:
             language: uk
             extraPlugins: "youtube"
+            allowedContent: true
             toolbar: [
                 ["FontSize", "Bold", "Italic", "Underline", "Strike", "Subscript", "Superscript", "TextColor"], ["-"],
                 ["Cut", "Copy", "Paste", "PasteText", "PasteFromWord"], ["-"],
@@ -13,7 +14,7 @@ fos_ck_editor:
                 ["CopyFormatting", "RemoveFormat"], ["-"],
                 ["Link", "Table", "HorizontalRule", "Smiley", "SpecialChar", "PageBreak"], ["-"],
                 ["Source", "-", "Save", "Anchor", "Maximize"]
-                ["Youtube"], ["-"],
+                ["Youtube", "Iframe"], ["-"],
                 ["About"],
               ]
     plugins:
