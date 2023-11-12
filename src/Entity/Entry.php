@@ -68,6 +68,7 @@ class Entry
     private ?DateTimeInterface $deleted_at = null;
 
     #[ORM\OneToMany(mappedBy: 'details', targetEntity: EntryAttachment::class)]
+    #[ORM\OrderBy(['id' => 'desc'])]
     private Collection $entryAttachments;
 
     #[ORM\OneToMany(mappedBy: 'entry', targetEntity: EntryCategory::class)]

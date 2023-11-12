@@ -83,7 +83,7 @@ class UserController extends AbstractController
         $em->persist($user);
         $em->flush();
 
-        $url = "user/picture/{$request->get('id')}/{$attach->getName()}";
+        $url = "storage/user/picture/{$request->get('id')}/{$attach->getName()}";
         $picture = $cacheManager->getBrowserPath(parse_url($url, PHP_URL_PATH), 'user_preview', [], null);
 
         return $this->json(['message' => $translator->trans('user.picture.changed'), 'picture' => $picture]);

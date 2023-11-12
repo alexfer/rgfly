@@ -53,6 +53,7 @@ $(function () {
     let info = $('.card-footer .picture-info');
     let profile = $('label[for="profile_picture"]');
     let entry = $('label[for="picture"]');
+    let attachments = $('.entry-attachments');
     let upload = function (file) {
         $('.input-group-append button').on('click', function (e) {
             e.preventDefault();
@@ -75,6 +76,12 @@ $(function () {
                             $('.toast .toast-body').text(response.message);
                             $('.toast').toast('show');
                             let wrapper = $('.tech-form .pictures .wrapper');
+                            attachments.append(
+                                $('<div/>').attr('class', 'd-inline-block m-1').append(
+                                    $('<img/>').attr('class', 'attach').attr('src', response.picture)
+                                )
+                            );
+
                             wrapper.find('img').attr('src', response.picture);
                             wrapper.after(wrapper.html());
                             $('.tech-form .pictures a.first').toggleClass('inactive').removeClass('first');

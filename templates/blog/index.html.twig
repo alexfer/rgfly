@@ -21,7 +21,12 @@
                     <div class="blog-block col-lg-4 col-md-6 col-sm-6 mb-4">
                         <div class="card shadow-sm h-100">
                             <div class="blog-img-block">
-                                <img src="{{ asset('http://placehold.it/380x200') }}" class="blog-img"/>
+                                {% for key, picture in entry.entryAttachments.slice(0, 1) %}
+                                    {% set _picture = 'storage/entry/picture/' ~ entry.entryDetails.id ~ '/' ~ picture.attach.name %}
+                                    <img src="{{ asset(_picture) | imagine_filter('entry_preview') }}" class="blog-img"/>
+                                {% else %}
+                                    <img src="{{ asset('http://placehold.it/380x200') }}" class="blog-img"/>
+                                {% endfor %}
                             </div>
                             <div class="card-body p-3">
                                 <a href="{{ path('app_blog_view', {slug: entry.slug}) }}">
@@ -31,13 +36,15 @@
                             <div class="card-footer text-right">
                                 <ul>
                                     <li>
-                                        <a target="_blank" href="{{ asset('https://www.facebook.com/AlexanderShtyher/') }}">
+                                        <a target="_blank"
+                                           href="{{ asset('https://www.facebook.com/AlexanderShtyher/') }}">
                                             @{{ entry.user.userDetails.firstName }}
                                         </a>
                                         <i class="bi bi-person-fill"></i>
                                     </li>
                                     <li>
-                                        <i class="text-muted bi bi-calendar-date"></i> <small>{{ entry.createdAt|date(date_format) }}</small>
+                                        <i class="text-muted bi bi-calendar-date"></i>
+                                        <small>{{ entry.createdAt|date(date_format) }}</small>
                                     </li>
                                     <li>
                                         <a href="">

@@ -19,12 +19,20 @@
             <h4>{{ entry.entryDetails.title }}</h4>
             <div class="entry-meta">
                 <ul>
-                    <li> <span>Posted On:</span>  <a href="#">{{ entry.createdAt|date(date_format) }}</a>
+                    <li><span>Posted On:</span> <a href="#">{{ entry.createdAt|date(date_format) }}</a>
                     </li>
-                    <li> <span>Posted By:</span>  <a href="#">{{ entry.user.userDetails.firstName }} {{ entry.user.userDetails.lastName }}</a>
+                    <li><span>Posted By:</span> <a
+                                href="#">{{ entry.user.userDetails.firstName }} {{ entry.user.userDetails.lastName }}</a>
                     </li>
                 </ul>
             </div>
+            {% for key, picture in entry.entryAttachments.slice(0, 1) %}
+                {% set _picture = 'storage/entry/picture/' ~ entry.entryDetails.id ~ '/' ~ picture.attach.name %}
+                <div class="content-image mb-4">
+                    <img src="{{ asset(_picture) | imagine_filter('entry_view') }}" class="img-responsive" alt="{{ entry.entryDetails.title }}"/>
+                    <i class="d-block text-left text-muted mt-1 pl-1">{{ entry.entryDetails.shortContent }}</i>
+                </div>
+            {% endfor %}
             {{ entry.entryDetails.content|raw }}
         </div>
     </section>

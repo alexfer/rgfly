@@ -240,10 +240,11 @@ class BlogController extends AbstractController
 
         $id = $request->get('id');
         $entry = $repository->findOneBy(['id' => $id]);
+        $detailsId = $entry->getEntryDetails()->getId();
 
         if ($file) {
 
-            $fileUploader = new FileUploader($this->getTargetDir($entry->getEntryDetails()->getId(), $params), $slugger, $em);
+            $fileUploader = new FileUploader($this->getTargetDir($detailsId, $params), $slugger, $em);
 
             try {
                 $attach = $fileUploader->upload($file)->handle();
@@ -258,7 +259,7 @@ class BlogController extends AbstractController
             $em->flush();
         }
 
-        $url = "entry/picture/{$id}/{$attach->getName()}";
+        $url = "storage/entry/picture/{$detailsId}/{$attach->getName()}";
         $picture = $cacheManager->getBrowserPath(parse_url($url, PHP_URL_PATH), 'entry_preview', [], null);
 
         return $this->json(['message' => $translator->trans('entry.picture.appended'), 'picture' => $picture]);
