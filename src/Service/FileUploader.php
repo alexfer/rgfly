@@ -3,8 +3,6 @@
 namespace App\Service;
 
 use App\Entity\Attach;
-use App\Entity\EntryAttachment;
-use App\Entity\EntryDetails;
 use App\Entity\UserDetails;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -85,13 +83,9 @@ class FileUploader
     {
         $attach = new Attach();
 
-        if($object && $object instanceof UserDetails) {
+        if ($object && $object instanceof UserDetails) {
             $attach->setUserDetails($object);
         }
-
-//        if($object instanceof EntryAttachment) {
-//            $attach->setDetails($object);
-//        }
 
         $attach->setName($this->fileName)
             ->setSize($this->getSize())

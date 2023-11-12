@@ -214,7 +214,18 @@ class BlogController extends AbstractController
             ]);
     }
 
-    #[Route('/attach/{id}', name: 'app_dashboard_blog_attch', methods: ['GET', 'POST'])]
+    /**
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @param EntryRepository $repository
+     * @param EntityManagerInterface $em
+     * @param SluggerInterface $slugger
+     * @param CacheManager $cacheManager
+     * @param ParameterBagInterface $params
+     * @return Response
+     * @throws \Exception
+     */
+    #[Route('/attach/{id}', name: 'app_dashboard_blog_attch', methods: ['POST'])]
     public function attach(
         Request                $request,
         TranslatorInterface    $translator,
