@@ -299,6 +299,10 @@
                 <source>label.form.content</source>
                 <target>Content</target>
             </trans-unit>
+            <trans-unit id="label.form.short_content">
+                <source>label.form.short_content</source>
+                <target>Short Content</target>
+            </trans-unit>
             <trans-unit id="label.form.visible">
                 <source>label.form.visible</source>
                 <target>Published</target>
@@ -414,6 +418,10 @@
             <trans-unit id="user.picture.changed">
                 <source>user.picture.changed</source>
                 <target><![CDATA[User picture has been changed successfully.]]></target>
+            </trans-unit>
+            <trans-unit id="entry.picture.appended">
+                <source>entry.picture.appended</source>
+                <target><![CDATA[Entry picture has been appended successfully.]]></target>
             </trans-unit>
             <trans-unit id="user.picture.setup">
                 <source>user.picture.setup</source>
@@ -610,6 +618,10 @@
             <trans-unit id="label.form.picture">
                 <source>label.form.picture</source>
                 <target>Your profile picture</target>
+            </trans-unit>
+            <trans-unit id="label.form.entry_picture">
+                <source>label.form.entry_picture</source>
+                <target>Choice picture</target>
             </trans-unit>
             <trans-unit id="form.phone.help">
                 <source>form.phone.help</source>

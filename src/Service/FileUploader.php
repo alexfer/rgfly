@@ -3,6 +3,9 @@
 namespace App\Service;
 
 use App\Entity\Attach;
+use App\Entity\EntryAttachment;
+use App\Entity\EntryDetails;
+use App\Entity\UserDetails;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -78,11 +81,19 @@ class FileUploader
      * @param object|null $object
      * @return Attach|null
      */
-    public function handle(?object $object): ?Attach
+    public function handle(?object $object = null): ?Attach
     {
         $attach = new Attach();
-        $attach->setUserDetails($object)
-            ->setName($this->fileName)
+
+        if($object && $object instanceof UserDetails) {
+            $attach->setUserDetails($object);
+        }
+
+//        if($object instanceof EntryAttachment) {
+//            $attach->setDetails($object);
+//        }
+
+        $attach->setName($this->fileName)
             ->setSize($this->getSize())
             ->setMime($this->getMimeType());
 

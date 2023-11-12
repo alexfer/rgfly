@@ -5,10 +5,10 @@ namespace App\Form\Type\Dashboard;
 use App\Entity\Entry;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\{SubmitType, TextType,};
+use Symfony\Component\Form\Extension\Core\Type\{SubmitType, TextareaType, TextType};
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\{Length, NotBlank,};
+use Symfony\Component\Validator\Constraints\{Length, NotBlank};
 
 class EntryDetailsType extends AbstractType
 {
@@ -39,6 +39,22 @@ class EntryDetailsType extends AbstractType
                 ]),
             ],
         ])
+            ->add('short_content', TextareaType::class, [
+                'mapped' => false,
+                'data' => $options['data']?->getEntryDetails()?->getShortContent(),
+                'attr' => [
+                    'min' => 50,
+                    'max' => 500,
+                ],
+                'constraints' => [
+                    new Length([
+                        'min' => 50,
+                        'minMessage' => 'form.short_content.min',
+                        'max' => 500,
+                        'maxMessage' => 'form.short_content.max',
+                    ]),
+                ],
+            ])
             ->add('content', CKEditorType::class, [
                 'mapped' => false,
                 'data' => $options['data']?->getEntryDetails()?->getContent(),

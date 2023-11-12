@@ -139,7 +139,7 @@ class ProfileController extends AbstractController
         $em->persist($details);
         $em->flush();
 
-        $url = "user/picture/{$user->getId()}/{$attach->getName()}";
+        $url = "storage/user/picture/{$user->getId()}/{$attach->getName()}";
         $picture = $cacheManager->getBrowserPath(parse_url($url, PHP_URL_PATH), 'user_thumb', [], null);
 
         return $this->json(['message' => $translator->trans('user.picture.changed'), 'picture' => $picture]);

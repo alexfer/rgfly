@@ -2,18 +2,21 @@
 
 namespace App\Controller\Dashboard;
 
-use App\Entity\{Entry, EntryCategory, EntryDetails};
+use App\Entity\{Entry, EntryAttachment, EntryCategory, EntryDetails};
 use App\Form\Type\Dashboard\EntryDetailsType;
 use App\Repository\CategoryRepository;
 use App\Repository\EntryCategoryRepository;
 use App\Repository\EntryRepository;
+use App\Service\FileUploader;
 use App\Service\Navbar;
 use DateTime;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\{Request, Response,};
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -32,6 +35,17 @@ class BlogController extends AbstractController
             'menu.dashboard.create.blog' => 'app_dashboard_create_blog',
         ],
     ];
+
+    /**
+     *
+     * @param int|null $id
+     * @return string
+     */
+    private function getTargetDir(?int $id, ParameterBagInterface $params): string
+    {
+        $storage = sprintf('%s/picture/', $params->get('entry_storage_dir'));
+        return $storage . $id;
+    }
 
     /**
      * @param EntryRepository $repository
@@ -77,7 +91,6 @@ class BlogController extends AbstractController
     ): Response
     {
         $entry = new Entry();
-        $details = new EntryDetails();
 
         $form = $this->createForm(EntryDetailsType::class, $entry);
         $form->handleRequest($request);
@@ -110,7 +123,10 @@ class BlogController extends AbstractController
                 }
             }
 
+            $details = new EntryDetails();
+
             $details->setTitle($form->get('title')->getData())
+                ->setShortContent($form->get('short_content')->getData())
                 ->setContent($form->get('content')->getData())
                 ->setEntry($entry);
 
@@ -176,9 +192,9 @@ class BlogController extends AbstractController
             $em->persist($entry);
             $em->flush();
 
-            $details = $entry->getEntryDetails();
-
-            $details->setTitle($form->get('title')->getData())
+            $details = $entry->getEntryDetails()
+                ->setTitle($form->get('title')->getData())
+                ->setShortContent($form->get('short_content')->getData())
                 ->setContent($form->get('content')->getData())
                 ->setEntry($entry);
 
@@ -192,8 +208,49 @@ class BlogController extends AbstractController
 
         return $this->render('dashboard/content/blog/_form.html.twig', $this->build($user) + [
                 'form' => $form,
+                'entry' => $entry,
                 'error' => null,
                 'categories' => $categoryRepository->findBy([], ['position' => 'asc']),
             ]);
     }
+
+    #[Route('/attach/{id}', name: 'app_dashboard_blog_attch', methods: ['GET', 'POST'])]
+    public function attach(
+        Request                $request,
+        TranslatorInterface    $translator,
+        EntryRepository        $repository,
+        EntityManagerInterface $em,
+        SluggerInterface       $slugger,
+        CacheManager           $cacheManager,
+        ParameterBagInterface  $params,
+    ): Response
+    {
+        $file = $request->files->get('file');
+
+        $id = $request->get('id');
+        $entry = $repository->findOneBy(['id' => $id]);
+
+        if ($file) {
+
+            $fileUploader = new FileUploader($this->getTargetDir($entry->getEntryDetails()->getId(), $params), $slugger, $em);
+
+            try {
+                $attach = $fileUploader->upload($file)->handle();
+            } catch (Exception $ex) {
+                throw new Exception($ex->getMessage());
+            }
+
+            $entryAttachment = new EntryAttachment();
+            $entryAttachment->setDetails($entry)->setAttach($attach);
+
+            $em->persist($entryAttachment);
+            $em->flush();
+        }
+
+        $url = "entry/picture/{$id}/{$attach->getName()}";
+        $picture = $cacheManager->getBrowserPath(parse_url($url, PHP_URL_PATH), 'entry_preview', [], null);
+
+        return $this->json(['message' => $translator->trans('entry.picture.appended'), 'picture' => $picture]);
+    }
+
 }

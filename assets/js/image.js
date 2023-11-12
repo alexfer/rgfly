@@ -52,6 +52,7 @@ $(function () {
     let form_data = new FormData();
     let info = $('.card-footer .picture-info');
     let profile = $('label[for="profile_picture"]');
+    let entry = $('label[for="picture"]');
     let upload = function (file) {
         $('.input-group-append button').on('click', function (e) {
             e.preventDefault();
@@ -69,6 +70,7 @@ $(function () {
                     success: function (response) {
                         if (response !== 0) {
                             profile.text(profile.attr('data-label'));
+                            entry.text(entry.attr('data-label'));
                             info.text('');
                             $('.toast .toast-body').text(response.message);
                             $('.toast').toast('show');
@@ -91,11 +93,12 @@ $(function () {
         });
     };
 
-    $('input[name="profile[picture]"]').on('change', function (e) {
+    $('input[name="profile[picture]"], input[name="entry[picture]"]').on('change', function (e) {
         e.preventDefault();
         let file = this.files[0];
         info.html(file.name + ', ' + formatBytes(file.size) + ', ' + file.type);
         profile.html(file.name);
+        entry.html(file.name);
         upload(file);
     });
 

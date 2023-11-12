@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Blogs{% endblock %}
+{% block title %}{{ entry.entryDetails.title }}{% endblock %}
 
 {% block body %}
     <div class="page-title-area blog">
@@ -8,7 +8,7 @@
             <div class="d-table-cell">
                 <div class="container">
                     <div class="page-title-content">
-                        <h2>{{ entry.entryDetails.title }}</h2>
+                        <h4>{{ entry.entryDetails.title }}</h4>
                     </div>
                 </div>
             </div>
@@ -16,7 +16,15 @@
     </div>
     <section class="section-area default bg-white">
         <div class="container">
-            {{ entry.entryDetails.title }}
+            <h4>{{ entry.entryDetails.title }}</h4>
+            <div class="entry-meta">
+                <ul>
+                    <li> <span>Posted On:</span>  <a href="#">{{ entry.createdAt|date(date_format) }}</a>
+                    </li>
+                    <li> <span>Posted By:</span>  <a href="#">{{ entry.user.userDetails.firstName }} {{ entry.user.userDetails.lastName }}</a>
+                    </li>
+                </ul>
+            </div>
             {{ entry.entryDetails.content|raw }}
         </div>
     </section>

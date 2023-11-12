@@ -122,6 +122,14 @@
                 <source>form.content.max</source>
                 <target>The content is too long. It should have {{ limit }} characters or less.</target>
             </trans-unit>
+            <trans-unit id="form.short_content.min">
+                <source>form.short_content.min</source>
+                <target>The short content is too short. It should have {{ limit }} characters or more.</target>
+            </trans-unit>
+            <trans-unit id="form.short_content.max">
+                <source>form.short_content.max</source>
+                <target>The short content is too long. It should have {{ limit }} characters or less.</target>
+            </trans-unit>
             <trans-unit id="form.message.agree_terms">
                 <source>form.message.agree_terms</source>
                 <target><![CDATA[You should agree to our Terms & Conditions and Privacy Policy.]]></target>

@@ -26,6 +26,9 @@ class EntryDetails
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $content = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $short_content = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -46,6 +49,25 @@ class EntryDetails
     public function setTitle(string $title): static
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getShortContent(): ?string
+    {
+        return $this->short_content;
+    }
+
+    /**
+     * @param string $content
+     * @return $this
+     */
+    public function setShortContent(string $short_content): static
+    {
+        $this->short_content = $short_content;
 
         return $this;
     }
