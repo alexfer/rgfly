@@ -24,6 +24,7 @@ Encore
     .addEntry('layout', './assets/js/layout.js')
     .addEntry('image', './assets/js/image.js')
     .addStyleEntry('sidebar', './assets/styles/sidebar.css')
+    //.addStyleEntry('global', './assets/styles/global.scss')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
@@ -59,7 +60,7 @@ Encore
     })
 
     // enables Sass/SCSS support
-    //.enableSassLoader()
+    .enableSassLoader()
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()

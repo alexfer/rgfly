@@ -7,10 +7,6 @@ use App\Repository\EntryRepository;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use function array_flip;
-use function array_merge;
-use function class_exists;
-use function count;
 
 trait Navbar
 {
