@@ -125,7 +125,7 @@ class BlogController extends AbstractController
 
             $details = new EntryDetails();
 
-            $details->setTitle($form->get('title')->getData())
+            $details->setTitle($title)
                 ->setShortContent($form->get('short_content')->getData())
                 ->setContent($form->get('content')->getData())
                 ->setEntry($entry);
@@ -153,6 +153,7 @@ class BlogController extends AbstractController
      * @param EntryCategoryRepository $entryCategoryRepository
      * @param CategoryRepository $categoryRepository
      * @param TranslatorInterface $translator
+     * @param SluggerInterface $slugger
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -167,12 +168,28 @@ class BlogController extends AbstractController
         EntryCategoryRepository $entryCategoryRepository,
         CategoryRepository      $categoryRepository,
         TranslatorInterface     $translator,
+        SluggerInterface        $slugger,
     ): Response
     {
         $form = $this->createForm(EntryDetailsType::class, $entry);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        $error = null;
+        $title = $form->get('title')->getData();
+
+        if ($title) {
+            try {
+                $entry->setType('blog')
+                    ->setSlug($slugger->slug($title)->lower())
+                    ->setUser($user);
+                $em->persist($entry);
+                $em->flush();
+            } catch (UniqueConstraintViolationException $e) {
+                $error = $translator->trans('slug.unique', [], 'validators');
+            }
+        }
+
+        if ($form->isSubmitted() && $form->isValid() && !$error) {
 
             $requestCategory = $request->get('category');
 
@@ -186,6 +203,7 @@ class BlogController extends AbstractController
             }
 
             $entry->setStatus($form->get('status')->getData())
+                ->setSlug($slugger->slug($title)->lower())
                 ->setUpdatedAt(new DateTime())
                 ->setDeletedAt($form->get('status')->getData() == 'trashed' ? new DateTime() : null);
 
@@ -193,7 +211,7 @@ class BlogController extends AbstractController
             $em->flush();
 
             $details = $entry->getEntryDetails()
-                ->setTitle($form->get('title')->getData())
+                ->setTitle($title)
                 ->setShortContent($form->get('short_content')->getData())
                 ->setContent($form->get('content')->getData())
                 ->setEntry($entry);
@@ -209,7 +227,7 @@ class BlogController extends AbstractController
         return $this->render('dashboard/content/blog/_form.html.twig', $this->build($user) + [
                 'form' => $form,
                 'entry' => $entry,
-                'error' => null,
+                'error' => $error,
                 'categories' => $categoryRepository->findBy([], ['position' => 'asc']),
             ]);
     }

@@ -64,7 +64,7 @@ class EntryDetails
      * @param string $content
      * @return $this
      */
-    public function setShortContent(string $short_content): static
+    public function setShortContent(?string $short_content): static
     {
         $this->short_content = $short_content;
 
