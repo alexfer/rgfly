@@ -15,15 +15,6 @@ security:
             security: false
         main:            
             lazy: true
-            oauth:
-                resource_owners:
-                    facebook: "/login/facebook-check"
-                    google: "/login/google-check"
-                login_path: /login
-                use_forward: false
-                failure_path: /web/login
-                oauth_user_provider:
-                    service: hwi_oauth.user.provider
             entry_point: form_login
             custom_authenticator:
                 - App\Security\Authentication\UserAuthenticator
