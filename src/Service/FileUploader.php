@@ -26,9 +26,9 @@ class FileUploader
      * @param EntityManagerInterface $em
      */
     public function __construct(
-        private string                 $targetDirectory,
-        private SluggerInterface       $slugger,
-        private EntityManagerInterface $em,
+        private readonly string                 $targetDirectory,
+        private readonly SluggerInterface       $slugger,
+        private readonly EntityManagerInterface $em,
     )
     {
 

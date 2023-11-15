@@ -8,6 +8,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\EntryCategoryRepository;
 use App\Repository\EntryRepository;
 use App\Service\FileUploader;
+use App\Service\Interface\ImageValidatorInterface;
 use App\Service\Navbar;
 use DateTime;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
@@ -17,7 +18,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\{Request, Response,};
+use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -245,13 +246,14 @@ class BlogController extends AbstractController
      */
     #[Route('/attach/{id}', name: 'app_dashboard_blog_attch', methods: ['POST'])]
     public function attach(
-        Request                $request,
-        TranslatorInterface    $translator,
-        EntryRepository        $repository,
-        EntityManagerInterface $em,
-        SluggerInterface       $slugger,
-        CacheManager           $cacheManager,
-        ParameterBagInterface  $params,
+        Request                 $request,
+        TranslatorInterface     $translator,
+        EntryRepository         $repository,
+        EntityManagerInterface  $em,
+        SluggerInterface        $slugger,
+        CacheManager            $cacheManager,
+        ParameterBagInterface   $params,
+        ImageValidatorInterface $imageValidator,
     ): Response
     {
         $file = $request->files->get('file');
@@ -262,12 +264,23 @@ class BlogController extends AbstractController
 
         if ($file) {
 
+            $validate = $imageValidator->validate($file, $translator);
+
+            if ($validate->has(0)) {
+                return $this->json(['message' => $validate->get(0)->getMessage(), 'picture' => null]);
+            }
+
+            if ($validate->has(0)) {
+                return $this->json(['message' => $validate->get(0)->getMessage(), 'picture' => null]);
+            }
+
+
             $fileUploader = new FileUploader($this->getTargetDir($detailsId, $params), $slugger, $em);
 
             try {
                 $attach = $fileUploader->upload($file)->handle();
             } catch (Exception $ex) {
-                throw new Exception($ex->getMessage());
+                return $this->json(['message' => $ex->getMessage(), 'picture' => null]);
             }
 
             $entryAttachment = new EntryAttachment();

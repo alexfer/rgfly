@@ -3,11 +3,12 @@
 namespace App\Controller\Dashboard;
 
 use App\Form\Type\User\ChangePasswordProfileType;
-use Exception;
 use App\Repository\{UserDetailsRepository, UserRepository,};
-use App\Service\Navbar;
 use App\Service\FileUploader;
+use App\Service\Interface\ImageValidatorInterface;
+use App\Service\Navbar;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -62,12 +63,24 @@ class UserController extends AbstractController
         SluggerInterface       $slugger,
         CacheManager           $cacheManager,
         ParameterBagInterface  $params,
+        ImageValidatorInterface $imageValidator,
     ): Response
     {
         $user = $repository->find($request->get('id'));
         $file = $request->files->get('file');
 
         if ($file) {
+
+            $validate =  $imageValidator->validate($file, $translator);
+
+            if ($validate->has(0)) {
+                return $this->json(['message' => $validate->get(0)->getMessage(), 'picture' => null]);
+            }
+
+            if ($validate->has(0)) {
+                return $this->json(['message' => $validate->get(0)->getMessage(), 'picture' => null]);
+            }
+
             $fileUploader = new FileUploader($this->getTargetDir($user->getId(), $params), $slugger, $em);
 
             try {

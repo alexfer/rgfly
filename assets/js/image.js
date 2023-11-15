@@ -70,10 +70,18 @@ $(function () {
                     processData: false,
                     success: function (response) {
                         if (response !== 0) {
+                            let toats = $('.toast .toast-body');
+
+                            if(!response.picture) {
+                                toats.toggleClass('error');
+                                toats.text(response.message);
+                            } else {
+                                toats.removeClass('error').text(response.message);
+                            }
+
                             profile.text(profile.attr('data-label'));
                             entry.text(entry.attr('data-label'));
                             info.text('');
-                            $('.toast .toast-body').text(response.message);
                             $('.toast').toast('show');
                             let wrapper = $('.tech-form .pictures .wrapper');
                             attachments.append(

@@ -8,6 +8,7 @@ use App\Repository\AttachRepository;
 use App\Repository\UserDetailsRepository;
 use App\Repository\UserRepository;
 use App\Service\FileUploader;
+use App\Service\Interface\ImageValidatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
@@ -119,12 +120,20 @@ class ProfileController extends AbstractController
         SluggerInterface       $slugger,
         CacheManager           $cacheManager,
         ParameterBagInterface  $params,
+        ImageValidatorInterface $imageValidator,
     ): Response
     {
         $details = $repository->find($user->getId());
         $file = $request->files->get('file');
 
         if ($file) {
+
+            $validate =  $imageValidator->validate($file, $translator);
+
+            if ($validate->has(0)) {
+                return $this->json(['message' => $validate->get(0)->getMessage(), 'picture' => null]);
+            }
+
             $fileUploader = new FileUploader($this->getTargetDir($user->getId(), $params), $slugger, $em);
 
             try {
