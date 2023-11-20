@@ -5,8 +5,8 @@
             <div class="tech-responsive-menu">
                 <div class="tech-logo">
                     <a href="{{ path('app_index') }}">
-                        <span class="black-logo text-dark">TECHSPACE</span>
-                        <span class="white-logo text-white">TECHSPACE</span>
+                        <img src="{{ asset('/img/logo-black.png') }}" class="black-logo">
+                        <img src="{{ asset('/img/logo-white.png') }}" class="white-logo">
                     </a>
                 </div>
             </div>
@@ -16,8 +16,8 @@
         <nav class="navbar navbar-expand-md navbar-light">
             <div class="container">
                 <a class="navbar-brand" href="{{ path('app_index') }}">
-                    <span class="black-logo text-dark">TECHSPACE</span>
-                    <span class="white-logo text-white">TECHSPACE</span>
+                    <img src="{{ asset('/img/logo-black.png') }}" class="black-logo" alt="{{ 'site.title'|trans }} - {{ 'text.home.header'|trans }}">
+                    <img src="{{ asset('/img/logo-white.png') }}" class="white-logo" alt="{{ 'site.title'|trans }} - {{ 'text.home.header'|trans }}">
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#tech-navbar"
                         aria-controls="tech-navbar" aria-expanded="false">

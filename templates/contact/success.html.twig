@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ 'text.contact_us.success'|trans }}{% endblock %}
-
+{% set _message = app.flashes('success') %}
 {% block body %}
     <div class="page-title-area default">
         <div class="d-table">
@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="alert alert-light text-dark shadow-sm" role="alert">
-                        <h4 class="alert-heading">Well done! Keep it up!</h4>
+                        <h4 class="alert-heading">{{ 'text.contact_us.success'|trans }}</h4>
                         <p>{{ 'text.contact_us.success.short_desc'|trans|raw }}</p>
                         <hr>
                         <p class="mb-0">{{ 'text.contact_us.success.long_desc'|trans }}</p>

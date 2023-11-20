@@ -15,8 +15,14 @@ class DashboardVoter extends Voter
     const VIEW = 'view';
     const EDIT = 'edit';
 
+    /**
+     * @var Security
+     */
     private Security $security;
 
+    /**
+     * @param Security $security
+     */
     public function __construct(Security $security)
     {
         $this->security = $security;

@@ -27,7 +27,11 @@
         </div>
     </section>
 {% endblock %}
+{% block toast %}
+    {{ include ('layouts/toast.html.twig') }}
+{% endblock %}
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('image') }}
+{#    <script type="text/javascript" src="{{ asset('plugins/jquery.lazy/jquery.lazy.min.js') }}"></script>#}
 {% endblock %}

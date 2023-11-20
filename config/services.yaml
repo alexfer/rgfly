@@ -10,7 +10,9 @@ parameters:
     app.date_format: 'M d, Y'
     locale: 'en'
     user_storage_dir: '%kernel.project_dir%/public/storage/user'
+    user_storage_picture: 'storage/user/picture'
     entry_storage_dir: '%kernel.project_dir%/public/storage/entry'
+    entry_storage_picture: 'storage/entry/picture'
     app.notifications.email_sender: '%env(EMAIL_SENDER)%'
     app.notifications.email_sender_name: '%env(EMAIL_SENDER_NAME)%'
 

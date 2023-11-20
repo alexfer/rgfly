@@ -14,7 +14,7 @@ $(window).on('scroll', function () {
 $(function () {
     $('.toast').toast('hide');
 
-    let flash = $('.d-tech-form input[name="flash"]').attr('value');
+    let flash = $('.d-tech-form input[name="flash"], .tech-form input[name="flash"]').attr('value');
 
     if (typeof flash !== 'undefined') {
         let messages = $.parseJSON(flash);

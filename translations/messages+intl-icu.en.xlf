@@ -55,6 +55,18 @@
                 <target>
                     <![CDATA[Try loading this page again in some minutes or go back to the <a cass="link" href="{ url }">Homepage</a>.]]></target>
             </trans-unit>
+            <trans-unit id="site.title">
+                <source>site.title</source>
+                <target>Techspace</target>
+            </trans-unit>
+            <trans-unit id="text.home.header">
+                <source>text.home.header</source>
+                <target>Software development company</target>
+            </trans-unit>
+            <trans-unit id="title.blogs">
+                <source>title.blogs</source>
+                <target>Blogs</target>
+            </trans-unit>
             <trans-unit id="title.questions">
                 <source>title.questions</source>
                 <target>Questions</target>
@@ -114,6 +126,14 @@
             <trans-unit id="title.terms">
                 <source>title.terms</source>
                 <target><![CDATA[Terms &amp; Conditions]]></target>
+            </trans-unit>
+            <trans-unit id="title.service.message">
+                <source>title.service.message</source>
+                <target>Service Message</target>
+            </trans-unit>
+            <trans-unit id="title.service.text">
+                <source>title.service.text</source>
+                <target><![CDATA[Leave your information using the <a class="link" href="{ contact }">page</a> and we will contact you within 1 business day.]]></target>
             </trans-unit>
             <trans-unit id="title.contact_information">
                 <source>title.contact_information</source>
@@ -389,10 +409,6 @@
                 <source>text.all_right_reserved</source>
                 <target>All Rights Reserved</target>
             </trans-unit>
-            <trans-unit id="text.home.header">
-                <source>text.home.header</source>
-                <target>Software development company</target>
-            </trans-unit>
             <trans-unit id="text.home.desc">
                 <source>text.home.desc</source>
                 <target>
@@ -403,6 +419,18 @@
                 <source>user.password.changed</source>
                 <target><![CDATA[User password has been changed successfully.]]></target>
             </trans-unit>
+            <trans-unit id="entry.info.draft">
+                <source>entry.info.draft</source>
+                <target>Draft</target>
+            </trans-unit>
+            <trans-unit id="entry.info.published">
+                <source>user.entry.info.published</source>
+                <target>Published</target>
+            </trans-unit>
+            <trans-unit id="entry.info.trashed">
+                <source>entry.info.trashed</source>
+                <target>Trashed</target>
+            </trans-unit>
             <trans-unit id="user.entry.preview">
                 <source>user.entry.preview</source>
                 <target>Preview</target>
@@ -410,6 +438,10 @@
             <trans-unit id="user.entry.updated">
                 <source>user.entry.updated</source>
                 <target><![CDATA[Entry has been updated successfully.]]></target>
+            </trans-unit>
+            <trans-unit id="user.profile.updated">
+                <source>user.profile.updated</source>
+                <target><![CDATA[Your profile has been updated successfully.]]></target>
             </trans-unit>
             <trans-unit id="user.entry.created">
                 <source>user.entry.created</source>
@@ -423,9 +455,13 @@
                 <source>entry.picture.appended</source>
                 <target><![CDATA[Entry picture has been appended successfully.]]></target>
             </trans-unit>
-            <trans-unit id="user.picture.setup">
-                <source>user.picture.setup</source>
-                <target><![CDATA[User picture has been set upped by default successfully.]]></target>
+            <trans-unit id="user.picture.default">
+                <source>user.picture.default</source>
+                <target><![CDATA[This picture has been used by default.]]></target>
+            </trans-unit>
+            <trans-unit id="user.picture.delete">
+                <source>user.picture.delete</source>
+                <target><![CDATA[This picture has been removed.]]></target>
             </trans-unit>
             <trans-unit id="text.faq.header">
                 <source>text.faq.header</source>
@@ -513,12 +549,14 @@
             </trans-unit>
             <trans-unit id="text.contact_us.success.short_desc">
                 <source>text.contact_us.success.short_desc</source>
-                <target>Your message has been sent successfully.</target>
+                <target>Your message has been sent successfully. Thank you for contacting us. We will contact you as
+                    soon as possible.
+                </target>
             </trans-unit>
             <trans-unit id="text.contact_us.success.long_desc">
                 <source>text.contact_us.success.long_desc</source>
                 <target>
-                    <![CDATA[Test text]]>
+                    <![CDATA[Let's stay in close touch.]]>
                 </target>
             </trans-unit>
             <trans-unit id="text.dashboard">
@@ -553,6 +591,18 @@
             <trans-unit id="label.form.name">
                 <source>label.form.name</source>
                 <target>Your Name</target>
+            </trans-unit>
+            <trans-unit id="label.form.attach">
+                <source>label.form.attach</source>
+                <target>Attach</target>
+            </trans-unit>
+            <trans-unit id="label.form.user.pictures">
+                <source>label.form.user.pictures</source>
+                <target>Your pictures</target>
+            </trans-unit>
+            <trans-unit id="form.help.pictures">
+                <source>form.help.pictures</source>
+                <target>Choice one of the pictures to using by default.</target>
             </trans-unit>
             <trans-unit id="label.form.first_name">
                 <source>label.form.first_name</source>

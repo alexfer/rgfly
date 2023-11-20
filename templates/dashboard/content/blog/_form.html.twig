@@ -71,11 +71,6 @@
             <div class="collapse mt-2" id="attachments">
                 <div class="card-body">
                     <div class="table text-center entry-attachments">
-                        <template>
-                            <div class="d-inline-block m-1">
-                                <img class="attach" src="{{ asset('img/1x1.png') }}">
-                            </div>
-                        </template>
                         {% for key, picture in entry.entryAttachments %}
                             {% set _picture = 'storage/entry/picture/' ~ entry.entryDetails.id ~ '/' ~ picture.attach.name %}
                             <div class="d-inline-block m-1">
@@ -110,4 +105,5 @@
     </div>
     {{ form_end(form) }}
 {% endblock %}
+
 

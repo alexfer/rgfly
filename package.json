@@ -37,6 +37,7 @@
         "core-js": "^3.33.1",
         "node-sass": "^9.0.0",
         "sass-loader": "^13.3.2",
+        "sweetalert": "^2.1.2",
         "watch": "^0.13.0"
     }
 }

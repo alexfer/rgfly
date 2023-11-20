@@ -1,28 +1,15 @@
 import $ from 'jquery';
+import swal from 'sweetalert';
 
 $(function () {
-    $('#pills-tab .nav-link').on('click', function (e) {
-        e.preventDefault();
-        let nav = $(this);
-        let id = nav.next().children('i').attr('data-id');
-        let url = nav.next().children('i').attr('data-url');
-        let first = $('.tech-form .pictures li:nth-child(2)').children().children('img');
-        let current = nav.children('img');
-
-        if (typeof id !== 'undefined') {
-            $.post(url, {id: id}, function (response) {
-                $('.toast .toast-body').text(response.message);
-            }).fail(function () {
-                $('.toast .toast-body').text('Something went wrong');
-            }).always(function () {
-                $('.toast').toast('show');
-            });
-
-            first.attr('src', current.attr('src'));
-            current.attr('src', first.attr('src'));
-        }
-    });
-
+    let imgSrc = $('#imgProfile').attr('src');
+    let changeBtn = $('#btnChangePicture');
+    let formData = new FormData();
+    let info = $('.card-footer .picture-info');
+    let profile = $('label[for="profile_picture"]');
+    let entry = $('label[for="picture"]');
+    let attachments = $('.entry-attachments');
+    let loader = $('.loader');
     let readURL = function (input) {
 
         if (input.files && input.files[0]) {
@@ -47,32 +34,25 @@ $(function () {
         return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
     }
 
-    let imgSrc = $('#imgProfile').attr('src');
-    let changeBtn = $('#btnChangePicture');
-    let form_data = new FormData();
-    let info = $('.card-footer .picture-info');
-    let profile = $('label[for="profile_picture"]');
-    let entry = $('label[for="picture"]');
-    let attachments = $('.entry-attachments');
     let upload = function (file) {
         $('.input-group-append button').on('click', function (e) {
             e.preventDefault();
-            form_data.append('file', file);
+            formData.append('file', file);
 
             if (file) {
-                $('.tech-form .pictures .blank').hide();
-                $('.tech-form .pictures .spinner-grow').fadeIn('slow');
+                loader.toggleClass('show');
+                attachments.toggleClass('blur');
                 $.ajax({
                     url: $(this).attr('data-url'),
                     type: 'post',
-                    data: form_data,
+                    data: formData,
                     contentType: false,
                     processData: false,
                     success: function (response) {
-                        if (response !== 0) {
+                        if (response) {
                             let toats = $('.toast .toast-body');
 
-                            if(!response.picture) {
+                            if (!response.picture) {
                                 toats.toggleClass('error');
                                 toats.text(response.message);
                             } else {
@@ -83,22 +63,32 @@ $(function () {
                             entry.text(entry.attr('data-label'));
                             info.text('');
                             $('.toast').toast('show');
-                            let wrapper = $('.tech-form .pictures .wrapper');
-                            attachments.append(
-                                $('<div/>').attr('class', 'd-inline-block m-1').append(
-                                    $('<img/>').attr('class', 'attach').attr('src', response.picture)
-                                )
-                            );
 
-                            wrapper.find('img').attr('src', response.picture);
-                            wrapper.after(wrapper.html());
-                            $('.tech-form .pictures a.first').toggleClass('inactive').removeClass('first');
+                            attachments.empty();
+
+                            $.each(response.attachments, function (key, attachment) {
+                                attachments.append(
+                                    $('<div/>')
+                                        .attr('class', 'd-inline-block  mr-3 mb-3').append(
+                                        $('<img/>')
+                                            .attr('class', 'attach lazy')
+                                            .attr('src', attachment.url)
+                                    ).append($('<div/>').attr('class', 'text-right').css('display', 'none')
+                                        .append($('<small/>').html(formatBytes(attachment.size))
+                                            .append(
+                                                $('<i>').attr('class', 'bi bi-person-bounding-box')
+                                                    .append($('<i>').attr('class', 'bi bi-trash-fill trash')))
+                                        ))
+                                );
+                                attachments.delay(10000);
+                            });
                         }
                     },
                     complete: function () {
                         setTimeout(() => {
-                            $('.tech-form .pictures .spinner-grow').fadeOut('slow');
-                        }, 2000);
+                            loader.removeClass('show');
+                            attachments.removeClass('blur');
+                        }, 7000);
                     }
                 });
                 file = null;
@@ -107,6 +97,55 @@ $(function () {
             }
         });
     };
+
+    attachments.find('.handlers a').on('click', function (e) {
+        e.preventDefault();
+
+        const url = $(this).attr('href');
+        const id = $(this).parent('div').attr('data-id');
+        const action = $(this).attr('data-action');
+        const args = JSON.parse(attachments.attr('data-params'));
+        console.log(args.remove.text);
+
+        let params = {};
+
+        if (action === 'remove') {
+            params = {
+                title: args.remove.title,
+                text: args.remove.text,
+                icon: args.remove.icon,
+                buttons: true,
+                dangerMode: true
+            };
+        } else {
+            params = {
+                title: args.default.title,
+                text: args.default.text,
+                icon: args.default.icon,
+                buttons: true
+            };
+        }
+
+        swal(params).then(name => {
+            if (!name) throw null;
+            return fetch(url, {
+                method: 'post',
+                body: JSON.stringify({id: id})
+            }).catch(swal.noop);
+        }).then(response => {
+            return response.json();
+        }).then(json => {
+            $(this).parent('div').parent('div').remove();
+            swal({
+                title: args.success.title,
+                text: json.message,
+                icon: args.success.icon
+            });
+        }, function (dismiss) {
+            if (dismiss === 'cancel' || dismiss === 'close') {
+            }
+        });
+    });
 
     $('input[name="profile[picture]"], input[name="entry[picture]"]').on('change', function (e) {
         e.preventDefault();
@@ -126,13 +165,13 @@ $(function () {
             let btnChange = $('#btnChangePicture');
             let files = $('#profilePicture')[0].files[0];
 
-            form_data.append('file', files);
+            formData.append('file', files);
             btnChange.hide();
             loading.show();
             $.ajax({
                 url: url,
                 type: 'post',
-                data: form_data,
+                data: formData,
                 contentType: false,
                 processData: false,
                 success: function (response) {

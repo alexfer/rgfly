@@ -62,6 +62,16 @@ class ProfileController extends AbstractController
         return $request->files->get($key);
     }
 
+    #[Route('/profile/attach/remove', name: 'app_profile_attach_remove', methods: ['POST'])]
+    public function remove(
+        Request             $request,
+        TranslatorInterface $translator,
+    ): Response
+    {
+        $id = $request->getPayload()->get('id');
+        return $this->json(['message' => $translator->trans('user.picture.delete')]);
+    }
+
     /**
      * @param Request $request
      * @param UserRepository $repository
@@ -73,8 +83,8 @@ class ProfileController extends AbstractController
      * @throws NotFoundExceptionInterface
      * @throws Exception
      */
-    #[Route('/profile/attach/setup', name: 'app_profile_attach_setup', methods: ['POST'])]
-    public function setup(
+    #[Route('/profile/attach/default', name: 'app_profile_attach_default', methods: ['POST'])]
+    public function default(
         Request                $request,
         UserRepository         $repository,
         TranslatorInterface    $translator,
@@ -88,14 +98,16 @@ class ProfileController extends AbstractController
             throw new Exception($ex);
         }
 
-        $attachment = $attach->find($request->get('id'));
+        $id = $request->getPayload()->get('id');
+
+        $attachment = $attach->find($id);
         $owner = $repository->find($user->getId());
         $owner->setAttach($attachment);
 
         $em->persist($owner);
         $em->flush();
 
-        return $this->json(['message' => $translator->trans('user.picture.setup')]);
+        return $this->json(['message' => $translator->trans('user.picture.default')]);
     }
 
     /**
@@ -107,20 +119,23 @@ class ProfileController extends AbstractController
      * @param SluggerInterface $slugger
      * @param CacheManager $cacheManager
      * @param ParameterBagInterface $params
+     * @param ImageValidatorInterface $imageValidator
+     * @param AttachRepository $attachRepository
      * @return Response
      * @throws Exception
      */
     #[Route('/profile/attach', name: 'app_profile_attach', methods: ['POST'])]
     public function attach(
-        Request                $request,
-        TranslatorInterface    $translator,
-        EntityManagerInterface $em,
-        UserDetailsRepository  $repository,
-        UserInterface          $user,
-        SluggerInterface       $slugger,
-        CacheManager           $cacheManager,
-        ParameterBagInterface  $params,
+        Request                 $request,
+        TranslatorInterface     $translator,
+        EntityManagerInterface  $em,
+        UserDetailsRepository   $repository,
+        UserInterface           $user,
+        SluggerInterface        $slugger,
+        CacheManager            $cacheManager,
+        ParameterBagInterface   $params,
         ImageValidatorInterface $imageValidator,
+        AttachRepository        $attachRepository,
     ): Response
     {
         $details = $repository->find($user->getId());
@@ -128,19 +143,26 @@ class ProfileController extends AbstractController
 
         if ($file) {
 
-            $validate =  $imageValidator->validate($file, $translator);
+            $validate = $imageValidator->validate($file, $translator);
 
             if ($validate->has(0)) {
-                return $this->json(['message' => $validate->get(0)->getMessage(), 'picture' => null]);
+                return $this->json([
+                        'success' => false,
+                        'message' => $validate->get(0)->getMessage(),
+                        'picture' => null,
+                        'attachments' => [],
+                    ]
+                );
             }
 
-            $fileUploader = new FileUploader($this->getTargetDir($user->getId(), $params), $slugger, $em);
+            $fileUploader = new FileUploader($this->getTargetDir($user->getId()), $slugger, $em);
 
             try {
                 $attach = $fileUploader->upload($file)->handle($details);
             } catch (Exception $ex) {
                 throw new Exception($ex->getMessage());
             }
+
             $details->getUser()->setAttach($attach);
             $details->addAttach($attach);
         }
@@ -148,10 +170,18 @@ class ProfileController extends AbstractController
         $em->persist($details);
         $em->flush();
 
-        $url = "storage/user/picture/{$user->getId()}/{$attach->getName()}";
-        $picture = $cacheManager->getBrowserPath(parse_url($url, PHP_URL_PATH), 'user_thumb', [], null);
+        $storage = $params->get('user_storage_picture');
 
-        return $this->json(['message' => $translator->trans('user.picture.changed'), 'picture' => $picture]);
+        $url = "{$storage}/{$user->getId()}/{$attach->getName()}";
+        $picture = $cacheManager->getBrowserPath(parse_url($url, PHP_URL_PATH), 'user_thumb', [], null);
+        $attachments = $attachRepository->getUserAttachments($details, $cacheManager, $storage, 'user_thumb');
+
+        return $this->json([
+            'success' => true,
+            'message' => $translator->trans('user.picture.changed'),
+            'picture' => $picture,
+            'attachments' => $attachments,
+        ]);
     }
 
     /**
@@ -160,6 +190,7 @@ class ProfileController extends AbstractController
      * @param SluggerInterface $slugger
      * @param EntityManagerInterface $em
      * @param UserDetailsRepository $repository
+     * @param TranslatorInterface $translator
      * @return Response
      * @throws Exception
      */
@@ -170,6 +201,7 @@ class ProfileController extends AbstractController
         SluggerInterface       $slugger,
         EntityManagerInterface $em,
         UserDetailsRepository  $repository,
+        TranslatorInterface    $translator,
     ): Response
     {
         $details = $repository->find($user->getId());
@@ -197,6 +229,8 @@ class ProfileController extends AbstractController
 
             $em->persist($details);
             $em->flush();
+
+            $this->addFlash('success', json_encode(['message' => $translator->trans('user.profile.updated')]));
 
             return $this->redirectToRoute('app_profile');
         }

@@ -8,19 +8,30 @@ use Twig\TwigFilter;
 class ByteConversionTwigExtension extends AbstractExtension
 {
 
-    public function getFilters()
+    /**
+     * @return TwigFilter[]
+     */
+    public function getFilters(): array
     {
         return [
             new TwigFilter('format_bytes', [$this, 'formatBytes']),
         ];
     }
 
-    public function getName()
+    /**
+     * @return string
+     */
+    public function getName(): string
     {
         return 'format_bytes';
     }
 
-    function formatBytes($bytes, $precision = 2): string
+    /**
+     * @param $bytes
+     * @param int $precision
+     * @return string
+     */
+    function formatBytes($bytes, int $precision = 2): string
     {
         $base = log($bytes, 1024);
         $suffixes = ['Byte', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];

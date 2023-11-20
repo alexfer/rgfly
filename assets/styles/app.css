@@ -832,6 +832,11 @@ p:last-child {
     margin-right: 15px;
 }
 
+.tech-nav img {
+    border: none;
+    box-shadow: none;
+}
+
 .tech-nav .black-logo {
     display: none;
 }
@@ -1046,25 +1051,66 @@ p:last-child {
     height: 190px;
 }
 
-.tech-form ul.pictures div.wrapper {
+.d-tech-form .entry-attachments.blur,
+.tech-form .entry-attachments.blur {
+    opacity: 0.2;
+}
+
+.tech-form .entry-attachments .handlers {
+    position: relative;
+    z-index: 1;
+    margin-top: -24px;
+    margin-bottom: 0;
+    height: 25px;
+    background-color: rgba(255, 255, 255, 0.8);
+    opacity: 0.9;
+}
+
+.tech-form .entry-attachments .handlers a.bi {
+    cursor: pointer;
+    float: right;
+    position: relative;
+    opacity: 1;
+    padding: 3px;
+    z-index: 2;
+}
+
+.tech-form .entry-attachments .handlers a.bi:last-child {
+    margin-right: 5px;
+}
+
+.loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: none;
 }
 
-.tech-form ul.pictures .nav-link .spinner-grow {
-    position: absolute;
-    margin-top: 36px;
-    margin-left: 36px;
+.loader.show {
+    display: block;
 }
 
 .tech-form ul.pictures .nav-link.inactive img {
     opacity: 0.4;
 }
 
-.tech-form .pictures i.trash {
-    padding-right: 10px;
-    padding-left: 10px;
+.tech-form .pictures i {
+    padding-right: 2px;
+    padding-left: 2px;
     cursor: pointer;
 }
+
+.tech-form .pictures i:last-child {
+    padding-right: 8px;
+}
+
+/*.tech-form .pictures small {*/
+/*    font-size: 10px;*/
+/*    font-family: courier, monospace;*/
+/*    display: inline-block;*/
+/*    margin-right: 6px;*/
+/*}*/
 
 .tech-form ul.pictures .nav-link.active img {
     opacity: 1 !important;
@@ -1095,6 +1141,7 @@ p:last-child {
     color: #364870;
     background-color: #cbd8f2;
 }
+
 .service-message .toast .toast-body.error {
     background-color: rgba(248, 150, 150, 0.65);
 }
@@ -1397,7 +1444,7 @@ p:last-child {
 .faq-accordion .accordion .accordion-item {
     display: block;
     margin-bottom: 0px;
-    border-bottom: 1px solid argb(231 231 231);
+    border-bottom: 1px solid rgba(231 231 231);
 }
 
 .faq-accordion .accordion .accordion-item:last-child {

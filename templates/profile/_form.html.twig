@@ -1,3 +1,20 @@
+{% set _message = app.flashes('success') %}
+{% set _params = {
+    remove: {
+        title: 'Are you sure?',
+        text: 'This picture will be deleted permanently.',
+        icon: 'warning'
+    },
+    default: {
+        title: 'Use this picture?',
+        text: 'This picture will be used default.',
+        icon: 'info'
+    },
+    success: {
+        title: 'Service message',
+        icon: 'success'
+    }
+} %}
 {{ form_start(form, {attr: {class: 'tech-form', novalidate: 'novalidate'}}) }}
 {% if form_errors(form) %}
     <div class="alert alert-danger">
@@ -76,57 +93,33 @@
         </div>
     </div>
 </div>
-<div class="card mb-5">
-    <div class="card-header">Your pictures</div>
+<div class="card">
+    <div class="card-header">{{ 'label.form.user.pictures'|trans }}</div>
     <div class="card-body">
-        <p>Choice one of the pictures to using by default.</p>
-        <ul class="nav nav-pills pictures" id="pills-tab" role="tablist">
-            <div class="wrapper">
-                <li class="nav-item">
-                    <a class="bg-light nav-link p-2 m-1"
-                       id="pills-new-tab"
-                       data-toggle="pill"
-                       href="#pills-new"
-                       role="tab"
-                       aria-controls="pills-new"
-                       aria-selected="true">
-                        <div class="spinner-grow" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                        <img class="img-responsive img-rounded ml-1" src="{{ asset('img/user-picture.jpg') }}"
-                             width="100" height="100"/>
-                    </a>
-                </li>
+        <p>{{ 'form.help.pictures'|trans }}</p>
+        <div class="loader row mx-auto justify-content-center align-items-center flex-column">
+            <div class="col pt-50 d-inline-block">
+                <div class="spinner-grow text-success" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
             </div>
-            {% for key, picture in app.user.userDetails.attach %}
-                <li class="nav-item">
+        </div>
+        <div class="table entry-attachments" data-params="{{ _params|json_encode }}">
+            {% for key, picture in app.user.userDetails.attach|slice(0, 16) %}
+                <div class="d-inline-block mr-3 mb-3">
                     {% set _picture = 'storage/user/picture/' ~ app.user.id ~ '/' ~ picture.name %}
-                    <a class="bg-light nav-link p-2 m-1 {% if not key %}first{% else %}inactive{% endif %}"
-                       id="pills-{{ picture.id }}-tab"
-                       data-toggle="pill"
-                       href="#pills-{{ picture.id }}"
-                       role="tab"
-                       aria-controls="pills-{{ picture.id }}"
-                       aria-selected="{% if not key %}true{% else %}false{% endif %}">
-                        <img class="img-responsive img-rounded"
-                             src="{{ asset(_picture) | imagine_filter('user_thumb') }}"
-                             alt="{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}">
-                    </a>
-                    {% if key %}
-                        <div class="text-right">
-                            <small>{{ picture.size|format_bytes }}</small> <i
-                                    data-url="{{ path('app_profile_attach_setup') }}" data-id="{{ picture.id }}"
-                                    class="bi bi-trash-fill trash"></i>
-                        </div>
-                    {% endif %}
-                </li>
-            {% else %}
-                <li class="nav-item blank">
-                    <img class="img-responsive img-rounded ml-1" src="{{ asset('http://placehold.it/150x150') }}"
-                         alt="{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}">
-                </li>
+                    <img class="attach"
+                         src="{{ asset(_picture) | imagine_filter('user_thumb') }}">
+                    <div class="handlers" data-id="{{ picture.id }}">
+                        {#                        <small>{{ picture.size|format_bytes }}</small> #}
+                        <a href="{{ path('app_profile_attach_remove') }}" data-action="remove"
+                           class="bi bi-trash-fill"></a>
+                        <a href="{{ path('app_profile_attach_default') }}" data-action="default"
+                           class="bi bi-person-bounding-box"></a>
+                    </div>
+                </div>
             {% endfor %}
-        </ul>
+        </div>
     </div>
     <div class="card-footer">
         <div class="input-group">
@@ -137,15 +130,17 @@
             </div>
             <div class="input-group-append">
                 <button class="btn btn-outline-info" data-url="{{ path('app_profile_attach') }}" type="button"
-                        id="attach"><i class="bi bi-image-fill pr-2"></i>Attach
+                        id="attach"><i class="bi bi-image-fill pr-2"></i>{{ 'label.form.attach'|trans }}
                 </button>
             </div>
         </div>
         <small class="d-block picture-info text-monospace mt-1"></small>
     </div>
 </div>
+
+<input type="hidden" name="flash" value="{{ _message[0]|default([]|json_encode) }}">
 <div class="form-row">
-    <div class="col-sm text-center">
+    <div class="col-sm text-center mt-3">
         {{ form_widget(form.update, { label: 'form.action.update' }) }}
     </div>
 </div>
