@@ -105,8 +105,6 @@ $(function () {
         const id = $(this).parent('div').attr('data-id');
         const action = $(this).attr('data-action');
         const args = JSON.parse(attachments.attr('data-params'));
-        console.log(args.remove.text);
-
         let params = {};
 
         if (action === 'remove') {

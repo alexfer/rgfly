@@ -435,6 +435,22 @@
                 <source>user.entry.preview</source>
                 <target>Preview</target>
             </trans-unit>
+            <trans-unit id="swal.remove.title">
+                <source>swal.remove.title</source>
+                <target>Are you sure?</target>
+            </trans-unit>
+            <trans-unit id="swal.remove.text">
+                <source>swal.remove.text</source>
+                <target>This picture will be deleted permanently.</target>
+            </trans-unit>
+            <trans-unit id="swal.default.title">
+                <source>swal.default.title</source>
+                <target>Use this picture?</target>
+            </trans-unit>
+            <trans-unit id="swal.default.text">
+                <source>swal.default.text</source>
+                <target>This picture will be used default.</target>
+            </trans-unit>
             <trans-unit id="user.entry.updated">
                 <source>user.entry.updated</source>
                 <target><![CDATA[Entry has been updated successfully.]]></target>

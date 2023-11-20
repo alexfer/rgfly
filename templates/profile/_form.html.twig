@@ -1,17 +1,17 @@
 {% set _message = app.flashes('success') %}
 {% set _params = {
     remove: {
-        title: 'Are you sure?',
-        text: 'This picture will be deleted permanently.',
+        title: 'swal.remove.title'|trans,
+        text: 'swal.remove.text'|trans,
         icon: 'warning'
     },
     default: {
-        title: 'Use this picture?',
-        text: 'This picture will be used default.',
+        title: 'swal.default.title'|trans,
+        text: 'swal.default.text'|trans,
         icon: 'info'
     },
     success: {
-        title: 'Service message',
+        title: 'title.service.message'|trans,
         icon: 'success'
     }
 } %}
