@@ -483,6 +483,12 @@
                 <source>text.faq.header</source>
                 <target>Direct answers to frequently asked questions</target>
             </trans-unit>
+            <trans-unit id="text.blog.desc">
+                <source>text.blog.desc</source>
+                <target>
+                    <![CDATA[View our most recent news blog]]>
+                </target>
+            </trans-unit>
             <trans-unit id="text.faq.desc">
                 <source>text.faq.desc</source>
                 <target>

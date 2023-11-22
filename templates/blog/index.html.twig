@@ -8,7 +8,13 @@
             <div class="d-table-cell">
                 <div class="container">
                     <div class="page-title-content">
-                        <h4>{{ 'text.contact.desc'|trans|raw }}</h4>
+                        <h4>
+                            {% if category %}
+                                {{ category.name }}
+                            {% else %}
+                                {{ 'text.blog.desc'|trans|raw }}
+                            {% endif %}
+                        </h4>
                     </div>
                 </div>
             </div>
@@ -23,7 +29,8 @@
                             <div class="blog-img-block">
                                 {% for key, picture in entry.entryAttachments.slice(0, 1) %}
                                     {% set _picture = 'storage/entry/picture/' ~ entry.entryDetails.id ~ '/' ~ picture.attach.name %}
-                                    <img src="{{ asset(_picture) | imagine_filter('entry_preview') }}" class="blog-img"/>
+                                    <img src="{{ asset(_picture) | imagine_filter('entry_preview') }}"
+                                         class="blog-img"/>
                                 {% else %}
                                     <img src="{{ asset('http://placehold.it/380x200') }}" class="blog-img"/>
                                 {% endfor %}
@@ -65,6 +72,8 @@
                             </div>
                         </div>
                     </div>
+                {% else %}
+                    Not found
                 {% endfor %}
             </div>
         </div>
