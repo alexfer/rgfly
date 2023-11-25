@@ -43,6 +43,9 @@ class Category
         $this->entryCategories = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
@@ -67,11 +70,18 @@ class Category
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return $this
+     */
     public function setName(string $name): static
     {
         $this->name = $name;
@@ -79,11 +89,18 @@ class Category
         return $this;
     }
 
+    /**
+     * @return int|null
+     */
     public function getPosition(): ?int
     {
         return $this->position;
     }
 
+    /**
+     * @param int $position
+     * @return $this
+     */
     public function setPosition(int $position): static
     {
         $this->position = $position;
@@ -91,11 +108,18 @@ class Category
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->created_at;
     }
 
+    /**
+     * @param \DateTimeInterface $created_at
+     * @return $this
+     */
     public function setCreatedAt(\DateTimeInterface $created_at): static
     {
         $this->created_at = $created_at;
@@ -103,11 +127,18 @@ class Category
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getDeletedAt(): ?\DateTimeInterface
     {
         return $this->deleted_at;
     }
 
+    /**
+     * @param \DateTimeInterface|null $deleted_at
+     * @return $this
+     */
     public function setDeletedAt(?\DateTimeInterface $deleted_at): static
     {
         $this->deleted_at = $deleted_at;
@@ -123,6 +154,10 @@ class Category
         return $this->entryCategories;
     }
 
+    /**
+     * @param EntryCategory $entryCategory
+     * @return $this
+     */
     public function addEntryCategory(EntryCategory $entryCategory): static
     {
         if (!$this->entryCategories->contains($entryCategory)) {
@@ -133,6 +168,10 @@ class Category
         return $this;
     }
 
+    /**
+     * @param EntryCategory $entryCategory
+     * @return $this
+     */
     public function removeEntryCategory(EntryCategory $entryCategory): static
     {
         if ($this->entryCategories->removeElement($entryCategory)) {

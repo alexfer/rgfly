@@ -6,7 +6,7 @@
 {% block title_content %}
     {{ _title_extend }}
     {% if form.vars.data.id %}
-        <a target="_blank" class="btn btn btn-outline-info float-right mt-1"
+        <a type="button" target="_blank" class="btn btn-sm btn-outline-info float-right mt-1 preview"
            href="{{ path('app_blog_view', {slug: form.vars.data.slug}) }}">{{ 'user.entry.preview'|trans }}</a>
     {% endif %}
 {% endblock %}
@@ -32,7 +32,7 @@
     <div class="form-group mt-3">
         <a class="form-title card card-header" data-toggle="collapse" href="#categories" role="button"
            aria-expanded="false"
-           aria-controls="categories">Categories</a>
+           aria-controls="categories">{{ 'entry.form.categories'|trans }}</a>
         <div class="collapse mt-2 active" id="categories">
             <div class="card card-body">
                 {% for key, category in categories %}
@@ -67,7 +67,7 @@
         <div class="form-group mt-3 card">
             <a class="form-title card-header" data-toggle="collapse" href="#attachments" role="button"
                aria-expanded="false"
-               aria-controls="attachments">Attachments</a>
+               aria-controls="attachments">{{ 'entry.form.attachments'|trans }}</a>
             <div class="collapse mt-2" id="attachments">
                 <div class="card-body">
                     <div class="table text-center entry-attachments">
@@ -89,7 +89,7 @@
                     <div class="input-group-append">
                         <button class="btn btn-outline-info"
                                 data-url="{{ path('app_dashboard_blog_attch', {id: form.vars.data.id}) }}" type="button"
-                                id="attach"><i class="bi bi-image-fill pr-2"></i>Attach
+                                id="attach"><i class="bi bi-image-fill pr-2"></i>{{ 'label.form.attach'|trans }}
                         </button>
                     </div>
                     <small class="picture-info text-monospace mt-1 w-100"></small>

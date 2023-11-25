@@ -45,8 +45,10 @@ class EntryRepository extends ServiceEntityRepository
         }
 
         if ($limit) {
-            $qb->orderBy('e.id',  'desc')->setMaxResults($limit);
+            $qb->orderBy('e.id', 'desc')->setMaxResults($limit);
         }
-        return $qb->setCacheable(true)->getQuery()->getResult();
+        return $qb->getQuery()
+            ->useQueryCache(true)
+            ->getResult();
     }
 }

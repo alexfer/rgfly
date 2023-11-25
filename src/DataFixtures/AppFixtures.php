@@ -7,15 +7,21 @@ use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class AppFixtures extends Fixture
 {
+    private $slugger;
     /**
      * @param UserPasswordHasherInterface $passwordHasher
+     * @param SluggerInterface $slugger
      */
-    public function __construct(private readonly UserPasswordHasherInterface $passwordHasher)
+    public function __construct(
+        private readonly UserPasswordHasherInterface $passwordHasher,
+        SluggerInterface                             $slugger,
+    )
     {
-
+        $this->slugger = $slugger;
     }
 
     /**
@@ -64,6 +70,7 @@ class AppFixtures extends Fixture
         foreach ($this->getCategoryData() as [$name, $position]) {
             $category = new Category();
             $category->setName($name);
+            $category->setSlug($this->slugger->slug($name)->lower());
             $category->setPosition($position);
             $category->setCreatedAt(new DateTime());
             $category->setDeletedAt(null);

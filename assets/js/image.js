@@ -148,10 +148,13 @@ $(function () {
     $('input[name="profile[picture]"], input[name="entry[picture]"]').on('change', function (e) {
         e.preventDefault();
         let file = this.files[0];
+        let input = document.getElementById('profile_picture');
         info.html(file.name + ', ' + formatBytes(file.size) + ', ' + file.type);
         profile.html(file.name);
         entry.html(file.name);
         upload(file);
+
+        input.parentNode.innerHTML = input.parentNode.innerHTML;
     });
 
     changeBtn.on('click', function () {

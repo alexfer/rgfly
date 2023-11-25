@@ -999,16 +999,32 @@ p:last-child {
     transition: all 0.90s ease 0s;
     box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12), 0 2px 4px -1px rgba(0, 0, 0, .2)
 }
-
-.tech-form .btn-outline-info,
-.d-tech-form .btn-outline-info {
-    color: #6e6e6e;
-    background-color: #ddd;
+a.preview,
+.d-tech-form .input-group-append .btn-outline-info,
+.tech-form .input-group-append .btn-outline-info,
+.tech-form a.btn-outline-info,
+.d-tech-form a.btn-outline-info {
+    /*color: #6e6e6e;*/
+    /*background-color: rgba(18, 54, 142, 0.36);*/
+    color: rgba(51, 63, 85, 0.9) !important;
+    background: transparent;
     border: 1px solid #a0a0a0;
     height: auto;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
+}
+a.preview:hover,
+a.preview:focus,
+.tech-form .input-group-append .btn-outline-info:hover,
+.tech-form .input-group-append .btn-outline-info:focus,
+.d-tech-form .input-group-append .btn-outline-info:hover,
+.d-tech-form .input-group-append .btn-outline-info:focus,
+.d-tech-form a.btn-outline-info:hover,
+.d-tech-form a.btn-outline-info:focus {
+    color: rgba(255, 255, 255, 0.95) !important;
+    background-color: rgba(56, 65, 80, 0.6);
+    border: 1px solid #a0a0a0;
 }
 
 .tech-form .btn:hover,

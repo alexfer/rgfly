@@ -13,10 +13,10 @@ class EntryAttachment
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-    #[ORM\ManyToOne(inversedBy: 'entryAttachments')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'entryAttachments')]
     private ?Attach $attach = null;
 
-    #[ORM\ManyToOne(inversedBy: 'entryAttachments')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'entryAttachments')]
     private ?Entry $details = null;
 
     public function getId(): ?int

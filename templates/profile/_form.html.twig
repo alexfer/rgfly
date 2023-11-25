@@ -111,7 +111,6 @@
                     <img class="attach"
                          src="{{ asset(_picture) | imagine_filter('user_thumb') }}">
                     <div class="handlers" data-id="{{ picture.id }}">
-                        {#                        <small>{{ picture.size|format_bytes }}</small> #}
                         <a href="{{ path('app_profile_attach_remove') }}" data-action="remove"
                            class="bi bi-trash-fill"></a>
                         <a href="{{ path('app_profile_attach_default') }}" data-action="default"

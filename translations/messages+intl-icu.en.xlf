@@ -424,8 +424,8 @@
                 <target>Draft</target>
             </trans-unit>
             <trans-unit id="entry.info.published">
-                <source>user.entry.info.published</source>
-                <target>Published</target>
+                <source>entry.info.published</source>
+                <target>Publish</target>
             </trans-unit>
             <trans-unit id="entry.info.trashed">
                 <source>entry.info.trashed</source>
@@ -450,6 +450,14 @@
             <trans-unit id="swal.default.text">
                 <source>swal.default.text</source>
                 <target>This picture will be used default.</target>
+            </trans-unit>
+            <trans-unit id="entry.form.categories">
+                <source>entry.form.categories</source>
+                <target>Categories</target>
+            </trans-unit>
+            <trans-unit id="entry.form.attachments">
+                <source>entry.form.attachments</source>
+                <target>Attachments</target>
             </trans-unit>
             <trans-unit id="user.entry.updated">
                 <source>user.entry.updated</source>

@@ -30,9 +30,9 @@ class Entry
     ];
 
     const STATUS = [
-        'Draft' => 'draft',
-        'Published' => 'published',
-        'Trashed' => 'trashed',
+        'entry.info.draft' => 'draft',
+        'entry.info.published' => 'published',
+        'entry.info.trashed' => 'trashed',
     ];
 
     #[ORM\Id]
