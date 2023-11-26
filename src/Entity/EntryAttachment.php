@@ -14,6 +14,7 @@ class EntryAttachment
     #[ORM\Column]
     private ?int $id = null;
     #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'entryAttachments')]
+    #[ORM\OrderBy(['id' => 'DESC'])]
     private ?Attach $attach = null;
 
     #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'entryAttachments')]

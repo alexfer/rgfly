@@ -79,7 +79,7 @@ class Entry
         $this->created_at = new DateTime();
         $this->updated_at = new DateTime();
         $this->type = self::TYPE['Other'];
-        $this->status = self::STATUS['Draft'];
+        $this->status = self::STATUS['entry.info.draft'];
         $this->comments = 0;
         $this->entryAttachments = new ArrayCollection();
         $this->entryCategories = new ArrayCollection();

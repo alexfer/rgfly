@@ -50,45 +50,46 @@ $(function () {
                     processData: false,
                     success: function (response) {
                         if (response) {
-                            let toats = $('.toast .toast-body');
+                            let toast = $('.toast .toast-body');
 
                             if (!response.picture) {
-                                toats.toggleClass('error');
-                                toats.text(response.message);
+                                toast.toggleClass('error');
+                                toast.text(response.message);
                             } else {
-                                toats.removeClass('error').text(response.message);
+                                toast.removeClass('error').text(response.message);
                             }
 
                             profile.text(profile.attr('data-label'));
                             entry.text(entry.attr('data-label'));
                             info.text('');
                             $('.toast').toast('show');
-
-                            attachments.empty();
-
-                            $.each(response.attachments, function (key, attachment) {
-                                attachments.append(
-                                    $('<div/>')
-                                        .attr('class', 'd-inline-block  mr-3 mb-3').append(
-                                        $('<img/>')
-                                            .attr('class', 'attach lazy')
-                                            .attr('src', attachment.url)
-                                    ).append($('<div/>').attr('class', 'text-right').css('display', 'none')
-                                        .append($('<small/>').html(formatBytes(attachment.size))
-                                            .append(
-                                                $('<i>').attr('class', 'bi bi-person-bounding-box')
-                                                    .append($('<i>').attr('class', 'bi bi-trash-fill trash')))
+                            attachments.prepend(
+                                $('<div/>')
+                                    .attr('class', 'd-inline-block  mr-3 mb-3').append(
+                                    $('<img/>')
+                                        .attr('class', 'attach lazy')
+                                        .attr('src', response.picture)
+                                ).append(
+                                    $('<div/>').attr('class', 'handlers').attr('data-id', response.id)
+                                        .append(
+                                            $('<a/>').attr('class', 'bi bi-trash-fill trash')
+                                                .attr('href', response.path)
+                                                .attr('data-action', 'remove')
+                                                .bind('click', function (e) {
+                                                    e.preventDefault();
+                                                })
                                         ))
-                                );
-                                attachments.delay(10000);
-                            });
+                            ).delay(4000).show('slow');
+                            setTimeout(function() {
+                                attachments.children().last().remove();
+                            }, 2000);
                         }
                     },
                     complete: function () {
                         setTimeout(() => {
                             loader.removeClass('show');
                             attachments.removeClass('blur');
-                        }, 7000);
+                        }, 5000);
                     }
                 });
                 file = null;
@@ -98,7 +99,7 @@ $(function () {
         });
     };
 
-    attachments.find('.handlers a').on('click', function (e) {
+    attachments.find('.handlers a').off('click').on('click', function (e) {
         e.preventDefault();
 
         const url = $(this).attr('href');
@@ -148,13 +149,21 @@ $(function () {
     $('input[name="profile[picture]"], input[name="entry[picture]"]').on('change', function (e) {
         e.preventDefault();
         let file = this.files[0];
-        let input = document.getElementById('profile_picture');
+        let profileInput = document.getElementById('profile_picture');
+        let entryInput = document.getElementById('entry_picture');
         info.html(file.name + ', ' + formatBytes(file.size) + ', ' + file.type);
         profile.html(file.name);
         entry.html(file.name);
         upload(file);
 
-        input.parentNode.innerHTML = input.parentNode.innerHTML;
+        if (profileInput) {
+            profileInput.parentNode.innerHTML = profileInput.parentNode.innerHTML;
+        }
+
+        if (entryInput) {
+            entryInput.parentNode.innerHTML = entryInput.parentNode.innerHTML;
+        }
+
     });
 
     changeBtn.on('click', function () {

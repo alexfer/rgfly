@@ -4,7 +4,9 @@ namespace App\Controller\Dashboard;
 
 use App\Entity\{Entry, EntryAttachment, EntryCategory, EntryDetails};
 use App\Form\Type\Dashboard\EntryDetailsType;
+use App\Repository\AttachRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\EntryAttachmentRepository;
 use App\Repository\EntryCategoryRepository;
 use App\Repository\EntryRepository;
 use App\Service\FileUploader;
@@ -13,6 +15,7 @@ use App\Service\Navbar;
 use DateTime;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -241,19 +244,22 @@ class BlogController extends AbstractController
      * @param SluggerInterface $slugger
      * @param CacheManager $cacheManager
      * @param ParameterBagInterface $params
+     * @param EntryAttachmentRepository $entryAttachmentRepository
+     * @param ImageValidatorInterface $imageValidator
      * @return Response
-     * @throws \Exception
+     * @throws Exception
      */
-    #[Route('/attach/{id}', name: 'app_dashboard_blog_attch', methods: ['POST'])]
+    #[Route('/attach/{id}', name: 'app_dashboard_blog_attach', methods: ['POST'])]
     public function attach(
-        Request                 $request,
-        TranslatorInterface     $translator,
-        EntryRepository         $repository,
-        EntityManagerInterface  $em,
-        SluggerInterface        $slugger,
-        CacheManager            $cacheManager,
-        ParameterBagInterface   $params,
-        ImageValidatorInterface $imageValidator,
+        Request                   $request,
+        TranslatorInterface       $translator,
+        EntryRepository           $repository,
+        EntityManagerInterface    $em,
+        SluggerInterface          $slugger,
+        CacheManager              $cacheManager,
+        ParameterBagInterface     $params,
+        EntryAttachmentRepository $entryAttachmentRepository,
+        ImageValidatorInterface   $imageValidator,
     ): Response
     {
         $file = $request->files->get('file');
@@ -274,13 +280,16 @@ class BlogController extends AbstractController
                 return $this->json(['message' => $validate->get(0)->getMessage(), 'picture' => null]);
             }
 
-
             $fileUploader = new FileUploader($this->getTargetDir($detailsId, $params), $slugger, $em);
 
             try {
                 $attach = $fileUploader->upload($file)->handle();
             } catch (Exception $ex) {
-                return $this->json(['message' => $ex->getMessage(), 'picture' => null]);
+                return $this->json([
+                    'success' => false,
+                    'message' => $ex->getMessage(),
+                    'picture' => null,
+                ]);
             }
 
             $entryAttachment = new EntryAttachment();
@@ -290,10 +299,18 @@ class BlogController extends AbstractController
             $em->flush();
         }
 
-        $url = "storage/entry/picture/{$detailsId}/{$attach->getName()}";
-        $picture = $cacheManager->getBrowserPath(parse_url($url, PHP_URL_PATH), 'entry_preview', [], null);
+        $storage = $params->get('entry_storage_picture');
 
-        return $this->json(['message' => $translator->trans('entry.picture.appended'), 'picture' => $picture]);
+        $url = "{$storage}/{$detailsId}/{$attach->getName()}";
+        $picture = $cacheManager->getBrowserPath(parse_url($url, PHP_URL_PATH), 'entry_preview', [], null);
+        //$attachments = $entryAttachmentRepository->getEntityAttachments($entry, $cacheManager, $storage, 'entry_preview');
+
+        return $this->json([
+            'success' => true,
+            'message' => $translator->trans('entry.picture.appended'),
+            'picture' => $picture,
+            //'attachments' => $attachments,
+        ]);
     }
 
 }

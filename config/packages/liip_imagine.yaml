@@ -5,6 +5,9 @@ liip_imagine:
     driver: "gd"
     twig:
         mode: lazy
+    resolvers:
+        default:
+            web_path: ~
     filter_sets:
         # name our filter set "my_thumb_filter"
         user_thumb:

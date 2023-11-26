@@ -174,13 +174,15 @@ class ProfileController extends AbstractController
 
         $url = "{$storage}/{$user->getId()}/{$attach->getName()}";
         $picture = $cacheManager->getBrowserPath(parse_url($url, PHP_URL_PATH), 'user_thumb', [], null);
-        $attachments = $attachRepository->getUserAttachments($details, $cacheManager, $storage, 'user_thumb');
+        //$attachments = $attachRepository->getUserAttachments($details, $cacheManager, $storage, 'user_thumb');
 
         return $this->json([
             'success' => true,
+            'id' => $attach->getId(),
+            'path' => $this->generateUrl('app_profile_attach_remove'),
             'message' => $translator->trans('user.picture.changed'),
             'picture' => $picture,
-            'attachments' => $attachments,
+            //'attachments' => $attachments,
         ]);
     }
 

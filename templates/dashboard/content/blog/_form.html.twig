@@ -11,6 +11,23 @@
     {% endif %}
 {% endblock %}
 {% block content %}
+    {% set _params = {
+        remove: {
+            title: 'swal.remove.title'|trans,
+            text: 'swal.remove.text'|trans,
+            icon: 'warning'
+        },
+        default: {
+            title: 'swal.default.title'|trans,
+            text: 'swal.default.text'|trans,
+            icon: 'info'
+        },
+        success: {
+            title: 'title.service.message'|trans,
+            icon: 'success'
+        }
+    } %}
+
     {{ form_start(form, {attr: {class: 'd-tech-form', novalidate: 'novalidate'}}) }}
     {% if form_errors(form) %}
         <div class="alert alert-danger">
@@ -70,11 +87,24 @@
                aria-controls="attachments">{{ 'entry.form.attachments'|trans }}</a>
             <div class="collapse mt-2" id="attachments">
                 <div class="card-body">
-                    <div class="table text-center entry-attachments">
-                        {% for key, picture in entry.entryAttachments %}
+                    <div class="loader row mx-auto justify-content-center align-items-center flex-column">
+                        <div class="col pt-50 d-inline-block">
+                            <div class="spinner-grow text-success" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table entry-attachments" data-params="{{ _params|json_encode }}">
+                        {% for key, picture in entry.entryAttachments|slice(0, 4) %}
                             {% set _picture = 'storage/entry/picture/' ~ entry.entryDetails.id ~ '/' ~ picture.attach.name %}
-                            <div class="d-inline-block m-1">
+                            <div class="d-inline-block mr-3 mb-3">
                                 <img class="attach" src="{{ asset(_picture) | imagine_filter('entry_preview') }}">
+                                <div class="handlers" data-id="{{ picture.id }}">
+                                    <a href="#" data-action="remove"
+                                       class="bi bi-trash-fill"></a>
+                                    <a href="#" data-action="default"
+                                       class="bi bi-person-bounding-box"></a>
+                                </div>
                             </div>
                         {% endfor %}
                     </div>
@@ -88,7 +118,7 @@
                     </div>
                     <div class="input-group-append">
                         <button class="btn btn-outline-info"
-                                data-url="{{ path('app_dashboard_blog_attch', {id: form.vars.data.id}) }}" type="button"
+                                data-url="{{ path('app_dashboard_blog_attach', {id: form.vars.data.id}) }}" type="button"
                                 id="attach"><i class="bi bi-image-fill pr-2"></i>{{ 'label.form.attach'|trans }}
                         </button>
                     </div>

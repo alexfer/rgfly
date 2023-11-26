@@ -999,6 +999,7 @@ p:last-child {
     transition: all 0.90s ease 0s;
     box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12), 0 2px 4px -1px rgba(0, 0, 0, .2)
 }
+
 a.preview,
 .d-tech-form .input-group-append .btn-outline-info,
 .tech-form .input-group-append .btn-outline-info,
@@ -1014,6 +1015,7 @@ a.preview,
     -moz-box-shadow: none;
     box-shadow: none;
 }
+
 a.preview:hover,
 a.preview:focus,
 .tech-form .input-group-append .btn-outline-info:hover,
@@ -1099,6 +1101,7 @@ a.preview:focus,
     opacity: 0.2;
 }
 
+.d-tech-form .entry-attachments .handlers,
 .tech-form .entry-attachments .handlers {
     position: relative;
     z-index: 1;
@@ -1108,7 +1111,7 @@ a.preview:focus,
     background-color: rgba(255, 255, 255, 0.8);
     opacity: 0.9;
 }
-
+.d-tech-form .entry-attachments .handlers a.bi,
 .tech-form .entry-attachments .handlers a.bi {
     cursor: pointer;
     float: right;
@@ -1118,6 +1121,7 @@ a.preview:focus,
     z-index: 2;
 }
 
+.d-tech-form .entry-attachments .handlers a.bi:last-child,
 .tech-form .entry-attachments .handlers a.bi:last-child {
     margin-right: 5px;
 }
