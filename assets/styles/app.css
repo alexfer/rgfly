@@ -125,6 +125,10 @@ img {
     color: rgba(12, 123, 140, 0.7);
 }
 
+i.d-block {
+    font-size: 12px;
+}
+
 button {
     outline: 0 !important;
 }

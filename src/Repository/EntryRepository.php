@@ -35,18 +35,33 @@ class EntryRepository extends ServiceEntityRepository
     public function findEntriesByCondition(string $slug = null, string $type = null, int $limit = 12): ?array
     {
         $qb = $this->createQueryBuilder('e')
+            ->select([
+                'e.id',
+                'e.slug',
+                'e.created_at',
+                'ed.title',
+                'a.name as attach',
+                'ud.first_name',
+            ])
             ->leftJoin('e.entryCategories', 'ec', 'WITH', 'ec.entry = e.id')
-            ->leftJoin('App\Entity\Category', 'c', 'WITH', 'c.id = ec.category');
+            ->leftJoin('App\Entity\Category', 'c', 'WITH', 'c.id = ec.category')
+            ->join('App\Entity\EntryDetails', 'ed', 'WITH', 'e.id = ed.entry')
+            ->join('App\Entity\UserDetails', 'ud', 'WITH', 'e.user = ud.user')
+            ->leftJoin('App\Entity\EntryAttachment', 'ea', 'WITH', 'ed.id = ea.details')
+            ->leftJoin('App\Entity\Attach', 'a', 'WITH', 'a.id = ea.attach');
 
         if ($slug) {
             $qb->where('c.slug = :slug')->setParameter('slug', $slug);
-        } else {
-            return $this->findBy(['type' => $type], ['id' => 'desc'], $limit);
         }
 
-        if ($limit) {
-            $qb->orderBy('e.id', 'desc')->setMaxResults($limit);
-        }
+        $qb->andWhere('e.type = :type')
+            ->setParameter('type', $type)
+            ->andWhere('e.status = :status')
+            ->setParameter('status', 'published')
+            ->andWhere('e.deleted_at is null')
+            ->groupBy('e.id');
+        $qb->orderBy('e.id', 'desc')->setMaxResults($limit);
+
         return $qb->getQuery()
             ->useQueryCache(true)
             ->getResult();

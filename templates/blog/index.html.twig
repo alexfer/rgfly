@@ -27,17 +27,28 @@
                     <div class="blog-block col-lg-4 col-md-6 col-sm-6 mb-4">
                         <div class="card shadow-sm h-100">
                             <div class="blog-img-block">
-                                {% for key, picture in entry.entryAttachments.slice(0, 1) %}
-                                    {% set _picture = 'storage/entry/picture/' ~ entry.entryDetails.id ~ '/' ~ picture.attach.name %}
+                                {% set _picture = 'storage/entry/picture/' ~ entry.id ~ '/' ~ entry.attach %}
+                                <a href="{{ path('app_blog_view', {slug: entry.slug}) }}">
+                                    {% if entry.attach %}
                                     <img src="{{ asset(_picture) | imagine_filter('entry_preview') }}"
-                                         class="blog-img"/>
-                                {% else %}
-                                    <img src="{{ asset('http://placehold.it/380x200') }}" class="blog-img"/>
-                                {% endfor %}
+                                         class="blog-img" alt="{{ entry.title }}"/>
+                                    {% else %}
+                                        <img src="{{ asset('http://placehold.it/380x200') }}" class="blog-img" alt="missing image"/>
+                                    {% endif %}
+                                </a>
+{#                                {% for key, picture in entry.entryAttachments.slice(0, 1) %}#}
+{#                                    {% set _picture = 'storage/entry/picture/' ~ entry.entryDetails.id ~ '/' ~ picture.attach.name %}#}
+{#                                    <a href="{{ path('app_blog_view', {slug: entry.slug}) }}">#}
+{#                                        <img src="{{ asset(_picture) | imagine_filter('entry_preview') }}"#}
+{#                                             class="blog-img" alt="{{ entry.entryDetails.title }}"/>#}
+{#                                    </a>#}
+{#                                {% else %}#}
+{#                                    <img src="{{ asset('http://placehold.it/380x200') }}" class="blog-img" alt="missing image"/>#}
+{#                                {% endfor %}#}
                             </div>
                             <div class="card-body p-3">
                                 <a href="{{ path('app_blog_view', {slug: entry.slug}) }}">
-                                    {{ entry.entryDetails.title }}
+                                    {{ entry.title }}
                                 </a>
                             </div>
                             <div class="card-footer text-right">
@@ -45,13 +56,13 @@
                                     <li>
                                         <a target="_blank"
                                            href="{{ asset('https://www.facebook.com/AlexanderShtyher/') }}">
-                                            @{{ entry.user.userDetails.firstName }}
+                                            @{{ entry.first_name }}
                                         </a>
                                         <i class="bi bi-person-fill"></i>
                                     </li>
                                     <li>
                                         <i class="text-muted bi bi-calendar-date"></i>
-                                        <small>{{ entry.createdAt|date(date_format) }}</small>
+                                        <small>{{ entry.created_at|date(date_format) }}</small>
                                     </li>
                                     <li>
                                         <a href="">

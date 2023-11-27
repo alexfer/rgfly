@@ -212,7 +212,6 @@ class BlogController extends AbstractController
                 ->setDeletedAt($form->get('status')->getData() == 'trashed' ? new DateTime() : null);
 
             $em->persist($entry);
-            $em->flush();
 
             $details = $entry->getEntryDetails()
                 ->setTitle($title)

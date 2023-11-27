@@ -56,6 +56,9 @@ class EntryDetailsType extends AbstractType
                 ],
             ])
             ->add('content', CKEditorType::class, [
+//                'config' => [
+//                    'toolbar' => 'full'
+//                ],
                 'mapped' => false,
                 'data' => $options['data']?->getEntryDetails()?->getContent(),
                 'attr' => [
