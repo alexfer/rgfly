@@ -2,8 +2,9 @@
 
 namespace App\Repository;
 
-use App\Entity\Entry;
+use App\Entity\{Attach, Category, Entry, EntryAttachment, EntryDetails, UserDetails,};
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -43,12 +44,12 @@ class EntryRepository extends ServiceEntityRepository
                 'a.name as attach',
                 'ud.first_name',
             ])
-            ->leftJoin('e.entryCategories', 'ec', 'WITH', 'ec.entry = e.id')
-            ->leftJoin('App\Entity\Category', 'c', 'WITH', 'c.id = ec.category')
-            ->join('App\Entity\EntryDetails', 'ed', 'WITH', 'e.id = ed.entry')
-            ->join('App\Entity\UserDetails', 'ud', 'WITH', 'e.user = ud.user')
-            ->leftJoin('App\Entity\EntryAttachment', 'ea', 'WITH', 'ed.id = ea.details')
-            ->leftJoin('App\Entity\Attach', 'a', 'WITH', 'a.id = ea.attach');
+            ->leftJoin('e.entryCategories', 'ec', Expr\Join::WITH, 'ec.entry = e.id')
+            ->leftJoin(Category::class, 'c', Expr\Join::WITH, 'c.id = ec.category')
+            ->join(UserDetails::class, 'ud', Expr\Join::WITH, 'e.user = ud.user')
+            ->join(EntryDetails::class, 'ed', Expr\Join::WITH, 'e.id = ed.entry')
+            ->leftJoin(EntryAttachment::class, 'ea', Expr\Join::WITH, 'ea.details = ed.entry')
+            ->leftJoin(Attach::class, 'a', Expr\Join::WITH, 'a.id = ea.attach');
 
         if ($slug) {
             $qb->where('c.slug = :slug')->setParameter('slug', $slug);
@@ -59,7 +60,9 @@ class EntryRepository extends ServiceEntityRepository
             ->andWhere('e.status = :status')
             ->setParameter('status', 'published')
             ->andWhere('e.deleted_at is null')
+            ->orderBy('ea.id', 'desc')
             ->groupBy('e.id');
+
         $qb->orderBy('e.id', 'desc')->setMaxResults($limit);
 
         return $qb->getQuery()

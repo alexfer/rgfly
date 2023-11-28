@@ -36,15 +36,6 @@
                                         <img src="{{ asset('http://placehold.it/380x200') }}" class="blog-img" alt="missing image"/>
                                     {% endif %}
                                 </a>
-{#                                {% for key, picture in entry.entryAttachments.slice(0, 1) %}#}
-{#                                    {% set _picture = 'storage/entry/picture/' ~ entry.entryDetails.id ~ '/' ~ picture.attach.name %}#}
-{#                                    <a href="{{ path('app_blog_view', {slug: entry.slug}) }}">#}
-{#                                        <img src="{{ asset(_picture) | imagine_filter('entry_preview') }}"#}
-{#                                             class="blog-img" alt="{{ entry.entryDetails.title }}"/>#}
-{#                                    </a>#}
-{#                                {% else %}#}
-{#                                    <img src="{{ asset('http://placehold.it/380x200') }}" class="blog-img" alt="missing image"/>#}
-{#                                {% endfor %}#}
                             </div>
                             <div class="card-body p-3">
                                 <a href="{{ path('app_blog_view', {slug: entry.slug}) }}">

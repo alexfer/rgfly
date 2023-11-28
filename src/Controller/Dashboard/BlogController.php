@@ -183,9 +183,7 @@ class BlogController extends AbstractController
 
         if ($title) {
             try {
-                $entry->setType('blog')
-                    ->setSlug($slugger->slug($title)->lower())
-                    ->setUser($user);
+                $entry->setType('blog')->setSlug($slugger->slug($title)->lower());
                 $em->persist($entry);
                 $em->flush();
             } catch (UniqueConstraintViolationException $e) {
