@@ -107,7 +107,7 @@ class BlogController extends AbstractController
                     ->setSlug($slugger->slug($title)->lower())
                     ->setUser($user);
                 $em->persist($entry);
-                $em->flush();
+
             } catch (UniqueConstraintViolationException $e) {
                 $error = $translator->trans('slug.unique', [], 'validators');
             }
@@ -144,6 +144,7 @@ class BlogController extends AbstractController
         return $this->render('dashboard/content/blog/_form.html.twig', $this->build($user) + [
                 'form' => $form,
                 'error' => $error,
+                'entry' => $entry,
                 'categories' => $category->findBy([], ['position' => 'asc']),
             ]);
     }
@@ -320,7 +321,7 @@ class BlogController extends AbstractController
         EntryRepository           $entryRepository,
         EntityManagerInterface    $em,
         EntryAttachmentRepository $entryAttachmentRepository,
-    )
+    ): Response
     {
         $entry = $entryRepository->find($request->get('entry'));
         $details = $entry->getEntryDetails();

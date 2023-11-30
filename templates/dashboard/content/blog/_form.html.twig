@@ -95,7 +95,7 @@
                         </div>
                     </div>
                     <div class="table entry-attachments" data-params="{{ _params|json_encode }}">
-                        {% if entry.entryAttachments %}
+                        {% if form.vars.data.id %}
                             {% for key, picture in entry.entryAttachments|slice(0, 4) %}
                                 {% set _picture = 'storage/entry/picture/' ~ entry.entryDetails.id ~ '/' ~ picture.attach.name %}
                                 <div class="d-inline-block mr-3 mb-3">
@@ -103,7 +103,7 @@
                                     <div class="handlers" data-id="{{ picture.id }}">
                                         <a href="#" data-action="remove"
                                            class="bi bi-trash-fill"></a>
-                                        <a href="{{ path('app_dashboard_blog_attach_set_use', {id: entry.id}) }}" data-action="default"
+                                        <a href="{{ path('app_dashboard_blog_attach_set_use', {entry: entry.id}) }}" data-action="default"
                                            class="bi bi-person-bounding-box"></a>
                                     </div>
                                 </div>

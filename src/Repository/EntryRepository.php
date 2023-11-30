@@ -44,6 +44,7 @@ class EntryRepository extends ServiceEntityRepository
                 'a.name as attach',
                 'ud.first_name',
             ])
+            ->distinct(true)
             ->leftJoin('e.entryCategories', 'ec', Expr\Join::WITH, 'ec.entry = e.id')
             ->leftJoin(Category::class, 'c', Expr\Join::WITH, 'c.id = ec.category')
             ->join(UserDetails::class, 'ud', Expr\Join::WITH, 'e.user = ud.user')
@@ -59,8 +60,7 @@ class EntryRepository extends ServiceEntityRepository
             ->setParameter('type', $type)
             ->andWhere('e.status = :status')
             ->setParameter('status', 'published')
-            ->andWhere('e.deleted_at is null')
-            ->groupBy('e.id');
+            ->andWhere('e.deleted_at is null');
 
         $qb->orderBy('e.created_at', 'desc')->setMaxResults($limit);
 
