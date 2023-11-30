@@ -10,7 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserDetailsRepository::class)]
-#[ORM\Table(name: 'user_details')]
+#[ORM\Table(name: 'public.user_details')]
 class UserDetails
 {
     #[ORM\Id]
@@ -22,7 +22,6 @@ class UserDetails
     private ?User $user = null;
 
     #[ORM\OneToMany(mappedBy: 'userDetails', targetEntity: Attach::class)]
-    #[ORM\OrderBy(['id' => 'desc'])]
     private Collection $attach;
 
     #[ORM\Column(length: 255, nullable: true)]

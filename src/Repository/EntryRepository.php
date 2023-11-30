@@ -37,7 +37,7 @@ class EntryRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('e')
             ->select([
-                'e.id',
+                'ed.id',
                 'e.slug',
                 'e.created_at',
                 'ed.title',
@@ -48,7 +48,7 @@ class EntryRepository extends ServiceEntityRepository
             ->leftJoin(Category::class, 'c', Expr\Join::WITH, 'c.id = ec.category')
             ->join(UserDetails::class, 'ud', Expr\Join::WITH, 'e.user = ud.user')
             ->join(EntryDetails::class, 'ed', Expr\Join::WITH, 'e.id = ed.entry')
-            ->leftJoin(EntryAttachment::class, 'ea', Expr\Join::WITH, 'ea.details = ed.entry')
+            ->leftJoin(EntryAttachment::class, 'ea', Expr\Join::WITH, 'ea.details = ed.entry and ea.in_use = 1')
             ->leftJoin(Attach::class, 'a', Expr\Join::WITH, 'a.id = ea.attach');
 
         if ($slug) {
@@ -60,10 +60,9 @@ class EntryRepository extends ServiceEntityRepository
             ->andWhere('e.status = :status')
             ->setParameter('status', 'published')
             ->andWhere('e.deleted_at is null')
-            ->orderBy('ea.id', 'desc')
             ->groupBy('e.id');
 
-        $qb->orderBy('e.id', 'desc')->setMaxResults($limit);
+        $qb->orderBy('e.created_at', 'desc')->setMaxResults($limit);
 
         return $qb->getQuery()
             ->useQueryCache(true)

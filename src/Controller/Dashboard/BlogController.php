@@ -4,7 +4,6 @@ namespace App\Controller\Dashboard;
 
 use App\Entity\{Entry, EntryAttachment, EntryCategory, EntryDetails};
 use App\Form\Type\Dashboard\EntryDetailsType;
-use App\Repository\AttachRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\EntryAttachmentRepository;
 use App\Repository\EntryCategoryRepository;
@@ -289,8 +288,12 @@ class BlogController extends AbstractController
                 ]);
             }
 
+            $entryAttachmentRepository->updateInuseStatus($entry->getEntryDetails());
+
             $entryAttachment = new EntryAttachment();
-            $entryAttachment->setDetails($entry)->setAttach($attach);
+            $entryAttachment->setDetails($entry)
+                ->setAttach($attach)
+                ->setInUse(1);
 
             $em->persist($entryAttachment);
             $em->flush();
@@ -307,6 +310,31 @@ class BlogController extends AbstractController
             'message' => $translator->trans('entry.picture.appended'),
             'picture' => $picture,
             //'attachments' => $attachments,
+        ]);
+    }
+
+    #[Route('/attach-set-use/{entry}', name: 'app_dashboard_blog_attach_set_use', methods: ['POST'])]
+    public function setInUse(
+        Request                   $request,
+        TranslatorInterface       $translator,
+        EntryRepository           $entryRepository,
+        EntityManagerInterface    $em,
+        EntryAttachmentRepository $entryAttachmentRepository,
+    )
+    {
+        $entry = $entryRepository->find($request->get('entry'));
+        $details = $entry->getEntryDetails();
+
+        $entryAttachmentRepository->updateInuseStatus($details);
+        $attachment = $entryAttachmentRepository->findOneBy(['details' => $details]);
+
+        $attachment->setInUse(1);
+        $em->persist($attachment);
+        $em->flush();
+
+        return $this->json([
+            'success' => true,
+            'message' => $translator->trans('entry.picture.default'),
         ]);
     }
 

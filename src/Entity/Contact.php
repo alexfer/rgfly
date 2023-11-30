@@ -8,7 +8,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
-#[ORM\Table(name: 'contact')]
+#[ORM\Table(name: 'public.contact')]
 class Contact
 {
     /**
@@ -30,7 +30,7 @@ class Contact
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(type: "string", options: ['default' => 'New'], columnDefinition: "ENUM('New', 'Draft', 'Answered', 'Error', 'Trashed')")]
+    #[ORM\Column(type: "string")]
     private ?string $status;
 
     #[ORM\Column(type: Types::INTEGER)]

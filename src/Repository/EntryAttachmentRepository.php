@@ -2,11 +2,13 @@
 
 namespace App\Repository;
 
-use App\Entity\Entry;
 use App\Entity\Attach;
+use App\Entity\Entry;
 use App\Entity\EntryAttachment;
+use App\Entity\EntryDetails;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\Query\Expr;
 use Doctrine\Persistence\ManagerRegistry;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 
@@ -33,11 +35,17 @@ class EntryAttachmentRepository extends ServiceEntityRepository
     ): array
     {
         $result = $this->createQueryBuilder('ea')
-            ->select('a.id', 'a.mime', 'a.name', 'a.size', 'a.created_at')
-            ->leftJoin(Attach::class, 'a', 'WITH', 'ea.id = a.id')
+            ->select([
+                'a.id',
+                'a.mime',
+                'a.name',
+                'a.size',
+                'a.created_at',
+            ])
+            ->leftJoin(Attach::class, 'a', Expr\Join::WITH, 'ea.id = a.id')
             ->where('ea.details = :details')
             ->setParameter('details', $entry->getEntryDetails())
-            ->orderBy('a.id', 'DESC')
+            ->orderBy('a.id', 'desc')
             ->setMaxResults(8)
             ->getQuery()
             ->getResult(AbstractQuery::HYDRATE_ARRAY);
@@ -56,6 +64,22 @@ class EntryAttachmentRepository extends ServiceEntityRepository
         }
 
         return $attachments;
+    }
+
+    /**
+     * @param EntryDetails $details
+     * @param int|null $inUse
+     * @return void
+     */
+    public function updateInuseStatus(EntryDetails $details, ?int $inUse = 0): void
+    {
+        $this->createQueryBuilder('ea')
+            ->update()
+            ->set('ea.in_use', $inUse)
+            ->where('ea.details = :details')
+            ->setParameter('details', $details)
+            ->getQuery()
+            ->execute();
     }
 
 }
