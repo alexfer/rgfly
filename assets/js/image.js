@@ -80,9 +80,10 @@ $(function () {
                                                 })
                                         ))
                             ).delay(4000).show('slow');
-                            setTimeout(function() {
-                                attachments.children().last().remove();
-                            }, 2000);
+
+                            // setTimeout(function() {
+                            //     attachments.children().last().remove();
+                            // }, 2000);
                         }
                     },
                     complete: function () {
@@ -134,7 +135,9 @@ $(function () {
         }).then(response => {
             return response.json();
         }).then(json => {
-            $(this).parent('div').parent('div').remove();
+            if(action === 'remove') {
+                $(this).parent('div').parent('div').remove();
+            }
             swal({
                 title: args.success.title,
                 text: json.message,

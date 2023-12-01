@@ -61,7 +61,7 @@ class EntryDetails
     }
 
     /**
-     * @param string $content
+     * @param string|null $short_content
      * @return $this
      */
     public function setShortContent(?string $short_content): static

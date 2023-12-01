@@ -4,6 +4,7 @@ namespace App\Controller\Dashboard;
 
 use App\Entity\{Entry, EntryAttachment, EntryCategory, EntryDetails};
 use App\Form\Type\Dashboard\EntryDetailsType;
+use App\Repository\AttachRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\EntryAttachmentRepository;
 use App\Repository\EntryCategoryRepository;
@@ -314,6 +315,15 @@ class BlogController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @param EntryRepository $entryRepository
+     * @param EntityManagerInterface $em
+     * @param EntryAttachmentRepository $entryAttachmentRepository
+     * @param AttachRepository $attachRepository
+     * @return Response
+     */
     #[Route('/attach-set-use/{entry}', name: 'app_dashboard_blog_attach_set_use', methods: ['POST'])]
     public function setInUse(
         Request                   $request,
@@ -321,13 +331,18 @@ class BlogController extends AbstractController
         EntryRepository           $entryRepository,
         EntityManagerInterface    $em,
         EntryAttachmentRepository $entryAttachmentRepository,
+        AttachRepository          $attachRepository,
     ): Response
     {
         $entry = $entryRepository->find($request->get('entry'));
         $details = $entry->getEntryDetails();
 
-        $entryAttachmentRepository->updateInuseStatus($details);
-        $attachment = $entryAttachmentRepository->findOneBy(['details' => $details]);
+        $entryAttachmentRepository->resetStatus($details);
+
+        $parameters = json_decode($request->getContent(), true);;
+
+        $attach = $attachRepository->find($parameters['id']);
+        $attachment = $entryAttachmentRepository->findOneBy(['details' => $details->getEntry(), 'attach' => $attach]);
 
         $attachment->setInUse(1);
         $em->persist($attachment);

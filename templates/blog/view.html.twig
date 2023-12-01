@@ -16,7 +16,7 @@
     </div>
     <section class="section-area default bg-white">
         <div class="container">
-            <h4>{{ entry.entryDetails.title }}</h4>
+            <h1>{{ entry.entryDetails.title }}</h1>
             <div class="entry-meta">
                 <ul>
                     <li>
@@ -33,13 +33,15 @@
                     <a href="{{ path('app_blog_category', {slug: categories.category.slug}) }}">{{ categories.category.name }}</a>
                 {% endfor %}
             </div>
-            {% for key, picture in entry.entryAttachments.slice(0, 1) %}
-                {% set _picture = 'storage/entry/picture/' ~ entry.entryDetails.id ~ '/' ~ picture.attach.name %}
-                <div class="content-image mb-4">
-                    <img src="{{ asset(_picture) | imagine_filter('entry_view') }}" class="img-responsive"
-                         alt="{{ entry.entryDetails.title }}"/>
-                    <i class="d-block text-left text-muted mt-1 pl-1">{{ entry.entryDetails.shortContent }}</i>
-                </div>
+            {% for key, picture in entry.entryAttachments %}
+                {% if picture.inUse %}
+                    {% set _picture = 'storage/entry/picture/' ~ entry.entryDetails.id ~ '/' ~ picture.attach.name %}
+                    <div class="content-image mb-4">
+                        <img src="{{ asset(_picture) | imagine_filter('entry_view') }}" class="img-responsive"
+                             alt="{{ entry.entryDetails.title }}"/>
+                        <i class="d-block text-left text-muted mt-1 pl-1">{{ entry.entryDetails.shortContent }}</i>
+                    </div>
+                {% endif %}
             {% endfor %}
             {{ entry.entryDetails.content|raw }}
         </div>

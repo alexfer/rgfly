@@ -68,16 +68,15 @@ class EntryAttachmentRepository extends ServiceEntityRepository
 
     /**
      * @param EntryDetails $details
-     * @param int|null $inUse
      * @return void
      */
-    public function updateInuseStatus(EntryDetails $details, ?int $inUse = 0): void
+    public function resetStatus(EntryDetails $details): void
     {
         $this->createQueryBuilder('ea')
             ->update()
-            ->set('ea.in_use', $inUse)
+            ->set('ea.in_use', 0)
             ->where('ea.details = :details')
-            ->setParameter('details', $details)
+            ->setParameter('details', $details->getEntry())
             ->getQuery()
             ->execute();
     }
