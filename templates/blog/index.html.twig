@@ -15,6 +15,9 @@
                                 {{ 'text.blog.desc'|trans|raw }}
                             {% endif %}
                         </h4>
+                        {% if category %}
+                            <p>{{ category.description }}</p>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -30,10 +33,11 @@
                                 {% set _picture = 'storage/entry/picture/' ~ entry.id ~ '/' ~ entry.attach %}
                                 <a href="{{ path('app_blog_view', {slug: entry.slug}) }}">
                                     {% if entry.attach %}
-                                    <img src="{{ asset(_picture) | imagine_filter('entry_preview') }}"
-                                         class="blog-img" alt="{{ entry.title }}"/>
+                                        <img src="{{ asset(_picture) | imagine_filter('entry_preview') }}"
+                                             class="blog-img" alt="{{ entry.title }}"/>
                                     {% else %}
-                                        <img src="{{ asset('http://placehold.it/380x200') }}" class="blog-img" alt="missing image"/>
+                                        <img src="{{ asset('http://placehold.it/380x200') }}" class="blog-img"
+                                             alt="missing image"/>
                                     {% endif %}
                                 </a>
                             </div>

@@ -70,20 +70,12 @@ $(function () {
                                         .attr('class', 'attach lazy')
                                         .attr('src', response.picture)
                                 ).append(
-                                    $('<div/>').attr('class', 'handlers').attr('data-id', response.id)
-                                        .append(
-                                            $('<a/>').attr('class', 'bi bi-trash-fill trash')
-                                                .attr('href', response.path)
-                                                .attr('data-action', 'remove')
-                                                .bind('click', function (e) {
-                                                    e.preventDefault();
-                                                })
-                                        ))
-                            ).delay(4000).show('slow');
-
-                            // setTimeout(function() {
-                            //     attachments.children().last().remove();
-                            // }, 2000);
+                                    $('<div/>').attr('class', 'handlers').attr('data-id', response.id))).delay(4000).show('slow');
+                            if (attachments.length > 6) {
+                                setTimeout(function () {
+                                    attachments.children().last().remove();
+                                }, 2000);
+                            }
                         }
                     },
                     complete: function () {
@@ -135,7 +127,7 @@ $(function () {
         }).then(response => {
             return response.json();
         }).then(json => {
-            if(action === 'remove') {
+            if (action === 'remove') {
                 $(this).parent('div').parent('div').remove();
             }
             swal({

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20231201165955 extends AbstractMigration
+final class Version20231202044813 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -25,7 +25,7 @@ final class Version20231201165955 extends AbstractMigration
         $this->addSql('CREATE SEQUENCE public.category_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE public.contact_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE public.entry_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE entry_attachment_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE public.entry_attachment_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE public.entry_category_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE public.entry_details_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE public.faq_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
@@ -44,9 +44,9 @@ final class Version20231201165955 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_1AF0FC14989D9B62 ON public.entry (slug)');
         $this->addSql('CREATE INDEX IDX_1AF0FC14A76ED395 ON public.entry (user_id)');
         $this->addSql('CREATE INDEX idx ON public.entry (status, type)');
-        $this->addSql('CREATE TABLE entry_attachment (id INT NOT NULL, attach_id INT DEFAULT NULL, details_id INT DEFAULT NULL, in_use INT DEFAULT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE INDEX IDX_E1F59089E784F8B7 ON entry_attachment (attach_id)');
-        $this->addSql('CREATE INDEX IDX_E1F59089BB1A0722 ON entry_attachment (details_id)');
+        $this->addSql('CREATE TABLE public.entry_attachment (id INT NOT NULL, attach_id INT DEFAULT NULL, details_id INT DEFAULT NULL, in_use INT DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE INDEX IDX_75C61CE4E784F8B7 ON public.entry_attachment (attach_id)');
+        $this->addSql('CREATE INDEX IDX_75C61CE4BB1A0722 ON public.entry_attachment (details_id)');
         $this->addSql('CREATE TABLE public.entry_category (id INT NOT NULL, entry_id INT DEFAULT NULL, category_id INT DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_B75755FDBA364942 ON public.entry_category (entry_id)');
         $this->addSql('CREATE INDEX IDX_B75755FD12469DE2 ON public.entry_category (category_id)');
@@ -83,8 +83,8 @@ final class Version20231201165955 extends AbstractMigration
         $this->addSql('ALTER TABLE public.answer ADD CONSTRAINT FK_90333E05A76ED395 FOREIGN KEY (user_id) REFERENCES public."user" (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE public.attach ADD CONSTRAINT FK_942708A11C7DC1CE FOREIGN KEY (user_details_id) REFERENCES public.user_details (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE public.entry ADD CONSTRAINT FK_1AF0FC14A76ED395 FOREIGN KEY (user_id) REFERENCES public."user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE entry_attachment ADD CONSTRAINT FK_E1F59089E784F8B7 FOREIGN KEY (attach_id) REFERENCES public.attach (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE entry_attachment ADD CONSTRAINT FK_E1F59089BB1A0722 FOREIGN KEY (details_id) REFERENCES public.entry (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE public.entry_attachment ADD CONSTRAINT FK_75C61CE4E784F8B7 FOREIGN KEY (attach_id) REFERENCES public.attach (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE public.entry_attachment ADD CONSTRAINT FK_75C61CE4BB1A0722 FOREIGN KEY (details_id) REFERENCES public.entry (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE public.entry_category ADD CONSTRAINT FK_B75755FDBA364942 FOREIGN KEY (entry_id) REFERENCES public.entry (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE public.entry_category ADD CONSTRAINT FK_B75755FD12469DE2 FOREIGN KEY (category_id) REFERENCES public.category (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE public.entry_details ADD CONSTRAINT FK_628313B1BA364942 FOREIGN KEY (entry_id) REFERENCES public.entry (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
@@ -101,7 +101,7 @@ final class Version20231201165955 extends AbstractMigration
         $this->addSql('DROP SEQUENCE public.category_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE public.contact_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE public.entry_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE entry_attachment_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE public.entry_attachment_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE public.entry_category_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE public.entry_details_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE public.faq_id_seq CASCADE');
@@ -112,8 +112,8 @@ final class Version20231201165955 extends AbstractMigration
         $this->addSql('ALTER TABLE public.answer DROP CONSTRAINT FK_90333E05A76ED395');
         $this->addSql('ALTER TABLE public.attach DROP CONSTRAINT FK_942708A11C7DC1CE');
         $this->addSql('ALTER TABLE public.entry DROP CONSTRAINT FK_1AF0FC14A76ED395');
-        $this->addSql('ALTER TABLE entry_attachment DROP CONSTRAINT FK_E1F59089E784F8B7');
-        $this->addSql('ALTER TABLE entry_attachment DROP CONSTRAINT FK_E1F59089BB1A0722');
+        $this->addSql('ALTER TABLE public.entry_attachment DROP CONSTRAINT FK_75C61CE4E784F8B7');
+        $this->addSql('ALTER TABLE public.entry_attachment DROP CONSTRAINT FK_75C61CE4BB1A0722');
         $this->addSql('ALTER TABLE public.entry_category DROP CONSTRAINT FK_B75755FDBA364942');
         $this->addSql('ALTER TABLE public.entry_category DROP CONSTRAINT FK_B75755FD12469DE2');
         $this->addSql('ALTER TABLE public.entry_details DROP CONSTRAINT FK_628313B1BA364942');
@@ -125,7 +125,7 @@ final class Version20231201165955 extends AbstractMigration
         $this->addSql('DROP TABLE public.category');
         $this->addSql('DROP TABLE public.contact');
         $this->addSql('DROP TABLE public.entry');
-        $this->addSql('DROP TABLE entry_attachment');
+        $this->addSql('DROP TABLE public.entry_attachment');
         $this->addSql('DROP TABLE public.entry_category');
         $this->addSql('DROP TABLE public.entry_details');
         $this->addSql('DROP TABLE public.faq');
