@@ -10,7 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AttachRepository::class)]
-#[ORM\Table(name: 'public.attach')]
+//#[ORM\Table(name: 'public.attach')]
 class Attach
 {
 

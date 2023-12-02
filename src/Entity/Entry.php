@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EntryRepository::class)]
-#[ORM\Table(name: 'public.entry')]
+//#[ORM\Table(name: 'public.entry')]
 #[ORM\Index(columns: ['status', 'type'], name: 'idx')]
 class Entry
 {
