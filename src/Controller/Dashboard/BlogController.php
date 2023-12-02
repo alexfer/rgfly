@@ -290,7 +290,7 @@ class BlogController extends AbstractController
                 ]);
             }
 
-            $entryAttachmentRepository->updateInuseStatus($entry->getEntryDetails());
+            $entryAttachmentRepository->resetStatus($entry->getEntryDetails());
 
             $entryAttachment = new EntryAttachment();
             $entryAttachment->setDetails($entry)

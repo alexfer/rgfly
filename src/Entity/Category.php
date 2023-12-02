@@ -25,7 +25,10 @@ class Category
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::STRING, length: 512, nullable: true)]
+    private ?string $description = null;
+
+    #[ORM\Column(type: Types::SMALLINT, length: 3)]
     private ?int $position = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -85,6 +88,25 @@ class Category
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     * @return $this
+     */
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
 
         return $this;
     }
