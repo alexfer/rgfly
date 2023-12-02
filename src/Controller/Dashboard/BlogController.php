@@ -41,8 +41,8 @@ class BlogController extends AbstractController
     ];
 
     /**
-     *
      * @param int|null $id
+     * @param ParameterBagInterface $params
      * @return string
      */
     private function getTargetDir(?int $id, ParameterBagInterface $params): string
@@ -271,11 +271,10 @@ class BlogController extends AbstractController
             $validate = $imageValidator->validate($file, $translator);
 
             if ($validate->has(0)) {
-                return $this->json(['message' => $validate->get(0)->getMessage(), 'picture' => null]);
-            }
-
-            if ($validate->has(0)) {
-                return $this->json(['message' => $validate->get(0)->getMessage(), 'picture' => null]);
+                return $this->json([
+                    'message' => $validate->get(0)->getMessage(),
+                    'picture' => null,
+                ]);
             }
 
             $fileUploader = new FileUploader($this->getTargetDir($detailsId, $params), $slugger, $em);
@@ -305,13 +304,11 @@ class BlogController extends AbstractController
 
         $url = "{$storage}/{$detailsId}/{$attach->getName()}";
         $picture = $cacheManager->getBrowserPath(parse_url($url, PHP_URL_PATH), 'entry_preview', [], null);
-        //$attachments = $entryAttachmentRepository->getEntityAttachments($entry, $cacheManager, $storage, 'entry_preview');
 
         return $this->json([
             'success' => true,
             'message' => $translator->trans('entry.picture.appended'),
             'picture' => $picture,
-            //'attachments' => $attachments,
         ]);
     }
 
