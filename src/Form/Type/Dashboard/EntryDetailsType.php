@@ -3,7 +3,6 @@
 namespace App\Form\Type\Dashboard;
 
 use App\Entity\Entry;
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{SubmitType, TextareaType, TextType};
 use Symfony\Component\Form\FormBuilderInterface;
@@ -55,7 +54,7 @@ class EntryDetailsType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('content', CKEditorType::class, [
+            ->add('content', TextareaType::class, [
 //                'config' => [
 //                    'toolbar' => 'full'
 //                ],

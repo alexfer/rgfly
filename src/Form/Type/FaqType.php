@@ -3,9 +3,8 @@
 namespace App\Form\Type;
 
 use App\Entity\Faq;
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\{CheckboxType, SubmitType, TextType,};
+use Symfony\Component\Form\Extension\Core\Type\{CheckboxType, SubmitType, TextType, TextareaType,};
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\{Length, NotBlank,};
@@ -32,7 +31,7 @@ class FaqType extends AbstractType
                 ]),
             ],
         ])
-            ->add('content', CKEditorType::class, [
+            ->add('content', TextareaType::class, [
                 'attr' => [
                     'min' => 100,
                     'max' => 65535,
