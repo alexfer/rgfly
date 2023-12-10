@@ -1,4 +1,8 @@
 {% extends 'dashboard/index.html.twig' %}
+{#{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('ckeditorcss') }}
+{% endblock %}#}
 
 {% if form.vars.data.id %}
     {% set _title_extend = 'title.dashboard.change_faq'|trans %}
@@ -19,7 +23,7 @@
     <div class="form-group">
         {% set content_error = form.content.vars.errors|length ? 'form-control error' : 'form-control' %}
         {{ form_label(form.content, 'label.form.content') }} <span class="text-danger">*</span>
-        {{ form_widget(form.content, {attr: {class: content_error, rows: 6, placeholder: 'label.form.faq.content'}}) }}
+        {{ form_widget(form.content, {attr: {class: content_error, rows: 6, placeholder: 'label.form.content'}}) }}
         <sm class="text-danger">{{ form_errors(form.content) }}</sm>
     </div>
     <div class="form-group">
@@ -32,4 +36,18 @@
            class="btn btn-secondary shadow-sm">{{ 'form.action.cancel'|trans }}</a>
     </div>
     {{ form_end(form) }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.1.0/classic/ckeditor.js"></script>
+    <script type="text/javascript">
+        ClassicEditor.create(document.querySelector('#faq_content'))
+                .then(editor => {
+                    window.editor = editor;
+                    console.log(editor);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+    </script>
 {% endblock %}

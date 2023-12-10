@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
@@ -41,7 +42,7 @@ class SecurityController extends AbstractController
         $form = $this->createForm(LoginType::class, $default);
         $form->handleRequest($request);
 
-        $error = $request->getSession()->get(Security::AUTHENTICATION_ERROR);
+        $error = $request->getSession()->get(SecurityRequestAttributes::AUTHENTICATION_ERROR);
         $request->getSession()->clear();
 
         return $this->render('security/index.html.twig', [
@@ -71,7 +72,7 @@ class SecurityController extends AbstractController
     public function error(Request $request): Response
     {
         return $this->render('security/error.html.twig', [
-            'error' => $request->getSession()->get(Security::AUTHENTICATION_ERROR),
+            'error' => $request->getSession()->get(SecurityRequestAttributes::AUTHENTICATION_ERROR),
         ]);
     }
 }
