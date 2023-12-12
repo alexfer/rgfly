@@ -142,7 +142,9 @@
     {{ parent() }}
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
     <script type="text/javascript">
-        CKEDITOR.replace('entry_details_content');
+        CKEDITOR.replace('entry_details_content', {
+            'removePlugins': 'simage'
+        });
     </script>
 {% endblock %}
 
