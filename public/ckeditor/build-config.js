@@ -13,10 +13,10 @@
  * (1) https://ckeditor.com/cke4/builder
  *     Visit online builder to build CKEditor from scratch.
  *
- * (2) https://ckeditor.com/cke4/builder/228c51cf647132204c6c47f3c33155dd
+ * (2) https://ckeditor.com/cke4/builder/5ff67052387e823ca08cee64047f0292
  *     Visit online builder to build CKEditor, starting with the same setup as before.
  *
- * (3) https://ckeditor.com/cke4/builder/download/228c51cf647132204c6c47f3c33155dd
+ * (3) https://ckeditor.com/cke4/builder/download/5ff67052387e823ca08cee64047f0292
  *     Straight download link to the latest version of CKEditor (Optimized) with the same setup as before.
  *
  * NOTE:
@@ -55,8 +55,7 @@ var CKBUILDER_CONFIG = {
 		'tests'
 	],
 	plugins : {
-		'a11yhelp' : 1,
-		'about' : 1,
+		'backgrounds' : 1,
 		'basicstyles' : 1,
 		'blockquote' : 1,
 		'clipboard' : 1,
@@ -66,37 +65,47 @@ var CKBUILDER_CONFIG = {
 		'entities' : 1,
 		'filebrowser' : 1,
 		'floatingspace' : 1,
+		'font' : 1,
 		'format' : 1,
 		'horizontalrule' : 1,
 		'html5video' : 1,
 		'htmlwriter' : 1,
+		'iframe' : 1,
 		'image' : 1,
+		'imageresize' : 1,
 		'indentlist' : 1,
 		'link' : 1,
 		'list' : 1,
+		'liststyle' : 1,
 		'magicline' : 1,
 		'maximize' : 1,
+		'numericinput' : 1,
+		'pagebreak' : 1,
 		'pastefromgdocs' : 1,
 		'pastefromlibreoffice' : 1,
 		'pastefromword' : 1,
 		'pastetext' : 1,
+		'preview' : 1,
 		'removeformat' : 1,
 		'resize' : 1,
-		'scayt' : 1,
 		'showborders' : 1,
+		'simage' : 1,
 		'sourcearea' : 1,
-		'specialchar' : 1,
-		'stylescombo' : 1,
 		'tab' : 1,
 		'table' : 1,
+		'tableresize' : 1,
 		'tableselection' : 1,
 		'tabletools' : 1,
 		'toolbar' : 1,
+		'uicolor' : 1,
 		'undo' : 1,
 		'uploadimage' : 1,
-		'wysiwygarea' : 1
+		'videodetector' : 1,
+		'wysiwygarea' : 1,
+		'youtube' : 1
 	},
 	languages : {
-		'en' : 1
+		'en' : 1,
+		'uk' : 1
 	}
 };

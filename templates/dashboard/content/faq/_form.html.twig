@@ -39,15 +39,8 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    <script src="https://cdn.ckeditor.com/ckeditor5/40.1.0/classic/ckeditor.js"></script>
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
     <script type="text/javascript">
-        ClassicEditor.create(document.querySelector('#faq_content'))
-                .then(editor => {
-                    window.editor = editor;
-                    console.log(editor);
-                })
-                .catch(error => {
-                    console.error(error);
-                });
+        CKEDITOR.replace('faq_content');
     </script>
 {% endblock %}
