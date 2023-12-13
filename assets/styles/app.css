@@ -24,9 +24,9 @@ img {
 }
 
 .entry-tags {
-    -ms-flex: 0 0 50%;
+    -ms-flex: 0 0 98%;
     -webkit-box-flex: 0;
-    flex: 0 0 50%;
+    flex: 0 0 90%;
     max-width: 90%;
     color: #5f5f5f;
     margin-bottom: 20px;

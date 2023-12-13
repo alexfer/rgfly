@@ -6,7 +6,6 @@ use App\Repository\EntryCategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EntryCategoryRepository::class)]
-//#[ORM\Table(name: 'public.entry_category')]
 class EntryCategory
 {
     #[ORM\Id]

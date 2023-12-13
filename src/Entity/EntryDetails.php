@@ -7,8 +7,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EntryDetailsRepository::class)]
-//#[ORM\Table(name: 'public.entry_details')]
-#[ORM\Index(columns: ['content'], flags: ['fulltext'])]
 class EntryDetails
 {
     #[ORM\Id]

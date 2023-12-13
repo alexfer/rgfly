@@ -26,6 +26,15 @@
     <section class="section-area default bg-white">
         <div class="container">
             <div class="row">
+                {% if categories %}
+                    <div class="col-12 entry-tags">
+                        {% for category in categories %}
+                            <a href="{{ path('app_blog_category', {slug: category.slug}) }}" title="{{ category.description }}">{{ category.name }}</a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="row">
                 {% for entry in entries %}
                     <div class="blog-block col-lg-4 col-md-6 col-sm-6 mb-4">
                         <div class="card shadow-sm h-100">
@@ -33,11 +42,11 @@
                                 {% set _picture = 'storage/entry/picture/' ~ entry.id ~ '/' ~ entry.attach %}
                                 <a href="{{ path('app_blog_view', {slug: entry.slug}) }}">
                                     {% if entry.attach %}
-                                        <img src="{{ asset(_picture) | imagine_filter('entry_preview') }}"
+                                        <img src="{{ asset(_picture)|imagine_filter('entry_preview') }}"
                                              class="blog-img" alt="{{ entry.title }}"/>
                                     {% else %}
                                         <img src="{{ asset('http://placehold.it/380x200') }}" class="blog-img"
-                                             alt="missing image"/>
+                                             alt="Missing image for entry: {{ entry.title }}"/>
                                     {% endif %}
                                 </a>
                             </div>
