@@ -23,17 +23,22 @@
             </div>
         </div>
     </div>
-    <section class="section-area default bg-white">
-        <div class="container">
+    <div class="container-fluid py-2">
+        <div class="container pt-2">
             <div class="row">
                 {% if categories %}
                     <div class="col-12 entry-tags">
-                        {% for category in categories %}
+                        {% for category in categories|slice(0, 7) %}
                             <a href="{{ path('app_blog_category', {slug: category.slug}) }}" title="{{ category.description }}">{{ category.name }}</a>
                         {% endfor %}
+                        <a href="javascript:void(0)" title="...">...</a>
                     </div>
                 {% endif %}
             </div>
+        </div>        
+    </div>
+    <section class="section-area default bg-white">
+        <div class="container">
             <div class="row">
                 {% for entry in entries %}
                     <div class="blog-block col-lg-4 col-md-6 col-sm-6 mb-4">
