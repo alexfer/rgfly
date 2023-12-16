@@ -81,6 +81,41 @@
         </div>
     </div>
 </div>
+<div class="form-row align-items-center">
+    <div class="col-4">
+        {{ form_label(form.facebook_profile, 'Facebook Profile', {label_attr: {class: 'sr-only'}}) }}
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <i class="bi bi-facebook"></i>
+                </div>
+            </div>
+            {{ form_widget(form.facebook_profile, {attr: {class: 'form-control  w-auto', placeholder: 'https://facebook-url'}}) }}
+        </div>
+    </div>
+    <div class="col-4">
+        {{ form_label(form.twittetr_profile, 'Twitter Profile', {label_attr: {class: 'sr-only'}}) }}
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <i class="bi bi-twitter"></i>
+                </div>
+            </div>
+            {{ form_widget(form.twittetr_profile, {attr: {class: 'form-control  w-auto', placeholder: 'https://twitter-url'}}) }}
+        </div>
+    </div>
+    <div class="col-4">
+        {{ form_label(form.instagram_profile, 'Instagram Profile', {label_attr: {class: 'sr-only'}}) }}
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <i class="bi bi-instagram"></i>
+                </div>
+            </div>
+            {{ form_widget(form.instagram_profile, {attr: {class: 'form-control  w-auto', placeholder: 'https://instagram-url'}}) }}
+        </div>
+    </div>
+</div>
 <div class="form-row">
     <div class="col-md-12">
         <div class="form-group">

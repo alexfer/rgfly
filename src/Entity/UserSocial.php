@@ -26,16 +26,29 @@ class UserSocial
     #[ORM\Column(length: 512, nullable: true)]
     private ?string $instagram_profile = null;
 
+    /**
+     * 
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * 
+     * @return UserDetails|null
+     */
     public function getDetails(): ?UserDetails
     {
         return $this->details;
     }
 
+    /**
+     * 
+     * @param UserDetails|null $details
+     * @return static
+     */
     public function setDetails(?UserDetails $details): static
     {
         $this->details = $details;
@@ -43,11 +56,20 @@ class UserSocial
         return $this;
     }
 
+    /*
+     * 
+     */
+
     public function getFacebookProfile(): ?string
     {
         return $this->facebook_profile;
     }
 
+    /**
+     * 
+     * @param string|null $facebook_profile
+     * @return static
+     */
     public function setFacebookProfile(?string $facebook_profile): static
     {
         $this->facebook_profile = $facebook_profile;
@@ -55,11 +77,20 @@ class UserSocial
         return $this;
     }
 
+    /**
+     * 
+     * @return string|null
+     */
     public function getTwitterProfile(): ?string
     {
         return $this->twitter_profile;
     }
 
+    /**
+     * 
+     * @param string|null $twitter_profile
+     * @return static
+     */
     public function setTwitterProfile(?string $twitter_profile): static
     {
         $this->twitter_profile = $twitter_profile;
@@ -67,11 +98,20 @@ class UserSocial
         return $this;
     }
 
+    /**
+     * 
+     * @return string|null
+     */
     public function getInstagramProfile(): ?string
     {
         return $this->instagram_profile;
     }
 
+    /**
+     * 
+     * @param string|null $instagram_profile
+     * @return static
+     */
     public function setInstagramProfile(?string $instagram_profile): static
     {
         $this->instagram_profile = $instagram_profile;

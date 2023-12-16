@@ -2,7 +2,13 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\{Category, User, UserDetails,};
+use App\Entity\{
+    Category,
+    User,
+    UserDetails,
+    UserSocial,
+    Faq,
+};
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -11,6 +17,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class AppFixtures extends Fixture
 {
+
     private $slugger;
 
     /**
@@ -18,8 +25,8 @@ class AppFixtures extends Fixture
      * @param SluggerInterface $slugger
      */
     public function __construct(
-        private readonly UserPasswordHasherInterface $passwordHasher,
-        SluggerInterface                             $slugger,
+            private readonly UserPasswordHasherInterface $passwordHasher,
+            SluggerInterface $slugger,
     )
     {
         $this->slugger = $slugger;
@@ -33,6 +40,7 @@ class AppFixtures extends Fixture
     {
         $this->loadUsers($manager);
         $this->loadCategories($manager);
+        $this->loadQuestions($manager);
     }
 
     /**
@@ -57,15 +65,26 @@ class AppFixtures extends Fixture
 
             $details = new UserDetails();
             $details->setUser($user)
-                ->setFirstName($userDetails[$key]['first_name'])
-                ->setLastName($userDetails[$key]['last_name']);
+                    ->setFirstName($userDetails[$key]['first_name'])
+                    ->setLastName($userDetails[$key]['last_name']);
 
             $manager->persist($details);
+
+            $social = new UserSocial();
+            $social->setDetails($details);
+
+            $manager->persist($social);
+
             $key++;
         }
         $manager->flush();
     }
 
+    /**
+     * 
+     * @param ObjectManager $manager
+     * @return void
+     */
     private function loadCategories(ObjectManager $manager): void
     {
         foreach ($this->getCategoryData() as [$name, $description, $position]) {
@@ -82,7 +101,24 @@ class AppFixtures extends Fixture
     }
 
     /**
-     * @return array[]
+     * 
+     * @param ObjectManager $manager
+     * @return void
+     */
+    private function loadQuestions(ObjectManager $manager): void
+    {
+        foreach ($this->getQuestionsData() as [$title, $content]) {
+            $faq = new Faq();
+            $faq->setTitle($title)->setContent($content)->setVisible(1);
+            $manager->persist($faq);
+        }
+
+        $manager->flush();
+    }
+
+    /**
+     * 
+     * @return array
      */
     private function getUserData(): array
     {
@@ -97,7 +133,8 @@ class AppFixtures extends Fixture
     }
 
     /**
-     * @return array[]
+     * 
+     * @return array
      */
     private function getUserDetailsData(): array
     {
@@ -112,7 +149,8 @@ class AppFixtures extends Fixture
     }
 
     /**
-     * @return array[]
+     * 
+     * @return array
      */
     private function getCategoryData(): array
     {
@@ -127,6 +165,25 @@ class AppFixtures extends Fixture
             ['Testing and QA', 'Types of QA testing: everything you need to know.', 8],
             ['Integration', 'Want to know more about integration services?', 9],
             ['Help desk', 'The most common and generally best way to organize your support tickets is by issue type.', 10],
+        ];
+    }
+
+    /**
+     * 
+     * @return array
+     */
+    private function getQuestionsData(): array
+    {
+        return [
+            ['Where do your developers come from?', '<b>Techspace works</b> from Ukraine, Poland, Hungary, Bulgaria, Serbia, Romania, Croatia, Spain, Portugal and Macedonia.'],
+            ['Do your developers have experience with Agile?', 'Yes. Our developers are trained in Agile, SCRUM and Kanban. Our specialists are trained and experienced in project-based working according to the Agile methodology, so they can also join your organization immediately.'],
+            ['When is Nearshore right for my organization?', 'Nearshore is suitable for virtually all organizations. Through Corona, we have all adapted to working from home and remotely and have become accustomed to online meetings. As a result, scheduling work and sharing updates through online platforms has become increasingly normal and has removed the biggest barrier to nearshoring. So as long as you English speaks and has an idea of what you want your developer or team to develop, nearshore development is right for your organization.'],
+            ['What happens if we are not satisfied with a developer?', 'If you are not satisfied with the performance of a developer, you initially report this to us. We then engage with him/her to resolve the problem. If it appears that the problem is not resolvable between you and the developer, we will within 2 to 4 weeks find a suitable replacement for you.'],
+            ['Can you support me in managing my team?', 'We have 15 years of experience setting up collaborations and remote teams. We are happy to advise you and share best practices with you.'],
+            ['What is Nearshore?', 'Nearshore is a technical term for supplementing or setting up a team, abroad but close to home. In contrast to Outsourcing or Outstaffing, Nearshore is really a collaborative model between customer and supplier, where our role is to find and retain the specialists you need. Where as the client is responsible for the direction and risks of the project. The emphasis is on collaboration as Nearshore team members work closely with your internal staff in order to deliver your projects quickly and with high quality.'],
+            ['We need a large development team, can you help?', 'Of course, we would love to get in touch with you. Depending on your needs, we can indicate whether we can help you with your request or not. This will mainly depend on how many developers, the techniques and how quickly the team needs to start. Feel free to contact us at info@techspace.com.'],
+            ['I am looking for only 1 developer, can you help me?', 'Of course, our services can be purchased per 1 FTE. For support services, such as DevOps– or QA as a service, a minimum of 16 hours per week applies. A specialist will do the maximum feasible with the hours you purchase. So by taking less hours, you also have less capacity or operational clout to achieve your goals. Do you find it difficult to determine how many hours of support you need for your projects? Then contact us without obligation at info@techspace.com.'],
+            ['Can my team come to our headquarters on a business trip?', 'Yes. We can completely take care of this for you by arranging airfare, visas, and lodging for the period you have your team on your <b>head office</b> want to invite. Before we arrange everything, we will of course coordinate all costs with you. We do not charge a fee for this service, the costs incurred can be paid by you directly.'],
         ];
     }
 }

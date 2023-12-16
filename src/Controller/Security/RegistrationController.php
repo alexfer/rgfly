@@ -2,15 +2,21 @@
 
 namespace App\Controller\Security;
 
-use App\Entity\UserDetails;
-use App\Entity\User;
+use App\Entity\{
+    User,
+    UserDetails,
+    UserSocial,
+};
 use App\Form\Type\User\DetailsType;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\{Request, Response,};
+use Symfony\Component\HttpFoundation\{
+    Request,
+    Response,
+};
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -29,10 +35,10 @@ class RegistrationController extends AbstractController
      */
     #[Route('/register', name: 'app_register', methods: ['GET', 'POST'])]
     public function register(
-        Request                     $request,
-        UserPasswordHasherInterface $userPasswordHasher,
-        EntityManagerInterface      $em,
-        ParameterBagInterface       $params,
+            Request $request,
+            UserPasswordHasherInterface $userPasswordHasher,
+            EntityManagerInterface $em,
+            ParameterBagInterface $params,
     ): Response
     {
         $securityContext = $this->container->get('security.authorization_checker');
@@ -43,6 +49,7 @@ class RegistrationController extends AbstractController
 
         $user = new User();
         $details = new UserDetails();
+        $social = new UserSocial();
 
         $form = $this->createForm(DetailsType::class, $user);
         $form->handleRequest($request);
@@ -50,10 +57,10 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
+                    $userPasswordHasher->hashPassword(
+                            $user,
+                            $form->get('plainPassword')->getData()
+                    )
             );
 
             $user->setIp($request->getClientIp());
@@ -61,10 +68,14 @@ class RegistrationController extends AbstractController
             $em->persist($user);
 
             $details->setFirstName($form->get('first_name')->getData())
-                ->setLastName($form->get('last_name')->getData())
-                ->setUser($user);
+                    ->setLastName($form->get('last_name')->getData())
+                    ->setUser($user);
 
             $em->persist($details);
+
+            $social->setDetails($details);
+            $em->persist($social);
+
             $em->flush();
 
             if ($params->get('auto_login')) {
@@ -75,7 +86,7 @@ class RegistrationController extends AbstractController
         }
 
         return $this->render('registration/register.html.twig', [
-            'form' => $form->createView(),
+                    'form' => $form->createView(),
         ]);
     }
 

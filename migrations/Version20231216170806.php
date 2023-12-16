@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20231213183054 extends AbstractMigration
+final class Version20231216170806 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,6 +20,19 @@ final class Version20231213183054 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
+        $this->addSql('CREATE SEQUENCE answer_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE attach_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE category_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE contact_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE entry_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE entry_attachment_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE entry_category_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE entry_details_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE faq_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE reset_password_request_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE "user_id_seq" INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE user_details_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE user_social_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE answer (id INT NOT NULL, contact_id INT NOT NULL, user_id INT NOT NULL, message TEXT NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_DADD4A25E7A1254A ON answer (contact_id)');
         $this->addSql('CREATE INDEX IDX_DADD4A25A76ED395 ON answer (user_id)');
@@ -50,6 +63,8 @@ final class Version20231213183054 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649E784F8B7 ON "user" (attach_id)');
         $this->addSql('CREATE TABLE user_details (id INT NOT NULL, user_id INT DEFAULT NULL, first_name VARCHAR(255) DEFAULT NULL, last_name VARCHAR(255) DEFAULT NULL, phone VARCHAR(255) DEFAULT NULL, country VARCHAR(2) DEFAULT NULL, city VARCHAR(255) DEFAULT NULL, about TEXT DEFAULT NULL, date_birth TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_2A2B1580A76ED395 ON user_details (user_id)');
+        $this->addSql('CREATE TABLE user_social (id INT NOT NULL, details_id INT DEFAULT NULL, facebook_profile VARCHAR(512) DEFAULT NULL, twitter_profile VARCHAR(512) DEFAULT NULL, instagram_profile VARCHAR(512) DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_1433FABABB1A0722 ON user_social (details_id)');
         $this->addSql('CREATE TABLE messenger_messages (id BIGSERIAL NOT NULL, body TEXT NOT NULL, headers TEXT NOT NULL, queue_name VARCHAR(190) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, available_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, delivered_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_75EA56E0FB7336F0 ON messenger_messages (queue_name)');
         $this->addSql('CREATE INDEX IDX_75EA56E0E3BD61CE ON messenger_messages (available_at)');
@@ -79,13 +94,26 @@ final class Version20231213183054 extends AbstractMigration
         $this->addSql('ALTER TABLE reset_password_request ADD CONSTRAINT FK_7CE748AA76ED395 FOREIGN KEY (user_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE "user" ADD CONSTRAINT FK_8D93D649E784F8B7 FOREIGN KEY (attach_id) REFERENCES attach (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE user_details ADD CONSTRAINT FK_2A2B1580A76ED395 FOREIGN KEY (user_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE user_social ADD CONSTRAINT FK_1433FABABB1A0722 FOREIGN KEY (details_id) REFERENCES user_details (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
-        $this->addSql('CREATE SCHEMA web');
+        $this->addSql('DROP SEQUENCE answer_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE attach_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE category_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE contact_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE entry_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE entry_attachment_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE entry_category_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE entry_details_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE faq_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE reset_password_request_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE "user_id_seq" CASCADE');
+        $this->addSql('DROP SEQUENCE user_details_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE user_social_id_seq CASCADE');
         $this->addSql('ALTER TABLE answer DROP CONSTRAINT FK_DADD4A25E7A1254A');
         $this->addSql('ALTER TABLE answer DROP CONSTRAINT FK_DADD4A25A76ED395');
         $this->addSql('ALTER TABLE attach DROP CONSTRAINT FK_DEC97C811C7DC1CE');
@@ -98,6 +126,7 @@ final class Version20231213183054 extends AbstractMigration
         $this->addSql('ALTER TABLE reset_password_request DROP CONSTRAINT FK_7CE748AA76ED395');
         $this->addSql('ALTER TABLE "user" DROP CONSTRAINT FK_8D93D649E784F8B7');
         $this->addSql('ALTER TABLE user_details DROP CONSTRAINT FK_2A2B1580A76ED395');
+        $this->addSql('ALTER TABLE user_social DROP CONSTRAINT FK_1433FABABB1A0722');
         $this->addSql('DROP TABLE answer');
         $this->addSql('DROP TABLE attach');
         $this->addSql('DROP TABLE category');
@@ -110,6 +139,7 @@ final class Version20231213183054 extends AbstractMigration
         $this->addSql('DROP TABLE reset_password_request');
         $this->addSql('DROP TABLE "user"');
         $this->addSql('DROP TABLE user_details');
+        $this->addSql('DROP TABLE user_social');
         $this->addSql('DROP TABLE messenger_messages');
         $this->addSql('DROP TABLE rememberme_token');
     }

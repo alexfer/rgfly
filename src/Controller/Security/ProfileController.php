@@ -16,7 +16,10 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\{Request, Response,};
+use Symfony\Component\HttpFoundation\{
+    Request,
+    Response,
+};
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -45,8 +48,8 @@ class ProfileController extends AbstractController
      * @return UserDetails|null
      */
     private function getRepository(
-        Request               $request,
-        UserDetailsRepository $repository,
+            Request $request,
+            UserDetailsRepository $repository,
     ): ?UserDetails
     {
         return $repository->find($request->get('id'));
@@ -64,8 +67,8 @@ class ProfileController extends AbstractController
 
     #[Route('/profile/attach/remove', name: 'app_profile_attach_remove', methods: ['POST'])]
     public function remove(
-        Request             $request,
-        TranslatorInterface $translator,
+            Request $request,
+            TranslatorInterface $translator,
     ): Response
     {
         $id = $request->getPayload()->get('id');
@@ -85,11 +88,11 @@ class ProfileController extends AbstractController
      */
     #[Route('/profile/attach/default', name: 'app_profile_attach_default', methods: ['POST'])]
     public function default(
-        Request                $request,
-        UserRepository         $repository,
-        TranslatorInterface    $translator,
-        AttachRepository       $attach,
-        EntityManagerInterface $em,
+            Request $request,
+            UserRepository $repository,
+            TranslatorInterface $translator,
+            AttachRepository $attach,
+            EntityManagerInterface $em,
     ): Response
     {
         try {
@@ -126,16 +129,16 @@ class ProfileController extends AbstractController
      */
     #[Route('/profile/attach', name: 'app_profile_attach', methods: ['POST'])]
     public function attach(
-        Request                 $request,
-        TranslatorInterface     $translator,
-        EntityManagerInterface  $em,
-        UserDetailsRepository   $repository,
-        UserInterface           $user,
-        SluggerInterface        $slugger,
-        CacheManager            $cacheManager,
-        ParameterBagInterface   $params,
-        ImageValidatorInterface $imageValidator,
-        AttachRepository        $attachRepository,
+            Request $request,
+            TranslatorInterface $translator,
+            EntityManagerInterface $em,
+            UserDetailsRepository $repository,
+            UserInterface $user,
+            SluggerInterface $slugger,
+            CacheManager $cacheManager,
+            ParameterBagInterface $params,
+            ImageValidatorInterface $imageValidator,
+            AttachRepository $attachRepository,
     ): Response
     {
         $details = $repository->find($user->getId());
@@ -147,11 +150,11 @@ class ProfileController extends AbstractController
 
             if ($validate->has(0)) {
                 return $this->json([
-                        'success' => false,
-                        'message' => $validate->get(0)->getMessage(),
-                        'picture' => null,
-                        'attachments' => [],
-                    ]
+                            'success' => false,
+                            'message' => $validate->get(0)->getMessage(),
+                            'picture' => null,
+                            'attachments' => [],
+                                ]
                 );
             }
 
@@ -177,12 +180,12 @@ class ProfileController extends AbstractController
         //$attachments = $attachRepository->getUserAttachments($details, $cacheManager, $storage, 'user_thumb');
 
         return $this->json([
-            'success' => true,
-            'id' => $attach->getId(),
-            'path' => $this->generateUrl('app_profile_attach_remove'),
-            'message' => $translator->trans('user.picture.changed'),
-            'picture' => $picture,
-            //'attachments' => $attachments,
+                    'success' => true,
+                    'id' => $attach->getId(),
+                    'path' => $this->generateUrl('app_profile_attach_remove'),
+                    'message' => $translator->trans('user.picture.changed'),
+                    'picture' => $picture,
+                        //'attachments' => $attachments,
         ]);
     }
 
@@ -198,12 +201,12 @@ class ProfileController extends AbstractController
      */
     #[Route('/profile', name: 'app_profile', methods: ['GET', 'POST'])]
     public function index(
-        Request                $request,
-        UserInterface          $user,
-        SluggerInterface       $slugger,
-        EntityManagerInterface $em,
-        UserDetailsRepository  $repository,
-        TranslatorInterface    $translator,
+            Request $request,
+            UserInterface $user,
+            SluggerInterface $slugger,
+            EntityManagerInterface $em,
+            UserDetailsRepository $repository,
+            TranslatorInterface $translator,
     ): Response
     {
         $details = $repository->find($user->getId());
@@ -229,6 +232,11 @@ class ProfileController extends AbstractController
             $details->setFirstName($form->get('first_name')->getData());
             $details->setLastName($form->get('last_name')->getData());
 
+            $details->getUserSocial()
+                    ->setFacebookProfile($form->get('facebook_profile')->getData())
+                    ->setInstagramProfile($form->get('instagram_profile')->getData())
+                    ->setTwitterProfile($form->get('twittetr_profile')->getData());
+
             $em->persist($details);
             $em->flush();
 
@@ -238,7 +246,7 @@ class ProfileController extends AbstractController
         }
 
         return $this->render('profile/profile.html.twig', [
-            'form' => $form,
+                    'form' => $form,
         ]);
     }
 

@@ -29,6 +29,7 @@ Use [Composer](https://getcomposer.org/) install to download and install the pac
 
 ### 4. Creating a database and fill it with data
 ```bash
+    php bin/console doctrine:database:drop --force
     php bin/console doctrine:database:create
     php bin/console doctrine:migrations:migrate
     php bin/console doctrine:fixtures:load
