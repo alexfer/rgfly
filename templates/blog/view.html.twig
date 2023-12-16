@@ -25,9 +25,9 @@
     <section class="section-area default bg-white">
         <div class="container">
             <div class="entry-meta">
-                <ul>                    
+                <ul>
                     <li>
-                        <span class="bi bi-calendar-week text-success pr-1"></span> <a href="{{ path('app_blog_date', {date: entry.createdAt|date('Y-m-d') }) }}">{{ entry.createdAt|date(date_format) }}</a>                        
+                        <span class="bi bi-calendar-week text-success pr-1"></span> <a href="{{ path('app_blog_date', {date: entry.createdAt|date('Y-m-d') }) }}">{{ entry.createdAt|date(date_format) }}</a>
                     </li>
                     <li>
                         <button class="btn btn-sm btn-info">Leave a Comment</button>
@@ -50,7 +50,7 @@
                                 <i class="d-block text-left text-muted mt-1 pl-1">{{ entry.entryDetails.shortContent }}</i>
                             </div>
                         {% endif %}
-                    {% endfor %}            
+                    {% endfor %}
                     {{ entry.entryDetails.content|raw }}
                 </div>
                 <div class="col-3 text-center">
@@ -68,6 +68,32 @@
                         {% endif %}
                         <li class="pt-3">
                             <a href="#"><h4>{{ entry.user.userDetails.firstName }} {{ entry.user.userDetails.lastName }}</h4></a>
+                            {% if entry.user.userDetails.userSocial %}
+                                {% set _social = entry.user.userDetails.userSocial %}
+                                <ul class="list-inline">
+                                    {% if _social.facebookProfile %}
+                                        <li class="list-inline-item">
+                                            <a target="_blank" href="{{ _social.facebookProfile }}">
+                                                <i class="bi bi-facebook text-info"></i>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if _social.twitterProfile %}
+                                        <li class="list-inline-item">
+                                            <a target="_blank" href="{{ _social.twitterProfile }}">
+                                                <i class="bi bi-twitter text-info"></i>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if _social.instagramProfile %}
+                                        <li class="list-inline-item">
+                                            <a target="_blank" href="{{ _social.instagramProfile }}">
+                                                <i class="bi bi-instagram text-info"></i>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            {% endif %}
                         </li>
                         <li class="px-2">
                             <hr/>
