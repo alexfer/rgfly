@@ -47,6 +47,9 @@ class UserDetails
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?DateTime $updated_at = null;
 
+    #[ORM\OneToOne(mappedBy: 'details', cascade: ['persist', 'remove'])]
+    private ?UserSocial $userSocial = null;
+
     public function __construct()
     {
         $this->updated_at = new DateTime();
@@ -193,6 +196,28 @@ class UserDetails
     public function setUpdatedAt(DateTime $updated_at): static
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function getUserSocial(): ?UserSocial
+    {
+        return $this->userSocial;
+    }
+
+    public function setUserSocial(?UserSocial $userSocial): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($userSocial === null && $this->userSocial !== null) {
+            $this->userSocial->setDetails(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($userSocial !== null && $userSocial->getDetails() !== $this) {
+            $userSocial->setDetails($this);
+        }
+
+        $this->userSocial = $userSocial;
 
         return $this;
     }

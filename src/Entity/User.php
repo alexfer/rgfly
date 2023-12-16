@@ -15,6 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[UniqueEntity(fields: ['email'], message: 'email.unique')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -52,16 +53,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->created_at = new DateTime();
     }
 
+    /**
+     * 
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * 
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * 
+     * @param string $email
+     * @return static
+     */
     public function setEmail(string $email): static
     {
         $this->email = $email;
@@ -69,6 +83,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * 
+     * @return string|null
+     */
     public function getIp(): ?string
     {
         return $this->ip;
@@ -82,17 +100,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * A visual identifier that represents this user.
-     *
      * @see UserInterface
+     * @return string
      */
     public function getUserIdentifier(): string
     {
-        return (string)$this->email;
-    }
+        return (string) $this->email;
+    }    
 
     /**
      * @see UserInterface
+     * @return array
      */
     public function getRoles(): array
     {
@@ -103,6 +121,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
+    /**
+     * 
+     * @param array $roles
+     * @return self
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -112,12 +135,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @see PasswordAuthenticatedUserInterface
+     * @return string
      */
     public function getPassword(): string
     {
         return $this->password;
     }
 
+    /**
+     * 
+     * @param string $password
+     * @return self
+     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -125,11 +154,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * 
+     * @return DateTime
+     */
     public function getCreatedAt(): DateTime
     {
         return $this->created_at;
     }
 
+    /**
+     * 
+     * @param DateTime $created_at
+     * @return self
+     */
     public function setCreatedAt(DateTime $created_at): self
     {
         $this->created_at = $created_at;
@@ -137,11 +175,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * 
+     * @return DateTime|null
+     */
     public function getDeletedAt(): ?DateTime
     {
         return $this->deleted_at;
     }
 
+    /**
+     * 
+     * @param DateTime|null $deleted_at
+     * @return self
+     */
     public function setDeletedAt(?DateTime $deleted_at): self
     {
         $this->deleted_at = $deleted_at;
@@ -149,11 +196,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * 
+     * @return Attach|null
+     */
     public function getAttach(): ?Attach
     {
         return $this->attach;
     }
 
+    /**
+     * 
+     * @param Attach|null $attach
+     * @return static
+     */
     public function setAttach(?Attach $attach): static
     {
         $this->attach = $attach;
@@ -163,6 +219,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @see UserInterface
+     * @return void
      */
     public function eraseCredentials(): void
     {
@@ -170,11 +227,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
+    /**
+     * 
+     * @return UserDetails|null
+     */
     public function getUserDetails(): ?UserDetails
     {
         return $this->userDetails;
     }
 
+    /**
+     * 
+     * @param UserDetails|null $userDetails
+     * @return static
+     */
     public function setUserDetails(?UserDetails $userDetails): static
     {
         // unset the owning side of the relation if necessary
