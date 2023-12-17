@@ -17,23 +17,22 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid py-4 bg-gradient-info">
-        <div class="container">
-            <h1>{{ entry.entryDetails.title }}</h1>
-        </div>
-    </div>
-    <section class="section-area default bg-white">
+    <div class="container-fluid entry py-4 bg-gradient-info">
         <div class="container">
             <div class="entry-meta">
                 <ul>
                     <li>
                         <span class="bi bi-calendar-week text-success pr-1"></span> <a href="{{ path('app_blog_date', {date: entry.createdAt|date('Y-m-d') }) }}">{{ entry.createdAt|date(date_format) }}</a>
                     </li>
-                    <li>
-                        <button class="btn btn-sm btn-info">{{ 'button.leave.cpmment'|trans }}</button>
+                    <li class="float-right">
+                        <button class="btn btn-sm btn-info shadow">{{ 'button.leave.cpmment'|trans }}</button>
                     </li>
                 </ul>
             </div>
+        </div>
+    </div>
+    <section class="section-area default bg-white">
+        <div class="container">            
             <div class="row">
                 <div class="col-9">
                     <div class="entry-tags">
@@ -53,7 +52,7 @@
                     {% endfor %}
                     {{ entry.entryDetails.content|raw }}
                 </div>
-                <div class="col-3 text-center">
+                <div class="col-3 mt-5 pb-2 text-center">
                     <ul>
                         {% if entry.user.userDetails.user.attach %}
                             <li>

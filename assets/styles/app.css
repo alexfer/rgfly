@@ -44,6 +44,7 @@ img {
     margin-right: 4px;
 }
 
+.entry-tags a.active,
 .entry-tags a:hover {
     color: #ffffff !important;
     background-color: #5e87eb;
@@ -1320,7 +1321,7 @@ a.preview:focus,
 
 .section-area.default {
     position: relative;
-    padding: 50px 0 100px 0;
+    padding: 20px 0 100px 0;
     z-index: 1;
 }
 
@@ -1328,62 +1329,51 @@ a.preview:focus,
     padding-bottom: 5px;
 }
 
-.section-area.default .entry-meta {
-    margin-bottom: 15px;
+.container-fluid.entry .entry-meta {
+    margin-bottom: 1px;
 }
 
-.section-area.default .entry-meta ul {
+.container-fluid.entry .entry-meta ul {
     padding-left: 0;
     margin-bottom: 0;
     list-style-type: none;
 }
 
-.section-area.default .entry-meta ul li {
+.container-fluid.entry .entry-meta ul li {
     position: relative;
     display: inline-block;
     color: #505060;
     margin-right: 10px;
 }
 
-.section-area.default .entry-meta ul li img {
+.container-fluid.entry .entry-meta ul li img {
     height: 65px;
 }
 
-.section-area.default .entry-meta ul li span {
+.container-fluid.entry .entry-meta ul li span {
     display: inline-block;
     color: #999999;
     /*font-weight: 300;*/
 }
 
-.section-area.default .entry-meta ul li a {
+.container-fluid.entry .entry-meta ul li a {
     display: inline-block;
     color: #5e87eb;
 }
 
-.section-area.default .entry-meta ul li a:hover {
+.container-fluid.entry .entry-meta ul li a:hover {
     color: rgba(32, 52, 170, 0.87);
 }
 
-.section-area.default .entry-meta ul li i {
+.container-fluid.entry .entry-meta ul li i {
     color: #5e87eb;
     margin-right: 2px;
 }
-
-/*.section-area.default .entry-meta ul li::before {
-    content: '';
-    position: absolute;
-    top: 12px;
-    right: -15px;
-    width: 6px;
-    height: 1px;
-    background: #5e87eb;
-}*/
-
-.section-area.default .entry-meta ul li:last-child {
+.container-fluid.entry .entry-meta ul li:last-child {
     margin-right: 0;
 }
 
-.section-area.default .entry-meta ul li:last-child::before {
+.container-fluid.entry .entry-meta ul li:last-child::before {
     display: none;
 }
 

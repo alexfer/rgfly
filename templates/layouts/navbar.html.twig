@@ -60,7 +60,9 @@
                                         <img class="rounded-circle mr-2" src="{{ asset(_picture) | imagine_filter('user_thumb') }}" width="18" height="18">
                                     {% else %}                                        
                                         <i class="bi bi-person-circle mx-2 text-lg text"></i>                                
-                                    {% endfor %}                                                                    
+                                    {% endfor %}
+                                {% else %}
+                                    <i class="bi bi-person-circle mx-2 text-lg text"></i> 
                                 {% endif %}
                                 {% if not app.user %}
                                     {{ 'title.user.area'|trans }}

@@ -32,12 +32,7 @@ class BlogController extends AbstractController {
         $slug = $request->get('slug');
         $entries = $repository->findEntriesByCondition($slug, 'blog', 12);
         $category = $categoryRepository->findOneBy(['slug' => $slug]);
-
-        $categories = null;
-
-        if (!$category) {
-            $categories = $categoryRepository->findAll();
-        }
+        $categories = $categoryRepository->findBy([], ['slug' => 'asc']);
 
         return $this->render('blog/index.html.twig', [
                     'entries' => $entries,

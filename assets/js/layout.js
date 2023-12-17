@@ -66,4 +66,10 @@ $(function () {
         };
         $('[data-toggle="tooltip"]').tooltip(options);
     });
+    
+    $('.load-categories').on('click', function(e) {
+        e.preventDefault();
+        $(this).parent('div').children('.sr-only').removeClass('sr-only');
+        $(this).remove();
+    });    
 });

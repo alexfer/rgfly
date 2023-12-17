@@ -11,6 +11,7 @@
                         <h4>
                             {% if category %}
                                 {{ category.name }}
+                                {% set _active = category.id %}
                             {% else %}
                                 {{ 'text.blog.desc'|trans|raw }}
                             {% endif %}
@@ -28,10 +29,16 @@
             <div class="row">
                 {% if categories %}
                     <div class="col-12 entry-tags">
-                        {% for category in categories|slice(0, 7) %}
-                            <a href="{{ path('app_blog_category', {slug: category.slug}) }}" title="{{ category.description }}">{{ category.name }}</a>
+                        {% for key, category in categories %}
+                            {% if key < 8 %}
+                                <a href="{{ path('app_blog_category', {slug: category.slug}) }}" class="{% if _active == category.id %}active{% endif %}" title="{{ category.description }}">{{ category.name }}</a>
+                            {% else %}
+                                <a href="{{ path('app_blog_category', {slug: category.slug}) }}" class="sr-only{% if _active == category.id %} active{% endif %}" title="{{ category.description }}">{{ category.name }}</a>
+                            {% endif %}
                         {% endfor %}
-                        <a href="javascript:void(0)" title="...">...</a>
+                        {% if categories|length > 8 %}
+                            <a href="#" class="load-categories" title="...">...</a>
+                        {% endif %}
                     </div>
                 {% endif %}
             </div>
