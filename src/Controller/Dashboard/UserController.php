@@ -3,7 +3,11 @@
 namespace App\Controller\Dashboard;
 
 use App\Form\Type\User\ChangePasswordProfileType;
-use App\Repository\{UserDetailsRepository, UserRepository,};
+use App\Repository\{
+    UserDetailsRepository,
+    UserRepository,
+    AttachRepository,
+};
 use App\Service\FileUploader;
 use App\Service\Interface\ImageValidatorInterface;
 use App\Service\Navbar;
@@ -12,8 +16,14 @@ use Exception;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\{Request, Response,};
-use Symfony\Component\Intl\{Countries, Locale,};
+use Symfony\Component\HttpFoundation\{
+    Request,
+    Response,
+};
+use Symfony\Component\Intl\{
+    Countries,
+    Locale,
+};
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -34,13 +44,13 @@ class UserController extends AbstractController
      */
     #[Route('', name: 'app_dashboard_user', methods: ['GET'])]
     public function index(
-        UserRepository $repository,
-        UserInterface  $user,
+            UserRepository $repository,
+            UserInterface $user,
     ): Response
     {
         return $this->render('dashboard/content/user/index.html.twig', $this->build($user) + [
-                'entries' => $repository->findBy([], ['id' => 'desc']),
-            ]);
+                    'entries' => $repository->findBy([], ['id' => 'desc']),
+        ]);
     }
 
     /**
@@ -56,14 +66,15 @@ class UserController extends AbstractController
      */
     #[Route('/details/{id}/change-picture', name: 'app_dashboard_change_picture_user', methods: ['POST'])]
     public function changePicture(
-        Request                $request,
-        TranslatorInterface    $translator,
-        EntityManagerInterface $em,
-        UserDetailsRepository  $repository,
-        SluggerInterface       $slugger,
-        CacheManager           $cacheManager,
-        ParameterBagInterface  $params,
-        ImageValidatorInterface $imageValidator,
+            Request $request,
+            TranslatorInterface $translator,
+            EntityManagerInterface $em,
+            UserDetailsRepository $repository,
+            SluggerInterface $slugger,
+            CacheManager $cacheManager,
+            ParameterBagInterface $params,
+            AttachRepository $attachRepository,
+            ImageValidatorInterface $imageValidator,
     ): Response
     {
         $user = $repository->find($request->get('id'));
@@ -71,11 +82,7 @@ class UserController extends AbstractController
 
         if ($file) {
 
-            $validate =  $imageValidator->validate($file, $translator);
-
-            if ($validate->has(0)) {
-                return $this->json(['message' => $validate->get(0)->getMessage(), 'picture' => null]);
-            }
+            $validate = $imageValidator->validate($file, $translator);
 
             if ($validate->has(0)) {
                 return $this->json(['message' => $validate->get(0)->getMessage(), 'picture' => null]);
@@ -87,6 +94,11 @@ class UserController extends AbstractController
                 $attach = $fileUploader->upload($file)->handle($user);
             } catch (Exception $ex) {
                 throw new Exception($ex->getMessage());
+            }
+
+            $attachments = $attachRepository->findAll();
+            foreach ($attachments as $attachment) {
+                $user->removeAttach($attachment);                
             }
 
             $user->getUser()->setAttach($attach);
@@ -114,12 +126,12 @@ class UserController extends AbstractController
      */
     #[Route('/details/{id}/{tab}', name: 'app_dashboard_details_user', methods: ['GET', 'POST'])]
     public function details(
-        Request                     $request,
-        UserRepository              $repository,
-        UserInterface               $user,
-        UserPasswordHasherInterface $passwordHasher,
-        EntityManagerInterface      $em,
-        TranslatorInterface         $translator,
+            Request $request,
+            UserRepository $repository,
+            UserInterface $user,
+            UserPasswordHasherInterface $passwordHasher,
+            EntityManagerInterface $em,
+            TranslatorInterface $translator,
     ): Response
     {
         $entry = $repository->find($request->get('id'));
@@ -131,8 +143,8 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $encodedPassword = $passwordHasher->hashPassword(
-                $entry,
-                $form->get('plainPassword')->getData()
+                    $entry,
+                    $form->get('plainPassword')->getData()
             );
 
             $entry->setPassword($encodedPassword);
@@ -144,10 +156,10 @@ class UserController extends AbstractController
         }
 
         return $this->render('dashboard/content/user/details.html.twig', $this->build($user) + [
-                'entry' => $entry,
-                'form' => $form,
-                'country' => $country ? Countries::getNames(Locale::getDefault())[$country] : null,
-            ]);
+                    'entry' => $entry,
+                    'form' => $form,
+                    'country' => $country ? Countries::getNames(Locale::getDefault())[$country] : null,
+        ]);
     }
 
     /**

@@ -100,7 +100,7 @@
                                 {% set _picture = 'storage/entry/picture/' ~ entry.entryDetails.id ~ '/' ~ picture.attach.name %}
                                 <div class="d-inline-block mr-3 mb-3">
                                     <img class="attach" src="{{ asset(_picture) | imagine_filter('entry_preview') }}">
-                                    <div class="handlers" data-id="{{ picture.id }}">
+                                    <div class="handlers" data-id="{{ picture.attach.id }}">
                                         <a href="#" data-action="remove"
                                            class="bi bi-trash-fill"></a>
                                         <a href="{{ path('app_dashboard_blog_attach_set_use', {entry: entry.id}) }}" data-action="default"

@@ -54,7 +54,14 @@
                         <li class="nav-item">
                             <button class="btn btn-primary nav-link dropdown-toggle mr-auto" id="userMenu" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-person-circle mx-2 text-lg"></i>
+                                {% if app.user and app.user.userDetails.attach|length %}
+                                    {% for picture in app.user.userDetails.attach|slice(0, 1) %}
+                                        {% set _picture = 'storage/user/picture/' ~ app.user.id ~ '/' ~ picture.name %}
+                                        <img class="rounded-circle mr-2" src="{{ asset(_picture) | imagine_filter('user_thumb') }}" width="18" height="18">
+                                    {% else %}                                        
+                                        <i class="bi bi-person-circle mx-2 text-lg text"></i>                                
+                                    {% endfor %}                                                                    
+                                {% endif %}
                                 {% if not app.user %}
                                     {{ 'title.user.area'|trans }}
                                 {% else %}
