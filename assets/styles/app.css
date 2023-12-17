@@ -1498,8 +1498,6 @@ a.preview:focus,
 
 .faq-accordion .accordion .accordion-item {
     display: block;
-    margin-bottom: 0px;
-    border-bottom: 1px solid rgba(231 231 231);
 }
 
 .faq-accordion .accordion .accordion-item:last-child {

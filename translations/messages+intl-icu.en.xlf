@@ -332,6 +332,10 @@
                 <source>user.tab.summary</source>
                 <target>Summary</target>
             </trans-unit>
+            <trans-unit id="user.tab.social">
+                <source>user.tab.social</source>
+                <target>Social</target>
+            </trans-unit>
             <trans-unit id="user.tab.location">
                 <source>user.tab.location</source>
                 <target>Location</target>
@@ -723,6 +727,10 @@
                 <source>form.action.save</source>
                 <target>Save</target>
             </trans-unit>
+            <trans-unit id="form.action.next">
+                <source>form.action.next</source>
+                <target>Next</target>
+            </trans-unit>
             <trans-unit id="form.action.update">
                 <source>form.action.update</source>
                 <target>Update</target>
@@ -778,6 +786,10 @@
             <trans-unit id="label.form.keep_me_logged_in">
                 <source>label.form.keep_me_logged_in</source>
                 <target>Keep me logged in</target>
+            </trans-unit>
+            <trans-unit id="button.leave.cpmment">
+                <source>button.leave.cpmment</source>
+                <target>Leave a Comment</target>
             </trans-unit>
         </body>
     </file>

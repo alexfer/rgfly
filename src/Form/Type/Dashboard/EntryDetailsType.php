@@ -76,7 +76,7 @@ class EntryDetailsType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('save', SubmitType::class, [
+            ->add('next', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-primary shadow',
                 ],

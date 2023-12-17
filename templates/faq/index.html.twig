@@ -23,11 +23,11 @@
                         <div class="faq-accordion">
                             <ul class="accordion">
                                 {% for entry in entries %}
-                                    <li class="accordion-item">
+                                    <li class="accordion-item b-0">
                                         <a class="accordion-title {{ loop.index == 1 ? 'active' : '' }}" href="#"
                                            data-toggle="accordion-content"> <i class="bi bi-caret-down-fill"></i>
                                             {{ entry.title }}</a>
-                                        <span class="accordion-content {{ loop.index == 1 ? 'show' : '' }}">{{ entry.content|raw }}</span>
+                                        <span class="accordion-content{{ loop.index == 1 ? ' show' : '' }}">{{ entry.content|raw }}</span>
                                     </li>
                                 {% endfor %}
                             </ul>

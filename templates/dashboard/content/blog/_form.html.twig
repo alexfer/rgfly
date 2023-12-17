@@ -132,7 +132,7 @@
     {% endif %}
     <input type="hidden" name="flash" value="{{ _message[0]|default([]|json_encode) }}">
     <div class="form-group text-center my-4">
-        {{ form_widget(form.save, { label: form.vars.data.id ? 'form.action.update' : 'form.action.save'}) }}
+        {{ form_widget(form.next, { label: form.vars.data.id ? 'form.action.update' : 'form.action.next'}) }}
         <a type="button" href="{{ url('app_dashboard_blog') }}"
            class="btn btn-secondary shadow shadow-sm">{{ 'form.action.cancel'|trans }}</a>
     </div>

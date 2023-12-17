@@ -30,7 +30,7 @@
                         <span class="bi bi-calendar-week text-success pr-1"></span> <a href="{{ path('app_blog_date', {date: entry.createdAt|date('Y-m-d') }) }}">{{ entry.createdAt|date(date_format) }}</a>
                     </li>
                     <li>
-                        <button class="btn btn-sm btn-info">Leave a Comment</button>
+                        <button class="btn btn-sm btn-info">{{ 'button.leave.cpmment'|trans }}</button>
                     </li>
                 </ul>
             </div>
