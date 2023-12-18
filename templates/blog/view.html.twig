@@ -22,7 +22,8 @@
             <div class="entry-meta">
                 <ul>
                     <li>
-                        <span class="bi bi-calendar-week text-success pr-1"></span> <a href="{{ path('app_blog_date', {date: entry.createdAt|date('Y-m-d') }) }}">{{ entry.createdAt|date(date_format) }}</a>
+                        <span class="bi bi-calendar-week text-success pr-1"></span> <a
+                                href="{{ path('app_blog_date', {date: entry.createdAt|date('Y-m-d') }) }}">{{ entry.createdAt|date(date_format) }}</a>
                     </li>
                     <li class="float-right">
                         <button class="btn btn-sm btn-info shadow">{{ 'button.leave.cpmment'|trans }}</button>
@@ -32,7 +33,7 @@
         </div>
     </div>
     <section class="section-area default bg-white">
-        <div class="container">            
+        <div class="container">
             <div class="row">
                 <div class="col-9">
                     <div class="entry-tags">
@@ -66,7 +67,9 @@
                             </li>
                         {% endif %}
                         <li class="pt-3">
-                            <a href="#"><h4>{{ entry.user.userDetails.firstName }} {{ entry.user.userDetails.lastName }}</h4></a>
+                            <a href="#">
+                                <h4>{{ entry.user.userDetails.firstName }} {{ entry.user.userDetails.lastName }}</h4>
+                            </a>
                             {% if entry.user.userDetails.userSocial %}
                                 {% set _social = entry.user.userDetails.userSocial %}
                                 <ul class="list-inline">

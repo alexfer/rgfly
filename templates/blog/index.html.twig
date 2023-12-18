@@ -31,9 +31,13 @@
                     <div class="col-12 entry-tags">
                         {% for key, category in categories %}
                             {% if key < 8 %}
-                                <a href="{{ path('app_blog_category', {slug: category.slug}) }}" class="{% if _active == category.id %}active{% endif %}" title="{{ category.description }}">{{ category.name }}</a>
+                                <a href="{{ path('app_blog_category', {slug: category.slug}) }}"
+                                   class="{% if _active == category.id %}active{% endif %}"
+                                   title="{{ category.description }}">{{ category.name }}</a>
                             {% else %}
-                                <a href="{{ path('app_blog_category', {slug: category.slug}) }}" class="sr-only{% if _active == category.id %} active{% endif %}" title="{{ category.description }}">{{ category.name }}</a>
+                                <a href="{{ path('app_blog_category', {slug: category.slug}) }}"
+                                   class="sr-only{% if _active == category.id %} active{% endif %}"
+                                   title="{{ category.description }}">{{ category.name }}</a>
                             {% endif %}
                         {% endfor %}
                         {% if categories|length > 8 %}
