@@ -13,7 +13,7 @@ class MarketProductController extends AbstractController
     public function index(): Response
     {
         return $this->render('marketplace/product/index.html.twig', [
-                    'controller_name' => 'MarketProductController',
+            'controller_name' => 'MarketProductController',
         ]);
     }
 }

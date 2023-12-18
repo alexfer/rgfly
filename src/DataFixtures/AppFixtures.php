@@ -25,8 +25,8 @@ class AppFixtures extends Fixture
      * @param SluggerInterface $slugger
      */
     public function __construct(
-            private readonly UserPasswordHasherInterface $passwordHasher,
-            SluggerInterface $slugger,
+        private readonly UserPasswordHasherInterface $passwordHasher,
+        SluggerInterface                             $slugger,
     )
     {
         $this->slugger = $slugger;
@@ -65,8 +65,8 @@ class AppFixtures extends Fixture
 
             $details = new UserDetails();
             $details->setUser($user)
-                    ->setFirstName($userDetails[$key]['first_name'])
-                    ->setLastName($userDetails[$key]['last_name']);
+                ->setFirstName($userDetails[$key]['first_name'])
+                ->setLastName($userDetails[$key]['last_name']);
 
             $manager->persist($details);
 
@@ -81,7 +81,7 @@ class AppFixtures extends Fixture
     }
 
     /**
-     * 
+     *
      * @param ObjectManager $manager
      * @return void
      */
@@ -101,7 +101,7 @@ class AppFixtures extends Fixture
     }
 
     /**
-     * 
+     *
      * @param ObjectManager $manager
      * @return void
      */
@@ -117,7 +117,7 @@ class AppFixtures extends Fixture
     }
 
     /**
-     * 
+     *
      * @return array
      */
     private function getUserData(): array
@@ -133,7 +133,7 @@ class AppFixtures extends Fixture
     }
 
     /**
-     * 
+     *
      * @return array
      */
     private function getUserDetailsData(): array
@@ -149,7 +149,7 @@ class AppFixtures extends Fixture
     }
 
     /**
-     * 
+     *
      * @return array
      */
     private function getCategoryData(): array
@@ -169,7 +169,7 @@ class AppFixtures extends Fixture
     }
 
     /**
-     * 
+     *
      * @return array
      */
     private function getQuestionsData(): array

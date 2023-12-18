@@ -27,7 +27,7 @@ class UserSocial
     private ?string $instagram_profile = null;
 
     /**
-     * 
+     *
      * @return int|null
      */
     public function getId(): ?int
@@ -36,7 +36,7 @@ class UserSocial
     }
 
     /**
-     * 
+     *
      * @return UserDetails|null
      */
     public function getDetails(): ?UserDetails
@@ -45,7 +45,7 @@ class UserSocial
     }
 
     /**
-     * 
+     *
      * @param UserDetails|null $details
      * @return static
      */
@@ -66,7 +66,7 @@ class UserSocial
     }
 
     /**
-     * 
+     *
      * @param string|null $facebook_profile
      * @return static
      */
@@ -78,7 +78,7 @@ class UserSocial
     }
 
     /**
-     * 
+     *
      * @return string|null
      */
     public function getTwitterProfile(): ?string
@@ -87,7 +87,7 @@ class UserSocial
     }
 
     /**
-     * 
+     *
      * @param string|null $twitter_profile
      * @return static
      */
@@ -99,7 +99,7 @@ class UserSocial
     }
 
     /**
-     * 
+     *
      * @return string|null
      */
     public function getInstagramProfile(): ?string
@@ -108,7 +108,7 @@ class UserSocial
     }
 
     /**
-     * 
+     *
      * @param string|null $instagram_profile
      * @return static
      */

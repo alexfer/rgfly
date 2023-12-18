@@ -54,7 +54,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * 
+     *
      * @return int|null
      */
     public function getId(): ?int
@@ -63,7 +63,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * 
+     *
      * @return string|null
      */
     public function getEmail(): ?string
@@ -72,7 +72,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * 
+     *
      * @param string $email
      * @return static
      */
@@ -84,7 +84,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * 
+     *
      * @return string|null
      */
     public function getIp(): ?string
@@ -100,17 +100,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @see UserInterface
      * @return string
+     * @see UserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
-    }    
+        return (string)$this->email;
+    }
 
     /**
-     * @see UserInterface
      * @return array
+     * @see UserInterface
      */
     public function getRoles(): array
     {
@@ -122,7 +122,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * 
+     *
      * @param array $roles
      * @return self
      */
@@ -134,8 +134,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @see PasswordAuthenticatedUserInterface
      * @return string
+     * @see PasswordAuthenticatedUserInterface
      */
     public function getPassword(): string
     {
@@ -143,7 +143,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * 
+     *
      * @param string $password
      * @return self
      */
@@ -155,7 +155,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * 
+     *
      * @return DateTime
      */
     public function getCreatedAt(): DateTime
@@ -164,7 +164,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * 
+     *
      * @param DateTime $created_at
      * @return self
      */
@@ -176,7 +176,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * 
+     *
      * @return DateTime|null
      */
     public function getDeletedAt(): ?DateTime
@@ -185,7 +185,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * 
+     *
      * @param DateTime|null $deleted_at
      * @return self
      */
@@ -197,7 +197,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * 
+     *
      * @return Attach|null
      */
     public function getAttach(): ?Attach
@@ -206,7 +206,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * 
+     *
      * @param Attach|null $attach
      * @return static
      */
@@ -218,8 +218,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @see UserInterface
      * @return void
+     * @see UserInterface
      */
     public function eraseCredentials(): void
     {
@@ -228,7 +228,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * 
+     *
      * @return UserDetails|null
      */
     public function getUserDetails(): ?UserDetails
@@ -237,7 +237,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * 
+     *
      * @param UserDetails|null $userDetails
      * @return static
      */

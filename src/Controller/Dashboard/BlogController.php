@@ -71,15 +71,15 @@ class BlogController extends AbstractController
      */
     #[Route('', name: self::CHILDREN['blog']['menu.dashboard.overview.blog'])]
     public function index(
-            EntryRepository $repository,
-            UserInterface $user,
+        EntryRepository $repository,
+        UserInterface   $user,
     ): Response
     {
         $entries = $repository->findBy($this->criteria($user, ['type' => 'blog']), ['id' => 'desc']);
 
         return $this->render('dashboard/content/blog/index.html.twig', $this->build($user) + [
-                    'entries' => $entries,
-        ]);
+                'entries' => $entries,
+            ]);
     }
 
     /**
@@ -96,13 +96,13 @@ class BlogController extends AbstractController
      */
     #[Route('/create', name: self::CHILDREN['blog']['menu.dashboard.create.blog'])]
     public function create(
-            Request $request,
-            UserInterface $user,
-            EntityManagerInterface $em,
-            CategoryRepository $category,
-            CategoryRepository $categoryRepository,
-            SluggerInterface $slugger,
-            TranslatorInterface $translator,
+        Request                $request,
+        UserInterface          $user,
+        EntityManagerInterface $em,
+        CategoryRepository     $category,
+        CategoryRepository     $categoryRepository,
+        SluggerInterface       $slugger,
+        TranslatorInterface    $translator,
     ): Response
     {
         $entry = new Entry();
@@ -116,8 +116,8 @@ class BlogController extends AbstractController
         if ($title) {
             try {
                 $entry->setType('blog')
-                        ->setSlug($slugger->slug($title)->lower())
-                        ->setUser($user);
+                    ->setSlug($slugger->slug($title)->lower())
+                    ->setUser($user);
                 $em->persist($entry);
             } catch (UniqueConstraintViolationException $e) {
                 $error = $translator->trans('slug.unique', [], 'validators');
@@ -132,7 +132,7 @@ class BlogController extends AbstractController
                 foreach ($requestCategory as $key => $value) {
                     $entryCategory = new EntryCategory();
                     $entryCategory->setEntry($entry)
-                            ->setCategory($categoryRepository->findOneBy(['id' => $key]));
+                        ->setCategory($categoryRepository->findOneBy(['id' => $key]));
                     $em->persist($entryCategory);
                 }
             }
@@ -140,9 +140,9 @@ class BlogController extends AbstractController
             $details = new EntryDetails();
 
             $details->setTitle($title)
-                    ->setShortContent($form->get('short_content')->getData())
-                    ->setContent($form->get('content')->getData())
-                    ->setEntry($entry);
+                ->setShortContent($form->get('short_content')->getData())
+                ->setContent($form->get('content')->getData())
+                ->setEntry($entry);
 
             $em->persist($details);
             $em->flush();
@@ -153,11 +153,11 @@ class BlogController extends AbstractController
         }
 
         return $this->render('dashboard/content/blog/_form.html.twig', $this->build($user) + [
-                    'form' => $form,
-                    'error' => $error,
-                    'entry' => $entry,
-                    'categories' => $category->findBy([], ['position' => 'asc']),
-        ]);
+                'form' => $form,
+                'error' => $error,
+                'entry' => $entry,
+                'categories' => $category->findBy([], ['position' => 'asc']),
+            ]);
     }
 
     /**
@@ -176,14 +176,14 @@ class BlogController extends AbstractController
     #[Route('/edit/{id}', name: 'app_dashboard_edit_blog', methods: ['GET', 'POST'])]
     #[IsGranted('edit', 'entry')]
     public function edit(
-            Request $request,
-            Entry $entry,
-            EntityManagerInterface $em,
-            UserInterface $user,
-            EntryCategoryRepository $entryCategoryRepository,
-            CategoryRepository $categoryRepository,
-            TranslatorInterface $translator,
-            SluggerInterface $slugger,
+        Request                 $request,
+        Entry                   $entry,
+        EntityManagerInterface  $em,
+        UserInterface           $user,
+        EntryCategoryRepository $entryCategoryRepository,
+        CategoryRepository      $categoryRepository,
+        TranslatorInterface     $translator,
+        SluggerInterface        $slugger,
     ): Response
     {
         $form = $this->createForm(EntryDetailsType::class, $entry);
@@ -216,17 +216,17 @@ class BlogController extends AbstractController
             }
 
             $entry->setStatus($form->get('status')->getData())
-                    ->setSlug($slugger->slug($title)->lower())
-                    ->setUpdatedAt(new DateTime())
-                    ->setDeletedAt($form->get('status')->getData() == 'trashed' ? new DateTime() : null);
+                ->setSlug($slugger->slug($title)->lower())
+                ->setUpdatedAt(new DateTime())
+                ->setDeletedAt($form->get('status')->getData() == 'trashed' ? new DateTime() : null);
 
             $em->persist($entry);
 
             $details = $entry->getEntryDetails()
-                    ->setTitle($title)
-                    ->setShortContent($form->get('short_content')->getData())
-                    ->setContent($form->get('content')->getData())
-                    ->setEntry($entry);
+                ->setTitle($title)
+                ->setShortContent($form->get('short_content')->getData())
+                ->setContent($form->get('content')->getData())
+                ->setEntry($entry);
 
             $em->persist($details);
             $em->flush();
@@ -237,11 +237,11 @@ class BlogController extends AbstractController
         }
 
         return $this->render('dashboard/content/blog/_form.html.twig', $this->build($user) + [
-                    'form' => $form,
-                    'entry' => $entry,
-                    'error' => $error,
-                    'categories' => $categoryRepository->findBy([], ['position' => 'asc']),
-        ]);
+                'form' => $form,
+                'entry' => $entry,
+                'error' => $error,
+                'categories' => $categoryRepository->findBy([], ['position' => 'asc']),
+            ]);
     }
 
     /**
@@ -259,15 +259,15 @@ class BlogController extends AbstractController
      */
     #[Route('/attach/{id}', name: 'app_dashboard_blog_attach', methods: ['POST'])]
     public function attach(
-            Request $request,
-            TranslatorInterface $translator,
-            EntryRepository $repository,
-            EntityManagerInterface $em,
-            SluggerInterface $slugger,
-            CacheManager $cacheManager,
-            ParameterBagInterface $params,
-            EntryAttachmentRepository $entryAttachmentRepository,
-            ImageValidatorInterface $imageValidator,
+        Request                   $request,
+        TranslatorInterface       $translator,
+        EntryRepository           $repository,
+        EntityManagerInterface    $em,
+        SluggerInterface          $slugger,
+        CacheManager              $cacheManager,
+        ParameterBagInterface     $params,
+        EntryAttachmentRepository $entryAttachmentRepository,
+        ImageValidatorInterface   $imageValidator,
     ): Response
     {
         $file = $request->files->get('file');
@@ -282,8 +282,8 @@ class BlogController extends AbstractController
 
             if ($validate->has(0)) {
                 return $this->json([
-                            'message' => $validate->get(0)->getMessage(),
-                            'picture' => null,
+                    'message' => $validate->get(0)->getMessage(),
+                    'picture' => null,
                 ]);
             }
 
@@ -293,9 +293,9 @@ class BlogController extends AbstractController
                 $attach = $fileUploader->upload($file)->handle();
             } catch (Exception $ex) {
                 return $this->json([
-                            'success' => false,
-                            'message' => $ex->getMessage(),
-                            'picture' => null,
+                    'success' => false,
+                    'message' => $ex->getMessage(),
+                    'picture' => null,
                 ]);
             }
 
@@ -309,8 +309,8 @@ class BlogController extends AbstractController
 
             $entryAttachment = new EntryAttachment();
             $entryAttachment->setDetails($entry)
-                    ->setAttach($attach)
-                    ->setInUse(1);
+                ->setAttach($attach)
+                ->setInUse(1);
 
             $em->persist($entryAttachment);
             $em->flush();
@@ -322,9 +322,9 @@ class BlogController extends AbstractController
         $picture = $cacheManager->getBrowserPath(parse_url($url, PHP_URL_PATH), 'entry_preview', [], null);
 
         return $this->json([
-                    'success' => true,
-                    'message' => $translator->trans('entry.picture.appended'),
-                    'picture' => $picture,
+            'success' => true,
+            'message' => $translator->trans('entry.picture.appended'),
+            'picture' => $picture,
         ]);
     }
 
@@ -339,12 +339,12 @@ class BlogController extends AbstractController
      */
     #[Route('/attach-set-use/{entry}', name: 'app_dashboard_blog_attach_set_use', methods: ['POST'])]
     public function setInUse(
-            Request $request,
-            TranslatorInterface $translator,
-            EntryRepository $entryRepository,
-            EntityManagerInterface $em,
-            EntryAttachmentRepository $entryAttachmentRepository,
-            AttachRepository $attachRepository,
+        Request                   $request,
+        TranslatorInterface       $translator,
+        EntryRepository           $entryRepository,
+        EntityManagerInterface    $em,
+        EntryAttachmentRepository $entryAttachmentRepository,
+        AttachRepository          $attachRepository,
     ): Response
     {
         $entry = $entryRepository->find($request->get('entry'));
@@ -365,8 +365,8 @@ class BlogController extends AbstractController
         $em->flush();
 
         return $this->json([
-                    'success' => true,
-                    'message' => $translator->trans('entry.picture.default'),
+            'success' => true,
+            'message' => $translator->trans('entry.picture.default'),
         ]);
     }
 }
