@@ -40,7 +40,7 @@ Use [Composer](https://getcomposer.org/) install to download and install the pac
     $ npm install
     $ npm run dev --watch
 ```
-Code Of Conduct
+Code of Conduct
 ============
 
 I as member, contributor, and leader pledge to make participation in  community a harassment-free experience for everyone, regardless of age, body size, visible or invisible disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, caste, color, religion, or sexual identity and orientation.
