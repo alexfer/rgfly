@@ -12,7 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EntryRepository::class)]
 #[ORM\Index(columns: ['status', 'type'], name: 'idx')]
-class Entry {
+class Entry
+{
 
     /**
      * @var array
@@ -69,7 +70,8 @@ class Entry {
     #[ORM\OneToMany(mappedBy: 'entry', targetEntity: EntryCategory::class)]
     private Collection $entryCategories;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->created_at = new DateTime();
         $this->updated_at = new DateTime();
         $this->type = self::TYPE['Other'];
@@ -82,14 +84,16 @@ class Entry {
     /**
      * @return int|null
      */
-    public function getId(): ?int {
+    public function getId(): ?int
+    {
         return $this->id;
     }
 
     /**
      * @return string|null
      */
-    public function getSlug(): ?string {
+    public function getSlug(): ?string
+    {
         return $this->slug;
     }
 
@@ -97,7 +101,8 @@ class Entry {
      * @param $slug
      * @return $this
      */
-    public function setSlug($slug): static {
+    public function setSlug($slug): static
+    {
         $this->slug = $slug;
 
         return $this;
@@ -106,14 +111,16 @@ class Entry {
     /**
      * @return bool
      */
-    public function isPrivate(): bool {
+    public function isPrivate(): bool
+    {
         return true;
     }
 
     /**
      * @return User|null
      */
-    public function getUser(): ?User {
+    public function getUser(): ?User
+    {
         return $this->user;
     }
 
@@ -121,7 +128,8 @@ class Entry {
      * @param User|null $user
      * @return $this
      */
-    public function setUser(?User $user): self {
+    public function setUser(?User $user): self
+    {
         $this->user = $user;
 
         return $this;
@@ -130,7 +138,8 @@ class Entry {
     /**
      * @return string|null
      */
-    public function getType(): ?string {
+    public function getType(): ?string
+    {
         return $this->type;
     }
 
@@ -138,7 +147,8 @@ class Entry {
      * @param string $type
      * @return $this
      */
-    public function setType(string $type): static {
+    public function setType(string $type): static
+    {
         $this->type = $type;
 
         return $this;
@@ -147,7 +157,8 @@ class Entry {
     /**
      * @return string|null
      */
-    public function getStatus(): ?string {
+    public function getStatus(): ?string
+    {
         return $this->status;
     }
 
@@ -155,7 +166,8 @@ class Entry {
      * @param string $status
      * @return $this
      */
-    public function setStatus(string $status): static {
+    public function setStatus(string $status): static
+    {
         $this->status = $status;
 
         return $this;
@@ -164,7 +176,8 @@ class Entry {
     /**
      * @return int|null
      */
-    public function getComments(): ?int {
+    public function getComments(): ?int
+    {
         return $this->comments;
     }
 
@@ -172,7 +185,8 @@ class Entry {
      * @param int $comments
      * @return $this
      */
-    public function setComments(int $comments): static {
+    public function setComments(int $comments): static
+    {
         $this->comments = $comments;
 
         return $this;
@@ -181,7 +195,8 @@ class Entry {
     /**
      * @return DateTime|null
      */
-    public function getCreatedAt(): ?DateTime {
+    public function getCreatedAt(): ?DateTime
+    {
         return $this->created_at;
     }
 
@@ -189,7 +204,8 @@ class Entry {
      * @param DateTimeInterface $created_at
      * @return $this
      */
-    public function setCreatedAt(DateTimeInterface $created_at): static {
+    public function setCreatedAt(DateTimeInterface $created_at): static
+    {
         $this->created_at = $created_at;
 
         return $this;
@@ -198,7 +214,8 @@ class Entry {
     /**
      * @return DateTimeInterface|null
      */
-    public function getUpdatedAt(): ?DateTimeInterface {
+    public function getUpdatedAt(): ?DateTimeInterface
+    {
         return $this->updated_at;
     }
 
@@ -206,7 +223,8 @@ class Entry {
      * @param DateTimeInterface $updated_at
      * @return $this
      */
-    public function setUpdatedAt(DateTimeInterface $updated_at): static {
+    public function setUpdatedAt(DateTimeInterface $updated_at): static
+    {
         $this->updated_at = $updated_at;
 
         return $this;
@@ -215,7 +233,8 @@ class Entry {
     /**
      * @return DateTimeInterface|null
      */
-    public function getDeletedAt(): ?DateTimeInterface {
+    public function getDeletedAt(): ?DateTimeInterface
+    {
         return $this->deleted_at;
     }
 
@@ -223,7 +242,8 @@ class Entry {
      * @param DateTimeInterface|null $deleted_at
      * @return $this
      */
-    public function setDeletedAt(?DateTimeInterface $deleted_at): static {
+    public function setDeletedAt(?DateTimeInterface $deleted_at): static
+    {
         $this->deleted_at = $deleted_at;
 
         return $this;
@@ -232,11 +252,13 @@ class Entry {
     /**
      * @return Collection<int, EntryAttachment>
      */
-    public function getEntryAttachments(): Collection {
+    public function getEntryAttachments(): Collection
+    {
         return $this->entryAttachments;
     }
 
-    public function addEntryAttachment(EntryAttachment $entryAttachment): static {
+    public function addEntryAttachment(EntryAttachment $entryAttachment): static
+    {
         if (!$this->entryAttachments->contains($entryAttachment)) {
             $this->entryAttachments->add($entryAttachment);
             $entryAttachment->setDetails($this);
@@ -245,7 +267,8 @@ class Entry {
         return $this;
     }
 
-    public function removeEntryAttachment(EntryAttachment $entryAttachment): static {
+    public function removeEntryAttachment(EntryAttachment $entryAttachment): static
+    {
         if ($this->entryAttachments->removeElement($entryAttachment)) {
             // set the owning side to null (unless already changed)
             if ($entryAttachment->getDetails() === $this) {
@@ -259,11 +282,13 @@ class Entry {
     /**
      * @return EntryDetails|null
      */
-    public function getEntryDetails(): ?EntryDetails {
+    public function getEntryDetails(): ?EntryDetails
+    {
         return $this->entryDetails;
     }
 
-    public function setEntryDetails(?EntryDetails $entryDetails): static {
+    public function setEntryDetails(?EntryDetails $entryDetails): static
+    {
         // unset the owning side of the relation if necessary
         if ($entryDetails === null && $this->entryDetails !== null) {
             $this->entryDetails->setEntry(null);
@@ -282,11 +307,13 @@ class Entry {
     /**
      * @return Collection<int, EntryCategory>
      */
-    public function getEntryCategories(): Collection {
+    public function getEntryCategories(): Collection
+    {
         return $this->entryCategories;
     }
 
-    public function addEntryCategory(EntryCategory $entryCategory): static {
+    public function addEntryCategory(EntryCategory $entryCategory): static
+    {
         if (!$this->entryCategories->contains($entryCategory)) {
             $this->entryCategories->add($entryCategory);
             $entryCategory->setEntry($this);
@@ -295,7 +322,8 @@ class Entry {
         return $this;
     }
 
-    public function removeEntryCategory(EntryCategory $entryCategory): static {
+    public function removeEntryCategory(EntryCategory $entryCategory): static
+    {
         if ($this->entryCategories->removeElement($entryCategory)) {
             // set the owning side to null (unless already changed)
             if ($entryCategory->getEntry() === $this) {

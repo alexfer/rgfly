@@ -42,7 +42,7 @@
                     </div>
                 {% endif %}
             </div>
-        </div>        
+        </div>
     </div>
     <section class="section-area default bg-white">
         <div class="container">
@@ -71,7 +71,7 @@
                                 <ul>
                                     <li>
                                         <a target="_blank"
-                                           href="{{ asset('https://www.facebook.com/AlexanderShtyher/') }}">
+                                           href="">
                                             @{{ entry.first_name }}
                                         </a>
                                         <i class="bi bi-person-fill"></i>
@@ -79,6 +79,9 @@
                                     <li>
                                         <i class="text-muted bi bi-calendar-date"></i>
                                         <small>{{ entry.created_at|date(date_format) }}</small>
+                                    </li>
+                                    <li>
+                                        <small>Follow us in</small>
                                     </li>
                                     <li>
                                         <a href="">

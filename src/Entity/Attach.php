@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\MarketPlace\MarketProductAttach;
 use App\Repository\AttachRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -39,11 +40,15 @@ class Attach
     #[ORM\OneToOne(mappedBy: 'attach', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
+    #[ORM\OneToMany(mappedBy: 'attach', targetEntity: MarketProductAttach::class)]
+    private Collection $marketProductAttaches;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
         $this->size = 0;
         $this->entryAttachments = new ArrayCollection();
+        $this->marketProductAttaches = new ArrayCollection();
     }
 
     /**
@@ -171,6 +176,36 @@ class Attach
         }
 
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketProductAttach>
+     */
+    public function getMarketProductAttaches(): Collection
+    {
+        return $this->marketProductAttaches;
+    }
+
+    public function addMarketProductAttach(MarketProductAttach $marketProductAttach): static
+    {
+        if (!$this->marketProductAttaches->contains($marketProductAttach)) {
+            $this->marketProductAttaches->add($marketProductAttach);
+            $marketProductAttach->setAttach($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMarketProductAttach(MarketProductAttach $marketProductAttach): static
+    {
+        if ($this->marketProductAttaches->removeElement($marketProductAttach)) {
+            // set the owning side to null (unless already changed)
+            if ($marketProductAttach->getAttach() === $this) {
+                $marketProductAttach->setAttach(null);
+            }
+        }
 
         return $this;
     }
