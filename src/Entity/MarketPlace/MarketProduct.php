@@ -25,7 +25,7 @@ class MarketProduct
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\Column(length: 512)]
+    #[ORM\Column(length: 512, unique: true, nullable: true)]
     private ?string $slug = null;
 
     #[ORM\Column]
