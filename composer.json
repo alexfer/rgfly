@@ -1,6 +1,15 @@
 {
     "type": "project",
-    "license": "proprietary",
+    "description": "Blog & Marketplace using the Symfony PHP framework",
+    "keywords": ["framework", "dev", "blog", "marketplace"],
+    "homepage": "https://github.com/alexfer/techspace",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexander Sh",
+            "email": "alexandershtyher@gmail.com"
+        }
+    ],
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
