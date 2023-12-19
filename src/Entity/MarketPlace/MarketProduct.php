@@ -3,6 +3,9 @@
 namespace App\Entity\MarketPlace;
 
 use App\Repository\MarketPlace\MarketProductRepository;
+use DateTime;
+use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -35,13 +38,13 @@ class MarketProduct
     private ?float $price = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?DateTime $created_at = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $updated_at = null;
+    private ?DateTimeInterface $updated_at = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $deleted_at = null;
+    private ?DateTimeInterface $deleted_at = null;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: MarketCategoryProduct::class)]
     private Collection $marketCategoryProducts;
@@ -49,8 +52,12 @@ class MarketProduct
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: MarketProductAttach::class)]
     private Collection $marketProductAttaches;
 
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    private ?Market $market = null;
+
     public function __construct()
     {
+        $this->created_at = new DateTime();
         $this->marketCategoryProducts = new ArrayCollection();
         $this->marketProductAttaches = new ArrayCollection();
     }
@@ -166,19 +173,19 @@ class MarketProduct
 
     /**
      *
-     * @return \DateTimeImmutable|null
+     * @return DateTime|null
      */
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?DateTime
     {
         return $this->created_at;
     }
 
     /**
      *
-     * @param \DateTimeImmutable $created_at
+     * @param DateTime$created_at
      * @return static
      */
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    public function setCreatedAt(DateTime $created_at): static
     {
         $this->created_at = $created_at;
 
@@ -187,19 +194,19 @@ class MarketProduct
 
     /**
      *
-     * @return \DateTimeInterface|null
+     * @return DateTimeInterface|null
      */
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updated_at;
     }
 
     /**
      *
-     * @param \DateTimeInterface|null $updated_at
+     * @param DateTimeInterface|null $updated_at
      * @return static
      */
-    public function setUpdatedAt(?\DateTimeInterface $updated_at): static
+    public function setUpdatedAt(?DateTimeInterface $updated_at): static
     {
         $this->updated_at = $updated_at;
 
@@ -208,19 +215,19 @@ class MarketProduct
 
     /**
      *
-     * @return \DateTimeInterface|null
+     * @return DateTimeInterface|null
      */
-    public function getDeletedAt(): ?\DateTimeInterface
+    public function getDeletedAt(): ?DateTimeInterface
     {
         return $this->deleted_at;
     }
 
     /**
      *
-     * @param \DateTimeInterface|null $deleted_at
+     * @param DateTimeInterface|null $deleted_at
      * @return static
      */
-    public function setDeletedAt(?\DateTimeInterface $deleted_at): static
+    public function setDeletedAt(?DateTimeInterface $deleted_at): static
     {
         $this->deleted_at = $deleted_at;
 
@@ -288,6 +295,18 @@ class MarketProduct
                 $marketProductAttach->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMarket(): ?Market
+    {
+        return $this->market;
+    }
+
+    public function setMarket(?Market $market): static
+    {
+        $this->market = $market;
 
         return $this;
     }

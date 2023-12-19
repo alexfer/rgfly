@@ -2,8 +2,11 @@
 
 namespace App\Entity;
 
+use App\Entity\MarketPlace\Market;
 use App\Repository\UserRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -45,12 +48,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Attach $attach = null;
 
-    final public const ROLE_USER = 'ROLE_USER';
-    final public const ROLE_ADMIN = 'ROLE_ADMIN';
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Market::class)]
+    private Collection $markets;
+
+    final public const string ROLE_USER = 'ROLE_USER';
+    final public const string ROLE_ADMIN = 'ROLE_ADMIN';
 
     public function __construct()
     {
         $this->created_at = new DateTime();
+        $this->markets = new ArrayCollection();
     }
 
     /**
@@ -254,6 +261,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->userDetails = $userDetails;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Market>
+     */
+    public function getMarkets(): Collection
+    {
+        return $this->markets;
+    }
+
+    public function addMarket(Market $market): static
+    {
+        if (!$this->markets->contains($market)) {
+            $this->markets->add($market);
+            $market->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMarket(Market $market): static
+    {
+        if ($this->markets->removeElement($market)) {
+            // set the owning side to null (unless already changed)
+            if ($market->getOwner() === $this) {
+                $market->setOwner(null);
+            }
+        }
 
         return $this;
     }

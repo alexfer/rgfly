@@ -145,7 +145,7 @@
             </trans-unit>
             <trans-unit id="title.email">
                 <source>title.email</source>
-                <target>Enail</target>
+                <target>Email</target>
             </trans-unit>
             <trans-unit id="title.address">
                 <source>title.address</source>
@@ -162,6 +162,10 @@
             <trans-unit id="menu.dashboard">
                 <source>menu.dashboard</source>
                 <target>Dashboard</target>
+            </trans-unit>
+            <trans-unit id="menu.dashboard.marketplace">
+                <source>menu.dashboard.marketplace</source>
+                <target>Market Place</target>
             </trans-unit>
             <trans-unit id="menu.dashboard.overview">
                 <source>menu.dashboard.overview</source>
@@ -182,6 +186,10 @@
             <trans-unit id="title.dashboard.overview_gallery">
                 <source>title.dashboard.overview_gallery</source>
                 <target>Gallery Overview</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.overview_market">
+                <source>title.dashboard.overview_market</source>
+                <target>Markets Overview</target>
             </trans-unit>
             <trans-unit id="title.dashboard.overview_other">
                 <source>title.dashboard.overview_other</source>
@@ -217,7 +225,7 @@
             </trans-unit>
             <trans-unit id="menu.dashboard.create_faq">
                 <source>menu.dashboard.create_faq</source>
-                <target>Create Qusestion</target>
+                <target>Create Question</target>
             </trans-unit>
             <trans-unit id="menu.dashboard.users">
                 <source>menu.dashboard.users</source>
@@ -258,6 +266,10 @@
             <trans-unit id="table.header.id">
                 <source>table.header.id</source>
                 <target>#</target>
+            </trans-unit>
+            <trans-unit id="table.header.owner">
+                <source>table.header.owner</source>
+                <target>Owner</target>
             </trans-unit>
             <trans-unit id="table.header.title">
                 <source>table.header.title</source>
@@ -517,7 +529,7 @@
             </trans-unit>
             <trans-unit id="text.contact.desc">
                 <source>text.contact.desc</source>
-                <target>Leave your information using the form and we will contact you within 1 business day.</target>
+                <target>Leave your information using the form, and we will contact you within 1 business day.</target>
             </trans-unit>
             <trans-unit id="text.register">
                 <source>text.register</source>
@@ -529,7 +541,7 @@
             </trans-unit>
             <trans-unit id="text.register.success">
                 <source>text.register.success</source>
-                <target>Registeration Complete</target>
+                <target>Registration Complete</target>
             </trans-unit>
             <trans-unit id="text.register.success.desc">
                 <source>text.register.success.desc</source>
@@ -573,7 +585,7 @@
             <trans-unit id="text.about_us.long_desc">
                 <source>text.about_us.long_desc</source>
                 <target>
-                    <![CDATA[We started as an internet agency and have increasingly grown to develop applications, mobile apps, platforms and products. For customers and with customers. During the growth we noticed that more and more companies were having trouble attracting personnel and so we received the first requests whether we wanted to help our customers with this. Because we already had our own nearshore location at that time, the idea arose to provide our customers with developers for the longer term, whom they could manage themselves. We then shifted our focus.]]>
+                    <![CDATA[We started as an internet agency and have increasingly grown to develop applications, mobile apps, platforms and products. For customers and with customers. During the growth we noticed that more and more companies were having trouble attracting personnel, and so we received the first requests whether we wanted to help our customers with this. Because we already had our own nearshore location at that time, the idea arose to provide our customers with developers for the longer term, whom they could manage themselves. We then shifted our focus.]]>
                 </target>
             </trans-unit>
 
@@ -599,7 +611,7 @@
             </trans-unit>
             <trans-unit id="text.dashboard">
                 <source>text.dashboard</source>
-                <target>Dahboard</target>
+                <target>Dashboard</target>
             </trans-unit>
             <trans-unit id="text.dashboard.desc">
                 <source>text.dashboard.desc</source>
@@ -665,7 +677,7 @@
             <trans-unit id="form.agree_terms.help">
                 <source>form.agree_terms.help</source>
                 <target>
-                    <![CDATA[More about our <a class="link" target="_blank" href="{ policy }">Privacy Policy</a> and <a class="link" target="_blank" href="{ terms }">Terms &amp; Cinditions</a>.]]></target>
+                    <![CDATA[More about our <a class="link" target="_blank" href="{ policy }">Privacy Policy</a> and <a class="link" target="_blank" href="{ terms }">Terms &amp; Conditions</a>.]]></target>
             </trans-unit>
             <trans-unit id="form.first_name.help">
                 <source>form.first_name.help</source>
