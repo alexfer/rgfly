@@ -5,19 +5,48 @@
 {% block title_content %}{{ _title_extend }}{% endblock %}
 
 {% block content %}
-
-    <div class="card">
-        <div class="card-header">
-            <h4>{{ 'dashboard.title.markets'|trans }}</h4>
+    {% if app.user.markets|length %}
+        <div class="card">
+            <div class="card-header">
+                <strong>{{ app.user.markets[0].name }}</strong>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <a href="">{{ 'entry.form.categories'|trans }}</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="">{{ 'entry.form.products'|trans }}</a>
+                </li>
+            </ul>
         </div>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">Cras justo odio</li>
-            <li class="list-group-item">Dapibus ac facilisis in</li>
-            <li class="list-group-item">Vestibulum at eros</li>
-        </ul>
-{#        <div class="card-body">#}
-{#            {{ app.user.markets|length }}#}
-{#        </div>#}
+    {% endif %}
+    <div class="row mt-3">
+        <div class="col-sm-6">
+            <div class="card h-100">
+                <div class="card-header">
+                    <strong>{{ 'title.blogs'|trans }}</strong>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <a href="{{ path('app_dashboard_blog') }}">{{ 'menu.dashboard.overview.blog'|trans }}</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{{ path('app_dashboard_create_blog') }}">{{ 'menu.dashboard.create.blog'|trans }}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card h-100">
+                <div class="card-header">
+                    <strong>{{ 'entry.form.news'|trans }}</strong>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <a href="{{ path('app_dashboard_news') }}">{{ 'menu.dashboard.overview_news'|trans }}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
-
 {% endblock %}

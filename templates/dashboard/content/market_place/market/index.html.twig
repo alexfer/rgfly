@@ -11,19 +11,39 @@
             <tr>
                 <th class="col-1 text-center" scope="col">{{ 'table.header.id'|trans }}</th>
                 <th class="col-4" scope="col">{{ 'table.header.title'|trans }}</th>
-                <th class="col-4" scope="col">{{ 'table.header.owner'|trans }}</th>
+                <th class="col-3" scope="col">{{ 'table.header.owner'|trans }}</th>
                 <th class="col-2 text-center" scope="col">{{ 'table.header.created_at'|trans }}</th>
-                <th class="col-1 text-center" scope="col">{{ 'table.header.handle'|trans }}</th>
+                <th class="col-2 text-center" scope="col">{{ 'table.header.handle'|trans }}</th>
             </tr>
             </thead>
             <tbody>
             {% for entry in entries %}
-                <tr>
+                <tr class="{% if entry.deletedAt %}text-secondary bg-draft{% endif %}">
                     <th scope="row" class="text-center">{{ entry.id }}</th>
                     <td>{{ entry.name }}</td>
                     <td>{{ entry.owner.userDetails.firstName }} {{ entry.owner.userDetails.lastName }}</td>
-                    <td class="text-center">{{ entry.createdAt|date(date_format) }}</td>
-                    <td class="text-center"><i class="bi bi-person-circle"></i></td>
+                    <td class="text-center bd-highlight">{{ entry.createdAt|date(date_format) }}</td>
+                    <td class="text-center">
+                        {% if entry.deletedAt %}
+                            <a class="btn btn-sm btn-outline-lightning rounded restore-entry"
+                               href="{{ path('app_dashboard_restore_market', {id: entry.id}) }}">
+                                <i class="bi bi-caret-up-square-fill"></i>
+                            </a>
+                        {% else %}
+                            <a href="{{ path('app_dashboard_market_place_edit_market', {id: entry.id}) }}"
+                               class="btn btn-sm btn-outline-lightning rounded mr-1">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a
+                                    class="btn btn-sm btn-outline-lightning rounded delete-entry"
+                                    data-token="{{ csrf_token('delete') }}"
+                                    data-url="{{ url('app_dashboard_delete_market', {id: entry.id}) }}"
+                                    data-toggle="modal"
+                                    data-target="#modal-delete">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        {% endif %}
+                    </td>
                 </tr>
             {% else %}
                 <tr>

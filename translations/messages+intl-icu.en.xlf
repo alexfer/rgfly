@@ -499,6 +499,14 @@
                 <source>entry.form.categories</source>
                 <target>Categories</target>
             </trans-unit>
+            <trans-unit id="entry.form.products">
+                <source>entry.form.products</source>
+                <target>Products</target>
+            </trans-unit>
+            <trans-unit id="entry.form.news">
+                <source>entry.form.news</source>
+                <target>News</target>
+            </trans-unit>
             <trans-unit id="entry.form.attachments">
                 <source>entry.form.attachments</source>
                 <target>Attachments</target>

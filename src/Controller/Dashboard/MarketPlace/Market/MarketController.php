@@ -6,7 +6,9 @@ use App\Entity\MarketPlace\Market;
 use App\Form\Type\Dashboard\MarketPlace\MarketType;
 use App\Repository\MarketPlace\MarketRepository;
 use App\Service\Navbar;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -121,5 +123,47 @@ class MarketController extends AbstractController
             ]);
     }
 
+    /**
+     * @param Request $request
+     * @param Market $entry
+     * @param EntityManagerInterface $em
+     * @return Response
+     * @throws Exception
+     */
+    #[Route('/delete/{id}', name: 'app_dashboard_delete_market', methods: ['POST'])]
+    public function delete(
+        Request                $request,
+        Market                    $entry,
+        EntityManagerInterface $em,
+    ): Response
+    {
+        if ($this->isCsrfTokenValid('delete', $request->get('_token'))) {
+            $date = new DateTime('@' . strtotime('now'));
+            $entry->setDeletedAt($date);
+            $em->persist($entry);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('app_dashboard_market_place_market');
+    }
+
+    /**
+     *
+     * @param Market $entry
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
+    #[Route('/restore/{id}', name: 'app_dashboard_restore_market')]
+    public function restore(
+        Market                    $entry,
+        EntityManagerInterface $em,
+    ): Response
+    {
+        $entry->setDeletedAt(null);
+        $em->persist($entry);
+        $em->flush();
+
+        return $this->redirectToRoute('app_dashboard_market_place_market');
+    }
 
 }
