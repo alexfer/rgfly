@@ -1,0 +1,50 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% if form.vars.data.id %}
+    {% set _title_extend = 'title.dashboard.change_market'|trans %}
+{% else %}
+    {% set _title_extend = 'title.dashboard.create_market'|trans %}
+{% endif %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}{{ _title_extend }}{% endblock %}
+
+{% block content %}
+    {% if app.user.markets|length and not form.vars.data.id %}
+        <div class="alert alert-warning">
+            <h6 class="text-center py-3">{{ 'dashboard.market.restrict'|trans }}</h6>
+        </div>
+    {% else %}
+        {% set _message = app.flashes('success') %}
+        {{ form_start(form, {attr: {class: 'd-tech-form', novalidate: 'novalidate'}}) }}
+        <div class="form-group">
+            {% set name_error = form.name.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.name, 'label.form.market_name') }} <span class="text-danger">*</span>
+            {{ form_widget(form.name, {attr: {class: name_error, placeholder: 'label.form.market_name'}}) }}
+            <sm class="text-danger">{{ form_errors(form.name) }}</sm>
+        </div>
+        <div class="form-group">
+            {% set description_error = form.description.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.description, 'label.form.market_description') }}
+            {{ form_widget(form.description, {attr: {class: description_error, rows: 6, placeholder: 'label.form.market_description'}}) }}
+            <sm class="text-danger">{{ form_errors(form.description) }}</sm>
+        </div>
+        <input type="hidden" name="flash" value="{{ _message[0]|default([]|json_encode) }}">
+        <div class="form-group text-center my-4">
+            {{ form_widget(form.save, { label: form.vars.data.id ? 'form.action.update' : 'form.action.save'}) }}
+            <a type="button" href="{{ url('app_dashboard_market_place_market') }}"
+               class="btn btn-secondary shadow-sm">{{ 'form.action.cancel'|trans }}</a>
+        </div>
+        {{ form_end(form) }}
+    {% endif %}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script type="text/javascript">
+        CKEDITOR.replace('market_description', {
+            extraPlugins: 'editorplaceholder',
+            editorplaceholder: '{{ 'label.form.market_description'|trans }}',
+            'removePlugins': 'simage'
+        });
+    </script>
+{% endblock %}

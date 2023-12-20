@@ -66,6 +66,10 @@
                 <source>form.content.not_blank</source>
                 <target>The content can't be blank.</target>
             </trans-unit>
+            <trans-unit id="form.description.not_blank">
+                <source>form.description.not_blank</source>
+                <target>The description can't be blank.</target>
+            </trans-unit>
             <trans-unit id="form.email.not_blank">
                 <source>form.email.not_blank</source>
                 <target>The email can't be blank.</target>
@@ -125,6 +129,14 @@
             <trans-unit id="form.short_content.min">
                 <source>form.short_content.min</source>
                 <target>The short content is too short. It should have {{ limit }} characters or more.</target>
+            </trans-unit>
+            <trans-unit id="form.description.max">
+                <source>form.description.max</source>
+                <target>The description is too long. It should have {{ limit }} characters or less.</target>
+            </trans-unit>
+            <trans-unit id="form.description.min">
+                <source>form.description.min</source>
+                <target>The description is too short. It should have {{ limit }} characters or more.</target>
             </trans-unit>
             <trans-unit id="form.short_content.max">
                 <source>form.short_content.max</source>

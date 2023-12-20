@@ -223,6 +223,10 @@
                 <source>menu.dashboard.create.blog</source>
                 <target>Create Blog</target>
             </trans-unit>
+            <trans-unit id="menu.dashboard.create.market">
+                <source>menu.dashboard.create.market</source>
+                <target>Add Market</target>
+            </trans-unit>
             <trans-unit id="menu.dashboard.create_faq">
                 <source>menu.dashboard.create_faq</source>
                 <target>Create Question</target>
@@ -319,6 +323,14 @@
                 <source>label.form.repeat_password</source>
                 <target>Repeat Password</target>
             </trans-unit>
+            <trans-unit id="label.form.market_name">
+                <source>label.form.market_name</source>
+                <target>Market Name</target>
+            </trans-unit>
+            <trans-unit id="label.form.market_description">
+                <source>label.form.market_description</source>
+                <target>Description of Market</target>
+            </trans-unit>
             <trans-unit id="label.form.title">
                 <source>label.form.title</source>
                 <target>Title</target>
@@ -397,6 +409,22 @@
                 <target>City</target>
             </trans-unit>
 
+            <trans-unit id="dashboard.market.restrict">
+                <source>dashboard.market.restrict</source>
+                <target>Sorry, but you may create only one store.</target>
+            </trans-unit>
+            <trans-unit id="dashboard.title.markets">
+                <source>dashboard.title.markets</source>
+                <target>Your Markets</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.create_market">
+                <source>title.dashboard.create_market</source>
+                <target>Create Market</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.change_market">
+                <source>title.dashboard.change_market</source>
+                <target>Update Market</target>
+            </trans-unit>
             <trans-unit id="title.dashboard.overview.blog">
                 <source>title.dashboard.overview.blog</source>
                 <target>Blog Overview</target>

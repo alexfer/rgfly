@@ -9,6 +9,8 @@ use App\Service\Navbar;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -82,11 +84,12 @@ class FaqController extends AbstractController
     }
 
     /**
-     *
      * @param Request $request
      * @param EntityManagerInterface $em
      * @param UserInterface $user
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/create', name: 'app_dashboard_create_faq', methods: ['GET', 'POST'])]
     public function create(
@@ -113,12 +116,13 @@ class FaqController extends AbstractController
     }
 
     /**
-     *
      * @param Request $request
      * @param Faq $entry
      * @param EntityManagerInterface $em
      * @param UserInterface $user
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/edit/{id}', name: 'app_dashboard_edit_faq', methods: ['GET', 'POST'])]
     public function edit(
