@@ -17,8 +17,8 @@ class ProductController extends AbstractController
 
     #[Route('/', name: 'app_dashboard_market_place_product')]
     public function index(
-        UserInterface $user,
-        MarketRepository $marketRepository,
+        UserInterface           $user,
+        MarketRepository        $marketRepository,
         MarketProductRepository $marketProductRepository,
     ): Response
     {

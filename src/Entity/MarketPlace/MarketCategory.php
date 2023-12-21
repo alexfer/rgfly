@@ -3,6 +3,8 @@
 namespace App\Entity\MarketPlace;
 
 use App\Repository\MarketPlace\MarketCategoryRepository;
+use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -32,17 +34,17 @@ class MarketCategory
     private ?int $position = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?DateTimeImmutable $created_at = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $deleted_at = null;
+    private ?DateTimeInterface $deleted_at = null;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: MarketCategoryProduct::class)]
     private Collection $marketCategoryProducts;
 
     public function __construct()
     {
-        $this->created_at = new \DateTimeImmutable();
+        $this->created_at = new DateTimeImmutable();
         $this->marketCategoryProducts = new ArrayCollection();
     }
 
@@ -137,19 +139,19 @@ class MarketCategory
 
     /**
      *
-     * @return \DateTimeImmutable|null
+     * @return DateTimeImmutable|null
      */
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->created_at;
     }
 
     /**
      *
-     * @param \DateTimeImmutable $created_at
+     * @param DateTimeImmutable $created_at
      * @return static
      */
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    public function setCreatedAt(DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;
 
@@ -158,19 +160,19 @@ class MarketCategory
 
     /**
      *
-     * @return \DateTimeInterface|null
+     * @return DateTimeInterface|null
      */
-    public function getDeletedAt(): ?\DateTimeInterface
+    public function getDeletedAt(): ?DateTimeInterface
     {
         return $this->deleted_at;
     }
 
     /**
      *
-     * @param \DateTimeInterface|null $deleted_at
+     * @param DateTimeInterface|null $deleted_at
      * @return static
      */
-    public function setDeletedAt(?\DateTimeInterface $deleted_at): static
+    public function setDeletedAt(?DateTimeInterface $deleted_at): static
     {
         $this->deleted_at = $deleted_at;
 

@@ -182,7 +182,7 @@ class MarketProduct
 
     /**
      *
-     * @param DateTime$created_at
+     * @param DateTime $created_at
      * @return static
      */
     public function setCreatedAt(DateTime $created_at): static

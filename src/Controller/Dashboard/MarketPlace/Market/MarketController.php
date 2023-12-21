@@ -133,7 +133,7 @@ class MarketController extends AbstractController
     #[Route('/delete/{id}', name: 'app_dashboard_delete_market', methods: ['POST'])]
     public function delete(
         Request                $request,
-        Market                    $entry,
+        Market                 $entry,
         EntityManagerInterface $em,
     ): Response
     {
@@ -155,7 +155,7 @@ class MarketController extends AbstractController
      */
     #[Route('/restore/{id}', name: 'app_dashboard_restore_market')]
     public function restore(
-        Market                    $entry,
+        Market                 $entry,
         EntityManagerInterface $em,
     ): Response
     {

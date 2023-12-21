@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\{Category, MarketPlace\MarketCategory, User, UserDetails, UserSocial, Faq};
 use DateTime;
+use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -108,7 +109,7 @@ class AppFixtures extends Fixture
             $category->setSlug($this->slugger->slug($name)->lower());
             $category->setDescription($description);
             $category->setPosition($position);
-            $category->setCreatedAt(new \DateTimeImmutable());
+            $category->setCreatedAt(new DateTimeImmutable());
             $category->setDeletedAt(null);
             $manager->persist($category);
         }
