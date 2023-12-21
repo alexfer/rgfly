@@ -183,6 +183,10 @@
                 <source>title.dashboard.overview_articles</source>
                 <target>Articles Overview</target>
             </trans-unit>
+            <trans-unit id="title.dashboard.overview_product">
+                <source>title.dashboard.overview_product</source>
+                <target>Products Overview</target>
+            </trans-unit>
             <trans-unit id="title.dashboard.overview_gallery">
                 <source>title.dashboard.overview_gallery</source>
                 <target>Gallery Overview</target>
@@ -286,6 +290,10 @@
             <trans-unit id="table.header.name">
                 <source>table.header.name</source>
                 <target>Name</target>
+            </trans-unit>
+            <trans-unit id="table.header.market">
+                <source>table.header.market</source>
+                <target>Market</target>
             </trans-unit>
             <trans-unit id="table.header.user.created_at">
                 <source>table.header.user.created_at</source>
@@ -770,6 +778,10 @@
             <trans-unit id="label.form.message">
                 <source>label.form.message</source>
                 <target>Message</target>
+            </trans-unit>
+            <trans-unit id="market.product.create">
+                <source>market.product.create</source>
+                <target>Add Product</target>
             </trans-unit>
             <trans-unit id="form.action.save">
                 <source>form.action.save</source>

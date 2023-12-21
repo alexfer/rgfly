@@ -20,7 +20,9 @@
             {% for entry in entries %}
                 <tr class="{% if entry.deletedAt %}text-secondary bg-draft{% endif %}">
                     <th scope="row" class="text-center">{{ entry.id }}</th>
-                    <td>{{ entry.name }}</td>
+                    <td>
+                        <a href="{{ path('app_dashboard_market_place_edit_market', {id: entry.id}) }}">{{ entry.name }}</a>
+                    </td>
                     <td>{{ entry.owner.userDetails.firstName }} {{ entry.owner.userDetails.lastName }}</td>
                     <td class="text-center bd-highlight">{{ entry.createdAt|date(date_format) }}</td>
                     <td class="text-center">
