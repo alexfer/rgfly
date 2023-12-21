@@ -2,13 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\{
-    Category,
-    User,
-    UserDetails,
-    UserSocial,
-    Faq,
-};
+use App\Entity\{Category, MarketPlace\MarketCategory, User, UserDetails, UserSocial, Faq};
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -41,6 +35,7 @@ class AppFixtures extends Fixture
         $this->loadUsers($manager);
         $this->loadCategories($manager);
         $this->loadQuestions($manager);
+        $this->loadProductCategories($manager);
     }
 
     /**
@@ -94,6 +89,26 @@ class AppFixtures extends Fixture
             $category->setDescription($description);
             $category->setPosition($position);
             $category->setCreatedAt(new DateTime());
+            $category->setDeletedAt(null);
+            $manager->persist($category);
+        }
+        $manager->flush();
+    }
+
+    /**
+     *
+     * @param ObjectManager $manager
+     * @return void
+     */
+    private function loadProductCategories(ObjectManager $manager): void
+    {
+        foreach ($this->getProductCategoryData() as [$name, $description, $position]) {
+            $category = new MarketCategory();
+            $category->setName($name);
+            $category->setSlug($this->slugger->slug($name)->lower());
+            $category->setDescription($description);
+            $category->setPosition($position);
+            $category->setCreatedAt(new \DateTimeImmutable());
             $category->setDeletedAt(null);
             $manager->persist($category);
         }
@@ -184,6 +199,26 @@ class AppFixtures extends Fixture
             ['We need a large development team, can you help?', 'Of course, we would love to get in touch with you. Depending on your needs, we can indicate whether we can help you with your request or not. This will mainly depend on how many developers, the techniques and how quickly the team needs to start. Feel free to contact us at info@techspace.com.'],
             ['I am looking for only 1 developer, can you help me?', 'Of course, our services can be purchased per 1 FTE. For support services, such as DevOps– or QA as a service, a minimum of 16 hours per week applies. A specialist will do the maximum feasible with the hours you purchase. So by taking less hours, you also have less capacity or operational clout to achieve your goals. Do you find it difficult to determine how many hours of support you need for your projects? Then contact us without obligation at info@techspace.com.'],
             ['Can my team come to our headquarters on a business trip?', 'Yes. We can completely take care of this for you by arranging airfare, visas, and lodging for the period you have your team on your <b>head office</b> want to invite. Before we arrange everything, we will of course coordinate all costs with you. We do not charge a fee for this service, the costs incurred can be paid by you directly.'],
+        ];
+    }
+
+    /**
+     *
+     * @return array
+     */
+    private function getProductCategoryData(): array
+    {
+        return [
+            ['Computers & Notebooks', 'Computers & Notebooks.', 1],
+            ['Smartphones, TV and Electronics', 'Smartphones, TV and Electronics.', 2],
+            ['Products for gamers', 'Products for gamers.', 3],
+            ['Products for home', 'Products for home.', 4],
+            ['Automotive Tools', 'Automotive Tools.', 5],
+            ['Plumbing and repair', 'Plumbing and repair.', 6],
+            ['Sport', 'Sport.', 7],
+            ['Beauty and health', 'Beauty and health.', 8],
+            ['Good for Kids', 'Good for Kids.', 9],
+            ['Sales', 'Sales.', 10],
         ];
     }
 }

@@ -42,6 +42,7 @@ class MarketCategory
 
     public function __construct()
     {
+        $this->created_at = new \DateTimeImmutable();
         $this->marketCategoryProducts = new ArrayCollection();
     }
 

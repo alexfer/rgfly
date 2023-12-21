@@ -13,7 +13,7 @@ class RateLimiterSubscriber implements EventSubscriberInterface
     /**
      * @var RateLimiterFactory
      */
-    private $anonymousAppLimiter;
+    private RateLimiterFactory $anonymousAppLimiter;
 
     /*
      * @var array
