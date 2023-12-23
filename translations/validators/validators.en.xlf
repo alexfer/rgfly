@@ -5,7 +5,31 @@
             <trans-unit id="form.name.not_blank">
                 <source>form.name.not_blank</source>
                 <target>The name can't be blank.</target>
-            </trans-unit>            
+            </trans-unit>
+            <trans-unit id="form.price.not_blank">
+                <source>form.price.not_blank</source>
+                <target>The price can't be blank.</target>
+            </trans-unit>
+            <trans-unit id="form.quantity.not_blank">
+                <source>form.quantity.not_blank</source>
+                <target>The quantity can't be blank.</target>
+            </trans-unit>
+            <trans-unit id="form.price.min">
+                <source>form.price.min</source>
+                <target>Your price is too short. It should have {{ limit }} characters or more.</target>
+            </trans-unit>
+            <trans-unit id="form.price.max">
+                <source>form.price.max</source>
+                <target>Your price is too long. It should have {{ limit }} characters or less.</target>
+            </trans-unit>
+            <trans-unit id="form.quantity.min">
+                <source>form.quantity.min</source>
+                <target>Your quantity is too short. It should have {{ limit }} characters or more.</target>
+            </trans-unit>
+            <trans-unit id="form.quantity.max">
+                <source>form.quantity.max</source>
+                <target>Your quantity is too long. It should have {{ limit }} characters or less.</target>
+            </trans-unit>
             <trans-unit id="form.name.min">
                 <source>form.name.min</source>
                 <target>Your name is too short. It should have {{ limit }} characters or more.</target>
@@ -92,7 +116,7 @@
             </trans-unit>
             <trans-unit id="slug.unique">
                 <source>slug.unique</source>
-                <target>There is already an entry with the same key information.</target>
+                <target><![CDATA[There is already an entry with the same key information. Check %name% field. You are using %value%.]]></target>
             </trans-unit>
             <trans-unit id="form.email.not_valid">
                 <source>form.email.not_valid</source>

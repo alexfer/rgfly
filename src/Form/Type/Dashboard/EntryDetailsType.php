@@ -55,9 +55,6 @@ class EntryDetailsType extends AbstractType
                 ],
             ])
             ->add('content', TextareaType::class, [
-//                'config' => [
-//                    'toolbar' => 'full'
-//                ],
                 'mapped' => false,
                 'data' => $options['data']?->getEntryDetails()?->getContent(),
                 'attr' => [

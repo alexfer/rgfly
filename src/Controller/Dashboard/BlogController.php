@@ -120,7 +120,10 @@ class BlogController extends AbstractController
                     ->setUser($user);
                 $em->persist($entry);
             } catch (UniqueConstraintViolationException $e) {
-                $error = $translator->trans('slug.unique', [], 'validators');
+                $error = $translator->trans('slug.unique', [
+                    '%name%' => $translator->trans('label.form.title'),
+                    '%value%' => $title,
+                ], 'validators');
             }
         }
 
@@ -132,7 +135,7 @@ class BlogController extends AbstractController
                 foreach ($requestCategory as $key => $value) {
                     $entryCategory = new EntryCategory();
                     $entryCategory->setEntry($entry)
-                        ->setCategory($categoryRepository->findOneBy(['id' => $key]));
+                        ->setCategory($category->findOneBy(['id' => $key]));
                     $em->persist($entryCategory);
                 }
             }
@@ -198,7 +201,10 @@ class BlogController extends AbstractController
                 $em->persist($entry);
                 $em->flush();
             } catch (UniqueConstraintViolationException $e) {
-                $error = $translator->trans('slug.unique', [], 'validators');
+                $error = $translator->trans('slug.unique', [
+                    '%name%' => $translator->trans('label.form.title'),
+                    '%value%' => $title,
+                ], 'validators');
             }
         }
 

@@ -8,9 +8,8 @@
     <nav class="navbar market navbar-expand-lg navbar-light mb-2" style="background-color: #e3f2fd;">
         <div class="collapse navbar-collapse" id="navbar-market">
             <div class="navbar-nav">
-                <a class="nav-item nav-link" href="#">{{ 'market.product.create'|trans }}</a>
-                <a class="nav-item nav-link" href="#">Pricing</a>
-                <a class="nav-item nav-link disabled" href="#">Disabled</a>
+                <a class="nav-item nav-link"
+                   href="{{ path('app_dashboard_market_place_create_product') }}">{{ 'market.product.create'|trans }}</a>
             </div>
         </div>
         <span class="navbar-text text-dark">{{ market.name }}</span>
@@ -19,11 +18,12 @@
     <table class="table table-hover table-borderless mb-0">
         <thead class="bg-secondary text-white">
         <tr>
-            <th class="col-1 text-center" scope="col">{{ 'table.header.id'|trans }}</th>
-            <th class="col-4" scope="col">{{ 'table.header.name'|trans }}</th>
-            <th class="col-3" scope="col">{{ 'table.header.market'|trans }}</th>
-            <th class="col-2 text-center" scope="col">{{ 'table.header.created_at'|trans }}</th>
-            <th class="col-2 text-center" scope="col">{{ 'table.header.handle'|trans }}</th>
+            <th class="text-center" scope="col">{{ 'table.header.id'|trans }}</th>
+            <th class="" scope="col">{{ 'table.header.name'|trans }}</th>
+            <th class=" text-center" scope="col">{{ 'table.header.price'|trans }}</th>
+            <th class=" text-center" scope="col">{{ 'table.header.quantity'|trans }}</th>
+            <th class=" text-center" scope="col">{{ 'table.header.created_at'|trans }}</th>
+            <th class=" text-center" scope="col">{{ 'table.header.handle'|trans }}</th>
         </tr>
         </thead>
         <tbody>
@@ -31,9 +31,16 @@
             <tr class="{% if entry.deletedAt %}text-secondary bg-draft{% endif %}">
                 <th scope="row" class="text-center">{{ entry.id }}</th>
                 <td>
-                    <a href="{{ path('app_dashboard_market_place_edit_market', {id: entry.id}) }}">{{ entry.name }}</a>
+                    <a data-toggle="tooltip"
+                       data-placement="right"
+                       class="link"
+                       title="{{ entry.name }}"
+                       href="{{ path('app_dashboard_market_place_edit_product', {id: entry.id}) }}">
+                        {{ entry.name|length > 30 ? entry.name|slice(0, 30) ~ '...' : entry.name }}
+                    </a>
                 </td>
-                <td>{{ entry.market.name }}</td>
+                <td class="text-center">{{ entry.price }}</td>
+                <td class="text-center">{{ entry.quantity }}</td>
                 <td class="text-center bd-highlight">{{ entry.createdAt|date(date_format) }}</td>
                 <td class="text-center">
                     {% if entry.deletedAt %}
@@ -42,7 +49,7 @@
                             <i class="bi bi-caret-up-square-fill"></i>
                         </a>
                     {% else %}
-                        <a href="{{ path('app_dashboard_market_place_edit_market', {id: entry.id}) }}"
+                        <a href="{{ path('app_dashboard_market_place_edit_product', {id: entry.id}) }}"
                            class="btn btn-sm btn-outline-lightning rounded mr-1">
                             <i class="bi bi-pencil-square"></i>
                         </a>

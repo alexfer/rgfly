@@ -33,12 +33,11 @@
                 <tr>
                     <th scope="row" class="text-center text-muted bg-{{ entry.status }}">{{ entry.id }}</th>
                     <td>
-                        <a
-                                data-toggle="tooltip"
-                                data-placement="right"
-                                class="link"
-                                title="{{ entry.entryDetails.title }}"
-                                href="{{ path('app_dashboard_edit_blog', {id: entry.id}) }}">
+                        <a data-toggle="tooltip"
+                           data-placement="right"
+                           class="link"
+                           title="{{ entry.entryDetails.title }}"
+                           href="{{ path('app_dashboard_edit_blog', {id: entry.id}) }}">
                             {{ entry.entryDetails.title|length > 30 ? entry.entryDetails.title|slice(0, 30) ~ '...' : entry.entryDetails.title }}
                         </a>
                     </td>

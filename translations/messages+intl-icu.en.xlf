@@ -291,6 +291,14 @@
                 <source>table.header.name</source>
                 <target>Name</target>
             </trans-unit>
+            <trans-unit id="table.header.price">
+                <source>table.header.price</source>
+                <target>Price</target>
+            </trans-unit>
+            <trans-unit id="table.header.quantity">
+                <source>table.header.quantity</source>
+                <target>Quantity</target>
+            </trans-unit>
             <trans-unit id="table.header.market">
                 <source>table.header.market</source>
                 <target>Market</target>
@@ -335,9 +343,25 @@
                 <source>label.form.market_name</source>
                 <target>Market Name</target>
             </trans-unit>
+            <trans-unit id="label.form.product_name">
+                <source>label.form.product_name</source>
+                <target>Product Name</target>
+            </trans-unit>
             <trans-unit id="label.form.market_description">
                 <source>label.form.market_description</source>
                 <target>Description of Market</target>
+            </trans-unit>
+            <trans-unit id="label.form.product_description">
+                <source>label.form.product_description</source>
+                <target>Description of Product</target>
+            </trans-unit>
+            <trans-unit id="label.form.quantity">
+                <source>label.form.quantity</source>
+                <target>Quantity</target>
+            </trans-unit>
+            <trans-unit id="label.form.price">
+                <source>label.form.price</source>
+                <target>Price</target>
             </trans-unit>
             <trans-unit id="label.form.title">
                 <source>label.form.title</source>
@@ -432,6 +456,14 @@
             <trans-unit id="title.dashboard.change_market">
                 <source>title.dashboard.change_market</source>
                 <target>Update Market</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.create_product">
+                <source>title.dashboard.create_product</source>
+                <target>Create Product</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.change_product">
+                <source>title.dashboard.change_product</source>
+                <target>Update Product</target>
             </trans-unit>
             <trans-unit id="title.dashboard.overview.blog">
                 <source>title.dashboard.overview.blog</source>

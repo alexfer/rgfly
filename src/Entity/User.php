@@ -162,6 +162,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isPasswordSafe(): bool
+    {
+        return $this->email !== $this->password;
+    }
+
+    /**
      *
      * @return DateTime
      */

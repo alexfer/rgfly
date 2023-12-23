@@ -14,24 +14,25 @@ class DetailsType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('first_name', TextType::class, [
-            'mapped' => false,
-            'attr' => [
-                'min' => 3,
-                'max' => 200,
-            ],
-            'constraints' => [
-                new NotBlank([
-                    'message' => 'form.first_name.not_blank',
-                ]),
-                new Length([
+        $builder
+            ->add('first_name', TextType::class, [
+                'mapped' => false,
+                'attr' => [
                     'min' => 3,
-                    'minMessage' => 'form.first_name.min',
                     'max' => 200,
-                    'maxMessage' => 'form.first_name.max',
-                ]),
-            ],
-        ])
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'form.first_name.not_blank',
+                    ]),
+                    new Length([
+                        'min' => 3,
+                        'minMessage' => 'form.first_name.min',
+                        'max' => 200,
+                        'maxMessage' => 'form.first_name.max',
+                    ]),
+                ],
+            ])
             ->add('last_name', TextType::class, [
                 'mapped' => false,
                 'attr' => [

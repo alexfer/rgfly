@@ -4,16 +4,16 @@ namespace App\Entity\MarketPlace;
 
 use App\Repository\MarketPlace\MarketProductRepository;
 use DateTime;
-use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MarketProductRepository::class)]
-#[UniqueEntity(fields: ['slug'], message: 'slug.unique')]
+#[UniqueEntity(fields: ['slug'], message: 'slug.unique', errorPath: 'slug')]
 class MarketProduct
 {
 
@@ -29,9 +29,14 @@ class MarketProduct
     private ?string $description = null;
 
     #[ORM\Column(length: 512, unique: true, nullable: true)]
+    #[Assert\Valid()]
     private ?string $slug = null;
 
     #[ORM\Column]
+    #[Assert\Type(
+        type: 'integer',
+        message: 'The value {{ value }} is not a valid {{ type }}.',
+    )]
     private ?int $quantity = null;
 
     #[ORM\Column]

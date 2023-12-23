@@ -38,7 +38,9 @@
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
     <script type="text/javascript">
         CKEDITOR.replace('faq_content', {
-            'removePlugins': 'simage'
+            extraPlugins: 'editorplaceholder',
+            removePlugins: 'simage,image,youtube,html5video,iframe,uicolor,videodetector,preview',
+            editorplaceholder: '{{ 'label.form.content'|trans }}'
         });
     </script>
 {% endblock %}
