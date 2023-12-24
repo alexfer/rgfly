@@ -42,10 +42,14 @@ class Market
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $deleted_at = null;
 
+    #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketProvider::class)]
+    private Collection $marketProviders;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
         $this->products = new ArrayCollection();
+        $this->marketProviders = new ArrayCollection();
     }
 
     /**
@@ -215,6 +219,36 @@ class Market
     public function setDeletedAt(?DateTimeInterface $deleted_at): static
     {
         $this->deleted_at = $deleted_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketProvider>
+     */
+    public function getMarketProviders(): Collection
+    {
+        return $this->marketProviders;
+    }
+
+    public function addMarketProvider(MarketProvider $marketProvider): static
+    {
+        if (!$this->marketProviders->contains($marketProvider)) {
+            $this->marketProviders->add($marketProvider);
+            $marketProvider->setMarket($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMarketProvider(MarketProvider $marketProvider): static
+    {
+        if ($this->marketProviders->removeElement($marketProvider)) {
+            // set the owning side to null (unless already changed)
+            if ($marketProvider->getMarket() === $this) {
+                $marketProvider->setMarket(null);
+            }
+        }
 
         return $this;
     }

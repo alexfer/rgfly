@@ -543,6 +543,10 @@
                 <source>entry.form.categories</source>
                 <target>Categories</target>
             </trans-unit>
+            <trans-unit id="entry.form.providers">
+                <source>entry.form.providers</source>
+                <target>Providers</target>
+            </trans-unit>
             <trans-unit id="entry.form.products">
                 <source>entry.form.products</source>
                 <target>Products</target>
