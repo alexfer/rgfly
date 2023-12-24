@@ -45,9 +45,6 @@ class MarketType extends AbstractType
                     'max' => 65535,
                 ],
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'form.description.not_blank',
-                    ]),
                     new Length([
                         'min' => 100,
                         'minMessage' => 'form.description.min',

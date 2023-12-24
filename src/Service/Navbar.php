@@ -28,17 +28,18 @@ trait Navbar
 
     /**
      * @param UserInterface $user
+     * @param string $key
      * @param array|null $criteria
      * @return UserInterface[]
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function criteria(UserInterface $user, ?array $criteria = null): array
+    private function criteria(UserInterface $user, ?array $criteria = null, string $key = 'user'): array
     {
         $securityContext = $this->container->get('security.authorization_checker');
 
         $options = [
-            'user' => $user,
+            $key => $user,
         ];
 
         if ($criteria && count($criteria)) {
@@ -46,7 +47,7 @@ trait Navbar
         }
 
         if ($securityContext->isGranted('ROLE_ADMIN')) {
-            unset($options['user']);
+            unset($options[$key]);
         }
 
         return $options;

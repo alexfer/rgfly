@@ -5,7 +5,7 @@
 {% block title_content %}{{ _title_extend }}{% endblock %}
 
 {% block content %}
-    <div class="table-responsive card">
+    <div class="table-responsive table-sm card">
         <table class="table table-hover table-borderless mb-0">
             <thead class="bg-secondary text-white">
             <tr>
@@ -34,17 +34,17 @@
                     </td>
                     <td class="text-center">
                         <a href="{{ path('app_dashboard_edit_faq', {id: entry.id}) }}"
-                           class="btn btn-sm btn-outline-lightning rounded mr-1">
+                           class="btn btn-sm btn-outline-lightning rounded px-1 py-0 mr-1">
                             <i class="bi bi-pencil-square"></i>
                         </a>
                         {% if entry.deletedAt %}
-                            <a class="btn btn-sm btn-outline-lightning rounded restore-entry"
+                            <a class="btn btn-sm btn-outline-lightning rounded restore-entry px-1 py-0"
                                href="{{ path('app_dashboard_restore_faq', {id: entry.id}) }}">
                                 <i class="bi bi-caret-up-square-fill"></i>
                             </a>
                         {% else %}
                             <a
-                                    class="btn btn-sm btn-outline-lightning rounded delete-entry"
+                                    class="btn btn-sm btn-outline-lightning rounded delete-entry px-1 py-0"
                                     data-token="{{ csrf_token('delete') }}"
                                     data-url="{{ url('app_dashboard_delete_faq', {id: entry.id}) }}"
                                     data-toggle="modal"
@@ -56,7 +56,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="4" class="text-center text-info bg-white">{{ 'table.footer.not_found'|trans }}</td>
+                    <td colspan="4" class="text-center text-danger bg-grey">{{ 'table.footer.not_found'|trans }}</td>
                 </tr>
             {% endfor %}
             </tbody>

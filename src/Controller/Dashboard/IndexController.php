@@ -2,7 +2,9 @@
 
 namespace App\Controller\Dashboard;
 
+use App\Entity\MarketPlace\Market;
 use App\Service\Navbar;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Redis;
@@ -24,10 +26,14 @@ class IndexController extends AbstractController
      * @throws NotFoundExceptionInterface
      */
     #[Route('', name: 'app_dashboard')]
-    public function index(UserInterface $user): Response
+    public function index(
+        UserInterface $user,
+        EntityManagerInterface $em,
+    ): Response
     {
+        $markets = $em->getRepository(Market::class)->findBy($this->criteria($user, null, 'owner'));
         return $this->render('dashboard/content/index.html.twig', $this->build($user) + [
-                'cache' => null,
+                'markets' => $markets,
             ]);
     }
 }

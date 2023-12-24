@@ -57,6 +57,14 @@ class Market
     }
 
     /**
+     * @return bool
+     */
+    public function isPrivate(): bool
+    {
+        return true;
+    }
+
+    /**
      * @return User|null
      */
     public function getOwner(): ?User

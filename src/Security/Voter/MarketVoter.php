@@ -2,13 +2,14 @@
 
 namespace App\Security\Voter;
 
-use App\Entity\{Entry, User,};
+use App\Entity\User;
+use App\Entity\MarketPlace\Market;
 use LogicException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Bundle\SecurityBundle\Security;
 
-class DashboardVoter extends Voter
+class MarketVoter extends Voter
 {
 
     const string DELETE = 'delete';
@@ -28,32 +29,21 @@ class DashboardVoter extends Voter
         $this->security = $security;
     }
 
-    /**
-     *
-     * @param string $attribute
-     * @param mixed $subject
-     * @return bool
-     */
+    #[\Override]
     protected function supports(string $attribute, mixed $subject): bool
     {
         if (!in_array($attribute, [self::DELETE, self::VIEW, self::EDIT])) {
             return false;
         }
 
-        if (!$subject instanceof Entry) {
+        if (!$subject instanceof Market) {
             return false;
         }
 
         return true;
     }
 
-    /**
-     *
-     * @param string $attribute
-     * @param mixed $subject
-     * @param TokenInterface $token
-     * @return bool
-     */
+    #[\Override]
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
@@ -67,51 +57,48 @@ class DashboardVoter extends Voter
             return false;
         }
 
-        $entry = $subject;
+        $entity = $subject;
 
         return match ($attribute) {
-            self::DELETE => $this->canDelete($entry, $user),
-            self::VIEW => $this->canView($entry, $user),
-            self::EDIT => $this->canEdit($entry, $user),
+            self::DELETE => $this->canDelete($entity, $user),
+            self::VIEW => $this->canView($entity, $user),
+            self::EDIT => $this->canEdit($entity, $user),
             default => throw new LogicException('This code should not be reached!')
         };
     }
 
     /**
-     *
-     * @param Entry $object
+     * @param Market $market
      * @param User $user
      * @return bool
      */
-    private function canView(Entry $object, User $user): bool
+    private function canView(Market $market, User $user): bool
     {
         // if they can edit, they can view
-        if ($this->canEdit($object, $user)) {
+        if ($this->canEdit($market, $user)) {
             return true;
         }
 
-        return !$object->isPrivate();
+        return !$market->isPrivate();
     }
 
     /**
-     *
-     * @param Entry $object
+     * @param Market $market
      * @param User $user
      * @return bool
      */
-    private function canEdit(Entry $object, User $user): bool
+    private function canEdit(Market $market, User $user): bool
     {
-        return $user === $object->getUser();
+        return $user === $market->getOwner();
     }
 
     /**
-     *
-     * @param Entry $object
+     * @param Market $market
      * @param User $user
      * @return bool
      */
-    private function canDelete(Entry $object, User $user): bool
+    private function canDelete(Market $market, User $user): bool
     {
-        return $user === $object->getUser();
+        return $user === $market->getOwner();
     }
 }

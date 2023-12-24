@@ -5,7 +5,7 @@
 {% block title_content %}{{ _title_extend }}{% endblock %}
 
 {% block content %}
-    <div class="table-responsive card">
+    <div class="table-responsive table-sm card">
         <table class="table table-hover table-borderless mb-0">
             <thead class="bg-secondary text-white">
             <tr >
@@ -50,7 +50,7 @@
                     </td>
                     <td class="text-center">
                         <a
-                                class="btn btn-sm btn-outline-lightning rounded delete-entry"
+                                class="btn btn-sm btn-outline-lightning rounded delete-entry px-1 py-0"
                                 data-token="{{ csrf_token('delete') }}"
                                 data-url="{{ url('app_dashboard_delete_contact', {id: entry.id}) }}"
                                 data-toggle="modal"
@@ -61,7 +61,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="5" class="text-center text-info bg-grey">{{ 'table.footer.not_found'|trans }}</td>
+                    <td colspan="5" class="text-center text-danger bg-grey">{{ 'table.footer.not_found'|trans }}</td>
                 </tr>
             {% endfor %}
             </tbody>

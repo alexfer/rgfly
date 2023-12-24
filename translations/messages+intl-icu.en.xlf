@@ -283,6 +283,10 @@
                 <source>table.header.title</source>
                 <target>Title</target>
             </trans-unit>
+            <trans-unit id="table.header.products">
+                <source>table.header.products</source>
+                <target>Products</target>
+            </trans-unit>
             <trans-unit id="table.header.status">
                 <source>table.header.status</source>
                 <target>Status</target>
@@ -815,6 +819,10 @@
                 <source>market.product.create</source>
                 <target>Add Product</target>
             </trans-unit>
+            <trans-unit id="market.products.overview">
+                <source>market.products.overview</source>
+                <target>Products overview</target>
+            </trans-unit>
             <trans-unit id="form.action.save">
                 <source>form.action.save</source>
                 <target>Save</target>
@@ -830,6 +838,10 @@
             <trans-unit id="form.action.cancel">
                 <source>form.action.cancel</source>
                 <target>Cancel</target>
+            </trans-unit>
+            <trans-unit id="form.action.back">
+                <source>form.action.back</source>
+                <target>Back</target>
             </trans-unit>
             <trans-unit id="form.action.confirm">
                 <source>form.action.confirm</source>

@@ -8,15 +8,18 @@
     {% if app.user.markets|length %}
         <div class="card">
             <div class="card-header">
-                <strong>{{ app.user.markets[0].name }}</strong>
+                <strong>Markets</strong>
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">
                     <a href="">{{ 'entry.form.categories'|trans }}</a>
                 </li>
+                {% for market in markets %}
                 <li class="list-group-item">
-                    <a href="{{ path('app_dashboard_market_place_product') }}">{{ 'entry.form.products'|trans }}</a>
+                    <a href="{{ path('app_dashboard_market_place_market_product', {market: market.id}) }}" class="badge badge-pill badge-success text-white" style="font-size: 16px;font-weight: normal;border-radius: 0.4rem">{{ market.name }}</a>
+                    <div class="badge badge-primary float-right">{{ market.products.count }}</div>
                 </li>
+                {% endfor %}
             </ul>
         </div>
     {% endif %}

@@ -2,14 +2,12 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Market;
 
+use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketCategory;
 use App\Entity\MarketPlace\MarketCategoryProduct;
 use App\Entity\MarketPlace\MarketProduct;
 use App\Form\Type\Dashboard\MarketPlace\ProductType;
-use App\Repository\MarketPlace\MarketCategoryProductRepository;
-use App\Repository\MarketPlace\MarketCategoryRepository;
-use App\Repository\MarketPlace\MarketProductRepository;
-use App\Repository\MarketPlace\MarketRepository;
+use App\Security\Voter\ProductVoter;
 use App\Service\Navbar;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -28,15 +27,24 @@ class ProductController extends AbstractController
 {
     use Navbar;
 
-    #[Route('/', name: 'app_dashboard_market_place_product')]
+    /**
+     * @param Request $request
+     * @param UserInterface $user
+     * @param EntityManagerInterface $em
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/{market}', name: 'app_dashboard_market_place_market_product')]
     public function index(
-        UserInterface           $user,
-        MarketRepository        $marketRepository,
-        MarketProductRepository $marketProductRepository,
+        Request                $request,
+        UserInterface          $user,
+        EntityManagerInterface $em,
     ): Response
     {
-        $market = $marketRepository->findOneBy(['owner' => $user], ['id' => 'desc']);
-        $entries = $marketProductRepository->findBy(['market' => $market], ['id' => 'desc']);
+        $criteria = $this->criteria($user, ['market_id' => $request->get('market')], 'owner');
+        $market = $em->getRepository(Market::class)->findOneBy(['id' => $request->get('market')], ['id' => 'desc']);
+        $entries = $em->getRepository(MarketProduct::class)->findBy(['market' => $market], ['id' => 'desc']);
 
         return $this->render('dashboard/content/market_place/product/index.html.twig', $this->build($user) + [
                 'market' => $market,
@@ -44,21 +52,24 @@ class ProductController extends AbstractController
             ]);
     }
 
-    #[Route('/edit/{id}', name: 'app_dashboard_market_place_edit_product', methods: ['GET', 'POST'])]
+    #[Route('/edit/{market}/{id}', name: 'app_dashboard_market_place_edit_product', methods: ['GET', 'POST'])]
+    #[IsGranted(ProductVoter::EDIT, subject: 'entry', statusCode: Response::HTTP_FORBIDDEN)]
     public function edit(
-        Request                  $request,
-        UserInterface            $user,
-        MarketProduct            $entry,
-        MarketCategoryRepository $categoryRepository,
-        MarketCategoryProductRepository  $marketCategoryProductRepository,
-        EntityManagerInterface   $em,
-        TranslatorInterface      $translator,
-        SluggerInterface         $slugger,
+        Request                $request,
+        UserInterface          $user,
+        MarketProduct          $entry,
+        EntityManagerInterface $em,
+        TranslatorInterface    $translator,
+        SluggerInterface       $slugger,
     ): Response
     {
         $form = $this->createForm(ProductType::class, $entry);
         $form->handleRequest($request);
+
+        $categoryRepository = $em->getRepository(MarketCategory::class);
         $categories = $categoryRepository->findBy([], ['name' => 'asc']);
+        $repository = $em->getRepository(MarketCategoryProduct::class);
+
         $uniqueError = null;
         $name = $form->get('name')->getData();
 
@@ -78,20 +89,25 @@ class ProductController extends AbstractController
         if ($form->isSubmitted() && $form->isValid() && !$uniqueError) {
             $requestCategory = $request->get('category');
             if ($requestCategory) {
-                $marketCategoryProductRepository->removeCategoryProduct($entry);
+                $repository->removeCategoryProduct($entry);
                 foreach ($requestCategory as $key => $value) {
                     $entryCategory = new MarketCategoryProduct();
                     $entryCategory->setProduct($entry)
                         ->setCategory($categoryRepository->findOneBy(['id' => $key]));
                     $em->persist($entryCategory);
                 }
+            } else {
+                $repository->removeCategoryProduct($entry);
             }
             $em->persist($entry);
             $em->flush();
 
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.updated')]));
 
-            return $this->redirectToRoute('app_dashboard_market_place_edit_product', ['id' => $entry->getId()]);
+            return $this->redirectToRoute('app_dashboard_market_place_edit_product', [
+                'market' => $request->get('market'),
+                'id' => $entry->getId(),
+            ]);
         }
 
         return $this->render('dashboard/content/market_place/product/_form.html.twig', $this->build($user) + [
@@ -106,29 +122,25 @@ class ProductController extends AbstractController
      * @param Request $request
      * @param UserInterface $user
      * @param SluggerInterface $slugger
-     * @param MarketCategoryRepository $categoryRepository
-     * @param MarketRepository $marketRepository
      * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/create', name: 'app_dashboard_market_place_create_product')]
+    #[Route('/create/{market}', name: 'app_dashboard_market_place_create_product')]
     public function create(
-        Request                  $request,
-        UserInterface            $user,
-        SluggerInterface         $slugger,
-        MarketCategoryRepository $categoryRepository,
-        MarketRepository         $marketRepository,
-        EntityManagerInterface   $em,
-        TranslatorInterface      $translator,
+        Request                $request,
+        UserInterface          $user,
+        SluggerInterface       $slugger,
+        EntityManagerInterface $em,
+        TranslatorInterface    $translator,
     ): Response
     {
-        $categories = $categoryRepository->findBy([], ['name' => 'asc']);
+        $categories = $em->getRepository(MarketCategory::class)->findBy([], ['name' => 'asc']);
+        $market = $em->getRepository(Market::class)->findOneBy($this->criteria($user, ['id' => $request->get('market')], 'owner'));
 
         $entry = new MarketProduct();
-        $market = $marketRepository->findOneBy(['owner' => $user]);
 
         $form = $this->createForm(ProductType::class, $entry);
         $form->handleRequest($request);
@@ -146,14 +158,13 @@ class ProductController extends AbstractController
                 foreach ($requestCategory as $key => $value) {
                     $entryCategory = new MarketCategoryProduct();
                     $entryCategory->setProduct($entry)
-                        ->setCategory($categoryRepository->findOneBy(['id' => $key]));
+                        ->setCategory($em->getRepository(MarketCategory::class)->findOneBy(['id' => $key]));
                     $em->persist($entryCategory);
                 }
             }
 
             try {
-                $entry->setSlug($slug);
-                $entry->setMarket($market);
+                $entry->setSlug($slug)->setMarket($market);
                 $em->persist($entry);
                 $em->flush();
             } catch (UniqueConstraintViolationException $e) {
@@ -165,7 +176,7 @@ class ProductController extends AbstractController
 
             if (!$uniqueError) {
                 $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
-                return $this->redirectToRoute('app_dashboard_market_place_edit_product', ['id' => $entry->getId()]);
+                return $this->redirectToRoute('app_dashboard_market_place_edit_product', ['market' => $request->get('market'), 'id' => $entry->getId()]);
             }
         }
 

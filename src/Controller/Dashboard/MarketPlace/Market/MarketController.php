@@ -5,17 +5,21 @@ namespace App\Controller\Dashboard\MarketPlace\Market;
 use App\Entity\MarketPlace\Market;
 use App\Form\Type\Dashboard\MarketPlace\MarketType;
 use App\Repository\MarketPlace\MarketRepository;
+use App\Security\Voter\MarketVoter;
 use App\Service\Navbar;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -37,11 +41,11 @@ class MarketController extends AbstractController
         MarketRepository $marketRepository,
     ): Response
     {
-
-        $entries = $marketRepository->findBy(['owner' => $user], ['created_at' => 'desc']);
+        $criteria = $this->criteria($user, null,'owner');
+        $markets = $marketRepository->findBy($criteria, ['created_at' => 'desc']);
 
         return $this->render('dashboard/content/market_place/market/index.html.twig', $this->build($user) + [
-                'entries' => $entries,
+                'markets' => $markets,
             ]);
     }
 
@@ -64,11 +68,12 @@ class MarketController extends AbstractController
         TranslatorInterface    $translator,
     ): Response
     {
-
         $entry = new Market();
         $form = $this->createForm(MarketType::class, $entry);
 
-        if (!$user->getMarkets()->count()) {
+        $markets = $user->getMarkets()->count();
+
+        if (!$markets) {
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
@@ -80,6 +85,8 @@ class MarketController extends AbstractController
 
                 return $this->redirectToRoute('app_dashboard_market_place_edit_market', ['id' => $entry->getId()]);
             }
+        } else {
+            throw new AccessDeniedHttpException('Permission denied.');
         }
 
         return $this->render('dashboard/content/market_place/market/_form.html.twig', $this->build($user) + [
@@ -98,6 +105,7 @@ class MarketController extends AbstractController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/edit/{id}', name: 'app_dashboard_market_place_edit_market', methods: ['GET', 'POST'])]
+    #[IsGranted(MarketVoter::EDIT, subject: 'entry', statusCode: Response::HTTP_FORBIDDEN)]
     public function edit(
         Request                $request,
         Market                 $entry,

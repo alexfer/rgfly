@@ -5,7 +5,7 @@
 {% block title_content %}{{ _title_extend }}{% endblock %}
 
 {% block content %}
-    <div class="table-responsive card">
+    <div class="table-responsive table-sm card">
         <table class="table table-hover table-borderless mb-0">
             <thead class="bg-secondary text-white">
             <tr>
@@ -37,7 +37,7 @@
                                 data-toggle="tooltip"
                                 data-placement="top"
                                 title="{{ 'tooltip.show.more'|trans }} {{ entry.userDetails.firstName }}"
-                                class="btn btn-sm btn-outline-lightning rounded"
+                                class="btn btn-sm btn-outline-lightning rounded px-1 py-0"
                                 href="{{ path('app_dashboard_details_user', {id: entry.id, tab: 'summary'}) }}">
                             <i class="bi bi-person-circle"></i>
                         </a>
@@ -45,7 +45,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="5" class="text-center text-info bg-white">{{ 'table.footer.not_found'|trans }}</td>
+                    <td colspan="5" class="text-center text-danger bg-grey">{{ 'table.footer.not_found'|trans }}</td>
                 </tr>
             {% endfor %}
             </tbody>
