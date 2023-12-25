@@ -133,7 +133,8 @@
             </trans-unit>
             <trans-unit id="title.service.text">
                 <source>title.service.text</source>
-                <target><![CDATA[Leave your information using the <a class="link" href="{ contact }">page</a> and we will contact you within 1 business day.]]></target>
+                <target>
+                    <![CDATA[Leave your information using the <a class="link" href="{ contact }">page</a> and we will contact you within 1 business day.]]></target>
             </trans-unit>
             <trans-unit id="title.contact_information">
                 <source>title.contact_information</source>
@@ -190,6 +191,14 @@
             <trans-unit id="title.dashboard.providers">
                 <source>title.dashboard.providers</source>
                 <target>Providers</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.suppliers">
+                <source>title.dashboard.suppliers</source>
+                <target>Suppliers</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.manufacturers">
+                <source>title.dashboard.manufacturers</source>
+                <target>Manufacturers</target>
             </trans-unit>
             <trans-unit id="title.dashboard.overview_gallery">
                 <source>title.dashboard.overview_gallery</source>
@@ -299,6 +308,14 @@
                 <source>table.header.name</source>
                 <target>Name</target>
             </trans-unit>
+            <trans-unit id="table.header.country">
+                <source>table.header.country</source>
+                <target>Country</target>
+            </trans-unit>
+            <trans-unit id="table.header.description">
+                <source>table.header.description</source>
+                <target>Description</target>
+            </trans-unit>
             <trans-unit id="table.header.url">
                 <source>table.header.url</source>
                 <target>Url</target>
@@ -358,6 +375,14 @@
             <trans-unit id="label.form.product_name">
                 <source>label.form.product_name</source>
                 <target>Product Name</target>
+            </trans-unit>
+            <trans-unit id="label.form.provider_name">
+                <source>label.form.provider_name</source>
+                <target>Provider Name</target>
+            </trans-unit>
+            <trans-unit id="label.form.provider_url">
+                <source>label.form.provider_url</source>
+                <target>Provider Url</target>
             </trans-unit>
             <trans-unit id="label.form.market_description">
                 <source>label.form.market_description</source>
@@ -838,6 +863,14 @@
             <trans-unit id="market.provider.create">
                 <source>market.provider.create</source>
                 <target>Add Provider</target>
+            </trans-unit>
+            <trans-unit id="market.supplier.create">
+                <source>market.supplier.create</source>
+                <target>Add Supplier</target>
+            </trans-unit>
+            <trans-unit id="market.manufacturer.create">
+                <source>market.manufacturer.create</source>
+                <target>Add Manufacturer</target>
             </trans-unit>
             <trans-unit id="market.suppliers">
                 <source>market.suppliers</source>

@@ -82,6 +82,10 @@
                 <source>form.phone.not_valid</source>
                 <target>The phone number '{{ value }}' is not a valid. Please provide a valid phone number.</target>
             </trans-unit>
+            <trans-unit id="form.url.not_valid">
+                <source>form.url.not_valid</source>
+                <target>The Url '{{ value }}' is not a valid. Please provide a valid Url.</target>
+            </trans-unit>
             <trans-unit id="form.title.not_blank">
                 <source>form.title.not_blank</source>
                 <target>The title can't be blank.</target>

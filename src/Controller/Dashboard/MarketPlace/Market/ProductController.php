@@ -140,7 +140,7 @@ class ProductController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/create/{market}', name: 'app_dashboard_market_place_create_product')]
+    #[Route('/create/{market}', name: 'app_dashboard_market_place_create_product', methods: ['GET', 'POST'])]
     public function create(
         Request                $request,
         UserInterface          $user,

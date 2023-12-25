@@ -1,11 +1,11 @@
 {% extends 'dashboard/index.html.twig' %}
 
-{% set _title_extend = 'title.dashboard.providers'|trans %}
+{% set _title_extend = 'title.dashboard.suppliers'|trans %}
 {% block title_extend %}{{ _title_extend }} - {% endblock %}
 {% block title_content %}
     {{ _title_extend }}
-    <a type="button" class="btn btn-sm external btn-outline-secondary float-right mt-1"
-       href="{{ path('app_dashboard_market_place_create_provider', {market: market.id}) }}">{{ 'market.provider.create'|trans }}</a>
+    <a type="button" target="_blank" class="btn btn-sm external btn-outline-secondary float-right mt-1"
+       href="#">{{ 'market.provider.create'|trans }}</a>
 {% endblock %}
 
 {% block content %}
@@ -15,28 +15,26 @@
             <tr>
                 <th class="text-center font-weight-light" scope="col">{{ 'table.header.id'|trans }}</th>
                 <th class="font-weight-light" scope="col">{{ 'table.header.name'|trans }}</th>
-                <th class="font-weight-light" scope="col">{{ 'table.header.url'|trans }}</th>
+                <th class="font-weight-light text-center" scope="col">{{ 'table.header.country'|trans }}</th>
                 <th class="font-weight-light text-center" scope="col">{{ 'table.header.handle'|trans }}</th>
             </tr>
             </thead>
             <tbody>
-            {% for provider in providers %}
+            {% for supplier in suppliers %}
                 <tr>
-                    <th scope="row" class="text-center">{{ provider.id }}</th>
+                    <th scope="row" class="text-center">{{ supplier.id }}</th>
                     <td>
                         <a data-toggle="tooltip"
                            data-placement="right"
                            class="link"
-                           title="{{ provider.name }}"
-                           href="{{ path('app_dashboard_market_place_edit_provider', {market: provider.market.id, id: provider.id}) }}">
-                            {{ provider.name|length > 30 ? provider.name|slice(0, 30) ~ '...' : provider.name }}
+                           title="{{ providers.name }}"
+                           href="{{ path('app_dashboard_market_place_edit_product', {market: supplier.market.id, id: supplier.id}) }}">
+                            {{ supplier.name|length > 30 ? supplier.name|slice(0, 30) ~ '...' : supplier.name }}
                         </a>
                     </td>
-                    <td>
-                        <a target="_blank" href="{{ provider.url }}">{{ provider.name }}</a>
-                    </td>
+                    <td>{{ supplier.country }}</td>
                     <td class="text-center">
-                        <a href="{{ path('app_dashboard_market_place_edit_provider', {market: provider.market.id, id: provider.id}) }}"
+                        <a href="{{ path('app_dashboard_market_place_edit_product', {market: supplier.market.id, id: supplier.id}) }}"
                            class="btn btn-sm btn-outline-lightning rounded px-1 py-0">
                             <i class="bi bi-pencil-square"></i>
                         </a>
