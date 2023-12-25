@@ -548,7 +548,31 @@ p:last-child {
 }
 
 .navbar.market {
-    box-shadow: 0 2px 2px -2px rgba(0,0,0,.2);
+    box-shadow: 0 2px 2px -2px rgba(0, 0, 0, .2);
+    background-color: #4e5768;
+    transition: all 0.90s ease 0s;
+    border-radius: 5px;
+}
+
+.navbar.market .navbar-nav .nav-link {
+    color: #9da7cc;
+    transition: background-size 350ms;
+}
+
+.navbar.market .btn-dark {
+    background-color: #4e5768;
+    border: none;
+}
+
+.navbar.market .dropdown-menu {
+    background-color: #4e5768;
+}
+.navbar.market .dropdown-menu .nav-link {
+    background: transparent;
+}
+
+.navbar.market .navbar-nav .nav-link:hover {
+    color: rgba(255, 255, 255, 0.95);
 }
 
 .tech-nav .navbar {
@@ -567,10 +591,7 @@ p:last-child {
 
 .tech-nav .navbar .navbar-nav .nav-item {
     position: relative;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    padding-left: 0;
-    padding-right: 0;
+    padding: 15px 0;
 }
 
 .tech-nav.index-navbar .navbar .navbar-nav .nav-item a {
@@ -1162,13 +1183,6 @@ a.preview:focus,
     padding-right: 8px;
 }
 
-/*.tech-form .pictures small {*/
-/*    font-size: 10px;*/
-/*    font-family: courier, monospace;*/
-/*    display: inline-block;*/
-/*    margin-right: 6px;*/
-/*}*/
-
 .tech-form ul.pictures .nav-link.active img {
     opacity: 1 !important;
 }
@@ -1410,6 +1424,13 @@ a.preview:focus,
 
 .section-area.default a:hover {
     color: rgba(32, 52, 170, 0.87);
+}
+.section-area .content a.external {
+    color: #2e4053;
+}
+
+.section-area .content a.external:hover {
+    color: rgba(211, 218, 255, 0.87);
 }
 
 .content-image {

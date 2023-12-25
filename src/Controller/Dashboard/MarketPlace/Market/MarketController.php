@@ -41,7 +41,7 @@ class MarketController extends AbstractController
         MarketRepository $marketRepository,
     ): Response
     {
-        $criteria = $this->criteria($user, null,'owner');
+        $criteria = $this->criteria($user, null, 'owner');
         $markets = $marketRepository->findBy($criteria, ['created_at' => 'desc']);
 
         return $this->render('dashboard/content/market_place/market/index.html.twig', $this->build($user) + [

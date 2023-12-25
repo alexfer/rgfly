@@ -42,8 +42,9 @@ class ProductController extends AbstractController
         EntityManagerInterface $em,
     ): Response
     {
-        $criteria = $this->criteria($user, ['market_id' => $request->get('market')], 'owner');
-        $market = $em->getRepository(Market::class)->findOneBy(['id' => $request->get('market')], ['id' => 'desc']);
+        $criteria = $this->criteria($user, ['id' => $request->get('market')], 'owner');
+        // TODO: check in future
+        $market = $em->getRepository(Market::class)->findOneBy($criteria, ['id' => 'desc']);
         $entries = $em->getRepository(MarketProduct::class)->findBy(['market' => $market], ['id' => 'desc']);
 
         return $this->render('dashboard/content/market_place/product/index.html.twig', $this->build($user) + [
@@ -52,6 +53,17 @@ class ProductController extends AbstractController
             ]);
     }
 
+    /**
+     * @param Request $request
+     * @param UserInterface $user
+     * @param MarketProduct $entry
+     * @param EntityManagerInterface $em
+     * @param TranslatorInterface $translator
+     * @param SluggerInterface $slugger
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     #[Route('/edit/{market}/{id}', name: 'app_dashboard_market_place_edit_product', methods: ['GET', 'POST'])]
     #[IsGranted(ProductVoter::EDIT, subject: 'entry', statusCode: Response::HTTP_FORBIDDEN)]
     public function edit(

@@ -187,6 +187,10 @@
                 <source>title.dashboard.overview_product</source>
                 <target>Products Overview</target>
             </trans-unit>
+            <trans-unit id="title.dashboard.providers">
+                <source>title.dashboard.providers</source>
+                <target>Providers</target>
+            </trans-unit>
             <trans-unit id="title.dashboard.overview_gallery">
                 <source>title.dashboard.overview_gallery</source>
                 <target>Gallery Overview</target>
@@ -294,6 +298,10 @@
             <trans-unit id="table.header.name">
                 <source>table.header.name</source>
                 <target>Name</target>
+            </trans-unit>
+            <trans-unit id="table.header.url">
+                <source>table.header.url</source>
+                <target>Url</target>
             </trans-unit>
             <trans-unit id="table.header.price">
                 <source>table.header.price</source>
@@ -822,6 +830,22 @@
             <trans-unit id="market.product.create">
                 <source>market.product.create</source>
                 <target>Add Product</target>
+            </trans-unit>
+            <trans-unit id="market.providers">
+                <source>market.providers</source>
+                <target>Providers</target>
+            </trans-unit>
+            <trans-unit id="market.provider.create">
+                <source>market.provider.create</source>
+                <target>Add Provider</target>
+            </trans-unit>
+            <trans-unit id="market.suppliers">
+                <source>market.suppliers</source>
+                <target>Suppliers</target>
+            </trans-unit>
+            <trans-unit id="market.manufacturers">
+                <source>market.manufacturers</source>
+                <target>Manufacturers</target>
             </trans-unit>
             <trans-unit id="market.products.overview">
                 <source>market.products.overview</source>

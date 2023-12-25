@@ -2,9 +2,8 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\{Category, MarketPlace\MarketCategory, User, UserDetails, UserSocial, Faq};
+use App\Entity\{Category, User, UserDetails, UserSocial, Faq};
 use DateTime;
-use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -13,7 +12,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class AppFixtures extends Fixture
 {
 
-    private $slugger;
+    private SluggerInterface $slugger;
 
     /**
      * @param UserPasswordHasherInterface $passwordHasher
@@ -36,7 +35,16 @@ class AppFixtures extends Fixture
         $this->loadUsers($manager);
         $this->loadCategories($manager);
         $this->loadQuestions($manager);
-        $this->loadProductCategories($manager);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getDependencies(): array
+    {
+        return [
+            MarketPlaceFixtures::class,
+        ];
     }
 
     /**
@@ -90,26 +98,6 @@ class AppFixtures extends Fixture
             $category->setDescription($description);
             $category->setPosition($position);
             $category->setCreatedAt(new DateTime());
-            $category->setDeletedAt(null);
-            $manager->persist($category);
-        }
-        $manager->flush();
-    }
-
-    /**
-     *
-     * @param ObjectManager $manager
-     * @return void
-     */
-    private function loadProductCategories(ObjectManager $manager): void
-    {
-        foreach ($this->getProductCategoryData() as [$name, $description, $position]) {
-            $category = new MarketCategory();
-            $category->setName($name);
-            $category->setSlug($this->slugger->slug($name)->lower());
-            $category->setDescription($description);
-            $category->setPosition($position);
-            $category->setCreatedAt(new DateTimeImmutable());
             $category->setDeletedAt(null);
             $manager->persist($category);
         }
@@ -203,23 +191,4 @@ class AppFixtures extends Fixture
         ];
     }
 
-    /**
-     *
-     * @return array
-     */
-    private function getProductCategoryData(): array
-    {
-        return [
-            ['Computers & Notebooks', 'Computers & Notebooks.', 1],
-            ['Smartphones, TV and Electronics', 'Smartphones, TV and Electronics.', 2],
-            ['Products for gamers', 'Products for gamers.', 3],
-            ['Products for home', 'Products for home.', 4],
-            ['Automotive Tools', 'Automotive Tools.', 5],
-            ['Plumbing and repair', 'Plumbing and repair.', 6],
-            ['Sport', 'Sport.', 7],
-            ['Beauty and health', 'Beauty and health.', 8],
-            ['Good for Kids', 'Good for Kids.', 9],
-            ['Sales', 'Sales.', 10],
-        ];
-    }
 }

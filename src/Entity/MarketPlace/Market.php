@@ -45,11 +45,19 @@ class Market
     #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketProvider::class)]
     private Collection $marketProviders;
 
+    #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketSupplier::class)]
+    private Collection $marketSuppliers;
+
+    #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketManufacturer::class)]
+    private Collection $marketManufacturers;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
         $this->products = new ArrayCollection();
         $this->marketProviders = new ArrayCollection();
+        $this->marketSuppliers = new ArrayCollection();
+        $this->marketManufacturers = new ArrayCollection();
     }
 
     /**
@@ -231,6 +239,10 @@ class Market
         return $this->marketProviders;
     }
 
+    /**
+     * @param MarketProvider $marketProvider
+     * @return $this
+     */
     public function addMarketProvider(MarketProvider $marketProvider): static
     {
         if (!$this->marketProviders->contains($marketProvider)) {
@@ -241,12 +253,76 @@ class Market
         return $this;
     }
 
+    /**
+     * @param MarketProvider $marketProvider
+     * @return $this
+     */
     public function removeMarketProvider(MarketProvider $marketProvider): static
     {
         if ($this->marketProviders->removeElement($marketProvider)) {
             // set the owning side to null (unless already changed)
             if ($marketProvider->getMarket() === $this) {
                 $marketProvider->setMarket(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketSupplier>
+     */
+    public function getMarketSuppliers(): Collection
+    {
+        return $this->marketSuppliers;
+    }
+
+    public function addMarketSupplier(MarketSupplier $marketSupplier): static
+    {
+        if (!$this->marketSuppliers->contains($marketSupplier)) {
+            $this->marketSuppliers->add($marketSupplier);
+            $marketSupplier->setMarket($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMarketSupplier(MarketSupplier $marketSupplier): static
+    {
+        if ($this->marketSuppliers->removeElement($marketSupplier)) {
+            // set the owning side to null (unless already changed)
+            if ($marketSupplier->getMarket() === $this) {
+                $marketSupplier->setMarket(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketManufacturer>
+     */
+    public function getMarketManufacturers(): Collection
+    {
+        return $this->marketManufacturers;
+    }
+
+    public function addMarketManufacturer(MarketManufacturer $marketManufacturer): static
+    {
+        if (!$this->marketManufacturers->contains($marketManufacturer)) {
+            $this->marketManufacturers->add($marketManufacturer);
+            $marketManufacturer->setMarket($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMarketManufacturer(MarketManufacturer $marketManufacturer): static
+    {
+        if ($this->marketManufacturers->removeElement($marketManufacturer)) {
+            // set the owning side to null (unless already changed)
+            if ($marketManufacturer->getMarket() === $this) {
+                $marketManufacturer->setMarket(null);
             }
         }
 

@@ -27,7 +27,7 @@ class IndexController extends AbstractController
      */
     #[Route('', name: 'app_dashboard')]
     public function index(
-        UserInterface $user,
+        UserInterface          $user,
         EntityManagerInterface $em,
     ): Response
     {
