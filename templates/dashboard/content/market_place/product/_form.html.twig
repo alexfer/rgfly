@@ -41,6 +41,24 @@
             <sm class="text-danger">{{ form_errors(form.price) }}</sm>
         </div>
     </div>
+    <div class="form-group">
+        {% set provider_error = form.provider.vars.errors|length ? 'form-control error' : 'form-control' %}
+        {{ form_label(form.provider, 'label.form.provider_name') }}
+        {{ form_widget(form.provider, {attr: {class: provider_error}}) }}
+        <sm class="text-danger">{{ form_errors(form.provider) }}</sm>
+    </div>
+    <div class="form-group">
+        {% set supplier_error = form.supplier.vars.errors|length ? 'form-control error' : 'form-control' %}
+        {{ form_label(form.supplier, 'label.form.supplier_name') }}
+        {{ form_widget(form.supplier, {attr: {class: supplier_error}}) }}
+        <sm class="text-danger">{{ form_errors(form.supplier) }}</sm>
+    </div>
+    <div class="form-group">
+        {% set manufacturer_error = form.manufacturer.vars.errors|length ? 'form-control error' : 'form-control' %}
+        {{ form_label(form.manufacturer, 'label.form.manufacturer_name') }}
+        {{ form_widget(form.manufacturer, {attr: {class: manufacturer_error}}) }}
+        <sm class="text-danger">{{ form_errors(form.manufacturer) }}</sm>
+    </div>
     {% include 'dashboard/content/form/category.html.twig' with {'categories': categories, 'collection': form.vars.data.marketCategoryProducts} %}
     <div class="form-group">
         {% set description_error = form.description.vars.errors|length ? 'form-control error' : 'form-control' %}

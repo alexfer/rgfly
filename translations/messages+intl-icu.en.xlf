@@ -376,6 +376,14 @@
                 <source>label.form.product_name</source>
                 <target>Product Name</target>
             </trans-unit>
+            <trans-unit id="label.form.supplier_name">
+                <source>label.form.supplier_name</source>
+                <target>Supplier Name</target>
+            </trans-unit>
+            <trans-unit id="label.form.manufacturer_name">
+                <source>label.form.manufacturer_name</source>
+                <target>Manufacturer Name</target>
+            </trans-unit>
             <trans-unit id="label.form.provider_name">
                 <source>label.form.provider_name</source>
                 <target>Provider Name</target>
