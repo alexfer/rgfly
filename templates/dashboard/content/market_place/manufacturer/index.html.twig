@@ -5,7 +5,7 @@
 {% block title_content %}
     {{ _title_extend }}
     <a type="button" class="btn btn-sm external btn-outline-secondary float-right mt-1"
-       href="#">{{ 'market.manufacturer.create'|trans }}</a>
+       href="{{ path('app_dashboard_market_place_create_manufacturer', {market: market.id}) }}">{{ 'market.manufacturer.create'|trans }}</a>
 {% endblock %}
 
 {% block content %}
@@ -27,14 +27,14 @@
                         <a data-toggle="tooltip"
                            data-placement="right"
                            class="link"
-                           title="{{ providers.name }}"
-                           href="{{ path('app_dashboard_market_place_edit_product', {market: manufacturer.market.id, id: manufacturer.id}) }}">
+                           title="{{ manufacturer.name }}"
+                           href="{{ path('app_dashboard_market_place_edit_manufacturer', {market: manufacturer.market.id, id: manufacturer.id}) }}">
                             {{ manufacturer.name|length > 30 ? manufacturer.name|slice(0, 30) ~ '...' : manufacturer.name }}
                         </a>
                     </td>
                     <td>{{ manufacturer.description }}</td>
                     <td class="text-center">
-                        <a href="{{ path('app_dashboard_market_place_edit_product', {market: manufacturer.market.id, id: manufacturer.id}) }}"
+                        <a href="{{ path('app_dashboard_market_place_edit_manufacturer', {market: manufacturer.market.id, id: manufacturer.id}) }}"
                            class="btn btn-sm btn-outline-lightning rounded px-1 py-0">
                             <i class="bi bi-pencil-square"></i>
                         </a>

@@ -2,9 +2,15 @@
 
 namespace App\Form\Type\Dashboard\MarketPlace;
 
+use AllowDynamicProperties;
+use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketProduct;
 use App\Entity\MarketPlace\MarketProvider;
+use App\Service\MarketPlace\MarketTrait;
+use App\Service\Navbar;
+use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\Types\Integer;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -15,13 +21,28 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 
-class ProductType extends AbstractType
+#[AllowDynamicProperties] class ProductType extends AbstractType
 {
+
+    private null|Market $market;
+
+    public function __construct(private readonly Security $security, RequestStack $requestStack, EntityManagerInterface $em)
+    {
+        $user = $security->getUser();
+        $request = $requestStack->getCurrentRequest();
+        $this->market = $em->getRepository(Market::class)->findOneBy(['id' => $request->get('market')]);
+    }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -31,20 +52,26 @@ class ProductType extends AbstractType
     {
         $providers = $suppliers = $manufacturers = [];
 
-        $marketProviders = $options['data']?->getMarket()?->getMarketProviders();
-        $marketSuppliers = $options['data']?->getMarket()?->getMarketSuppliers();
-        $marketSManufacturers = $options['data']?->getMarket()?->getMarketManufacturers();
+        $marketProviders = $this->market->getMarketProviders()->toArray();
+        $marketSuppliers = $this->market->getMarketSuppliers()->toArray();
+        $marketSManufacturers = $this->market->getMarketManufacturers()->toArray();
 
-        foreach ($marketProviders as $provider) {
-            $providers[$provider->getId()] = $provider->getName();
+        if ($marketProviders) {
+            foreach ($marketProviders as $provider) {
+                $providers[$provider->getId()] = $provider->getName();
+            }
         }
 
-        foreach ($marketSuppliers as $supplier) {
-            $suppliers[$supplier->getId()] = $supplier->getName();
+        if ($marketSuppliers) {
+            foreach ($marketSuppliers as $supplier) {
+                $suppliers[$supplier->getId()] = $supplier->getName();
+            }
         }
 
-        foreach ($marketSManufacturers as $manufacturer) {
-            $suppliers[$manufacturer->getId()] = $manufacturer->getName();
+        if ($marketSManufacturers) {
+            foreach ($marketSManufacturers as $manufacturer) {
+                $manufacturers[$manufacturer->getId()] = $manufacturer->getName();
+            }
         }
 
         $builder

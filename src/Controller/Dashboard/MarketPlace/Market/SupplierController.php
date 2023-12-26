@@ -99,7 +99,7 @@ class SupplierController extends AbstractController
         TranslatorInterface    $translator,
     ): Response
     {
-        $form = $this->createForm(ProviderType::class, $supplier);
+        $form = $this->createForm(SupplerType::class, $supplier);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

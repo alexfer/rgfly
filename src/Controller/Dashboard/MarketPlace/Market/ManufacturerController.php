@@ -96,7 +96,7 @@ class ManufacturerController extends AbstractController
     public function edit(
         Request                $request,
         UserInterface          $user,
-        MarketManufacturer         $manufacturer,
+        MarketManufacturer     $manufacturer,
         EntityManagerInterface $em,
         TranslatorInterface    $translator,
     ): Response

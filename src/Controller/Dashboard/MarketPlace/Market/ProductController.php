@@ -8,6 +8,7 @@ use App\Entity\MarketPlace\MarketCategoryProduct;
 use App\Entity\MarketPlace\MarketProduct;
 use App\Form\Type\Dashboard\MarketPlace\ProductType;
 use App\Security\Voter\ProductVoter;
+use App\Service\MarketPlace\MarketTrait;
 use App\Service\Navbar;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,7 +26,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/dashboard/market-place/product')]
 class ProductController extends AbstractController
 {
-    use Navbar;
+    use Navbar, MarketTrait;
 
     /**
      * @param Request $request
@@ -150,7 +151,7 @@ class ProductController extends AbstractController
     ): Response
     {
         $categories = $em->getRepository(MarketCategory::class)->findBy([], ['name' => 'asc']);
-        $market = $em->getRepository(Market::class)->findOneBy($this->criteria($user, ['id' => $request->get('market')], 'owner'));
+        $market = $this->market($request, $user, $em);
 
         $entry = new MarketProduct();
 
