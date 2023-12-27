@@ -3,6 +3,8 @@
 namespace App\Entity\MarketPlace;
 
 use App\Repository\MarketPlace\MarketManufacturerRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -22,6 +24,14 @@ class MarketManufacturer
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
+
+    #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: MarketProductManufacturer::class)]
+    private Collection $marketProductManufacturers;
+
+    public function __construct()
+    {
+        $this->marketProductManufacturers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -60,6 +70,36 @@ class MarketManufacturer
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketProductManufacturer>
+     */
+    public function getMarketProductManufacturers(): Collection
+    {
+        return $this->marketProductManufacturers;
+    }
+
+    public function addMarketProductManufacturer(MarketProductManufacturer $marketProductManufacturer): static
+    {
+        if (!$this->marketProductManufacturers->contains($marketProductManufacturer)) {
+            $this->marketProductManufacturers->add($marketProductManufacturer);
+            $marketProductManufacturer->setManufacturer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMarketProductManufacturer(MarketProductManufacturer $marketProductManufacturer): static
+    {
+        if ($this->marketProductManufacturers->removeElement($marketProductManufacturer)) {
+            // set the owning side to null (unless already changed)
+            if ($marketProductManufacturer->getManufacturer() === $this) {
+                $marketProductManufacturer->setManufacturer(null);
+            }
+        }
 
         return $this;
     }

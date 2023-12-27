@@ -74,6 +74,8 @@ use Symfony\Component\Validator\Constraints\Regex;
             }
         }
 
+        //dd($options['data']->getMarketProductProvider()->getProvider());
+
         $builder
             ->add('name', TextType::class, [
                 'attr' => [
@@ -131,6 +133,8 @@ use Symfony\Component\Validator\Constraints\Regex;
                 'required' => false,
                 'multiple' => false,
                 'expanded' => false,
+                'data' => $options['data']->getMarketProductProvider() ? $options['data']->getMarketProductProvider()->getProvider()->getid(): 0,
+                //'data' => 0,
                 'placeholder' => 'label.form.provider_name',
                 'choices' => array_flip($providers),
             ])
@@ -139,6 +143,7 @@ use Symfony\Component\Validator\Constraints\Regex;
                 'required' => false,
                 'multiple' => false,
                 'expanded' => false,
+                'data' => $options['data']->getMarketProductSupplier() ? $options['data']->getMarketProductSupplier()->getSupplier()->getid(): 0,
                 'placeholder' => 'label.form.supplier_name',
                 'choices' => array_flip($suppliers),
             ])
@@ -147,6 +152,7 @@ use Symfony\Component\Validator\Constraints\Regex;
                 'required' => false,
                 'multiple' => false,
                 'expanded' => false,
+                'data' => $options['data']->getMarketProductManufacturer() ? $options['data']->getMarketProductManufacturer()->getManufacturer()->getid(): 0,
                 'placeholder' => 'label.form.manufacturer_name',
                 'choices' => array_flip($manufacturers),
             ])

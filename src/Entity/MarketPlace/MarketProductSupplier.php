@@ -13,32 +13,22 @@ class MarketProductSupplier
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'marketProductSupplier', cascade: ['persist', 'remove'])]
     private ?MarketProduct $product = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'marketProductSuppliers')]
     private ?MarketSupplier $supplier = null;
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return MarketProduct|null
-     */
     public function getProduct(): ?MarketProduct
     {
         return $this->product;
     }
 
-    /**
-     * @param MarketProduct|null $product
-     * @return $this
-     */
     public function setProduct(?MarketProduct $product): static
     {
         $this->product = $product;
@@ -46,18 +36,11 @@ class MarketProductSupplier
         return $this;
     }
 
-    /**
-     * @return MarketSupplier|null
-     */
     public function getSupplier(): ?MarketSupplier
     {
         return $this->supplier;
     }
 
-    /**
-     * @param MarketSupplier|null $supplier
-     * @return $this
-     */
     public function setSupplier(?MarketSupplier $supplier): static
     {
         $this->supplier = $supplier;

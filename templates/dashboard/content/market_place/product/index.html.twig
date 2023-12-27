@@ -5,21 +5,7 @@
 {% block title_content %}{{ _title_extend }}{% endblock %}
 
 {% block content %}
-    <nav class="navbar market navbar-expand-lg navbar-light mb-2">
-    <div class="collapse navbar-collapse" id="navbar-market">
-        <div class="navbar-nav">
-            <a class="nav-item nav-link"
-               href="{{ path('app_dashboard_market_place_create_product', {market: market.id}) }}">{{ 'market.product.create'|trans }}</a>
-            <a class="nav-item nav-link"
-               href="{{ path('app_dashboard_market_place_market_provider', {market: market.id}) }}">{{ 'market.providers'|trans }}</a>
-            <a class="nav-item nav-link"
-               href="{{ path('app_dashboard_market_place_market_supplier', {market: market.id}) }}">{{ 'market.suppliers'|trans }}</a>
-            <a class="nav-item nav-link"
-               href="{{ path('app_dashboard_market_place_market_manufacturer', {market: market.id}) }}">{{ 'market.manufacturers'|trans }}</a>
-        </div>
-    </div>
-    <span class="navbar-text text-white font-weight-bold">{{ market.name }}</span>
-</nav>
+    {% include 'dashboard/content/market_place/navbar/nav.html.twig' %}
     <div class="table-responsive table-sm card">
         <table class="table table-hover table-borderless mb-0">
             <thead class="bg-secondary text-white">

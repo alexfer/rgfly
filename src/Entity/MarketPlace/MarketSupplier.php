@@ -3,6 +3,8 @@
 namespace App\Entity\MarketPlace;
 
 use App\Repository\MarketPlace\MarketSupplierRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MarketSupplierRepository::class)]
@@ -21,6 +23,14 @@ class MarketSupplier
 
     #[ORM\Column(length: 3)]
     private ?string $country = null;
+
+    #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: MarketProductSupplier::class)]
+    private Collection $marketProductSuppliers;
+
+    public function __construct()
+    {
+        $this->marketProductSuppliers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -59,6 +69,36 @@ class MarketSupplier
     public function setCountry(string $country): static
     {
         $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketProductSupplier>
+     */
+    public function getMarketProductSuppliers(): Collection
+    {
+        return $this->marketProductSuppliers;
+    }
+
+    public function addMarketProductSupplier(MarketProductSupplier $marketProductSupplier): static
+    {
+        if (!$this->marketProductSuppliers->contains($marketProductSupplier)) {
+            $this->marketProductSuppliers->add($marketProductSupplier);
+            $marketProductSupplier->setSupplier($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMarketProductSupplier(MarketProductSupplier $marketProductSupplier): static
+    {
+        if ($this->marketProductSuppliers->removeElement($marketProductSupplier)) {
+            // set the owning side to null (unless already changed)
+            if ($marketProductSupplier->getSupplier() === $this) {
+                $marketProductSupplier->setSupplier(null);
+            }
+        }
 
         return $this;
     }

@@ -60,6 +60,15 @@ class MarketProduct
     #[ORM\ManyToOne(inversedBy: 'products')]
     private ?Market $market = null;
 
+    #[ORM\OneToOne(mappedBy: 'product', cascade: ['persist', 'remove'])]
+    private ?MarketProductProvider $marketProductProvider = null;
+
+    #[ORM\OneToOne(mappedBy: 'product', cascade: ['persist', 'remove'])]
+    private ?MarketProductSupplier $marketProductSupplier = null;
+
+    #[ORM\OneToOne(mappedBy: 'product', cascade: ['persist', 'remove'])]
+    private ?MarketProductManufacturer $marketProductManufacturer = null;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
@@ -312,6 +321,72 @@ class MarketProduct
     public function setMarket(?Market $market): static
     {
         $this->market = $market;
+
+        return $this;
+    }
+
+    public function getMarketProductProvider(): ?MarketProductProvider
+    {
+        return $this->marketProductProvider;
+    }
+
+    public function setMarketProductProvider(?MarketProductProvider $marketProductProvider): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($marketProductProvider === null && $this->marketProductProvider !== null) {
+            $this->marketProductProvider->setProduct(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($marketProductProvider !== null && $marketProductProvider->getProduct() !== $this) {
+            $marketProductProvider->setProduct($this);
+        }
+
+        $this->marketProductProvider = $marketProductProvider;
+
+        return $this;
+    }
+
+    public function getMarketProductSupplier(): ?MarketProductSupplier
+    {
+        return $this->marketProductSupplier;
+    }
+
+    public function setMarketProductSupplier(?MarketProductSupplier $marketProductSupplier): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($marketProductSupplier === null && $this->marketProductSupplier !== null) {
+            $this->marketProductSupplier->setProduct(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($marketProductSupplier !== null && $marketProductSupplier->getProduct() !== $this) {
+            $marketProductSupplier->setProduct($this);
+        }
+
+        $this->marketProductSupplier = $marketProductSupplier;
+
+        return $this;
+    }
+
+    public function getMarketProductManufacturer(): ?MarketProductManufacturer
+    {
+        return $this->marketProductManufacturer;
+    }
+
+    public function setMarketProductManufacturer(?MarketProductManufacturer $marketProductManufacturer): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($marketProductManufacturer === null && $this->marketProductManufacturer !== null) {
+            $this->marketProductManufacturer->setProduct(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($marketProductManufacturer !== null && $marketProductManufacturer->getProduct() !== $this) {
+            $marketProductManufacturer->setProduct($this);
+        }
+
+        $this->marketProductManufacturer = $marketProductManufacturer;
 
         return $this;
     }

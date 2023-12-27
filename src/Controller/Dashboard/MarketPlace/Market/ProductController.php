@@ -5,7 +5,13 @@ namespace App\Controller\Dashboard\MarketPlace\Market;
 use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketCategory;
 use App\Entity\MarketPlace\MarketCategoryProduct;
+use App\Entity\MarketPlace\MarketManufacturer;
 use App\Entity\MarketPlace\MarketProduct;
+use App\Entity\MarketPlace\MarketProductManufacturer;
+use App\Entity\MarketPlace\MarketProductProvider;
+use App\Entity\MarketPlace\MarketProductSupplier;
+use App\Entity\MarketPlace\MarketProvider;
+use App\Entity\MarketPlace\MarketSupplier;
 use App\Form\Type\Dashboard\MarketPlace\ProductType;
 use App\Security\Voter\ProductVoter;
 use App\Service\MarketPlace\MarketTrait;
@@ -112,6 +118,32 @@ class ProductController extends AbstractController
             } else {
                 $repository->removeCategoryProduct($entry);
             }
+
+            $supplier = $em->getRepository(MarketSupplier::class)
+                ->findOneBy(['id' => $form->get('supplier')->getData()]);
+            $provider = $em->getRepository(MarketProvider::class)
+                ->findOneBy(['id' => $form->get('provider')->getData()]);
+            $manufacturer = $em->getRepository(MarketManufacturer::class)
+                ->findOneBy(['id' => $form->get('manufacturer')->getData()]);
+
+            if ($supplier) {
+                $ps = $entry->getMarketProductSupplier();
+                $ps->setProduct($entry)->setSupplier($supplier);
+                $em->persist($ps);
+            }
+
+            if ($provider) {
+                $pp = $entry->getMarketProductProvider();
+                $pp->setProduct($entry)->setProvider($provider);
+                $em->persist($pp);
+            }
+
+            if ($manufacturer) {
+                $pm = $entry->getMarketProductManufacturer();
+                $pm->setProduct($entry)->setManufacturer($manufacturer);
+                $em->persist($pm);
+            }
+
             $em->persist($entry);
             $em->flush();
 
@@ -179,13 +211,35 @@ class ProductController extends AbstractController
             try {
                 $entry->setSlug($slug)->setMarket($market);
                 $em->persist($entry);
-                $em->flush();
             } catch (UniqueConstraintViolationException $e) {
                 $uniqueError = $translator->trans('slug.unique', [
                     '%name%' => $translator->trans('label.form.product_name'),
                     '%value%' => $name,
                 ], 'validators');
             }
+
+            $supplier = $em->getRepository(MarketSupplier::class)->findOneBy(['id' => $form->get('supplier')->getData()]);
+            $provider = $em->getRepository(MarketProvider::class)->findOneBy(['id' => $form->get('provider')->getData()]);
+            $manufacturer = $em->getRepository(MarketManufacturer::class)->findOneBy(['id' => $form->get('manufacturer')->getData()]);
+
+            if ($supplier) {
+                $ps = new MarketProductSupplier();
+                $ps->setProduct($entry)->setSupplier($supplier);
+                $em->persist($ps);
+            }
+
+            if ($provider) {
+                $pp = new MarketProductProvider();
+                $pp->setProduct($entry)->setProvider($provider);
+                $em->persist($pp);
+            }
+            if ($manufacturer) {
+                $pm = new MarketProductManufacturer();
+                $pm->setProduct($entry)->setManufacturer($manufacturer);
+                $em->persist($pm);
+            }
+
+            $em->flush();
 
             if (!$uniqueError) {
                 $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
