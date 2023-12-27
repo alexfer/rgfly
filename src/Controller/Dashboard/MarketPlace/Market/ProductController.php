@@ -21,6 +21,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -96,7 +98,7 @@ class ProductController extends AbstractController
             try {
                 $entry->setSlug($slugger->slug($name)->lower());
                 $em->persist($entry);
-                $em->flush();
+                //$em->flush();
             } catch (UniqueConstraintViolationException $e) {
                 $uniqueError = $translator->trans('slug.unique', [
                     '%name%' => $translator->trans('label.form.title'),
@@ -119,30 +121,7 @@ class ProductController extends AbstractController
                 $repository->removeCategoryProduct($entry);
             }
 
-            $supplier = $em->getRepository(MarketSupplier::class)
-                ->findOneBy(['id' => $form->get('supplier')->getData()]);
-            $provider = $em->getRepository(MarketProvider::class)
-                ->findOneBy(['id' => $form->get('provider')->getData()]);
-            $manufacturer = $em->getRepository(MarketManufacturer::class)
-                ->findOneBy(['id' => $form->get('manufacturer')->getData()]);
-
-            if ($supplier) {
-                $ps = $entry->getMarketProductSupplier();
-                $ps->setProduct($entry)->setSupplier($supplier);
-                $em->persist($ps);
-            }
-
-            if ($provider) {
-                $pp = $entry->getMarketProductProvider();
-                $pp->setProduct($entry)->setProvider($provider);
-                $em->persist($pp);
-            }
-
-            if ($manufacturer) {
-                $pm = $entry->getMarketProductManufacturer();
-                $pm->setProduct($entry)->setManufacturer($manufacturer);
-                $em->persist($pm);
-            }
+            $em = $this->handleRelations($em, $form, $entry);
 
             $em->persist($entry);
             $em->flush();
@@ -218,26 +197,7 @@ class ProductController extends AbstractController
                 ], 'validators');
             }
 
-            $supplier = $em->getRepository(MarketSupplier::class)->findOneBy(['id' => $form->get('supplier')->getData()]);
-            $provider = $em->getRepository(MarketProvider::class)->findOneBy(['id' => $form->get('provider')->getData()]);
-            $manufacturer = $em->getRepository(MarketManufacturer::class)->findOneBy(['id' => $form->get('manufacturer')->getData()]);
-
-            if ($supplier) {
-                $ps = new MarketProductSupplier();
-                $ps->setProduct($entry)->setSupplier($supplier);
-                $em->persist($ps);
-            }
-
-            if ($provider) {
-                $pp = new MarketProductProvider();
-                $pp->setProduct($entry)->setProvider($provider);
-                $em->persist($pp);
-            }
-            if ($manufacturer) {
-                $pm = new MarketProductManufacturer();
-                $pm->setProduct($entry)->setManufacturer($manufacturer);
-                $em->persist($pm);
-            }
+            $em = $this->handleRelations($em, $form, $entry);
 
             $em->flush();
 
@@ -253,5 +213,53 @@ class ProductController extends AbstractController
                 'entry' => $entry,
                 'categories' => $categories,
             ]);
+    }
+
+    /**
+     * @param EntityManagerInterface $em
+     * @param FormInterface $form
+     * @param MarketProduct $entry
+     * @return EntityManagerInterface
+     */
+    private function handleRelations(
+        EntityManagerInterface $em,
+        FormInterface          $form,
+        MarketProduct          $entry,
+    ): EntityManagerInterface
+    {
+        $supplier = $em->getRepository(MarketSupplier::class)
+            ->findOneBy(['id' => $form->get('supplier')->getData()]);
+        $provider = $em->getRepository(MarketProvider::class)
+            ->findOneBy(['id' => $form->get('provider')->getData()]);
+        $manufacturer = $em->getRepository(MarketManufacturer::class)
+            ->findOneBy(['id' => $form->get('manufacturer')->getData()]);
+
+        if ($supplier) {
+            $ps = $entry->getMarketProductSupplier();
+            if(!$ps) {
+                $ps = new MarketProductSupplier();
+            }
+            $ps->setProduct($entry)->setSupplier($supplier);
+            $em->persist($ps);
+        }
+
+        if ($provider) {
+            $pp = $entry->getMarketProductProvider();
+            if(!$pp) {
+                $pp = new MarketProductProvider();
+            }
+            $pp->setProduct($entry)->setProvider($provider);
+            $em->persist($pp);
+        }
+        if ($manufacturer) {
+            $pm = $entry->getMarketProductManufacturer();
+            if(!$pm) {
+                $pm = new MarketProductManufacturer();
+            }
+            $pm->setProduct($entry)->setManufacturer($manufacturer);
+            $em->persist($pm);
+        }
+
+        return $em;
     }
 }
