@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketProductAttach;
 use App\Repository\AttachRepository;
 use DateTime;
@@ -13,7 +14,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: AttachRepository::class)]
 class Attach
 {
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER)]
@@ -42,6 +42,9 @@ class Attach
 
     #[ORM\OneToMany(mappedBy: 'attach', targetEntity: MarketProductAttach::class)]
     private Collection $marketProductAttaches;
+
+    #[ORM\OneToOne(mappedBy: 'attach', cascade: ['persist', 'remove'])]
+    private ?Market $market = null;
 
     public function __construct()
     {
@@ -206,6 +209,28 @@ class Attach
                 $marketProductAttach->setAttach(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMarket(): ?Market
+    {
+        return $this->market;
+    }
+
+    public function setMarket(?Market $market): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($market === null && $this->market !== null) {
+            $this->market->setAttach(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($market !== null && $market->getAttach() !== $this) {
+            $market->setAttach($this);
+        }
+
+        $this->market = $market;
 
         return $this;
     }

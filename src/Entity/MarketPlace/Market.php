@@ -2,6 +2,7 @@
 
 namespace App\Entity\MarketPlace;
 
+use App\Entity\Attach;
 use App\Entity\User;
 use App\Repository\MarketPlace\MarketRepository;
 use DateTime;
@@ -27,6 +28,15 @@ class Market
     #[ORM\Column(length: 512)]
     private ?string $name = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $address = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $email = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $phone = null;
+
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
@@ -50,6 +60,9 @@ class Market
 
     #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketManufacturer::class)]
     private Collection $marketManufacturers;
+
+    #[ORM\OneToOne(inversedBy: 'market', cascade: ['persist', 'remove'])]
+    private ?Attach $attach = null;
 
     public function __construct()
     {
@@ -110,6 +123,63 @@ class Market
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    /**
+     * @param string $address
+     * @return $this
+     */
+    public function setAddress(string $address): static
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     * @return $this
+     */
+    public function setEmail(string $email): static
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param string $phone
+     * @return $this
+     */
+    public function setPhone(string $phone): static
+    {
+        $this->phone = $phone;
 
         return $this;
     }
@@ -325,6 +395,18 @@ class Market
                 $marketManufacturer->setMarket(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAttach(): ?Attach
+    {
+        return $this->attach;
+    }
+
+    public function setAttach(?Attach $attach): static
+    {
+        $this->attach = $attach;
 
         return $this;
     }

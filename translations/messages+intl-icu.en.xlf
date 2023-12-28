@@ -364,6 +364,10 @@
                 <source>label.form.new_password</source>
                 <target>New password</target>
             </trans-unit>
+            <trans-unit id="label.form.logo">
+                <source>label.form.logo</source>
+                <target>Market logo</target>
+            </trans-unit>
             <trans-unit id="label.form.repeat_password">
                 <source>label.form.repeat_password</source>
                 <target>Repeat Password</target>
