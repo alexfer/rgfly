@@ -399,11 +399,18 @@ class Market
         return $this;
     }
 
+    /**
+     * @return Attach|null
+     */
     public function getAttach(): ?Attach
     {
         return $this->attach;
     }
 
+    /**
+     * @param Attach|null $attach
+     * @return $this
+     */
     public function setAttach(?Attach $attach): static
     {
         $this->attach = $attach;
