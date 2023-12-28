@@ -42,11 +42,6 @@ class ManufacturerController extends AbstractController
     ): Response
     {
         $market = $this->market($request, $user, $em);
-
-        if(!$market) {
-            throw $this->createAccessDeniedException();
-        }
-
         $manufacturers = $em->getRepository(MarketManufacturer::class)->findBy(['market' => $market], ['id' => 'desc']);
 
         return $this->render('dashboard/content/market_place/manufacturer/index.html.twig', $this->build($user) + [
@@ -95,6 +90,16 @@ class ManufacturerController extends AbstractController
             ]);
     }
 
+    /**
+     * @param Request $request
+     * @param UserInterface $user
+     * @param MarketManufacturer $manufacturer
+     * @param EntityManagerInterface $em
+     * @param TranslatorInterface $translator
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     #[Route('/edit/{market}/{id}', name: 'app_dashboard_market_place_edit_manufacturer', methods: ['GET', 'POST'])]
     public function edit(
         Request                $request,
@@ -104,11 +109,14 @@ class ManufacturerController extends AbstractController
         TranslatorInterface    $translator,
     ): Response
     {
+        $market = $this->market($request, $user, $em);
+
         $form = $this->createForm(ManufacturerType::class, $manufacturer);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $manufacturer->setMarket($market);
             $em->persist($manufacturer);
             $em->flush();
 

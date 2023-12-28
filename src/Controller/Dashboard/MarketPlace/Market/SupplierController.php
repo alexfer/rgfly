@@ -41,9 +41,7 @@ class SupplierController extends AbstractController
         EntityManagerInterface $em,
     ): Response
     {
-        $criteria = $this->criteria($user, ['id' => $request->get('market')], 'owner');
-        // TODO: check in future
-        $market = $em->getRepository(Market::class)->findOneBy($criteria, ['id' => 'desc']);
+        $market = $this->market($request, $user, $em);
         $suppliers = $em->getRepository(MarketSupplier::class)->findBy(['market' => $market], ['id' => 'desc']);
 
         return $this->render('dashboard/content/market_place/supplier/index.html.twig', $this->build($user) + [
@@ -93,6 +91,16 @@ class SupplierController extends AbstractController
             ]);
     }
 
+    /**
+     * @param Request $request
+     * @param UserInterface $user
+     * @param MarketSupplier $supplier
+     * @param EntityManagerInterface $em
+     * @param TranslatorInterface $translator
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     #[Route('/edit/{market}/{id}', name: 'app_dashboard_market_place_edit_supplier', methods: ['GET', 'POST'])]
     public function edit(
         Request                $request,
@@ -102,11 +110,13 @@ class SupplierController extends AbstractController
         TranslatorInterface    $translator,
     ): Response
     {
+        $market = $this->market($request, $user, $em);
+
         $form = $this->createForm(SupplerType::class, $supplier);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $supplier->setMarket($market);
             $em->persist($supplier);
             $em->flush();
 
