@@ -6,6 +6,7 @@ use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketProvider;
 use App\Form\Type\Dashboard\MarketPlace\ProductType;
 use App\Form\Type\Dashboard\MarketPlace\ProviderType;
+use App\Security\Voter\ProductVoter;
 use App\Service\MarketPlace\MarketTrait;
 use App\Service\Navbar;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/dashboard/market-place/provider')]
@@ -38,9 +40,7 @@ class ProviderController extends AbstractController
         EntityManagerInterface $em,
     ): Response
     {
-        $criteria = $this->criteria($user, ['id' => $request->get('market')], 'owner');
-        // TODO: check in future
-        $market = $em->getRepository(Market::class)->findOneBy($criteria, ['id' => 'desc']);
+        $market = $this->market($request, $user, $em);
         $providers = $em->getRepository(MarketProvider::class)->findBy(['market' => $market], ['id' => 'desc']);
 
         return $this->render('dashboard/content/market_place/provider/index.html.twig', $this->build($user) + [
@@ -89,6 +89,16 @@ class ProviderController extends AbstractController
             ]);
     }
 
+    /**
+     * @param Request $request
+     * @param UserInterface $user
+     * @param MarketProvider $provider
+     * @param EntityManagerInterface $em
+     * @param TranslatorInterface $translator
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     #[Route('/edit/{market}/{id}', name: 'app_dashboard_market_place_edit_provider', methods: ['GET', 'POST'])]
     public function edit(
         Request                $request,
@@ -98,11 +108,14 @@ class ProviderController extends AbstractController
         TranslatorInterface    $translator,
     ): Response
     {
+        $market = $this->market($request, $user, $em);
+
         $form = $this->createForm(ProviderType::class, $provider);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $provider->setMarket($market);
             $em->persist($provider);
             $em->flush();
 

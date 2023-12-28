@@ -51,9 +51,7 @@ class ProductController extends AbstractController
         EntityManagerInterface $em,
     ): Response
     {
-        $criteria = $this->criteria($user, ['id' => $request->get('market')], 'owner');
-        // TODO: check in future
-        $market = $em->getRepository(Market::class)->findOneBy($criteria, ['id' => 'desc']);
+        $market = $this->market($request, $user, $em);
         $entries = $em->getRepository(MarketProduct::class)->findBy(['market' => $market], ['id' => 'desc']);
 
         return $this->render('dashboard/content/market_place/product/index.html.twig', $this->build($user) + [
@@ -98,7 +96,6 @@ class ProductController extends AbstractController
             try {
                 $entry->setSlug($slugger->slug($name)->lower());
                 $em->persist($entry);
-                //$em->flush();
             } catch (UniqueConstraintViolationException $e) {
                 $uniqueError = $translator->trans('slug.unique', [
                     '%name%' => $translator->trans('label.form.title'),
@@ -109,6 +106,7 @@ class ProductController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid() && !$uniqueError) {
             $requestCategory = $request->get('category');
+
             if ($requestCategory) {
                 $repository->removeCategoryProduct($entry);
                 foreach ($requestCategory as $key => $value) {
@@ -120,6 +118,7 @@ class ProductController extends AbstractController
             } else {
                 $repository->removeCategoryProduct($entry);
             }
+
 
             $em = $this->handleRelations($em, $form, $entry);
 

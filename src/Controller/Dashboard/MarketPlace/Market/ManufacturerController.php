@@ -41,9 +41,12 @@ class ManufacturerController extends AbstractController
         EntityManagerInterface $em,
     ): Response
     {
-        $criteria = $this->criteria($user, ['id' => $request->get('market')], 'owner');
-        // TODO: check in future
-        $market = $em->getRepository(Market::class)->findOneBy($criteria, ['id' => 'desc']);
+        $market = $this->market($request, $user, $em);
+
+        if(!$market) {
+            throw $this->createAccessDeniedException();
+        }
+
         $manufacturers = $em->getRepository(MarketManufacturer::class)->findBy(['market' => $market], ['id' => 'desc']);
 
         return $this->render('dashboard/content/market_place/manufacturer/index.html.twig', $this->build($user) + [

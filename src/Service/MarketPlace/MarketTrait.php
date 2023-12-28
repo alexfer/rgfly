@@ -4,6 +4,7 @@ namespace App\Service\MarketPlace;
 
 use App\Entity\MarketPlace\Market;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,11 +20,17 @@ trait MarketTrait
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function market(Request $request, UserInterface $user, EntityManagerInterface $em): Market|null
+    protected function market(Request $request, UserInterface $user, EntityManagerInterface $em): ?Market
     {
-        return $em->getRepository(Market::class)
+        $market = $em->getRepository(Market::class)
             ->findOneBy($this->criteria($user, [
                 'id' => $request->get('market')
             ], 'owner'));
+
+        if (!$market) {
+            throw $this->createAccessDeniedException();
+        }
+        return $market;
     }
+
 }
