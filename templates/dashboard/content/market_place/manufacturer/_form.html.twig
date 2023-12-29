@@ -1,9 +1,9 @@
 {% extends 'dashboard/index.html.twig' %}
 
 {% if form.vars.data.id %}
-    {% set _title_extend = 'market.manufacturer.create'|trans %}
+    {% set _title_extend = 'brand.manufacturer.create'|trans %}
 {% else %}
-    {% set _title_extend = 'market.manufacturer.create'|trans %}
+    {% set _title_extend = 'brand.manufacturer.create'|trans %}
 {% endif %}
 {% block title_extend %}{{ _title_extend }} - {% endblock %}
 {% block title_content %}{{ _title_extend }}{% endblock %}

@@ -5,7 +5,7 @@ namespace App\Form\Type\Dashboard\MarketPlace;
 use AllowDynamicProperties;
 use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketProduct;
-use App\Entity\MarketPlace\MarketProvider;
+use App\Entity\MarketPlace\MarketBrand;
 use App\Service\MarketPlace\MarketTrait;
 use App\Service\Navbar;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,7 +40,8 @@ use Symfony\Component\Validator\Constraints\Regex;
     {
         $user = $security->getUser();
         $request = $requestStack->getCurrentRequest();
-        $this->market = $em->getRepository(Market::class)->findOneBy(['id' => $request->get('market')]);
+        $this->market = $em->getRepository(Market::class)
+            ->findOneBy(['id' => $request->get('market')]);
     }
 
     /**
@@ -50,15 +51,15 @@ use Symfony\Component\Validator\Constraints\Regex;
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $providers = $suppliers = $manufacturers = [];
+        $brands = $suppliers = $manufacturers = [];
 
-        $marketProviders = $this->market->getMarketProviders()->toArray();
+        $marketBrands = $this->market->getMarketBrands()->toArray();
         $marketSuppliers = $this->market->getMarketSuppliers()->toArray();
         $marketSManufacturers = $this->market->getMarketManufacturers()->toArray();
 
-        if ($marketProviders) {
-            foreach ($marketProviders as $provider) {
-                $providers[$provider->getId()] = $provider->getName();
+        if ($marketBrands) {
+            foreach ($marketBrands as $brand) {
+                $brands[$brand->getId()] = $brand->getName();
             }
         }
 
@@ -128,15 +129,14 @@ use Symfony\Component\Validator\Constraints\Regex;
                     ]),
                 ],
             ])
-            ->add('provider', ChoiceType::class, [
+            ->add('brand', ChoiceType::class, [
                 'mapped' => false,
                 'required' => false,
                 'multiple' => false,
                 'expanded' => false,
-                'data' => $options['data']->getMarketProductProvider() ? $options['data']->getMarketProductProvider()->getProvider()->getid(): 0,
-                //'data' => 0,
-                'placeholder' => 'label.form.provider_name',
-                'choices' => array_flip($providers),
+                'data' => $options['data']->getMarketProductBrand() ? $options['data']->getMarketProductBrand()->getBrand()->getid(): 0,
+                'placeholder' => 'label.form.brand_name',
+                'choices' => array_flip($brands),
             ])
             ->add('supplier', ChoiceType::class, [
                 'mapped' => false,

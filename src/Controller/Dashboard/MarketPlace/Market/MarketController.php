@@ -23,7 +23,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[Route('/dashboard/market-place')]
+#[Route('/dashboard/marker-place')]
 class MarketController extends AbstractController
 {
     use Navbar;

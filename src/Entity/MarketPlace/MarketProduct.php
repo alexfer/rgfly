@@ -61,7 +61,7 @@ class MarketProduct
     private ?Market $market = null;
 
     #[ORM\OneToOne(mappedBy: 'product', cascade: ['persist', 'remove'])]
-    private ?MarketProductProvider $marketProductProvider = null;
+    private ?MarketProductBrand $marketProductBrand = null;
 
     #[ORM\OneToOne(mappedBy: 'product', cascade: ['persist', 'remove'])]
     private ?MarketProductSupplier $marketProductSupplier = null;
@@ -325,24 +325,24 @@ class MarketProduct
         return $this;
     }
 
-    public function getMarketProductProvider(): ?MarketProductProvider
+    public function getMarketProductBrand(): ?MarketProductBrand
     {
-        return $this->marketProductProvider;
+        return $this->marketProductBrand;
     }
 
-    public function setMarketProductProvider(?MarketProductProvider $marketProductProvider): static
+    public function setMarketProductBrand(?MarketProductBrand $marketProductBrand): static
     {
         // unset the owning side of the relation if necessary
-        if ($marketProductProvider === null && $this->marketProductProvider !== null) {
-            $this->marketProductProvider->setProduct(null);
+        if ($marketProductBrand === null && $this->marketProductBrand !== null) {
+            $this->marketProductBrand->setProduct(null);
         }
 
         // set the owning side of the relation if necessary
-        if ($marketProductProvider !== null && $marketProductProvider->getProduct() !== $this) {
-            $marketProductProvider->setProduct($this);
+        if ($marketProductBrand !== null && $marketProductBrand->getProduct() !== $this) {
+            $marketProductBrand->setProduct($this);
         }
 
-        $this->marketProductProvider = $marketProductProvider;
+        $this->marketProductBrand = $marketProductBrand;
 
         return $this;
     }

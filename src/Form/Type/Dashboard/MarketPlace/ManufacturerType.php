@@ -3,7 +3,7 @@
 namespace App\Form\Type\Dashboard\MarketPlace;
 
 use App\Entity\MarketPlace\MarketManufacturer;
-use App\Entity\MarketPlace\MarketProvider;
+use App\Entity\MarketPlace\MarketBrand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;

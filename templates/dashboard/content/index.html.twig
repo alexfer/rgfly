@@ -17,7 +17,7 @@
                 {% for market in markets %}
                 <li class="list-group-item">
                     <a href="{{ path('app_dashboard_market_place_market_product', {market: market.id}) }}" class="badge badge-pill badge-success text-white" style="font-size: 16px;font-weight: normal;border-radius: 0.4rem">{{ market.name }}</a>
-                    <div class="badge badge-primary float-right">{{ market.products.count }}</div>
+{#                    <div class="badge badge-primary float-right">{{ market.products.count }}</div>#}
                 </li>
                 {% endfor %}
             </ul>

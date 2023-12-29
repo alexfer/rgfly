@@ -23,7 +23,7 @@ final class Version20231225055209 extends AbstractMigration
         $this->addSql('CREATE SEQUENCE market_manufacturer_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE market_manufacturer (id INT NOT NULL, market_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, description TEXT DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_B77B4092622F3F37 ON market_manufacturer (market_id)');
-        $this->addSql('ALTER TABLE market_manufacturer ADD CONSTRAINT FK_B77B4092622F3F37 FOREIGN KEY (market_id) REFERENCES market (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE market_manufacturer ADD CONSTRAINT FK_B77B4092622F3F37 FOREIGN KEY (market_id) REFERENCES brand (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
     public function down(Schema $schema): void

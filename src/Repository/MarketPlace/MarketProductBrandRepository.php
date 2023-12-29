@@ -2,27 +2,27 @@
 
 namespace App\Repository\MarketPlace;
 
-use App\Entity\MarketPlace\MarketProductProvider;
+use App\Entity\MarketPlace\MarketProductBrand;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<MarketProductProvider>
+ * @extends ServiceEntityRepository<MarketProductBrand>
  *
- * @method MarketProductProvider|null find($id, $lockMode = null, $lockVersion = null)
- * @method MarketProductProvider|null findOneBy(array $criteria, array $orderBy = null)
- * @method MarketProductProvider[]    findAll()
- * @method MarketProductProvider[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method MarketProductBrand|null find($id, $lockMode = null, $lockVersion = null)
+ * @method MarketProductBrand|null findOneBy(array $criteria, array $orderBy = null)
+ * @method MarketProductBrand[]    findAll()
+ * @method MarketProductBrand[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MarketProductProviderRepository extends ServiceEntityRepository
+class MarketProductBrandRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, MarketProductProvider::class);
+        parent::__construct($registry, MarketProductBrand::class);
     }
 
 //    /**
-//     * @return MarketProductProvider[] Returns an array of MarketProductProvider objects
+//     * @return MarketProductBrand[] Returns an array of MarketProductBrand objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -36,7 +36,7 @@ class MarketProductProviderRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?MarketProductProvider
+//    public function findOneBySomeField($value): ?MarketProductBrand
 //    {
 //        return $this->createQueryBuilder('m')
 //            ->andWhere('m.exampleField = :val')

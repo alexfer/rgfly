@@ -8,9 +8,9 @@ use App\Entity\MarketPlace\MarketCategoryProduct;
 use App\Entity\MarketPlace\MarketManufacturer;
 use App\Entity\MarketPlace\MarketProduct;
 use App\Entity\MarketPlace\MarketProductManufacturer;
-use App\Entity\MarketPlace\MarketProductProvider;
+use App\Entity\MarketPlace\MarketProductBrand;
 use App\Entity\MarketPlace\MarketProductSupplier;
-use App\Entity\MarketPlace\MarketProvider;
+use App\Entity\MarketPlace\MarketBrand;
 use App\Entity\MarketPlace\MarketSupplier;
 use App\Form\Type\Dashboard\MarketPlace\ProductType;
 use App\Security\Voter\ProductVoter;
@@ -228,8 +228,8 @@ class ProductController extends AbstractController
     {
         $supplier = $em->getRepository(MarketSupplier::class)
             ->findOneBy(['id' => $form->get('supplier')->getData()]);
-        $provider = $em->getRepository(MarketProvider::class)
-            ->findOneBy(['id' => $form->get('provider')->getData()]);
+        $brand = $em->getRepository(MarketBrand::class)
+            ->findOneBy(['id' => $form->get('brand')->getData()]);
         $manufacturer = $em->getRepository(MarketManufacturer::class)
             ->findOneBy(['id' => $form->get('manufacturer')->getData()]);
 
@@ -242,12 +242,12 @@ class ProductController extends AbstractController
             $em->persist($ps);
         }
 
-        if ($provider) {
-            $pp = $entry->getMarketProductProvider();
+        if ($brand) {
+            $pp = $entry->getMarketProductBrand();
             if(!$pp) {
-                $pp = new MarketProductProvider();
+                $pp = new MarketProductBrand();
             }
-            $pp->setProduct($entry)->setProvider($provider);
+            $pp->setProduct($entry)->setBrand($brand);
             $em->persist($pp);
         }
         if ($manufacturer) {

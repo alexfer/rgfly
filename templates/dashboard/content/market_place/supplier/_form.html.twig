@@ -19,7 +19,7 @@
     </div>
     <div class="form-group">
         {% set country_error = form.country.vars.errors|length ? 'form-control error' : 'form-control' %}
-        {{ form_label(form.country, 'label.form.provider_url') }}
+        {{ form_label(form.country, 'label.form.supplier_country') }}
         {{ form_widget(form.country, {attr: {class: name_error}}) }}
         <sm class="text-danger">{{ form_errors(form.country) }}</sm>
     </div>

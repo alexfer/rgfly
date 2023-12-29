@@ -52,8 +52,8 @@ class Market
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $deleted_at = null;
 
-    #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketProvider::class)]
-    private Collection $marketProviders;
+    #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketBrand::class)]
+    private Collection $marketBrands;
 
     #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketSupplier::class)]
     private Collection $marketSuppliers;
@@ -61,14 +61,14 @@ class Market
     #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketManufacturer::class)]
     private Collection $marketManufacturers;
 
-    #[ORM\OneToOne(inversedBy: 'market', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'brand', cascade: ['persist', 'remove'])]
     private ?Attach $attach = null;
 
     public function __construct()
     {
         $this->created_at = new DateTime();
         $this->products = new ArrayCollection();
-        $this->marketProviders = new ArrayCollection();
+        $this->marketBrands = new ArrayCollection();
         $this->marketSuppliers = new ArrayCollection();
         $this->marketManufacturers = new ArrayCollection();
     }
@@ -302,37 +302,37 @@ class Market
     }
 
     /**
-     * @return Collection<int, MarketProvider>
+     * @return Collection<int, MarketBrand>
      */
-    public function getMarketProviders(): Collection
+    public function getMarketBrands(): Collection
     {
-        return $this->marketProviders;
+        return $this->marketBrands;
     }
 
     /**
-     * @param MarketProvider $marketProvider
+     * @param MarketBrand $marketBrand
      * @return $this
      */
-    public function addMarketProvider(MarketProvider $marketProvider): static
+    public function addMarketBrand(MarketBrand $marketBrand): static
     {
-        if (!$this->marketProviders->contains($marketProvider)) {
-            $this->marketProviders->add($marketProvider);
-            $marketProvider->setMarket($this);
+        if (!$this->marketBrands->contains($marketBrand)) {
+            $this->marketBrands->add($marketBrand);
+            $marketBrand->setMarket($this);
         }
 
         return $this;
     }
 
     /**
-     * @param MarketProvider $marketProvider
+     * @param MarketBrand $marketBrand
      * @return $this
      */
-    public function removeMarketProvider(MarketProvider $marketProvider): static
+    public function removeMarketBrand(MarketBrand $marketBrand): static
     {
-        if ($this->marketProviders->removeElement($marketProvider)) {
+        if ($this->marketBrands->removeElement($marketBrand)) {
             // set the owning side to null (unless already changed)
-            if ($marketProvider->getMarket() === $this) {
-                $marketProvider->setMarket(null);
+            if ($marketBrand->getMarket() === $this) {
+                $marketBrand->setMarket(null);
             }
         }
 

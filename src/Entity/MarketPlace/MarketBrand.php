@@ -2,13 +2,13 @@
 
 namespace App\Entity\MarketPlace;
 
-use App\Repository\MarketPlace\MarketProviderRepository;
+use App\Repository\MarketPlace\MarketBrandRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: MarketProviderRepository::class)]
-class MarketProvider
+#[ORM\Entity(repositoryClass: MarketBrandRepository::class)]
+class MarketBrand
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -24,7 +24,7 @@ class MarketProvider
     #[ORM\Column(length: 512, nullable: true)]
     private ?string $url = null;
 
-    #[ORM\OneToMany(mappedBy: 'provider', targetEntity: MarketProductProvider::class)]
+    #[ORM\OneToMany(mappedBy: 'provider', targetEntity: MarketProductBrand::class)]
     private Collection $marketProductProviders;
 
     public function __construct()
@@ -98,14 +98,14 @@ class MarketProvider
     }
 
     /**
-     * @return Collection<int, MarketProductProvider>
+     * @return Collection<int, MarketProductBrand>
      */
     public function getMarketProductProviders(): Collection
     {
         return $this->marketProductProviders;
     }
 
-    public function addMarketProductProvider(MarketProductProvider $marketProductProvider): static
+    public function addMarketProductProvider(MarketProductBrand $marketProductProvider): static
     {
         if (!$this->marketProductProviders->contains($marketProductProvider)) {
             $this->marketProductProviders->add($marketProductProvider);
@@ -115,7 +115,7 @@ class MarketProvider
         return $this;
     }
 
-    public function removeMarketProductProvider(MarketProductProvider $marketProductProvider): static
+    public function removeMarketProductProvider(MarketProductBrand $marketProductProvider): static
     {
         if ($this->marketProductProviders->removeElement($marketProductProvider)) {
             // set the owning side to null (unless already changed)

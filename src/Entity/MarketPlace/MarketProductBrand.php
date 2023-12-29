@@ -2,22 +2,22 @@
 
 namespace App\Entity\MarketPlace;
 
-use App\Repository\MarketPlace\MarketProductProviderRepository;
+use App\Repository\MarketPlace\MarketProductBrandRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: MarketProductProviderRepository::class)]
-class MarketProductProvider
+#[ORM\Entity(repositoryClass: MarketProductBrandRepository::class)]
+class MarketProductBrand
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(inversedBy: 'marketProductProvider', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'marketProductPBrand', cascade: ['persist', 'remove'])]
     private ?MarketProduct $product = null;
 
-    #[ORM\ManyToOne(inversedBy: 'marketProductProviders')]
-    private ?MarketProvider $provider = null;
+    #[ORM\ManyToOne(inversedBy: 'marketProductBrands')]
+    private ?MarketBrand $brand = null;
 
     public function getId(): ?int
     {
@@ -36,14 +36,14 @@ class MarketProductProvider
         return $this;
     }
 
-    public function getProvider(): ?MarketProvider
+    public function getBrand(): ?MarketBrand
     {
-        return $this->provider;
+        return $this->brand;
     }
 
-    public function setProvider(?MarketProvider $provider): static
+    public function setBrand(?MarketBrand $brand): static
     {
-        $this->provider = $provider;
+        $this->brand = $brand;
 
         return $this;
     }

@@ -188,9 +188,9 @@
                 <source>title.dashboard.overview_product</source>
                 <target>Products Overview</target>
             </trans-unit>
-            <trans-unit id="title.dashboard.providers">
-                <source>title.dashboard.providers</source>
-                <target>Providers</target>
+            <trans-unit id="title.dashboard.brands">
+                <source>title.dashboard.brands</source>
+                <target>Brands</target>
             </trans-unit>
             <trans-unit id="title.dashboard.suppliers">
                 <source>title.dashboard.suppliers</source>
@@ -388,13 +388,17 @@
                 <source>label.form.manufacturer_name</source>
                 <target>Manufacturer Name</target>
             </trans-unit>
-            <trans-unit id="label.form.provider_name">
-                <source>label.form.provider_name</source>
-                <target>Provider Name</target>
+            <trans-unit id="label.form.brand_name">
+                <source>label.form.brand_name</source>
+                <target>Brand Name</target>
             </trans-unit>
-            <trans-unit id="label.form.provider_url">
-                <source>label.form.provider_url</source>
-                <target>Provider Url</target>
+            <trans-unit id="label.form.brand_url">
+                <source>label.form.brand_url</source>
+                <target>Brand Url</target>
+            </trans-unit>
+            <trans-unit id="label.form.supplier_url">
+                <source>label.form.supplier_url</source>
+                <target>Supplier Url</target>
             </trans-unit>
             <trans-unit id="label.form.market_description">
                 <source>label.form.market_description</source>
@@ -588,9 +592,9 @@
                 <source>entry.form.categories</source>
                 <target>Categories</target>
             </trans-unit>
-            <trans-unit id="entry.form.providers">
-                <source>entry.form.providers</source>
-                <target>Providers</target>
+            <trans-unit id="entry.form.brands">
+                <source>entry.form.brands</source>
+                <target>Brands</target>
             </trans-unit>
             <trans-unit id="entry.form.products">
                 <source>entry.form.products</source>
@@ -795,6 +799,14 @@
                 <source>label.form.country</source>
                 <target>Your Country</target>
             </trans-unit>
+            <trans-unit id="label.form.supplier_country">
+                <source>label.form.supplier_country</source>
+                <target>Supplier Country</target>
+            </trans-unit>
+            <trans-unit id="form.supplier_country.placeholder">
+                <source>form.supplier_country.placeholder</source>
+                <target>Choose supplier country</target>
+            </trans-unit>
             <trans-unit id="form.country.placeholder">
                 <source>form.country.placeholder</source>
                 <target>Choose your country</target>
@@ -868,13 +880,17 @@
                 <source>market.product.create</source>
                 <target>Add Product</target>
             </trans-unit>
-            <trans-unit id="market.providers">
-                <source>market.providers</source>
-                <target>Providers</target>
+            <trans-unit id="market.brands">
+                <source>market.brands</source>
+                <target>Brands</target>
             </trans-unit>
-            <trans-unit id="market.provider.create">
-                <source>market.provider.create</source>
-                <target>Add Provider</target>
+            <trans-unit id="market.brand.create">
+                <source>market.brand.create</source>
+                <target>Add Brand</target>
+            </trans-unit>
+            <trans-unit id="market.brand.update">
+                <source>market.brand.update</source>
+                <target>Update Brand</target>
             </trans-unit>
             <trans-unit id="market.supplier.create">
                 <source>market.supplier.create</source>

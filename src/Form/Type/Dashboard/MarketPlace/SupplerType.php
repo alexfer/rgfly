@@ -2,7 +2,7 @@
 
 namespace App\Form\Type\Dashboard\MarketPlace;
 
-use App\Entity\MarketPlace\MarketProvider;
+use App\Entity\MarketPlace\MarketBrand;
 use App\Entity\MarketPlace\MarketSupplier;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -39,7 +39,7 @@ class SupplerType extends AbstractType
                 ],
             ])
             ->add('country', ChoiceType::class, [
-                'placeholder' => 'form.country.placeholder',
+                'placeholder' => 'form.supplier_country.placeholder',
                 'label' => 'label.country',
                 'required' => false,
                 'multiple' => false,

@@ -42,11 +42,11 @@
         </div>
     </div>
     <div class="form-group">
-        {% set provider_error = form.provider.vars.errors|length ? 'form-control error' : 'form-control' %}
-        {{ form_label(form.provider, 'label.form.provider_name') }}
-        <a href="{{ path('app_dashboard_market_place_create_provider', {market: app.request.get('market')}) }}" class="link float-right">{{ 'market.provider.create'|trans }}</a>
-        {{ form_widget(form.provider, {attr: {class: provider_error}}) }}
-        <sm class="text-danger">{{ form_errors(form.provider) }}</sm>
+        {% set brand_error = form.brand.vars.errors|length ? 'form-control error' : 'form-control' %}
+        {{ form_label(form.brand, 'label.form.brand_name') }}
+        <a href="{{ path('app_dashboard_market_place_create_brand', {market: app.request.get('market')}) }}" class="link float-right">{{ 'market.brand.create'|trans }}</a>
+        {{ form_widget(form.brand, {attr: {class: brand_error}}) }}
+        <sm class="text-danger">{{ form_errors(form.brand) }}</sm>
     </div>
     <div class="form-group">
         {% set supplier_error = form.supplier.vars.errors|length ? 'form-control error' : 'form-control' %}
@@ -65,7 +65,7 @@
     {% include 'dashboard/content/form/category.html.twig' with {'categories': categories, 'collection': form.vars.data.marketCategoryProducts} %}
     <div class="form-group">
         {% set description_error = form.description.vars.errors|length ? 'form-control error' : 'form-control' %}
-        {{ form_label(form.description, 'label.form.product_description') }}
+        {{ form_label(form.description, 'label.form.product_description') }}  <span class="text-danger">*</span>
         {{ form_widget(form.description, {attr: {class: description_error, rows: 6, placeholder: 'label.form.product_description'}}) }}
         <sm class="text-danger">{{ form_errors(form.description) }}</sm>
     </div>
