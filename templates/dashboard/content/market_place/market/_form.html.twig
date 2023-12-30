@@ -6,7 +6,14 @@
     {% set _title_extend = 'title.dashboard.create_market'|trans %}
 {% endif %}
 {% block title_extend %}{{ _title_extend }} - {% endblock %}
-{% block title_content %}{{ _title_extend }}{% endblock %}
+{% block title_content %}
+    {{ _title_extend }}
+    {% if form.vars.data.attach %}
+        {% set _logo = 'storage/market/logo/' ~ form.vars.data.id ~ '/' ~ form.vars.data.attach.name %}
+        <img class="img-responsive img-rounded" src="{{ asset(_logo) | imagine_filter('market_thumb') }}"
+             alt="{{ form.vars.data.name }}">
+    {% endif %}
+{% endblock %}
 
 {% block content %}
     {% if app.user.markets|length and not form.vars.data.id %}
@@ -23,11 +30,37 @@
             <sm class="text-danger">{{ form_errors(form.name) }}</sm>
         </div>
         <div class="form-group">
+            {% set phone_error = form.phone.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.phone, 'label.form.phone') }}
+            {{ form_widget(form.phone, {attr: {class: phone_error, placeholder: 'label.form.phone'}}) }}
+            <sm class="text-danger">{{ form_errors(form.phone) }}</sm>
+        </div>
+        <div class="form-group">
+            {% set email_error = form.email.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.email, 'label.form.email') }}
+            {{ form_widget(form.email, {attr: {class: email_error, placeholder: 'label.form.email'}}) }}
+            <sm class="text-danger">{{ form_errors(form.email) }}</sm>
+        </div>
+        <div class="form-group">
+            {% set currency_error = form.currency.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.currency, 'label.form.currency') }}
+            {{ form_widget(form.currency, {attr: {class: currency_error, placeholder: 'label.form.currency'}}) }}
+            <sm class="text-danger">{{ form_errors(form.currency) }}</sm>
+        </div>
+        <div class="form-group">
             {% set description_error = form.description.vars.errors|length ? 'form-control error' : 'form-control' %}
             {{ form_label(form.description, 'label.form.market_description') }}
             {{ form_widget(form.description, {attr: {class: description_error, rows: 6, placeholder: 'label.form.market_description'}}) }}
             <sm class="text-danger">{{ form_errors(form.description) }}</sm>
         </div>
+        <div class="input-group">
+            <div class="custom-file">
+                {{ form_widget(form.logo, {attr: {class: 'custom-file-input', 'aria-describedby': 'logo' }}) }}
+                {{ form_label(form.logo, 'label.form.market_logo', {label_attr: {class: 'custom-file-label', 'data-label': 'label.form.market_logo'|trans}}) }}
+                <small class="text-danger">{{ form_errors(form.logo) }}</small>
+            </div>
+        </div>
+
         <input type="hidden" name="flash" value="{{ _message[0]|default([]|json_encode) }}">
         <div class="form-group text-center my-4">
             {{ form_widget(form.save, { label: form.vars.data.id ? 'form.action.update' : 'form.action.save'}) }}

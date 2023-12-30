@@ -3,7 +3,7 @@
 namespace App\Form\Type\Dashboard\MarketPlace;
 
 use App\Entity\MarketPlace\Market;
-use Liip\ImagineBundle\Form\Type\ImageType;
+use App\Service\MarketPlace\Currency;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -48,12 +48,17 @@ class MarketType extends AbstractType
                 ],
             ])
             ->add('currency', ChoiceType::class, [
-                'placeholder' => 'form.supplier_country.placeholder',
+                'placeholder' => 'label.form.market_currency.placeholder',
                 'label' => 'label.currency',
                 'required' => false,
                 'multiple' => false,
                 'expanded' => false,
-                'choices' => [],
+                'choices' => [
+                    Currency::USD => Currency::USD,
+                    Currency::EUR => Currency::EUR,
+                    Currency::UAH => Currency::UAH,
+
+                ],
             ])
             ->add('phone', TelType::class, [
                 'attr' => [
@@ -79,6 +84,9 @@ class MarketType extends AbstractType
             ])
             ->add('logo', FileType::class, [
                 'mapped' => false,
+                'label_attr' => [
+                    'name' => 'label.form.market_logo'
+                ],
                 'attr' => [
                     'accept' => 'image/png, image/jpeg',
                 ],

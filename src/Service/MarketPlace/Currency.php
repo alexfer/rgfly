@@ -136,8 +136,10 @@ class Currency
     private const ROUNDING = 'rounding';
     private const NAME_PLURAL = 'name_plural';
 
-
-    private static array $currencies = [
+    /**
+     * @var array|array[]
+     */
+    public static array $currencies = [
         self::USD => [self::COUNTRY_NAME => 'US Dollar', self::CODE => self::USD, self::CURRENCY => 'US Dollar', self::SYMBOL => '$', self::SYMBOL_NATIVE => '$', self::DECIMAL_DIGITS => 2, self::ROUNDING => 0, self::NAME_PLURAL => 'US dollars'],
         self::CAD => [self::COUNTRY_NAME => 'Canadian Dollar', self::CODE => self::CAD, self::CURRENCY => 'Canadian Dollar', self::SYMBOL => 'CA$', self::SYMBOL_NATIVE => '$', self::DECIMAL_DIGITS => 2, self::ROUNDING => 0, self::NAME_PLURAL => 'Canadian dollars'],
         self::EUR => [self::COUNTRY_NAME => 'Euro', self::CODE => self::EUR, self::CURRENCY => 'Euro', self::SYMBOL => '€', self::SYMBOL_NATIVE => '€', self::DECIMAL_DIGITS => 2, self::ROUNDING => 0, self::NAME_PLURAL => 'euros'],
@@ -258,4 +260,12 @@ class Currency
         self::ZMK => [self::COUNTRY_NAME => 'Zambian Kwacha', self::CODE => self::ZMK, self::CURRENCY => 'Zambian Kwacha', self::SYMBOL => 'ZK', self::SYMBOL_NATIVE => 'ZK', self::DECIMAL_DIGITS => 0, self::ROUNDING => 0, self::NAME_PLURAL => 'Zambian kwachas'],
         self::ZWL => [self::COUNTRY_NAME => 'Zimbabwean Dollar', self::CODE => self::ZWL, self::CURRENCY => 'Zimbabwean Dollar', self::SYMBOL => 'ZWL$', self::SYMBOL_NATIVE => 'ZWL$', self::DECIMAL_DIGITS => 0, self::ROUNDING => 0, self::NAME_PLURAL => 'Zimbabwean Dollar']
     ];
+
+    /**
+     * @return array|array[]
+     */
+    public static function currency(): array
+    {
+        return self::$currencies;
+    }
 }

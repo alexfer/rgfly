@@ -61,7 +61,7 @@ class Market
     #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketManufacturer::class)]
     private Collection $marketManufacturers;
 
-    #[ORM\OneToOne(inversedBy: 'brand', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'market', cascade: ['persist', 'remove'])]
     private ?Attach $attach = null;
 
     #[ORM\Column(length: 5, nullable: true)]

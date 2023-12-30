@@ -376,6 +376,18 @@
                 <source>label.form.market_name</source>
                 <target>Market Name</target>
             </trans-unit>
+            <trans-unit id="label.form.market_currency">
+                <source>label.form.market_currency</source>
+                <target>Market Currency</target>
+            </trans-unit>
+            <trans-unit id="label.form.market_logo">
+                <source>label.form.market_logo</source>
+                <target>Market Logo</target>
+            </trans-unit>
+            <trans-unit id="label.form.market_currency.placeholder">
+                <source>label.form.market_currency.placeholder</source>
+                <target>Market currency</target>
+            </trans-unit>
             <trans-unit id="label.form.product_name">
                 <source>label.form.product_name</source>
                 <target>Product Name</target>
