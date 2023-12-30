@@ -5,6 +5,7 @@ namespace App\Form\Type\Dashboard\MarketPlace;
 use App\Entity\MarketPlace\Market;
 use Liip\ImagineBundle\Form\Type\ImageType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -45,6 +46,14 @@ class MarketType extends AbstractType
                         'maxMessage' => 'form.name.max',
                     ]),
                 ],
+            ])
+            ->add('currency', ChoiceType::class, [
+                'placeholder' => 'form.supplier_country.placeholder',
+                'label' => 'label.currency',
+                'required' => false,
+                'multiple' => false,
+                'expanded' => false,
+                'choices' => [],
             ])
             ->add('phone', TelType::class, [
                 'attr' => [

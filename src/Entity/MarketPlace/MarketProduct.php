@@ -33,13 +33,9 @@ class MarketProduct
     private ?string $slug = null;
 
     #[ORM\Column]
-    #[Assert\Type(
-        type: 'integer',
-        message: 'The value {{ value }} is not a valid {{ type }}.',
-    )]
     private ?int $quantity = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'float')]
     private ?float $price = null;
 
     #[ORM\Column]
@@ -74,6 +70,8 @@ class MarketProduct
         $this->created_at = new DateTime();
         $this->marketCategoryProducts = new ArrayCollection();
         $this->marketProductAttaches = new ArrayCollection();
+        $this->price = 0.1;
+        $this->quantity = 0;
     }
 
     /**
@@ -180,7 +178,7 @@ class MarketProduct
      */
     public function setPrice(float $price): static
     {
-        $this->price = $price;
+        $this->price = round($price,2);;
 
         return $this;
     }

@@ -64,6 +64,9 @@ class Market
     #[ORM\OneToOne(inversedBy: 'brand', cascade: ['persist', 'remove'])]
     private ?Attach $attach = null;
 
+    #[ORM\Column(length: 5, nullable: true)]
+    private ?string $currency = null;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
@@ -414,6 +417,18 @@ class Market
     public function setAttach(?Attach $attach): static
     {
         $this->attach = $attach;
+
+        return $this;
+    }
+
+    public function getCurrency(): ?string
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(?string $currency): static
+    {
+        $this->currency = $currency;
 
         return $this;
     }

@@ -31,7 +31,7 @@
                             {{ entry.name|length > 30 ? entry.name|slice(0, 30) ~ '...' : entry.name }}
                         </a>
                     </td>
-                    <td class="text-center">{{ entry.price }}</td>
+                    <td class="text-center">{{ entry.price|number_format(2) }}</td>
                     <td class="text-center">{{ entry.quantity }}</td>
                     <td class="text-center bd-highlight">{{ entry.createdAt|date(date_format) }}</td>
                     <td class="text-center">

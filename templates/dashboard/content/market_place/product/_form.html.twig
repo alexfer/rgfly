@@ -10,7 +10,7 @@
 
 {% block content %}
     {% set _message = app.flashes('success') %}
-    {{ form_start(form, {attr: {class: 'd-tech-form', novalidate: 'novalidate'}}) }}
+    {{ form_start(form, {attr: {class: 'd-tech-form'}}) }}
     {% if form_errors(form) %}
         <div class="alert alert-danger">
             {{ form_errors(form) }}
@@ -31,13 +31,13 @@
         <div class="col-6">
             {% set quantity_error = form.quantity.vars.errors|length and not error ? 'form-control error' : 'form-control' %}
             {{ form_label(form.quantity, 'label.form.quantity') }} <span class="text-danger">*</span>
-            {{ form_widget(form.quantity, {attr: {class: name_error, placeholder: '1'}}) }}
+            {{ form_widget(form.quantity, {attr: {class: quantity_error, placeholder: '1'}}) }}
             <sm class="text-danger">{{ form_errors(form.quantity) }}</sm>
         </div>
         <div class="col-6">
             {% set price_error = form.price.vars.errors|length ? 'form-control error' : 'form-control' %}
             {{ form_label(form.price, 'label.form.price') }} <span class="text-danger">*</span>
-            {{ form_widget(form.price, {attr: {class: name_error, placeholder: '0.01'}}) }}
+            {{ form_widget(form.price, {attr: {class: price_error, placeholder: '0.50'}}) }}
             <sm class="text-danger">{{ form_errors(form.price) }}</sm>
         </div>
     </div>

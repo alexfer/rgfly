@@ -15,6 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -29,7 +30,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Type;
 
 #[AllowDynamicProperties] class ProductType extends AbstractType
 {
@@ -98,7 +101,7 @@ use Symfony\Component\Validator\Constraints\Regex;
             ->add('quantity', IntegerType::class, [
                 'attr' => [
                     'min' => 1,
-                    'max' => 1000,
+                    'max' => 100000,
                 ],
                 'constraints' => [
                     new NotBlank([
@@ -114,18 +117,14 @@ use Symfony\Component\Validator\Constraints\Regex;
             ])
             ->add('price', MoneyType::class, [
                 'attr' => [
-                    'min' => 1,
-                    'max' => 100000,
+                    'min' => '0.50',
+                    'step' => '0.50',
                 ],
+                'html5' => true,
+                'currency' => 'UAH',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'form.price.not_blank',
-                    ]),
-                    new Length([
-                        'min' => 1,
-                        'minMessage' => 'form.price.min',
-                        'max' => 100000,
-                        'maxMessage' => 'form.price.max',
                     ]),
                 ],
             ])
