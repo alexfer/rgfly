@@ -26,6 +26,10 @@
         </span>
     </div>
 </div>
+<div class="custom-control custom-switch ml-3">
+    <input type="checkbox" name="mode" data-container="{{ container }}" class="custom-control-input" id="mode">
+    <label class="custom-control-label text-muted" data-responsive-off="Responsive mode off" data-responsive-on="Responsive mode on" for="mode">{{ container }}</label>
+</div>
 {% set _part = _route|split('_')|last %}
 <ul class="nav flex-column py-2">
     <li class="nav-item">

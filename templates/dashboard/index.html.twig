@@ -23,9 +23,9 @@
         </div>
     </div>
     <section class="section-area default py-0">
-        <div class="{{ container }}">
+        <div id="container" class="{{ container }}">
             <div class="d-flex">
-                <div class="col-md-3">
+                <div class="col-md-3 pl-1">
                     <div class="sidebar rounded my-3">
                         {% include 'dashboard/sidebar.html.twig'  with {'navbar': navbar} %}
                     </div>
@@ -49,4 +49,5 @@
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('image') }}
+    {{ encore_entry_script_tags('cookie') }}
 {% endblock %}
