@@ -514,6 +514,10 @@
                 <source>dashboard.title.markets</source>
                 <target>Your Markets</target>
             </trans-unit>
+            <trans-unit id="dashboard.markets">
+                <source>dashboard.markets</source>
+                <target>Markets</target>
+            </trans-unit>
             <trans-unit id="title.dashboard.create_market">
                 <source>title.dashboard.create_market</source>
                 <target>Create Market</target>

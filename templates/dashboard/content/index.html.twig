@@ -8,26 +8,34 @@
     {% if app.user.markets|length %}
         <div class="card">
             <div class="card-header">
-                <strong>Markets</strong>
+                <strong>{{ 'dashboard.markets'|trans }}</strong>
             </div>
             <ul class="list-group list-group-flush">
                 {% for market in markets %}
                     <li class="list-group-item">
-                        <a href="{{ path('app_dashboard_market_place_market_product', {market: market.id}) }}"
-                           class="badge badge-pill badge-success text-white"
-                           style="font-size: 16px;font-weight: normal;border-radius: 0.4rem">{{ market.name }}</a>
+                        <a
+                                data-toggle="tooltip"
+                                data-placement="right"
+                                title="{{ market.name }}"
+                                href="{{ path('app_dashboard_market_place_market_product', {market: market.id}) }}"
+                                class="badge badge-pill badge-secondary text-white market-item">
+                            {{ market.name|length > 30 ? market.name|slice(0, 30) ~ ' ... ' : market.name }}
+                        </a>
                         <div class="badge badge-primary float-right">{{ market.products.count }}</div>
                     </li>
                     <li class="list-group-item">
-                        <a class="ml-4" href="{{ path('app_dashboard_market_place_market_brand', {market: market.id}) }}">{{ 'market.brands'|trans }}</a>
+                        <a class="ml-4"
+                           href="{{ path('app_dashboard_market_place_market_brand', {market: market.id}) }}">{{ 'market.brands'|trans }}</a>
                         <div class="badge badge-warning float-right">{{ market.marketBrands.count }}</div>
                     </li>
                     <li class="list-group-item">
-                        <a class="ml-4" href="{{ path('app_dashboard_market_place_market_supplier', {market: market.id}) }}">{{ 'market.suppliers'|trans }}</a>
+                        <a class="ml-4"
+                           href="{{ path('app_dashboard_market_place_market_supplier', {market: market.id}) }}">{{ 'market.suppliers'|trans }}</a>
                         <div class="badge badge-secondary float-right">{{ market.marketSuppliers.count }}</div>
                     </li>
                     <li class="list-group-item">
-                        <a class="ml-4" href="{{ path('app_dashboard_market_place_market_manufacturer', {market: market.id}) }}">{{ 'market.manufacturers'|trans }}</a>
+                        <a class="ml-4"
+                           href="{{ path('app_dashboard_market_place_market_manufacturer', {market: market.id}) }}">{{ 'market.manufacturers'|trans }}</a>
                         <div class="badge badge-danger float-right">{{ market.marketManufacturers.count }}</div>
                     </li>
                 {% endfor %}

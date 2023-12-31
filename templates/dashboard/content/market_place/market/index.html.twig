@@ -12,18 +12,22 @@
                     <button class="btn btn-dark btn-sm" type="button">
                         {{ 'market.products.overview'|trans }}
                     </button>
-                    <button type="button" class="btn btn-sm btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button type="button" class="btn btn-sm btn-dark dropdown-toggle dropdown-toggle-split"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="sr-only"></span>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         {% for market in markets %}
-                            <a class="nav-link dropdown-item" href="{{ path('app_dashboard_market_place_market_product', {market: market.id}) }}">{{ market.name }}</a>
+                            <a class="nav-link dropdown-item"
+                               href="{{ path('app_dashboard_market_place_market_product', {market: market.id}) }}">
+                                {{ market.name|length > 25 ? market.name|slice(0, 25) ~ ' ... ' : market.name }}
+                            </a>
                         {% endfor %}
                     </div>
                 </div>
             </div>
         </div>
-{#        <a href="#" class="badge badge-pill badge-info navbar-text py-2 px-3 text-light" style="font-size: 16px;font-weight: normal">You can have only one marketplace</a>#}
+        {#        <a href="#" class="badge badge-pill badge-info navbar-text py-2 px-3 text-light" style="font-size: 16px;font-weight: normal">You can have only one marketplace</a> #}
     </nav>
     <div class="table-responsive table-sm card">
         <table class="table table-sm table-hover table-borderless mb-0">

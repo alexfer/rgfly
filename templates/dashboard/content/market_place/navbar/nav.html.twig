@@ -11,5 +11,5 @@
                href="{{ path('app_dashboard_market_place_market_manufacturer', {market: market.id}) }}">{{ 'market.manufacturers'|trans }}</a>
         </div>
     </div>
-    <span class="navbar-text text-white font-weight-bold">{{ market.name }}</span>
+    <span class="navbar-text text-white font-weight-bold">{{ market.name|length > 30 ? market.name|slice(0, 30) ~ ' ... ' : market.name }}</span>
 </nav>
