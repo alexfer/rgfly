@@ -10,7 +10,7 @@ use App\Repository\{
 };
 use App\Service\FileUploader;
 use App\Service\Interface\ImageValidatorInterface;
-use App\Service\Navbar;
+use App\Service\Dashboard;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
@@ -34,7 +34,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class UserController extends AbstractController
 {
 
-    use Navbar;
+    use Dashboard;
 
     /**
      *
@@ -48,7 +48,7 @@ class UserController extends AbstractController
         UserInterface  $user,
     ): Response
     {
-        return $this->render('dashboard/content/user/index.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/user/index.html.twig', $this->navbar() + [
                 'entries' => $repository->findBy([], ['id' => 'desc']),
             ]);
     }
@@ -155,7 +155,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('app_dashboard_details_user', ['id' => $entry->getId(), 'tab' => 'security']);
         }
 
-        return $this->render('dashboard/content/user/details.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/user/details.html.twig', $this->navbar() + [
                 'entry' => $entry,
                 'form' => $form,
                 'country' => $country ? Countries::getNames(Locale::getDefault())[$country] : null,

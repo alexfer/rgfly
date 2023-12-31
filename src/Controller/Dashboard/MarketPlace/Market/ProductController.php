@@ -15,7 +15,7 @@ use App\Entity\MarketPlace\MarketSupplier;
 use App\Form\Type\Dashboard\MarketPlace\ProductType;
 use App\Security\Voter\ProductVoter;
 use App\Service\MarketPlace\MarketTrait;
-use App\Service\Navbar;
+use App\Service\Dashboard;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
@@ -35,7 +35,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/dashboard/market-place/product')]
 class ProductController extends AbstractController
 {
-    use Navbar, MarketTrait;
+    use Dashboard, MarketTrait;
 
     /**
      * @param Request $request
@@ -55,7 +55,7 @@ class ProductController extends AbstractController
         $market = $this->market($request, $user, $em);
         $entries = $em->getRepository(MarketProduct::class)->findBy(['market' => $market], ['id' => 'desc']);
 
-        return $this->render('dashboard/content/market_place/product/index.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/market_place/product/index.html.twig', $this->navbar() + [
                 'market' => $market,
                 'entries' => $entries,
             ]);
@@ -134,7 +134,7 @@ class ProductController extends AbstractController
             ]);
         }
 
-        return $this->render('dashboard/content/market_place/product/_form.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/market_place/product/_form.html.twig', $this->navbar() + [
                 'form' => $form,
                 'error' => $uniqueError,
                 'entry' => $entry,
@@ -207,7 +207,7 @@ class ProductController extends AbstractController
             }
         }
 
-        return $this->render('dashboard/content/market_place/product/_form.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/market_place/product/_form.html.twig', $this->navbar() + [
                 'form' => $form,
                 'error' => $uniqueError,
                 'entry' => $entry,

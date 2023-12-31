@@ -39,13 +39,13 @@
            href="{{ path('app_dashboard_market_place_market') }}"
            data-toggle="collapse"
            data-target=".market"
-           aria-expanded="{{ _part == 'brand-place' ? 'true': 'false' }}"
+           aria-expanded="{{ _part == 'market-place' ? 'true': 'false' }}"
            aria-controls="market">
             <i class="bi bi-basket2"></i>
             {{ 'menu.dashboard.marketplace'|trans }}
             <i class="bi bi-arrow-right-short arrow"></i>
         </a>
-        <div class="collapse market {{ _part == 'brand' ? 'show': '' }}">
+        <div class="collapse market {{ _part == 'market' ? 'show': '' }}">
             <a class="nav-link {{ _route == 'app_dashboard_market_place_market' ? 'active' : '' }}"
                href="{{ path('app_dashboard_market_place_market') }}">
                 <i class="bi bi-arrow-right-short"></i>
@@ -55,7 +55,7 @@
                 <a class="nav-link {{ _route == 'app_dashboard_market_place_create_market' ? 'active' : '' }}"
                    href="{{ path('app_dashboard_market_place_create_market') }}">
                     <i class="bi bi-arrow-right-short"></i>
-                    {{ 'menu.dashboard.create.brand'|trans }}
+                    {{ 'menu.dashboard.create.market'|trans }}
                 </a>
             {% endif %}
         </div>
@@ -112,7 +112,6 @@
                 <i class="bi bi-person-workspace"></i>
                 {{ key|replace({'_': ' '})|capitalize }}
                 <i class="bi bi-arrow-right-short arrow float-right"></i>
-                <span class="badge badge-pill badge-info mt-1 float-right">{{ count[key] }}</span>
             </a>
             <div class="collapse {{ key }} {{ _part == key ? 'show': '' }}">
                 {% for message, route in children[key] %}

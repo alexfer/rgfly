@@ -7,12 +7,15 @@ use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketProduct;
 use App\Entity\MarketPlace\MarketBrand;
 use App\Service\MarketPlace\MarketTrait;
-use App\Service\Navbar;
+use App\Service\Dashboard;
 use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -42,9 +45,9 @@ use Symfony\Component\Validator\Constraints\Type;
     public function __construct(private readonly Security $security, RequestStack $requestStack, EntityManagerInterface $em)
     {
         $user = $security->getUser();
-        $request = $requestStack->getCurrentRequest();
+        $market = $requestStack->getCurrentRequest()->get('market');
         $this->market = $em->getRepository(Market::class)
-            ->findOneBy(['id' => $request->get('market')]);
+            ->findOneBy(['id' => $market]);
     }
 
     /**
@@ -121,7 +124,7 @@ use Symfony\Component\Validator\Constraints\Type;
                     'step' => '0.50',
                 ],
                 'html5' => true,
-                'currency' => 'UAH',
+                'currency' => $this->market->getCurrency(),
                 'constraints' => [
                     new NotBlank([
                         'message' => 'form.price.not_blank',
@@ -133,7 +136,7 @@ use Symfony\Component\Validator\Constraints\Type;
                 'required' => false,
                 'multiple' => false,
                 'expanded' => false,
-                'data' => $options['data']->getMarketProductBrand() ? $options['data']->getMarketProductBrand()->getBrand()->getid(): 0,
+                'data' => $options['data']?->getMarketProductBrand()?->getBrand()?->getid(),
                 'placeholder' => 'label.form.brand_name',
                 'choices' => array_flip($brands),
             ])
@@ -142,7 +145,7 @@ use Symfony\Component\Validator\Constraints\Type;
                 'required' => false,
                 'multiple' => false,
                 'expanded' => false,
-                'data' => $options['data']->getMarketProductSupplier() ? $options['data']->getMarketProductSupplier()->getSupplier()->getid(): 0,
+                'data' => $options['data']?->getMarketProductSupplier()?->getSupplier()?->getid(),
                 'placeholder' => 'label.form.supplier_name',
                 'choices' => array_flip($suppliers),
             ])
@@ -151,7 +154,7 @@ use Symfony\Component\Validator\Constraints\Type;
                 'required' => false,
                 'multiple' => false,
                 'expanded' => false,
-                'data' => $options['data']->getMarketProductManufacturer() ? $options['data']->getMarketProductManufacturer()->getManufacturer()->getid(): 0,
+                'data' => $options['data']?->getMarketProductManufacturer()?->getManufacturer()?->getid(),
                 'placeholder' => 'label.form.manufacturer_name',
                 'choices' => array_flip($manufacturers),
             ])

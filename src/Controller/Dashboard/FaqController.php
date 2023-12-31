@@ -5,7 +5,7 @@ namespace App\Controller\Dashboard;
 use App\Entity\Faq;
 use App\Form\Type\FaqType;
 use App\Repository\FaqRepository;
-use App\Service\Navbar;
+use App\Service\Dashboard;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -21,7 +21,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class FaqController extends AbstractController
 {
 
-    use Navbar;
+    use Dashboard;
 
     /**
      *
@@ -35,7 +35,7 @@ class FaqController extends AbstractController
         UserInterface $user,
     ): Response
     {
-        return $this->render('dashboard/content/faq/index.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/faq/index.html.twig', $this->navbar() + [
                 'entries' => $reposiroty->findBy([], ['id' => 'desc']),
             ]);
     }
@@ -110,7 +110,7 @@ class FaqController extends AbstractController
             return $this->redirectToRoute('app_dashboard_edit_faq', ['id' => $entry->getId()]);
         }
 
-        return $this->render('dashboard/content/faq/_form.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/faq/_form.html.twig', $this->navbar() + [
                 'form' => $form,
             ]);
     }
@@ -142,7 +142,7 @@ class FaqController extends AbstractController
             return $this->redirectToRoute('app_dashboard_edit_faq', ['id' => $entry->getId()]);
         }
 
-        return $this->render('dashboard/content/faq/_form.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/faq/_form.html.twig', $this->navbar() + [
                 'form' => $form,
             ]);
     }

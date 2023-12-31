@@ -7,7 +7,7 @@ use App\Form\Type\Dashboard\MarketPlace\MarketType;
 use App\Repository\MarketPlace\MarketRepository;
 use App\Security\Voter\MarketVoter;
 use App\Service\FileUploader;
-use App\Service\Navbar;
+use App\Service\Dashboard;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -30,7 +30,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/dashboard/marker-place')]
 class MarketController extends AbstractController
 {
-    use Navbar;
+    use Dashboard;
 
     /**
      * @param UserInterface $user
@@ -48,7 +48,7 @@ class MarketController extends AbstractController
         $criteria = $this->criteria($user, null, 'owner');
         $markets = $marketRepository->findBy($criteria, ['created_at' => 'desc']);
 
-        return $this->render('dashboard/content/market_place/market/index.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/market_place/market/index.html.twig', $this->navbar() + [
                 'markets' => $markets,
             ]);
     }
@@ -61,8 +61,7 @@ class MarketController extends AbstractController
      * @param TranslatorInterface $translator
      * @param ParameterBagInterface $params
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws Exception
      */
     #[Route('/create', name: 'app_dashboard_market_place_create_market')]
     public function create(
@@ -112,7 +111,7 @@ class MarketController extends AbstractController
             throw new AccessDeniedHttpException('Permission denied.');
         }
 
-        return $this->render('dashboard/content/market_place/market/_form.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/market_place/market/_form.html.twig', $this->navbar() + [
                 'form' => $form,
             ]);
     }
@@ -186,7 +185,7 @@ class MarketController extends AbstractController
             return $this->redirectToRoute('app_dashboard_market_place_edit_market', ['id' => $entry->getId()]);
         }
 
-        return $this->render('dashboard/content/market_place/market/_form.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/market_place/market/_form.html.twig', $this->navbar() + [
                 'form' => $form,
             ]);
     }

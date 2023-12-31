@@ -8,23 +8,8 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-trait Navbar
+trait Dashboard
 {
-
-    /**
-     *
-     * @var EntryRepository|null
-     */
-    private ?EntryRepository $repository = null;
-
-    /**
-     *
-     * @param EntryRepository $repository
-     */
-    public function __construct(EntryRepository $repository)
-    {
-        $this->repository = $repository;
-    }
 
     /**
      * @param UserInterface $user
@@ -54,31 +39,22 @@ trait Navbar
     }
 
     /**
-     * @param UserInterface $user
      * @return array[]
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
-    public function build(UserInterface $user): array
+    public function navbar(): array
     {
         $navbar = $children = $count = [];
         foreach (array_flip(Entry::TYPE) as $key => $class) {
             $class = sprintf('\App\Controller\Dashboard\%sController', $class);
             if (class_exists($class)) {
-
                 $navbar[$key] = $class;
                 $children[$key] = $class::CHILDREN[$key];
-                $count[$key] = $this->repository->count($this->criteria($user, [
-                    'type' => $key,
-                    'deleted_at' => null,
-                ]));
             }
         }
 
         return [
             'navbar' => $navbar,
             'children' => $children,
-            'count' => $count,
         ];
     }
 }

@@ -18,7 +18,7 @@ use App\Repository\{
 };
 use App\Service\FileUploader;
 use App\Service\Interface\ImageValidatorInterface;
-use App\Service\Navbar;
+use App\Service\Dashboard;
 use DateTime;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -42,7 +42,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class BlogController extends AbstractController
 {
 
-    use Navbar;
+    use Dashboard;
 
     const CHILDREN = [
         'blog' => [
@@ -77,7 +77,7 @@ class BlogController extends AbstractController
     {
         $entries = $repository->findBy($this->criteria($user, ['type' => 'blog']), ['id' => 'desc']);
 
-        return $this->render('dashboard/content/blog/index.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/blog/index.html.twig', $this->navbar() + [
                 'entries' => $entries,
             ]);
     }
@@ -155,7 +155,7 @@ class BlogController extends AbstractController
             return $this->redirectToRoute('app_dashboard_edit_blog', ['id' => $entry->getId()]);
         }
 
-        return $this->render('dashboard/content/blog/_form.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/blog/_form.html.twig', $this->navbar() + [
                 'form' => $form,
                 'error' => $error,
                 'entry' => $entry,
@@ -242,7 +242,7 @@ class BlogController extends AbstractController
             return $this->redirectToRoute('app_dashboard_edit_blog', ['id' => $entry->getId()]);
         }
 
-        return $this->render('dashboard/content/blog/_form.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/blog/_form.html.twig', $this->navbar() + [
                 'form' => $form,
                 'entry' => $entry,
                 'error' => $error,

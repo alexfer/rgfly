@@ -8,7 +8,7 @@ use App\Entity\MarketPlace\MarketSupplier;
 use App\Form\Type\Dashboard\MarketPlace\BrandType;
 use App\Form\Type\Dashboard\MarketPlace\SupplerType;
 use App\Service\MarketPlace\MarketTrait;
-use App\Service\Navbar;
+use App\Service\Dashboard;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -24,7 +24,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/dashboard/market-place/supplier')]
 class SupplierController extends AbstractController
 {
-    use Navbar, MarketTrait;
+    use Dashboard, MarketTrait;
 
     /**
      * @param Request $request
@@ -44,7 +44,7 @@ class SupplierController extends AbstractController
         $market = $this->market($request, $user, $em);
         $suppliers = $em->getRepository(MarketSupplier::class)->findBy(['market' => $market], ['id' => 'desc']);
 
-        return $this->render('dashboard/content/market_place/supplier/index.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/market_place/supplier/index.html.twig', $this->navbar() + [
                 'market' => $market,
                 'suppliers' => $suppliers,
                 'countries' => Countries::getNames(Locale::getDefault()),
@@ -86,7 +86,7 @@ class SupplierController extends AbstractController
             ]);
         }
 
-        return $this->render('dashboard/content/market_place/supplier/_form.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/market_place/supplier/_form.html.twig', $this->navbar() + [
                 'form' => $form,
             ]);
     }
@@ -127,7 +127,7 @@ class SupplierController extends AbstractController
             ]);
         }
 
-        return $this->render('dashboard/content/market_place/supplier/_form.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/market_place/supplier/_form.html.twig', $this->navbar() + [
                 'form' => $form,
             ]);
     }

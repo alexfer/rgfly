@@ -8,7 +8,7 @@ use App\Form\Type\Dashboard\MarketPlace\ProductType;
 use App\Form\Type\Dashboard\MarketPlace\BrandType;
 use App\Security\Voter\ProductVoter;
 use App\Service\MarketPlace\MarketTrait;
-use App\Service\Navbar;
+use App\Service\Dashboard;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -23,7 +23,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/dashboard/market-place/brand')]
 class BrandController extends AbstractController
 {
-    use Navbar, MarketTrait;
+    use Dashboard, MarketTrait;
 
     /**
      * @param Request $request
@@ -43,7 +43,7 @@ class BrandController extends AbstractController
         $market = $this->market($request, $user, $em);
         $brands = $em->getRepository(MarketBrand::class)->findBy(['market' => $market], ['id' => 'desc']);
 
-        return $this->render('dashboard/content/market_place/brand/index.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/market_place/brand/index.html.twig', $this->navbar() + [
                 'market' => $market,
                 'brands' => $brands,
             ]);
@@ -84,7 +84,7 @@ class BrandController extends AbstractController
             ]);
         }
 
-        return $this->render('dashboard/content/market_place/brand/_form.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/market_place/brand/_form.html.twig', $this->navbar() + [
                 'form' => $form,
             ]);
     }
@@ -126,7 +126,7 @@ class BrandController extends AbstractController
             ]);
         }
 
-        return $this->render('dashboard/content/market_place/brand/_form.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/market_place/brand/_form.html.twig', $this->navbar() + [
                 'form' => $form,
             ]);
     }
