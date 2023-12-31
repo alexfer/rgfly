@@ -13,7 +13,7 @@ class MarketProductBrand
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(inversedBy: 'marketProductPBrand', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'marketProductBrand', cascade: ['persist', 'remove'])]
     private ?MarketProduct $product = null;
 
     #[ORM\ManyToOne(inversedBy: 'marketProductBrands')]

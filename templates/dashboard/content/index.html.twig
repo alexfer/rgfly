@@ -8,9 +8,18 @@
     {% if app.user.markets|length %}
         <div class="card">
             <div class="card-header">
-                <strong>{{ 'dashboard.markets'|trans }}</strong>
+                <button
+                        class="btn"
+                        data-toggle="collapse"
+                        type="button"
+                        data-target="#markets"
+                        aria-expanded="false"
+                        aria-controls="markets">
+                    <i class="bi bi-basket pr-2"></i>
+                    {{ 'dashboard.markets'|trans }}
+                </button>
             </div>
-            <ul class="list-group list-group-flush">
+            <ul id="markets" class="collapse multi-collapse list-group list-group-flush">
                 {% for market in markets %}
                     <li class="list-group-item">
                         <a
@@ -44,11 +53,19 @@
     {% endif %}
     <div class="row mt-3">
         <div class="col-sm-6">
-            <div class="card h-100">
+            <div class="card">
                 <div class="card-header">
-                    <strong>{{ 'title.blogs'|trans }}</strong>
+                    <button
+                            class="btn"
+                            data-toggle="collapse"
+                            type="button"
+                            data-target="#blogs"
+                            aria-expanded="true"
+                            aria-controls="blogs">
+                        <i class="bi bi-person-workspace pr-2"></i>{{ 'title.blogs'|trans }}
+                    </button>
                 </div>
-                <ul class="list-group list-group-flush">
+                <ul id="blogs" class="collapse multi-collapse list-group list-group-flush">
                     <li class="list-group-item">
                         <a href="{{ path('app_dashboard_blog') }}">{{ 'menu.dashboard.overview.blog'|trans }}</a>
                     </li>
@@ -59,11 +76,19 @@
             </div>
         </div>
         <div class="col-sm-6">
-            <div class="card h-100">
+            <div class="card">
                 <div class="card-header">
-                    <strong>{{ 'entry.form.news'|trans }}</strong>
+                    <button
+                            class="btn"
+                            data-toggle="collapse"
+                            type="button"
+                            data-target="#news"
+                            aria-expanded="true"
+                            aria-controls="news">
+                        <i class="bi bi-newspaper pr-2"></i>{{ 'entry.form.news'|trans }}
+                    </button>
                 </div>
-                <ul class="list-group list-group-flush">
+                <ul id="news" class="collapse multi-collapse list-group list-group-flush">
                     <li class="list-group-item">
                         <a href="{{ path('app_dashboard_news') }}">{{ 'menu.dashboard.overview_news'|trans }}</a>
                     </li>

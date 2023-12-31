@@ -81,8 +81,6 @@ use Symfony\Component\Validator\Constraints\Type;
             }
         }
 
-        //dd($options['data']->getMarketProductProvider()->getProvider());
-
         $builder
             ->add('name', TextType::class, [
                 'attr' => [
@@ -124,7 +122,7 @@ use Symfony\Component\Validator\Constraints\Type;
                     'step' => '0.50',
                 ],
                 'html5' => true,
-                'currency' => $this->market->getCurrency(),
+                'currency' => $this->market->getCurrency() ?? 'USD',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'form.price.not_blank',

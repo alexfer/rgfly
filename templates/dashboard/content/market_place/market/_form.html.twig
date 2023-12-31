@@ -1,7 +1,7 @@
 {% extends 'dashboard/index.html.twig' %}
 
 {% if form.vars.data.id %}
-    {% set _title_extend = 'title.dashboard.change_market'|trans %}
+    {% set _title_extend = form.vars.data.name %}
 {% else %}
     {% set _title_extend = 'title.dashboard.create_market'|trans %}
 {% endif %}
@@ -10,13 +10,15 @@
     {{ _title_extend }}
     {% if form.vars.data.attach %}
         {% set _logo = 'storage/market/logo/' ~ form.vars.data.id ~ '/' ~ form.vars.data.attach.name %}
-        <img class="img-responsive img-rounded float-right" src="{{ asset(_logo) | imagine_filter('market_thumb') }}"
+        <img class="img-rounded float-right" src="{{ asset(_logo) | imagine_filter('market_thumb') }}"
+             style="height: 50px;"
              alt="{{ form.vars.data.name }}">
         <div class="clearfix"></div>
     {% endif %}
 {% endblock %}
 
 {% block content %}
+    <hr>
     {% if app.user.markets|length and not form.vars.data.id %}
         <div class="alert alert-warning">
             <h6 class="text-center py-3">{{ 'dashboard.market.restrict'|trans }}</h6>

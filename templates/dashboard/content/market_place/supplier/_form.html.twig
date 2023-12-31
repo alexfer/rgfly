@@ -1,14 +1,14 @@
 {% extends 'dashboard/index.html.twig' %}
 
 {% if form.vars.data.id %}
-    {% set _title_extend = 'market.supplier.create'|trans %}
+    {% set _title_extend = form.vars.data.name %}
 {% else %}
     {% set _title_extend = 'market.supplier.create'|trans %}
 {% endif %}
 {% block title_extend %}{{ _title_extend }} - {% endblock %}
 {% block title_content %}{{ _title_extend }}{% endblock %}
-
 {% block content %}
+    <hr>
     {% set _message = app.flashes('success') %}
     {{ form_start(form, {attr: {class: 'd-tech-form', novalidate: 'novalidate'}}) }}
     <div class="form-group">
