@@ -28,6 +28,7 @@ class MarketPlaceFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $this->loadProductCategories($manager);
+        $this->loadPaymentMethods($manager);
     }
 
     /**
