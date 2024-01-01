@@ -20,16 +20,26 @@ class MarketPaymentMethod
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $deleted_at = null;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return $this
+     */
     public function setName(string $name): static
     {
         $this->name = $name;
@@ -37,11 +47,18 @@ class MarketPaymentMethod
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getDeletedAt(): ?\DateTimeInterface
     {
         return $this->deleted_at;
     }
 
+    /**
+     * @param \DateTimeInterface|null $deleted_at
+     * @return $this
+     */
     public function setDeletedAt(?\DateTimeInterface $deleted_at): static
     {
         $this->deleted_at = $deleted_at;

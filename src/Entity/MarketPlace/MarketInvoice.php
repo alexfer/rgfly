@@ -35,16 +35,31 @@ class MarketInvoice
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?MarketPaymentMethod $payment_method = null;
 
+
+    public function __construct()
+    {
+        $this->created_at = new \DateTimeImmutable();
+    }
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return MarketOrders|null
+     */
     public function getOrders(): ?MarketOrders
     {
         return $this->orders;
     }
 
+    /**
+     * @param MarketOrders|null $orders
+     * @return $this
+     */
     public function setOrders(?MarketOrders $orders): static
     {
         $this->orders = $orders;
@@ -52,11 +67,18 @@ class MarketInvoice
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getNumber(): ?string
     {
         return $this->number;
     }
 
+    /**
+     * @param string $number
+     * @return $this
+     */
     public function setNumber(string $number): static
     {
         $this->number = $number;
@@ -64,11 +86,18 @@ class MarketInvoice
         return $this;
     }
 
+    /**
+     * @return float|null
+     */
     public function getTax(): ?float
     {
         return $this->tax;
     }
 
+    /**
+     * @param float $tax
+     * @return $this
+     */
     public function setTax(float $tax): static
     {
         $this->tax = $tax;
@@ -76,11 +105,18 @@ class MarketInvoice
         return $this;
     }
 
+    /**
+     * @return float|null
+     */
     public function getAmount(): ?float
     {
         return $this->amount;
     }
 
+    /**
+     * @param float $amount
+     * @return $this
+     */
     public function setAmount(float $amount): static
     {
         $this->amount = $amount;
@@ -88,11 +124,18 @@ class MarketInvoice
         return $this;
     }
 
+    /**
+     * @return \DateTimeImmutable|null
+     */
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->created_at;
     }
 
+    /**
+     * @param \DateTimeImmutable $created_at
+     * @return $this
+     */
     public function setCreatedAt(\DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;
@@ -100,11 +143,18 @@ class MarketInvoice
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getPayedAt(): ?\DateTimeInterface
     {
         return $this->paid_at;
     }
 
+    /**
+     * @param \DateTimeInterface|null $paid_at
+     * @return $this
+     */
     public function setPayedAt(?\DateTimeInterface $paid_at): static
     {
         $this->paid_at = $paid_at;
@@ -112,11 +162,18 @@ class MarketInvoice
         return $this;
     }
 
+    /**
+     * @return MarketPaymentMethod|null
+     */
     public function getPaymentMethod(): ?MarketPaymentMethod
     {
         return $this->payment_method;
     }
 
+    /**
+     * @param MarketPaymentMethod|null $payment_method
+     * @return $this
+     */
     public function setPaymentMethod(?MarketPaymentMethod $payment_method): static
     {
         $this->payment_method = $payment_method;

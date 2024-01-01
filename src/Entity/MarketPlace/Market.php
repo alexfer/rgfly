@@ -354,6 +354,10 @@ class Market
         return $this->marketSuppliers;
     }
 
+    /**
+     * @param MarketSupplier $marketSupplier
+     * @return $this
+     */
     public function addMarketSupplier(MarketSupplier $marketSupplier): static
     {
         if (!$this->marketSuppliers->contains($marketSupplier)) {
@@ -364,6 +368,10 @@ class Market
         return $this;
     }
 
+    /**
+     * @param MarketSupplier $marketSupplier
+     * @return $this
+     */
     public function removeMarketSupplier(MarketSupplier $marketSupplier): static
     {
         if ($this->marketSuppliers->removeElement($marketSupplier)) {
@@ -384,6 +392,10 @@ class Market
         return $this->marketManufacturers;
     }
 
+    /**
+     * @param MarketManufacturer $marketManufacturer
+     * @return $this
+     */
     public function addMarketManufacturer(MarketManufacturer $marketManufacturer): static
     {
         if (!$this->marketManufacturers->contains($marketManufacturer)) {
@@ -394,6 +406,10 @@ class Market
         return $this;
     }
 
+    /**
+     * @param MarketManufacturer $marketManufacturer
+     * @return $this
+     */
     public function removeMarketManufacturer(MarketManufacturer $marketManufacturer): static
     {
         if ($this->marketManufacturers->removeElement($marketManufacturer)) {
@@ -445,6 +461,10 @@ class Market
         return $this->marketOrders;
     }
 
+    /**
+     * @param MarketOrders $marketOrder
+     * @return $this
+     */
     public function addMarketOrder(MarketOrders $marketOrder): static
     {
         if (!$this->marketOrders->contains($marketOrder)) {
@@ -455,6 +475,10 @@ class Market
         return $this;
     }
 
+    /**
+     * @param MarketOrders $marketOrder
+     * @return $this
+     */
     public function removeMarketOrder(MarketOrders $marketOrder): static
     {
         if ($this->marketOrders->removeElement($marketOrder)) {

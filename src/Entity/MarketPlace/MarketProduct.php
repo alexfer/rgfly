@@ -258,6 +258,10 @@ class MarketProduct
         return $this->marketCategoryProducts;
     }
 
+    /**
+     * @param MarketCategoryProduct $marketCategoryProduct
+     * @return $this
+     */
     public function addMarketCategoryProduct(MarketCategoryProduct $marketCategoryProduct): static
     {
         if (!$this->marketCategoryProducts->contains($marketCategoryProduct)) {

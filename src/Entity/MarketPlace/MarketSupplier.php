@@ -32,16 +32,26 @@ class MarketSupplier
         $this->marketProductSuppliers = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return Market|null
+     */
     public function getMarket(): ?Market
     {
         return $this->market;
     }
 
+    /**
+     * @param Market|null $market
+     * @return $this
+     */
     public function setMarket(?Market $market): static
     {
         $this->market = $market;
@@ -49,11 +59,18 @@ class MarketSupplier
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return $this
+     */
     public function setName(string $name): static
     {
         $this->name = $name;
@@ -61,11 +78,18 @@ class MarketSupplier
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getCountry(): ?string
     {
         return $this->country;
     }
 
+    /**
+     * @param string $country
+     * @return $this
+     */
     public function setCountry(string $country): static
     {
         $this->country = $country;
@@ -81,6 +105,10 @@ class MarketSupplier
         return $this->marketProductSuppliers;
     }
 
+    /**
+     * @param MarketProductSupplier $marketProductSupplier
+     * @return $this
+     */
     public function addMarketProductSupplier(MarketProductSupplier $marketProductSupplier): static
     {
         if (!$this->marketProductSuppliers->contains($marketProductSupplier)) {
@@ -91,6 +119,10 @@ class MarketSupplier
         return $this;
     }
 
+    /**
+     * @param MarketProductSupplier $marketProductSupplier
+     * @return $this
+     */
     public function removeMarketProductSupplier(MarketProductSupplier $marketProductSupplier): static
     {
         if ($this->marketProductSuppliers->removeElement($marketProductSupplier)) {

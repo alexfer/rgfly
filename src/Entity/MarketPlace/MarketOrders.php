@@ -39,19 +39,30 @@ class MarketOrders
 
     public function __construct()
     {
+        $this->created_at = new \DateTimeImmutable();
         $this->marketOrdersProducts = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return Market|null
+     */
     public function getMarket(): ?Market
     {
         return $this->market;
     }
 
+    /**
+     * @param Market|null $market
+     * @return $this
+     */
     public function setMarket(?Market $market): static
     {
         $this->market = $market;
@@ -59,11 +70,18 @@ class MarketOrders
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getNumber(): ?string
     {
         return $this->number;
     }
 
+    /**
+     * @param string $number
+     * @return $this
+     */
     public function setNumber(string $number): static
     {
         $this->number = $number;
@@ -71,11 +89,18 @@ class MarketOrders
         return $this;
     }
 
+    /**
+     * @return float|null
+     */
     public function getTotal(): ?float
     {
         return $this->total;
     }
 
+    /**
+     * @param float $total
+     * @return $this
+     */
     public function setTotal(float $total): static
     {
         $this->total = $total;
@@ -83,11 +108,18 @@ class MarketOrders
         return $this;
     }
 
+    /**
+     * @return \DateTimeImmutable|null
+     */
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->created_at;
     }
 
+    /**
+     * @param \DateTimeImmutable $created_at
+     * @return $this
+     */
     public function setCreatedAt(\DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;
@@ -95,11 +127,18 @@ class MarketOrders
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getCompletedAt(): ?\DateTimeInterface
     {
         return $this->completed_at;
     }
 
+    /**
+     * @param \DateTimeInterface|null $completed_at
+     * @return $this
+     */
     public function setCompletedAt(?\DateTimeInterface $completed_at): static
     {
         $this->completed_at = $completed_at;
@@ -107,11 +146,18 @@ class MarketOrders
         return $this;
     }
 
+    /**
+     * @return MarketInvoice|null
+     */
     public function getMarketInvoice(): ?MarketInvoice
     {
         return $this->marketInvoice;
     }
 
+    /**
+     * @param MarketInvoice|null $marketInvoice
+     * @return $this
+     */
     public function setMarketInvoice(?MarketInvoice $marketInvoice): static
     {
         // unset the owning side of the relation if necessary
@@ -137,6 +183,10 @@ class MarketOrders
         return $this->marketOrdersProducts;
     }
 
+    /**
+     * @param MarketOrdersProduct $marketOrdersProduct
+     * @return $this
+     */
     public function addMarketOrdersProduct(MarketOrdersProduct $marketOrdersProduct): static
     {
         if (!$this->marketOrdersProducts->contains($marketOrdersProduct)) {
@@ -147,6 +197,10 @@ class MarketOrders
         return $this;
     }
 
+    /**
+     * @param MarketOrdersProduct $marketOrdersProduct
+     * @return $this
+     */
     public function removeMarketOrdersProduct(MarketOrdersProduct $marketOrdersProduct): static
     {
         if ($this->marketOrdersProducts->removeElement($marketOrdersProduct)) {

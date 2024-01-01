@@ -19,16 +19,26 @@ class MarketProductBrand
     #[ORM\ManyToOne(inversedBy: 'marketProductBrands')]
     private ?MarketBrand $brand = null;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return MarketProduct|null
+     */
     public function getProduct(): ?MarketProduct
     {
         return $this->product;
     }
 
+    /**
+     * @param MarketProduct|null $product
+     * @return $this
+     */
     public function setProduct(?MarketProduct $product): static
     {
         $this->product = $product;
@@ -36,11 +46,18 @@ class MarketProductBrand
         return $this;
     }
 
+    /**
+     * @return MarketBrand|null
+     */
     public function getBrand(): ?MarketBrand
     {
         return $this->brand;
     }
 
+    /**
+     * @param MarketBrand|null $brand
+     * @return $this
+     */
     public function setBrand(?MarketBrand $brand): static
     {
         $this->brand = $brand;
