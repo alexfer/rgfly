@@ -2,19 +2,19 @@
 
 namespace App\Entity\MarketPlace;
 
-use App\Repository\MarketPlace\MarketIInvoiceRepository;
+use App\Repository\MarketPlace\MarketInvoiceRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: MarketIInvoiceRepository::class)]
-class MarketIInvoice
+#[ORM\Entity(repositoryClass: MarketInvoiceRepository::class)]
+class MarketInvoice
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(inversedBy: 'marketIInvoice', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'marketInvoice', cascade: ['persist', 'remove'])]
     private ?MarketOrders $orders = null;
 
     #[ORM\Column(length: 100, nullable: true)]
@@ -33,7 +33,7 @@ class MarketIInvoice
     private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $payed_at = null;
+    private ?\DateTimeInterface $paid_at = null;
 
     public function getId(): ?int
     {
@@ -114,12 +114,12 @@ class MarketIInvoice
 
     public function getPayedAt(): ?\DateTimeInterface
     {
-        return $this->payed_at;
+        return $this->paid_at;
     }
 
-    public function setPayedAt(?\DateTimeInterface $payed_at): static
+    public function setPayedAt(?\DateTimeInterface $paid_at): static
     {
-        $this->payed_at = $payed_at;
+        $this->paid_at = $paid_at;
 
         return $this;
     }

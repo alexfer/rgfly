@@ -30,7 +30,7 @@ class MarketOrders
     private ?\DateTimeInterface $completed_at = null;
 
     #[ORM\OneToOne(mappedBy: 'orders', cascade: ['persist', 'remove'])]
-    private ?MarketIInvoice $marketIInvoice = null;
+    private ?MarketInvoice $marketInvoice = null;
 
     public function getId(): ?int
     {
@@ -97,24 +97,24 @@ class MarketOrders
         return $this;
     }
 
-    public function getMarketIInvoice(): ?MarketIInvoice
+    public function getMarketInvoice(): ?MarketInvoice
     {
-        return $this->marketIInvoice;
+        return $this->marketInvoice;
     }
 
-    public function setMarketIInvoice(?MarketIInvoice $marketIInvoice): static
+    public function setMarketInvoice(?MarketInvoice $marketInvoice): static
     {
         // unset the owning side of the relation if necessary
-        if ($marketIInvoice === null && $this->marketIInvoice !== null) {
-            $this->marketIInvoice->setOrders(null);
+        if ($marketInvoice === null && $this->marketInvoice !== null) {
+            $this->marketInvoice->setOrders(null);
         }
 
         // set the owning side of the relation if necessary
-        if ($marketIInvoice !== null && $marketIInvoice->getOrders() !== $this) {
-            $marketIInvoice->setOrders($this);
+        if ($marketInvoice !== null && $marketInvoice->getOrders() !== $this) {
+            $marketInvoice->setOrders($this);
         }
 
-        $this->marketIInvoice = $marketIInvoice;
+        $this->marketInvoice = $marketInvoice;
 
         return $this;
     }

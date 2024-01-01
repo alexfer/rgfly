@@ -2,27 +2,27 @@
 
 namespace App\Repository\MarketPlace;
 
-use App\Entity\MarketPlace\MarketIInvoice;
+use App\Entity\MarketPlace\MarketInvoice;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<MarketIInvoice>
+ * @extends ServiceEntityRepository<MarketInvoice>
  *
- * @method MarketIInvoice|null find($id, $lockMode = null, $lockVersion = null)
- * @method MarketIInvoice|null findOneBy(array $criteria, array $orderBy = null)
- * @method MarketIInvoice[]    findAll()
- * @method MarketIInvoice[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method MarketInvoice|null find($id, $lockMode = null, $lockVersion = null)
+ * @method MarketInvoice|null findOneBy(array $criteria, array $orderBy = null)
+ * @method MarketInvoice[]    findAll()
+ * @method MarketInvoice[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MarketIInvoiceRepository extends ServiceEntityRepository
+class MarketInvoiceRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, MarketIInvoice::class);
+        parent::__construct($registry, MarketInvoice::class);
     }
 
 //    /**
-//     * @return MarketIInvoice[] Returns an array of MarketIInvoice objects
+//     * @return MarketInvoice[] Returns an array of MarketInvoice objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -36,7 +36,7 @@ class MarketIInvoiceRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?MarketIInvoice
+//    public function findOneBySomeField($value): ?MarketInvoice
 //    {
 //        return $this->createQueryBuilder('m')
 //            ->andWhere('m.exampleField = :val')
