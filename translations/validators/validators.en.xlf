@@ -6,21 +6,21 @@
                 <source>form.name.not_blank</source>
                 <target>The name can't be blank.</target>
             </trans-unit>
-            <trans-unit id="form.price.not_blank">
-                <source>form.price.not_blank</source>
-                <target>The price can't be blank.</target>
+            <trans-unit id="form.cost.not_blank">
+                <source>form.cost.not_blank</source>
+                <target>The cost can't be blank.</target>
             </trans-unit>
             <trans-unit id="form.quantity.not_blank">
                 <source>form.quantity.not_blank</source>
                 <target>The quantity can't be blank.</target>
             </trans-unit>
-            <trans-unit id="form.price.min">
-                <source>form.price.min</source>
-                <target>Your price is too short. It should have {{ limit }} characters or more.</target>
+            <trans-unit id="form.cost.min">
+                <source>form.cost.min</source>
+                <target>Your cost is too short. It should have {{ limit }} characters or more.</target>
             </trans-unit>
-            <trans-unit id="form.price.max">
-                <source>form.price.max</source>
-                <target>Your price is too long. It should have {{ limit }} characters or less.</target>
+            <trans-unit id="form.cost.max">
+                <source>form.cost.max</source>
+                <target>Your cost is too long. It should have {{ limit }} characters or less.</target>
             </trans-unit>
             <trans-unit id="form.quantity.min">
                 <source>form.quantity.min</source>

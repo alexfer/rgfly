@@ -2,12 +2,12 @@
 
 namespace App\Entity\MarketPlace;
 
-use App\Repository\MarketPlace\MarketPaymentMethodRepository;
+use App\Repository\MarketPlace\MarketPaymentGatewayRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: MarketPaymentMethodRepository::class)]
-class MarketPaymentMethod
+#[ORM\Entity(repositoryClass: MarketPaymentGatewayRepository::class)]
+class MarketPaymentGateway
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -16,6 +16,9 @@ class MarketPaymentMethod
 
     #[ORM\Column(length: 100)]
     private ?string $name = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $summary = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $deleted_at = null;
@@ -43,6 +46,25 @@ class MarketPaymentMethod
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSummary(): ?string
+    {
+        return $this->summary;
+    }
+
+    /**
+     * @param string $summary
+     * @return $this
+     */
+    public function setSummary(string $summary): static
+    {
+        $this->summary = $summary;
 
         return $this;
     }

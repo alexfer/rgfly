@@ -116,7 +116,7 @@ use Symfony\Component\Validator\Constraints\Type;
                     ]),
                 ],
             ])
-            ->add('price', MoneyType::class, [
+            ->add('cost', MoneyType::class, [
                 'attr' => [
                     'min' => '0.50',
                     'step' => '0.50',
@@ -125,7 +125,7 @@ use Symfony\Component\Validator\Constraints\Type;
                 'currency' => $this->market->getCurrency() ?? 'USD',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'form.price.not_blank',
+                        'message' => 'form.cost.not_blank',
                     ]),
                 ],
             ])

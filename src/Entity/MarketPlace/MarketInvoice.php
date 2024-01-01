@@ -33,7 +33,7 @@ class MarketInvoice
     private ?\DateTimeInterface $paid_at = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?MarketPaymentMethod $payment_method = null;
+    private ?MarketPaymentGateway $payment_gateway = null;
 
 
     public function __construct()
@@ -163,20 +163,20 @@ class MarketInvoice
     }
 
     /**
-     * @return MarketPaymentMethod|null
+     * @return MarketPaymentGateway|null
      */
-    public function getPaymentMethod(): ?MarketPaymentMethod
+    public function getPaymentGateway(): ?MarketPaymentGateway
     {
-        return $this->payment_method;
+        return $this->payment_gateway;
     }
 
     /**
-     * @param MarketPaymentMethod|null $payment_method
+     * @param MarketPaymentGateway|null $payment_gateway
      * @return $this
      */
-    public function setPaymentMethod(?MarketPaymentMethod $payment_method): static
+    public function setPaymentGateway(?MarketPaymentGateway $payment_gateway): static
     {
-        $this->payment_method = $payment_method;
+        $this->payment_gateway = $payment_gateway;
 
         return $this;
     }

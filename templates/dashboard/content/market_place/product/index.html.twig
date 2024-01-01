@@ -20,37 +20,37 @@
             </tr>
             </thead>
             <tbody>
-            {% for entry in entries %}
-                <tr class="{% if entry.deletedAt %}text-secondary bg-draft{% endif %}">
-                    <th scope="row" class="text-center">{{ entry.id }}</th>
+            {% for product in products %}
+                <tr class="{% if product.deletedAt %}text-secondary bg-draft{% endif %}">
+                    <th scope="row" class="text-center">{{ product.id }}</th>
                     <td>
                         <a data-toggle="tooltip"
                            data-placement="right"
                            class="link"
-                           title="{{ entry.name }}"
-                           href="{{ path('app_dashboard_market_place_edit_product', {market: entry.market.id, id: entry.id}) }}">
-                            {{ entry.name|length > 30 ? entry.name|slice(0, 30) ~ '...' : entry.name }}
+                           title="{{ product.name }}"
+                           href="{{ path('app_dashboard_market_place_edit_product', {market: product.market.id, id: product.id}) }}">
+                            {{ product.name|length > 30 ? product.name|slice(0, 30) ~ '...' : product.name }}
                         </a>
                     </td>
-                    <td class="text-center">{{ market.currency }} {{ entry.cost|number_format(2) }}</td>
-                    <td class="text-center">{{ entry.quantity }}</td>
-                    <td class="text-center sr-only">{{ market.currency }} {{ (entry.cost * entry.quantity)|number_format(2) }}</td>
-                    <td class="text-center bd-highlight">{{ entry.createdAt|date(date_format) }}</td>
+                    <td class="text-center">{{ market.currency }} {{ product.cost|number_format(2) }}</td>
+                    <td class="text-center">{{ product.quantity }}</td>
+                    <td class="text-center sr-only">{{ market.currency }} {{ (product.cost * product.quantity)|number_format(2) }}</td>
+                    <td class="text-center bd-highlight">{{ product.createdAt|date(date_format) }}</td>
                     <td class="text-center">
-                        {% if entry.deletedAt %}
+                        {% if product.deletedAt %}
                             <a class="btn btn-sm btn-outline-lightning rounded restore-entry px-1 py-0"
-                               href="{{ path('app_dashboard_restore_market', {id: entry.id}) }}">
+                               href="{{ path('app_dashboard_restore_market', {id: product.id}) }}">
                                 <i class="bi bi-caret-up-square-fill"></i>
                             </a>
                         {% else %}
-                            <a href="{{ path('app_dashboard_market_place_edit_product', {market: entry.market.id, id: entry.id}) }}"
+                            <a href="{{ path('app_dashboard_market_place_edit_product', {market: product.market.id, id: product.id}) }}"
                                class="btn btn-sm btn-outline-lightning rounded px-1 py-0 mr-1">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
                             <a
                                     class="btn btn-sm btn-outline-lightning rounded delete-entry px-1 py-0"
                                     data-token="{{ csrf_token('delete') }}"
-                                    data-url="{{ url('app_dashboard_delete_market', {id: entry.id}) }}"
+                                    data-url="{{ url('app_dashboard_delete_market', {id: product.id}) }}"
                                     data-toggle="modal"
                                     data-target="#modal-delete">
                                 <i class="bi bi-trash"></i>
