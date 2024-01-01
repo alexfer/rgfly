@@ -11,6 +11,7 @@ parameters:
     locale: 'en'
     user_storage_dir: '%kernel.project_dir%/public/storage/user'
     user_storage_picture: 'storage/user/picture'
+    market_storage_logo: 'storage/market/logo'
     entry_storage_dir: '%kernel.project_dir%/public/storage/entry'
     entry_storage_picture: 'storage/entry/picture'
     app.notifications.email_sender: '%env(EMAIL_SENDER)%'

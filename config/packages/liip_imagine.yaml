@@ -10,12 +10,16 @@ liip_imagine:
             web_path: ~
     filter_sets:
         # name our filter set "my_thumb_filter"
+        market_thumb:
+            filters:
+                thumbnail:
+                    size: [ 100, 100 ]
+                    mode: outbound
         user_thumb:
             filters:
                 thumbnail:
                     size: [100, 100]
                     mode: outbound
-        
         user_profile:
             filters:
                 thumbnail:
@@ -32,6 +36,16 @@ liip_imagine:
                     size: [ 380, 200 ]
                     mode: outbound
         entry_view:
+            filters:
+                thumbnail:
+                    size: [ 1100, 400 ]
+                    mode: outbound
+        product_preview:
+            filters:
+                thumbnail:
+                    size: [ 280, 300 ]
+                    mode: outbound
+        product_view:
             filters:
                 thumbnail:
                     size: [ 1100, 400 ]

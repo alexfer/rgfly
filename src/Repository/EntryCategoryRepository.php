@@ -16,11 +16,18 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class EntryCategoryRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, EntryCategory::class);
     }
 
+    /**
+     * @param int|string $entry
+     * @return float|int|mixed|string
+     */
     public function removeEntryCategory(int|string $entry)
     {
         return $this->createQueryBuilder('c')
@@ -30,29 +37,4 @@ class EntryCategoryRepository extends ServiceEntityRepository
             ->getQuery()
             ->execute();
     }
-
-//    /**
-//     * @return EntryCategory[] Returns an array of EntryCategory objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('e.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?EntryCategory
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

@@ -26,6 +26,13 @@
         </span>
     </div>
 </div>
+<div class="custom-control custom-switch ml-3">
+    <input type="checkbox" name="mode" data-container="{{ container }}" class="custom-control-input" id="mode">
+    <label class="custom-control-label text-muted"
+           data-responsive-off="{{ 'dashboard.mode.off'|trans }}"
+           data-responsive-on="{{ 'dashboard.mode.on'|trans }}"
+           for="mode">{{ container }}</label>
+</div>
 {% set _part = _route|split('_')|last %}
 <ul class="nav flex-column py-2">
     <li class="nav-item">
@@ -112,7 +119,6 @@
                 <i class="bi bi-person-workspace"></i>
                 {{ key|replace({'_': ' '})|capitalize }}
                 <i class="bi bi-arrow-right-short arrow float-right"></i>
-                <span class="badge badge-pill badge-info mt-1 float-right">{{ count[key] }}</span>
             </a>
             <div class="collapse {{ key }} {{ _part == key ? 'show': '' }}">
                 {% for message, route in children[key] %}

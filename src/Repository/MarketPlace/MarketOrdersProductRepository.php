@@ -2,27 +2,27 @@
 
 namespace App\Repository\MarketPlace;
 
-use App\Entity\MarketPlace\MarketProductProvider;
+use App\Entity\MarketPlace\MarketOrdersProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<MarketProductProvider>
+ * @extends ServiceEntityRepository<MarketOrdersProduct>
  *
- * @method MarketProductProvider|null find($id, $lockMode = null, $lockVersion = null)
- * @method MarketProductProvider|null findOneBy(array $criteria, array $orderBy = null)
- * @method MarketProductProvider[]    findAll()
- * @method MarketProductProvider[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method MarketOrdersProduct|null find($id, $lockMode = null, $lockVersion = null)
+ * @method MarketOrdersProduct|null findOneBy(array $criteria, array $orderBy = null)
+ * @method MarketOrdersProduct[]    findAll()
+ * @method MarketOrdersProduct[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MarketProductProviderRepository extends ServiceEntityRepository
+class MarketOrdersProductRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, MarketProductProvider::class);
+        parent::__construct($registry, MarketOrdersProduct::class);
     }
 
 //    /**
-//     * @return MarketProductProvider[] Returns an array of MarketProductProvider objects
+//     * @return MarketOrdersProduct[] Returns an array of MarketOrdersProduct objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -36,7 +36,7 @@ class MarketProductProviderRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?MarketProductProvider
+//    public function findOneBySomeField($value): ?MarketOrdersProduct
 //    {
 //        return $this->createQueryBuilder('m')
 //            ->andWhere('m.exampleField = :val')

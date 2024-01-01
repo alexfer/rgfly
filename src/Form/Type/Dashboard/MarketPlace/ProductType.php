@@ -5,16 +5,20 @@ namespace App\Form\Type\Dashboard\MarketPlace;
 use AllowDynamicProperties;
 use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketProduct;
-use App\Entity\MarketPlace\MarketProvider;
+use App\Entity\MarketPlace\MarketBrand;
 use App\Service\MarketPlace\MarketTrait;
-use App\Service\Navbar;
+use App\Service\Dashboard;
 use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -29,7 +33,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Type;
 
 #[AllowDynamicProperties] class ProductType extends AbstractType
 {
@@ -39,8 +45,9 @@ use Symfony\Component\Validator\Constraints\Regex;
     public function __construct(private readonly Security $security, RequestStack $requestStack, EntityManagerInterface $em)
     {
         $user = $security->getUser();
-        $request = $requestStack->getCurrentRequest();
-        $this->market = $em->getRepository(Market::class)->findOneBy(['id' => $request->get('market')]);
+        $market = $requestStack->getCurrentRequest()->get('market');
+        $this->market = $em->getRepository(Market::class)
+            ->findOneBy(['id' => $market]);
     }
 
     /**
@@ -50,15 +57,15 @@ use Symfony\Component\Validator\Constraints\Regex;
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $providers = $suppliers = $manufacturers = [];
+        $brands = $suppliers = $manufacturers = [];
 
-        $marketProviders = $this->market->getMarketProviders()->toArray();
+        $marketBrands = $this->market->getMarketBrands()->toArray();
         $marketSuppliers = $this->market->getMarketSuppliers()->toArray();
         $marketSManufacturers = $this->market->getMarketManufacturers()->toArray();
 
-        if ($marketProviders) {
-            foreach ($marketProviders as $provider) {
-                $providers[$provider->getId()] = $provider->getName();
+        if ($marketBrands) {
+            foreach ($marketBrands as $brand) {
+                $brands[$brand->getId()] = $brand->getName();
             }
         }
 
@@ -73,8 +80,6 @@ use Symfony\Component\Validator\Constraints\Regex;
                 $manufacturers[$manufacturer->getId()] = $manufacturer->getName();
             }
         }
-
-        //dd($options['data']->getMarketProductProvider()->getProvider());
 
         $builder
             ->add('name', TextType::class, [
@@ -97,7 +102,7 @@ use Symfony\Component\Validator\Constraints\Regex;
             ->add('quantity', IntegerType::class, [
                 'attr' => [
                     'min' => 1,
-                    'max' => 1000,
+                    'max' => 100000,
                 ],
                 'constraints' => [
                     new NotBlank([
@@ -111,39 +116,34 @@ use Symfony\Component\Validator\Constraints\Regex;
                     ]),
                 ],
             ])
-            ->add('price', MoneyType::class, [
+            ->add('cost', MoneyType::class, [
                 'attr' => [
-                    'min' => 1,
-                    'max' => 100000,
+                    'min' => '0.50',
+                    'step' => '0.50',
                 ],
+                'html5' => true,
+                'currency' => $this->market->getCurrency() ?? 'USD',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'form.price.not_blank',
-                    ]),
-                    new Length([
-                        'min' => 1,
-                        'minMessage' => 'form.price.min',
-                        'max' => 100000,
-                        'maxMessage' => 'form.price.max',
+                        'message' => 'form.cost.not_blank',
                     ]),
                 ],
             ])
-            ->add('provider', ChoiceType::class, [
+            ->add('brand', ChoiceType::class, [
                 'mapped' => false,
                 'required' => false,
                 'multiple' => false,
                 'expanded' => false,
-                'data' => $options['data']->getMarketProductProvider() ? $options['data']->getMarketProductProvider()->getProvider()->getid(): 0,
-                //'data' => 0,
-                'placeholder' => 'label.form.provider_name',
-                'choices' => array_flip($providers),
+                'data' => $options['data']?->getMarketProductBrand()?->getBrand()?->getid(),
+                'placeholder' => 'label.form.brand_name',
+                'choices' => array_flip($brands),
             ])
             ->add('supplier', ChoiceType::class, [
                 'mapped' => false,
                 'required' => false,
                 'multiple' => false,
                 'expanded' => false,
-                'data' => $options['data']->getMarketProductSupplier() ? $options['data']->getMarketProductSupplier()->getSupplier()->getid(): 0,
+                'data' => $options['data']?->getMarketProductSupplier()?->getSupplier()?->getid(),
                 'placeholder' => 'label.form.supplier_name',
                 'choices' => array_flip($suppliers),
             ])
@@ -152,7 +152,7 @@ use Symfony\Component\Validator\Constraints\Regex;
                 'required' => false,
                 'multiple' => false,
                 'expanded' => false,
-                'data' => $options['data']->getMarketProductManufacturer() ? $options['data']->getMarketProductManufacturer()->getManufacturer()->getid(): 0,
+                'data' => $options['data']?->getMarketProductManufacturer()?->getManufacturer()?->getid(),
                 'placeholder' => 'label.form.manufacturer_name',
                 'choices' => array_flip($manufacturers),
             ])

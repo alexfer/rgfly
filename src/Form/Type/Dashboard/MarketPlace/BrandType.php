@@ -3,7 +3,7 @@
 namespace App\Form\Type\Dashboard\MarketPlace;
 
 use App\Entity\MarketPlace\Market;
-use App\Entity\MarketPlace\MarketProvider;
+use App\Entity\MarketPlace\MarketBrand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 
-class ProviderType extends AbstractType
+class BrandType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -62,7 +62,7 @@ class ProviderType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => MarketProvider::class,
+            'data_class' => MarketBrand::class,
         ]);
     }
 }

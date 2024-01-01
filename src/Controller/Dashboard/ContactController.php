@@ -4,7 +4,7 @@ namespace App\Controller\Dashboard;
 
 use App\Entity\Contact;
 use App\Repository\ContactRepository;
-use App\Service\Navbar;
+use App\Service\Dashboard;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class ContactController extends AbstractController
 {
 
-    use Navbar;
+    use Dashboard;
 
     /**
      *
@@ -30,7 +30,7 @@ class ContactController extends AbstractController
         UserInterface     $user,
     ): Response
     {
-        return $this->render('dashboard/content/contact/index.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/contact/index.html.twig', $this->navbar() + [
                 'entries' => $reposiroty->findBy([], ['id' => 'desc']),
             ]);
     }
@@ -74,7 +74,7 @@ class ContactController extends AbstractController
         UserInterface          $user,
     ): Response
     {
-        return $this->render('dashboard/content/contact/review.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/contact/review.html.twig', $this->navbar() + [
                 'entry' => $entry,
             ]);
     }

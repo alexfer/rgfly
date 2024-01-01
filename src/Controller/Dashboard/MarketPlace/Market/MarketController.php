@@ -6,14 +6,18 @@ use App\Entity\MarketPlace\Market;
 use App\Form\Type\Dashboard\MarketPlace\MarketType;
 use App\Repository\MarketPlace\MarketRepository;
 use App\Security\Voter\MarketVoter;
-use App\Service\Navbar;
+use App\Service\FileUploader;
+use App\Service\Dashboard;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -23,10 +27,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[Route('/dashboard/market-place')]
+#[Route('/dashboard/marker-place')]
 class MarketController extends AbstractController
 {
-    use Navbar;
+    use Dashboard;
 
     /**
      * @param UserInterface $user
@@ -44,7 +48,7 @@ class MarketController extends AbstractController
         $criteria = $this->criteria($user, null, 'owner');
         $markets = $marketRepository->findBy($criteria, ['created_at' => 'desc']);
 
-        return $this->render('dashboard/content/market_place/market/index.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/market_place/market/index.html.twig', $this->navbar() + [
                 'markets' => $markets,
             ]);
     }
@@ -55,9 +59,9 @@ class MarketController extends AbstractController
      * @param UserInterface $user
      * @param SluggerInterface $slugger
      * @param TranslatorInterface $translator
+     * @param ParameterBagInterface $params
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws Exception
      */
     #[Route('/create', name: 'app_dashboard_market_place_create_market')]
     public function create(
@@ -66,6 +70,7 @@ class MarketController extends AbstractController
         UserInterface          $user,
         SluggerInterface       $slugger,
         TranslatorInterface    $translator,
+        ParameterBagInterface  $params,
     ): Response
     {
         $entry = new Market();
@@ -77,7 +82,24 @@ class MarketController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $entry->setOwner($user)->setSlug($slugger->slug($form->get('name')->getData())->lower());
+
+                $entry->setOwner($user)
+                    ->setSlug($slugger->slug($form->get('name')->getData())->lower());
+
+                $file = $form->get('logo')->getData();
+
+                if ($file) {
+                    $fileUploader = new FileUploader($this->getTargetDir($params, $entry->getId()), $slugger, $em);
+
+                    try {
+                        $attach = $fileUploader->upload($file)->handle($entry);
+                    } catch (Exception $ex) {
+                        throw new Exception($ex->getMessage());
+                    }
+
+                    $entry->setAttach($attach);
+                }
+
                 $em->persist($entry);
                 $em->flush();
 
@@ -89,7 +111,7 @@ class MarketController extends AbstractController
             throw new AccessDeniedHttpException('Permission denied.');
         }
 
-        return $this->render('dashboard/content/market_place/market/_form.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/market_place/market/_form.html.twig', $this->navbar() + [
                 'form' => $form,
             ]);
     }
@@ -99,7 +121,10 @@ class MarketController extends AbstractController
      * @param Market $entry
      * @param EntityManagerInterface $em
      * @param UserInterface $user
+     * @param SluggerInterface $slugger
      * @param TranslatorInterface $translator
+     * @param ParameterBagInterface $params
+     * @param CacheManager $cacheManager
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -111,13 +136,47 @@ class MarketController extends AbstractController
         Market                 $entry,
         EntityManagerInterface $em,
         UserInterface          $user,
+        SluggerInterface       $slugger,
         TranslatorInterface    $translator,
+        ParameterBagInterface  $params,
+        CacheManager           $cacheManager,
     ): Response
     {
         $form = $this->createForm(MarketType::class, $entry);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $file = $form->get('logo')->getData();
+
+            if ($file) {
+                $fileUploader = new FileUploader($this->getTargetDir($params, $entry->getId()), $slugger, $em);
+
+                $oldAttach = $entry->getAttach();
+
+                if ($oldAttach) {
+                    $em->remove($oldAttach);
+                    $entry->setAttach(null);
+
+                    $fs = new Filesystem();
+                    $oldFile = $this->getTargetDir($params, $entry->getId()) . '/' . $oldAttach->getName();
+
+                    $cacheManager->remove($oldFile, 'market_thumb');
+
+                    if ($fs->exists($oldFile)) {
+                        $fs->remove($oldFile);
+                    }
+                }
+
+                try {
+                    $attach = $fileUploader->upload($file)->handle($entry);
+                } catch (Exception $ex) {
+                    throw new Exception($ex->getMessage());
+                }
+
+                $entry->setAttach($attach);
+            }
+
             $em->persist($entry);
             $em->flush();
 
@@ -126,7 +185,7 @@ class MarketController extends AbstractController
             return $this->redirectToRoute('app_dashboard_market_place_edit_market', ['id' => $entry->getId()]);
         }
 
-        return $this->render('dashboard/content/market_place/market/_form.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/market_place/market/_form.html.twig', $this->navbar() + [
                 'form' => $form,
             ]);
     }
@@ -172,6 +231,15 @@ class MarketController extends AbstractController
         $em->flush();
 
         return $this->redirectToRoute('app_dashboard_market_place_market');
+    }
+
+    /**
+     * @param int $id
+     * @return string
+     */
+    private function getTargetDir(ParameterBagInterface $params, int $id): string
+    {
+        return sprintf('%s/%d', $params->get('market_storage_logo'), $id);
     }
 
 }

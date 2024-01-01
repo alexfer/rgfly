@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Attach;
+use App\Entity\MarketPlace\Market;
 use App\Entity\UserDetails;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -85,6 +86,10 @@ class FileUploader
 
         if ($object && $object instanceof UserDetails) {
             $attach->setUserDetails($object);
+        }
+
+        if ($object && $object instanceof Market) {
+            $attach->setMarket($object);
         }
 
         $attach->setName($this->fileName)

@@ -2,20 +2,20 @@
 
 namespace App\Entity\MarketPlace;
 
-use App\Repository\MarketPlace\MarketProviderRepository;
+use App\Repository\MarketPlace\MarketBrandRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: MarketProviderRepository::class)]
-class MarketProvider
+#[ORM\Entity(repositoryClass: MarketBrandRepository::class)]
+class MarketBrand
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'marketProviders')]
+    #[ORM\ManyToOne(inversedBy: 'marketBrands')]
     private ?Market $market = null;
 
     #[ORM\Column(length: 255)]
@@ -24,12 +24,12 @@ class MarketProvider
     #[ORM\Column(length: 512, nullable: true)]
     private ?string $url = null;
 
-    #[ORM\OneToMany(mappedBy: 'provider', targetEntity: MarketProductProvider::class)]
-    private Collection $marketProductProviders;
+    #[ORM\OneToMany(mappedBy: 'brand', targetEntity: MarketProductBrand::class)]
+    private Collection $marketProductBrands;
 
     public function __construct()
     {
-        $this->marketProductProviders = new ArrayCollection();
+        $this->marketProductBrands = new ArrayCollection();
     }
 
     /**
@@ -98,29 +98,37 @@ class MarketProvider
     }
 
     /**
-     * @return Collection<int, MarketProductProvider>
+     * @return Collection<int, MarketProductBrand>
      */
-    public function getMarketProductProviders(): Collection
+    public function getMarketProductBrands(): Collection
     {
-        return $this->marketProductProviders;
+        return $this->marketProductBrands;
     }
 
-    public function addMarketProductProvider(MarketProductProvider $marketProductProvider): static
+    /**
+     * @param MarketProductBrand $marketProductBrand
+     * @return $this
+     */
+    public function addMarketProductBrand(MarketProductBrand $marketProductBrand): static
     {
-        if (!$this->marketProductProviders->contains($marketProductProvider)) {
-            $this->marketProductProviders->add($marketProductProvider);
-            $marketProductProvider->setProvider($this);
+        if (!$this->marketProductBrands->contains($marketProductBrand)) {
+            $this->marketProductBrands->add($marketProductBrand);
+            $marketProductBrand->setBrand($this);
         }
 
         return $this;
     }
 
-    public function removeMarketProductProvider(MarketProductProvider $marketProductProvider): static
+    /**
+     * @param MarketProductBrand $marketProductBrand
+     * @return $this
+     */
+    public function removeMarketProductBrand(MarketProductBrand $marketProductBrand): static
     {
-        if ($this->marketProductProviders->removeElement($marketProductProvider)) {
+        if ($this->marketProductBrands->removeElement($marketProductBrand)) {
             // set the owning side to null (unless already changed)
-            if ($marketProductProvider->getProvider() === $this) {
-                $marketProductProvider->setProvider(null);
+            if ($marketProductBrand->getBrand() === $this) {
+                $marketProductBrand->setBrand(null);
             }
         }
 

@@ -2,22 +2,22 @@
 
 namespace App\Entity\MarketPlace;
 
-use App\Repository\MarketPlace\MarketProductManufacturerRepository;
+use App\Repository\MarketPlace\MarketProductBrandRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: MarketProductManufacturerRepository::class)]
-class MarketProductManufacturer
+#[ORM\Entity(repositoryClass: MarketProductBrandRepository::class)]
+class MarketProductBrand
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(inversedBy: 'marketProductManufacturer', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'marketProductBrand', cascade: ['persist', 'remove'])]
     private ?MarketProduct $product = null;
 
-    #[ORM\ManyToOne(inversedBy: 'marketProductManufacturers')]
-    private ?MarketManufacturer $manufacturer = null;
+    #[ORM\ManyToOne(inversedBy: 'marketProductBrands')]
+    private ?MarketBrand $brand = null;
 
     /**
      * @return int|null
@@ -47,20 +47,20 @@ class MarketProductManufacturer
     }
 
     /**
-     * @return MarketManufacturer|null
+     * @return MarketBrand|null
      */
-    public function getManufacturer(): ?MarketManufacturer
+    public function getBrand(): ?MarketBrand
     {
-        return $this->manufacturer;
+        return $this->brand;
     }
 
     /**
-     * @param MarketManufacturer|null $manufacturer
+     * @param MarketBrand|null $brand
      * @return $this
      */
-    public function setManufacturer(?MarketManufacturer $manufacturer): static
+    public function setBrand(?MarketBrand $brand): static
     {
-        $this->manufacturer = $manufacturer;
+        $this->brand = $brand;
 
         return $this;
     }

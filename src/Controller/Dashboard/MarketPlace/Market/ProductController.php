@@ -8,20 +8,21 @@ use App\Entity\MarketPlace\MarketCategoryProduct;
 use App\Entity\MarketPlace\MarketManufacturer;
 use App\Entity\MarketPlace\MarketProduct;
 use App\Entity\MarketPlace\MarketProductManufacturer;
-use App\Entity\MarketPlace\MarketProductProvider;
+use App\Entity\MarketPlace\MarketProductBrand;
 use App\Entity\MarketPlace\MarketProductSupplier;
-use App\Entity\MarketPlace\MarketProvider;
+use App\Entity\MarketPlace\MarketBrand;
 use App\Entity\MarketPlace\MarketSupplier;
 use App\Form\Type\Dashboard\MarketPlace\ProductType;
 use App\Security\Voter\ProductVoter;
 use App\Service\MarketPlace\MarketTrait;
-use App\Service\Navbar;
+use App\Service\Dashboard;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,7 +35,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/dashboard/market-place/product')]
 class ProductController extends AbstractController
 {
-    use Navbar, MarketTrait;
+    use Dashboard, MarketTrait;
 
     /**
      * @param Request $request
@@ -52,11 +53,11 @@ class ProductController extends AbstractController
     ): Response
     {
         $market = $this->market($request, $user, $em);
-        $entries = $em->getRepository(MarketProduct::class)->findBy(['market' => $market], ['id' => 'desc']);
+        $products = $em->getRepository(MarketProduct::class)->findBy(['market' => $market], ['id' => 'desc']);
 
-        return $this->render('dashboard/content/market_place/product/index.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/market_place/product/index.html.twig', $this->navbar() + [
                 'market' => $market,
-                'entries' => $entries,
+                'products' => $products,
             ]);
     }
 
@@ -72,17 +73,17 @@ class ProductController extends AbstractController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/edit/{market}/{id}', name: 'app_dashboard_market_place_edit_product', methods: ['GET', 'POST'])]
-    #[IsGranted(ProductVoter::EDIT, subject: 'entry', statusCode: Response::HTTP_FORBIDDEN)]
+    #[IsGranted(ProductVoter::EDIT, subject: 'product', statusCode: Response::HTTP_FORBIDDEN)]
     public function edit(
         Request                $request,
         UserInterface          $user,
-        MarketProduct          $entry,
+        MarketProduct          $product,
         EntityManagerInterface $em,
         TranslatorInterface    $translator,
         SluggerInterface       $slugger,
     ): Response
     {
-        $form = $this->createForm(ProductType::class, $entry);
+        $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         $categoryRepository = $em->getRepository(MarketCategory::class);
@@ -94,8 +95,8 @@ class ProductController extends AbstractController
 
         if ($name) {
             try {
-                $entry->setSlug($slugger->slug($name)->lower());
-                $em->persist($entry);
+                $product->setSlug($slugger->slug($name)->lower());
+                $em->persist($product);
             } catch (UniqueConstraintViolationException $e) {
                 $uniqueError = $translator->trans('slug.unique', [
                     '%name%' => $translator->trans('label.form.title'),
@@ -108,35 +109,33 @@ class ProductController extends AbstractController
             $requestCategory = $request->get('category');
 
             if ($requestCategory) {
-                $repository->removeCategoryProduct($entry);
+                $repository->removeCategoryProduct($product);
                 foreach ($requestCategory as $key => $value) {
                     $entryCategory = new MarketCategoryProduct();
-                    $entryCategory->setProduct($entry)
+                    $entryCategory->setProduct($product)
                         ->setCategory($categoryRepository->findOneBy(['id' => $key]));
                     $em->persist($entryCategory);
                 }
             } else {
-                $repository->removeCategoryProduct($entry);
+                $repository->removeCategoryProduct($product);
             }
 
+            $em = $this->handleRelations($em, $form, $product);
 
-            $em = $this->handleRelations($em, $form, $entry);
-
-            $em->persist($entry);
+            $em->persist($product);
             $em->flush();
 
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.updated')]));
 
             return $this->redirectToRoute('app_dashboard_market_place_edit_product', [
                 'market' => $request->get('market'),
-                'id' => $entry->getId(),
+                'id' => $product->getId(),
             ]);
         }
 
-        return $this->render('dashboard/content/market_place/product/_form.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/market_place/product/_form.html.twig', $this->navbar() + [
                 'form' => $form,
                 'error' => $uniqueError,
-                'entry' => $entry,
                 'categories' => $categories,
             ]);
     }
@@ -160,12 +159,12 @@ class ProductController extends AbstractController
         TranslatorInterface    $translator,
     ): Response
     {
-        $categories = $em->getRepository(MarketCategory::class)->findBy([], ['name' => 'asc']);
         $market = $this->market($request, $user, $em);
+        $categories = $em->getRepository(MarketCategory::class)->findBy([], ['name' => 'asc']);
 
-        $entry = new MarketProduct();
+        $product = new MarketProduct();
 
-        $form = $this->createForm(ProductType::class, $entry);
+        $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         $uniqueError = null;
@@ -179,16 +178,17 @@ class ProductController extends AbstractController
 
             if ($requestCategory) {
                 foreach ($requestCategory as $key => $value) {
-                    $entryCategory = new MarketCategoryProduct();
-                    $entryCategory->setProduct($entry)
+                    $productCategory = new MarketCategoryProduct();
+                    $productCategory->setProduct($product)
                         ->setCategory($em->getRepository(MarketCategory::class)->findOneBy(['id' => $key]));
-                    $em->persist($entryCategory);
+                    $em->persist($productCategory);
                 }
             }
 
             try {
-                $entry->setSlug($slug)->setMarket($market);
-                $em->persist($entry);
+                $product->setSlug($slug)
+                    ->setMarket($market);
+                $em->persist($product);
             } catch (UniqueConstraintViolationException $e) {
                 $uniqueError = $translator->trans('slug.unique', [
                     '%name%' => $translator->trans('label.form.product_name'),
@@ -196,20 +196,19 @@ class ProductController extends AbstractController
                 ], 'validators');
             }
 
-            $em = $this->handleRelations($em, $form, $entry);
+            $em = $this->handleRelations($em, $form, $product);
 
             $em->flush();
 
             if (!$uniqueError) {
                 $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
-                return $this->redirectToRoute('app_dashboard_market_place_edit_product', ['market' => $request->get('market'), 'id' => $entry->getId()]);
+                return $this->redirectToRoute('app_dashboard_market_place_edit_product', ['market' => $request->get('market'), 'id' => $product->getId()]);
             }
         }
 
-        return $this->render('dashboard/content/market_place/product/_form.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/market_place/product/_form.html.twig', $this->navbar() + [
                 'form' => $form,
                 'error' => $uniqueError,
-                'entry' => $entry,
                 'categories' => $categories,
             ]);
     }
@@ -228,8 +227,8 @@ class ProductController extends AbstractController
     {
         $supplier = $em->getRepository(MarketSupplier::class)
             ->findOneBy(['id' => $form->get('supplier')->getData()]);
-        $provider = $em->getRepository(MarketProvider::class)
-            ->findOneBy(['id' => $form->get('provider')->getData()]);
+        $brand = $em->getRepository(MarketBrand::class)
+            ->findOneBy(['id' => $form->get('brand')->getData()]);
         $manufacturer = $em->getRepository(MarketManufacturer::class)
             ->findOneBy(['id' => $form->get('manufacturer')->getData()]);
 
@@ -242,12 +241,12 @@ class ProductController extends AbstractController
             $em->persist($ps);
         }
 
-        if ($provider) {
-            $pp = $entry->getMarketProductProvider();
+        if ($brand) {
+            $pp = $entry->getMarketProductBrand();
             if(!$pp) {
-                $pp = new MarketProductProvider();
+                $pp = new MarketProductBrand();
             }
-            $pp->setProduct($entry)->setProvider($provider);
+            $pp->setProduct($entry)->setBrand($brand);
             $em->persist($pp);
         }
         if ($manufacturer) {

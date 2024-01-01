@@ -33,16 +33,26 @@ class MarketManufacturer
         $this->marketProductManufacturers = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return Market|null
+     */
     public function getMarket(): ?Market
     {
         return $this->market;
     }
 
+    /**
+     * @param Market|null $market
+     * @return $this
+     */
     public function setMarket(?Market $market): static
     {
         $this->market = $market;
@@ -50,11 +60,18 @@ class MarketManufacturer
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return $this
+     */
     public function setName(string $name): static
     {
         $this->name = $name;
@@ -62,11 +79,18 @@ class MarketManufacturer
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
+    /**
+     * @param string|null $description
+     * @return $this
+     */
     public function setDescription(?string $description): static
     {
         $this->description = $description;
@@ -82,6 +106,10 @@ class MarketManufacturer
         return $this->marketProductManufacturers;
     }
 
+    /**
+     * @param MarketProductManufacturer $marketProductManufacturer
+     * @return $this
+     */
     public function addMarketProductManufacturer(MarketProductManufacturer $marketProductManufacturer): static
     {
         if (!$this->marketProductManufacturers->contains($marketProductManufacturer)) {
@@ -92,6 +120,10 @@ class MarketManufacturer
         return $this;
     }
 
+    /**
+     * @param MarketProductManufacturer $marketProductManufacturer
+     * @return $this
+     */
     public function removeMarketProductManufacturer(MarketProductManufacturer $marketProductManufacturer): static
     {
         if ($this->marketProductManufacturers->removeElement($marketProductManufacturer)) {

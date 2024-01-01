@@ -2,6 +2,7 @@
 
 namespace App\Entity\MarketPlace;
 
+use App\Entity\Attach;
 use App\Entity\User;
 use App\Repository\MarketPlace\MarketRepository;
 use DateTime;
@@ -27,6 +28,15 @@ class Market
     #[ORM\Column(length: 512)]
     private ?string $name = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $address = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $email = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $phone = null;
+
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
@@ -42,8 +52,8 @@ class Market
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $deleted_at = null;
 
-    #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketProvider::class)]
-    private Collection $marketProviders;
+    #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketBrand::class)]
+    private Collection $marketBrands;
 
     #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketSupplier::class)]
     private Collection $marketSuppliers;
@@ -51,13 +61,23 @@ class Market
     #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketManufacturer::class)]
     private Collection $marketManufacturers;
 
+    #[ORM\OneToOne(inversedBy: 'market', cascade: ['persist', 'remove'])]
+    private ?Attach $attach = null;
+
+    #[ORM\Column(length: 5, nullable: true)]
+    private ?string $currency = null;
+
+    #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketOrders::class)]
+    private Collection $marketOrders;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
         $this->products = new ArrayCollection();
-        $this->marketProviders = new ArrayCollection();
+        $this->marketBrands = new ArrayCollection();
         $this->marketSuppliers = new ArrayCollection();
         $this->marketManufacturers = new ArrayCollection();
+        $this->marketOrders = new ArrayCollection();
     }
 
     /**
@@ -110,6 +130,63 @@ class Market
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    /**
+     * @param string $address
+     * @return $this
+     */
+    public function setAddress(string $address): static
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     * @return $this
+     */
+    public function setEmail(string $email): static
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param string $phone
+     * @return $this
+     */
+    public function setPhone(string $phone): static
+    {
+        $this->phone = $phone;
 
         return $this;
     }
@@ -232,37 +309,37 @@ class Market
     }
 
     /**
-     * @return Collection<int, MarketProvider>
+     * @return Collection<int, MarketBrand>
      */
-    public function getMarketProviders(): Collection
+    public function getMarketBrands(): Collection
     {
-        return $this->marketProviders;
+        return $this->marketBrands;
     }
 
     /**
-     * @param MarketProvider $marketProvider
+     * @param MarketBrand $marketBrand
      * @return $this
      */
-    public function addMarketProvider(MarketProvider $marketProvider): static
+    public function addMarketBrand(MarketBrand $marketBrand): static
     {
-        if (!$this->marketProviders->contains($marketProvider)) {
-            $this->marketProviders->add($marketProvider);
-            $marketProvider->setMarket($this);
+        if (!$this->marketBrands->contains($marketBrand)) {
+            $this->marketBrands->add($marketBrand);
+            $marketBrand->setMarket($this);
         }
 
         return $this;
     }
 
     /**
-     * @param MarketProvider $marketProvider
+     * @param MarketBrand $marketBrand
      * @return $this
      */
-    public function removeMarketProvider(MarketProvider $marketProvider): static
+    public function removeMarketBrand(MarketBrand $marketBrand): static
     {
-        if ($this->marketProviders->removeElement($marketProvider)) {
+        if ($this->marketBrands->removeElement($marketBrand)) {
             // set the owning side to null (unless already changed)
-            if ($marketProvider->getMarket() === $this) {
-                $marketProvider->setMarket(null);
+            if ($marketBrand->getMarket() === $this) {
+                $marketBrand->setMarket(null);
             }
         }
 
@@ -277,6 +354,10 @@ class Market
         return $this->marketSuppliers;
     }
 
+    /**
+     * @param MarketSupplier $marketSupplier
+     * @return $this
+     */
     public function addMarketSupplier(MarketSupplier $marketSupplier): static
     {
         if (!$this->marketSuppliers->contains($marketSupplier)) {
@@ -287,6 +368,10 @@ class Market
         return $this;
     }
 
+    /**
+     * @param MarketSupplier $marketSupplier
+     * @return $this
+     */
     public function removeMarketSupplier(MarketSupplier $marketSupplier): static
     {
         if ($this->marketSuppliers->removeElement($marketSupplier)) {
@@ -307,6 +392,10 @@ class Market
         return $this->marketManufacturers;
     }
 
+    /**
+     * @param MarketManufacturer $marketManufacturer
+     * @return $this
+     */
     public function addMarketManufacturer(MarketManufacturer $marketManufacturer): static
     {
         if (!$this->marketManufacturers->contains($marketManufacturer)) {
@@ -317,12 +406,85 @@ class Market
         return $this;
     }
 
+    /**
+     * @param MarketManufacturer $marketManufacturer
+     * @return $this
+     */
     public function removeMarketManufacturer(MarketManufacturer $marketManufacturer): static
     {
         if ($this->marketManufacturers->removeElement($marketManufacturer)) {
             // set the owning side to null (unless already changed)
             if ($marketManufacturer->getMarket() === $this) {
                 $marketManufacturer->setMarket(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Attach|null
+     */
+    public function getAttach(): ?Attach
+    {
+        return $this->attach;
+    }
+
+    /**
+     * @param Attach|null $attach
+     * @return $this
+     */
+    public function setAttach(?Attach $attach): static
+    {
+        $this->attach = $attach;
+
+        return $this;
+    }
+
+    public function getCurrency(): ?string
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(?string $currency): static
+    {
+        $this->currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketOrders>
+     */
+    public function getMarketOrders(): Collection
+    {
+        return $this->marketOrders;
+    }
+
+    /**
+     * @param MarketOrders $marketOrder
+     * @return $this
+     */
+    public function addMarketOrder(MarketOrders $marketOrder): static
+    {
+        if (!$this->marketOrders->contains($marketOrder)) {
+            $this->marketOrders->add($marketOrder);
+            $marketOrder->setMarket($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MarketOrders $marketOrder
+     * @return $this
+     */
+    public function removeMarketOrder(MarketOrders $marketOrder): static
+    {
+        if ($this->marketOrders->removeElement($marketOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($marketOrder->getMarket() === $this) {
+                $marketOrder->setMarket(null);
             }
         }
 

@@ -1,14 +1,14 @@
 {% extends 'dashboard/index.html.twig' %}
 
 {% if form.vars.data.id %}
-    {% set _title_extend = 'market.supplier.create'|trans %}
+    {% set _title_extend = form.vars.data.name %}
 {% else %}
     {% set _title_extend = 'market.supplier.create'|trans %}
 {% endif %}
 {% block title_extend %}{{ _title_extend }} - {% endblock %}
 {% block title_content %}{{ _title_extend }}{% endblock %}
-
 {% block content %}
+    <hr>
     {% set _message = app.flashes('success') %}
     {{ form_start(form, {attr: {class: 'd-tech-form', novalidate: 'novalidate'}}) }}
     <div class="form-group">
@@ -19,7 +19,7 @@
     </div>
     <div class="form-group">
         {% set country_error = form.country.vars.errors|length ? 'form-control error' : 'form-control' %}
-        {{ form_label(form.country, 'label.form.provider_url') }}
+        {{ form_label(form.country, 'label.form.supplier_country') }}
         {{ form_widget(form.country, {attr: {class: name_error}}) }}
         <sm class="text-danger">{{ form_errors(form.country) }}</sm>
     </div>

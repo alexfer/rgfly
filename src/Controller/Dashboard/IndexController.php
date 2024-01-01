@@ -3,7 +3,7 @@
 namespace App\Controller\Dashboard;
 
 use App\Entity\MarketPlace\Market;
-use App\Service\Navbar;
+use App\Service\Dashboard;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class IndexController extends AbstractController
 {
 
-    use Navbar;
+    use Dashboard;
 
     /**
      * @param UserInterface $user
@@ -32,7 +32,7 @@ class IndexController extends AbstractController
     ): Response
     {
         $markets = $em->getRepository(Market::class)->findBy($this->criteria($user, null, 'owner'));
-        return $this->render('dashboard/content/index.html.twig', $this->build($user) + [
+        return $this->render('dashboard/content/index.html.twig', $this->navbar() + [
                 'markets' => $markets,
             ]);
     }

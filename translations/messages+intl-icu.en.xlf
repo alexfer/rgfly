@@ -160,6 +160,14 @@
                 <source>title.subscribe</source>
                 <target>Subscribe</target>
             </trans-unit>
+            <trans-unit id="dashboard.mode.on">
+                <source>dashboard.mode.on</source>
+                <target>Responsive mode on</target>
+            </trans-unit>
+            <trans-unit id="dashboard.mode.off">
+                <source>dashboard.mode.off</source>
+                <target>Responsive mode off</target>
+            </trans-unit>
             <trans-unit id="menu.dashboard">
                 <source>menu.dashboard</source>
                 <target>Dashboard</target>
@@ -188,9 +196,9 @@
                 <source>title.dashboard.overview_product</source>
                 <target>Products Overview</target>
             </trans-unit>
-            <trans-unit id="title.dashboard.providers">
-                <source>title.dashboard.providers</source>
-                <target>Providers</target>
+            <trans-unit id="title.dashboard.brands">
+                <source>title.dashboard.brands</source>
+                <target>Brands</target>
             </trans-unit>
             <trans-unit id="title.dashboard.suppliers">
                 <source>title.dashboard.suppliers</source>
@@ -288,6 +296,14 @@
                 <source>table.header.id</source>
                 <target>#</target>
             </trans-unit>
+            <trans-unit id="table.header.amount">
+                <source>table.header.amount</source>
+                <target>Amount</target>
+            </trans-unit>
+            <trans-unit id="table.header.cost">
+                <source>table.header.cost</source>
+                <target>Cost</target>
+            </trans-unit>
             <trans-unit id="table.header.owner">
                 <source>table.header.owner</source>
                 <target>Owner</target>
@@ -364,6 +380,10 @@
                 <source>label.form.new_password</source>
                 <target>New password</target>
             </trans-unit>
+            <trans-unit id="label.form.logo">
+                <source>label.form.logo</source>
+                <target>Market logo</target>
+            </trans-unit>
             <trans-unit id="label.form.repeat_password">
                 <source>label.form.repeat_password</source>
                 <target>Repeat Password</target>
@@ -371,6 +391,18 @@
             <trans-unit id="label.form.market_name">
                 <source>label.form.market_name</source>
                 <target>Market Name</target>
+            </trans-unit>
+            <trans-unit id="label.form.market_currency">
+                <source>label.form.market_currency</source>
+                <target>Market Currency</target>
+            </trans-unit>
+            <trans-unit id="label.form.market_logo">
+                <source>label.form.market_logo</source>
+                <target>Market Logo</target>
+            </trans-unit>
+            <trans-unit id="label.form.market_currency.placeholder">
+                <source>label.form.market_currency.placeholder</source>
+                <target>Market currency</target>
             </trans-unit>
             <trans-unit id="label.form.product_name">
                 <source>label.form.product_name</source>
@@ -384,13 +416,17 @@
                 <source>label.form.manufacturer_name</source>
                 <target>Manufacturer Name</target>
             </trans-unit>
-            <trans-unit id="label.form.provider_name">
-                <source>label.form.provider_name</source>
-                <target>Provider Name</target>
+            <trans-unit id="label.form.brand_name">
+                <source>label.form.brand_name</source>
+                <target>Brand Name</target>
             </trans-unit>
-            <trans-unit id="label.form.provider_url">
-                <source>label.form.provider_url</source>
-                <target>Provider Url</target>
+            <trans-unit id="label.form.brand_url">
+                <source>label.form.brand_url</source>
+                <target>Brand Url</target>
+            </trans-unit>
+            <trans-unit id="label.form.supplier_url">
+                <source>label.form.supplier_url</source>
+                <target>Supplier Url</target>
             </trans-unit>
             <trans-unit id="label.form.market_description">
                 <source>label.form.market_description</source>
@@ -404,9 +440,9 @@
                 <source>label.form.quantity</source>
                 <target>Quantity</target>
             </trans-unit>
-            <trans-unit id="label.form.price">
-                <source>label.form.price</source>
-                <target>Price</target>
+            <trans-unit id="label.form.cost">
+                <source>label.form.cost</source>
+                <target>Cost</target>
             </trans-unit>
             <trans-unit id="label.form.title">
                 <source>label.form.title</source>
@@ -493,6 +529,10 @@
             <trans-unit id="dashboard.title.markets">
                 <source>dashboard.title.markets</source>
                 <target>Your Markets</target>
+            </trans-unit>
+            <trans-unit id="dashboard.markets">
+                <source>dashboard.markets</source>
+                <target>Markets</target>
             </trans-unit>
             <trans-unit id="title.dashboard.create_market">
                 <source>title.dashboard.create_market</source>
@@ -584,9 +624,9 @@
                 <source>entry.form.categories</source>
                 <target>Categories</target>
             </trans-unit>
-            <trans-unit id="entry.form.providers">
-                <source>entry.form.providers</source>
-                <target>Providers</target>
+            <trans-unit id="entry.form.brands">
+                <source>entry.form.brands</source>
+                <target>Brands</target>
             </trans-unit>
             <trans-unit id="entry.form.products">
                 <source>entry.form.products</source>
@@ -791,6 +831,14 @@
                 <source>label.form.country</source>
                 <target>Your Country</target>
             </trans-unit>
+            <trans-unit id="label.form.supplier_country">
+                <source>label.form.supplier_country</source>
+                <target>Supplier Country</target>
+            </trans-unit>
+            <trans-unit id="form.supplier_country.placeholder">
+                <source>form.supplier_country.placeholder</source>
+                <target>Choose supplier country</target>
+            </trans-unit>
             <trans-unit id="form.country.placeholder">
                 <source>form.country.placeholder</source>
                 <target>Choose your country</target>
@@ -864,13 +912,17 @@
                 <source>market.product.create</source>
                 <target>Add Product</target>
             </trans-unit>
-            <trans-unit id="market.providers">
-                <source>market.providers</source>
-                <target>Providers</target>
+            <trans-unit id="market.brands">
+                <source>market.brands</source>
+                <target>Brands</target>
             </trans-unit>
-            <trans-unit id="market.provider.create">
-                <source>market.provider.create</source>
-                <target>Add Provider</target>
+            <trans-unit id="market.brand.create">
+                <source>market.brand.create</source>
+                <target>Add Brand</target>
+            </trans-unit>
+            <trans-unit id="market.brand.update">
+                <source>market.brand.update</source>
+                <target>Update Brand</target>
             </trans-unit>
             <trans-unit id="market.supplier.create">
                 <source>market.supplier.create</source>
