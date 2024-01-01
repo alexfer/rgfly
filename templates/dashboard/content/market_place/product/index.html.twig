@@ -14,6 +14,7 @@
                 <th class="font-weight-light" scope="col">{{ 'table.header.name'|trans }}</th>
                 <th class="font-weight-light text-center" scope="col">{{ 'table.header.price'|trans }}</th>
                 <th class="font-weight-light text-center" scope="col">{{ 'table.header.quantity'|trans }}</th>
+                <th class="font-weight-light text-center sr-only" scope="col">{{ 'table.header.total'|trans }}</th>
                 <th class="font-weight-light text-center" scope="col">{{ 'table.header.created_at'|trans }}</th>
                 <th class="font-weight-light text-center" scope="col">{{ 'table.header.handle'|trans }}</th>
             </tr>
@@ -31,8 +32,9 @@
                             {{ entry.name|length > 30 ? entry.name|slice(0, 30) ~ '...' : entry.name }}
                         </a>
                     </td>
-                    <td class="text-center">{{ entry.price|number_format(2) }}</td>
+                    <td class="text-center">{{ market.currency }} {{ entry.price|number_format(2) }}</td>
                     <td class="text-center">{{ entry.quantity }}</td>
+                    <td class="text-center sr-only">{{ market.currency }} {{ (entry.price * entry.quantity)|number_format(2) }}</td>
                     <td class="text-center bd-highlight">{{ entry.createdAt|date(date_format) }}</td>
                     <td class="text-center">
                         {% if entry.deletedAt %}

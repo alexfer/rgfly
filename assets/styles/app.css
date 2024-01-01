@@ -490,6 +490,10 @@ p:last-child {
     border-left-color: #5e87eb;
 }
 
+.sr-only.show {
+    position: relative !important;
+}
+
 .market-item {
     font-size: 16px;
     font-weight: normal;

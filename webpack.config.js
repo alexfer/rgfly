@@ -23,7 +23,7 @@ Encore
         .addEntry('app', './assets/app.js')
         .addEntry('layout', './assets/js/layout.js')
         .addEntry('image', './assets/js/image.js')
-        .addEntry('cookie', './assets/js/cookie.js')
+        .addEntry('responsive', './assets/js/responsive.js')
 //        .addEntry('ckeditor', './assets/js/ckeditor.js')
         .addStyleEntry('sidebar', './assets/styles/sidebar.css')
         //.addStyleEntry('global', './assets/styles/global.scss')

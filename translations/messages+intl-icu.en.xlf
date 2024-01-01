@@ -160,6 +160,14 @@
                 <source>title.subscribe</source>
                 <target>Subscribe</target>
             </trans-unit>
+            <trans-unit id="dashboard.mode.on">
+                <source>dashboard.mode.on</source>
+                <target>Responsive mode on</target>
+            </trans-unit>
+            <trans-unit id="dashboard.mode.off">
+                <source>dashboard.mode.off</source>
+                <target>Responsive mode off</target>
+            </trans-unit>
             <trans-unit id="menu.dashboard">
                 <source>menu.dashboard</source>
                 <target>Dashboard</target>

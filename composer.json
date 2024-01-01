@@ -1,7 +1,9 @@
 {
     "type": "project",
     "description": "Blog & Marketplace using the Symfony PHP framework",
-    "keywords": ["framework", "dev", "blog", "marketplace"],
+    "keywords": ["framework", "symfony", "symfony-7", "dev", "blog",
+        "marketplace", "ecommerce", "online-shop", "bootstrap", "php",
+        "postgred", "jquery", "webpack"],
     "homepage": "https://github.com/alexfer/techspace",
     "license": "MIT",
     "authors": [
