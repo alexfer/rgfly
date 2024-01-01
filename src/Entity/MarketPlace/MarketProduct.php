@@ -36,7 +36,7 @@ class MarketProduct
     private ?int $quantity = null;
 
     #[ORM\Column(type: 'float')]
-    private ?float $price = null;
+    private ?float $cost = null;
 
     #[ORM\Column]
     private ?DateTime $created_at = null;
@@ -65,13 +65,17 @@ class MarketProduct
     #[ORM\OneToOne(mappedBy: 'product', cascade: ['persist', 'remove'])]
     private ?MarketProductManufacturer $marketProductManufacturer = null;
 
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: MarketOrdersProduct::class)]
+    private Collection $marketOrdersProducts;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
         $this->marketCategoryProducts = new ArrayCollection();
         $this->marketProductAttaches = new ArrayCollection();
-        $this->price = 0.1;
+        $this->cost = 0.1;
         $this->quantity = 0;
+        $this->marketOrdersProducts = new ArrayCollection();
     }
 
     /**
@@ -166,19 +170,19 @@ class MarketProduct
      *
      * @return float|null
      */
-    public function getPrice(): ?float
+    public function getCost(): ?float
     {
-        return $this->price;
+        return $this->cost;
     }
 
     /**
      *
-     * @param float $price
+     * @param float $cost
      * @return static
      */
-    public function setPrice(float $price): static
+    public function setCost(float $cost): static
     {
-        $this->price = round($price,2);;
+        $this->cost = round($cost,2);
 
         return $this;
     }
@@ -289,6 +293,10 @@ class MarketProduct
         return $this->marketProductAttaches;
     }
 
+    /**
+     * @param MarketProductAttach $marketProductAttach
+     * @return $this
+     */
     public function addMarketProductAttach(MarketProductAttach $marketProductAttach): static
     {
         if (!$this->marketProductAttaches->contains($marketProductAttach)) {
@@ -299,6 +307,10 @@ class MarketProduct
         return $this;
     }
 
+    /**
+     * @param MarketProductAttach $marketProductAttach
+     * @return $this
+     */
     public function removeMarketProductAttach(MarketProductAttach $marketProductAttach): static
     {
         if ($this->marketProductAttaches->removeElement($marketProductAttach)) {
@@ -311,11 +323,18 @@ class MarketProduct
         return $this;
     }
 
+    /**
+     * @return Market|null
+     */
     public function getMarket(): ?Market
     {
         return $this->market;
     }
 
+    /**
+     * @param Market|null $market
+     * @return $this
+     */
     public function setMarket(?Market $market): static
     {
         $this->market = $market;
@@ -323,11 +342,18 @@ class MarketProduct
         return $this;
     }
 
+    /**
+     * @return MarketProductBrand|null
+     */
     public function getMarketProductBrand(): ?MarketProductBrand
     {
         return $this->marketProductBrand;
     }
 
+    /**
+     * @param MarketProductBrand|null $marketProductBrand
+     * @return $this
+     */
     public function setMarketProductBrand(?MarketProductBrand $marketProductBrand): static
     {
         // unset the owning side of the relation if necessary
@@ -345,11 +371,18 @@ class MarketProduct
         return $this;
     }
 
+    /**
+     * @return MarketProductSupplier|null
+     */
     public function getMarketProductSupplier(): ?MarketProductSupplier
     {
         return $this->marketProductSupplier;
     }
 
+    /**
+     * @param MarketProductSupplier|null $marketProductSupplier
+     * @return $this
+     */
     public function setMarketProductSupplier(?MarketProductSupplier $marketProductSupplier): static
     {
         // unset the owning side of the relation if necessary
@@ -367,11 +400,18 @@ class MarketProduct
         return $this;
     }
 
+    /**
+     * @return MarketProductManufacturer|null
+     */
     public function getMarketProductManufacturer(): ?MarketProductManufacturer
     {
         return $this->marketProductManufacturer;
     }
 
+    /**
+     * @param MarketProductManufacturer|null $marketProductManufacturer
+     * @return $this
+     */
     public function setMarketProductManufacturer(?MarketProductManufacturer $marketProductManufacturer): static
     {
         // unset the owning side of the relation if necessary
@@ -385,6 +425,44 @@ class MarketProduct
         }
 
         $this->marketProductManufacturer = $marketProductManufacturer;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketOrdersProduct>
+     */
+    public function getMarketOrdersProducts(): Collection
+    {
+        return $this->marketOrdersProducts;
+    }
+
+    /**
+     * @param MarketOrdersProduct $marketOrdersProduct
+     * @return $this
+     */
+    public function addMarketOrdersProduct(MarketOrdersProduct $marketOrdersProduct): static
+    {
+        if (!$this->marketOrdersProducts->contains($marketOrdersProduct)) {
+            $this->marketOrdersProducts->add($marketOrdersProduct);
+            $marketOrdersProduct->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MarketOrdersProduct $marketOrdersProduct
+     * @return $this
+     */
+    public function removeMarketOrdersProduct(MarketOrdersProduct $marketOrdersProduct): static
+    {
+        if ($this->marketOrdersProducts->removeElement($marketOrdersProduct)) {
+            // set the owning side to null (unless already changed)
+            if ($marketOrdersProduct->getProduct() === $this) {
+                $marketOrdersProduct->setProduct(null);
+            }
+        }
 
         return $this;
     }

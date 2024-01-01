@@ -3,6 +3,8 @@
 namespace App\Entity\MarketPlace;
 
 use App\Repository\MarketPlace\MarketOrdersRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,6 +33,14 @@ class MarketOrders
 
     #[ORM\OneToOne(mappedBy: 'orders', cascade: ['persist', 'remove'])]
     private ?MarketInvoice $marketInvoice = null;
+
+    #[ORM\OneToMany(mappedBy: 'orders', targetEntity: MarketOrdersProduct::class)]
+    private Collection $marketOrdersProducts;
+
+    public function __construct()
+    {
+        $this->marketOrdersProducts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -115,6 +125,36 @@ class MarketOrders
         }
 
         $this->marketInvoice = $marketInvoice;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketOrdersProduct>
+     */
+    public function getMarketOrdersProducts(): Collection
+    {
+        return $this->marketOrdersProducts;
+    }
+
+    public function addMarketOrdersProduct(MarketOrdersProduct $marketOrdersProduct): static
+    {
+        if (!$this->marketOrdersProducts->contains($marketOrdersProduct)) {
+            $this->marketOrdersProducts->add($marketOrdersProduct);
+            $marketOrdersProduct->setOrders($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMarketOrdersProduct(MarketOrdersProduct $marketOrdersProduct): static
+    {
+        if ($this->marketOrdersProducts->removeElement($marketOrdersProduct)) {
+            // set the owning side to null (unless already changed)
+            if ($marketOrdersProduct->getOrders() === $this) {
+                $marketOrdersProduct->setOrders(null);
+            }
+        }
 
         return $this;
     }
