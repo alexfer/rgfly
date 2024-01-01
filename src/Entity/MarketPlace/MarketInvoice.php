@@ -17,9 +17,6 @@ class MarketInvoice
     #[ORM\OneToOne(inversedBy: 'marketInvoice', cascade: ['persist', 'remove'])]
     private ?MarketOrders $orders = null;
 
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $payment_method = null;
-
     #[ORM\Column(length: 50)]
     private ?string $number = null;
 
@@ -35,6 +32,9 @@ class MarketInvoice
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $paid_at = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?MarketPaymentMethod $payment_method = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -48,18 +48,6 @@ class MarketInvoice
     public function setOrders(?MarketOrders $orders): static
     {
         $this->orders = $orders;
-
-        return $this;
-    }
-
-    public function getPaymentMethod(): ?string
-    {
-        return $this->payment_method;
-    }
-
-    public function setPaymentMethod(?string $payment_method): static
-    {
-        $this->payment_method = $payment_method;
 
         return $this;
     }
@@ -120,6 +108,18 @@ class MarketInvoice
     public function setPayedAt(?\DateTimeInterface $paid_at): static
     {
         $this->paid_at = $paid_at;
+
+        return $this;
+    }
+
+    public function getPaymentMethod(): ?MarketPaymentMethod
+    {
+        return $this->payment_method;
+    }
+
+    public function setPaymentMethod(?MarketPaymentMethod $payment_method): static
+    {
+        $this->payment_method = $payment_method;
 
         return $this;
     }
