@@ -296,6 +296,14 @@
                 <source>table.header.id</source>
                 <target>#</target>
             </trans-unit>
+            <trans-unit id="table.header.amount">
+                <source>table.header.amount</source>
+                <target>Amount</target>
+            </trans-unit>
+            <trans-unit id="table.header.cost">
+                <source>table.header.cost</source>
+                <target>Cost</target>
+            </trans-unit>
             <trans-unit id="table.header.owner">
                 <source>table.header.owner</source>
                 <target>Owner</target>
