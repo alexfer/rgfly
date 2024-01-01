@@ -29,6 +29,9 @@ class MarketOrders
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $completed_at = null;
 
+    #[ORM\OneToOne(mappedBy: 'orders', cascade: ['persist', 'remove'])]
+    private ?MarketIInvoice $marketIInvoice = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,6 +93,28 @@ class MarketOrders
     public function setCompletedAt(?\DateTimeInterface $completed_at): static
     {
         $this->completed_at = $completed_at;
+
+        return $this;
+    }
+
+    public function getMarketIInvoice(): ?MarketIInvoice
+    {
+        return $this->marketIInvoice;
+    }
+
+    public function setMarketIInvoice(?MarketIInvoice $marketIInvoice): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($marketIInvoice === null && $this->marketIInvoice !== null) {
+            $this->marketIInvoice->setOrders(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($marketIInvoice !== null && $marketIInvoice->getOrders() !== $this) {
+            $marketIInvoice->setOrders($this);
+        }
+
+        $this->marketIInvoice = $marketIInvoice;
 
         return $this;
     }
