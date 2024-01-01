@@ -67,6 +67,9 @@ class Market
     #[ORM\Column(length: 5, nullable: true)]
     private ?string $currency = null;
 
+    #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketOrders::class)]
+    private Collection $marketOrders;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
@@ -74,6 +77,7 @@ class Market
         $this->marketBrands = new ArrayCollection();
         $this->marketSuppliers = new ArrayCollection();
         $this->marketManufacturers = new ArrayCollection();
+        $this->marketOrders = new ArrayCollection();
     }
 
     /**
@@ -429,6 +433,36 @@ class Market
     public function setCurrency(?string $currency): static
     {
         $this->currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketOrders>
+     */
+    public function getMarketOrders(): Collection
+    {
+        return $this->marketOrders;
+    }
+
+    public function addMarketOrder(MarketOrders $marketOrder): static
+    {
+        if (!$this->marketOrders->contains($marketOrder)) {
+            $this->marketOrders->add($marketOrder);
+            $marketOrder->setMarket($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMarketOrder(MarketOrders $marketOrder): static
+    {
+        if ($this->marketOrders->removeElement($marketOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($marketOrder->getMarket() === $this) {
+                $marketOrder->setMarket(null);
+            }
+        }
 
         return $this;
     }

@@ -3,7 +3,7 @@
     "description": "Blog & Marketplace using the Symfony PHP framework",
     "keywords": ["framework", "symfony", "symfony-7", "dev", "blog",
         "marketplace", "ecommerce", "online-shop", "bootstrap", "php",
-        "postgred", "jquery", "webpack", "docker", "shopping-cart"],
+        "postgred", "jquery", "webpack", "docker", "shopping-cart", "redis"],
     "homepage": "https://github.com/alexfer/techspace",
     "license": "MIT",
     "authors": [
