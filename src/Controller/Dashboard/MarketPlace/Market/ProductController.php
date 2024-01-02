@@ -105,15 +105,17 @@ class ProductController extends AbstractController
             }
         }
 
-        if ($form->isSubmitted() && $form->isValid() && !$uniqueError) {
-            $requestCategory = $request->get('category');
+        $entryCategory = null;
 
-            if ($requestCategory) {
+        if ($form->isSubmitted() && $form->isValid() && !$uniqueError) {
+            $requestCategory = $form->get('category')->getData();
+
+            if (count($requestCategory)) {
                 $repository->removeCategoryProduct($product);
                 foreach ($requestCategory as $key => $value) {
                     $entryCategory = new MarketCategoryProduct();
                     $entryCategory->setProduct($product)
-                        ->setCategory($categoryRepository->findOneBy(['id' => $key]));
+                        ->setCategory($categoryRepository->findOneBy(['id' => $value]));
                     $em->persist($entryCategory);
                 }
             } else {
@@ -137,6 +139,7 @@ class ProductController extends AbstractController
                 'form' => $form,
                 'error' => $uniqueError,
                 'categories' => $categories,
+                'productCategory' => $repository->findAll(),
             ]);
     }
 

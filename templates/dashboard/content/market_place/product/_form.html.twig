@@ -25,54 +25,74 @@
         {% set name_error = form.name.vars.errors|length ? 'form-control error' : 'form-control' %}
         {{ form_label(form.name, 'label.form.product_name') }} <span class="text-danger">*</span>
         {{ form_widget(form.name, {attr: {class: name_error, placeholder: 'label.form.product_name'}}) }}
-        <sm class="text-danger">{{ form_errors(form.name) }}</sm>
+        <small class="text-danger">{{ form_errors(form.name) }}</small>
     </div>
     <div class="form-group row">
         <div class="col-6">
             {% set quantity_error = form.quantity.vars.errors|length and not error ? 'form-control error' : 'form-control' %}
             {{ form_label(form.quantity, 'label.form.quantity') }} <span class="text-danger">*</span>
             {{ form_widget(form.quantity, {attr: {class: quantity_error, placeholder: '1'}}) }}
-            <sm class="text-danger">{{ form_errors(form.quantity) }}</sm>
+            <small class="text-danger">{{ form_errors(form.quantity) }}</small>
         </div>
         <div class="col-6">
             {% set cost_error = form.cost.vars.errors|length ? 'form-control error' : 'form-control' %}
             {{ form_label(form.cost, 'label.form.cost') }} <span class="text-danger">*</span>
             {{ form_widget(form.cost, {attr: {class: cost_error, placeholder: '0.50'}}) }}
-            <sm class="text-danger">{{ form_errors(form.cost) }}</sm>
+            <small class="text-danger">{{ form_errors(form.cost) }}</small>
         </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(form.category, 'entry.form.categories') }}
+        {% for key, field in form.category %}
+            <div class="custom-control custom-switch">
+                {% set _checked = false %}
+                {% if form.vars.data.id %}
+                    {% for category in productCategory %}
+                        {% if category.category.id == field.vars.value %}
+                            {% set _checked = true %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {{ form_widget(field, {attr: {class: 'custom-control-input', checked: _checked}}) }}
+                {{ form_label(field, field.vars.label, {label_attr: {class: 'custom-control-label'}}) }}
+            </div>
+        {% endfor %}
     </div>
     <div class="form-group">
         {% set brand_error = form.brand.vars.errors|length ? 'form-control error' : 'form-control' %}
         {{ form_label(form.brand, 'label.form.brand_name') }}
-        <a href="{{ path('app_dashboard_market_place_create_brand', {market: app.request.get('market')}) }}" class="link float-right">{{ 'market.brand.create'|trans }}</a>
+        <a href="{{ path('app_dashboard_market_place_create_brand', {market: app.request.get('market')}) }}"
+           class="link float-right">{{ 'market.brand.create'|trans }}</a>
         {{ form_widget(form.brand, {attr: {class: brand_error}}) }}
-        <sm class="text-danger">{{ form_errors(form.brand) }}</sm>
+        <small class="text-danger">{{ form_errors(form.brand) }}</small>
     </div>
     <div class="form-group">
         {% set supplier_error = form.supplier.vars.errors|length ? 'form-control error' : 'form-control' %}
-        <a href="{{ path('app_dashboard_market_place_create_supplier', {market: app.request.get('market')}) }}" class="link float-right">{{ 'market.supplier.create'|trans }}</a>
+        <a href="{{ path('app_dashboard_market_place_create_supplier', {market: app.request.get('market')}) }}"
+           class="link float-right">{{ 'market.supplier.create'|trans }}</a>
         {{ form_label(form.supplier, 'label.form.supplier_name') }}
         {{ form_widget(form.supplier, {attr: {class: supplier_error}}) }}
-        <sm class="text-danger">{{ form_errors(form.supplier) }}</sm>
+        <small class="text-danger">{{ form_errors(form.supplier) }}</small>
     </div>
     <div class="form-group">
         {% set manufacturer_error = form.manufacturer.vars.errors|length ? 'form-control error' : 'form-control' %}
         {{ form_label(form.manufacturer, 'label.form.manufacturer_name') }}
-        <a href="{{ path('app_dashboard_market_place_create_manufacturer', {market: app.request.get('market')}) }}" class="link float-right">{{ 'market.manufacturer.create'|trans }}</a>
+        <a href="{{ path('app_dashboard_market_place_create_manufacturer', {market: app.request.get('market')}) }}"
+           class="link float-right">{{ 'market.manufacturer.create'|trans }}</a>
         {{ form_widget(form.manufacturer, {attr: {class: manufacturer_error}}) }}
-        <sm class="text-danger">{{ form_errors(form.manufacturer) }}</sm>
+        <small class="text-danger">{{ form_errors(form.manufacturer) }}</small>
     </div>
-    {% include 'dashboard/content/form/category.html.twig' with {'categories': categories, 'collection': form.vars.data.marketCategoryProducts} %}
     <div class="form-group">
         {% set description_error = form.description.vars.errors|length ? 'form-control error' : 'form-control' %}
-        {{ form_label(form.description, 'label.form.product_description') }}  <span class="text-danger">*</span>
+        {{ form_label(form.description, 'label.form.product_description') }} <span class="text-danger">*</span>
         {{ form_widget(form.description, {attr: {class: description_error, rows: 6, placeholder: 'label.form.product_description'}}) }}
-        <sm class="text-danger">{{ form_errors(form.description) }}</sm>
+        <small class="text-danger">{{ form_errors(form.description) }}</small>
     </div>
     <input type="hidden" name="flash" value="{{ _message[0]|default([]|json_encode) }}">
     <div class="form-group text-center my-4">
         {{ form_widget(form.save, { label: form.vars.data.id ? 'form.action.update' : 'form.action.save'}) }}
-        <a type="button" href="{{ url('app_dashboard_market_place_market_product', {market: app.request.get('market')}) }}"
+        <a type="button"
+           href="{{ url('app_dashboard_market_place_market_product', {market: app.request.get('market')}) }}"
            class="btn btn-secondary shadow-sm">{{ 'form.action.back'|trans }}</a>
     </div>
     {{ form_end(form) }}

@@ -125,8 +125,6 @@ class Currency
     public const ZAR = 'ZAR';
     public const ZMK = 'ZMK';
     public const ZWL = 'ZWL';
-
-
     private const CODE = 'code';
     private const COUNTRY_NAME = 'country_name';
     private const CURRENCY = 'currency';

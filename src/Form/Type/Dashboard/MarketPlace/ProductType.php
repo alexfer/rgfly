@@ -4,50 +4,53 @@ namespace App\Form\Type\Dashboard\MarketPlace;
 
 use AllowDynamicProperties;
 use App\Entity\MarketPlace\Market;
+use App\Entity\MarketPlace\MarketCategory;
 use App\Entity\MarketPlace\MarketProduct;
-use App\Entity\MarketPlace\MarketBrand;
-use App\Service\MarketPlace\MarketTrait;
-use App\Service\Dashboard;
 use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Constraints\Regex;
-use Symfony\Component\Validator\Constraints\Type;
+use Doctrine\ORM\EntityRepository;
 
 #[AllowDynamicProperties] class ProductType extends AbstractType
 {
 
+    /**
+     * @var Market|null
+     */
     private null|Market $market;
 
-    public function __construct(private readonly Security $security, RequestStack $requestStack, EntityManagerInterface $em)
+    /**
+     * @var EntityRepository
+     */
+    private EntityRepository $categories;
+
+    /**
+     * @param Security $security
+     * @param RequestStack $requestStack
+     * @param EntityManagerInterface $em
+     */
+    public function __construct(
+        Security $security,
+        RequestStack $requestStack,
+        EntityManagerInterface $em,
+    )
     {
         $user = $security->getUser();
         $market = $requestStack->getCurrentRequest()->get('market');
         $this->market = $em->getRepository(Market::class)
             ->findOneBy(['id' => $market]);
+        $this->categories = $em->getRepository(MarketCategory::class);
     }
 
     /**
@@ -57,11 +60,19 @@ use Symfony\Component\Validator\Constraints\Type;
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $brands = $suppliers = $manufacturers = [];
+        $brands = $suppliers = $manufacturers = $categories = [];
 
         $marketBrands = $this->market->getMarketBrands()->toArray();
         $marketSuppliers = $this->market->getMarketSuppliers()->toArray();
         $marketSManufacturers = $this->market->getMarketManufacturers()->toArray();
+
+        $marketCategory = $this->categories->findAll();
+
+        if ($marketCategory) {
+            foreach ($marketCategory as $category) {
+                $categories[$category->getId()] = $category->getName();
+            }
+        }
 
         if ($marketBrands) {
             foreach ($marketBrands as $brand) {
@@ -128,6 +139,13 @@ use Symfony\Component\Validator\Constraints\Type;
                         'message' => 'form.cost.not_blank',
                     ]),
                 ],
+            ])
+            ->add('category', ChoiceType::class, [
+                'mapped' => false,
+                'required' => false,
+                'multiple' => true,
+                'expanded' => true,
+                'choices' => array_flip($categories),
             ])
             ->add('brand', ChoiceType::class, [
                 'mapped' => false,
