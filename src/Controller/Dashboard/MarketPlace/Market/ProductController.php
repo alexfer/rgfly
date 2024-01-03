@@ -139,7 +139,7 @@ class ProductController extends AbstractController
                 'form' => $form,
                 'error' => $uniqueError,
                 'categories' => $categories,
-                'productCategory' => $repository->findAll(),
+                'productCategory' => $repository->findBy(['product' => $product]),
             ]);
     }
 
@@ -177,13 +177,13 @@ class ProductController extends AbstractController
             $name = $form->get('name')->getData();
             $slug = $slugger->slug($name)->lower();
 
-            $requestCategory = $request->get('category');
+            $requestCategory = $form->get('category')->getData();
 
             if ($requestCategory) {
                 foreach ($requestCategory as $key => $value) {
                     $productCategory = new MarketCategoryProduct();
                     $productCategory->setProduct($product)
-                        ->setCategory($em->getRepository(MarketCategory::class)->findOneBy(['id' => $key]));
+                        ->setCategory($em->getRepository(MarketCategory::class)->findOneBy(['id' => $value]));
                     $em->persist($productCategory);
                 }
             }
@@ -237,7 +237,7 @@ class ProductController extends AbstractController
 
         if ($supplier) {
             $ps = $entry->getMarketProductSupplier();
-            if(!$ps) {
+            if (!$ps) {
                 $ps = new MarketProductSupplier();
             }
             $ps->setProduct($entry)->setSupplier($supplier);
@@ -246,7 +246,7 @@ class ProductController extends AbstractController
 
         if ($brand) {
             $pp = $entry->getMarketProductBrand();
-            if(!$pp) {
+            if (!$pp) {
                 $pp = new MarketProductBrand();
             }
             $pp->setProduct($entry)->setBrand($brand);
@@ -254,7 +254,7 @@ class ProductController extends AbstractController
         }
         if ($manufacturer) {
             $pm = $entry->getMarketProductManufacturer();
-            if(!$pm) {
+            if (!$pm) {
                 $pm = new MarketProductManufacturer();
             }
             $pm->setProduct($entry)->setManufacturer($manufacturer);
