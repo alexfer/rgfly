@@ -21,6 +21,7 @@
         "doctrine/doctrine-bundle": "^2.10",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.16",
+        "gedmo/doctrine-extensions": "^3.14",
         "liip/imagine-bundle": "^2.12",
         "nelmio/cors-bundle": "^2.4",
         "phpdocumentor/reflection-docblock": "^5.3",
