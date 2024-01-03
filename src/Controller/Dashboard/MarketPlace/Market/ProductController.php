@@ -263,4 +263,33 @@ class ProductController extends AbstractController
 
         return $em;
     }
+
+    /**
+     * @param Request $request
+     * @param UserInterface $user
+     * @param MarketProduct $product
+     * @param EntityManagerInterface $em
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/delete/{market}/{id}', name: 'app_dashboard_delete_product', methods: ['POST'])]
+    public function delete(
+        Request                $request,
+        UserInterface          $user,
+        MarketProduct          $product,
+        EntityManagerInterface $em,
+    ): Response
+    {
+        $market = $this->market($request, $user, $em);
+
+        if ($this->isCsrfTokenValid('delete', $request->get('_token'))) {
+            $date = new \DateTime('@' . strtotime('now'));
+            $product->setDeletedAt($date);
+            $em->persist($product);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('app_dashboard_market_place_market_product', ['market' => $market->getId()]);
+    }
 }

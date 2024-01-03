@@ -15,18 +15,21 @@
         {% set name_error = form.name.vars.errors|length ? 'form-control error' : 'form-control' %}
         {{ form_label(form.name, 'label.form.supplier_name') }} <span class="text-danger">*</span>
         {{ form_widget(form.name, {attr: {class: name_error, placeholder: 'label.form.supplier_name'}}) }}
-        <sm class="text-danger">{{ form_errors(form.name) }}</sm>
+        <smallclass
+        ="text-danger">{{ form_errors(form.name) }}</small>
     </div>
     <div class="form-group">
         {% set country_error = form.country.vars.errors|length ? 'form-control error' : 'form-control' %}
         {{ form_label(form.country, 'label.form.supplier_country') }}
         {{ form_widget(form.country, {attr: {class: name_error}}) }}
-        <sm class="text-danger">{{ form_errors(form.country) }}</sm>
+        <smallclass
+        ="text-danger">{{ form_errors(form.country) }}</small>
     </div>
     <input type="hidden" name="flash" value="{{ _message[0]|default([]|json_encode) }}">
     <div class="form-group text-center my-4">
         {{ form_widget(form.save, { label: form.vars.data.id ? 'form.action.update' : 'form.action.save'}) }}
-        <a type="button" href="{{ url('app_dashboard_market_place_market_supplier', {market: app.request.get('market')}) }}"
+        <a type="button"
+           href="{{ url('app_dashboard_market_place_market_supplier', {market: app.request.get('market')}) }}"
            class="btn btn-secondary shadow-sm">{{ 'form.action.back'|trans }}</a>
     </div>
     {{ form_end(form) }}

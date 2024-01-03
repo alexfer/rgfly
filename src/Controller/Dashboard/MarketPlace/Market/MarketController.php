@@ -192,7 +192,7 @@ class MarketController extends AbstractController
 
     /**
      * @param Request $request
-     * @param Market $entry
+     * @param Market $market
      * @param EntityManagerInterface $em
      * @return Response
      * @throws Exception
@@ -200,14 +200,14 @@ class MarketController extends AbstractController
     #[Route('/delete/{id}', name: 'app_dashboard_delete_market', methods: ['POST'])]
     public function delete(
         Request                $request,
-        Market                 $entry,
+        Market                 $market,
         EntityManagerInterface $em,
     ): Response
     {
         if ($this->isCsrfTokenValid('delete', $request->get('_token'))) {
             $date = new DateTime('@' . strtotime('now'));
-            $entry->setDeletedAt($date);
-            $em->persist($entry);
+            $market->setDeletedAt($date);
+            $em->persist($market);
             $em->flush();
         }
 
