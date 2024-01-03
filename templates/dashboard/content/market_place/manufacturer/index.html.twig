@@ -39,6 +39,14 @@
                            class="btn btn-sm btn-outline-lightning rounded px-1 py-0">
                             <i class="bi bi-pencil-square"></i>
                         </a>
+                        <a
+                                class="btn btn-sm btn-outline-lightning rounded delete-entry px-1 py-0"
+                                data-token="{{ csrf_token('delete') }}"
+                                data-url="{{ url('app_dashboard_delete_manufacturer', {market: manufacturer.market.id, id: manufacturer.id}) }}"
+                                data-toggle="modal"
+                                data-target="#modal-delete">
+                            <i class="bi bi-trash"></i>
+                        </a>
                     </td>
                 </tr>
             {% else %}

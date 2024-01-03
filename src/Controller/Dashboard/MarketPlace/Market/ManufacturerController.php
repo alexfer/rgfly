@@ -131,4 +131,31 @@ class ManufacturerController extends AbstractController
                 'form' => $form,
             ]);
     }
+
+    /**
+     * @param Request $request
+     * @param UserInterface $user
+     * @param MarketManufacturer $manufacturer
+     * @param EntityManagerInterface $em
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/delete/{market}/{id}', name: 'app_dashboard_delete_manufacturer', methods: ['POST'])]
+    public function delete(
+        Request                $request,
+        UserInterface          $user,
+        MarketManufacturer     $manufacturer,
+        EntityManagerInterface $em,
+    ): Response
+    {
+        $market = $this->market($request, $user, $em);
+
+        if ($this->isCsrfTokenValid('delete', $request->get('_token'))) {
+            $em->remove($manufacturer);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('app_dashboard_market_place_market_manufacturer', ['market' => $market->getId()]);
+    }
 }

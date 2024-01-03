@@ -131,4 +131,31 @@ class SupplierController extends AbstractController
                 'form' => $form,
             ]);
     }
+
+    /**
+     * @param Request $request
+     * @param UserInterface $user
+     * @param MarketSupplier $supplier
+     * @param EntityManagerInterface $em
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/delete/{market}/{id}', name: 'app_dashboard_delete_supplier', methods: ['POST'])]
+    public function delete(
+        Request                $request,
+        UserInterface          $user,
+        MarketSupplier         $supplier,
+        EntityManagerInterface $em,
+    ): Response
+    {
+        $market = $this->market($request, $user, $em);
+
+        if ($this->isCsrfTokenValid('delete', $request->get('_token'))) {
+            $em->remove($supplier);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('app_dashboard_market_place_market_supplier', ['market' => $market->getId()]);
+    }
 }

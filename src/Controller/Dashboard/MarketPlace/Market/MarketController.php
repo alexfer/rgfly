@@ -216,24 +216,25 @@ class MarketController extends AbstractController
 
     /**
      *
-     * @param Market $entry
+     * @param Market $market
      * @param EntityManagerInterface $em
      * @return Response
      */
     #[Route('/restore/{id}', name: 'app_dashboard_restore_market')]
     public function restore(
-        Market                 $entry,
+        Market                 $market,
         EntityManagerInterface $em,
     ): Response
     {
-        $entry->setDeletedAt(null);
-        $em->persist($entry);
+        $market->setDeletedAt(null);
+        $em->persist($market);
         $em->flush();
 
         return $this->redirectToRoute('app_dashboard_market_place_market');
     }
 
     /**
+     * @param ParameterBagInterface $params
      * @param int $id
      * @return string
      */

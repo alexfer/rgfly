@@ -292,4 +292,29 @@ class ProductController extends AbstractController
 
         return $this->redirectToRoute('app_dashboard_market_place_market_product', ['market' => $market->getId()]);
     }
+
+    /**
+     * @param Request $request
+     * @param UserInterface $user
+     * @param MarketProduct $product
+     * @param EntityManagerInterface $em
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/restore/{market}/{id}', name: 'app_dashboard_restore_product')]
+    public function restore(
+        Request                $request,
+        UserInterface          $user,
+        MarketProduct          $product,
+        EntityManagerInterface $em,
+    ): Response
+    {
+        $market = $this->market($request, $user, $em);
+        $product->setDeletedAt(null);
+        $em->persist($product);
+        $em->flush();
+
+        return $this->redirectToRoute('app_dashboard_market_place_market_product', ['market' => $market->getId()]);
+    }
 }

@@ -26,30 +26,26 @@
         {% set title_error = form.title.vars.errors|length or error ? 'form-control error' : 'form-control' %}
         {{ form_label(form.title, 'label.form.title') }} <span class="text-danger">*</span>
         {{ form_widget(form.title, {attr: {class: title_error, placeholder: 'label.form.title'}}) }}
-        <smallclass
-        ="text-danger">{{ error ? error : form_errors(form.title) }}</small>
+        <small class="text-danger">{{ error ? error : form_errors(form.title) }}</small>
     </div>
     <div class="form-group mt-3">
         {% set short_content_error = form.short_content.vars.errors|length ? 'form-control error' : 'form-control' %}
         {{ form_label(form.short_content, 'label.form.short_content') }}
         {{ form_widget(form.short_content, {attr: {class: short_content_error, rows: 3, placeholder: 'label.form.short_content'}}) }}
-        <smallclass
-        ="text-danger">{{ form_errors(form.short_content) }}</small>
+        <small class="text-danger">{{ form_errors(form.short_content) }}</small>
     </div>
     {% include 'dashboard/content/form/category.html.twig' with {'categories': categories, 'collection': form.vars.data.entryCategories} %}
     <div class="form-group mt-3">
         {% set content_error = form.content.vars.errors|length ? 'form-control error' : 'form-control' %}
         {{ form_label(form.content, 'label.form.content') }} <span class="text-danger">*</span>
         {{ form_widget(form.content, {attr: {class: content_error, rows: 6, placeholder: 'label.form.content'}}) }}
-        <smallclass
-        ="text-danger">{{ form_errors(form.content) }}</small>
+        <small class="text-danger">{{ form_errors(form.content) }}</small>
     </div>
     <div class="form-group mt-3">
         {% set status_error = form.status.vars.errors|length ? 'form-control error' : 'form-control' %}
         {{ form_label(form.status, 'label.form.status') }}
         {{ form_widget(form.status, {attr: {class: status_error, disabled: form.vars.data.id ? false : true}}) }}
-        <smallclass
-        ="text-danger">{{ form_errors(form.status) }}</small>
+        <small class="text-danger">{{ form_errors(form.status) }}</small>
     </div>
     {% if form.vars.data.id %}
         {% include 'dashboard/content/form/attachment.html.twig' with {

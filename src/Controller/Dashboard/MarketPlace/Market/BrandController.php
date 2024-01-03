@@ -130,4 +130,31 @@ class BrandController extends AbstractController
                 'form' => $form,
             ]);
     }
+
+    /**
+     * @param Request $request
+     * @param UserInterface $user
+     * @param MarketBrand $brand
+     * @param EntityManagerInterface $em
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/delete/{market}/{id}', name: 'app_dashboard_delete_brand', methods: ['POST'])]
+    public function delete(
+        Request                $request,
+        UserInterface          $user,
+        MarketBrand            $brand,
+        EntityManagerInterface $em,
+    ): Response
+    {
+        $market = $this->market($request, $user, $em);
+
+        if ($this->isCsrfTokenValid('delete', $request->get('_token'))) {
+            $em->remove($brand);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('app_dashboard_market_place_market_brand', ['market' => $market->getId()]);
+    }
 }

@@ -39,7 +39,7 @@
                     <td class="text-center">
                         {% if product.deletedAt %}
                             <a class="btn btn-sm btn-outline-lightning rounded restore-entry px-1 py-0"
-                               href="{{ path('app_dashboard_restore_market', {id: product.id}) }}">
+                               href="{{ path('app_dashboard_restore_product', {market: product.market.id, id: product.id}) }}">
                                 <i class="bi bi-caret-up-square-fill"></i>
                             </a>
                         {% else %}
@@ -50,7 +50,7 @@
                             <a
                                     class="btn btn-sm btn-outline-lightning rounded delete-entry px-1 py-0"
                                     data-token="{{ csrf_token('delete') }}"
-                                    data-url="{{ url('app_dashboard_delete_product', {market: market.id, id: product.id}) }}"
+                                    data-url="{{ url('app_dashboard_delete_product', {market: product.market.id, id: product.id}) }}"
                                     data-toggle="modal"
                                     data-target="#modal-delete">
                                 <i class="bi bi-trash"></i>
