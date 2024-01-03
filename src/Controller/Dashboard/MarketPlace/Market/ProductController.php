@@ -72,7 +72,7 @@ class ProductController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/edit/{market}/{id}', name: 'app_dashboard_market_place_edit_product', methods: ['GET', 'POST'])]
+    #[Route('/edit/{market}-{id}', name: 'app_dashboard_market_place_edit_product', methods: ['GET', 'POST'])]
     #[IsGranted(ProductVoter::EDIT, subject: 'product', statusCode: Response::HTTP_FORBIDDEN)]
     public function edit(
         Request                $request,
@@ -273,7 +273,7 @@ class ProductController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/delete/{market}/{id}', name: 'app_dashboard_delete_product', methods: ['POST'])]
+    #[Route('/delete/{market}-{id}', name: 'app_dashboard_delete_product', methods: ['POST'])]
     public function delete(
         Request                $request,
         UserInterface          $user,
@@ -302,7 +302,7 @@ class ProductController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/restore/{market}/{id}', name: 'app_dashboard_restore_product')]
+    #[Route('/restore/{market}-{id}', name: 'app_dashboard_restore_product')]
     public function restore(
         Request                $request,
         UserInterface          $user,

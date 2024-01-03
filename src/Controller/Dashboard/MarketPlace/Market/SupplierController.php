@@ -101,7 +101,7 @@ class SupplierController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/edit/{market}/{id}', name: 'app_dashboard_market_place_edit_supplier', methods: ['GET', 'POST'])]
+    #[Route('/edit/{market}-{id}', name: 'app_dashboard_market_place_edit_supplier', methods: ['GET', 'POST'])]
     public function edit(
         Request                $request,
         UserInterface          $user,
@@ -141,7 +141,7 @@ class SupplierController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/delete/{market}/{id}', name: 'app_dashboard_delete_supplier', methods: ['POST'])]
+    #[Route('/delete/{market}-{id}', name: 'app_dashboard_delete_supplier', methods: ['POST'])]
     public function delete(
         Request                $request,
         UserInterface          $user,
