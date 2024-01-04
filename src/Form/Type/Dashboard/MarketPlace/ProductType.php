@@ -66,7 +66,7 @@ use Doctrine\ORM\EntityRepository;
         $marketSuppliers = $this->market->getMarketSuppliers()->toArray();
         $marketSManufacturers = $this->market->getMarketManufacturers()->toArray();
 
-        $marketCategory = $this->categories->findAll();
+        $marketCategory = $this->categories->findBy(['parent' => null]);
 
         if ($marketCategory) {
             foreach ($marketCategory as $category) {

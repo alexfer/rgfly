@@ -163,7 +163,7 @@ class ProductController extends AbstractController
     ): Response
     {
         $market = $this->market($request, $user, $em);
-        $categories = $em->getRepository(MarketCategory::class)->findBy([], ['name' => 'asc']);
+        $categories = $em->getRepository(MarketCategory::class)->findBy(['parent' => null], ['name' => 'asc']);
 
         $product = new MarketProduct();
 
