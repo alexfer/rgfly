@@ -33,13 +33,13 @@ class MarketCategory
     #[ORM\Column]
     private ?int $level = null;
 
-    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: 'MarketCategory')]
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: MarketCategory::class)]
     private Collection $children;
 
 
-    #[ORM\ManyToOne(targetEntity: 'MarketCategory', inversedBy: 'children')]
-    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', nullable: true)]
-    private ?int $parent = null;
+    #[ORM\ManyToOne(targetEntity: MarketCategory::class, inversedBy: 'children')]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    private ?MarketCategory $parent = null;
 
     #[ORM\Column]
     private ?DateTimeImmutable $created_at = null;
@@ -175,11 +175,7 @@ class MarketCategory
         return $this->parent;
     }
 
-    /**
-     * @param int|null $parent
-     * @return $this
-     */
-    public function setParent(?int $parent): static
+    public function setParent(?MarketCategory $parent): static
     {
         $this->parent = $parent;
 
