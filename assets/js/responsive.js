@@ -12,7 +12,6 @@ $(window).on('load', function () {
         responsive.removeClass('show');
         label.html(label.data('responsive-off'));
     }
-    console.log(responsive.find('.sr-only').length);
 });
 
 $(function () {

@@ -189,7 +189,30 @@ class MarketPlaceCategoryFixtures extends Fixture
                 'name' => 'Products for home',
                 'description' => 'Products for home.',
                 'parent' => [
-
+                    [
+                        'name' => 'Home textiles',
+                        'description' => 'Home textiles',
+                    ],
+                    [
+                        'name' => 'Dishes ware',
+                        'description' => 'Dishes ware',
+                    ],
+                    [
+                        'name' => 'Furniture\'s',
+                        'description' => 'Furniture\'s',
+                    ],
+                    [
+                        'name' => 'Kids room',
+                        'description' => 'Kids room',
+                    ],
+                    [
+                        'name' => 'Decor for home',
+                        'description' => 'Decor for home',
+                    ],
+                    [
+                        'name' => 'Clocks',
+                        'description' => 'Clocks',
+                    ],
                 ]],
             [
                 'name' => 'Automotive Tools',

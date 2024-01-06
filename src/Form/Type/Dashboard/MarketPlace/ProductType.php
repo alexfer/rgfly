@@ -5,6 +5,7 @@ namespace App\Form\Type\Dashboard\MarketPlace;
 use AllowDynamicProperties;
 use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketCategory;
+use App\Entity\MarketPlace\MarketCategoryProduct;
 use App\Entity\MarketPlace\MarketProduct;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -33,7 +34,8 @@ use Doctrine\ORM\EntityRepository;
     /**
      * @var EntityRepository
      */
-    private EntityRepository $categories;
+    private EntityRepository $categories, $productCategories;
+
 
     /**
      * @param Security $security
@@ -41,8 +43,8 @@ use Doctrine\ORM\EntityRepository;
      * @param EntityManagerInterface $em
      */
     public function __construct(
-        Security $security,
-        RequestStack $requestStack,
+        Security               $security,
+        RequestStack           $requestStack,
         EntityManagerInterface $em,
     )
     {
@@ -51,6 +53,7 @@ use Doctrine\ORM\EntityRepository;
         $this->market = $em->getRepository(Market::class)
             ->findOneBy(['id' => $market]);
         $this->categories = $em->getRepository(MarketCategory::class);
+        $this->productCategories = $em->getRepository(MarketCategoryProduct::class);
     }
 
     /**
@@ -60,17 +63,24 @@ use Doctrine\ORM\EntityRepository;
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $brands = $suppliers = $manufacturers = $categories = [];
+        $brands = $suppliers = $manufacturers = $categories = $productCategories = [];
 
         $marketBrands = $this->market->getMarketBrands()->toArray();
         $marketSuppliers = $this->market->getMarketSuppliers()->toArray();
-        $marketSManufacturers = $this->market->getMarketManufacturers()->toArray();
+        $marketSManufacturers = $this->market->getMarketManufacturers();
+        $marketCategory = $this->categories->findBy([], ['id' => 'asc']);
+        $marketProductCategory = $this->productCategories->findBy(['product' => $options['data']->getId()]);
 
-        $marketCategory = $this->categories->findBy(['parent' => null]);
-
+        if($marketProductCategory) {
+            foreach ($marketProductCategory as $productCategory) {
+                $productCategories[$productCategory->getCategory()->getId()] = $productCategory->getCategory()->getName();
+            }
+        }
         if ($marketCategory) {
             foreach ($marketCategory as $category) {
-                $categories[$category->getId()] = $category->getName();
+                if($category->getParent()) {
+                    $categories[$category->getParent()->getName()][$category->getName()] = $category->getId();
+                }
             }
         }
 
@@ -122,7 +132,7 @@ use Doctrine\ORM\EntityRepository;
                     new Length([
                         'min' => 1,
                         'minMessage' => 'form.quantity.min',
-                        'max' => 100,
+                        'max' => 10000,
                         'maxMessage' => 'form.quantity.max',
                     ]),
                 ],
@@ -144,8 +154,9 @@ use Doctrine\ORM\EntityRepository;
                 'mapped' => false,
                 'required' => false,
                 'multiple' => true,
-                'expanded' => true,
-                'choices' => array_flip($categories),
+                'expanded' => false,
+                'data' => array_keys($productCategories),
+                'choices' => $categories,
             ])
             ->add('brand', ChoiceType::class, [
                 'mapped' => false,
@@ -202,7 +213,8 @@ use Doctrine\ORM\EntityRepository;
      * @param OptionsResolver $resolver
      * @return void
      */
-    public function configureOptions(OptionsResolver $resolver): void
+    public
+    function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => MarketProduct::class,

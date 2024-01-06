@@ -33,20 +33,35 @@ class MarketCategory
     #[ORM\Column]
     private ?int $level = null;
 
+    /**
+     * @var Collection
+     */
     #[ORM\OneToMany(mappedBy: 'parent', targetEntity: MarketCategory::class)]
     private Collection $children;
 
 
+    /**
+     * @var MarketCategory|null
+     */
     #[ORM\ManyToOne(targetEntity: MarketCategory::class, inversedBy: 'children')]
     #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     private ?MarketCategory $parent = null;
 
+    /**
+     * @var DateTimeImmutable|null
+     */
     #[ORM\Column]
     private ?DateTimeImmutable $created_at = null;
 
+    /**
+     * @var DateTimeInterface|null
+     */
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $deleted_at = null;
 
+    /**
+     * @var Collection
+     */
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: MarketCategoryProduct::class)]
     private Collection $marketCategoryProducts;
 
@@ -168,13 +183,17 @@ class MarketCategory
     }
 
     /**
-     * @return int|null
+     * @return MarketCategory|null
      */
-    public function getParent(): ?int
+    public function getParent(): ?MarketCategory
     {
         return $this->parent;
     }
 
+    /**
+     * @param MarketCategory|null $parent
+     * @return $this
+     */
     public function setParent(?MarketCategory $parent): static
     {
         $this->parent = $parent;

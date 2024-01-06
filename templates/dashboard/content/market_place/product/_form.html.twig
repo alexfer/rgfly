@@ -43,20 +43,7 @@
     </div>
     <div class="form-group">
         {{ form_label(form.category, 'entry.form.categories') }}
-        {% for key, field in form.category %}
-            <div class="custom-control custom-switch">
-                {% set _checked = false %}
-                {% if form.vars.data.id %}
-                    {% for category in productCategory %}
-                        {% if category.category.id == field.vars.value %}
-                            {% set _checked = true %}
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-                {{ form_widget(field, {attr: {class: 'custom-control-input', checked: _checked}}) }}
-                {{ form_label(field, field.vars.label, {label_attr: {class: 'custom-control-label'}}) }}
-            </div>
-        {% endfor %}
+        {{ form_widget(form.category, {attr: {class: 'custom-select', size: 11}}) }}
     </div>
     <div class="form-group">
         {% set brand_error = form.brand.vars.errors|length ? 'form-control error' : 'form-control' %}
