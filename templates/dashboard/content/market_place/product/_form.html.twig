@@ -48,8 +48,12 @@
     <div class="form-group mb-3">
         {% set brand_error = form.brand.vars.errors|length ? 'form-select error' : 'form-select' %}
         {{ form_label(form.brand, 'label.form.brand_name') }}
-        <a href="{{ path('app_dashboard_market_place_create_brand', {market: app.request.get('market')}) }}"
-           class="link float-end">{{ 'market.brand.create'|trans }}</a>
+        <a data-bs-toggle="modal"
+           data-bs-target="#modal-brand"
+           data-url="{{ path('app_dashboard_market_place_xhr_create_brand', {market: app.request.get('market')}) }}"
+           data-token="{{ csrf_token('create') }}"
+           href="#"
+           class="link float-end add-entry">{{ 'market.brand.create'|trans }}</a>
         {{ form_widget(form.brand, {attr: {class: brand_error}}) }}
         <small class="text-danger">{{ form_errors(form.brand) }}</small>
     </div>

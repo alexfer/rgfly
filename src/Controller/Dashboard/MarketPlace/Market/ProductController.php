@@ -64,13 +64,11 @@ class ProductController extends AbstractController
     /**
      * @param Request $request
      * @param UserInterface $user
-     * @param MarketProduct $entry
+     * @param MarketProduct $product
      * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
      * @param SluggerInterface $slugger
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/edit/{market}-{id}', name: 'app_dashboard_market_place_edit_product', methods: ['GET', 'POST'])]
     #[IsGranted(ProductVoter::EDIT, subject: 'product', statusCode: Response::HTTP_FORBIDDEN)]

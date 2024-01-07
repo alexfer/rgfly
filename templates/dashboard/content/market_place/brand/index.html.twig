@@ -44,9 +44,9 @@
                         <a
                                 class="btn btn-sm btn-outline-lightning rounded delete-entry px-1 py-0"
                                 data-token="{{ csrf_token('delete') }}"
-                                data-url="{{ url('app_dashboard_delete_brand', {market: brand.market.id, id: brand.id}) }}"
-                                data-toggle="modal"
-                                data-target="#modal-delete">
+                                data-url="{{ path('app_dashboard_delete_brand', {market: brand.market.id, id: brand.id}) }}"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modal-delete">
                             <i class="bi bi-trash"></i>
                         </a>
                     </td>

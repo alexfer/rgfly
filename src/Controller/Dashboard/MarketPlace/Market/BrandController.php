@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -156,5 +157,51 @@ class BrandController extends AbstractController
         }
 
         return $this->redirectToRoute('app_dashboard_market_place_market_brand', ['market' => $market->getId()]);
+    }
+
+    /**
+     * @param Request $request
+     * @param UserInterface $user
+     * @param EntityManagerInterface $em
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/xhr_create/{market}', name: 'app_dashboard_market_place_xhr_create_brand', methods: ['POST'])]
+    public function xshCreate(
+        Request                $request,
+        UserInterface          $user,
+        EntityManagerInterface $em,
+        TranslatorInterface    $translator,
+    ): JsonResponse
+    {
+        $market = $this->market($request, $user, $em);
+        $requestGetPost = $request->get('brand');
+        $responseJson = [];
+
+        if ($requestGetPost && isset($requestGetPost['name'])) {
+            if ($this->isCsrfTokenValid('create', $requestGetPost['_token'])) {
+                $brand = new MarketBrand();
+                $brand->setName($requestGetPost['name']);
+                $brand->setMarket($market);
+                $em->persist($brand);
+                $em->flush();
+
+                $responseJson = [
+                    'json' => [
+                        'id' => "#product_brand",
+                        'option' => [
+                            'id' => $brand->getId(),
+                            'name' => $brand->getName(),
+                        ],
+                    ],
+                ];
+                $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
+            }
+        }
+        $response = new JsonResponse($responseJson);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
     }
 }

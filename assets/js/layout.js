@@ -59,6 +59,29 @@ $(function () {
         $('.modal .confirm').attr('action', $(this).attr('data-url'));
     });
 
+    $('.add-entry').on('click', function () {
+        let url = $(this).attr('data-url');
+        $('.modal input[id="_token"]').attr('value', $(this).attr('data-token'));
+        $('.modal form').off().on('submit', function () {
+            let form = $(this);
+            $.post(url, form.serialize(), function (response) {
+                form.trigger('reset');
+
+                let data = response.json;
+                let owner = data.id.toString();
+
+                $(owner).append($('<option/>', {
+                    value: data.option.id,
+                    text: data.option.name,
+                    selected: true,
+                }));
+            });
+
+            $('.modal button[data-bs-dismiss="modal"]').click();
+            return false;
+        });
+    });
+
     $('.load-categories').on('click', function (e) {
         e.preventDefault();
         $(this).parent('div').children('.sr-only').removeClass('sr-only');
