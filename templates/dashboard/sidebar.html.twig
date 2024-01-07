@@ -26,12 +26,15 @@
         </span>
     </div>
 </div>
-<div class="custom-control custom-switch ml-3">
-    <input type="checkbox" name="mode" data-container="{{ container }}" class="custom-control-input" id="mode">
-    <label class="custom-control-label text-muted"
-           data-responsive-off="{{ 'dashboard.mode.off'|trans }}"
-           data-responsive-on="{{ 'dashboard.mode.on'|trans }}"
-           for="mode">{{ container }}</label>
+<div class="d-block px-3">
+    <div class="form-check form-switch">
+        <input type="checkbox" name="mode" data-container="{{ container }}" class="form-check-input" role="switch"
+               id="mode">
+        <label class="custom-control-label text-white"
+               data-responsive-off="{{ 'dashboard.mode.off'|trans }}"
+               data-responsive-on="{{ 'dashboard.mode.on'|trans }}"
+               for="mode">{{ container }}</label>
+    </div>
 </div>
 {% set _part = _route|split('_')|last %}
 <ul class="nav flex-column py-2">
@@ -44,8 +47,8 @@
     <li class="nav-item">
         <a class="nav-link {{ _route == 'app_dashboard_market_place_market'? 'active': '' }}"
            href="{{ path('app_dashboard_market_place_market') }}"
-           data-toggle="collapse"
-           data-target=".market"
+           data-bs-toggle="collapse"
+           data-bs-target=".market"
            aria-expanded="{{ _part == 'market-place' ? 'true': 'false' }}"
            aria-controls="market">
             <i class="bi bi-basket2"></i>
@@ -72,8 +75,8 @@
             <a
                     class="nav-link {{ _route == 'app_dashboard_faq'? 'active': '' }}"
                     href="{{ path('app_dashboard_faq') }}"
-                    data-toggle="collapse"
-                    data-target=".faq"
+                    data-bs-toggle="collapse"
+                    data-bs-target=".faq"
                     aria-expanded="{{ _part == 'faq'? 'true': 'false' }}"
                     aria-controls="faq">
                 <i class="bi bi-question"></i>
@@ -112,8 +115,8 @@
             <a
                     class="nav-link {{ _part == nav ? 'active': '' }}"
                     href="#"
-                    data-toggle="collapse"
-                    data-target=".{{ key }}"
+                    data-bs-toggle="collapse"
+                    data-bs-target=".{{ key }}"
                     aria-expanded="{{ _part == key ? 'true': 'false' }}"
                     aria-controls="{{ key }}">
                 <i class="bi bi-person-workspace"></i>

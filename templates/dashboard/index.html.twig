@@ -26,12 +26,12 @@
         <div id="container" class="{{ container }}">
             <div class="d-flex" id="responsive">
                 <div class="col-md-3 pl-1">
-                    <div class="sidebar rounded my-3">
+                    <div class="sidebar rounded m-1">
                         {% include 'dashboard/sidebar.html.twig'  with {'navbar': navbar} %}
                     </div>
                 </div>
-                <div class="col-md-9 my-3 shadow-sm bg-white rounded">
-                    <div class="flex-column content my-3">
+                <div class="col-md-9 m-1 shadow-sm bg-white rounded">
+                    <div class="flex-column content p-2 m-1">
                         <h4>{% block title_content %}{{ 'text.dashboard'|trans }}{% endblock %}</h4>
                         {% block content %}
                             {% include 'dashboard/content/index.html.twig' %}

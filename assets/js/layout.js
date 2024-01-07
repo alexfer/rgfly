@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import tooltip from "bootstrap/js/src/tooltip";
 
 $(window).on('load', function () {
     $('.preloader').fadeOut('500');
@@ -13,7 +14,6 @@ $(window).on('scroll', function () {
 });
 $(function () {
     let toast = $('.toast');
-    toast.toast('hide');
 
     let flash = $('.d-tech-form input[name="flash"], .tech-form input[name="flash"]').attr('value');
 
@@ -22,17 +22,18 @@ $(function () {
 
         if (messages.message !== undefined) {
             $('.toast .toast-body').text(messages.message);
-            toast.toast('show');
+            toast.removeClass('hide').toggleClass('show');
         }
     }
+    toast.delay(3000).fadeOut(200);
 
-    $('ul[role="tablist"] a[data-toggle="tab"]').on('click', function (e) {
+    $('ul[role="tablist"] a[data-bs-toggle="tab"]').on('click', function (e) {
         e.preventDefault();
         let location = $(this).attr('aria-controls');
         window.history.replaceState({}, '', location);
     });
 
-    $('a[data-toggle="accordion-content"]').on('click', function (e) {
+    $('a[data-bs-toggle="accordion-content"]').on('click', function (e) {
         e.preventDefault();
 
         $(this).toggleClass('active');
@@ -41,7 +42,7 @@ $(function () {
         $('.accordion-title').not($(this)).removeClass('active');
     });
 
-    $('a[data-toggle="collapse"]').on('click', function (e) {
+    $('a[data-bs-toggle="collapse"]').on('click', function (e) {
         e.preventDefault();
 
         let arrow = $(this).children('.arrow');
@@ -56,16 +57,6 @@ $(function () {
     $('.delete-entry').on('click', function () {
         $('.modal input[name="_token"]').attr('value', $(this).attr('data-token'));
         $('.modal .confirm').attr('action', $(this).attr('data-url'));
-    });
-
-    $(function () {
-        let options = {
-            delay: {
-                'show': 100,
-                'hide': 400
-            }
-        };
-        $('[data-toggle="tooltip"]').tooltip(options);
     });
 
     $('.load-categories').on('click', function (e) {

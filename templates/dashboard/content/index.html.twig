@@ -10,12 +10,12 @@
             <div class="card-header">
                 <button
                         class="btn"
-                        data-toggle="collapse"
+                        data-bs-toggle="collapse"
                         type="button"
-                        data-target="#markets"
+                        data-bs-target="#markets"
                         aria-expanded="false"
                         aria-controls="markets">
-                    <i class="bi bi-basket pr-2"></i>
+                    <i class="bi bi-basket pr-5"></i>
                     {{ 'dashboard.markets'|trans }}
                 </button>
             </div>
@@ -23,11 +23,11 @@
                 {% for market in markets %}
                     <li class="list-group-item">
                         <a
-                                data-toggle="tooltip"
-                                data-placement="right"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="right"
                                 title="{{ market.name }}"
                                 href="{{ path('app_dashboard_market_place_market_product', {market: market.id}) }}"
-                                class="badge badge-pill badge-secondary text-white market-item">
+                                class="badge rounded-pill bg-secondary text-white market-item">
                             {{ market.name|length > 30 ? market.name|slice(0, 30) ~ ' ... ' : market.name }}
                         </a>
                         <div class="badge badge-primary float-right">{{ market.products.count }}</div>
@@ -57,12 +57,13 @@
                 <div class="card-header">
                     <button
                             class="btn"
-                            data-toggle="collapse"
+                            data-bs-toggle="collapse"
                             type="button"
-                            data-target="#blogs"
+                            data-bs-target="#blogs"
                             aria-expanded="true"
                             aria-controls="blogs">
-                        <i class="bi bi-person-workspace pr-2"></i>{{ 'title.blogs'|trans }}
+                        <i class="bi bi-person-workspace pr-5"></i>
+                        {{ 'title.blogs'|trans }}
                     </button>
                 </div>
                 <ul id="blogs" class="collapse multi-collapse list-group list-group-flush">
@@ -80,12 +81,13 @@
                 <div class="card-header">
                     <button
                             class="btn"
-                            data-toggle="collapse"
+                            data-bs-toggle="collapse"
                             type="button"
-                            data-target="#news"
+                            data-bs-target="#news"
                             aria-expanded="true"
                             aria-controls="news">
-                        <i class="bi bi-newspaper pr-2"></i>{{ 'entry.form.news'|trans }}
+                        <i class="bi bi-newspaper pr-5"></i>
+                        {{ 'entry.form.news'|trans }}
                     </button>
                 </div>
                 <ul id="news" class="collapse multi-collapse list-group list-group-flush">

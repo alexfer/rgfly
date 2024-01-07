@@ -1027,7 +1027,8 @@ p:last-child {
 }
 
 .tech-form textarea.form-control,
-.d-tech-form textarea.form-control {
+.d-tech-form textarea.form-control,
+.d-tech-form textarea.form-select {
     height: auto;
     padding-top: 15px;
     line-height: initial;
@@ -1119,18 +1120,18 @@ a.preview:focus,
     padding: 10px 20px;
     height: 52px;
     color: #636363;
-    border: none;
-    border-left-width: medium;
-    border-left-style: none;
-    border-left-color: currentcolor;
     background-color: #fff;
     font-weight: 400;
     border-radius: 5px;
     border-top: 3px solid #9a9a9b;
+    border-right-style: none;
+    border-bottom-style: none;
+    border-left: medium none currentcolor;
     transition: all 0.4s;
 }
 
-.d-tech-form .form-control {
+.d-tech-form .form-control,
+.d-tech-form .form-select {
     border-radius: 4px;
     border: 1px solid #9a9a9b;
 }
@@ -1143,9 +1144,7 @@ a.preview:focus,
 
 .tech-form input:focus,
 .tech-form textarea:focus,
-.tech-form select:focus,
-.d-tech-form input:focus,
-.d-tech-form textarea:focus {
+.tech-form select:focus{
     outline: none;
     border: none;
     -webkit-box-shadow: none;
@@ -1234,6 +1233,12 @@ a.preview:focus,
 
 .service-message .toast {
     width: 300px !important;
+}
+
+.service-message .toast .btn-close {
+    float: right;
+    position: absolute;
+    right: 35px;
 }
 
 .service-message .fade {
@@ -1366,7 +1371,7 @@ a.preview:focus,
 
 .section-area {
     position: relative;
-    padding: 100px 0;
+    padding: 35px 0;
     z-index: 1;
 }
 
@@ -1602,7 +1607,7 @@ a.preview:focus,
 }
 
 .faq-accordion .accordion .accordion-item .accordion-content.show {
-    display: block;
+    display: block !important;
 }
 
 .tab-content label {

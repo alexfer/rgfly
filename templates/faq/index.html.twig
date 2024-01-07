@@ -15,17 +15,17 @@
             </div>
         </div>
     </div>
-    <section class="section-area mb-50">
+    <section class="section-area">
         <div class="col-lg-12 col-md-12">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-10 offset-lg-1">
                         <div class="faq-accordion">
-                            <ul class="accordion">
+                            <ul class="accordion accordion-flush">
                                 {% for entry in entries %}
-                                    <li class="accordion-item b-0">
+                                    <li class="accordion-item px-5 b-0">
                                         <a class="accordion-title {{ loop.index == 1 ? 'active' : '' }}" href="#"
-                                           data-toggle="accordion-content"> <i class="bi bi-caret-down-fill"></i>
+                                           data-bs-toggle="accordion-content"> <i class="bi bi-caret-down-fill"></i>
                                             {{ entry.title }}</a>
                                         <span class="accordion-content{{ loop.index == 1 ? ' show' : '' }}">{{ entry.content|raw }}</span>
                                     </li>

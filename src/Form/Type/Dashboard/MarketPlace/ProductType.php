@@ -139,8 +139,8 @@ use Doctrine\ORM\EntityRepository;
             ])
             ->add('cost', MoneyType::class, [
                 'attr' => [
-                    'min' => '0.50',
-                    'step' => '0.50',
+                    'min' => '0.10',
+                    'step' => '0.10',
                 ],
                 'html5' => true,
                 'currency' => $this->market->getCurrency() ?? 'USD',

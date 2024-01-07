@@ -12,13 +12,13 @@
     <hr>
     {% set _message = app.flashes('success') %}
     {{ form_start(form, {attr: {class: 'd-tech-form', novalidate: 'novalidate'}}) }}
-    <div class="form-group">
+    <div class="form-group mb-3">
         {% set name_error = form.name.vars.errors|length ? 'form-control error' : 'form-control' %}
         {{ form_label(form.name, 'label.form.manufacturer_name') }} <span class="text-danger">*</span>
         {{ form_widget(form.name, {attr: {class: name_error, placeholder: 'label.form.manufacturer_name'}}) }}
         <small  class="text-danger">{{ form_errors(form.name) }}</small>
     </div>
-    <div class="form-group">
+    <div class="form-group mb-3">
         {% set description_error = form.description.vars.errors|length ? 'form-control error' : 'form-control' %}
         {{ form_label(form.description, 'label.form.market_description') }}
         {{ form_widget(form.description, {attr: {class: description_error, rows: 6, placeholder: 'label.form.market_description'}}) }}
