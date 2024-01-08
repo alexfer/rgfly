@@ -4,6 +4,7 @@ namespace App\Controller\Dashboard\MarketPlace\Market;
 
 use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketBrand;
+use App\Entity\MarketPlace\MarketManufacturer;
 use App\Entity\MarketPlace\MarketSupplier;
 use App\Form\Type\Dashboard\MarketPlace\BrandType;
 use App\Form\Type\Dashboard\MarketPlace\SupplerType;
@@ -13,6 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Intl\Countries;
@@ -157,5 +159,49 @@ class SupplierController extends AbstractController
         }
 
         return $this->redirectToRoute('app_dashboard_market_place_market_supplier', ['market' => $market->getId()]);
+    }
+
+    /**
+     * @param Request $request
+     * @param UserInterface $user
+     * @param EntityManagerInterface $em
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/xhr_create/{market}', name: 'app_dashboard_market_place_xhr_create_supplier', methods: ['POST'])]
+    public function xshCreate(
+        Request                $request,
+        UserInterface          $user,
+        EntityManagerInterface $em,
+    ): JsonResponse
+    {
+        $market = $this->market($request, $user, $em);
+        $requestGetPost = $request->get('supplier');
+        $responseJson = [];
+
+        if ($requestGetPost && isset($requestGetPost['name'])) {
+            if ($this->isCsrfTokenValid('create', $requestGetPost['_token'])) {
+                $supplier = new MarketSupplier();
+                $supplier->setName($requestGetPost['name']);
+                $supplier->setCountry(null);
+                $supplier->setMarket($market);
+                $em->persist($supplier);
+                $em->flush();
+
+                $responseJson = [
+                    'json' => [
+                        'id' => "#product_supplier",
+                        'option' => [
+                            'id' => $supplier->getId(),
+                            'name' => $supplier->getName(),
+                        ],
+                    ],
+                ];
+            }
+        }
+        $response = new JsonResponse($responseJson);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
     }
 }

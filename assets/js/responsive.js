@@ -31,7 +31,7 @@ $(function () {
         } else {
             label.html(label.data('responsive-off'));
             mode.removeAttr('checked');
-            $.removeCookie('container');
+            $.removeCookie('container', {path: '/'});
             container.attr('class', 'container');
             responsive.removeClass('show');
         }

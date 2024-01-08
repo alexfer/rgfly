@@ -1,24 +1,25 @@
-<div class="modal modal-lg fade" id="modal-brand" tabindex="-1" role="dialog" aria-labelledby="modal-brand"
+<div class="modal modal-lg fade" id="modal-supplier" tabindex="-1" role="dialog" aria-labelledby="modal-supplier"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">{{ 'market.brand.create'|trans }}</h5>
+                <h5 class="modal-title">{{ 'market.supplier.create'|trans }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="{{ 'form.action.close'|trans }}"></button>
             </div>
             <form method="post" class="d-tech-form confirm" action="">
                 <div class="modal-body">
                     <div class="form-group mb-3">
-                        <label for="brand_name" class="required">{{ 'label.form.brand_name'|trans }}</label>
-                        <input type="text" name="brand[name]" class="form-control" id="brand_name" min="3" max="250"
-                               required placeholder="{{ 'label.form.brand_name'|trans }}">
+                        <label for="supplier_name" class="required">{{ 'label.form.supplier_name'|trans }}</label>
+                        <input type="text" name="supplier[name]" class="form-control" id="supplier_name" min="3"
+                               max="250"
+                               required placeholder="{{ 'label.form.supplier_name'|trans }}">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary pb-2"
                             data-bs-dismiss="modal">{{ 'form.action.cancel'|trans }}</button>
-                    <input type="hidden" id="_token" name="brand[_token]" value="">
+                    <input type="hidden" id="_token" name="supplier[_token]" value="">
                     <button type="submit" class="btn btn-primary">{{ 'form.action.save'|trans }}</button>
                 </div>
             </form>

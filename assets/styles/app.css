@@ -1043,11 +1043,13 @@ p:last-child {
     color: #5e87eb;
 }
 
-.tech-form .form-control.error {
+.tech-form .form-control.error,
+.d-tech-form .form-select.error {
     border-top: 3px solid #ea8b8b;
 }
 
-.d-tech-form .form-control.error {
+.d-tech-form .form-control.error,
+.d-tech-form .form-select.error {
     border: 1px solid #ea8b8b;
 }
 
@@ -1144,7 +1146,7 @@ a.preview:focus,
 
 .tech-form input:focus,
 .tech-form textarea:focus,
-.tech-form select:focus{
+.tech-form select:focus {
     outline: none;
     border: none;
     -webkit-box-shadow: none;

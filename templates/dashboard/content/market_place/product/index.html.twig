@@ -14,7 +14,7 @@
                 <th class="bg-secondary text-white font-weight-light" scope="col">{{ 'table.header.name'|trans }}</th>
                 <th class="bg-secondary text-white font-weight-light text-center" scope="col">{{ 'table.header.cost'|trans }}</th>
                 <th class="bg-secondary text-white font-weight-light text-center" scope="col">{{ 'table.header.quantity'|trans }}</th>
-                <th class="bg-secondary text-white font-weight-light text-center sr-only" scope="col">{{ 'table.header.amount'|trans }}</th>
+                <th class="bg-secondary text-white font-weight-light text-center" scope="col">{{ 'table.header.amount'|trans }}</th>
                 <th class="bg-secondary text-white font-weight-light text-center" scope="col">{{ 'table.header.created_at'|trans }}</th>
                 <th class="bg-secondary text-white font-weight-light text-center" scope="col">{{ 'table.header.handle'|trans }}</th>
             </tr>
@@ -34,7 +34,7 @@
                     </td>
                     <td class="text-center">{{ market.currency }} {{ product.cost|number_format(2) }}</td>
                     <td class="text-center">{{ product.quantity }}</td>
-                    <td class="text-center sr-only">{{ market.currency }} {{ (product.cost * product.quantity)|number_format(2) }}</td>
+                    <td class="text-center">{{ market.currency }} {{ (product.cost * product.quantity)|number_format(2) }}</td>
                     <td class="text-center bd-highlight">{{ product.createdAt|date(date_format) }}</td>
                     <td class="text-center">
                         {% if product.deletedAt %}
@@ -60,7 +60,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="6" class="text-center text-danger bg-grey">{{ 'table.footer.not_found'|trans }}</td>
+                    <td colspan="7" class="text-center text-danger bg-grey">{{ 'table.footer.not_found'|trans }}</td>
                 </tr>
             {% endfor %}
             </tbody>

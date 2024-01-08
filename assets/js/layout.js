@@ -61,6 +61,7 @@ $(function () {
 
     $('.add-entry').on('click', function () {
         let url = $(this).attr('data-url');
+        console.log($(this).attr('data-bs-target'));
         $('.modal input[id="_token"]').attr('value', $(this).attr('data-token'));
         $('.modal form').off().on('submit', function () {
             let form = $(this);

@@ -163,7 +163,6 @@ class BrandController extends AbstractController
      * @param Request $request
      * @param UserInterface $user
      * @param EntityManagerInterface $em
-     * @param TranslatorInterface $translator
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -173,7 +172,6 @@ class BrandController extends AbstractController
         Request                $request,
         UserInterface          $user,
         EntityManagerInterface $em,
-        TranslatorInterface    $translator,
     ): JsonResponse
     {
         $market = $this->market($request, $user, $em);
@@ -197,7 +195,6 @@ class BrandController extends AbstractController
                         ],
                     ],
                 ];
-                $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
             }
         }
         $response = new JsonResponse($responseJson);

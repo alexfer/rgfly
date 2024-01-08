@@ -2,7 +2,6 @@
 
 namespace App\Form\Type\Dashboard\MarketPlace;
 
-use App\Entity\MarketPlace\MarketBrand;
 use App\Entity\MarketPlace\MarketSupplier;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -14,7 +13,6 @@ use Symfony\Component\Intl\Locale;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Regex;
 
 class SupplerType extends AbstractType
 {
@@ -41,9 +39,14 @@ class SupplerType extends AbstractType
             ->add('country', ChoiceType::class, [
                 'placeholder' => 'form.supplier_country.placeholder',
                 'label' => 'label.country',
-                'required' => false,
+                'required' => true,
                 'multiple' => false,
                 'expanded' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'form.country.not_blank',
+                    ]),
+                ],
                 'choices' => array_flip(Countries::getNames(Locale::getDefault())),
             ])
             ->add('save', SubmitType::class, [

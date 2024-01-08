@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -157,5 +158,48 @@ class ManufacturerController extends AbstractController
         }
 
         return $this->redirectToRoute('app_dashboard_market_place_market_manufacturer', ['market' => $market->getId()]);
+    }
+
+    /**
+     * @param Request $request
+     * @param UserInterface $user
+     * @param EntityManagerInterface $em
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/xhr_create/{market}', name: 'app_dashboard_market_place_xhr_create_manufacturer', methods: ['POST'])]
+    public function xshCreate(
+        Request                $request,
+        UserInterface          $user,
+        EntityManagerInterface $em,
+    ): JsonResponse
+    {
+        $market = $this->market($request, $user, $em);
+        $requestGetPost = $request->get('manufacturer');
+        $responseJson = [];
+
+        if ($requestGetPost && isset($requestGetPost['name'])) {
+            if ($this->isCsrfTokenValid('create', $requestGetPost['_token'])) {
+                $manufacturer = new MarketManufacturer();
+                $manufacturer->setName($requestGetPost['name']);
+                $manufacturer->setMarket($market);
+                $em->persist($manufacturer);
+                $em->flush();
+
+                $responseJson = [
+                    'json' => [
+                        'id' => "#product_manufacturer",
+                        'option' => [
+                            'id' => $manufacturer->getId(),
+                            'name' => $manufacturer->getName(),
+                        ],
+                    ],
+                ];
+            }
+        }
+        $response = new JsonResponse($responseJson);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
     }
 }
