@@ -2,11 +2,7 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Market;
 
-use App\Entity\MarketPlace\Market;
-use App\Entity\MarketPlace\MarketBrand;
-use App\Entity\MarketPlace\MarketManufacturer;
 use App\Entity\MarketPlace\MarketSupplier;
-use App\Form\Type\Dashboard\MarketPlace\BrandType;
 use App\Form\Type\Dashboard\MarketPlace\SupplerType;
 use App\Service\MarketPlace\MarketTrait;
 use App\Service\Dashboard;
@@ -169,7 +165,7 @@ class SupplierController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/xhr_create/{market}', name: 'app_dashboard_market_place_xhr_create_supplier', methods: ['POST'])]
+    #[Route('/xhr-create/{market}', name: 'app_dashboard_market_place_xhr_create_supplier', methods: ['POST'])]
     public function xshCreate(
         Request                $request,
         UserInterface          $user,
@@ -177,14 +173,14 @@ class SupplierController extends AbstractController
     ): JsonResponse
     {
         $market = $this->market($request, $user, $em);
-        $requestGetPost = $request->get('supplier');
+        $requestGetPost = $request->request->all();
         $responseJson = [];
 
-        if ($requestGetPost && isset($requestGetPost['name'])) {
-            if ($this->isCsrfTokenValid('create', $requestGetPost['_token'])) {
+        if ($requestGetPost && isset($requestGetPost['supplier']['name'])) {
+            if ($this->isCsrfTokenValid('create', $requestGetPost['supplier']['_token'])) {
                 $supplier = new MarketSupplier();
-                $supplier->setName($requestGetPost['name']);
-                $supplier->setCountry(null);
+                $supplier->setName($requestGetPost['supplier']['name']);
+                $supplier->setCountry($requestGetPost['supplier']['country']);
                 $supplier->setMarket($market);
                 $em->persist($supplier);
                 $em->flush();
@@ -204,4 +200,30 @@ class SupplierController extends AbstractController
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
+
+    /**
+     * @param Request $request
+     * @param UserInterface $user
+     * @param EntityManagerInterface $em
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/xhr-load-countries/{market}', name: 'app_dashboard_market_place_xhr_load_countries', methods: ['GET'])]
+    public function xhrLoadCounties(
+        Request                $request,
+        UserInterface          $user,
+        EntityManagerInterface $em,
+    ): JsonResponse
+    {
+        $market = $this->market($request, $user, $em);
+
+        $countries = [
+            'market' => $market->getName(),
+            'countries' => Countries::getNames(Locale::getDefault())
+        ];
+
+        return new JsonResponse($countries);
+    }
+
 }

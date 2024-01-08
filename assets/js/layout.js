@@ -60,8 +60,21 @@ $(function () {
     });
 
     $('.add-entry').on('click', function () {
-        let url = $(this).attr('data-url');
-        console.log($(this).attr('data-bs-target'));
+        let url = $(this).data('url');
+        let xhr = $(this).data('xhr');
+        let owner = $(this).data('bs-target');
+
+        if(typeof xhr !== 'undefined') {
+            $.get(xhr, function (response) {
+                $.each(response.countries, function(key, text){
+                    $('.modal #suppler_country').append($('<option>', {
+                        value: key,
+                        text : text
+                    }));
+                });
+            })
+        }
+
         $('.modal input[id="_token"]').attr('value', $(this).attr('data-token'));
         $('.modal form').off().on('submit', function () {
             let form = $(this);

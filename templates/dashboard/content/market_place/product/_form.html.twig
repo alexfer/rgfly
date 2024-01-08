@@ -63,6 +63,7 @@
            data-bs-target="#modal-supplier"
            data-token="{{ csrf_token('create') }}"
            data-url="{{ path('app_dashboard_market_place_xhr_create_supplier', {market: app.request.get('market')}) }}"
+           data-xhr="{{ path('app_dashboard_market_place_xhr_load_countries', {market: app.request.get('market')}) }}"
            href="#"
            class="link float-end add-entry">{{ 'market.supplier.create'|trans }}</a>
         {{ form_label(form.supplier, 'label.form.supplier_name') }}
