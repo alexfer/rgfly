@@ -53,6 +53,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     final public const string ROLE_USER = 'ROLE_USER';
     final public const string ROLE_ADMIN = 'ROLE_ADMIN';
+    final public const string ROLE_CUSTOMER = 'ROLE_CUSTOMER';
 
     public function __construct()
     {
