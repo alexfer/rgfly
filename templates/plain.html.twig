@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="{{ app.request.locale }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>{% block title %}Techspace{% endblock %}</title>
+    <title>{% block title %}{{ 'site.title'|trans }}{% endblock %}</title>
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
@@ -14,18 +14,9 @@
     <div class="d-table">
         <div class="d-table-cell">
             <div class="lds-spinner">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
+                {% for i in range(0, 12) %}
+                    <div></div>
+                {% endfor %}
             </div>
         </div>
     </div>

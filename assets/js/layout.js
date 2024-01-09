@@ -1,5 +1,4 @@
 import $ from 'jquery';
-import tooltip from "bootstrap/js/src/tooltip";
 
 $(window).on('load', function () {
     $('.preloader').fadeOut('500');
@@ -14,12 +13,10 @@ $(window).on('scroll', function () {
 });
 $(function () {
     let toast = $('.toast');
-
     let flash = $('.d-tech-form input[name="flash"], .tech-form input[name="flash"]').attr('value');
 
     if (typeof flash !== 'undefined') {
         let messages = $.parseJSON(flash);
-
         if (messages.message !== undefined) {
             $('.toast .toast-body').text(messages.message);
             toast.removeClass('hide').toggleClass('show');
