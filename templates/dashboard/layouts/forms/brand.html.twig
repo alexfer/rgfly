@@ -7,12 +7,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="{{ 'form.action.close'|trans }}"></button>
             </div>
-            <form method="post" class="d-tech-form confirm" action="">
+            <form method="post" class="d-tech-form confirm needs-validation" action="">
                 <div class="modal-body">
                     <div class="form-group mb-3">
                         <label for="brand_name" class="form-label required">{{ 'label.form.brand_name'|trans }}</label>
                         <input type="text" name="brand[name]" class="form-control" id="brand_name" min="3" max="250"
-                               required placeholder="{{ 'label.form.brand_name'|trans }}">
+                               placeholder="{{ 'label.form.brand_name'|trans }}"
+                               required>
                     </div>
                 </div>
                 <div class="modal-footer">

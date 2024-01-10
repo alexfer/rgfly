@@ -76,19 +76,21 @@ $(function () {
         $('.modal form').off().on('submit', function () {
             let form = $(this);
             $.post(url, form.serialize(), function (response) {
-                form.trigger('reset');
-
                 let data = response.json;
                 let owner = data.id.toString();
+                setTimeout(() => {
+                    form.trigger('reset');
+                    $('.modal button[data-bs-dismiss="modal"]').click();
+                }, 2000);
 
                 $(owner).append($('<option/>', {
                     value: data.option.id,
                     text: data.option.name,
                     selected: true,
                 }));
+            }).fail(function(xhr) {
+                console.log(xhr);
             });
-
-            $('.modal button[data-bs-dismiss="modal"]').click();
             return false;
         });
     });

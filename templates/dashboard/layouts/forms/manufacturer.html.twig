@@ -1,4 +1,5 @@
-<div class="modal modal-lg fade" id="modal-manufacturer" tabindex="-1" role="dialog" aria-labelledby="modal-manufacturer"
+<div class="modal modal-lg fade" id="modal-manufacturer" tabindex="-1" role="dialog"
+     aria-labelledby="modal-manufacturer"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -7,12 +8,14 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="{{ 'form.action.close'|trans }}"></button>
             </div>
-            <form method="post" class="d-tech-form confirm" action="">
+            <form method="post" class="d-tech-form confirm needs-validation" action="">
                 <div class="modal-body">
                     <div class="form-group mb-3">
-                        <label for="manufacturer_name" class="required">{{ 'label.form.manufacturer_name'|trans }}</label>
-                        <input type="text" name="manufacturer[name]" class="form-control" id="manufacturer_name" min="3" max="250"
-                               required placeholder="{{ 'label.form.manufacturer_name'|trans }}">
+                        <label for="manufacturer_name"
+                               class="required">{{ 'label.form.manufacturer_name'|trans }}</label>
+                        <input type="text" name="manufacturer[name]" class="form-control" id="manufacturer_name" min="3"
+                               max="250" placeholder="{{ 'label.form.manufacturer_name'|trans }}" required>
+                        <div class="invalid-feedback">dfs</div>
                     </div>
                 </div>
                 <div class="modal-footer">
