@@ -130,6 +130,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
+     * @param string $role
+     * @return mixed|string
+     */
+    public function hasRole(string $role)
+    {
+        return $this->roles[$role];
+    }
+
+    /**
      *
      * @param array $roles
      * @return self

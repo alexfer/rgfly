@@ -28,7 +28,7 @@
         {{ form_start(form, {attr: {class: 'd-tech-form', novalidate: 'novalidate'}}) }}
         <div class="form-group mb-3">
             {% set name_error = form.name.vars.errors|length ? 'form-control error' : 'form-control' %}
-            {{ form_label(form.name, 'label.form.market_name') }} <span class="text-danger">*</span>
+            {{ form_label(form.name, 'label.form.market_name', {label_attr: {class: 'form-label'}}) }} <span class="text-danger">*</span>
             {{ form_widget(form.name, {attr: {class: name_error, placeholder: 'label.form.market_name'}}) }}
             <small class="text-danger">{{ form_errors(form.name) }}</small>
         </div>

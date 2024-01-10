@@ -32,9 +32,9 @@
                             {{ product.name|length > 30 ? product.name|slice(0, 30) ~ '...' : product.name }}
                         </a>
                     </td>
-                    <td class="text-center">{{ market.currency }} {{ product.cost|number_format(2) }}</td>
+                    <td class="text-center">{{ currency['symbol_native'] }} {{ product.cost|number_format(2) }}</td>
                     <td class="text-center">{{ product.quantity }}</td>
-                    <td class="text-center">{{ market.currency }} {{ (product.cost * product.quantity)|number_format(2) }}</td>
+                    <td class="text-center">{{ currency['symbol_native'] }} {{ (product.cost * product.quantity)|number_format(2) }}</td>
                     <td class="text-center bd-highlight">{{ product.createdAt|date(date_format) }}</td>
                     <td class="text-center">
                         {% if product.deletedAt %}
@@ -60,7 +60,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="7" class="text-center text-danger bg-grey">{{ 'table.footer.not_found'|trans }}</td>
+                    <td colspan="7" class="text-center text-bg-light">{{ 'table.footer.not_found'|trans }}</td>
                 </tr>
             {% endfor %}
             </tbody>

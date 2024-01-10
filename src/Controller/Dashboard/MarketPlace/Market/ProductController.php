@@ -2,7 +2,6 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Market;
 
-use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketCategory;
 use App\Entity\MarketPlace\MarketCategoryProduct;
 use App\Entity\MarketPlace\MarketManufacturer;
@@ -14,6 +13,7 @@ use App\Entity\MarketPlace\MarketBrand;
 use App\Entity\MarketPlace\MarketSupplier;
 use App\Form\Type\Dashboard\MarketPlace\ProductType;
 use App\Security\Voter\ProductVoter;
+use App\Service\MarketPlace\Currency;
 use App\Service\MarketPlace\MarketTrait;
 use App\Service\Dashboard;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
@@ -21,8 +21,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,10 +51,12 @@ class ProductController extends AbstractController
     ): Response
     {
         $market = $this->market($request, $user, $em);
+        $currency = Currency::currency($market->getCurrency());
         $products = $em->getRepository(MarketProduct::class)->findBy(['market' => $market], ['id' => 'desc']);
 
         return $this->render('dashboard/content/market_place/product/index.html.twig', $this->navbar() + [
                 'market' => $market,
+                'currency' => $currency,
                 'products' => $products,
             ]);
     }

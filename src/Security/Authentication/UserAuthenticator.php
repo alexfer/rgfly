@@ -2,6 +2,7 @@
 
 namespace App\Security\Authentication;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -104,16 +105,31 @@ class UserAuthenticator extends AbstractAuthenticator
         );
     }
 
+    /**
+     * @param Request $request
+     * @param TokenInterface $token
+     * @param string $firewallName
+     * @return Response|null
+     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        $user = $token->getUser();
+
+        if (in_array(User::ROLE_ADMIN, $user->getRoles(), true)) {
+            return new RedirectResponse($this->router->generate('app_dashboard'));
+        } elseif (in_array(User::ROLE_USER, $user->getRoles(), true)) {
+            return new RedirectResponse($this->router->generate('app_dashboard'));
+        } elseif (in_array(User::ROLE_CUSTOMER, $user->getRoles(), true)) {
+            return new RedirectResponse($this->router->generate('app_index'));
+        }
+
         return new RedirectResponse($this->router->generate('app_index'));
     }
 
     /**
-     *
      * @param Request $request
      * @param AuthenticationException $exception
-     * @return RedirectResponse
+     * @return Response|null
      */
     public function onAuthenticationFailure(
         Request                 $request,

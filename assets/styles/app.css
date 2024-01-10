@@ -1027,8 +1027,7 @@ p:last-child {
 }
 
 .tech-form textarea.form-control,
-.d-tech-form textarea.form-control,
-.d-tech-form textarea.form-select {
+.d-tech-form textarea.form-control {
     height: auto;
     padding-top: 15px;
     line-height: initial;
@@ -1043,13 +1042,11 @@ p:last-child {
     color: #5e87eb;
 }
 
-.tech-form .form-control.error,
-.d-tech-form .form-select.error {
+.tech-form .form-control.error {
     border-top: 3px solid #ea8b8b;
 }
 
-.d-tech-form .form-control.error,
-.d-tech-form .form-select.error {
+.d-tech-form .form-control.error {
     border: 1px solid #ea8b8b;
 }
 
@@ -1136,6 +1133,7 @@ a.preview:focus,
 .d-tech-form .form-select {
     border-radius: 4px;
     border: 1px solid #9a9a9b;
+    height: auto;
 }
 
 .tech-form .form-control::placeholder,
@@ -1146,12 +1144,24 @@ a.preview:focus,
 
 .tech-form input:focus,
 .tech-form textarea:focus,
-.tech-form select:focus {
+.tech-form select:focus,
+.d-tech-form input:focus,
+.d-tech-form textarea:focus {
     outline: none;
     border: none;
     -webkit-box-shadow: none;
     box-shadow: none;
     border-top: 3px solid #004caa;
+}
+
+.d-tech-form select:focus {
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: 1px solid #004caa;
+}
+.d-tech-form select option[selected="selected"] {
+    background-color: rgba(0, 76, 170, 0.15) !important;
 }
 
 .d-tech-form .entry-attachments img.attach {

@@ -143,7 +143,7 @@ use Doctrine\ORM\EntityRepository;
                     'step' => '0.10',
                 ],
                 'html5' => true,
-                'currency' => $this->market->getCurrency() ?? 'USD',
+                'currency' => $this->market->getCurrency() ?? 'EUR',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'form.cost.not_blank',

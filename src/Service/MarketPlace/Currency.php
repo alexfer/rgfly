@@ -259,11 +259,15 @@ class Currency
         self::ZWL => [self::COUNTRY_NAME => 'Zimbabwean Dollar', self::CODE => self::ZWL, self::CURRENCY => 'Zimbabwean Dollar', self::SYMBOL => 'ZWL$', self::SYMBOL_NATIVE => 'ZWL$', self::DECIMAL_DIGITS => 0, self::ROUNDING => 0, self::NAME_PLURAL => 'Zimbabwean Dollar']
     ];
 
+    private static string $code;
+
     /**
-     * @return array|array[]
+     * @param string $code
+     * @return array
      */
-    public static function currency(): array
+    public static function currency(string $code = 'USD'): array
     {
-        return self::$currencies;
+        self::$code = $code;
+        return self::$currencies[self::$code];
     }
 }
