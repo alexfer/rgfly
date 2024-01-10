@@ -1,0 +1,42 @@
+<div class="modal modal-lg fade" id="modal-supplier" tabindex="-1" role="dialog" aria-labelledby="modal-supplier"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ 'market.supplier.create'|trans }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="{{ 'form.action.close'|trans }}"></button>
+            </div>
+            <form method="post" class="d-tech-form confirm needs-validation" action="">
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <label for="supplier_name" class="required">{{ 'label.form.supplier_name'|trans }}</label> <span
+                                class="text-danger">*</span>
+                        <input type="text" name="supplier[name]" class="form-control" id="supplier_name" min="3"
+                               max="250"
+                               required placeholder="{{ 'label.form.supplier_name'|trans }}">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="suppler_country" class="required">{{ 'label.form.supplier_country'|trans }} </label>
+                        <span class="text-danger">*</span>
+                        <select id="suppler_country" name="supplier[country]" required="required"
+                                class="form-select">
+                            <option value="">{{ 'form.supplier_country.placeholder'|trans }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary pb-2"
+                            data-bs-dismiss="modal">{{ 'form.action.cancel'|trans }}</button>
+                    <input type="hidden" id="_token" name="supplier[_token]" value="">
+                    <button type="submit" class="btn btn-primary">{{ 'form.action.save'|trans }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% block javascripts %}
+        <script type="text/javascript">
+
+        </script>
+    {% endblock %}
+</div>

@@ -1,0 +1,92 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% set _title_extend = 'title.dashboard.overview_market'|trans %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}{{ _title_extend }}{% endblock %}
+
+{% block content %}
+    <nav class="navbar market navbar-expand-lg navbar-light px-2 mb-2">
+        <div class="collapse navbar-collapse" id="navbar-market">
+            <div class="navbar-nav">
+                <div class="btn-group">
+                    <button class="btn btn-dark btn-sm" type="button">
+                        {{ 'market.products.overview'|trans }}
+                    </button>
+                    <button type="button" class="btn btn-sm btn-dark dropdown-toggle dropdown-toggle-split"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="sr-only"></span>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        {% for market in markets %}
+                            <a class="nav-link dropdown-item px-3"
+                               href="{{ path('app_dashboard_market_place_market_product', {market: market.id}) }}">
+                                {{ market.name|length > 25 ? market.name|slice(0, 25) ~ ' ... ' : market.name }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#        <a href="#" class="badge badge-pill badge-info navbar-text py-2 px-3 text-light" style="font-size: 16px;font-weight: normal">You can have only one marketplace</a> #}
+    </nav>
+    <div class="table-responsive table card">
+        <table class="table table-hover table-striped mb-0">
+            <thead>
+            <tr>
+                <th class="bg-secondary text-white text-center text-bg-light col-1 text-center" scope="col">{{ 'table.header.id'|trans }}</th>
+                <th class="bg-secondary text-white text-center text-bg-light col-4" scope="col">{{ 'table.header.title'|trans }}</th>
+                <th class="bg-secondary text-white text-center text-bg-light col-3 text-center" scope="col">{{ 'table.header.products'|trans }}</th>
+                <th class="bg-secondary text-white text-center text-bg-light col-2 text-center" scope="col">{{ 'table.header.created_at'|trans }}</th>
+                <th class="bg-secondary text-white text-center text-bg-light col-2 text-center" scope="col">{{ 'table.header.handle'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for market in markets %}
+                <tr class="{% if market.deletedAt %}text-secondary table-secondary{% endif %}">
+                    <th scope="row" class="text-center">{{ market.id }}</th>
+                    <td>
+                        <a data-bs-toggle="tooltip"
+                           data-bs-placement="right"
+                           class="link"
+                           title="{{ market.name }}"
+                           href="{{ path('app_dashboard_market_place_edit_market', {id: market.id}) }}">
+                            {{ market.name|length > 25 ? market.name|slice(0, 25) ~ ' ... ' : market.name }}
+                        </a>
+                    </td>
+                    <td class="text-center">{{ market.products.count }}</td>
+                    <td class="text-center bd-highlight">{{ market.createdAt|date(date_format) }}</td>
+                    <td class="text-center">
+                        <a href="{{ path('app_dashboard_market_place_market_product', {market: market.id}) }}"
+                           class="btn btn-sm btn-outline-lightning rounded px-1 py-0 mr-1">
+                            <i class="bi bi-basket"></i>
+                        </a>
+                        {% if market.deletedAt %}
+                            <a class="btn btn-sm btn-outline-lightning rounded restore-entry px-1 py-0"
+                               href="{{ path('app_dashboard_restore_market', {id: market.id}) }}">
+                                <i class="bi bi-caret-up-square-fill"></i>
+                            </a>
+                        {% else %}
+                            <a href="{{ path('app_dashboard_market_place_edit_market', {id: market.id}) }}"
+                               class="btn btn-sm btn-outline-lightning rounded px-1 py-0 mr-1">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a
+                                    class="btn btn-sm btn-outline-lightning rounded delete-entry px-1 py-0"
+                                    data-token="{{ csrf_token('delete') }}"
+                                    data-url="{{ url('app_dashboard_delete_market', {id: market.id}) }}"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modal-delete">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" class="text-center text-danger bg-grey">{{ 'table.footer.not_found'|trans }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

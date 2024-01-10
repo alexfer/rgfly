@@ -1,0 +1,110 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% if form.vars.data.id %}
+    {% set _title_extend = 'title.dashboard.change_product'|trans %}
+{% else %}
+    {% set _title_extend = 'title.dashboard.create_product'|trans %}
+{% endif %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}{{ _title_extend }}{% endblock %}
+
+{% block content %}
+    {% set _message = app.flashes('success') %}
+    {{ form_start(form, {attr: {class: 'd-tech-form'}}) }}
+    {% if form_errors(form) %}
+        <div class="alert alert-danger">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+    {% if error %}
+        <div class="alert alert-danger">
+            {{ error }}
+        </div>
+    {% endif %}
+    <div class="form-group mb-3">
+        {% set name_error = form.name.vars.errors|length ? 'form-control error' : 'form-control' %}
+        {{ form_label(form.name, 'label.form.product_name') }} <span class="text-danger">*</span>
+        {{ form_widget(form.name, {attr: {class: name_error, placeholder: 'label.form.product_name'}}) }}
+        <small class="text-danger">{{ form_errors(form.name) }}</small>
+    </div>
+    <div class="form-group mb-3 row">
+        <div class="col-6">
+            {% set quantity_error = form.quantity.vars.errors|length and not error ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.quantity, 'label.form.quantity') }} <span class="text-danger">*</span>
+            {{ form_widget(form.quantity, {attr: {class: quantity_error, placeholder: '1'}}) }}
+            <small class="text-danger">{{ form_errors(form.quantity) }}</small>
+        </div>
+        <div class="col-6">
+            {% set cost_error = form.cost.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.cost, 'label.form.cost') }} <span class="text-danger">*</span>
+            {{ form_widget(form.cost, {attr: {class: cost_error, placeholder: '0.10'}}) }}
+            <small class="text-danger">{{ form_errors(form.cost) }}</small>
+        </div>
+    </div>
+    <div class="form-group mb-3">
+        {{ form_label(form.category, 'entry.form.categories', {label_attr: {class: 'mb-1'}}) }}
+        {{ form_widget(form.category, {attr: {class: 'form-select', size: 11}}) }}
+    </div>
+    <div class="form-group mb-3">
+        {% set brand_error = form.brand.vars.errors|length ? 'form-select error' : 'form-select' %}
+        {{ form_label(form.brand, 'label.form.brand_name') }}
+        <a data-bs-toggle="modal"
+           data-bs-target="#modal-brand"
+           data-url="{{ path('app_dashboard_market_place_xhr_create_brand', {market: app.request.get('market')}) }}"
+           data-token="{{ csrf_token('create') }}"
+           href="#"
+           class="link float-end add-entry">{{ 'market.brand.create'|trans }}</a>
+        {{ form_widget(form.brand, {attr: {class: brand_error}}) }}
+        <small class="text-danger">{{ form_errors(form.brand) }}</small>
+    </div>
+    <div class="form-group mb-3">
+        {% set supplier_error = form.supplier.vars.errors|length ? 'form-select error' : 'form-select' %}
+        <a data-bs-toggle="modal"
+           data-bs-target="#modal-supplier"
+           data-token="{{ csrf_token('create') }}"
+           data-url="{{ path('app_dashboard_market_place_xhr_create_supplier', {market: app.request.get('market')}) }}"
+           data-xhr="{{ path('app_dashboard_market_place_xhr_load_countries', {market: app.request.get('market')}) }}"
+           href="#"
+           class="link float-end add-entry">{{ 'market.supplier.create'|trans }}</a>
+        {{ form_label(form.supplier, 'label.form.supplier_name') }}
+        {{ form_widget(form.supplier, {attr: {class: supplier_error}}) }}
+        <small class="text-danger">{{ form_errors(form.supplier) }}</small>
+    </div>
+    <div class="form-group mb-3">
+        {% set manufacturer_error = form.manufacturer.vars.errors|length ? 'form-select error' : 'form-select' %}
+        {{ form_label(form.manufacturer, 'label.form.manufacturer_name') }}
+        <a data-bs-toggle="modal"
+           data-bs-target="#modal-manufacturer"
+           data-token="{{ csrf_token('create') }}"
+           data-url="{{ path('app_dashboard_market_place_xhr_create_manufacturer', {market: app.request.get('market')}) }}"
+           href="#"
+           class="link float-end add-entry">{{ 'market.manufacturer.create'|trans }}</a>
+        {{ form_widget(form.manufacturer, {attr: {class: manufacturer_error}}) }}
+        <small class="text-danger">{{ form_errors(form.manufacturer) }}</small>
+    </div>
+    <div class="form-group mb-3">
+        {% set description_error = form.description.vars.errors|length ? 'form-control error' : 'form-control' %}
+        {{ form_label(form.description, 'label.form.product_description') }} <span class="text-danger">*</span>
+        {{ form_widget(form.description, {attr: {class: description_error, rows: 6, placeholder: 'label.form.product_description'}}) }}
+        <small class="text-danger">{{ form_errors(form.description) }}</small>
+    </div>
+    <input type="hidden" name="flash" value="{{ _message[0]|default([]|json_encode) }}">
+    <div class="form-group text-center  mb-3 my-4">
+        {{ form_widget(form.save, { label: form.vars.data.id ? 'form.action.update' : 'form.action.save'}) }}
+        <a type="button"
+           href="{{ url('app_dashboard_market_place_market_product', {market: app.request.get('market')}) }}"
+           class="btn btn-secondary shadow-sm">{{ 'form.action.back'|trans }}</a>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script type="text/javascript">
+        CKEDITOR.replace('product_description', {
+            extraPlugins: 'editorplaceholder',
+            editorplaceholder: '{{ 'label.form.product_description'|trans }}',
+            removePlugins: 'simage,image,youtube,html5video,iframe,uicolor,videodetector,preview',
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,15 @@
+<nav class="navbar market navbar-expand-lg navbar-light my-2">
+    <div class="collapse navbar-collapse ms-3" id="navbar-market">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link"
+               href="{{ path('app_dashboard_market_place_create_product', {market: market.id}) }}">{{ 'market.product.create'|trans }}</a>
+            <a class="nav-item nav-link"
+               href="{{ path('app_dashboard_market_place_market_brand', {market: market.id}) }}">{{ 'market.brands'|trans }}</a>
+            <a class="nav-item nav-link"
+               href="{{ path('app_dashboard_market_place_market_supplier', {market: market.id}) }}">{{ 'market.suppliers'|trans }}</a>
+            <a class="nav-item nav-link"
+               href="{{ path('app_dashboard_market_place_market_manufacturer', {market: market.id}) }}">{{ 'market.manufacturers'|trans }}</a>
+        </div>
+    </div>
+    <span class="navbar-text text-white me-3 font-weight-bold">{{ market.name|length > 30 ? market.name|slice(0, 30) ~ ' ... ' : market.name }}</span>
+</nav>

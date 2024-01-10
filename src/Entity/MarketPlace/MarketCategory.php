@@ -31,14 +31,37 @@ class MarketCategory
     private ?string $slug = null;
 
     #[ORM\Column]
-    private ?int $position = null;
+    private ?int $level = null;
 
+    /**
+     * @var Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: MarketCategory::class)]
+    private Collection $children;
+
+
+    /**
+     * @var MarketCategory|null
+     */
+    #[ORM\ManyToOne(targetEntity: MarketCategory::class, inversedBy: 'children')]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    private ?MarketCategory $parent = null;
+
+    /**
+     * @var DateTimeImmutable|null
+     */
     #[ORM\Column]
     private ?DateTimeImmutable $created_at = null;
 
+    /**
+     * @var DateTimeInterface|null
+     */
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $deleted_at = null;
 
+    /**
+     * @var Collection
+     */
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: MarketCategoryProduct::class)]
     private Collection $marketCategoryProducts;
 
@@ -46,6 +69,7 @@ class MarketCategory
     {
         $this->created_at = new DateTimeImmutable();
         $this->marketCategoryProducts = new ArrayCollection();
+        $this->children = new ArrayCollection();
     }
 
     /**
@@ -123,19 +147,56 @@ class MarketCategory
      *
      * @return int|null
      */
-    public function getPosition(): ?int
+    public function getLevel(): ?int
     {
-        return $this->position;
+        return $this->level;
     }
 
     /**
      *
-     * @param int $position
+     * @param int $level
      * @return static
      */
-    public function setPosition(int $position): static
+    public function setLevel(int $level): static
     {
-        $this->position = $position;
+        $this->level = $level;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketCategory>
+     */
+    public function getChildren(): Collection
+    {
+        return $this->children;
+    }
+
+    /**
+     * @param MarketCategory $children
+     * @return $this
+     */
+    public function addChildren(MarketCategory $children): static
+    {
+        $this->children[] = $children;
+        return $this;
+    }
+
+    /**
+     * @return MarketCategory|null
+     */
+    public function getParent(): ?MarketCategory
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @param MarketCategory|null $parent
+     * @return $this
+     */
+    public function setParent(?MarketCategory $parent): static
+    {
+        $this->parent = $parent;
 
         return $this;
     }

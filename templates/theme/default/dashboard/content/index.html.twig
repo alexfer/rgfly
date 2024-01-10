@@ -1,0 +1,101 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% set _title_extend = 'title.dashboard.summary'|trans %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}{{ _title_extend }}{% endblock %}
+
+{% block content %}
+    {% if app.user.markets|length %}
+        <div class="card">
+            <div class="card-header">
+                <button
+                        class="btn"
+                        data-bs-toggle="collapse"
+                        type="button"
+                        data-bs-target="#markets"
+                        aria-expanded="false"
+                        aria-controls="markets">
+                    <i class="bi bi-basket pr-5"></i>
+                    {{ 'dashboard.markets'|trans }}
+                </button>
+            </div>
+            <ul id="markets" class="collapse multi-collapse list-group list-group-flush">
+                {% for market in markets %}
+                    <li class="list-group-item">
+                        <a
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="right"
+                                title="{{ market.name }}"
+                                href="{{ path('app_dashboard_market_place_market_product', {market: market.id}) }}"
+                                class="badge rounded-pill bg-secondary text-white market-item">
+                            {{ market.name|length > 30 ? market.name|slice(0, 30) ~ ' ... ' : market.name }}
+                        </a>
+                        <div class="badge badge-primary float-right">{{ market.products.count }}</div>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="ml-4"
+                           href="{{ path('app_dashboard_market_place_market_brand', {market: market.id}) }}">{{ 'market.brands'|trans }}</a>
+                        <div class="badge badge-warning float-right">{{ market.marketBrands.count }}</div>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="ml-4"
+                           href="{{ path('app_dashboard_market_place_market_supplier', {market: market.id}) }}">{{ 'market.suppliers'|trans }}</a>
+                        <div class="badge badge-secondary float-right">{{ market.marketSuppliers.count }}</div>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="ml-4"
+                           href="{{ path('app_dashboard_market_place_market_manufacturer', {market: market.id}) }}">{{ 'market.manufacturers'|trans }}</a>
+                        <div class="badge badge-danger float-right">{{ market.marketManufacturers.count }}</div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    <div class="row mt-3">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <button
+                            class="btn"
+                            data-bs-toggle="collapse"
+                            type="button"
+                            data-bs-target="#blogs"
+                            aria-expanded="true"
+                            aria-controls="blogs">
+                        <i class="bi bi-person-workspace pr-5"></i>
+                        {{ 'title.blogs'|trans }}
+                    </button>
+                </div>
+                <ul id="blogs" class="collapse multi-collapse list-group list-group-flush">
+                    <li class="list-group-item">
+                        <a href="{{ path('app_dashboard_blog') }}">{{ 'menu.dashboard.overview.blog'|trans }}</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{{ path('app_dashboard_create_blog') }}">{{ 'menu.dashboard.create.blog'|trans }}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <button
+                            class="btn"
+                            data-bs-toggle="collapse"
+                            type="button"
+                            data-bs-target="#news"
+                            aria-expanded="true"
+                            aria-controls="news">
+                        <i class="bi bi-newspaper pr-5"></i>
+                        {{ 'entry.form.news'|trans }}
+                    </button>
+                </div>
+                <ul id="news" class="collapse multi-collapse list-group list-group-flush">
+                    <li class="list-group-item">
+                        <a href="{{ path('app_dashboard_news') }}">{{ 'menu.dashboard.overview_news'|trans }}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

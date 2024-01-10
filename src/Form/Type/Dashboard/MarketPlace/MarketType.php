@@ -84,6 +84,7 @@ class MarketType extends AbstractType
             ])
             ->add('logo', FileType::class, [
                 'mapped' => false,
+                'required' => false,
                 'label_attr' => [
                     'name' => 'label.form.market_logo'
                 ],

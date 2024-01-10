@@ -1,0 +1,142 @@
+<div class="sidebar-header">
+    <div class="user-pic">
+        {% if app.user.attach %}
+            {% set _picture = 'storage/user/picture/' ~ app.user.id ~ '/' ~ app.user.attach.name %}
+            <img class="img-responsive img-rounded" src="{{ asset(_picture) | imagine_filter('user_thumb') }}"
+                 alt="{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}">
+        {% else %}
+            {% for picture in app.user.userDetails.attach|slice(0, 1) %}
+                {% set _picture = 'storage/user/picture/' ~ app.user.id ~ '/' ~ picture.name %}
+                <img class="img-responsive img-rounded" src="{{ asset(_picture) | imagine_filter('user_thumb') }}"
+                     alt="{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}">
+            {% else %}
+                <img class="img-responsive img-rounded" src="{{ asset('img/user-picture.jpg') }}"
+                     alt="{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}">
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="user-info">
+        <span class="user-name">{{ app.user.userDetails.firstName }}
+            <strong>{{ app.user.userDetails.lastName }}</strong>
+        </span>
+        <span class="user-role">{{ app.user.roles[0]|replace({'ROLE_': ''})|capitalize }}</span>
+        <span class="user-status">
+            <i class="bi bi-circle-fill"></i>
+            <span>Online</span>
+        </span>
+    </div>
+</div>
+<div class="d-block px-3">
+    <div class="form-check form-switch">
+        <input type="checkbox" name="mode" data-container="{{ container }}" class="form-check-input" role="switch"
+               id="mode">
+        <label class="custom-control-label text-white"
+               data-responsive-off="{{ 'dashboard.mode.off'|trans }}"
+               data-responsive-on="{{ 'dashboard.mode.on'|trans }}"
+               for="mode">{{ container }}</label>
+    </div>
+</div>
+{% set _part = _route|split('_')|last %}
+<ul class="nav flex-column py-2">
+    <li class="nav-item">
+        <a class="nav-link {{ _route == 'app_dashboard'? 'active': '' }}" href="{{ path('app_dashboard') }}">
+            <i class="bi bi-house"></i>
+            {{ 'menu.dashboard'|trans }}
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {{ _route == 'app_dashboard_market_place_market'? 'active': '' }}"
+           href="{{ path('app_dashboard_market_place_market') }}"
+           data-bs-toggle="collapse"
+           data-bs-target=".market"
+           aria-expanded="{{ _part == 'market-place' ? 'true': 'false' }}"
+           aria-controls="market">
+            <i class="bi bi-basket2"></i>
+            {{ 'menu.dashboard.marketplace'|trans }}
+            <i class="bi bi-arrow-right-short arrow"></i>
+        </a>
+        <div class="collapse market {{ _part == 'market' ? 'show': '' }}">
+            <a class="nav-link {{ _route == 'app_dashboard_market_place_market' ? 'active' : '' }}"
+               href="{{ path('app_dashboard_market_place_market') }}">
+                <i class="bi bi-arrow-right-short"></i>
+                {{ 'menu.dashboard.overview'|trans }}
+            </a>
+            {% if app.user.markets|length == 0 %}
+                <a class="nav-link {{ _route == 'app_dashboard_market_place_create_market' ? 'active' : '' }}"
+                   href="{{ path('app_dashboard_market_place_create_market') }}">
+                    <i class="bi bi-arrow-right-short"></i>
+                    {{ 'menu.dashboard.create.market'|trans }}
+                </a>
+            {% endif %}
+        </div>
+    </li>
+    {% if is_granted('ROLE_ADMIN') %}
+        <li class="nav-item">
+            <a
+                    class="nav-link {{ _route == 'app_dashboard_faq'? 'active': '' }}"
+                    href="{{ path('app_dashboard_faq') }}"
+                    data-bs-toggle="collapse"
+                    data-bs-target=".faq"
+                    aria-expanded="{{ _part == 'faq'? 'true': 'false' }}"
+                    aria-controls="faq">
+                <i class="bi bi-question"></i>
+                {{ 'menu.dashboard.faq'|trans }}
+                <i class="bi bi-arrow-right-short arrow"></i>
+            </a>
+            <div class="collapse faq {{ _part == 'faq'? 'show': '' }}">
+                <a
+                        class="nav-link {{ _route == 'app_dashboard_faq' ? 'active' : '' }}"
+                        href="{{ path('app_dashboard_faq') }}">
+                    <i class="bi bi-arrow-right-short"></i>
+                    {{ 'menu.dashboard.overview'|trans }}
+                </a>
+                <a
+                        class="nav-link {{ _route == 'app_dashboard_create_faq' ? 'active' : '' }}"
+                        href="{{ path('app_dashboard_create_faq') }}">
+                    <i class="bi bi-arrow-right-short"></i>
+                    {{ 'menu.dashboard.create_faq'|trans }}
+                </a>
+            </div>
+            <a
+                    class="nav-link {{ _route in ['app_dashboard_user', 'app_dashboard_details_user'] ? 'active' : '' }}"
+                    href="{{ path('app_dashboard_user') }}">
+                <i class="bi bi-person"></i>
+                {{ 'menu.dashboard.users'|trans }}
+            </a>
+            <a class="nav-link {{ _route == 'app_dashboard_contact' ? 'active' : '' }}"
+               href="{{ path('app_dashboard_contact') }}">
+                <i class="bi bi-envelope-at"></i>
+                {{ 'menu.dashboard.contacts'|trans }}
+            </a>
+        </li>
+    {% endif %}
+    <li class="nav-item">
+        {% for key, nav in navbar|sort %}
+            <a
+                    class="nav-link {{ _part == nav ? 'active': '' }}"
+                    href="#"
+                    data-bs-toggle="collapse"
+                    data-bs-target=".{{ key }}"
+                    aria-expanded="{{ _part == key ? 'true': 'false' }}"
+                    aria-controls="{{ key }}">
+                <i class="bi bi-person-workspace"></i>
+                {{ key|replace({'_': ' '})|capitalize }}
+                <i class="bi bi-arrow-right-short arrow float-right"></i>
+            </a>
+            <div class="collapse {{ key }} {{ _part == key ? 'show': '' }}">
+                {% for message, route in children[key] %}
+                    <a class="nav-link {{ _route == route ? 'active' : '' }}" href="{{ path(route) }}">
+                        <i class="bi bi-arrow-right-short"></i>
+                        {{ message|trans }}
+                    </a>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ path('app_logout') }}">
+            <i class="bi bi-lock-fill"></i>
+            {{ 'form.action.logout'|trans }}
+        </a>
+    </li>
+</ul>

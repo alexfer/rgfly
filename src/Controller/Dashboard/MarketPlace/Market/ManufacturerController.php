@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -100,7 +101,7 @@ class ManufacturerController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/edit/{market}/{id}', name: 'app_dashboard_market_place_edit_manufacturer', methods: ['GET', 'POST'])]
+    #[Route('/edit/{market}-{id}', name: 'app_dashboard_market_place_edit_manufacturer', methods: ['GET', 'POST'])]
     public function edit(
         Request                $request,
         UserInterface          $user,
@@ -130,5 +131,75 @@ class ManufacturerController extends AbstractController
         return $this->render('dashboard/content/market_place/manufacturer/_form.html.twig', $this->navbar() + [
                 'form' => $form,
             ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param UserInterface $user
+     * @param MarketManufacturer $manufacturer
+     * @param EntityManagerInterface $em
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/delete/{market}-{id}', name: 'app_dashboard_delete_manufacturer', methods: ['POST'])]
+    public function delete(
+        Request                $request,
+        UserInterface          $user,
+        MarketManufacturer     $manufacturer,
+        EntityManagerInterface $em,
+    ): Response
+    {
+        $market = $this->market($request, $user, $em);
+
+        if ($this->isCsrfTokenValid('delete', $request->get('_token'))) {
+            $em->remove($manufacturer);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('app_dashboard_market_place_market_manufacturer', ['market' => $market->getId()]);
+    }
+
+    /**
+     * @param Request $request
+     * @param UserInterface $user
+     * @param EntityManagerInterface $em
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/xhr_create/{market}', name: 'app_dashboard_market_place_xhr_create_manufacturer', methods: ['POST'])]
+    public function xshCreate(
+        Request                $request,
+        UserInterface          $user,
+        EntityManagerInterface $em,
+    ): JsonResponse
+    {
+        $market = $this->market($request, $user, $em);
+        $requestGetPost = $request->get('manufacturer');
+        $responseJson = [];
+
+        if ($requestGetPost && isset($requestGetPost['name'])) {
+            if ($this->isCsrfTokenValid('create', $requestGetPost['_token'])) {
+                $manufacturer = new MarketManufacturer();
+                $manufacturer->setName($requestGetPost['name']);
+                $manufacturer->setMarket($market);
+                $em->persist($manufacturer);
+                $em->flush();
+
+                $responseJson = [
+                    'json' => [
+                        'id' => "#product_manufacturer",
+                        'option' => [
+                            'id' => $manufacturer->getId(),
+                            'name' => $manufacturer->getName(),
+                        ],
+                    ],
+                ];
+            }
+        }
+        $response = new JsonResponse($responseJson);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
     }
 }

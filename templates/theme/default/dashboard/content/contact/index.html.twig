@@ -1,0 +1,70 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% set _title_extend = 'title.dashboard.contact'|trans %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}{{ _title_extend }}{% endblock %}
+
+{% block content %}
+    <div class="table-responsive table-sm card">
+        <table class="table table-hover table-borderless mb-0">
+            <thead class="bg-secondary text-white">
+            <tr>
+                <th class="col-1 text-center" scope="col">{{ 'table.header.id'|trans }}</th>
+                <th class="col-2" scope="col">{{ 'table.header.name'|trans }}</th>
+                <th class="col-6" scope="col">{{ 'table.header.subject'|trans }}</th>
+                <th class="col-1 text-center" scope="col">{{ 'table.header.status'|trans }}</th>
+                <th class="col-2 text-center" scope="col">{{ 'table.header.handle'|trans }}</th>
+            </tr>
+            </thead>
+            {# {% set _bage = [status.new => 'secondary', 'primary', 'info', 'success', 'warning'] %} #}
+            <tbody>
+            {% for entry in entries %}
+                <tr>
+                    <th scope="row" class="text-center">{{ entry.id }}</th>
+                    <td>
+                        {{ entry.name }}
+                    </td>
+                    <td>
+                        {% if entry.status == 'Trashed' %}
+                            <del class="text-muted">{{ entry.subject }}</del>
+                        {% else %}
+                            <a href="{{ path('app_dashboard_review_contact', {id: entry.id}) }}"
+                               class="link">{{ entry.subject }}</a>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        {% if entry.status == 'Trashed' %}
+                            {% set _bage = 'secondary' %}
+                        {% elseif entry.status == 'New' %}
+                            {% set _bage = 'primary' %}
+                        {% elseif entry.status == 'Draft' %}
+                            {% set _bage = 'info' %}
+                        {% elseif entry.status == 'Seen' %}
+                            {% set _bage = 'success' %}
+                        {% elseif entry.status == 'Answered' %}
+                            {% set _bage = 'warning' %}
+                        {% else %}
+                            {% set _bage = 'dark' %}
+                        {% endif %}
+                        <a href="#" class="badge badge-{{ _bage }} p-2">{{ entry.status }}</a>
+                    </td>
+                    <td class="text-center">
+                        <a
+                                class="btn btn-sm btn-outline-lightning rounded delete-entry px-1 py-0"
+                                data-token="{{ csrf_token('delete') }}"
+                                data-url="{{ url('app_dashboard_delete_contact', {id: entry.id}) }}"
+                                data-toggle="modal"
+                                data-target="#modal-delete">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center text-danger bg-grey">{{ 'table.footer.not_found'|trans }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

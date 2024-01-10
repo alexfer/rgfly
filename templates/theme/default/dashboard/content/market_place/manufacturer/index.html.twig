@@ -1,0 +1,60 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% set _title_extend = 'title.dashboard.manufacturers'|trans %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}
+    {{ _title_extend }}
+    <a type="button" class="btn btn-sm external btn-outline-secondary float-end mt-1"
+       href="{{ path('app_dashboard_market_place_create_manufacturer', {market: market.id}) }}">{{ 'market.manufacturer.create'|trans }}</a>
+{% endblock %}
+
+{% block content %}
+    {% include 'dashboard/content/market_place/navbar/nav.html.twig' %}
+    <div class="table-responsive table card">
+        <table class="table table-hover table-striped mb-0">
+            <thead>
+            <tr>
+                <th class="bg-secondary text-white text-center font-weight-light" scope="col">{{ 'table.header.id'|trans }}</th>
+                <th class="bg-secondary text-white font-weight-light" scope="col">{{ 'table.header.name'|trans }}</th>
+                <th class="bg-secondary text-white font-weight-light text-center" scope="col">{{ 'table.header.description'|trans }}</th>
+                <th class="bg-secondary text-white font-weight-light text-center" scope="col">{{ 'table.header.handle'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for manufacturer in manufacturers %}
+                <tr>
+                    <th scope="row" class="text-center">{{ manufacturer.id }}</th>
+                    <td>
+                        <a data-toggle="tooltip"
+                           data-placement="right"
+                           class="link"
+                           title="{{ manufacturer.name }}"
+                           href="{{ path('app_dashboard_market_place_edit_manufacturer', {market: manufacturer.market.id, id: manufacturer.id}) }}">
+                            {{ manufacturer.name|length > 30 ? manufacturer.name|slice(0, 30) ~ '...' : manufacturer.name }}
+                        </a>
+                    </td>
+                    <td>{{ manufacturer.description }}</td>
+                    <td class="text-center">
+                        <a href="{{ path('app_dashboard_market_place_edit_manufacturer', {market: manufacturer.market.id, id: manufacturer.id}) }}"
+                           class="btn btn-sm btn-outline-lightning rounded px-1 py-0">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                        <a
+                                class="btn btn-sm btn-outline-lightning rounded delete-entry px-1 py-0"
+                                data-token="{{ csrf_token('delete') }}"
+                                data-url="{{ url('app_dashboard_delete_manufacturer', {market: manufacturer.market.id, id: manufacturer.id}) }}"
+                                data-toggle="modal"
+                                data-target="#modal-delete">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="text-center text-bg-light">{{ 'table.footer.not_found'|trans }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

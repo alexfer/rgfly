@@ -12,7 +12,6 @@ $(window).on('load', function () {
         responsive.removeClass('show');
         label.html(label.data('responsive-off'));
     }
-    console.log(responsive.find('.sr-only').length);
 });
 
 $(function () {
@@ -32,7 +31,7 @@ $(function () {
         } else {
             label.html(label.data('responsive-off'));
             mode.removeAttr('checked');
-            $.removeCookie('container');
+            $.removeCookie('container', {path: '/'});
             container.attr('class', 'container');
             responsive.removeClass('show');
         }

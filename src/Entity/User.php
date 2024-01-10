@@ -53,6 +53,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     final public const string ROLE_USER = 'ROLE_USER';
     final public const string ROLE_ADMIN = 'ROLE_ADMIN';
+    final public const string ROLE_CUSTOMER = 'ROLE_CUSTOMER';
 
     public function __construct()
     {
@@ -126,6 +127,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $roles[] = self::ROLE_USER;
 
         return array_unique($roles);
+    }
+
+    /**
+     * @param string $role
+     * @return mixed|string
+     */
+    public function hasRole(string $role)
+    {
+        return $this->roles[$role];
     }
 
     /**

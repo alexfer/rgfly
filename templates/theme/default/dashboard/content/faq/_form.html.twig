@@ -1,0 +1,46 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% if form.vars.data.id %}
+    {% set _title_extend = 'title.dashboard.change_faq'|trans %}
+{% else %}
+    {% set _title_extend = 'title.dashboard.create_faq'|trans %}
+{% endif %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}{{ _title_extend }}{% endblock %}
+
+{% block content %}
+    {{ form_start(form, {attr: {class: 'd-tech-form', novalidate: 'novalidate'}}) }}
+    <div class="form-group mb-3">
+        {% set title_error = form.title.vars.errors|length ? 'form-control error' : 'form-control' %}
+        {{ form_label(form.title, 'label.form.title') }} <span class="text-danger">*</span>
+        {{ form_widget(form.title, {attr: {class: title_error, placeholder: 'label.form.title'}}) }}
+        <small class="text-danger">{{ form_errors(form.title) }}</small>
+    </div>
+    <div class="form-group mb-3">
+        {% set content_error = form.content.vars.errors|length ? 'form-control error' : 'form-control' %}
+        {{ form_label(form.content, 'label.form.content') }} <span class="text-danger">*</span>
+        {{ form_widget(form.content, {attr: {class: content_error, rows: 6, placeholder: 'label.form.content'}}) }}
+        <small class="text-danger">{{ form_errors(form.content) }}</small>
+    </div>
+    <div class="form-group mb-3">
+        {{ form_widget(form.visible) }}
+        {{ form_label(form.visible, 'label.form.visible'|trans, {label_attr: {class: 'pl-2'}}) }}
+    </div>
+    <div class="form-group text-center my-4">
+        {{ form_widget(form.save, { label: form.vars.data.id ? 'form.action.update' : 'form.action.save'}) }}
+        <a type="button" href="{{ url('app_dashboard_faq') }}"
+           class="btn btn-secondary shadow-sm">{{ 'form.action.back'|trans }}</a>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script type="text/javascript">
+        CKEDITOR.replace('faq_content', {
+            extraPlugins: 'editorplaceholder',
+            removePlugins: 'simage,image,youtube,html5video,iframe,uicolor,videodetector,preview',
+            editorplaceholder: '{{ 'label.form.content'|trans }}'
+        });
+    </script>
+{% endblock %}

@@ -944,6 +944,10 @@
                 <source>market.products.overview</source>
                 <target>Products overview</target>
             </trans-unit>
+            <trans-unit id="dashboard.entry.delete">
+                <source>dashboard.entry.delete</source>
+                <target>Delete</target>
+            </trans-unit>
             <trans-unit id="form.action.save">
                 <source>form.action.save</source>
                 <target>Save</target>
@@ -959,6 +963,10 @@
             <trans-unit id="form.action.cancel">
                 <source>form.action.cancel</source>
                 <target>Cancel</target>
+            </trans-unit>
+            <trans-unit id="form.action.delete">
+                <source>form.action.delete</source>
+                <target>Delete</target>
             </trans-unit>
             <trans-unit id="form.action.back">
                 <source>form.action.back</source>

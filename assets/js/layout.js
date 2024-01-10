@@ -13,26 +13,24 @@ $(window).on('scroll', function () {
 });
 $(function () {
     let toast = $('.toast');
-    toast.toast('hide');
-
     let flash = $('.d-tech-form input[name="flash"], .tech-form input[name="flash"]').attr('value');
 
     if (typeof flash !== 'undefined') {
         let messages = $.parseJSON(flash);
-
         if (messages.message !== undefined) {
             $('.toast .toast-body').text(messages.message);
-            toast.toast('show');
+            toast.removeClass('hide').toggleClass('show');
         }
     }
+    toast.delay(3000).fadeOut(200);
 
-    $('ul[role="tablist"] a[data-toggle="tab"]').on('click', function (e) {
+    $('ul[role="tablist"] a[data-bs-toggle="tab"]').on('click', function (e) {
         e.preventDefault();
         let location = $(this).attr('aria-controls');
         window.history.replaceState({}, '', location);
     });
 
-    $('a[data-toggle="accordion-content"]').on('click', function (e) {
+    $('a[data-bs-toggle="accordion-content"]').on('click', function (e) {
         e.preventDefault();
 
         $(this).toggleClass('active');
@@ -41,7 +39,7 @@ $(function () {
         $('.accordion-title').not($(this)).removeClass('active');
     });
 
-    $('a[data-toggle="collapse"]').on('click', function (e) {
+    $('a[data-bs-toggle="collapse"]').on('click', function (e) {
         e.preventDefault();
 
         let arrow = $(this).children('.arrow');
@@ -58,14 +56,43 @@ $(function () {
         $('.modal .confirm').attr('action', $(this).attr('data-url'));
     });
 
-    $(function () {
-        let options = {
-            delay: {
-                'show': 100,
-                'hide': 400
-            }
-        };
-        $('[data-toggle="tooltip"]').tooltip(options);
+    $('.add-entry').on('click', function () {
+        let url = $(this).data('url');
+        let xhr = $(this).data('xhr');
+        let owner = $(this).data('bs-target');
+
+        if(typeof xhr !== 'undefined') {
+            $.get(xhr, function (response) {
+                $.each(response.countries, function(key, text){
+                    $('.modal #suppler_country').append($('<option>', {
+                        value: key,
+                        text : text
+                    }));
+                });
+            })
+        }
+
+        $('.modal input[id="_token"]').attr('value', $(this).attr('data-token'));
+        $('.modal form').off().on('submit', function () {
+            let form = $(this);
+            $.post(url, form.serialize(), function (response) {
+                let data = response.json;
+                let owner = data.id.toString();
+                setTimeout(() => {
+                    form.trigger('reset');
+                    $('.modal button[data-bs-dismiss="modal"]').click();
+                }, 2000);
+
+                $(owner).append($('<option/>', {
+                    value: data.option.id,
+                    text: data.option.name,
+                    selected: true,
+                }));
+            }).fail(function(xhr) {
+                console.log(xhr);
+            });
+            return false;
+        });
     });
 
     $('.load-categories').on('click', function (e) {

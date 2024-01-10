@@ -1,0 +1,12 @@
+<div class="service-message toast-container p-3">
+    <div class="toast fade hide" role="alert" aria-live="polite" aria-atomic="true" data-bs-delay="3000">
+        <div class="toast-header">
+            <i class="bi bi-bell pe-2 text-primary"></i>
+            <strong class="mr-auto">{{ 'title.service.message'|trans }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="{{ 'form.action.close'|trans }}"></button>
+        </div>
+        <div class="toast-body">
+            {{ 'title.service.text'|trans({'%contact%': path('contact')})|raw }}
+        </div>
+    </div>
+</div>

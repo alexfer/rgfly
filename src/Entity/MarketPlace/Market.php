@@ -53,12 +53,15 @@ class Market
     private ?DateTimeInterface $deleted_at = null;
 
     #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketBrand::class)]
+    #[ORM\OrderBy(['name' => 'asc'])]
     private Collection $marketBrands;
 
     #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketSupplier::class)]
+    #[ORM\OrderBy(['name' => 'asc'])]
     private Collection $marketSuppliers;
 
     #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketManufacturer::class)]
+    #[ORM\OrderBy(['name' => 'asc'])]
     private Collection $marketManufacturers;
 
     #[ORM\OneToOne(inversedBy: 'market', cascade: ['persist', 'remove'])]

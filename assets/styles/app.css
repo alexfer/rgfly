@@ -1025,7 +1025,6 @@ p:last-child {
         display: none;
     }
 }
-
 .tech-form textarea.form-control,
 .d-tech-form textarea.form-control {
     height: auto;
@@ -1119,20 +1118,21 @@ a.preview:focus,
     padding: 10px 20px;
     height: 52px;
     color: #636363;
-    border: none;
-    border-left-width: medium;
-    border-left-style: none;
-    border-left-color: currentcolor;
     background-color: #fff;
     font-weight: 400;
     border-radius: 5px;
     border-top: 3px solid #9a9a9b;
+    border-right-style: none;
+    border-bottom-style: none;
+    border-left: medium none currentcolor;
     transition: all 0.4s;
 }
 
-.d-tech-form .form-control {
+.d-tech-form .form-control,
+.d-tech-form .form-select {
     border-radius: 4px;
     border: 1px solid #9a9a9b;
+    height: auto;
 }
 
 .tech-form .form-control::placeholder,
@@ -1151,6 +1151,16 @@ a.preview:focus,
     -webkit-box-shadow: none;
     box-shadow: none;
     border-top: 3px solid #004caa;
+}
+
+.d-tech-form select:focus {
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: 1px solid #004caa;
+}
+.d-tech-form select option[selected="selected"] {
+    background-color: rgba(0, 76, 170, 0.15) !important;
 }
 
 .d-tech-form .entry-attachments img.attach {
@@ -1234,6 +1244,12 @@ a.preview:focus,
 
 .service-message .toast {
     width: 300px !important;
+}
+
+.service-message .toast .btn-close {
+    float: right;
+    position: absolute;
+    right: 35px;
 }
 
 .service-message .fade {
@@ -1366,7 +1382,7 @@ a.preview:focus,
 
 .section-area {
     position: relative;
-    padding: 100px 0;
+    padding: 35px 0;
     z-index: 1;
 }
 
@@ -1602,7 +1618,7 @@ a.preview:focus,
 }
 
 .faq-accordion .accordion .accordion-item .accordion-content.show {
-    display: block;
+    display: block !important;
 }
 
 .tab-content label {
