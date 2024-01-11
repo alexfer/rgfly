@@ -28,6 +28,10 @@ class MarketPlaceFixtures extends Fixture
         ];
     }
 
+    /**
+     * @param ObjectManager $manager
+     * @return void
+     */
     private function loadPaymentMethods(ObjectManager $manager): void
     {
         foreach ($this->getPaymentGatewayData() as $key => [$name, $summary]) {
@@ -40,6 +44,9 @@ class MarketPlaceFixtures extends Fixture
         $manager->flush();
     }
 
+    /**
+     * @return array[]
+     */
     private function getPaymentGatewayData(): array
     {
         return [

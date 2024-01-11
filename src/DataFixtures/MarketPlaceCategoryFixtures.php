@@ -11,10 +11,16 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class MarketPlaceCategoryFixtures extends Fixture
 {
 
+    /**
+     * @var SluggerInterface
+     */
     private SluggerInterface $slugger;
 
     private const string REFERENCE_NAME = 'cat_%d';
 
+    /**
+     * @param SluggerInterface $slugger
+     */
     public function __construct(SluggerInterface $slugger)
     {
         $this->slugger = $slugger;

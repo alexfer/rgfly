@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use AllowDynamicProperties;
 use App\Entity\Attach;
 use App\Entity\MarketPlace\Market;
 use App\Entity\UserDetails;
@@ -11,7 +12,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-class FileUploader
+#[AllowDynamicProperties] class FileUploader
 {
 
     /**
@@ -84,11 +85,11 @@ class FileUploader
     {
         $attach = new Attach();
 
-        if ($object && $object instanceof UserDetails) {
+        if ($object instanceof UserDetails) {
             $attach->setUserDetails($object);
         }
 
-        if ($object && $object instanceof Market) {
+        if ($object instanceof Market) {
             $attach->setMarket($object);
         }
 
