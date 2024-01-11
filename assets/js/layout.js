@@ -97,7 +97,7 @@ $(function () {
 
     $('.load-categories').on('click', function (e) {
         e.preventDefault();
-        $(this).parent('div').children('.sr-only').removeClass('sr-only');
+        $(this).parent('div').children('.visually-hidden').removeClass('visually-hidden');
         $(this).remove();
     });
 });

@@ -9,6 +9,7 @@ parameters:
     app.datetime_format: 'M d, Y H:i'
     app.date_format: 'M d, Y'
     locale: 'en'
+    theme: 'default'
     user_storage_dir: '%kernel.project_dir%/public/storage/user'
     user_storage_picture: 'storage/user/picture'
     market_storage_logo: 'storage/market/logo'
