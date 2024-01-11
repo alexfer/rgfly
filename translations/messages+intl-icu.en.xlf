@@ -71,6 +71,10 @@
                 <source>title.questions</source>
                 <target>Questions</target>
             </trans-unit>
+            <trans-unit id="title.market_places">
+                <source>title.market_places</source>
+                <target>Market Places</target>
+            </trans-unit>
             <trans-unit id="title.home">
                 <source>title.home</source>
                 <target>Home</target>

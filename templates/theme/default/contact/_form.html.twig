@@ -1,9 +1,9 @@
 {{ form_start(form, {attr: {class: 'tech-form', novalidate: 'novalidate'}}) }}
-<div class="form-row">
+<div class="row p-3">
     <div class="col-md-6">
-        <div class="form-group">
+        <div class="form-group mb-3">
             {% set name_error = form.name.vars.errors|length ? 'form-control error' : 'form-control' %}
-            {{ form_label(form.name, 'label.form.name') }} <span class="text-danger">*</span>
+            {{ form_label(form.name, 'label.form.name', {label_attr: {class: 'form-label'}}) }} <span class="text-danger">*</span>
             {{ form_widget(form.name, {'attr': {class: name_error, placeholder: 'label.form.name'}}) }}
             {% if form_errors(form.name) %}
                 <small class="form-text text-danger">{{ form_errors(form.name) }}</small>
@@ -13,9 +13,9 @@
         </div>
     </div>
     <div class="col-md-6">
-        <div class="form-group">
+        <div class="form-group mb-3">
             {% set email_error = form.email.vars.errors|length ? 'form-control error' : 'form-control' %}
-            {{ form_label(form.email, 'label.form.email') }} <span class="text-danger">*</span>
+            {{ form_label(form.email, 'label.form.email', {label_attr: {class: 'form-label'}}) }} <span class="text-danger">*</span>
             {{ form_widget(form.email, {attr: {class: email_error, placeholder: 'label.form.email'}}) }}
             {% if form_errors(form.email) %}
                 <small class="form-text text-danger">{{ form_errors(form.email) }}</small>
@@ -25,9 +25,9 @@
         </div>
     </div>
     <div class="col-md-6">
-        <div class="form-group">
+        <div class="form-group mb-3">
             {% set phone_error = form.phone.vars.errors|length ? 'form-control error' : 'form-control' %}
-            {{ form_label(form.phone, 'label.form.phone') }}
+            {{ form_label(form.phone, 'label.form.phone', {label_attr: {class: 'form-label'}}) }}
             {{ form_widget(form.phone, {attr: {class: phone_error, placeholder: 'label.form.phone'}}) }}
             {% if form_errors(form.phone) %}
                 <small class="form-text text-danger">{{ form_errors(form.phone) }}</small>
@@ -37,9 +37,9 @@
         </div>
     </div>
     <div class="col-md-6">
-        <div class="form-group">
+        <div class="form-group mb-3">
             {% set subject_error = form.subject.vars.errors|length ? 'form-control error' : 'form-control' %}
-            {{ form_label(form.subject, 'label.form.subject') }}
+            {{ form_label(form.subject, 'label.form.subject', {label_attr: {class: 'form-label'}}) }}
             {{ form_widget(form.subject, {attr: {class: subject_error, placeholder: 'label.form.subject'}}) }}
             {% if form_errors(form.message) %}
                 <small class="form-text text-danger">{{ form_errors(form.subject) }}</small>
@@ -49,9 +49,9 @@
         </div>
     </div>
     <div class="col-md-12">
-        <div class="form-group">
+        <div class="form-group mb-3">
             {% set message_error = form.message.vars.errors|length ? 'form-control error' : 'form-control' %}
-            {{ form_label(form.message, 'label.form.message') }} <span class="text-danger">*</span>
+            {{ form_label(form.message, 'label.form.message', {label_attr: {class: 'form-label'}}) }} <span class="text-danger">*</span>
             {{ form_widget(form.message, {attr: {class: message_error, rows: 6, placeholder: 'label.form.message'}}) }}
             {% if form_errors(form.message) %}
                 <small class="form-text text-danger">{{ form_errors(form.message) }}</small>

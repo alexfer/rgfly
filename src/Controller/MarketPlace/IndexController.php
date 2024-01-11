@@ -12,6 +12,8 @@ class IndexController extends AbstractController
     #[Route('', name: 'app_market_place_index')]
     public function index(): Response
     {
-        return $this->render('market_place/index.html.twig', []);
+        return $this->render('market_place/index.html.twig', [
+            'products' => []
+        ]);
     }
 }
