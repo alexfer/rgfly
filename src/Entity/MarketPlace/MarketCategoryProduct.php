@@ -2,8 +2,6 @@
 
 namespace App\Entity\MarketPlace;
 
-use App\Entity\MarketPlace\MarketCategory;
-use App\Entity\MarketPlace\MarketProduct;
 use App\Repository\MarketPlace\MarketCategoryProductRepository;
 use Doctrine\ORM\Mapping as ORM;
 

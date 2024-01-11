@@ -29,17 +29,17 @@ class MarketProduct
     private ?string $description = null;
 
     #[ORM\Column(length: 512, unique: true, nullable: true)]
-    #[Assert\Valid()]
+    #[Assert\Valid]
     private ?string $slug = null;
 
     #[ORM\Column]
-    private ?int $quantity = null;
+    private ?int $quantity;
 
     #[ORM\Column(type: 'float')]
-    private ?float $cost = null;
+    private ?float $cost;
 
     #[ORM\Column]
-    private ?DateTime $created_at = null;
+    private ?DateTime $created_at;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $updated_at = null;

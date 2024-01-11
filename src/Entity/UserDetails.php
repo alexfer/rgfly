@@ -42,10 +42,10 @@ class UserDetails
     private ?string $about = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?DateTime $date_birth = null;
+    private ?DateTime $date_birth;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?DateTime $updated_at = null;
+    private ?DateTime $updated_at;
 
     #[ORM\OneToOne(mappedBy: 'details', cascade: ['persist', 'remove'])]
     private ?UserSocial $userSocial = null;

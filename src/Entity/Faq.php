@@ -26,7 +26,7 @@ class Faq
     private ?int $visible = 0;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTime $created_at = null;
+    private ?DateTime $created_at;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTime $deleted_at = null;

@@ -120,14 +120,12 @@ class MarketController extends AbstractController
      * @param Request $request
      * @param Market $entry
      * @param EntityManagerInterface $em
-     * @param UserInterface $user
      * @param SluggerInterface $slugger
      * @param TranslatorInterface $translator
      * @param ParameterBagInterface $params
      * @param CacheManager $cacheManager
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws Exception
      */
     #[Route('/edit/{id}', name: 'app_dashboard_market_place_edit_market', methods: ['GET', 'POST'])]
     #[IsGranted(MarketVoter::EDIT, subject: 'entry', statusCode: Response::HTTP_FORBIDDEN)]
@@ -135,7 +133,6 @@ class MarketController extends AbstractController
         Request                $request,
         Market                 $entry,
         EntityManagerInterface $em,
-        UserInterface          $user,
         SluggerInterface       $slugger,
         TranslatorInterface    $translator,
         ParameterBagInterface  $params,

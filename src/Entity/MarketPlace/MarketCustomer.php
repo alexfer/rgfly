@@ -4,6 +4,8 @@ namespace App\Entity\MarketPlace;
 
 use App\Entity\User;
 use App\Repository\MarketPlace\MarketCustomerRepository;
+use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -25,7 +27,7 @@ class MarketCustomer
     private ?string $last_name = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $birthday = null;
+    private ?DateTimeInterface $birthday = null;
 
     #[ORM\Column(length: 10, nullable: true)]
     private ?string $gender = null;
@@ -34,17 +36,17 @@ class MarketCustomer
     private ?string $phone = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?DateTimeImmutable $created_at;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $updated_at = null;
+    private ?DateTimeImmutable $updated_at = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $deleted_at = null;
+    private ?DateTimeImmutable $deleted_at = null;
 
     public function __construct()
     {
-        $this->created_at = new \DateTimeImmutable();
+        $this->created_at = new DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -88,12 +90,12 @@ class MarketCustomer
         return $this;
     }
 
-    public function getBirthday(): ?\DateTimeInterface
+    public function getBirthday(): ?DateTimeInterface
     {
         return $this->birthday;
     }
 
-    public function setBirthday(?\DateTimeInterface $birthday): static
+    public function setBirthday(?DateTimeInterface $birthday): static
     {
         $this->birthday = $birthday;
 
@@ -124,36 +126,36 @@ class MarketCustomer
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    public function setCreatedAt(DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
+    public function getUpdatedAt(): ?DateTimeImmutable
     {
         return $this->updated_at;
     }
 
-    public function setUpdatedAt(?\DateTimeImmutable $updated_at): static
+    public function setUpdatedAt(?DateTimeImmutable $updated_at): static
     {
         $this->updated_at = $updated_at;
 
         return $this;
     }
 
-    public function getDeletedAt(): ?\DateTimeImmutable
+    public function getDeletedAt(): ?DateTimeImmutable
     {
         return $this->deleted_at;
     }
 
-    public function setDeletedAt(?\DateTimeImmutable $deleted_at): static
+    public function setDeletedAt(?DateTimeImmutable $deleted_at): static
     {
         $this->deleted_at = $deleted_at;
 

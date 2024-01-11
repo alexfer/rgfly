@@ -4,7 +4,7 @@ namespace App\Controller\MarketPlace;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/market-place/category')]
 class CategoryController extends AbstractController

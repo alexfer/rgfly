@@ -2,13 +2,8 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Market;
 
-use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketManufacturer;
-use App\Entity\MarketPlace\MarketBrand;
-use App\Entity\MarketPlace\MarketSupplier;
 use App\Form\Type\Dashboard\MarketPlace\ManufacturerType;
-use App\Form\Type\Dashboard\MarketPlace\BrandType;
-use App\Form\Type\Dashboard\MarketPlace\SupplerType;
 use App\Service\MarketPlace\MarketTrait;
 use App\Service\Dashboard;
 use Doctrine\ORM\EntityManagerInterface;

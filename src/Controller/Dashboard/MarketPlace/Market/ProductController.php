@@ -16,8 +16,10 @@ use App\Security\Voter\ProductVoter;
 use App\Service\MarketPlace\Currency;
 use App\Service\MarketPlace\MarketTrait;
 use App\Service\Dashboard;
+use DateTime;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -63,7 +65,6 @@ class ProductController extends AbstractController
 
     /**
      * @param Request $request
-     * @param UserInterface $user
      * @param MarketProduct $product
      * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
@@ -74,7 +75,6 @@ class ProductController extends AbstractController
     #[IsGranted(ProductVoter::EDIT, subject: 'product', statusCode: Response::HTTP_FORBIDDEN)]
     public function edit(
         Request                $request,
-        UserInterface          $user,
         MarketProduct          $product,
         EntityManagerInterface $em,
         TranslatorInterface    $translator,
@@ -103,14 +103,12 @@ class ProductController extends AbstractController
             }
         }
 
-        $entryCategory = null;
-
         if ($form->isSubmitted() && $form->isValid() && !$uniqueError) {
             $requestCategory = $form->get('category')->getData();
+            $repository->removeCategoryProduct($product);
 
             if (count($requestCategory)) {
-                $repository->removeCategoryProduct($product);
-                foreach ($requestCategory as $key => $value) {
+                foreach ($requestCategory as $value) {
                     $entryCategory = new MarketCategoryProduct();
                     $entryCategory->setProduct($product)
                         ->setCategory($categoryRepository->findOneBy(['id' => $value]));
@@ -178,7 +176,7 @@ class ProductController extends AbstractController
             $requestCategory = $form->get('category')->getData();
 
             if ($requestCategory) {
-                foreach ($requestCategory as $key => $value) {
+                foreach ($requestCategory as $value) {
                     $productCategory = new MarketCategoryProduct();
                     $productCategory->setProduct($product)
                         ->setCategory($em->getRepository(MarketCategory::class)->findOneBy(['id' => $value]));
@@ -270,6 +268,7 @@ class ProductController extends AbstractController
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws Exception
      */
     #[Route('/delete/{market}-{id}', name: 'app_dashboard_delete_product', methods: ['POST'])]
     public function delete(
@@ -282,7 +281,7 @@ class ProductController extends AbstractController
         $market = $this->market($request, $user, $em);
 
         if ($this->isCsrfTokenValid('delete', $request->get('_token'))) {
-            $date = new \DateTime('@' . strtotime('now'));
+            $date = new DateTime('@' . strtotime('now'));
             $product->setDeletedAt($date);
             $em->persist($product);
             $em->flush();

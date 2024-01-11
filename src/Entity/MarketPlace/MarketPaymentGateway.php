@@ -3,6 +3,7 @@
 namespace App\Entity\MarketPlace;
 
 use App\Repository\MarketPlace\MarketPaymentGatewayRepository;
+use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -21,7 +22,7 @@ class MarketPaymentGateway
     private ?string $summary = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $deleted_at = null;
+    private ?DateTimeInterface $deleted_at = null;
 
     /**
      * @return int|null
@@ -70,18 +71,18 @@ class MarketPaymentGateway
     }
 
     /**
-     * @return \DateTimeInterface|null
+     * @return DateTimeInterface|null
      */
-    public function getDeletedAt(): ?\DateTimeInterface
+    public function getDeletedAt(): ?DateTimeInterface
     {
         return $this->deleted_at;
     }
 
     /**
-     * @param \DateTimeInterface|null $deleted_at
+     * @param DateTimeInterface|null $deleted_at
      * @return $this
      */
-    public function setDeletedAt(?\DateTimeInterface $deleted_at): static
+    public function setDeletedAt(?DateTimeInterface $deleted_at): static
     {
         $this->deleted_at = $deleted_at;
 

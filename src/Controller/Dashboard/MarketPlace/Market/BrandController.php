@@ -2,11 +2,8 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Market;
 
-use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketBrand;
-use App\Form\Type\Dashboard\MarketPlace\ProductType;
 use App\Form\Type\Dashboard\MarketPlace\BrandType;
-use App\Security\Voter\ProductVoter;
 use App\Service\MarketPlace\MarketTrait;
 use App\Service\Dashboard;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,7 +15,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/dashboard/market-place/brand')]

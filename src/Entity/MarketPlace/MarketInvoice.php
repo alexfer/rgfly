@@ -3,6 +3,8 @@
 namespace App\Entity\MarketPlace;
 
 use App\Repository\MarketPlace\MarketInvoiceRepository;
+use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -27,10 +29,10 @@ class MarketInvoice
     private ?float $amount = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?DateTimeImmutable $created_at;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $paid_at = null;
+    private ?DateTimeInterface $paid_at = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?MarketPaymentGateway $payment_gateway = null;
@@ -38,7 +40,7 @@ class MarketInvoice
 
     public function __construct()
     {
-        $this->created_at = new \DateTimeImmutable();
+        $this->created_at = new DateTimeImmutable();
     }
     /**
      * @return int|null
@@ -125,18 +127,18 @@ class MarketInvoice
     }
 
     /**
-     * @return \DateTimeImmutable|null
+     * @return DateTimeImmutable|null
      */
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->created_at;
     }
 
     /**
-     * @param \DateTimeImmutable $created_at
+     * @param DateTimeImmutable $created_at
      * @return $this
      */
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    public function setCreatedAt(DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;
 
@@ -144,18 +146,18 @@ class MarketInvoice
     }
 
     /**
-     * @return \DateTimeInterface|null
+     * @return DateTimeInterface|null
      */
-    public function getPayedAt(): ?\DateTimeInterface
+    public function getPayedAt(): ?DateTimeInterface
     {
         return $this->paid_at;
     }
 
     /**
-     * @param \DateTimeInterface|null $paid_at
+     * @param DateTimeInterface|null $paid_at
      * @return $this
      */
-    public function setPayedAt(?\DateTimeInterface $paid_at): static
+    public function setPayedAt(?DateTimeInterface $paid_at): static
     {
         $this->paid_at = $paid_at;
 

@@ -13,7 +13,7 @@ class Contact
     /**
      * @var array
      */
-    const STATUS = [
+    const array STATUS = [
         'new' => 'New',
         'draft' => 'Draft',
         'answered' => 'Answered',
@@ -48,7 +48,7 @@ class Contact
     private ?string $email = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?DateTime $created_at = null;
+    private ?DateTime $created_at;
 
     public function __construct()
     {
