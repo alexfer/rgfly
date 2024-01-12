@@ -63,7 +63,7 @@
                         {% if market.deletedAt %}
                             <a class="btn btn-sm btn-outline-lightning rounded restore-entry px-1 py-0"
                                href="{{ path('app_dashboard_restore_market', {id: market.id}) }}">
-                                <i class="bi bi-caret-up-square-fill"></i>
+                                <i class="bi bi-chevron-double-up"></i>
                             </a>
                         {% else %}
                             <a href="{{ path('app_dashboard_market_place_edit_market', {id: market.id}) }}"
@@ -76,7 +76,7 @@
                                     data-url="{{ url('app_dashboard_delete_market', {id: market.id}) }}"
                                     data-bs-toggle="modal"
                                     data-bs-target="#modal-delete">
-                                <i class="bi chevron-double-up"></i>
+                                <i class="bi bi-trash"></i>
                             </a>
                         {% endif %}
                     </td>

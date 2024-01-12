@@ -1374,6 +1374,7 @@ a.preview:focus,
     position: relative;
     padding: 20px 0 100px 0;
     z-index: 1;
+    overflow: hidden;
 }
 
 .section-area.default h4 {
