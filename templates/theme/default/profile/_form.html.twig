@@ -21,11 +21,12 @@
         {{ form_errors(form) }}
     </div>
 {% endif %}
-<div class="form-row">
+<div class="row">
     <div class="col-md-6">
-        <div class="form-group">
+        <div class="form-group mb-3">
             {% set first_name_error = form.first_name.vars.errors|length ? 'form-control error' : 'form-control' %}
-            {{ form_label(form.first_name, 'label.form.first_name') }} <span class="text-danger">*</span>
+            {{ form_label(form.first_name, 'label.form.first_name', {label_attr: {class: 'form-label'}}) }} <span
+                    class="text-danger">*</span>
             {{ form_widget(form.first_name, {attr: {class: first_name_error, placeholder: 'label.form.first_name'}}) }}
             {% if form_errors(form.first_name) %}
                 <small class="text-danger">{{ form_errors(form.first_name) }}</small>
@@ -35,9 +36,10 @@
         </div>
     </div>
     <div class="col-md-6">
-        <div class="form-group">
+        <div class="form-group mb-3">
             {% set last_name_error = form.last_name.vars.errors|length ? 'form-control error' : 'form-control' %}
-            {{ form_label(form.last_name, 'label.form.last_name') }} <span class="text-danger">*</span>
+            {{ form_label(form.last_name, 'label.form.last_name', {label_attr: {class: 'form-label'}}) }} <span
+                    class="text-danger">*</span>
             {{ form_widget(form.last_name, {attr: {class: last_name_error, placeholder: 'label.form.last_name'}}) }}
             {% if form_errors(form.last_name) %}
                 <small class="text-danger">{{ form_errors(form.last_name) }}</small>
@@ -47,17 +49,17 @@
         </div>
     </div>
 </div>
-<div class="form-row">
+<div class="row">
     <div class="col-md-6">
-        <div class="form-group">
-            {{ form_label(form.date_birth, 'label.form.date_birth') }}
+        <div class="form-group mb-3">
+            {{ form_label(form.date_birth, 'label.form.date_birth', {label_attr: {class: 'form-label'}}) }}
             {{ form_widget(form.date_birth, {attr: {class: 'form-control', placeholder: '2006-05-15'}}) }}
         </div>
     </div>
     <div class="col-md-6">
-        <div class="form-group">
+        <div class="form-group mb-3">
             {% set phone_error = form.phone.vars.errors|length ? 'form-control error' : 'form-control' %}
-            {{ form_label(form.phone, 'label.form.phone') }}
+            {{ form_label(form.phone, 'label.form.phone', {label_attr: {class: 'form-label'}}) }}
             {{ form_widget(form.phone, {attr: {class: phone_error, placeholder: '+3106398200'}}) }}
             {% if form_errors(form.phone) %}
                 <small class="text-danger">{{ form_errors(form.phone) }}</small>
@@ -67,60 +69,48 @@
         </div>
     </div>
 </div>
-<div class="form-row">
+<div class="row">
     <div class="col-md-6">
-        <div class="form-group">
-            {{ form_label(form.country, 'label.form.country') }}
-            {{ form_widget(form.country, {attr: {class: 'form-control'}}) }}
+        <div class="form-group mb-3">
+            {{ form_label(form.country, 'label.form.country', {label_attr: {class: 'form-label'}}) }}
+            {{ form_widget(form.country, {attr: {class: 'form-select'}}) }}
         </div>
     </div>
     <div class="col-md-6">
-        <div class="form-group">
-            {{ form_label(form.city, 'label.form.city') }}
+        <div class="form-group mb-3">
+            {{ form_label(form.city, 'label.form.city', {label_attr: {class: 'form-label'}}) }}
             {{ form_widget(form.city, {attr: {class: 'form-control'}}) }}
         </div>
     </div>
 </div>
-<div class="form-row align-items-center">
+<div class="row align-items-center">
     <div class="col-4">
-        {{ form_label(form.facebook_profile, 'Facebook Profile', {label_attr: {class: 'sr-only'}}) }}
+        {{ form_label(form.facebook_profile, 'Facebook Profile', {label_attr: {class: 'form-label visually-hidden'}}) }}
         <div class="input-group mb-2">
-            <div class="input-group-prepend">
-                <div class="input-group-text">
-                    <i class="bi bi-facebook"></i>
-                </div>
-            </div>
+            <span class="input-group-text" id="twitter-addon"><i class="bi bi-facebook"></i></span>
             {{ form_widget(form.facebook_profile, {attr: {class: 'form-control  w-auto', placeholder: 'https://facebook-url'}}) }}
         </div>
     </div>
     <div class="col-4">
-        {{ form_label(form.twittetr_profile, 'Twitter Profile', {label_attr: {class: 'sr-only'}}) }}
-        <div class="input-group mb-2">
-            <div class="input-group-prepend">
-                <div class="input-group-text">
-                    <i class="bi bi-twitter"></i>
-                </div>
-            </div>
+        {{ form_label(form.twittetr_profile, 'Twitter Profile', {label_attr: {class: 'form-label visually-hidden'}}) }}
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="twitter-addon"><i class="bi bi-twitter"></i></span>
             {{ form_widget(form.twittetr_profile, {attr: {class: 'form-control  w-auto', placeholder: 'https://twitter-url'}}) }}
         </div>
     </div>
     <div class="col-4">
-        {{ form_label(form.instagram_profile, 'Instagram Profile', {label_attr: {class: 'sr-only'}}) }}
-        <div class="input-group mb-2">
-            <div class="input-group-prepend">
-                <div class="input-group-text">
-                    <i class="bi bi-instagram"></i>
-                </div>
-            </div>
+        {{ form_label(form.instagram_profile, 'Instagram Profile', {label_attr: {class: 'form-label visually-hidden'}}) }}
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="twitter-addon"><i class="bi bi-instagram"></i></span>
             {{ form_widget(form.instagram_profile, {attr: {class: 'form-control  w-auto', placeholder: 'https://instagram-url'}}) }}
         </div>
     </div>
 </div>
-<div class="form-row">
+<div class="row">
     <div class="col-md-12">
-        <div class="form-group">
+        <div class="form-group mb-3">
             {% set about_error = form.about.vars.errors|length ? 'form-control error' : 'form-control' %}
-            {{ form_label(form.about, 'label.form.about') }}
+            {{ form_label(form.about, 'label.form.about', {label_attr: {class: 'form-label'}}) }}
             {{ form_widget(form.about, {attr: {class: about_error}}) }}
             {% if form_errors(form.about) %}
                 <small class="text-danger">{{ form_errors(form.about) }}</small>
@@ -144,7 +134,7 @@
                 <div class="d-inline-block mr-3 mb-3">
                     {% set _picture = 'storage/user/picture/' ~ app.user.id ~ '/' ~ picture.name %}
                     <img class="attach"
-                         src="{{ asset(_picture) | imagine_filter('user_thumb') }}">
+                         src="{{ asset(_picture) | imagine_filter('user_thumb') }}" alt="...">
                     <div class="handlers" data-id="{{ picture.id }}">
                         <a href="{{ path('app_profile_attach_remove') }}" data-action="remove"
                            class="bi bi-trash-fill"></a>
@@ -156,25 +146,25 @@
         </div>
     </div>
     <div class="card-footer">
-        <div class="input-group">
-            <div class="custom-file">
-                {{ form_widget(form.picture, {attr: {class: 'custom-file-input', 'aria-describedby': 'picture' }}) }}
-                {{ form_label(form.picture, 'label.form.picture', {label_attr: {class: 'custom-file-label', 'data-label': 'label.form.picture'|trans}}) }}
-                <small class="text-danger">{{ form_errors(form.picture) }}</small>
-            </div>
-            <div class="input-group-append">
-                <button class="btn btn-outline-info" data-url="{{ path('app_profile_attach') }}" type="button"
-                        id="attach"><i class="bi bi-image-fill pr-2"></i>{{ 'label.form.attach'|trans }}
-                </button>
-            </div>
+        <div class="input-group mb-3">
+            {{ form_label(form.picture, 'label.form.picture', {label_attr: {class: 'form-label visually-hidden', 'data-label': 'label.form.picture'|trans}}) }}
+            {{ form_widget(form.picture, {attr: {class: 'form-control', 'aria-describedby': 'picture', 'aria-label': 'label.form.picture'|trans }}) }}
+            <button class="btn btn-secondary shadow-none" data-url="{{ path('app_profile_attach') }}" type="button"
+                    id="attach"><i class="bi bi-image-fill pe-2"></i>{{ 'label.form.attach'|trans }}</button>
+            <small class="text-danger">{{ form_errors(form.picture) }}</small>
+{#            <div class="custom-file">#}
+{#                {{ form_widget(form.picture, {attr: {class: 'custom-file-input', 'aria-describedby': 'picture' }}) }}#}
+{#                {{ form_label(form.picture, 'label.form.picture', {label_attr: {class: 'custom-file-label', 'data-label': 'label.form.picture'|trans}}) }}#}
+{#                <small class="text-danger">{{ form_errors(form.picture) }}</small>#}
+{#            </div>#}
         </div>
-        <small class="d-block picture-info text-monospace mt-1"></small>
+        <small class="d-block picture-info text-monospace ms-1"></small>
     </div>
 </div>
 
 <input type="hidden" name="flash" value="{{ _message[0]|default([]|json_encode) }}">
 <div class="form-row">
-    <div class="col-sm text-center mt-3">
+    <div class="col-sm text-center my-3">
         {{ form_widget(form.update, { label: 'form.action.update' }) }}
     </div>
 </div>

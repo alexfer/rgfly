@@ -9,10 +9,10 @@ html {
 body {
     padding: 0;
     margin: 0;
-    font-size: 15px;
+    font-size: 18px;
     color: #4e5768;
     font-family: 'Cabin', sans-serif;
-    background-color: rgba(241, 241, 241, 0.9);
+    background-color: rgba(245, 245, 245, 0.9);
 }
 
 img {
@@ -36,7 +36,7 @@ img {
     display: inline-block;
     color: #505060;
     font-weight: 400;
-    font-size: 14px !important;
+    font-size: 16px !important;
     padding: 6px 13px;
     border: 1px solid #ebebeb;
     background: #f8f8f8;
@@ -91,7 +91,7 @@ img {
 }
 
 .blog-block .card .card-footer ul li:first-child a {
-    font-size: 15px;
+    font-size: 17px;
     color: #5e87eb;
 }
 
@@ -106,7 +106,7 @@ img {
 }
 
 .blog-block .card .card-footer ul li a {
-    font-size: 16px;
+    font-size: 18px;
     color: rgba(32, 52, 170, 0.87);
     margin-left: 2px;
 }
@@ -117,7 +117,7 @@ img {
 
 .blog-block .card .card-body a {
     max-height: 70px;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
     color: rgba(4, 83, 94, 0.85);
 }
@@ -127,7 +127,7 @@ img {
 }
 
 i.d-block {
-    font-size: 12px;
+    font-size: 14px;
 }
 
 button {
@@ -223,7 +223,7 @@ dl, ol, ul {
     transition: 0.4s;
     border-radius: 5px;
     font-weight: 600;
-    font-size: 15px;
+    font-size: 17px;
     padding-left: 35px;
     padding-right: 35px;
     padding-top: 12px;
@@ -456,7 +456,7 @@ blockquote i.bi {
 }
 
 p {
-    font-size: 15px;
+    font-size: 17px;
     line-height: 1.8;
     color: #5f5f5f;
     margin-bottom: 15px;
@@ -474,7 +474,7 @@ p:last-child {
 }
 
 .market-item {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: normal;
     border-radius: 0.2rem
 }
@@ -610,8 +610,7 @@ p:last-child {
 }
 
 .tech-nav .navbar .navbar-nav .nav-item a {
-    font-size: 15.5px;
-    font-weight: 500;
+    font-size: 17px;
     color: #dad9d9;
     text-transform: capitalize;
     padding-left: 0;
@@ -627,7 +626,7 @@ p:last-child {
 }
 
 .tech-nav .navbar .navbar-nav .nav-item a i {
-    font-size: 10px;
+    font-size: 12px;
     position: relative;
     top: -1px;
     margin-left: 1px;
@@ -667,7 +666,7 @@ p:last-child {
 .navbar-light .navbar-nav .nav-link.btn {
     color: #fff;
     font-weight: 600;
-    font-size: 15px;
+    font-size: 17px;
     background-color: #5e87eb;
     border-radius: .30rem;
     border: 1px solid transparent;
@@ -685,14 +684,14 @@ p:last-child {
 }
 
 .tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li a i.bi {
-    font-size: 12px;
+    font-size: 14px;
     margin-right: 5px;
 }
 
 .tech-nav .navbar .navbar-nav .nav-item .dropdown-menu li a {
     position: relative;
     color: #505060;
-    font-size: 15px;
+    font-size: 17px;
     font-weight: 500;
     padding: 10px 15px;
     text-transform: capitalize;
@@ -891,7 +890,7 @@ p:last-child {
 
 .tech-nav .navbar .other-option .default-btn {
     padding: 8px 25px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
     box-shadow: 0 2px 15px rgb(123, 104, 238, 0.15);
 }
@@ -1014,7 +1013,7 @@ p:last-child {
 
 .d-tech-form .form-title {
     color: #4e5768;
-    font-size: 17px;
+    font-size: 19px;
 }
 
 .d-tech-form .form-title:hover {
@@ -1022,6 +1021,7 @@ p:last-child {
 }
 
 .tech-form .form-control.error,
+.tech-form .form-select.error,
 .d-tech-form .form-control.error,
 .d-tech-form .form-select.error {
     border-top: 3px solid #ea8b8b;
@@ -1031,10 +1031,10 @@ p:last-child {
 }
 
 .tech-form .btn, .d-tech-form .btn {
-    height: 50px;
-    padding: 0 30px;
-    font-weight: 600;
-    font-size: 15px;
+    height: 40px;
+    padding: 0 20px;
+    /*font-weight: 400;*/
+    font-size: 16px;
     background-color: #5e87eb;
     border-radius: .30rem;
     border: 1px solid transparent;
@@ -1083,7 +1083,7 @@ a.preview:focus,
     color: #6e6e6e;
     background-color: #ddd;
     border: 1px solid #a0a0a0;
-    padding-top: 12px;
+    padding-top: 8px;
 }
 
 .d-tech-form .btn.btn-secondary:hover,
@@ -1091,10 +1091,16 @@ a.preview:focus,
     color: #fff;
     background-color: #636363;
 }
-
+.tech-form input[type="file"] {
+    padding: 7px 18px;
+    height: 39px;
+    border: 1px #9a9a9b solid;
+    width: auto;
+}
 .tech-form .form-control,
+.tech-form .form-select,
 .d-tech-form .form-control {
-    font-size: 14px;
+    font-size: 16px;
     width: 100%;
     padding: 10px 20px;
     height: 52px;
@@ -1377,6 +1383,10 @@ a.preview:focus,
     overflow: hidden;
 }
 
+.section-area.default.dashboard {
+    font-size: 16px;
+}
+
 .section-area.default h4 {
     padding-bottom: 5px;
 }
@@ -1448,7 +1458,7 @@ a.preview:focus,
 }
 
 .section-area.default .container p {
-    font-size: 15px !important;
+    font-size: 17px !important;
 }
 
 .section-area.default a {
@@ -1584,7 +1594,7 @@ a.preview:focus,
     color: #333;
     -webkit-transition: 0.5s;
     transition: 0.5s;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .faq-accordion .accordion .accordion-item .active.accordion-title i {
@@ -1597,7 +1607,7 @@ a.preview:focus,
 
 .faq-accordion .accordion .accordion-item .accordion-content {
     display: none;
-    font-size: 15px;
+    font-size: 17px;
     padding-bottom: 20px;
     margin-bottom: 0;
 }
@@ -1719,7 +1729,7 @@ a.preview:focus,
     transition: 0.4s;
     line-height: 50px;
     text-transform: capitalize;
-    font-size: 15px;
+    font-size: 17px;
 }
 
 /**************************************
@@ -1732,12 +1742,12 @@ a.preview:focus,
 
 .copyright-area span {
     color: #ececec;
-    font-size: 15px;
+    font-size: 17px;
 }
 
 .copyright-area p {
     color: #ececec;
-    font-size: 15px;
+    font-size: 17px;
 }
 
 .copyright-area p a {
@@ -1760,7 +1770,7 @@ a.preview:focus,
 .copyright-area ul li {
     display: inline-block;
     color: #ececec;
-    font-size: 15px;
+    font-size: 17px;
     position: relative;
     margin-left: 10px;
     margin-right: 10px;
@@ -1891,7 +1901,7 @@ a.preview:focus,
 }
 
 .single-footer-widget p {
-    font-size: 15px;
+    font-size: 17px;
     color: #ececec;
     font-weight: 400;
 }
@@ -1924,7 +1934,7 @@ a.preview:focus,
 .single-footer-widget .footer-quick-links li a {
     display: inline-block;
     color: #ececec;
-    font-size: 15px;
+    font-size: 17px;
     font-weight: 400;
 }
 
@@ -1944,20 +1954,20 @@ a.preview:focus,
 }
 
 .single-footer-widget .footer-info-contact h3 {
-    font-size: 16px;
+    font-size: 18px;
     color: #fff;
     font-weight: 600;
     margin: 0 0 10px 0;
 }
 
 .single-footer-widget .footer-info-contact span {
-    font-size: 15px;
+    font-size: 17px;
     color: #ececec;
     font-weight: 400;
 }
 
 .single-footer-widget .footer-info-contact span a {
-    font-size: 15px;
+    font-size: 17px;
     color: #ececec;
     font-weight: 400;
     -webkit-transition: 0.4s;

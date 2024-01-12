@@ -3,5 +3,31 @@
 {% block title %}Hello MarketController!{% endblock %}
 
 {% block content_body %}
-    <h1>Hello Market</h1>
+    <div class="row g-4">
+        <div class="col-sm-6 col-lg-4 col-xl-3">
+            <div class="card shadow h-100">
+                <div class="position-relative">
+                    <img src="assets/images/category/directory/01.jpg" class="card-img-top" alt="Card image">
+                    <div class="card-img-overlay p-3 z-index-1">
+                        <div class="badge text-bg-dark"><i class="fa-solid fa-building-columns fa-fw text-warning"></i> Museum</div>
+                        <div class="badge text-bg-success">Open</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Title -->
+                    <h5 class="card-title me-2"><a href="directory-detail.html">Portland New Art Museum</a></h5>
+
+                    <!-- Address and Contact -->
+                    <ul class="list-group list-group-borderless mb-0">
+                        <li class="list-group-item small pb-0">
+                            <i class="bi bi-pin-map-fill fa-fw h6 small mb-0"></i> W Century Blvd, Los Angeles
+                        </li>
+                        <li class="list-group-item small pb-0">
+                            <i class="bi bi-telephone-fill fa-fw h6 small mb-0"></i> +(125) 548 996
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

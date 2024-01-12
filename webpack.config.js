@@ -26,6 +26,7 @@ Encore
         .addEntry('responsive', './assets/js/responsive.js')
 //        .addEntry('ckeditor', './assets/js/ckeditor.js')
         .addStyleEntry('sidebar', './assets/styles/sidebar.css')
+        .addStyleEntry('market', './assets/styles/market.css')
         //.addStyleEntry('global', './assets/styles/global.scss')
 
         // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)

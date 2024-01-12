@@ -22,7 +22,7 @@
             </div>
         </div>
     </div>
-    <section class="section-area default py-0">
+    <section class="section-area default dashboard py-0">
         <div id="container" class="{{ container }}">
             <div class="d-flex" id="responsive">
                 <div class="col-md-3">
@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <div class="col-md-9 m-1 shadow-sm bg-white rounded">
-                    <div class="flex-column content p-1 m-1">
+                    <div class="flex-column content p-3 m-1">
                         <h4>{% block title_content %}{{ 'text.dashboard'|trans }}{% endblock %}</h4>
                         {% block content %}
                             {% include 'dashboard/content/index.html.twig' %}

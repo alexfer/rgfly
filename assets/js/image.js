@@ -35,8 +35,8 @@ $(function () {
     }
 
     let upload = function (file) {
-        $('.input-group-append button').on('click', function (e) {
-            e.preventDefault();
+        alert($('button[id="attach"]'));
+        $('button[id="attach"]').on('click', function (e) {
             formData.append('file', file);
 
             if (file) {
