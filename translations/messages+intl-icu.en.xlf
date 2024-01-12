@@ -920,6 +920,10 @@
                 <source>market.brands</source>
                 <target>Brands</target>
             </trans-unit>
+            <trans-unit id="market.products">
+                <source>market.products</source>
+                <target>Products</target>
+            </trans-unit>
             <trans-unit id="market.brand.create">
                 <source>market.brand.create</source>
                 <target>Add Brand</target>

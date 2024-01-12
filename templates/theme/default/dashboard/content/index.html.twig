@@ -30,22 +30,22 @@
                                 class="badge rounded-pill bg-secondary text-white market-item">
                             {{ market.name|length > 30 ? market.name|slice(0, 30) ~ ' ... ' : market.name }}
                         </a>
-                        <div class="badge badge-primary float-right">{{ market.products.count }}</div>
+                        <div class="badge bg-primary float-end">{{ market.products.count }}</div>
                     </li>
                     <li class="list-group-item">
                         <a class="ml-4"
                            href="{{ path('app_dashboard_market_place_market_brand', {market: market.id}) }}">{{ 'market.brands'|trans }}</a>
-                        <div class="badge badge-warning float-right">{{ market.marketBrands.count }}</div>
+                        <div class="badge bg-warning float-end">{{ market.marketBrands.count }}</div>
                     </li>
                     <li class="list-group-item">
                         <a class="ml-4"
                            href="{{ path('app_dashboard_market_place_market_supplier', {market: market.id}) }}">{{ 'market.suppliers'|trans }}</a>
-                        <div class="badge badge-secondary float-right">{{ market.marketSuppliers.count }}</div>
+                        <div class="badge bg-secondary float-end">{{ market.marketSuppliers.count }}</div>
                     </li>
                     <li class="list-group-item">
                         <a class="ml-4"
                            href="{{ path('app_dashboard_market_place_market_manufacturer', {market: market.id}) }}">{{ 'market.manufacturers'|trans }}</a>
-                        <div class="badge badge-danger float-right">{{ market.marketManufacturers.count }}</div>
+                        <div class="badge bg-danger float-end">{{ market.marketManufacturers.count }}</div>
                     </li>
                 {% endfor %}
             </ul>

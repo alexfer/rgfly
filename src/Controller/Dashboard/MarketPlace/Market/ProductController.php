@@ -70,6 +70,7 @@ class ProductController extends AbstractController
      * @param TranslatorInterface $translator
      * @param SluggerInterface $slugger
      * @return Response
+     * @throws Exception
      */
     #[Route('/edit/{market}-{id}', name: 'app_dashboard_market_place_edit_product', methods: ['GET', 'POST'])]
     #[IsGranted(ProductVoter::EDIT, subject: 'product', statusCode: Response::HTTP_FORBIDDEN)]
@@ -148,6 +149,7 @@ class ProductController extends AbstractController
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws Exception
      */
     #[Route('/create/{market}', name: 'app_dashboard_market_place_create_product', methods: ['GET', 'POST'])]
     public function create(
@@ -193,6 +195,11 @@ class ProductController extends AbstractController
                     '%name%' => $translator->trans('label.form.product_name'),
                     '%value%' => $name,
                 ], 'validators');
+            }
+
+            if($market->getDeletedAt()) {
+                $date = new DateTime('@' . strtotime('now'));
+                $product->setDeletedAt($date);
             }
 
             $em = $this->handleRelations($em, $form, $product);

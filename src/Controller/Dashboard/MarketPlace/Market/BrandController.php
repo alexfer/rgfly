@@ -147,7 +147,7 @@ class BrandController extends AbstractController
     {
         $market = $this->market($request, $user, $em);
 
-        if ($this->isCsrfTokenValid('delete', $request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete', $request->get('_token')) && !$brand->getMarketProductBrands()->count()) {
             $em->remove($brand);
             $em->flush();
         }

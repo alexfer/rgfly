@@ -469,28 +469,7 @@ p:last-child {
     margin-bottom: 0;
 }
 
-.tooltip-inner {
-    background-color: #5e87eb;
-    color: lightcyan;
-}
-
-.tooltip.bs-tooltip-top .arrow:before {
-    border-top-color: #5e87eb;
-}
-
-.tooltip.bs-tooltip-bottom .arrow:before {
-    border-bottom-color: #5e87eb;
-}
-
-.tooltip.bs-tooltip-right .arrow:before {
-    border-right-color: #5e87eb;
-}
-
-.tooltip.bs-tooltip-left .arrow:before {
-    border-left-color: #5e87eb;
-}
-
-.sr-only.show {
+.visually-hidden.show {
     position: relative !important;
 }
 
@@ -1043,7 +1022,8 @@ p:last-child {
 }
 
 .tech-form .form-control.error,
-.d-tech-form .form-control.error {
+.d-tech-form .form-control.error,
+.d-tech-form .form-select.error {
     border-top: 3px solid #ea8b8b;
     border-left: 1px #ea8b8b solid;
     border-right: 1px #ea8b8b solid;
@@ -1462,7 +1442,7 @@ a.preview:focus,
     border-bottom: none;
 }
 
-.section-area.default table [data-toggle="tooltip"] {
+.section-area.default table [data-bs-toggle="tooltip"] {
     cursor: pointer;
 }
 

@@ -202,7 +202,12 @@ class MarketController extends AbstractController
     ): Response
     {
         if ($this->isCsrfTokenValid('delete', $request->get('_token'))) {
+            $products = $market->getProducts();
             $date = new DateTime('@' . strtotime('now'));
+            foreach($products as $product) {
+                $product->setDeletedAt($date);
+                $em->persist($product);
+            }
             $market->setDeletedAt($date);
             $em->persist($market);
             $em->flush();
@@ -223,6 +228,12 @@ class MarketController extends AbstractController
         EntityManagerInterface $em,
     ): Response
     {
+        $products = $market->getProducts();
+        foreach($products as $product) {
+            $product->setDeletedAt(null);
+            $em->persist($product);
+        }
+
         $market->setDeletedAt(null);
         $em->persist($market);
         $em->flush();

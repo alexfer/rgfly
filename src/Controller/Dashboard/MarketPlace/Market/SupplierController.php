@@ -149,7 +149,7 @@ class SupplierController extends AbstractController
     {
         $market = $this->market($request, $user, $em);
 
-        if ($this->isCsrfTokenValid('delete', $request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete', $request->get('_token')) && !$supplier->getMarketProductSuppliers()->count()) {
             $em->remove($supplier);
             $em->flush();
         }

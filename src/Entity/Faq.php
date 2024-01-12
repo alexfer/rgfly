@@ -94,7 +94,7 @@ class Faq
         return $this->deleted_at;
     }
 
-    public function setDeletedAt(DateTime $deleted_at): static
+    public function setDeletedAt(?DateTime $deleted_at): static
     {
         $this->deleted_at = $deleted_at;
 

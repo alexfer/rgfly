@@ -11,6 +11,7 @@ import './styles/app.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-select/dist/css/bootstrap-select.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.min.css';
+//import 'font-awesome/css/font-awesome.min.css'
 import './bootstrap';
 import 'bootstrap-select';
 import 'popper.js';
