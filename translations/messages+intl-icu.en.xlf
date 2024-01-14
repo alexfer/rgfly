@@ -929,7 +929,7 @@
                 <source>market.promotion.text</source>
                 <target>
                     <![CDATA[Hello from your friends at <strong>{ company }</strong>!
-                    We’re offering a special { discount }% discount on your next purchase with code { code }{ discount }.<br>
+                    We’re offering a special { discount }% discount on your next purchase with code <span class="text-dark text-bg-warning p-2">{ code }-{ discount }</span><br>
                     Start shopping with <a class="link" href="{ link }">{ company }</a> now.]]>
                 </target>
             </trans-unit>
