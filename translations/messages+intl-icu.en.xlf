@@ -854,7 +854,8 @@
             <trans-unit id="form.agree_terms.help">
                 <source>form.agree_terms.help</source>
                 <target>
-                    <![CDATA[More about our <a class="link" target="_blank" href="{ policy }">Privacy Policy</a> and <a class="link" target="_blank" href="{ terms }">Terms &amp; Conditions</a>.]]></target>
+                    <![CDATA[More about our <a class="link" target="_blank" href="{ policy }">Privacy Policy</a> and <a class="link" target="_blank" href="{ terms }">Terms &amp; Conditions</a>.]]>
+                </target>
             </trans-unit>
             <trans-unit id="form.first_name.help">
                 <source>form.first_name.help</source>
@@ -915,6 +916,22 @@
             <trans-unit id="market.product.create">
                 <source>market.product.create</source>
                 <target>Add Product</target>
+            </trans-unit>
+            <trans-unit id="market.product.details">
+                <source>market.product.details</source>
+                <target>View details</target>
+            </trans-unit>
+            <trans-unit id="market.promotion">
+                <source>market.promotion</source>
+                <target>Promotion offers</target>
+            </trans-unit>
+            <trans-unit id="market.promotion.text">
+                <source>market.promotion.text</source>
+                <target>
+                    <![CDATA[Hello from your friends at <strong>{ company }</strong>!
+                    We’re offering a special { discount }% discount on your next purchase with code { code }{ discount }.<br>
+                    Start shopping with <a class="link" href="{ link }">{ company }</a> now.]]>
+                </target>
             </trans-unit>
             <trans-unit id="market.brands">
                 <source>market.brands</source>
