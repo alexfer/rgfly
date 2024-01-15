@@ -18,6 +18,7 @@ class IndexController extends AbstractController
         EntityManagerInterface $em,
     ): Response
     {
+        // TODO: Replace with psql function - get_product
         $products = $em->getRepository(MarketProduct::class)->findBy(['deleted_at' => null], null, 8);
         shuffle($products);
 

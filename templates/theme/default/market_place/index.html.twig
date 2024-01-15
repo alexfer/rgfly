@@ -44,12 +44,14 @@
                             <div class="position-relative">
                                 <img src="{{ asset('img/08.jpg') }}" class="card-img-top h-100" alt="...">
                                 <div class="card-img-overlay p-3 z-index-1">
-                                    <div class="badge text-bg-dark bg-opacity-75">
-                                        <a href="#{{ product.marketCategoryProducts.first.category.parent.slug }}"
-                                           class="link-white">
-                                            {{ product.marketCategoryProducts.first.category.parent.name }}
-                                        </a>
-                                    </div>
+                                    {% if product.marketCategoryProducts.count %}
+                                        <div class="badge text-bg-dark bg-opacity-75">
+                                            <a href="{{ path('app_market_place_parent_category', {parent:  product.marketCategoryProducts.first.category.parent.slug}) }}"
+                                               class="link-white">
+                                                {{ product.marketCategoryProducts.first.category.parent.name }}
+                                            </a>
+                                        </div>
+                                    {% endif %}
                                     <div class="badge text-bg-danger bg-opacity-75">New</div>
                                 </div>
                             </div>
@@ -62,25 +64,23 @@
                                         </a>
                                     </li>
                                     <li class="list-inline-item">
-                                        <div class="badge btn-sm bg-secondary bg-opacity-25 text-secondary">
-                                            <h5 class="mb-0">
-                                                <s>{{ product.cost|number_format(2, '.', ',') }} <small>{{ product.market.currency|currency }}</small></s>
-                                            </h5>
-                                        </div>
-                                    </li>
-                                    <li class="list-inline-item">
                                         <div class="badge bg-success bg-opacity-25 text-success">
-                                            <h5 class="mb-0">{{ product.cost|number_format(2, '.', ',') }} <small>{{ product.market.currency|currency }}</small></h5>
+                                            <h5 class="mb-0">{{ product.cost|number_format(2, '.', ' ') }}
+                                                <small>{{ product.market.currency|currency }}</small></h5>
                                         </div>
                                     </li>
                                 </ul>
-                                <h5 class="card-title h-25 mb-0 mt-3 mx-3">
-                                    <a href="#product/{{ product.market.slug }}/{{ product.slug }}">{{ product.name }}</a>
+                                <h5 class="card-title h-25 mb-1 mt-3 mx-3">
+                                    <a title="{{ product.name }}"
+                                       href="#product/{{ product.market.slug }}/{{ product.slug }}">{{ product.name|length > 30 ? product.name|slice(0, 90) ~ '...' : product.name }}</a>
                                 </h5>
-                                <a href="#category/{{ product.marketCategoryProducts.first.category.slug }}" class="btn btn-link text-decoration-none text-secondary d-block text-start">
-                                    <hr>
-                                    <i class="bi bi-ui-radios-grid text-opacity-50 text-success"></i> {{ product.marketCategoryProducts.first.category.name }}
-                                </a>
+                                {% if product.marketCategoryProducts.count %}
+                                    <a href="#category/{{ product.marketCategoryProducts.first.category.slug }}"
+                                       class="btn btn-link text-decoration-none text-secondary d-block text-start">
+                                        <hr>
+                                        <i class="bi bi-ui-radios-grid text-opacity-50 text-success"></i> {{ product.marketCategoryProducts.first.category.name }}
+                                    </a>
+                                {% endif %}
                                 <ul class="list-group list-group-borderless mt-5">
                                     <li class="list-group-item small pb-0  border-0">
                                         <i class="bi bi-pin-map-fill me-2 text-opacity-50 text-info"></i>
@@ -88,7 +88,8 @@
                                            href="#{{ product.market.slug }}">{{ product.market.name }}</a>
                                     </li>
                                     <li class="list-group-item small pb-0  border-0">
-                                        <i class="bi bi-telephone-fill text-secondary me-2"></i> <span class="text-secondary">{{ product.market.phone }}</span>
+                                        <i class="bi bi-telephone-fill text-secondary me-2"></i> <span
+                                                class="text-secondary">{{ product.market.phone }}</span>
                                     </li>
                                 </ul>
                             </div>

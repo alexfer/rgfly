@@ -139,8 +139,8 @@ use Doctrine\ORM\EntityRepository;
             ])
             ->add('cost', MoneyType::class, [
                 'attr' => [
-                    'min' => '0.10',
-                    'step' => '0.10',
+                    'min' => '0.00',
+                    'step' => '0.01',
                 ],
                 'html5' => true,
                 'currency' => $this->market->getCurrency() ?? 'EUR',
@@ -152,7 +152,7 @@ use Doctrine\ORM\EntityRepository;
             ])
             ->add('category', ChoiceType::class, [
                 'mapped' => false,
-                'required' => false,
+                'required' => true,
                 'multiple' => true,
                 'expanded' => false,
                 'data' => array_keys($productCategories),

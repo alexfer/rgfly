@@ -2,22 +2,23 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Market;
 
-use App\Entity\MarketPlace\MarketCategory;
-use App\Entity\MarketPlace\MarketCategoryProduct;
-use App\Entity\MarketPlace\MarketManufacturer;
-use App\Entity\MarketPlace\MarketProduct;
-use App\Entity\MarketPlace\MarketProductManufacturer;
-use App\Entity\MarketPlace\MarketProductBrand;
-use App\Entity\MarketPlace\MarketProductSupplier;
-use App\Entity\MarketPlace\MarketBrand;
-use App\Entity\MarketPlace\MarketSupplier;
+use App\Entity\MarketPlace\{
+    MarketBrand,
+    MarketCategory,
+    MarketCategoryProduct,
+    MarketManufacturer,
+    MarketProduct,
+    MarketProductBrand,
+    MarketProductManufacturer,
+    MarketProductSupplier,
+};
 use App\Form\Type\Dashboard\MarketPlace\ProductType;
+use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Security\Voter\ProductVoter;
+use App\Service\Dashboard;
 use App\Service\MarketPlace\Currency;
 use App\Service\MarketPlace\MarketTrait;
-use App\Service\Dashboard;
 use DateTime;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
@@ -89,22 +90,14 @@ class ProductController extends AbstractController
         $categories = $categoryRepository->findBy([], ['name' => 'asc']);
         $repository = $em->getRepository(MarketCategoryProduct::class);
 
-        $uniqueError = null;
         $name = $form->get('name')->getData();
 
         if ($name) {
-            try {
-                $product->setSlug($slugger->slug($name)->lower());
-                $em->persist($product);
-            } catch (UniqueConstraintViolationException $e) {
-                $uniqueError = $translator->trans('slug.unique', [
-                    '%name%' => $translator->trans('label.form.title'),
-                    '%value%' => $name,
-                ], 'validators');
-            }
+            $product->setSlug($slugger->slug(MarketPlaceHelper::slug($product->getId()))->lower());
+            $em->persist($product);
         }
 
-        if ($form->isSubmitted() && $form->isValid() && !$uniqueError) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $requestCategory = $form->get('category')->getData();
             $repository->removeCategoryProduct($product);
 
@@ -134,7 +127,6 @@ class ProductController extends AbstractController
 
         return $this->render('dashboard/content/market_place/product/_form.html.twig', $this->navbar() + [
                 'form' => $form,
-                'error' => $uniqueError,
                 'categories' => $categories,
                 'productCategory' => $repository->findBy(['product' => $product]),
             ]);
@@ -168,12 +160,9 @@ class ProductController extends AbstractController
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
-        $uniqueError = null;
-
         if ($form->isSubmitted() && $form->isValid()) {
 
             $name = $form->get('name')->getData();
-            $slug = $slugger->slug($name)->lower();
 
             $requestCategory = $form->get('category')->getData();
 
@@ -186,35 +175,25 @@ class ProductController extends AbstractController
                 }
             }
 
-            try {
-                $product->setSlug($slug)
-                    ->setMarket($market);
-                $em->persist($product);
-            } catch (UniqueConstraintViolationException $e) {
-                $uniqueError = $translator->trans('slug.unique', [
-                    '%name%' => $translator->trans('label.form.product_name'),
-                    '%value%' => $name,
-                ], 'validators');
-            }
+            $product->setName($name)->setMarket($market);
+            $em->persist($product);
 
-            if($market->getDeletedAt()) {
+            if ($market->getDeletedAt()) {
                 $date = new DateTime('@' . strtotime('now'));
                 $product->setDeletedAt($date);
             }
 
             $em = $this->handleRelations($em, $form, $product);
-
+            $product->setSlug(MarketPlaceHelper::slug($product->getId()));
+            $em->persist($product);
             $em->flush();
 
-            if (!$uniqueError) {
-                $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
-                return $this->redirectToRoute('app_dashboard_market_place_edit_product', ['market' => $request->get('market'), 'id' => $product->getId()]);
-            }
+            $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
+            return $this->redirectToRoute('app_dashboard_market_place_edit_product', ['market' => $request->get('market'), 'id' => $product->getId()]);
         }
 
         return $this->render('dashboard/content/market_place/product/_form.html.twig', $this->navbar() + [
                 'form' => $form,
-                'error' => $uniqueError,
                 'categories' => $categories,
             ]);
     }
