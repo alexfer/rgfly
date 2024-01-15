@@ -68,6 +68,9 @@ class MarketProduct
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: MarketOrdersProduct::class)]
     private Collection $marketOrdersProducts;
 
+    #[ORM\Column(length: 80)]
+    private ?string $short_title = null;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
@@ -467,6 +470,18 @@ class MarketProduct
                 $marketOrdersProduct->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getShortTitle(): ?string
+    {
+        return $this->short_title;
+    }
+
+    public function setShortTitle(string $short_title): static
+    {
+        $this->short_title = $short_title;
 
         return $this;
     }
