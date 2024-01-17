@@ -20,6 +20,7 @@
         {% set short_name_error = form.short_name.vars.errors|length ? 'form-control error' : 'form-control' %}
         {{ form_label(form.short_name, 'label.form.product_short_name', {label_attr: {class: 'form-label'}}) }} <span class="text-danger">*</span>
         {{ form_widget(form.short_name, {attr: {class: short_name_error, placeholder: 'label.form.product_short_name'}}) }}
+        <div class="form-text ps-2">{{ 'form.product_short_name.length'|trans }}: <span id="chars">{{ form.short_name.vars.value|length }}</span> . {{ 'Allowed length'|trans({length: 80}) }}</div>
         <small class="text-danger">{{ form_errors(form.short_name) }}</small>
     </div>
     <div class="form-group mb-3">
@@ -101,6 +102,11 @@
     {{ parent() }}
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
     <script type="text/javascript">
+        let short_name = document.getElementById('product_short_name');
+        let chars = document.getElementById('chars');
+        short_name.onkeyup = function() {
+            chars.innerHTML = short_name.value.length;
+        }
         CKEDITOR.replace('product_description', {
             extraPlugins: 'editorplaceholder',
             editorplaceholder: '{{ 'label.form.product_description'|trans }}',

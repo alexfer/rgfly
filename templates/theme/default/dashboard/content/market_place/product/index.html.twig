@@ -22,7 +22,7 @@
                     scope="col">{{ 'table.header.cost'|trans }}</th>
                 <th class="bg-secondary text-white font-weight-light text-center"
                     scope="col">{{ 'table.header.quantity'|trans }}</th>
-                <th class="bg-secondary text-white font-weight-light text-center"
+                <th class="bg-secondary text-white font-weight-light text-center visually-hidden"
                     scope="col">{{ 'table.header.amount'|trans }}</th>
                 <th class="bg-secondary text-white font-weight-light text-center"
                     scope="col">{{ 'table.header.created_at'|trans }}</th>
@@ -43,9 +43,11 @@
                             {{ product.shortName }}
                         </a>
                     </td>
-                    <td class="text-center">{{ currency['symbol_native'] }} {{ product.cost|number_format(2) }}</td>
+                    <td class="text-center">{{ product.cost|number_format(2) }}<small class="text-muted">{{ currency['symbol_native'] }}</small></td>
                     <td class="text-center">{{ product.quantity }}</td>
-                    <td class="text-center">{{ currency['symbol_native'] }} {{ (product.cost * product.quantity)|number_format(2) }}</td>
+                    <td class="text-center visually-hidden">
+                        <small>{{ currency['symbol_native'] }} {{ (product.cost * product.quantity)|number_format(2) }}</small>
+                    </td>
                     <td class="text-center bd-highlight">{{ product.createdAt|date(date_format) }}</td>
                     <td class="text-center">
                         {% if product.deletedAt %}

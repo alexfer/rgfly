@@ -416,6 +416,14 @@
                 <source>label.form.product_short_name</source>
                 <target>Product short name</target>
             </trans-unit>
+            <trans-unit id="form.product_short_name.length">
+                <source>form.product_short_name.length</source>
+                <target>Length is</target>
+            </trans-unit>
+            <trans-unit id="form.product_short_name.allowed_length">
+                <source>form.product_short_name.allowed_length</source>
+                <target>Allowed { length }</target>
+            </trans-unit>
             <trans-unit id="label.form.supplier_name">
                 <source>label.form.supplier_name</source>
                 <target>Supplier Name</target>

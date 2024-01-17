@@ -68,9 +68,9 @@
                                         </div>
                                     </li>
                                 </ul>
-                                <h5 class="card-title h-auto mb-1 mt-3 mx-3">
+                                <h5 class="card-title h-25 mb-1 mt-3 mx-3">
                                     <a title="{{ product.name }}"
-                                       href="#product/{{ product.market.slug }}/{{ product.slug }}">{{ product.name|length > 40 ? product.name|slice(0, 40) ~ '...' : product.name }}</a>
+                                       href="#product/{{ product.market.slug }}/{{ product.slug }}">{{ product.shortName }}</a>
                                 </h5>
                                     <a href="#category/{{ product.marketCategoryProducts.first.category.slug }}"
                                        class="btn btn-link text-decoration-none text-secondary d-block text-start">

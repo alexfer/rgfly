@@ -44,6 +44,7 @@ class MarketProductRepository extends ServiceEntityRepository
                 'p.slug',
                 'p.cost',
                 'p.name',
+                'p.short_name',
                 'c as category',
                 'm.name as market',
                 'm.phone',

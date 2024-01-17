@@ -100,7 +100,7 @@ use Doctrine\ORM\EntityRepository;
             ->add('short_name', TextType::class, [
                 'attr' => [
                     'min' => 3,
-                    'max' => 40,
+                    'max' => 80,
                 ],
                 'constraints' => [
                     new NotBlank([
@@ -109,7 +109,7 @@ use Doctrine\ORM\EntityRepository;
                     new Length([
                         'min' => 3,
                         'minMessage' => 'form.short_name.min',
-                        'max' => 40,
+                        'max' => 80,
                         'maxMessage' => 'form.short_name.max',
                     ]),
                 ],

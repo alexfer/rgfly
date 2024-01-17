@@ -101,7 +101,6 @@ class ProductController extends AbstractController
             $em = $this->handleRelations($em, $form, $product);
 
             $product->setSlug($slugger->slug(MarketPlaceHelper::slug($product->getId()))->lower());
-            //$product->setShortName(substr($form->get('short_name')->getData(), 0, 40));
 
             $em->persist($product);
             $em->flush();
@@ -116,7 +115,6 @@ class ProductController extends AbstractController
 
         return $this->render('dashboard/content/market_place/product/_form.html.twig', $this->navbar() + [
                 'form' => $form,
-                //'productCategory' => $repository->findBy(['product' => $product]),
             ]);
     }
 
@@ -150,10 +148,8 @@ class ProductController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $name = $form->get('name')->getData();
-
             $requestCategory = $form->get('category')->getData();
-            //dd($requestCategory);
+
             if ($requestCategory) {
                 $productCategory = new MarketCategoryProduct();
                 $productCategory->setProduct($product)
@@ -161,7 +157,7 @@ class ProductController extends AbstractController
                 $em->persist($productCategory);
             }
 
-            $product->setName($name)->setMarket($market);
+            $product->setMarket($market);
             $em->persist($product);
 
             if ($market->getDeletedAt()) {
@@ -180,7 +176,6 @@ class ProductController extends AbstractController
 
         return $this->render('dashboard/content/market_place/product/_form.html.twig', $this->navbar() + [
                 'form' => $form,
-                'categories' => $categories,
             ]);
     }
 

@@ -68,7 +68,7 @@ class MarketProduct
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: MarketOrdersProduct::class)]
     private Collection $marketOrdersProducts;
 
-    #[ORM\Column(length: 40)]
+    #[ORM\Column(length: 80)]
     private ?string $short_name = null;
 
     public function __construct()
