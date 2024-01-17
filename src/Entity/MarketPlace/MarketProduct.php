@@ -68,16 +68,14 @@ class MarketProduct
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: MarketOrdersProduct::class)]
     private Collection $marketOrdersProducts;
 
-    #[ORM\Column(length: 80)]
-    private ?string $short_title = null;
+    #[ORM\Column(length: 40)]
+    private ?string $short_name = null;
 
     public function __construct()
     {
         $this->created_at = new DateTime();
         $this->marketCategoryProducts = new ArrayCollection();
         $this->marketProductAttaches = new ArrayCollection();
-        $this->cost = 0.1;
-        $this->quantity = 0;
         $this->marketOrdersProducts = new ArrayCollection();
     }
 
@@ -100,11 +98,10 @@ class MarketProduct
     }
 
     /**
-     *
-     * @param string $name
-     * @return static
+     * @param string|null $name
+     * @return $this
      */
-    public function setName(string $name): static
+    public function setName(?string $name): static
     {
         $this->name = $name;
 
@@ -142,11 +139,10 @@ class MarketProduct
     }
 
     /**
-     *
-     * @param string $description
-     * @return static
+     * @param string|null $description
+     * @return $this
      */
-    public function setDescription(string $description): static
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
 
@@ -162,7 +158,11 @@ class MarketProduct
         return $this->quantity;
     }
 
-    public function setQuantity(int $quantity): static
+    /**
+     * @param int|null $quantity
+     * @return $this
+     */
+    public function setQuantity(?int $quantity): static
     {
         $this->quantity = $quantity;
 
@@ -179,13 +179,12 @@ class MarketProduct
     }
 
     /**
-     *
-     * @param float $cost
-     * @return static
+     * @param float|null $cost
+     * @return $this
      */
-    public function setCost(float $cost): static
+    public function setCost(?float $cost): static
     {
-        $this->cost = round($cost,2);
+        $this->cost = round($cost, 2);
 
         return $this;
     }
@@ -474,14 +473,21 @@ class MarketProduct
         return $this;
     }
 
-    public function getShortTitle(): ?string
+    /**
+     * @return string|null
+     */
+    public function getShortName(): ?string
     {
-        return $this->short_title;
+        return $this->short_name;
     }
 
-    public function setShortTitle(string $short_title): static
+    /**
+     * @param string|null $short_name
+     * @return $this
+     */
+    public function setShortName(?string $short_name): static
     {
-        $this->short_title = $short_title;
+        $this->short_name = $short_name;
 
         return $this;
     }

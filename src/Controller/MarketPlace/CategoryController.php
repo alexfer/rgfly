@@ -33,20 +33,21 @@ class CategoryController extends AbstractController
         MarketProductRepository $marketProductRepository,
     ): Response
     {
-        $repository = $em->getRepository(MarketCategory::class)->findOneBy([
+        $category = $em->getRepository(MarketCategory::class)->findOneBy([
             'slug' => $request->get('parent'),
         ]);
 
         $categories = [];
-        $children = $repository->getChildren()->toArray();
+        $children = $category->getChildren()->toArray();
 
-        foreach ($children as $category) {
-            $categories[$category->getId()] = $category->getName();
+        foreach ($children as $child) {
+            $categories[$child->getId()] = $child->getName();
         }
         $products = $marketProductRepository->findProductsByParentCategory(array_keys($categories));
+        //dd($products);
 
         return $this->render('market_place/category/index.html.twig', [
-            'parent' => $repository,
+            'category' => $category,
             'children' => $children,
             'products' => $products,
         ]);

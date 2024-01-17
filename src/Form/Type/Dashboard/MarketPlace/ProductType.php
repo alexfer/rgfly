@@ -5,7 +5,6 @@ namespace App\Form\Type\Dashboard\MarketPlace;
 use AllowDynamicProperties;
 use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketCategory;
-use App\Entity\MarketPlace\MarketCategoryProduct;
 use App\Entity\MarketPlace\MarketProduct;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -20,6 +19,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Doctrine\ORM\EntityRepository;
 
@@ -34,7 +34,7 @@ use Doctrine\ORM\EntityRepository;
     /**
      * @var EntityRepository
      */
-    private EntityRepository $categories, $productCategories;
+    private EntityRepository $categories;
 
 
     /**
@@ -53,7 +53,6 @@ use Doctrine\ORM\EntityRepository;
         $this->market = $em->getRepository(Market::class)
             ->findOneBy(['id' => $market]);
         $this->categories = $em->getRepository(MarketCategory::class);
-        $this->productCategories = $em->getRepository(MarketCategoryProduct::class);
     }
 
     /**
@@ -63,19 +62,14 @@ use Doctrine\ORM\EntityRepository;
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $brands = $suppliers = $manufacturers = $categories = $productCategories = [];
+
+        $brands = $suppliers = $manufacturers = $categories = [];
 
         $marketBrands = $this->market->getMarketBrands()->toArray();
         $marketSuppliers = $this->market->getMarketSuppliers()->toArray();
         $marketSManufacturers = $this->market->getMarketManufacturers();
         $marketCategory = $this->categories->findBy([], ['id' => 'asc']);
-        $marketProductCategory = $this->productCategories->findBy(['product' => $options['data']->getId()]);
 
-        if($marketProductCategory) {
-            foreach ($marketProductCategory as $productCategory) {
-                $productCategories[$productCategory->getCategory()->getId()] = $productCategory->getCategory()->getName();
-            }
-        }
         if ($marketCategory) {
             foreach ($marketCategory as $category) {
                 if($category->getParent()) {
@@ -103,7 +97,24 @@ use Doctrine\ORM\EntityRepository;
         }
 
         $builder
-            ->add('name', TextType::class, [
+            ->add('short_name', TextType::class, [
+                'attr' => [
+                    'min' => 3,
+                    'max' => 40,
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'form.short_name.not_blank',
+                    ]),
+                    new Length([
+                        'min' => 3,
+                        'minMessage' => 'form.short_name.min',
+                        'max' => 40,
+                        'maxMessage' => 'form.short_name.max',
+                    ]),
+                ],
+            ])
+            ->add('name', TextareaType::class, [
                 'attr' => [
                     'min' => 3,
                     'max' => 250,
@@ -123,7 +134,7 @@ use Doctrine\ORM\EntityRepository;
             ->add('quantity', IntegerType::class, [
                 'attr' => [
                     'min' => 1,
-                    'max' => 100000,
+                    'max' => 1000,
                 ],
                 'constraints' => [
                     new NotBlank([
@@ -132,7 +143,7 @@ use Doctrine\ORM\EntityRepository;
                     new Length([
                         'min' => 1,
                         'minMessage' => 'form.quantity.min',
-                        'max' => 10000,
+                        'max' => 1000,
                         'maxMessage' => 'form.quantity.max',
                     ]),
                 ],
@@ -153,9 +164,15 @@ use Doctrine\ORM\EntityRepository;
             ->add('category', ChoiceType::class, [
                 'mapped' => false,
                 'required' => true,
-                'multiple' => true,
+                'multiple' => false,
                 'expanded' => false,
-                'data' => array_keys($productCategories),
+                'placeholder' => 'option.category.choice_category',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'form.category.not_blank',
+                    ]),
+                ],
+                'data' => $options['data']?->getMarketCategoryProducts()?->first() ? $options['data']?->getMarketCategoryProducts()?->first()?->getCategory()?->getId() : null,
                 'choices' => $categories,
             ])
             ->add('brand', ChoiceType::class, [

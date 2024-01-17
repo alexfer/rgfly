@@ -412,6 +412,10 @@
                 <source>label.form.product_name</source>
                 <target>Product Name</target>
             </trans-unit>
+            <trans-unit id="label.form.product_short_name">
+                <source>label.form.product_short_name</source>
+                <target>Product short name</target>
+            </trans-unit>
             <trans-unit id="label.form.supplier_name">
                 <source>label.form.supplier_name</source>
                 <target>Supplier Name</target>
@@ -627,6 +631,10 @@
             <trans-unit id="entry.form.categories">
                 <source>entry.form.categories</source>
                 <target>Categories</target>
+            </trans-unit>
+            <trans-unit id="option.category.choice_category">
+                <source>option.category.choice_category</source>
+                <target>Choice category ...</target>
             </trans-unit>
             <trans-unit id="entry.form.brands">
                 <source>entry.form.brands</source>

@@ -2,6 +2,7 @@
 
 namespace App\Repository\MarketPlace;
 
+use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketCategory;
 use App\Entity\MarketPlace\MarketCategoryProduct;
 use App\Entity\MarketPlace\MarketProduct;
@@ -38,12 +39,25 @@ class MarketProductRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('p')
             ->distinct()
-            //->select(['p.slug'])
-            ->leftJoin(MarketCategoryProduct::class, 'cp', Expr\Join::WITH, 'p.id = cp.product')
-            ->leftJoin(MarketCategory::class, 'c', Expr\Join::WITH, 'cp.category = c.id')
+            ->select([
+                'p.id',
+                'p.slug',
+                'p.cost',
+                'p.name',
+                'c as category',
+                'm.name as market',
+                'm.phone',
+                'm.id as market_id',
+                'm.currency',
+                'm.slug as market_slug'
+            ])
+            ->join(MarketCategoryProduct::class, 'cp', Expr\Join::WITH, 'p.id = cp.product')
+            ->join(MarketCategory::class, 'c', Expr\Join::WITH, 'cp.category = c.id')
+            ->join(Market::class, 'm', Expr\Join::WITH, 'p.market = m.id')
             ->where('cp.category IN (:ids)')
-            ->setParameter('ids', $ids, Connection::PARAM_INT_ARRAY)
+            ->setParameter('ids', $ids)
             ->andWhere('p.deleted_at IS NULL')
+            //->groupBy('p')
             ->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();

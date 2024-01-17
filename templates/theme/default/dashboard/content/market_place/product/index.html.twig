@@ -40,7 +40,7 @@
                            class="link"
                            title="{{ product.name }}"
                            href="{{ path('app_dashboard_market_place_edit_product', {market: product.market.id, id: product.id}) }}">
-                            {{ product.name|length > 30 ? product.name|slice(0, 30) ~ '...' : product.name }}
+                            {{ product.shortName }}
                         </a>
                     </td>
                     <td class="text-center">{{ currency['symbol_native'] }} {{ product.cost|number_format(2) }}</td>

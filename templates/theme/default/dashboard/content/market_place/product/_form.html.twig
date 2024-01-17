@@ -10,12 +10,18 @@
 
 {% block content %}
     {% set _message = app.flashes('success') %}
-    {{ form_start(form, {attr: {class: 'd-tech-form'}}) }}
     {% if form_errors(form) %}
         <div class="alert alert-danger">
             {{ form_errors(form) }}
         </div>
     {% endif %}
+    {{ form_start(form, {attr: {class: 'd-tech-form', novalidate: 'novalidate'}}) }}
+    <div class="form-group mb-3">
+        {% set short_name_error = form.short_name.vars.errors|length ? 'form-control error' : 'form-control' %}
+        {{ form_label(form.short_name, 'label.form.product_short_name', {label_attr: {class: 'form-label'}}) }} <span class="text-danger">*</span>
+        {{ form_widget(form.short_name, {attr: {class: short_name_error, placeholder: 'label.form.product_short_name'}}) }}
+        <small class="text-danger">{{ form_errors(form.short_name) }}</small>
+    </div>
     <div class="form-group mb-3">
         {% set name_error = form.name.vars.errors|length ? 'form-control error' : 'form-control' %}
         {{ form_label(form.name, 'label.form.product_name', {label_attr: {class: 'form-label'}}) }} <span class="text-danger">*</span>
@@ -24,9 +30,9 @@
     </div>
     <div class="form-group mb-3 row">
         <div class="col-6">
-            {% set quantity_error = form.quantity.vars.errors|length and not error ? 'form-control error' : 'form-control' %}
+            {% set quantity_error = form.quantity.vars.errors|length ? 'form-control error' : 'form-control' %}
             {{ form_label(form.quantity, 'label.form.quantity', {label_attr: {class: 'form-label'}}) }} <span class="text-danger">*</span>
-            {{ form_widget(form.quantity, {attr: {class: quantity_error, placeholder: '1'}}) }}
+            {{ form_widget(form.quantity, {attr: {class: quantity_error, placeholder: '0'}}) }}
             <small class="text-danger">{{ form_errors(form.quantity) }}</small>
         </div>
         <div class="col-6">
@@ -37,8 +43,10 @@
         </div>
     </div>
     <div class="form-group mb-3">
+        {% set category_error = form.category.vars.errors|length ? 'form-select error' : 'form-select' %}
         {{ form_label(form.category, 'entry.form.categories', {label_attr: {class: 'form-label'}}) }} <span class="text-danger">*</span>
-        {{ form_widget(form.category, {attr: {class: 'form-select', size: 11}}) }}
+        {{ form_widget(form.category, {attr: {class: category_error}}) }}
+        <small class="text-danger">{{ form_errors(form.category) }}</small>
     </div>
     <div class="form-group mb-3">
         {% set brand_error = form.brand.vars.errors|length ? 'form-select error' : 'form-select' %}
@@ -50,7 +58,6 @@
            href="#"
            class="link float-end add-entry">{{ 'market.brand.create'|trans }}</a>
         {{ form_widget(form.brand, {attr: {class: brand_error}}) }}
-        <small class="text-danger">{{ form_errors(form.brand) }}</small>
     </div>
     <div class="form-group mb-3">
         {% set supplier_error = form.supplier.vars.errors|length ? 'form-select error' : 'form-select' %}
@@ -63,7 +70,6 @@
            class="link float-end add-entry">{{ 'market.supplier.create'|trans }}</a>
         {{ form_label(form.supplier, 'label.form.supplier_name', {label_attr: {class: 'form-label'}}) }}
         {{ form_widget(form.supplier, {attr: {class: supplier_error}}) }}
-        <small class="text-danger">{{ form_errors(form.supplier) }}</small>
     </div>
     <div class="form-group mb-3">
         {% set manufacturer_error = form.manufacturer.vars.errors|length ? 'form-select error' : 'form-select' %}
@@ -75,7 +81,6 @@
            href="#"
            class="link float-end add-entry">{{ 'market.manufacturer.create'|trans }}</a>
         {{ form_widget(form.manufacturer, {attr: {class: manufacturer_error}}) }}
-        <small class="text-danger">{{ form_errors(form.manufacturer) }}</small>
     </div>
     <div class="form-group mb-3">
         {% set description_error = form.description.vars.errors|length ? 'form-control error' : 'form-control' %}

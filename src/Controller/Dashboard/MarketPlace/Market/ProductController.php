@@ -2,8 +2,7 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Market;
 
-use App\Entity\MarketPlace\{
-    MarketBrand,
+use App\Entity\MarketPlace\{MarketBrand,
     MarketCategory,
     MarketCategoryProduct,
     MarketManufacturer,
@@ -11,6 +10,7 @@ use App\Entity\MarketPlace\{
     MarketProductBrand,
     MarketProductManufacturer,
     MarketProductSupplier,
+    MarketSupplier
 };
 use App\Form\Type\Dashboard\MarketPlace\ProductType;
 use App\Helper\MarketPlace\MarketPlaceHelper;
@@ -87,32 +87,21 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         $categoryRepository = $em->getRepository(MarketCategory::class);
-        $categories = $categoryRepository->findBy([], ['name' => 'asc']);
         $repository = $em->getRepository(MarketCategoryProduct::class);
 
-        $name = $form->get('name')->getData();
-
-        if ($name) {
-            $product->setSlug($slugger->slug(MarketPlaceHelper::slug($product->getId()))->lower());
-            $em->persist($product);
-        }
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $requestCategory = $form->get('category')->getData();
-            $repository->removeCategoryProduct($product);
 
-            if (count($requestCategory)) {
-                foreach ($requestCategory as $value) {
-                    $entryCategory = new MarketCategoryProduct();
-                    $entryCategory->setProduct($product)
-                        ->setCategory($categoryRepository->findOneBy(['id' => $value]));
-                    $em->persist($entryCategory);
-                }
-            } else {
-                $repository->removeCategoryProduct($product);
-            }
+            // TODO: rewrite in future
+            $repository->removeCategoryProduct($product);
+            $entryCategory = new MarketCategoryProduct();
+            $entryCategory->setProduct($product)
+                ->setCategory($categoryRepository->find($form->get('category')->getData()));
+            $em->persist($entryCategory);
 
             $em = $this->handleRelations($em, $form, $product);
+
+            $product->setSlug($slugger->slug(MarketPlaceHelper::slug($product->getId()))->lower());
+            //$product->setShortName(substr($form->get('short_name')->getData(), 0, 40));
 
             $em->persist($product);
             $em->flush();
@@ -127,8 +116,7 @@ class ProductController extends AbstractController
 
         return $this->render('dashboard/content/market_place/product/_form.html.twig', $this->navbar() + [
                 'form' => $form,
-                'categories' => $categories,
-                'productCategory' => $repository->findBy(['product' => $product]),
+                //'productCategory' => $repository->findBy(['product' => $product]),
             ]);
     }
 
@@ -165,14 +153,12 @@ class ProductController extends AbstractController
             $name = $form->get('name')->getData();
 
             $requestCategory = $form->get('category')->getData();
-
+            //dd($requestCategory);
             if ($requestCategory) {
-                foreach ($requestCategory as $value) {
-                    $productCategory = new MarketCategoryProduct();
-                    $productCategory->setProduct($product)
-                        ->setCategory($em->getRepository(MarketCategory::class)->findOneBy(['id' => $value]));
-                    $em->persist($productCategory);
-                }
+                $productCategory = new MarketCategoryProduct();
+                $productCategory->setProduct($product)
+                    ->setCategory($em->getRepository(MarketCategory::class)->find($requestCategory));
+                $em->persist($productCategory);
             }
 
             $product->setName($name)->setMarket($market);
