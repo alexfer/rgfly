@@ -3,6 +3,8 @@
 namespace App\Entity\MarketPlace;
 
 use App\Repository\MarketPlace\MarketOrdersRepository;
+use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -26,10 +28,10 @@ class MarketOrders
     private ?float $total = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?DateTimeImmutable $created_at;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $completed_at = null;
+    private ?DateTimeInterface $completed_at = null;
 
     #[ORM\OneToOne(mappedBy: 'orders', cascade: ['persist', 'remove'])]
     private ?MarketInvoice $marketInvoice = null;
@@ -39,7 +41,7 @@ class MarketOrders
 
     public function __construct()
     {
-        $this->created_at = new \DateTimeImmutable();
+        $this->created_at = new DateTimeImmutable();
         $this->marketOrdersProducts = new ArrayCollection();
     }
 
@@ -109,18 +111,18 @@ class MarketOrders
     }
 
     /**
-     * @return \DateTimeImmutable|null
+     * @return DateTimeImmutable|null
      */
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->created_at;
     }
 
     /**
-     * @param \DateTimeImmutable $created_at
+     * @param DateTimeImmutable $created_at
      * @return $this
      */
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    public function setCreatedAt(DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;
 
@@ -128,18 +130,18 @@ class MarketOrders
     }
 
     /**
-     * @return \DateTimeInterface|null
+     * @return DateTimeInterface|null
      */
-    public function getCompletedAt(): ?\DateTimeInterface
+    public function getCompletedAt(): ?DateTimeInterface
     {
         return $this->completed_at;
     }
 
     /**
-     * @param \DateTimeInterface|null $completed_at
+     * @param DateTimeInterface|null $completed_at
      * @return $this
      */
-    public function setCompletedAt(?\DateTimeInterface $completed_at): static
+    public function setCompletedAt(?DateTimeInterface $completed_at): static
     {
         $this->completed_at = $completed_at;
 

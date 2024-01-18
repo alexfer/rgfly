@@ -2,13 +2,8 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Market;
 
-use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketManufacturer;
-use App\Entity\MarketPlace\MarketBrand;
-use App\Entity\MarketPlace\MarketSupplier;
 use App\Form\Type\Dashboard\MarketPlace\ManufacturerType;
-use App\Form\Type\Dashboard\MarketPlace\BrandType;
-use App\Form\Type\Dashboard\MarketPlace\SupplerType;
 use App\Service\MarketPlace\MarketTrait;
 use App\Service\Dashboard;
 use Doctrine\ORM\EntityManagerInterface;
@@ -152,7 +147,7 @@ class ManufacturerController extends AbstractController
     {
         $market = $this->market($request, $user, $em);
 
-        if ($this->isCsrfTokenValid('delete', $request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete', $request->get('_token')) && !$manufacturer->getMarketProductManufacturers()->count()) {
             $em->remove($manufacturer);
             $em->flush();
         }

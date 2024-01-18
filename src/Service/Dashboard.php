@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use App\Entity\Entry;
-use App\Repository\EntryRepository;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -43,7 +42,7 @@ trait Dashboard
      */
     public function navbar(): array
     {
-        $navbar = $children = $count = [];
+        $navbar = $children = [];
         foreach (array_flip(Entry::TYPE) as $key => $class) {
             $class = sprintf('\App\Controller\Dashboard\%sController', $class);
             if (class_exists($class)) {

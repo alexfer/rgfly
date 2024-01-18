@@ -2,22 +2,25 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Market;
 
-use App\Entity\MarketPlace\MarketCategory;
-use App\Entity\MarketPlace\MarketCategoryProduct;
-use App\Entity\MarketPlace\MarketManufacturer;
-use App\Entity\MarketPlace\MarketProduct;
-use App\Entity\MarketPlace\MarketProductManufacturer;
-use App\Entity\MarketPlace\MarketProductBrand;
-use App\Entity\MarketPlace\MarketProductSupplier;
-use App\Entity\MarketPlace\MarketBrand;
-use App\Entity\MarketPlace\MarketSupplier;
+use App\Entity\MarketPlace\{MarketBrand,
+    MarketCategory,
+    MarketCategoryProduct,
+    MarketManufacturer,
+    MarketProduct,
+    MarketProductBrand,
+    MarketProductManufacturer,
+    MarketProductSupplier,
+    MarketSupplier
+};
 use App\Form\Type\Dashboard\MarketPlace\ProductType;
+use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Security\Voter\ProductVoter;
+use App\Service\Dashboard;
 use App\Service\MarketPlace\Currency;
 use App\Service\MarketPlace\MarketTrait;
-use App\Service\Dashboard;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -63,18 +66,17 @@ class ProductController extends AbstractController
 
     /**
      * @param Request $request
-     * @param UserInterface $user
      * @param MarketProduct $product
      * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
      * @param SluggerInterface $slugger
      * @return Response
+     * @throws Exception
      */
     #[Route('/edit/{market}-{id}', name: 'app_dashboard_market_place_edit_product', methods: ['GET', 'POST'])]
     #[IsGranted(ProductVoter::EDIT, subject: 'product', statusCode: Response::HTTP_FORBIDDEN)]
     public function edit(
         Request                $request,
-        UserInterface          $user,
         MarketProduct          $product,
         EntityManagerInterface $em,
         TranslatorInterface    $translator,
@@ -85,42 +87,20 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         $categoryRepository = $em->getRepository(MarketCategory::class);
-        $categories = $categoryRepository->findBy([], ['name' => 'asc']);
         $repository = $em->getRepository(MarketCategoryProduct::class);
 
-        $uniqueError = null;
-        $name = $form->get('name')->getData();
+        if ($form->isSubmitted() && $form->isValid()) {
 
-        if ($name) {
-            try {
-                $product->setSlug($slugger->slug($name)->lower());
-                $em->persist($product);
-            } catch (UniqueConstraintViolationException $e) {
-                $uniqueError = $translator->trans('slug.unique', [
-                    '%name%' => $translator->trans('label.form.title'),
-                    '%value%' => $name,
-                ], 'validators');
-            }
-        }
-
-        $entryCategory = null;
-
-        if ($form->isSubmitted() && $form->isValid() && !$uniqueError) {
-            $requestCategory = $form->get('category')->getData();
-
-            if (count($requestCategory)) {
-                $repository->removeCategoryProduct($product);
-                foreach ($requestCategory as $key => $value) {
-                    $entryCategory = new MarketCategoryProduct();
-                    $entryCategory->setProduct($product)
-                        ->setCategory($categoryRepository->findOneBy(['id' => $value]));
-                    $em->persist($entryCategory);
-                }
-            } else {
-                $repository->removeCategoryProduct($product);
-            }
+            // TODO: rewrite in future
+            $repository->removeCategoryProduct($product);
+            $entryCategory = new MarketCategoryProduct();
+            $entryCategory->setProduct($product)
+                ->setCategory($categoryRepository->find($form->get('category')->getData()));
+            $em->persist($entryCategory);
 
             $em = $this->handleRelations($em, $form, $product);
+
+            $product->setSlug($slugger->slug(MarketPlaceHelper::slug($product->getId()))->lower());
 
             $em->persist($product);
             $em->flush();
@@ -135,9 +115,6 @@ class ProductController extends AbstractController
 
         return $this->render('dashboard/content/market_place/product/_form.html.twig', $this->navbar() + [
                 'form' => $form,
-                'error' => $uniqueError,
-                'categories' => $categories,
-                'productCategory' => $repository->findBy(['product' => $product]),
             ]);
     }
 
@@ -150,6 +127,7 @@ class ProductController extends AbstractController
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws Exception
      */
     #[Route('/create/{market}', name: 'app_dashboard_market_place_create_product', methods: ['GET', 'POST'])]
     public function create(
@@ -168,49 +146,36 @@ class ProductController extends AbstractController
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
-        $uniqueError = null;
-
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $name = $form->get('name')->getData();
-            $slug = $slugger->slug($name)->lower();
 
             $requestCategory = $form->get('category')->getData();
 
             if ($requestCategory) {
-                foreach ($requestCategory as $key => $value) {
-                    $productCategory = new MarketCategoryProduct();
-                    $productCategory->setProduct($product)
-                        ->setCategory($em->getRepository(MarketCategory::class)->findOneBy(['id' => $value]));
-                    $em->persist($productCategory);
-                }
+                $productCategory = new MarketCategoryProduct();
+                $productCategory->setProduct($product)
+                    ->setCategory($em->getRepository(MarketCategory::class)->find($requestCategory));
+                $em->persist($productCategory);
             }
 
-            try {
-                $product->setSlug($slug)
-                    ->setMarket($market);
-                $em->persist($product);
-            } catch (UniqueConstraintViolationException $e) {
-                $uniqueError = $translator->trans('slug.unique', [
-                    '%name%' => $translator->trans('label.form.product_name'),
-                    '%value%' => $name,
-                ], 'validators');
+            $product->setMarket($market);
+            $em->persist($product);
+
+            if ($market->getDeletedAt()) {
+                $date = new DateTime('@' . strtotime('now'));
+                $product->setDeletedAt($date);
             }
 
             $em = $this->handleRelations($em, $form, $product);
-
+            $product->setSlug(MarketPlaceHelper::slug($product->getId()));
+            $em->persist($product);
             $em->flush();
 
-            if (!$uniqueError) {
-                $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
-                return $this->redirectToRoute('app_dashboard_market_place_edit_product', ['market' => $request->get('market'), 'id' => $product->getId()]);
-            }
+            $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
+            return $this->redirectToRoute('app_dashboard_market_place_edit_product', ['market' => $request->get('market'), 'id' => $product->getId()]);
         }
 
         return $this->render('dashboard/content/market_place/product/_form.html.twig', $this->navbar() + [
                 'form' => $form,
-                'error' => $uniqueError,
-                'categories' => $categories,
             ]);
     }
 
@@ -270,6 +235,7 @@ class ProductController extends AbstractController
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws Exception
      */
     #[Route('/delete/{market}-{id}', name: 'app_dashboard_delete_product', methods: ['POST'])]
     public function delete(
@@ -282,7 +248,7 @@ class ProductController extends AbstractController
         $market = $this->market($request, $user, $em);
 
         if ($this->isCsrfTokenValid('delete', $request->get('_token'))) {
-            $date = new \DateTime('@' . strtotime('now'));
+            $date = new DateTime('@' . strtotime('now'));
             $product->setDeletedAt($date);
             $em->persist($product);
             $em->flush();

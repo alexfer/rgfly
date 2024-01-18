@@ -51,7 +51,7 @@ class MarketCategory
      * @var DateTimeImmutable|null
      */
     #[ORM\Column]
-    private ?DateTimeImmutable $created_at = null;
+    private ?DateTimeImmutable $created_at;
 
     /**
      * @var DateTimeInterface|null

@@ -18,14 +18,14 @@ class Entry
     /**
      * @var array
      */
-    const TYPE = [
+    const array TYPE = [
         'Other' => 'other',
         'Blog' => 'blog',
         'Article' => 'article',
         'News' => 'news',
         'Gallery' => 'gallery',
     ];
-    const STATUS = [
+    const array STATUS = [
         'entry.info.draft' => 'draft',
         'entry.info.published' => 'published',
         'entry.info.trashed' => 'trashed',
@@ -46,19 +46,19 @@ class Entry
     private ?EntryDetails $entryDetails = null;
 
     #[ORM\Column(type: Types::STRING)]
-    private ?string $type = null;
+    private ?string $type;
 
     #[ORM\Column(type: Types::STRING)]
-    private ?string $status = null;
+    private ?string $status;
 
     #[ORM\Column]
-    private ?int $comments = null;
+    private ?int $comments;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?DateTimeInterface $created_at = null;
+    private ?DateTimeInterface $created_at;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?DateTimeInterface $updated_at = null;
+    private ?DateTimeInterface $updated_at;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $deleted_at = null;

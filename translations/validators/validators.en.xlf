@@ -6,6 +6,10 @@
                 <source>form.name.not_blank</source>
                 <target>The name can't be blank.</target>
             </trans-unit>
+            <trans-unit id="form.short_name.not_blank">
+                <source>form.short_name.not_blank</source>
+                <target>The short name can't be blank.</target>
+            </trans-unit>
             <trans-unit id="form.country.not_blank">
                 <source>form.country.not_blank</source>
                 <target>The country can't be blank.</target>
@@ -13,6 +17,10 @@
             <trans-unit id="form.cost.not_blank">
                 <source>form.cost.not_blank</source>
                 <target>The cost can't be blank.</target>
+            </trans-unit>
+            <trans-unit id="form.category.not_blank">
+                <source>form.category.not_blank</source>
+                <target>Choice at least one category.</target>
             </trans-unit>
             <trans-unit id="form.quantity.not_blank">
                 <source>form.quantity.not_blank</source>
@@ -37,10 +45,18 @@
             <trans-unit id="form.name.min">
                 <source>form.name.min</source>
                 <target>Your name is too short. It should have {{ limit }} characters or more.</target>
-            </trans-unit>            
+            </trans-unit>
             <trans-unit id="form.name.max">
                 <source>form.name.max</source>
                 <target>Your name is too long. It should have {{ limit }} characters or less.</target>
+            </trans-unit>
+            <trans-unit id="form.short_name.min">
+                <source>form.short_name.min</source>
+                <target>Your short name is too short. It should have {{ limit }} characters or more.</target>
+            </trans-unit>
+            <trans-unit id="form.short_name.max">
+                <source>form.short_name.max</source>
+                <target>Your short name is too long. It should have {{ limit }} characters or less.</target>
             </trans-unit>
             <trans-unit id="form.subject.min">
                 <source>form.subject.min</source>
@@ -124,7 +140,8 @@
             </trans-unit>
             <trans-unit id="slug.unique">
                 <source>slug.unique</source>
-                <target><![CDATA[There is already an entry with the same key information. Check %name% field. You are using %value%.]]></target>
+                <target>
+                    <![CDATA[There is already an entry with the same key information. Check %name% field. You are using %value%.]]></target>
             </trans-unit>
             <trans-unit id="form.email.not_valid">
                 <source>form.email.not_valid</source>

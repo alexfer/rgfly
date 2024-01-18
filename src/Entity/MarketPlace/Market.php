@@ -47,7 +47,7 @@ class Market
     private Collection $products;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?DateTime $created_at = null;
+    private ?DateTime $created_at;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $deleted_at = null;

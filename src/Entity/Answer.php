@@ -16,14 +16,14 @@ class Answer
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Contact::class)]
-    #[ORM\JoinColumn(nullable: false, name: "contact_id", referencedColumnName: "id", onDelete: "CASCADE")]
+    #[ORM\JoinColumn(name: "contact_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     private ?Contact $contact = null;
 
     #[ORM\Column]
     private ?int $contact_id = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable: false, name: "user_id", referencedColumnName: "id", onDelete: "CASCADE")]
+    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     private ?User $user = null;
 
     #[ORM\Column]
@@ -33,7 +33,7 @@ class Answer
     private ?string $message = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?DateTime $created_at = null;
+    private ?DateTime $created_at;
 
     public function __construct()
     {

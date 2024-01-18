@@ -16,7 +16,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class RequestTokenCleanupCommand extends Command
 {
 
-    final const PERFORM = 'perform';
+    final const string PERFORM = 'perform';
 
     /**
      *

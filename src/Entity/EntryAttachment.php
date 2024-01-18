@@ -20,7 +20,7 @@ class EntryAttachment
     private ?Entry $details = null;
 
     #[ORM\Column(type: Types::INTEGER, length: 1, nullable: true)]
-    private ?int $in_use = 0;
+    private ?int $in_use;
 
     public function __construct()
     {

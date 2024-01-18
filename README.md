@@ -18,7 +18,7 @@ Techspace solutions
 ### 2. Prepare configuration
 You should change database configuration
 ```bash
-    $ cd rechspace/
+    $ cd projectdir/
     $ cp .env.original .env
 ```
 

@@ -71,6 +71,10 @@
                 <source>title.questions</source>
                 <target>Questions</target>
             </trans-unit>
+            <trans-unit id="title.market_places">
+                <source>title.market_places</source>
+                <target>Market Places</target>
+            </trans-unit>
             <trans-unit id="title.home">
                 <source>title.home</source>
                 <target>Home</target>
@@ -408,6 +412,18 @@
                 <source>label.form.product_name</source>
                 <target>Product Name</target>
             </trans-unit>
+            <trans-unit id="label.form.product_short_name">
+                <source>label.form.product_short_name</source>
+                <target>Product short name</target>
+            </trans-unit>
+            <trans-unit id="form.product_short_name.length">
+                <source>form.product_short_name.length</source>
+                <target>Length is</target>
+            </trans-unit>
+            <trans-unit id="form.product_short_name.allowed_length">
+                <source>form.product_short_name.allowed_length</source>
+                <target>Allowed { length }</target>
+            </trans-unit>
             <trans-unit id="label.form.supplier_name">
                 <source>label.form.supplier_name</source>
                 <target>Supplier Name</target>
@@ -623,6 +639,10 @@
             <trans-unit id="entry.form.categories">
                 <source>entry.form.categories</source>
                 <target>Categories</target>
+            </trans-unit>
+            <trans-unit id="option.category.choice_category">
+                <source>option.category.choice_category</source>
+                <target>Choice category ...</target>
             </trans-unit>
             <trans-unit id="entry.form.brands">
                 <source>entry.form.brands</source>
@@ -850,7 +870,8 @@
             <trans-unit id="form.agree_terms.help">
                 <source>form.agree_terms.help</source>
                 <target>
-                    <![CDATA[More about our <a class="link" target="_blank" href="{ policy }">Privacy Policy</a> and <a class="link" target="_blank" href="{ terms }">Terms &amp; Conditions</a>.]]></target>
+                    <![CDATA[More about our <a class="link" target="_blank" href="{ policy }">Privacy Policy</a> and <a class="link" target="_blank" href="{ terms }">Terms &amp; Conditions</a>.]]>
+                </target>
             </trans-unit>
             <trans-unit id="form.first_name.help">
                 <source>form.first_name.help</source>
@@ -912,9 +933,29 @@
                 <source>market.product.create</source>
                 <target>Add Product</target>
             </trans-unit>
+            <trans-unit id="market.product.details">
+                <source>market.product.details</source>
+                <target>View details</target>
+            </trans-unit>
+            <trans-unit id="market.promotion">
+                <source>market.promotion</source>
+                <target>Promotion offers</target>
+            </trans-unit>
+            <trans-unit id="market.promotion.text">
+                <source>market.promotion.text</source>
+                <target>
+                    <![CDATA[Hello from your friends at <strong>{ company }</strong>!
+                    We’re offering a special { discount }% discount on your next purchase with code <span class="text-dark text-bg-warning p-2">{ code }-{ discount }</span><br>
+                    Start shopping with <a class="link" href="{ link }">{ company }</a> now.]]>
+                </target>
+            </trans-unit>
             <trans-unit id="market.brands">
                 <source>market.brands</source>
                 <target>Brands</target>
+            </trans-unit>
+            <trans-unit id="market.products">
+                <source>market.products</source>
+                <target>Products</target>
             </trans-unit>
             <trans-unit id="market.brand.create">
                 <source>market.brand.create</source>

@@ -14,6 +14,7 @@
                                 {% set _active = category.id %}
                             {% else %}
                                 {{ 'text.blog.desc'|trans|raw }}
+                                {% set _active = 0 %}
                             {% endif %}
                         </h4>
                         {% if category %}
@@ -24,28 +25,26 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid py-2">
-        <div class="container pt-2">
-            <div class="row">
-                {% if categories %}
-                    <div class="col-12 entry-tags">
-                        {% for key, category in categories %}
-                            {% if key < 8 %}
-                                <a href="{{ path('app_blog_category', {slug: category.slug}) }}"
-                                   class="{% if _active == category.id %}active{% endif %}"
-                                   title="{{ category.description }}">{{ category.name }}</a>
-                            {% else %}
-                                <a href="{{ path('app_blog_category', {slug: category.slug}) }}"
-                                   class="sr-only{% if _active == category.id %} active{% endif %}"
-                                   title="{{ category.description }}">{{ category.name }}</a>
-                            {% endif %}
-                        {% endfor %}
-                        {% if categories|length > 8 %}
-                            <a href="#" class="load-categories" title="...">...</a>
+    <div class="container py-2">
+        <div class="row">
+            {% if categories %}
+                <div class="col-12 entry-tags">
+                    {% for key, category in categories %}
+                        {% if key < 8 %}
+                            <a href="{{ path('app_blog_category', {slug: category.slug}) }}"
+                               class="{% if _active == category.id %}active{% endif %}"
+                               title="{{ category.description }}">{{ category.name }}</a>
+                        {% else %}
+                            <a href="{{ path('app_blog_category', {slug: category.slug}) }}"
+                               class="visually-hidden{% if _active == category.id %} active{% endif %}"
+                               title="{{ category.description }}">{{ category.name }}</a>
                         {% endif %}
-                    </div>
-                {% endif %}
-            </div>
+                    {% endfor %}
+                    {% if categories|length > 8 %}
+                        <a href="#" class="load-categories" title="...">...</a>
+                    {% endif %}
+                </div>
+            {% endif %}
         </div>
     </div>
     <section class="section-area default bg-white">

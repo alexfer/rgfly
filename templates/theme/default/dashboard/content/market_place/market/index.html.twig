@@ -29,8 +29,8 @@
         </div>
         {#        <a href="#" class="badge badge-pill badge-info navbar-text py-2 px-3 text-light" style="font-size: 16px;font-weight: normal">You can have only one marketplace</a> #}
     </nav>
-    <div class="table-responsive table card">
-        <table class="table table-hover table-striped mb-0">
+    <div class="table-responsive card">
+        <table class="table table-hover table-borderless mb-0">
             <thead>
             <tr>
                 <th class="bg-secondary text-white text-center text-bg-light col-1 text-center" scope="col">{{ 'table.header.id'|trans }}</th>
@@ -63,7 +63,7 @@
                         {% if market.deletedAt %}
                             <a class="btn btn-sm btn-outline-lightning rounded restore-entry px-1 py-0"
                                href="{{ path('app_dashboard_restore_market', {id: market.id}) }}">
-                                <i class="bi bi-caret-up-square-fill"></i>
+                                <i class="bi bi-chevron-double-up"></i>
                             </a>
                         {% else %}
                             <a href="{{ path('app_dashboard_market_place_edit_market', {id: market.id}) }}"

@@ -26,7 +26,7 @@ class Attach
     private string $mime;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
-    private ?int $size = null;
+    private ?int $size;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     protected DateTime $created_at;

@@ -49,7 +49,7 @@ class RateLimiterSubscriber implements EventSubscriberInterface
     public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
-        // if (strpos($request->get("_route"), 'app_') !== false) {
+
         if ($request->isMethod('POST')) {
             $limiter = $this->anonymousAppLimiter->create($request->getClientIp());
             if (false === $limiter->consume(1)->isAccepted()) {

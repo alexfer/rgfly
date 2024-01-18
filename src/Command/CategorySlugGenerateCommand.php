@@ -14,7 +14,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 #[AsCommand('app:category:slug', 'Generating slug for each category')]
 class CategorySlugGenerateCommand extends Command
 {
-    final const PERFORM = 'perform';
+    final const string PERFORM = 'perform';
     private CategoryRepository $repository;
 
     private SluggerInterface $slugger;

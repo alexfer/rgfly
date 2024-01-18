@@ -91,8 +91,6 @@ class BlogController extends AbstractController
      * @param SluggerInterface $slugger
      * @param TranslatorInterface $translator
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/create', name: self::CHILDREN['blog']['menu.dashboard.create.blog'])]
     public function create(
@@ -173,8 +171,6 @@ class BlogController extends AbstractController
      * @param TranslatorInterface $translator
      * @param SluggerInterface $slugger
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/edit/{id}', name: 'app_dashboard_edit_blog', methods: ['GET', 'POST'])]
     #[IsGranted('edit', 'entry')]
@@ -305,11 +301,11 @@ class BlogController extends AbstractController
                 ]);
             }
 
-            $attchments = $entryAttachmentRepository->findAll();
-            foreach ($attchments as $attchment) {
-                $attchment->getInUse(0);
+            $attachments = $entryAttachmentRepository->findAll();
+            foreach ($attachments as $attachment) {
+                $attachment->getInUse(0);
             }
-            unset($attchment);
+            unset($attachment);
 
             $entryAttachmentRepository->resetStatus($entry->getEntryDetails());
 
@@ -356,9 +352,9 @@ class BlogController extends AbstractController
         $entry = $entryRepository->find($request->get('entry'));
         $details = $entry->getEntryDetails();
 
-        $attchments = $entryAttachmentRepository->findAll();
-        foreach ($attchments as $attchment) {
-            $attchment->setInUse(0);
+        $attachments = $entryAttachmentRepository->findAll();
+        foreach ($attachments as $attachment) {
+            $attachment->setInUse(0);
         }
 
         $parameters = json_decode($request->getContent(), true);

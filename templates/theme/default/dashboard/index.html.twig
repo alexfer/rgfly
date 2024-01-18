@@ -22,16 +22,16 @@
             </div>
         </div>
     </div>
-    <section class="section-area default py-0">
+    <section class="section-area default dashboard py-0">
         <div id="container" class="{{ container }}">
             <div class="d-flex" id="responsive">
-                <div class="col-md-3 pl-1">
+                <div class="col-md-3">
                     <div class="sidebar rounded m-1">
                         {% include 'dashboard/sidebar.html.twig'  with {'navbar': navbar} %}
                     </div>
                 </div>
                 <div class="col-md-9 m-1 shadow-sm bg-white rounded">
-                    <div class="flex-column content p-2 m-1">
+                    <div class="flex-column content p-3 m-1">
                         <h4>{% block title_content %}{{ 'text.dashboard'|trans }}{% endblock %}</h4>
                         {% block content %}
                             {% include 'dashboard/content/index.html.twig' %}
@@ -42,9 +42,9 @@
         </div>
     </section>
     {% include 'dashboard/layouts/modal.html.twig' %}
-    {% include 'dashboard/layouts/forms/brand.html.twig' %}
-    {% include 'dashboard/layouts/forms/supplier.html.twig' %}
-    {% include 'dashboard/layouts/forms/manufacturer.html.twig' %}
+    {% include 'dashboard/content/market_place/forms/brand.html.twig' %}
+    {% include 'dashboard/content/market_place/forms/supplier.html.twig' %}
+    {% include 'dashboard/content/market_place/forms/manufacturer.html.twig' %}
 {% endblock %}
 {% block toast %}
     {{ include ('layouts/toast.html.twig') }}

@@ -31,7 +31,7 @@ class ByteConversionTwigExtension extends AbstractExtension
      * @param int $precision
      * @return string
      */
-    function formatBytes($bytes, int $precision = 2): string
+    public function formatBytes($bytes, int $precision = 2): string
     {
         $base = log($bytes, 1024);
         $suffixes = ['Byte', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
