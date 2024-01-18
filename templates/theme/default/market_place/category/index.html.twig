@@ -8,11 +8,9 @@
     <ul class="list-inline mb-4">
         {% for child in category.children %}
             <li class="list-inline-item category">
-                <a href="" class="active">
-                    <div class="btn btn-outline-primary border-primary bg-white text-primary text-opacity-75 rounded-1 p-2 bg-opacity-25"
-                         style="border-style: dashed;">
-                        {{ child.name }} <i class="bi bi-arrow-right-short text-primary"></i>
-                    </div>
+                <a href="{{ path('app_market_place_child_category', {parent: category.slug, child: child.slug}) }}"
+                   class="btn btn-outline-primary rounded-1 bg-opacity-25 category-link">
+                    {{ child.name }} <i class="bi bi-arrow-right-short"></i>
                 </a>
             </li>
         {% endfor %}
@@ -24,12 +22,19 @@
                     <div class="position-relative">
                         <img src="{{ asset('img/08.jpg') }}" class="card-img-top h-100" alt="...">
                         <div class="card-img-overlay p-3 z-index-1">
-                                <div class="badge text-bg-dark bg-opacity-75">
+                            <div class="badge text-bg-dark bg-opacity-75">
+                                {% if category.parent is not null %}
+                                    <a href="{{ path('app_market_place_parent_category', {parent:  category.parent.slug}) }}"
+                                       class="link-white">
+                                        {{ category.parent.name }}
+                                    </a>
+                                {% else %}
                                     <a href="{{ path('app_market_place_parent_category', {parent:  category.slug}) }}"
                                        class="link-white">
-                                        {{ category.name }}
+                                        {{ product.category_name }}
                                     </a>
-                                </div>
+                                {% endif %}
+                            </div>
                             <div class="badge text-bg-danger bg-opacity-75">New</div>
                         </div>
                     </div>
@@ -54,14 +59,17 @@
                                href="#product/{{ product.market_slug }}/{{ product.slug }}">{{ product.short_name }}</a>
                         </h5>
                     </div>
-                    <div class="card-footer border-1 bg-transparent">
+                    <a href="{{ path('app_market_place_child_category', {parent: category.slug, child: product.category_slug}) }}"
+                       class="badge-child"><i
+                                class="bi bi-ui-radios-grid text-opacity-50 me-2"></i> {{ product.category_name }}</a>
+                    <div class="card-footer border-0 bg-transparent">
                         <ul class="list-group list-group-borderless mt-1 mb-2">
-                            <li class="list-group-item small py-1  border-0">
+                            <li class="list-group-item small px-1 py-1  border-0">
                                 <i class="bi bi-pin-map-fill me-2 text-opacity-50 text-info"></i>
                                 <a class="text-decoration-none"
                                    href="#{{ product.market_slug }}">{{ product.market }}</a>
                             </li>
-                            <li class="list-group-item small py-1  border-0">
+                            <li class="list-group-item small px-1 py-1  border-0">
                                 <i class="bi bi-telephone-fill text-secondary me-2"></i> <span
                                         class="text-secondary">{{ product.phone }}</span>
                             </li>

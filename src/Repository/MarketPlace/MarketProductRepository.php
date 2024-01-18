@@ -30,6 +30,36 @@ class MarketProductRepository extends ServiceEntityRepository
         parent::__construct($registry, MarketProduct::class);
     }
 
+    public function findProductsByChildrenCategory(int $id, int $limit = 10): ?array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->distinct()
+            ->select([
+                'p.id',
+                'p.slug',
+                'p.cost',
+                'p.name',
+                'p.short_name',
+                'c.name as category_name',
+                'c.slug as category_slug',
+                'm.name as market',
+                'm.phone',
+                'm.id as market_id',
+                'm.currency',
+                'm.slug as market_slug',
+            ])
+            ->join(MarketCategoryProduct::class, 'cp', Expr\Join::WITH, 'p.id = cp.product')
+            ->join(MarketCategory::class, 'c', Expr\Join::WITH, 'cp.category = c.id')
+            ->join(Market::class, 'm', Expr\Join::WITH, 'p.market = m.id')
+            ->where('cp.category = :id')
+            ->setParameter('id', $id)
+            ->andWhere('p.deleted_at IS NULL')
+            //->groupBy('p')
+            ->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
+
     /**
      * @param array $ids
      * @param int $limit
@@ -45,12 +75,13 @@ class MarketProductRepository extends ServiceEntityRepository
                 'p.cost',
                 'p.name',
                 'p.short_name',
-                'c as category',
+                'c.name as category_name',
+                'c.slug as category_slug',
                 'm.name as market',
                 'm.phone',
                 'm.id as market_id',
                 'm.currency',
-                'm.slug as market_slug'
+                'm.slug as market_slug',
             ])
             ->join(MarketCategoryProduct::class, 'cp', Expr\Join::WITH, 'p.id = cp.product')
             ->join(MarketCategory::class, 'c', Expr\Join::WITH, 'cp.category = c.id')

@@ -44,7 +44,6 @@ class CategoryController extends AbstractController
             $categories[$child->getId()] = $child->getName();
         }
         $products = $marketProductRepository->findProductsByParentCategory(array_keys($categories));
-        //dd($products);
 
         return $this->render('market_place/category/index.html.twig', [
             'category' => $category,
@@ -53,17 +52,23 @@ class CategoryController extends AbstractController
         ]);
     }
 
-    #[Route('/{parent}/children', name: 'app_market_place_children_category')]
+    #[Route('/{parent}/{child}', name: 'app_market_place_child_category')]
     public function children(
         Request                $request,
         EntityManagerInterface $em,
+        MarketProductRepository $marketProductRepository,
     ): Response
     {
+        $category = $em->getRepository(MarketCategory::class)->findOneBy([
+            'slug' => $request->get('child'),
+        ]);
 
         // TODO: Replace with psql function - get_product
-        $products = $em->getRepository(MarketProduct::class)->findBy(['deleted_at' => null], null, 8);
-        shuffle($products);
+        $products = $marketProductRepository->findProductsByChildrenCategory($category->getId());
 
-        return $this->render('market_place/category/index.html.twig', []);
+        return $this->render('market_place/category/index.html.twig', [
+            'category' => $category,
+            'products' => $products,
+        ]);
     }
 }
