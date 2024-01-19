@@ -30,31 +30,65 @@ class MarketProductRepository extends ServiceEntityRepository
         parent::__construct($registry, MarketProduct::class);
     }
 
+    /**
+     * @return string[]
+     */
+    private function columns(): array
+    {
+        return [
+            'p.id',
+            'p.slug',
+            'p.cost',
+            'p.name',
+            'p.short_name',
+            'c.name as category_name',
+            'c.slug as category_slug',
+            'm.name as market',
+            'm.phone',
+            'm.id as market_id',
+            'm.currency',
+            'm.slug as market_slug',
+        ];
+    }
+
+    /**
+     * @param int $limit
+     * @return array|null
+     */
+    public function getProducts(int $limit = 10): ?array
+    {
+        $select = $this->columns();
+        array_push($select, 'cc.name as parent_category_name', 'cc.slug as parent_category_slug');
+
+        $qb = $this->createQueryBuilder('p')
+            ->distinct()
+            ->select($select)
+            ->join(MarketCategoryProduct::class, 'cp', Expr\Join::WITH, 'p.id = cp.product')
+            ->join(MarketCategory::class, 'c', Expr\Join::WITH, 'cp.category = c.id')
+            ->leftJoin(MarketCategory::class, 'cc', Expr\Join::WITH, 'c.parent = cc.id')
+            ->join(Market::class, 'm', Expr\Join::WITH, 'p.market = m.id')
+            ->andWhere('p.deleted_at IS NULL')
+            ->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param int $id
+     * @param int $limit
+     * @return array|null
+     */
     public function findProductsByChildrenCategory(int $id, int $limit = 10): ?array
     {
         $qb = $this->createQueryBuilder('p')
             ->distinct()
-            ->select([
-                'p.id',
-                'p.slug',
-                'p.cost',
-                'p.name',
-                'p.short_name',
-                'c.name as category_name',
-                'c.slug as category_slug',
-                'm.name as market',
-                'm.phone',
-                'm.id as market_id',
-                'm.currency',
-                'm.slug as market_slug',
-            ])
+            ->select($this->columns())
             ->join(MarketCategoryProduct::class, 'cp', Expr\Join::WITH, 'p.id = cp.product')
             ->join(MarketCategory::class, 'c', Expr\Join::WITH, 'cp.category = c.id')
             ->join(Market::class, 'm', Expr\Join::WITH, 'p.market = m.id')
             ->where('cp.category = :id')
             ->setParameter('id', $id)
             ->andWhere('p.deleted_at IS NULL')
-            //->groupBy('p')
             ->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();
@@ -69,27 +103,13 @@ class MarketProductRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('p')
             ->distinct()
-            ->select([
-                'p.id',
-                'p.slug',
-                'p.cost',
-                'p.name',
-                'p.short_name',
-                'c.name as category_name',
-                'c.slug as category_slug',
-                'm.name as market',
-                'm.phone',
-                'm.id as market_id',
-                'm.currency',
-                'm.slug as market_slug',
-            ])
+            ->select($this->columns())
             ->join(MarketCategoryProduct::class, 'cp', Expr\Join::WITH, 'p.id = cp.product')
             ->join(MarketCategory::class, 'c', Expr\Join::WITH, 'cp.category = c.id')
             ->join(Market::class, 'm', Expr\Join::WITH, 'p.market = m.id')
             ->where('cp.category IN (:ids)')
             ->setParameter('ids', $ids)
             ->andWhere('p.deleted_at IS NULL')
-            //->groupBy('p')
             ->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();

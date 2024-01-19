@@ -21,9 +21,8 @@
         {% block content_body %}
             <div class="row mb-4">
                 <div class="col-12 text-center">
-                    <div class="card border-4 bg-info bg-opacity-25 border-success border-opacity-25 rounded-4"
-                         style="border-style: dashed;">
-                        <h1 class="my-3 mb-0">{{ 'market.promotion'|trans }}</h1>
+                    <div class="card border-4 bg-info bg-opacity-25 border-success border-opacity-25 rounded-4 dashed">
+                        <div class="display-5 my-3 mb-0">{{ 'market.promotion'|trans }}</div>
                         <div class="card-body">
                             <p class="mb-0">{{ 'market.promotion.text'|trans({
                                     '%company%': 'site.title'|trans,
@@ -44,9 +43,9 @@
                                 <img src="{{ asset('img/08.jpg') }}" class="card-img-top h-100" alt="...">
                                 <div class="card-img-overlay p-3 z-index-1">
                                     <div class="badge text-bg-dark bg-opacity-75">
-                                        <a href="{{ path('app_market_place_parent_category', {parent:  product.marketCategoryProducts.first.category.parent.slug}) }}"
+                                        <a href="{{ path('app_market_place_parent_category', {parent:  product.parent_category_slug}) }}"
                                            class="link-white">
-                                            {{ product.marketCategoryProducts.first.category.parent.name }}
+                                            {{ product.parent_category_name }}
                                         </a>
                                     </div>
                                     <div class="badge text-bg-danger bg-opacity-75">New</div>
@@ -56,35 +55,35 @@
                                 <ul class="list-inline text-end me-2 mb-3">
                                     <li class="list-inline-item position-absolute start-0 ms-3">
                                         <a class="btn btn-primary rounded-0"
-                                           data-id="{{ product.market.id }}-{{ product.id }}" type="button">
+                                           data-slug="{{ product.slug }}" type="button">
                                             <i class="bi bi-cart"></i>
                                         </a>
                                     </li>
                                     <li class="list-inline-item">
                                         <div class="badge bg-success bg-opacity-25 text-success">
                                             <h5 class="mb-0">{{ product.cost|number_format(2, '.', ' ') }}
-                                                <small>{{ product.market.currency|currency }}</small></h5>
+                                                <small>{{ product.currency|currency }}</small></h5>
                                         </div>
                                     </li>
                                 </ul>
                                 <h5 class="card-title h-25 mb-1 mt-3 mx-3">
                                     <a title="{{ product.name }}"
-                                       href="#/{{ product.market.slug }}/{{ product.slug }}">{{ product.shortName }}</a>
+                                       href="#/{{ product.slug }}">{{ product.short_name }}</a>
                                 </h5>
-                                <a href="{{ path('app_market_place_child_category', {parent: product.marketCategoryProducts.first.category.parent.slug, child: product.marketCategoryProducts.first.category.slug}) }}"
+                                <a href="{{ path('app_market_place_child_category', {parent: product.parent_category_slug, child:  product.category_slug}) }}"
                                    class="btn btn-link text-decoration-none text-secondary d-block text-start">
                                     <hr>
-                                    <i class="bi bi-ui-radios-grid text-opacity-50 text-success"></i> {{ product.marketCategoryProducts.first.category.name }}
+                                    <i class="bi bi-ui-radios-grid text-opacity-50 text-success"></i> {{ product.category_name }}
                                 </a>
                                 <ul class="list-group list-group-borderless mt-5">
                                     <li class="list-group-item small pb-0  border-0">
                                         <i class="bi bi-pin-map-fill me-2 text-opacity-50 text-info"></i>
                                         <a class="text-decoration-none"
-                                           href="#{{ product.market.slug }}">{{ product.market.name }}</a>
+                                           href="#{{ product.market_slug }}">{{ product.market}}</a>
                                     </li>
                                     <li class="list-group-item small pb-0  border-0">
                                         <i class="bi bi-telephone-fill text-secondary me-2"></i> <span
-                                                class="text-secondary">{{ product.market.phone }}</span>
+                                                class="text-secondary">{{ product.phone }}</span>
                                     </li>
                                 </ul>
                             </div>

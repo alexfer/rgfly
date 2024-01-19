@@ -1,3 +1,11 @@
+.marketplace .dashed {
+    border-style: dashed;
+}
+
+.marketplace .dotted {
+    border-style: dotted;
+}
+
 .marketplace a.category-link {
     border-style: dashed;
     border-color: #7952B3;
@@ -22,6 +30,7 @@
     font-size: 16px;
     margin-left: 17px;
 }
+
 .marketplace a.badge-child:hover {
     color: #6c757d;
     padding-left: 1px;
