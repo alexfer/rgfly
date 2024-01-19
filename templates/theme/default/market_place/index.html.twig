@@ -38,17 +38,27 @@
             <div class="row g-4">
                 {% for product in products %}
                     <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card shadow-sm h-100">
-                            <div class="position-relative">
+                        <div class="card card-hover-shadow h-100">
+                            <div class="card-img-scale-wrapper position-relative">
                                 <img src="{{ asset('img/08.jpg') }}" class="card-img-top h-100" alt="...">
-                                <div class="card-img-overlay p-3 z-index-1">
-                                    <div class="badge text-bg-dark bg-opacity-75">
-                                        <a href="{{ path('app_market_place_parent_category', {parent:  product.parent_category_slug}) }}"
-                                           class="link-white">
-                                            {{ product.parent_category_name }}
-                                        </a>
+                                <div class="card-img-overlay d-flex flex-column z-index-1 p-3">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="badge text-bg-dark bg-opacity-75 rounded-1">
+                                            <a href=""
+                                               class="link-white fw-normal">{{ 'market.product.details'|trans }}</a>
+                                        </span>
+                                        <span class="badge bg-white text-dark fw-normal">
+                                            <i class="bi bi-star-fill text-warning me-2"></i>4.3
+                                        </span>
                                     </div>
-                                    <div class="badge text-bg-danger bg-opacity-75">New</div>
+                                    <div class="w-100 mt-auto">
+                                        <span class="badge bg-secondary text-dark p-1">
+                                            <a href="{{ path('app_market_place_parent_category', {parent:  product.parent_category_slug}) }}"
+                                               class="link-white fs-6 fw-light px-2">
+                                            {{ product.parent_category_name }}
+                                            </a>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card-body px-1">
@@ -79,7 +89,7 @@
                                     <li class="list-group-item small pb-0  border-0">
                                         <i class="bi bi-pin-map-fill me-2 text-opacity-50 text-info"></i>
                                         <a class="text-decoration-none"
-                                           href="#{{ product.market_slug }}">{{ product.market}}</a>
+                                           href="#{{ product.market_slug }}">{{ product.market }}</a>
                                     </li>
                                     <li class="list-group-item small pb-0  border-0">
                                         <i class="bi bi-telephone-fill text-secondary me-2"></i> <span

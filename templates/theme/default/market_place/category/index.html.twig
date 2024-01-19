@@ -1,6 +1,6 @@
 {% extends 'market_place/index.html.twig' %}
 
-{% block title %}Hello CategoryController!{% endblock %}
+{% block title %}{{ category.name }}{% endblock %}
 
 {% block content_body %}
 
@@ -21,21 +21,27 @@
                 <div class="card shadow-sm h-100">
                     <div class="position-relative">
                         <img src="{{ asset('img/08.jpg') }}" class="card-img-top h-100" alt="...">
-                        <div class="card-img-overlay p-3 z-index-1">
-                            <div class="badge text-bg-dark bg-opacity-75">
-                                {% if category.parent is not null %}
-                                    <a href="{{ path('app_market_place_parent_category', {parent:  category.parent.slug}) }}"
-                                       class="link-white">
-                                        {{ category.parent.name }}
-                                    </a>
-                                {% else %}
-                                    <a href="{{ path('app_market_place_parent_category', {parent:  category.slug}) }}"
-                                       class="link-white">
-                                        {{ product.category_name }}
-                                    </a>
-                                {% endif %}
+                        <div class="card-img-overlay d-flex flex-column z-index-1 p-3">
+                            <div class="d-flex justify-content-between">
+                                        <span class="badge text-bg-dark bg-opacity-75 rounded-1">
+                                            <a href=""
+                                               class="link-white fw-normal">{{ 'market.product.details'|trans }}</a>
+                                        </span>
+                                <span class="badge bg-white text-dark fw-normal">
+                                            <i class="bi bi-star-fill text-warning me-2"></i>4.3
+                                        </span>
                             </div>
-                            <div class="badge text-bg-danger bg-opacity-75">New</div>
+                            <div class="w-100 mt-auto">
+                                <span class="badge bg-secondary text-dark p-1">
+                                    {% if category.parent is null %}
+                                        <a href="{{ path('app_market_place_child_category', {parent:  category.slug, child: product.category_slug }) }}"
+                                           class="link-white fs-6 fw-light px-2">{{ product.category_name }}</a>
+                                    {% else %}
+                                        <a href="{{ path('app_market_place_parent_category', {parent:  product.parent_category_slug }) }}"
+                                           class="link-white fs-6 fw-light px-2">{{ product.parent_category_name }}</a>
+                                    {% endif %}
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body px-1">

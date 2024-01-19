@@ -80,11 +80,15 @@ class MarketProductRepository extends ServiceEntityRepository
      */
     public function findProductsByChildrenCategory(int $id, int $limit = 10): ?array
     {
+        $select = $this->columns();
+        array_push($select, 'cc.name as parent_category_name', 'cc.slug as parent_category_slug');
+
         $qb = $this->createQueryBuilder('p')
             ->distinct()
-            ->select($this->columns())
+            ->select($select)
             ->join(MarketCategoryProduct::class, 'cp', Expr\Join::WITH, 'p.id = cp.product')
             ->join(MarketCategory::class, 'c', Expr\Join::WITH, 'cp.category = c.id')
+            ->leftJoin(MarketCategory::class, 'cc', Expr\Join::WITH, 'c.parent = cc.id')
             ->join(Market::class, 'm', Expr\Join::WITH, 'p.market = m.id')
             ->where('cp.category = :id')
             ->setParameter('id', $id)
