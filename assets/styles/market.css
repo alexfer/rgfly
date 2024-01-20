@@ -2,6 +2,58 @@
     border-style: dashed;
 }
 
+.marketplace .violet {
+    color: #7952B3;
+}
+
+.marketplace .violet-25 {
+    color: rgba(121, 82, 179, 0.25);
+}
+
+.marketplace .violet-50 {
+    color: rgba(121, 82, 179, 0.50);
+}
+
+.marketplace .violet-75 {
+    color: rgba(121, 82, 179, 0.75);
+}
+
+.marketplace .bg-violet {
+    background: #7952B3;
+}
+
+.marketplace .bg-violet-25 {
+    background: rgba(121, 82, 179, 0.25);
+}
+
+.marketplace .bg-violet-50 {
+    background: rgba(121, 82, 179, 0.50);
+}
+
+.marketplace .bg-violet-75 {
+    background: rgba(121, 82, 179, 0.75);
+}
+
+.marketplace .bg-violet:hover {
+    color: #fff;
+    background: #7952B3;
+}
+
+.marketplace .bg-violet-25:hover {
+    color: rgba(255, 255, 255, 0.25);
+    background: rgba(121, 82, 179, 0.25);
+}
+
+.marketplace .bg-violet-50 {
+    color: rgba(255, 255, 255, 0.50);
+    background: rgba(121, 82, 179, 0.50);
+}
+
+.marketplace .bg-violet-75 {
+    color: rgba(255, 255, 255, 0.70);
+    background: rgba(121, 82, 179, 0.75);
+}
+
 .marketplace .dotted {
     border-style: dotted;
 }

@@ -3,14 +3,14 @@
     {{ parent() }}
     {{ encore_entry_link_tags('market') }}
 {% endblock %}
-{% block title %}Market Place IndexController!{% endblock %}
+{% block title %}{{ 'title.general.market.name'|trans }}{% endblock %}
 {% block body %}
     <div class="page-title-area user-area">
         <div class="d-table">
             <div class="d-table-cell">
                 <div class="container">
                     <div class="page-title-content">
-                        <h2>Market Place</h2>
+                        <h2>{{ 'title.general.market.name'|trans }}</h2>
                         <p>index</p>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                                 <div class="card-img-overlay d-flex flex-column z-index-1 p-3">
                                     <div class="d-flex justify-content-between">
                                         <span class="badge text-bg-dark bg-opacity-75 rounded-1">
-                                            <a href=""
+                                            <a href="{{ path('app_market_place_product', {slug: product.slug}) }}"
                                                class="link-white fw-normal">{{ 'market.product.details'|trans }}</a>
                                         </span>
                                         <span class="badge bg-white text-dark fw-normal">
@@ -66,19 +66,19 @@
                                     <li class="list-inline-item position-absolute start-0 ms-3">
                                         <a class="btn btn-primary rounded-0"
                                            data-slug="{{ product.slug }}" type="button">
-                                            <i class="bi bi-cart"></i>
+                                            <i class="bi bi-cart me-1"></i>{{ 'market.product.add'|trans }}
                                         </a>
                                     </li>
                                     <li class="list-inline-item">
                                         <div class="badge bg-success bg-opacity-25 text-success">
-                                            <h5 class="mb-0">{{ product.cost|number_format(2, '.', ' ') }}
+                                            <h5 class="mb-0">{{ product.cost|number_format(2, ',', '') }}
                                                 <small>{{ product.currency|currency }}</small></h5>
                                         </div>
                                     </li>
                                 </ul>
                                 <h5 class="card-title h-25 mb-1 mt-3 mx-3">
                                     <a title="{{ product.name }}"
-                                       href="#/{{ product.slug }}">{{ product.short_name }}</a>
+                                       href="{{ path('app_market_place_product', {slug: product.slug}) }}">{{ product.short_name }}</a>
                                 </h5>
                                 <a href="{{ path('app_market_place_child_category', {parent: product.parent_category_slug, child:  product.category_slug}) }}"
                                    class="btn btn-link text-decoration-none text-secondary d-block text-start">
@@ -99,7 +99,7 @@
                             </div>
                             <div class="card-footer border-top">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <a href="#"
+                                    <a href="{{ path('app_market_place_product', {slug: product.slug}) }}"
                                        class="btn btn-link text-decoration-none p-0 mb-0">{{ 'market.product.details'|trans }}
                                         <i class="bi bi-arrow-right ms-1"></i>
                                     </a>

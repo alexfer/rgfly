@@ -24,7 +24,7 @@
                         <div class="card-img-overlay d-flex flex-column z-index-1 p-3">
                             <div class="d-flex justify-content-between">
                                         <span class="badge text-bg-dark bg-opacity-75 rounded-1">
-                                            <a href=""
+                                            <a href="{{ path('app_market_place_product', {slug: product.slug}) }}"
                                                class="link-white fw-normal">{{ 'market.product.details'|trans }}</a>
                                         </span>
                                 <span class="badge bg-white text-dark fw-normal">
@@ -50,19 +50,19 @@
                                 <a class="btn btn-primary rounded-0"
                                    data-id="{{ product.market_id }}-{{ product.id }}"
                                    type="button">
-                                    <i class="bi bi-cart"></i>
+                                    <i class="bi bi-cart me-1"></i>{{ 'market.product.add'|trans }}
                                 </a>
                             </li>
                             <li class="list-inline-item">
                                 <div class="badge bg-success bg-opacity-25 text-success">
-                                    <h5 class="mb-0">{{ product.cost|number_format(2, '.', ' ') }}
+                                    <h5 class="mb-0">{{ product.cost|number_format(2, ',', '') }}
                                         <small>{{ product.currency|currency }}</small></h5>
                                 </div>
                             </li>
                         </ul>
                         <h5 class="card-title h-auto mb-1 mt-3 mx-3">
                             <a title="{{ product.name }}"
-                               href="#product/{{ product.market_slug }}/{{ product.slug }}">{{ product.short_name }}</a>
+                               href="{{ path('app_market_place_product', {slug: product.slug}) }}">{{ product.short_name }}</a>
                         </h5>
                     </div>
                     <a href="{{ path('app_market_place_child_category', {parent: category.slug, child: product.category_slug}) }}"
@@ -81,7 +81,7 @@
                             </li>
                         </ul>
                         <div class="d-flex justify-content-between align-items-center">
-                            <a href="#"
+                            <a href="{{ path('app_market_place_product', {slug: product.slug}) }}"
                                class="btn btn-link text-decoration-none p-0 mb-0">{{ 'market.product.details'|trans }}
                                 <i class="bi bi-arrow-right ms-1"></i>
                             </a>

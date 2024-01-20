@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>{% block title %}{{ 'site.title'|trans }}{% endblock %} - {{ 'text.home.header'|trans }}</title>
+    <meta name="description" content="{{ 'site.description'|trans }}">
+    <meta name="robots" content="index,follow">
+    <meta charset="utf-8">
     <meta property="og:title" content="{{ 'site.title'|trans }}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url('app_index') }}">
@@ -39,7 +42,7 @@
             <div class="col-lg-12 col-md-12 text-center">
                 {% set year =  'now' | date('Y') %}
                 {% set build_year = '2023' %}
-                <span>&copy; {{ year == build_year ? build_year : build_year ~ '-' ~ year }} Techspace - {{ 'text.all_right_reserved'|trans }}</span>
+                <span>&copy; {{ year == build_year ? build_year : build_year ~ '-' ~ year }} {{ 'site.title'|trans }} - {{ 'text.all_right_reserved'|trans }}</span>
             </div>
         </div>
     </div>

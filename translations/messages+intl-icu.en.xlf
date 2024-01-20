@@ -59,6 +59,10 @@
                 <source>site.title</source>
                 <target>Techspace</target>
             </trans-unit>
+            <trans-unit id="site.description">
+                <source>site.description</source>
+                <target>A marketplace with free and paid Techspace solutions - Techspace Online</target>
+            </trans-unit>
             <trans-unit id="text.home.header">
                 <source>text.home.header</source>
                 <target>Software development company</target>
@@ -537,7 +541,6 @@
                 <source>user.info.city</source>
                 <target>City</target>
             </trans-unit>
-
             <trans-unit id="dashboard.market.restrict">
                 <source>dashboard.market.restrict</source>
                 <target>Sorry, but you may create only one store.</target>
@@ -557,6 +560,54 @@
             <trans-unit id="title.dashboard.change_market">
                 <source>title.dashboard.change_market</source>
                 <target>Update Market</target>
+            </trans-unit>
+            <trans-unit id="title.general.market.name">
+                <source>title.general.market.name</source>
+                <target>Market Place</target>
+            </trans-unit>
+            <trans-unit id="market.product.in_stock">
+                <source>market.product.in_stock</source>
+                <target>In Stock</target>
+            </trans-unit>
+            <trans-unit id="market.product.out_stock">
+                <source>market.product.out_stock</source>
+                <target>Out Stock</target>
+            </trans-unit>
+            <trans-unit id="market.product.code">
+                <source>market.product.code</source>
+                <target>Product Code</target>
+            </trans-unit>
+            <trans-unit id="market.product.code_prefix">
+                <source>market.product.code_prefix</source>
+                <target>P</target>
+            </trans-unit>
+            <trans-unit id="market.product.off">
+                <source>market.product.off</source>
+                <target>Off</target>
+            </trans-unit>
+            <trans-unit id="market.product.cart">
+                <source>market.product.cart</source>
+                <target>Cart</target>
+            </trans-unit>
+            <trans-unit id="market.product.wishlist">
+                <source>market.product.wishlist</source>
+                <target>Wishlist</target>
+            </trans-unit>
+            <trans-unit id="market.product.compare">
+                <source>market.product.compare</source>
+                <target>Compare</target>
+            </trans-unit>
+            <trans-unit id="market.product.add">
+                <source>market.product.add</source>
+                <target>Add</target>
+            </trans-unit>
+            <trans-unit id="market.product.availability">
+                <source>market.product.availability</source>
+                <target>Availability</target>
+            </trans-unit>
+            <trans-unit id="market.product.add_cart">
+                <source>market.product.add_cart</source>
+                <target>Add to cart</target>
             </trans-unit>
             <trans-unit id="title.dashboard.create_product">
                 <source>title.dashboard.create_product</source>

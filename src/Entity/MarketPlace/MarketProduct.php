@@ -71,6 +71,9 @@ class MarketProduct
     #[ORM\Column(length: 80)]
     private ?string $short_name = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $discount = null;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
@@ -488,6 +491,18 @@ class MarketProduct
     public function setShortName(?string $short_name): static
     {
         $this->short_name = $short_name;
+
+        return $this;
+    }
+
+    public function getDiscount(): ?float
+    {
+        return $this->discount;
+    }
+
+    public function setDiscount(?float $discount): static
+    {
+        $this->discount = $discount;
 
         return $this;
     }
