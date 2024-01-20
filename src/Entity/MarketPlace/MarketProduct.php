@@ -495,14 +495,21 @@ class MarketProduct
         return $this;
     }
 
+    /**
+     * @return float|null
+     */
     public function getDiscount(): ?float
     {
         return $this->discount;
     }
 
+    /**
+     * @param float|null $discount
+     * @return $this
+     */
     public function setDiscount(?float $discount): static
     {
-        $this->discount = $discount;
+        $this->discount = round($discount, 2);
 
         return $this;
     }

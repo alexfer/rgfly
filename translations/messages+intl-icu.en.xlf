@@ -464,6 +464,10 @@
                 <source>label.form.cost</source>
                 <target>Cost</target>
             </trans-unit>
+            <trans-unit id="label.form.discount">
+                <source>label.form.discount</source>
+                <target>Discount</target>
+            </trans-unit>
             <trans-unit id="label.form.title">
                 <source>label.form.title</source>
                 <target>Title</target>

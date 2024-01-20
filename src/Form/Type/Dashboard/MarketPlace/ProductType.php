@@ -6,12 +6,15 @@ use AllowDynamicProperties;
 use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketCategory;
 use App\Entity\MarketPlace\MarketProduct;
+use Doctrine\DBAL\Types\FloatType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -145,6 +148,22 @@ use Doctrine\ORM\EntityRepository;
                         'minMessage' => 'form.quantity.min',
                         'max' => 1000,
                         'maxMessage' => 'form.quantity.max',
+                    ]),
+                ],
+            ])
+            ->add('discount', RangeType::class, [
+                'attr' => [
+                    'min' => 0,
+                    'max' => 100,
+                    'step' => 1,
+                    'value' => $options['data']?->getDiscount() ?? 0,
+                ],
+                'constraints' => [
+                    new Length([
+                        'min' => 1,
+                        'minMessage' => 'form.discount.min',
+                        'max' => 100,
+                        'maxMessage' => 'form.discount.max',
                     ]),
                 ],
             ])
