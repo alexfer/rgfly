@@ -10,7 +10,7 @@
             <div class="d-table-cell">
                 <div class="container">
                     <div class="page-title-content">
-                        <h2>{{ 'title.general.market.name'|trans }}</h2>
+                        <h2>{% block extend_title %}{{ 'title.general.market.name'|trans }}{% endblock %}</h2>
                         <p>index</p>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                                     <li class="list-group-item small pb-0  border-0">
                                         <i class="bi bi-pin-map-fill me-2 text-opacity-50 text-info"></i>
                                         <a class="text-decoration-none"
-                                           href="#{{ product.market_slug }}">{{ product.market }}</a>
+                                           href="{{ path('app_market_place_market', {slug:  product.market_slug}) }}">{{ product.market }}</a>
                                     </li>
                                     <li class="list-group-item small pb-0  border-0">
                                         <i class="bi bi-telephone-fill text-secondary me-2"></i> <span

@@ -1,0 +1,20 @@
+{% extends 'market_place/index.html.twig' %}
+
+{% block title %}{{ market.name }}{% endblock %}
+{% block extend_title %}{{ market.name }}{% endblock %}
+
+{% block content_body %}
+    <div class="row">
+        <div class="col-sm-12">
+{#            {{ dump(market.attach.name) }}#}
+            <div class="card border-0 bg-light">
+                <div class="card-header py-3 border-bottom-0 display-6 fs-4">
+                    {{ market.name }}
+                </div>
+                <div class="card-body bg-white">
+                    {{ market.description|replace({'<p>': '<p class="lead fs-6">'})|raw }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

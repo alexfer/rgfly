@@ -1,6 +1,7 @@
 {% extends 'market_place/index.html.twig' %}
 
-{% block title %}{{ product.name }}{% endblock %}
+{% block title %}{{ product.shortName }}{% endblock %}
+{% block description %}{{ product.name }}{% endblock %}
 
 {% block content_body %}
     {% set parent = product.marketCategoryProducts.first.category.parent %}
@@ -35,9 +36,9 @@
                     <img src="{{ asset('img/08.jpg') }}" class="card-img-top h-100" alt="...">
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 mt-2">
                 <div class="ps-lg-10 mt-6 mt-md-0">
-                    <a href="#!" class="mb-4 d-block">{{ product.market.name }}</a>
+                    <a href="{{ path('app_market_place_market', {slug:  product.market.slug}) }}" class="mb-4 d-block"><i class="bi bi-shop me-2"></i>{{ product.market.name }}</a>
                     <h1 class="mb-1 text-truncate">{{ product.shortName }}</h1>
                     <div class="mb-4">
                         <small class="text-warning">
@@ -50,9 +51,19 @@
                         <a href="#" class="ms-2 fs-6">(30 reviews)</a>
                     </div>
                     <div class="fs-4">
-                        <span class="fw-bold text-dark">{{ product.cost|number_format(2, ',', '') }}<small>{{ product.market.currency|currency }}</small></span>
-                        <span class="text-decoration-line-through text-muted">35<small>{{ product.market.currency|currency }}</small></span>
-                        <span><small class="fs-6 ms-2 text-danger">26% Off</small></span>
+                        {% if product.discount %}
+                            {% set discount = product.discount %}
+                            {% set cost = product.cost %}
+                            <span class="fw-bold text-dark">{{ (cost - ((cost * discount) - discount)/100)|round|number_format(2, '.', ' ') }}<small>{{ product.market.currency|currency }}</small></span>
+                            <span class="text-decoration-line-through text-muted">{{ product.cost|number_format(2, '.', ' ') }}<small>{{ product.market.currency|currency }}</small></span>
+                        {% else %}
+                            <span class="fw-bold text-dark">{{ product.cost|number_format(2, '.', ' ') }}<small>{{ product.market.currency|currency }}</small></span>
+                        {% endif %}
+                        <span>
+                            {% if product.discount %}
+                                <small class="fs-6 ms-2 text-danger">{{ product.discount|number_format(2, ',', '') }}% {{ 'market.product.off'|trans }}</small>
+                            {% endif %}
+                        </span>
                     </div>
                     <hr class="my-6">
                     <div class="mb-5">
@@ -71,7 +82,8 @@
                                data-bs-placement="top"
                                title="{{ 'market.product.compare'|trans }}"><i class="bi bi-arrow-left-right"></i></a>
                             <a class="btn btn-light" href="#" data-bs-toggle="tooltip" data-bs-html="true"
-                               data-bs-placement="top" title="{{ 'market.product.wishlist'|trans }}"><i class="bi bi-heart"></i></a>
+                               data-bs-placement="top" title="{{ 'market.product.wishlist'|trans }}"><i
+                                        class="bi bi-heart"></i></a>
                         </div>
                     </div>
                     <hr class="my-3">
