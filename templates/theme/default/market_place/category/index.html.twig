@@ -4,8 +4,10 @@
 
 {% block content_body %}
 
-    <div class="display-6 mb-3">{{ category.name }}</div>
-    <ul class="list-inline mb-4">
+    <div class="card border-0 bg-light">
+        <div class="card-header py-3 border-bottom-0 display-6 fs-4">{{ category.name }}</div>
+    </div>
+    <ul class="list-inline my-3">
         {% for child in category.children %}
             <li class="list-inline-item category">
                 <a href="{{ path('app_market_place_child_category', {parent: category.slug, child: child.slug}) }}"
@@ -90,6 +92,9 @@
                     </div>
                 </div>
             </div>
+        {% else %}
+            <img class="d-block mx-auto mb-5 border-0 h-25 w-25 shadow-none" src="{{ asset('img/404.png') }}" width="340" alt="{{ 'table.footer.not_found'|trans }}">
+            <p class="text-center">{{ 'table.footer.not_found'|trans }}</p>
         {% endfor %}
     </div>
 {% endblock %}

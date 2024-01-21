@@ -11,10 +11,10 @@
                         {% set _checked = 'checked' %}
                     {% endif %}
                 {% endfor %}
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" name="category[{{ category.id }}]" class="custom-control-input"
+                <div class="form-check form-switch">
+                    <input type="checkbox" name="category[{{ category.id }}]" role="switch" class="form-check-input"
                            id="category-{{ category.id }}" {{ _checked }}>
-                    <label class="custom-control-label" for="category-{{ category.id }}">{{ category.name }}</label>
+                    <label class="form-check-label" for="category-{{ category.id }}">{{ category.name }}</label>
                 </div>
             {% endfor %}
         </div>

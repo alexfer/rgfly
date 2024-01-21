@@ -44,7 +44,7 @@ class BlogController extends AbstractController
 
     use Dashboard;
 
-    const CHILDREN = [
+    const array CHILDREN = [
         'blog' => [
             'menu.dashboard.overview.blog' => 'app_dashboard_blog',
             'menu.dashboard.create.blog' => 'app_dashboard_create_blog',
@@ -321,7 +321,7 @@ class BlogController extends AbstractController
         $storage = $params->get('entry_storage_picture');
 
         $url = "{$storage}/{$detailsId}/{$attach->getName()}";
-        $picture = $cacheManager->getBrowserPath(parse_url($url, PHP_URL_PATH), 'entry_preview', [], null);
+        $picture = $cacheManager->getBrowserPath(parse_url($url, PHP_URL_PATH), 'entry_preview');
 
         return $this->json([
             'success' => true,

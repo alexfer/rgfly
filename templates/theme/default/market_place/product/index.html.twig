@@ -32,7 +32,7 @@
     <div class="container mt-2">
         <div class="row">
             <div class="col-md-6">
-                <div class="p-0 zoom" onmousemove="zoom(event)" id="{{ product.slug }}">
+                <div class="p-0" id="{{ product.slug }}">
                     <img src="{{ asset('img/08.jpg') }}" class="card-img-top h-100" alt="...">
                 </div>
             </div>
@@ -103,6 +103,9 @@
                     </table>
                 </div>
             </div>
+        </div>
+        <div class="bg-light shadow-sm rounded-3 mt-2 mb-5 p-2">
+            {{ product.description|raw }}
         </div>
     </div>
 {% endblock %}

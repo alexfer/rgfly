@@ -6,8 +6,8 @@ $(function () {
     let changeBtn = $('#btnChangePicture');
     let formData = new FormData();
     let info = $('.card-footer .picture-info');
-    let profile = $('label[for="profile_picture"]');
-    let entry = $('label[for="picture"]');
+    let profile = $('input[id="profile_picture"]');
+    let entry = $('input[id="picture"]');
     let attachments = $('.entry-attachments');
     let loader = $('.loader');
     let readURL = function (input) {
@@ -24,7 +24,7 @@ $(function () {
     }
 
     let formatBytes = function (bytes, decimals = 2) {
-        if (!+bytes) return '0 Bytes'
+        if (!+bytes) return '0 Bytes';
 
         const k = 1024
         const dm = decimals < 0 ? 0 : decimals
@@ -35,11 +35,9 @@ $(function () {
     }
 
     let upload = function (file) {
-        alert($('button[id="attach"]'));
         $('button[id="attach"]').on('click', function (e) {
-            formData.append('file', file);
-
             if (file) {
+                formData.append('file', file);
                 loader.toggleClass('show');
                 attachments.toggleClass('blur');
                 $.ajax({
@@ -59,10 +57,10 @@ $(function () {
                                 toast.removeClass('error').text(response.message);
                             }
 
-                            profile.text(profile.attr('data-label'));
-                            entry.text(entry.attr('data-label'));
+                            profile.text(profile.data('label'));
+                            entry.text(entry.data('label'));
                             info.text('');
-                            $('.toast').toast('show');
+                            $('.toast').show();
                             attachments.prepend(
                                 $('<div/>')
                                     .attr('class', 'd-inline-block  mr-3 mb-3').append(
@@ -70,7 +68,7 @@ $(function () {
                                         .attr('class', 'attach lazy')
                                         .attr('src', response.picture)
                                 ).append(
-                                    $('<div/>').attr('class', 'handlers').attr('data-id', response.id))).delay(4000).show('slow');
+                                    $('<div/>').attr('class', 'handlers').attr('data-id', response.id))).delay(3000).show('slow');
                             if (attachments.length > 6) {
                                 setTimeout(function () {
                                     attachments.children().last().remove();
@@ -144,21 +142,10 @@ $(function () {
     $('input[name="profile[picture]"], input[name="entry[picture]"]').on('change', function (e) {
         e.preventDefault();
         let file = this.files[0];
-        let profileInput = document.getElementById('profile_picture');
-        let entryInput = document.getElementById('entry_picture');
         info.html(file.name + ', ' + formatBytes(file.size) + ', ' + file.type);
         profile.html(file.name);
         entry.html(file.name);
         upload(file);
-
-        if (profileInput) {
-            profileInput.parentNode.innerHTML = profileInput.parentNode.innerHTML;
-        }
-
-        if (entryInput) {
-            entryInput.parentNode.innerHTML = entryInput.parentNode.innerHTML;
-        }
-
     });
 
     changeBtn.on('click', function () {
@@ -187,11 +174,11 @@ $(function () {
                         $('#btnDiscard').hide();
                         $('#imgProfile').attr('src', response.picture);
                         $('.toast .toast-body').text(response.message);
-                        $('.toast').toast('show');
+                        $('.toast').show();
                     }
                 },
                 complete: function () {
-                    $('.toast').toast('show');
+                    $('.toast').show();
                 }
             });
         }
