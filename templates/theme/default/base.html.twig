@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ app.request.locale }}">
+<html lang="{{ app.request.locale }}" data-bs-theme="white">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -47,6 +47,7 @@
         </div>
     </div>
 </div>
+{{ include ('layouts/cart.html.twig') }}
 {% block toast %}{% endblock %}
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}

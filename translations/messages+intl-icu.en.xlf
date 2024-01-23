@@ -216,6 +216,10 @@
                 <source>title.dashboard.manufacturers</source>
                 <target>Manufacturers</target>
             </trans-unit>
+            <trans-unit id="title.dashboard.attributes">
+                <source>title.dashboard.attributes</source>
+                <target>Attributes</target>
+            </trans-unit>
             <trans-unit id="title.dashboard.overview_gallery">
                 <source>title.dashboard.overview_gallery</source>
                 <target>Gallery Overview</target>
@@ -436,6 +440,10 @@
                 <source>label.form.manufacturer_name</source>
                 <target>Manufacturer Name</target>
             </trans-unit>
+            <trans-unit id="label.form.attribute_name">
+                <source>label.form.attribute_name</source>
+                <target>Attribute Name</target>
+            </trans-unit>
             <trans-unit id="label.form.brand_name">
                 <source>label.form.brand_name</source>
                 <target>Brand Name</target>
@@ -591,7 +599,11 @@
             </trans-unit>
             <trans-unit id="market.product.cart">
                 <source>market.product.cart</source>
-                <target>Cart</target>
+                <target>Shopping Cart</target>
+            </trans-unit>
+            <trans-unit id="market.product.cart.empty">
+                <source>market.product.cart.empty</source>
+                <target>Your cart is currently empty</target>
             </trans-unit>
             <trans-unit id="market.product.wishlist">
                 <source>market.product.wishlist</source>
@@ -698,6 +710,10 @@
             <trans-unit id="option.category.choice_category">
                 <source>option.category.choice_category</source>
                 <target>Choice category ...</target>
+            </trans-unit>
+            <trans-unit id="option.attribute.choice_attribute">
+                <source>option.attribute.choice_attribute</source>
+                <target>Choice attribute ...</target>
             </trans-unit>
             <trans-unit id="entry.form.brands">
                 <source>entry.form.brands</source>
@@ -1024,6 +1040,10 @@
                 <source>market.supplier.create</source>
                 <target>Add Supplier</target>
             </trans-unit>
+            <trans-unit id="market.attribute.create">
+                <source>market.attribute.create</source>
+                <target>Add Attribute</target>
+            </trans-unit>
             <trans-unit id="market.manufacturer.create">
                 <source>market.manufacturer.create</source>
                 <target>Add Manufacturer</target>
@@ -1035,6 +1055,10 @@
             <trans-unit id="market.manufacturers">
                 <source>market.manufacturers</source>
                 <target>Manufacturers</target>
+            </trans-unit>
+            <trans-unit id="market.attributes">
+                <source>market.attributes</source>
+                <target>Attributes</target>
             </trans-unit>
             <trans-unit id="market.products.overview">
                 <source>market.products.overview</source>

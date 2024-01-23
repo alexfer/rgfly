@@ -11,6 +11,8 @@
                href="{{ path('app_dashboard_market_place_market_supplier', {market: market.id}) }}">{{ 'market.suppliers'|trans }}</a>
             <a class="nav-item nav-link"
                href="{{ path('app_dashboard_market_place_market_manufacturer', {market: market.id}) }}">{{ 'market.manufacturers'|trans }}</a>
+            <a class="nav-item nav-link"
+               href="{{ path('app_dashboard_market_place_market_attribute', {market: market.id}) }}">{{ 'market.attributes'|trans }}</a>
         </div>
     </div>
     <span class="navbar-text text-white me-3 font-weight-bold">{{ market.name|length > 30 ? market.name|slice(0, 30) ~ ' ... ' : market.name }}</span>

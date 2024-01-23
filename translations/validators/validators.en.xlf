@@ -14,6 +14,10 @@
                 <source>form.country.not_blank</source>
                 <target>The country can't be blank.</target>
             </trans-unit>
+            <trans-unit id="form.attribute.not_blank">
+                <source>form.attribute.not_blank</source>
+                <target>The attribute can't be blank.</target>
+            </trans-unit>
             <trans-unit id="form.cost.not_blank">
                 <source>form.cost.not_blank</source>
                 <target>The cost can't be blank.</target>

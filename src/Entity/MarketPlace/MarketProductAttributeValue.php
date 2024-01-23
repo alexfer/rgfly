@@ -19,26 +19,19 @@ class MarketProductAttributeValue
     #[ORM\Column(length: 255)]
     private ?string $value = null;
 
-    /**
-     * @return int|null
-     */
+    #[ORM\Column]
+    private array $extra = [];
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return MarketProductAttribute|null
-     */
     public function getAttribute(): ?MarketProductAttribute
     {
         return $this->attribute;
     }
 
-    /**
-     * @param MarketProductAttribute|null $attribute
-     * @return $this
-     */
     public function setAttribute(?MarketProductAttribute $attribute): static
     {
         $this->attribute = $attribute;
@@ -46,21 +39,26 @@ class MarketProductAttributeValue
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getValue(): ?string
     {
         return $this->value;
     }
 
-    /**
-     * @param string $value
-     * @return $this
-     */
     public function setValue(string $value): static
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    public function getExtra(): array
+    {
+        return $this->extra;
+    }
+
+    public function setExtra(array $extra): static
+    {
+        $this->extra = $extra;
 
         return $this;
     }

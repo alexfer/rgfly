@@ -1,12 +1,12 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\DataFixtures\MarketPlace;
 
 use App\Entity\MarketPlace\MarketPaymentGateway;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class MarketPlaceFixtures extends Fixture
+class Fixtures extends Fixture
 {
 
     /**
@@ -24,7 +24,7 @@ class MarketPlaceFixtures extends Fixture
     public function getDependencies(): array
     {
         return [
-            MarketPlaceCategoryFixtures::class,
+            CategoryFixtures::class,
         ];
     }
 

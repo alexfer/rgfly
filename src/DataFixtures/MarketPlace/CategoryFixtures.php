@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\DataFixtures\MarketPlace;
 
 use App\Entity\MarketPlace\MarketCategory;
 use DateTimeImmutable;
@@ -8,7 +8,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-class MarketPlaceCategoryFixtures extends Fixture
+class CategoryFixtures extends Fixture
 {
 
     /**
