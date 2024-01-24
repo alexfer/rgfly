@@ -16,7 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueEntity(fields: ['slug'], message: 'slug.unique', errorPath: 'slug')]
 class MarketProduct
 {
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -74,12 +73,16 @@ class MarketProduct
     #[ORM\Column(nullable: true)]
     private ?float $discount = null;
 
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: MarketProductVariants::class)]
+    private Collection $marketProductVariants;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
         $this->marketCategoryProducts = new ArrayCollection();
         $this->marketProductAttaches = new ArrayCollection();
         $this->marketOrdersProducts = new ArrayCollection();
+        $this->marketProductVariants = new ArrayCollection();
     }
 
     /**
@@ -510,6 +513,44 @@ class MarketProduct
     public function setDiscount(?float $discount): static
     {
         $this->discount = round($discount, 2);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketProductVariants>
+     */
+    public function getMarketProductVariants(): Collection
+    {
+        return $this->marketProductVariants;
+    }
+
+    /**
+     * @param MarketProductVariants $marketProductVariant
+     * @return $this
+     */
+    public function addMarketProductVariant(MarketProductVariants $marketProductVariant): static
+    {
+        if (!$this->marketProductVariants->contains($marketProductVariant)) {
+            $this->marketProductVariants->add($marketProductVariant);
+            $marketProductVariant->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MarketProductVariants $marketProductVariant
+     * @return $this
+     */
+    public function removeMarketProductVariant(MarketProductVariants $marketProductVariant): static
+    {
+        if ($this->marketProductVariants->removeElement($marketProductVariant)) {
+            // set the owning side to null (unless already changed)
+            if ($marketProductVariant->getProduct() === $this) {
+                $marketProductVariant->setProduct(null);
+            }
+        }
 
         return $this;
     }

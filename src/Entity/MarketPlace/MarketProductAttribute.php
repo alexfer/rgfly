@@ -25,9 +25,6 @@ class MarketProductAttribute
     private ?string $name = null;
 
     #[ORM\Column]
-    private ?int $in_use = null;
-
-    #[ORM\Column]
     private ?int $in_front = null;
 
     #[ORM\Column]
@@ -39,10 +36,14 @@ class MarketProductAttribute
     #[ORM\OneToMany(mappedBy: 'attribute', targetEntity: MarketProductAttributeValue::class)]
     private Collection $marketProductAttributeValues;
 
+    #[ORM\OneToMany(mappedBy: 'attribute', targetEntity: MarketProductVariants::class)]
+    private Collection $marketProductVariants;
+
     public function __construct()
     {
         $this->created_at = new DateTimeImmutable();
         $this->marketProductAttributeValues = new ArrayCollection();
+        $this->marketProductVariants = new ArrayCollection();
     }
 
     /**
@@ -87,25 +88,6 @@ class MarketProductAttribute
     public function setName(string $name): static
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getInUse(): ?int
-    {
-        return $this->in_use;
-    }
-
-    /**
-     * @param int $in_use
-     * @return $this
-     */
-    public function setInUse(int $in_use): static
-    {
-        $this->in_use = $in_use;
 
         return $this;
     }
@@ -175,6 +157,10 @@ class MarketProductAttribute
         return $this->marketProductAttributeValues;
     }
 
+    /**
+     * @param MarketProductAttributeValue $marketProductAttributeValue
+     * @return $this
+     */
     public function addMarketProductAttributeValue(MarketProductAttributeValue $marketProductAttributeValue): static
     {
         if (!$this->marketProductAttributeValues->contains($marketProductAttributeValue)) {
@@ -185,12 +171,54 @@ class MarketProductAttribute
         return $this;
     }
 
+    /**
+     * @param MarketProductAttributeValue $marketProductAttributeValue
+     * @return $this
+     */
     public function removeMarketProductAttributeValue(MarketProductAttributeValue $marketProductAttributeValue): static
     {
         if ($this->marketProductAttributeValues->removeElement($marketProductAttributeValue)) {
             // set the owning side to null (unless already changed)
             if ($marketProductAttributeValue->getAttribute() === $this) {
                 $marketProductAttributeValue->setAttribute(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketProductVariants>
+     */
+    public function getMarketProductVariants(): Collection
+    {
+        return $this->marketProductVariants;
+    }
+
+    /**
+     * @param MarketProductVariants $marketProductVariant
+     * @return $this
+     */
+    public function addMarketProductVariant(MarketProductVariants $marketProductVariant): static
+    {
+        if (!$this->marketProductVariants->contains($marketProductVariant)) {
+            $this->marketProductVariants->add($marketProductVariant);
+            $marketProductVariant->setAttribute($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MarketProductVariants $marketProductVariant
+     * @return $this
+     */
+    public function removeMarketProductVariant(MarketProductVariants $marketProductVariant): static
+    {
+        if ($this->marketProductVariants->removeElement($marketProductVariant)) {
+            // set the owning side to null (unless already changed)
+            if ($marketProductVariant->getAttribute() === $this) {
+                $marketProductVariant->setAttribute(null);
             }
         }
 
