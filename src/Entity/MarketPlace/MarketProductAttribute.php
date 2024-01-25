@@ -18,9 +18,6 @@ class MarketProductAttribute
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'marketProductAttributes')]
-    private ?Market $market = null;
-
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
@@ -36,14 +33,13 @@ class MarketProductAttribute
     #[ORM\OneToMany(mappedBy: 'attribute', targetEntity: MarketProductAttributeValue::class)]
     private Collection $marketProductAttributeValues;
 
-    #[ORM\OneToMany(mappedBy: 'attribute', targetEntity: MarketProductVariants::class)]
-    private Collection $marketProductVariants;
+    #[ORM\ManyToOne(inversedBy: 'marketProductAttributes')]
+    private ?MarketProduct $product = null;
 
     public function __construct()
     {
         $this->created_at = new DateTimeImmutable();
         $this->marketProductAttributeValues = new ArrayCollection();
-        $this->marketProductVariants = new ArrayCollection();
     }
 
     /**
@@ -52,25 +48,6 @@ class MarketProductAttribute
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return Market|null
-     */
-    public function getMarket(): ?Market
-    {
-        return $this->market;
-    }
-
-    /**
-     * @param Market|null $market
-     * @return $this
-     */
-    public function setMarket(?Market $market): static
-    {
-        $this->market = $market;
-
-        return $this;
     }
 
     /**
@@ -188,39 +165,20 @@ class MarketProductAttribute
     }
 
     /**
-     * @return Collection<int, MarketProductVariants>
+     * @return MarketProduct|null
      */
-    public function getMarketProductVariants(): Collection
+    public function getProduct(): ?MarketProduct
     {
-        return $this->marketProductVariants;
+        return $this->product;
     }
 
     /**
-     * @param MarketProductVariants $marketProductVariant
+     * @param MarketProduct|null $product
      * @return $this
      */
-    public function addMarketProductVariant(MarketProductVariants $marketProductVariant): static
+    public function setProduct(?MarketProduct $product): static
     {
-        if (!$this->marketProductVariants->contains($marketProductVariant)) {
-            $this->marketProductVariants->add($marketProductVariant);
-            $marketProductVariant->setAttribute($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param MarketProductVariants $marketProductVariant
-     * @return $this
-     */
-    public function removeMarketProductVariant(MarketProductVariants $marketProductVariant): static
-    {
-        if ($this->marketProductVariants->removeElement($marketProductVariant)) {
-            // set the owning side to null (unless already changed)
-            if ($marketProductVariant->getAttribute() === $this) {
-                $marketProductVariant->setAttribute(null);
-            }
-        }
+        $this->product = $product;
 
         return $this;
     }

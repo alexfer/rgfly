@@ -75,7 +75,7 @@ use Doctrine\ORM\EntityRepository;
 
         if ($marketCategory) {
             foreach ($marketCategory as $category) {
-                if($category->getParent()) {
+                if ($category->getParent()) {
                     $categories[$category->getParent()->getName()][$category->getName()] = $category->getId();
                 }
             }
@@ -249,11 +249,18 @@ use Doctrine\ORM\EntityRepository;
      * @param OptionsResolver $resolver
      * @return void
      */
-    public
-    function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => MarketProduct::class,
         ]);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getParent(): ?string
+    {
+        return AttributeType::class;
     }
 }

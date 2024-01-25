@@ -2,16 +2,18 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Market;
 
+use App\Helper\MarketPlace\MarketAttributeValues;
 use App\Entity\MarketPlace\{MarketBrand,
     MarketCategory,
     MarketCategoryProduct,
     MarketManufacturer,
     MarketProduct,
+    MarketProductAttribute,
+    MarketProductAttributeValue,
     MarketProductBrand,
     MarketProductManufacturer,
     MarketProductSupplier,
-    MarketSupplier
-};
+    MarketSupplier};
 use App\Form\Type\Dashboard\MarketPlace\ProductType;
 use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Security\Voter\ProductVoter;
@@ -168,6 +170,34 @@ class ProductController extends AbstractController
             $em = $this->handleRelations($em, $form, $product);
             $product->setSlug(MarketPlaceHelper::slug($product->getId()));
             $em->persist($product);
+
+            $attributes['colors'] = $form->get('color')->getData();
+            $attributes['size'] = $form->get('size')->getData();
+
+            if($attributes['colors']) {
+                $attribute = new MarketProductAttribute();
+                $attribute->setProduct($product)->setName('color')->setInFront(1);
+                $attributeColors = array_flip(MarketAttributeValues::ATTRIBUTES['Color']);
+
+                foreach ($attributes['colors'] as $color) {
+                    $attributeValue = new MarketProductAttributeValue();
+                    $value = $attributeValue->setAttribute($attribute)->setValue($attributeColors[$color])->setExtra([$color]);
+                    $em->persist($value);
+                }
+                $em->persist($attribute);
+            }
+            if($attributes['size']) {
+                $attribute = new MarketProductAttribute();
+                $attribute->setProduct($product)->setName('size')->setInFront(1);
+
+                foreach ($attributes['size'] as $size) {
+                    $attributeValue = new MarketProductAttributeValue();
+                    $value = $attributeValue->setAttribute($attribute)->setValue($size);
+                    $em->persist($value);
+                }
+                $em->persist($attribute);
+            }
+
             $em->flush();
 
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));

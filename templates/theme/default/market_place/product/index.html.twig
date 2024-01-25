@@ -38,7 +38,8 @@
             </div>
             <div class="col-md-6 mt-2">
                 <div class="ps-lg-10 mt-6 mt-md-0">
-                    <a href="{{ path('app_market_place_market', {slug:  product.market.slug}) }}" class="mb-4 d-block"><i class="bi bi-shop me-2"></i>{{ product.market.name }}</a>
+                    <a href="{{ path('app_market_place_market', {slug:  product.market.slug}) }}"
+                       class="mb-4 d-block"><i class="bi bi-shop me-2"></i>{{ product.market.name }}</a>
                     <h1 class="mb-1 text-truncate">{{ product.shortName }}</h1>
                     <div class="mb-4">
                         <small class="text-warning">
@@ -66,12 +67,23 @@
                         </span>
                     </div>
                     <hr class="my-6">
-                    <div class="mb-2">
-                        {% for attribute in product.market.marketProductAttributes.toArray %}
+                    <div class="mb-2 attributes bg-light">
+                        {% for attribute in product.marketProductAttributes.toArray %}
                             {% if attribute.inFront %}
                                 <p class="mt-2 mb-0">{{ attribute.name|capitalize }}</p>
                                 {% for attr in attribute.marketProductAttributeValues %}
-                                    <button type="button" class="btn btn-outline-secondary" data-id="{{ product.id }}-{{ attr.id }}">{{ attr.value|capitalize }}</button>
+                                    <input type="radio" name="attr[{{ attribute.name }}]" class="btn-check"
+                                           id="btn-check-{{ attr.id }}" value="{{ attr.id }}"
+                                           autocomplete="off">
+                                    <label class="btn btn-link-secondary rounded-circle bg-opacity-25 btn-sm"
+                                           for="btn-check-{{ attr.id }}"
+                                           {% if attribute.name == 'color' %} style="background-color: {{ attr.extra|join }};"{% endif %}>
+                                        {% if attribute.name == 'size' %}
+                                            <span class="px-1">{{ attr.value|capitalize }}</span>
+                                        {% else %}
+                                            <span class="py-1 px-2"></span>
+                                        {% endif %}
+                                    </label>
                                 {% endfor %}
                             {% endif %}
                         {% endfor %}

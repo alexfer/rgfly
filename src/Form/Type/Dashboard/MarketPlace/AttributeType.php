@@ -23,14 +23,14 @@ class AttributeType extends AbstractType
         $builder
             ->add('size', ChoiceType::class, [
                 'mapped' => false,
-                'required' => true,
+                'required' => false,
                 'multiple' => true,
                 'expanded' => true,
                 'choices' => [MarketAttributeValues::ATTRIBUTES['Size']],
             ])
             ->add('color', ChoiceType::class, [
                 'mapped' => false,
-                'required' => true,
+                'required' => false,
                 'multiple' => true,
                 'expanded' => true,
                 'choices' => [MarketAttributeValues::ATTRIBUTES['Color']],

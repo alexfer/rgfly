@@ -73,9 +73,6 @@ class Market
     #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketOrders::class)]
     private Collection $marketOrders;
 
-    #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketProductAttribute::class)]
-    private Collection $marketProductAttributes;
-
     public function __construct()
     {
         $this->created_at = new DateTime();
@@ -84,7 +81,6 @@ class Market
         $this->marketSuppliers = new ArrayCollection();
         $this->marketManufacturers = new ArrayCollection();
         $this->marketOrders = new ArrayCollection();
-        $this->marketProductAttributes = new ArrayCollection();
     }
 
     /**
@@ -494,45 +490,7 @@ class Market
                 $marketOrder->setMarket(null);
             }
         }
-
+        
         return $this;
     }
-
-    /**
-     * @return Collection<int, MarketProductAttribute>
-     */
-    public function getMarketProductAttributes(): Collection
-    {
-        return $this->marketProductAttributes;
-    }
-
-    /**
-     * @param MarketProductAttribute $marketProductAttribute
-     * @return $this
-     */
-    public function addMarketProductAttribute(MarketProductAttribute $marketProductAttribute): static
-    {
-        if (!$this->marketProductAttributes->contains($marketProductAttribute)) {
-            $this->marketProductAttributes->add($marketProductAttribute);
-            $marketProductAttribute->setMarket($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param MarketProductAttribute $marketProductAttribute
-     * @return $this
-     */
-    public function removeMarketProductAttribute(MarketProductAttribute $marketProductAttribute): static
-    {
-        if ($this->marketProductAttributes->removeElement($marketProductAttribute)) {
-            // set the owning side to null (unless already changed)
-            if ($marketProductAttribute->getMarket() === $this) {
-                $marketProductAttribute->setMarket(null);
-            }
-        }
-
-        return $this;
-    }
-}
+  }
