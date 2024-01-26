@@ -66,28 +66,29 @@
                             {% endif %}
                         </span>
                     </div>
-                    <hr class="my-6">
-                    <div class="mb-2 attributes bg-light">
-                        {% for attribute in product.marketProductAttributes.toArray %}
-                            {% if attribute.inFront %}
-                                <p class="mt-2 mb-0">{{ attribute.name|capitalize }}</p>
-                                {% for attr in attribute.marketProductAttributeValues %}
-                                    <input type="radio" name="attr[{{ attribute.name }}]" class="btn-check"
-                                           id="btn-check-{{ attr.id }}" value="{{ attr.id }}"
-                                           autocomplete="off">
-                                    <label class="btn btn-link-secondary rounded-circle bg-opacity-25 btn-sm"
-                                           for="btn-check-{{ attr.id }}"
-                                           {% if attribute.name == 'color' %} style="background-color: {{ attr.extra|join }};"{% endif %}>
-                                        {% if attribute.name == 'size' %}
-                                            <span class="px-1">{{ attr.value|capitalize }}</span>
-                                        {% else %}
-                                            <span class="py-1 px-2"></span>
-                                        {% endif %}
-                                    </label>
-                                {% endfor %}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
+                    {% if product.marketProductAttributes.count %}
+                        <hr class="my-1">
+                        <div class="">
+                            {% for attribute in product.marketProductAttributes.toArray %}
+                                {% if attribute.inFront %}
+                                    <p class="mt-2 mb-0">{{ attribute.name|capitalize }}</p>
+                                    {% for attr in attribute.marketProductAttributeValues %}
+                                        <input type="radio" name="attr[{{ attribute.name }}]" class="btn-check"
+                                               id="btn-check-{{ attr.id }}" value="{{ attr.id }}"
+                                               autocomplete="off">
+                                        <label class="btn btn-link-secondary rounded-circle bg-opacity-25 btn-sm"
+                                               for="btn-check-{{ attr.id }}" {% if attribute.name == 'color' %} style="background-color: {{ attr.extra|join }};"{% endif %}>
+                                            {% if attribute.name == 'size' %}
+                                                <span class="px-1">{{ attr.value|capitalize }}</span>
+                                            {% else %}
+                                                <span class="py-1 px-2"></span>
+                                            {% endif %}
+                                        </label>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                     <div class="mt-3 row justify-content-start g-2 align-items-center">
                         <div class="col-xxl-4 col-lg-4 col-md-5 col-5 d-grid">
                             <button type="button" class="btn btn-primary opacity-75">

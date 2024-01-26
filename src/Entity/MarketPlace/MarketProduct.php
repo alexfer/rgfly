@@ -522,44 +522,6 @@ class MarketProduct
     }
 
     /**
-     * @return Collection<int, MarketProductVariants>
-     */
-    public function getMarketProductVariants(): Collection
-    {
-        return $this->marketProductVariants;
-    }
-
-    /**
-     * @param MarketProductVariants $marketProductVariant
-     * @return $this
-     */
-    public function addMarketProductVariant(MarketProductVariants $marketProductVariant): static
-    {
-        if (!$this->marketProductVariants->contains($marketProductVariant)) {
-            $this->marketProductVariants->add($marketProductVariant);
-            $marketProductVariant->setProduct($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param MarketProductVariants $marketProductVariant
-     * @return $this
-     */
-    public function removeMarketProductVariant(MarketProductVariants $marketProductVariant): static
-    {
-        if ($this->marketProductVariants->removeElement($marketProductVariant)) {
-            // set the owning side to null (unless already changed)
-            if ($marketProductVariant->getProduct() === $this) {
-                $marketProductVariant->setProduct(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, MarketProductAttribute>
      */
     public function getMarketProductAttributes(): Collection

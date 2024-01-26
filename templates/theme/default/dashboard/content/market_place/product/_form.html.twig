@@ -77,7 +77,7 @@
                         {% for attributes in form.vars.data.marketProductAttributes.toArray %}
                             {% if attributes.name == 'size' %}
                                 {% for value in attributes.marketProductAttributeValues.toArray %}
-                                   {% if value.value == field.vars.value %}
+                                   {% if value.value == field.vars.value|upper %}
                                        {% set _checked_size = true %}
                                    {% endif%}
                                 {% endfor %}
