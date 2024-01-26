@@ -76,7 +76,7 @@
                                         <input type="radio" name="attr[{{ attribute.name }}]" class="btn-check"
                                                id="btn-check-{{ attr.id }}" value="{{ attr.id }}"
                                                autocomplete="off">
-                                        <label class="btn btn-link-secondary rounded-circle bg-opacity-25 btn-sm"
+                                        <label class="btn btn-link-secondary{% if attribute.name == 'color' %} rounded-circle{% endif%} bg-opacity-25 btn-sm"
                                                for="btn-check-{{ attr.id }}" {% if attribute.name == 'color' %} style="background-color: {{ attr.extra|join }};"{% endif %}>
                                             {% if attribute.name == 'size' %}
                                                 <span class="px-1">{{ attr.value|capitalize }}</span>

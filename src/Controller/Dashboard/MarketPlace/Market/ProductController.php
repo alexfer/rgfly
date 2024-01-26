@@ -102,66 +102,50 @@ class ProductController extends AbstractController
             $em->persist($entryCategory);
 
             $em = $this->handleRelations($em, $form, $product);
-
-            //$product->setSlug($slugger->slug(MarketPlaceHelper::slug($product->getId()))->lower());
-
             $attributes['colors'] = $form->get('color')->getData();
             $attributes['size'] = $form->get('size')->getData();
 
-            if (!$product->getMarketProductAttributes()->count()) {
+            foreach ($product->getMarketProductAttributes() as $attribute) {
+                $values = $attribute->getMarketProductAttributeValues();
+                foreach ($values as $value) {
+                    $em->remove($value);
+                    $em->flush();
+                }
+            }
 
-                if ($attributes['colors']) {
+            if ($attributes['colors']) {
+                $attributeColors = array_flip(MarketAttributeValues::ATTRIBUTES['Color']);
+
+                $attribute = $em->getRepository(MarketProductAttribute::class)->findOneBy(['product' => $product, 'name' => 'color']);
+
+                if (!$attribute) {
                     $attribute = new MarketProductAttribute();
                     $attribute->setProduct($product)->setName('color')->setInFront(1);
-                    $attributeColors = array_flip(MarketAttributeValues::ATTRIBUTES['Color']);
-
-                    foreach ($attributes['colors'] as $color) {
-                        $attributeValue = new MarketProductAttributeValue();
-                        $value = $attributeValue->setAttribute($attribute)->setValue($attributeColors[$color])->setExtra([$color]);
-                        $em->persist($value);
-                    }
                     $em->persist($attribute);
                 }
-                if ($attributes['size']) {
+
+                foreach ($attributes['colors'] as $color) {
+                    $attributeValue = new MarketProductAttributeValue();
+                    $value = $attributeValue->setAttribute($attribute)->setValue($attributeColors[$color])->setExtra([$color]);
+                    $em->persist($value);
+                }
+            }
+
+            if ($attributes['size']) {
+                $attributeSize = array_flip(MarketAttributeValues::ATTRIBUTES['Size']);
+
+                $attribute = $em->getRepository(MarketProductAttribute::class)->findOneBy(['product' => $product, 'name' => 'size']);
+
+                if (!$attribute) {
                     $attribute = new MarketProductAttribute();
                     $attribute->setProduct($product)->setName('size')->setInFront(1);
-
-                    foreach ($attributes['size'] as $size) {
-                        $attributeValue = new MarketProductAttributeValue();
-                        $value = $attributeValue->setAttribute($attribute)->setValue($size);
-                        $em->persist($value);
-                    }
                     $em->persist($attribute);
                 }
-            } else {
-                foreach ($product->getMarketProductAttributes() as $attribute) {
-                    $values = $attribute->getMarketProductAttributeValues();
-                    foreach ($values as $value) {
-                        $em->remove($value);
-                        $em->flush();
-                    }
-                }
 
-                if ($attributes['colors']) {
-                    $attributeColors = array_flip(MarketAttributeValues::ATTRIBUTES['Color']);
-
-                    foreach ($attributes['colors'] as $color) {
-                        $attribute = $em->getRepository(MarketProductAttribute::class)->findOneBy(['product' => $product, 'name' => 'color']);
-                        $attributeValue = new MarketProductAttributeValue();
-                        $value = $attributeValue->setAttribute($attribute)->setValue($attributeColors[$color])->setExtra([$color]);
-                        $em->persist($value);
-                    }
-                }
-
-                if ($attributes['size']) {
-                    $attributeSize = array_flip(MarketAttributeValues::ATTRIBUTES['Size']);
-
-                    foreach ($attributes['size'] as $size) {
-                        $attribute = $em->getRepository(MarketProductAttribute::class)->findOneBy(['product' => $product, 'name' => 'size']);
-                        $attributeValue = new MarketProductAttributeValue();
-                        $value = $attributeValue->setAttribute($attribute)->setValue($attributeSize[$size]);
-                        $em->persist($value);
-                    }
+                foreach ($attributes['size'] as $size) {
+                    $attributeValue = new MarketProductAttributeValue();
+                    $value = $attributeValue->setAttribute($attribute)->setValue($attributeSize[$size]);
+                    $em->persist($value);
                 }
             }
 
