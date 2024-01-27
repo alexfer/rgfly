@@ -24,7 +24,7 @@ Encore
         .addEntry('layout', './assets/js/layout.js')
         .addEntry('image', './assets/js/image.js')
         .addEntry('responsive', './assets/js/responsive.js')
-//        .addEntry('ckeditor', './assets/js/ckeditor.js')
+        .addEntry('market-js', './assets/js/market.js')
         .addStyleEntry('sidebar', './assets/styles/sidebar.css')
         .addStyleEntry('market', './assets/styles/market.css')
         //.addStyleEntry('global', './assets/styles/global.scss')

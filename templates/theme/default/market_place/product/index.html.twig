@@ -66,44 +66,54 @@
                             {% endif %}
                         </span>
                     </div>
-                    {% if product.marketProductAttributes.count %}
-                        <hr class="my-1">
-                        <div class="">
-                            {% for attribute in product.marketProductAttributes.toArray %}
-                                {% if attribute.inFront %}
-                                    <p class="mt-2 mb-0">{{ attribute.name|capitalize }}</p>
-                                    {% for attr in attribute.marketProductAttributeValues %}
-                                        <input type="radio" name="attr[{{ attribute.name }}]" class="btn-check"
-                                               id="btn-check-{{ attr.id }}" value="{{ attr.id }}"
-                                               autocomplete="off">
-                                        <label class="btn btn-link-secondary{% if attribute.name == 'color' %} rounded-circle{% endif%} bg-opacity-25 btn-sm"
-                                               for="btn-check-{{ attr.id }}" {% if attribute.name == 'color' %} style="background-color: {{ attr.extra|join }};"{% endif %}>
-                                            {% if attribute.name == 'size' %}
-                                                <span class="px-1">{{ attr.value|capitalize }}</span>
-                                            {% else %}
-                                                <span class="py-1 px-2"></span>
-                                            {% endif %}
-                                        </label>
-                                    {% endfor %}
-                                {% endif %}
-                            {% endfor %}
+                    <form id="cart" method="post"
+                          action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
+                        {% if product.marketProductAttributes.count %}
+                            <hr class="my-1">
+                            <div id="attributes">
+                                {% for attribute in product.marketProductAttributes.toArray %}
+                                    {% if attribute.inFront %}
+                                        <input type="hidden" name="color" value="">
+                                        <input type="hidden" name="size" value="">
+                                        <small class="d-block mt-2 mb-0 text-muted">{{ attribute.name|capitalize }}</small>
+                                        <div class="form-check-inline me-0" id="{{ attribute.name }}">
+                                            {% for attr in attribute.marketProductAttributeValues %}
+                                                <input type="radio" name="attr[{{ attribute.name }}]" class="btn-check"
+                                                       data-name="{{ attr.value }}"
+                                                       data-root-name="{{ attribute.name }}"
+                                                       id="btn-check-{{ attr.id }}" value="{{ attr.id }}"
+                                                       autocomplete="off">
+                                                <label class="btn btn-link-secondary{% if attribute.name == 'color' %} rounded-circle{% endif %} btn-sm"
+                                                       for="btn-check-{{ attr.id }}" {% if attribute.name == 'color' %} style="background-color: {{ attr.extra|join }};"{% endif %}>
+                                                    {% if attribute.name == 'size' %}
+                                                        <span class="px-1">{{ attr.value|capitalize }}</span>
+                                                    {% else %}
+                                                        <span class="py-1 px-2"></span>
+                                                    {% endif %}
+                                                </label>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <div class="mt-3 row justify-content-start g-2 align-items-center">
+                            <div class="col-xxl-4 col-lg-4 col-md-5 col-5 d-grid">
+                                <button type="submit" id="order" class="btn btn-primary opacity-75">
+                                    <i class="bi bi-basket me-2"></i>{{ 'market.product.add_cart'|trans }}
+                                </button>
+                            </div>
+                            <div class="col-md-4 col-4">
+                                <a class="btn btn-light" href="#" data-bs-toggle="tooltip" data-bs-html="true"
+                                   data-bs-placement="top"
+                                   title="{{ 'market.product.compare'|trans }}"><i
+                                            class="bi bi-arrow-left-right"></i></a>
+                                <a class="btn btn-light" href="#" data-bs-toggle="tooltip" data-bs-html="true"
+                                   data-bs-placement="top" title="{{ 'market.product.wishlist'|trans }}"><i
+                                            class="bi bi-heart"></i></a>
+                            </div>
                         </div>
-                    {% endif %}
-                    <div class="mt-3 row justify-content-start g-2 align-items-center">
-                        <div class="col-xxl-4 col-lg-4 col-md-5 col-5 d-grid">
-                            <button type="button" class="btn btn-primary opacity-75">
-                                <i class="bi bi-basket me-2"></i>{{ 'market.product.add_cart'|trans }}
-                            </button>
-                        </div>
-                        <div class="col-md-4 col-4">
-                            <a class="btn btn-light" href="#" data-bs-toggle="tooltip" data-bs-html="true"
-                               data-bs-placement="top"
-                               title="{{ 'market.product.compare'|trans }}"><i class="bi bi-arrow-left-right"></i></a>
-                            <a class="btn btn-light" href="#" data-bs-toggle="tooltip" data-bs-html="true"
-                               data-bs-placement="top" title="{{ 'market.product.wishlist'|trans }}"><i
-                                        class="bi bi-heart"></i></a>
-                        </div>
-                    </div>
+                    </form>
                     <hr class="my-3">
                     {% set code = product.slug|split('-')|last|upper %}
                     <table class="table table-borderless mb-0">
@@ -123,7 +133,13 @@
             </div>
         </div>
         <div class="bg-light shadow-sm rounded-3 mt-2 mb-5 p-2">
+            <strong class="d-block my-3">{{ product.shortName }}</strong>
             {{ product.description|raw }}
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('market-js') }}
 {% endblock %}

@@ -73,9 +73,6 @@ class MarketProduct
     #[ORM\Column(nullable: true)]
     private ?float $discount = null;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: MarketProductVariants::class)]
-    private Collection $marketProductVariants;
-
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: MarketProductAttribute::class)]
     private Collection $marketProductAttributes;
 
@@ -85,7 +82,6 @@ class MarketProduct
         $this->marketCategoryProducts = new ArrayCollection();
         $this->marketProductAttaches = new ArrayCollection();
         $this->marketOrdersProducts = new ArrayCollection();
-        $this->marketProductVariants = new ArrayCollection();
         $this->marketProductAttributes = new ArrayCollection();
     }
 

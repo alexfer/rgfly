@@ -13,11 +13,17 @@ class MarketOrdersProduct
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'marketOrdersProducts')]
+    #[ORM\ManyToOne(cascade: ['remove'], inversedBy: 'marketOrdersProducts')]
     private ?MarketOrders $orders = null;
 
     #[ORM\ManyToOne(inversedBy: 'marketOrdersProducts')]
     private ?MarketProduct $product = null;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $size = null;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $color = null;
 
     /**
      * @return int|null
@@ -61,6 +67,30 @@ class MarketOrdersProduct
     public function setProduct(?MarketProduct $product): static
     {
         $this->product = $product;
+
+        return $this;
+    }
+
+    public function getSize(): ?string
+    {
+        return $this->size;
+    }
+
+    public function setSize(?string $size): static
+    {
+        $this->size = $size;
+
+        return $this;
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(?string $color): static
+    {
+        $this->color = $color;
 
         return $this;
     }

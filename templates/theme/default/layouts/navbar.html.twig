@@ -113,9 +113,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#cart" class="nav-link" data-bs-toggle="offcanvas" role="button" aria-controls="cart">
+                            <a href="#shopping-cart" class="nav-link" data-bs-toggle="offcanvas" role="button" aria-controls="shopping-cart">
                                 <span class="badge bg-opacity-75 rounded-pill bg-success position-absolute top-0 start-100 mt-3 translate-middle-x">
-                                    <small>1</small>
+                                    <small id="qty">{{ app.session.get('quantity')|default(0) }}</small>
                                 </span>
                                 <h4 class="bi bi-cart mt-2"></h4>
                             </a>
