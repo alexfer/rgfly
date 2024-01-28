@@ -72,9 +72,9 @@
                             <hr class="my-1">
                             <div id="attributes">
                                 {% for attribute in product.marketProductAttributes.toArray %}
+                                    <input type="hidden" name="color" value="">
+                                    <input type="hidden" name="size" value="">
                                     {% if attribute.inFront %}
-                                        <input type="hidden" name="color" value="">
-                                        <input type="hidden" name="size" value="">
                                         <small class="d-block mt-2 mb-0 text-muted">{{ attribute.name|capitalize }}</small>
                                         <div class="form-check-inline me-0" id="{{ attribute.name }}">
                                             {% for attr in attribute.marketProductAttributeValues %}

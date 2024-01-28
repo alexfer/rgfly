@@ -13,6 +13,21 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: MarketOrdersRepository::class)]
 class MarketOrders
 {
+    const array STATUS = [
+        'delivered' => 'Delivered',
+        'unreached' => 'Unreached',
+        'paid' => 'Paid',
+        'confirmed' => 'Confirmed',
+        'processing' => 'Processing',
+        'pending' => 'Pending',
+        'on-hold' => 'On Hold',
+        'shipped' => 'Shipped',
+        'cancelled' => 'Cancelled',
+        'refused' => 'Refused',
+        'awaiting-return' => 'Awaiting Return',
+        'returned' => 'Returned',
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -39,14 +54,21 @@ class MarketOrders
     #[ORM\OneToMany(mappedBy: 'orders', targetEntity: MarketOrdersProduct::class)]
     private Collection $marketOrdersProducts;
 
-    #[ORM\OneToMany(mappedBy: 'marketOrders', targetEntity: MarketCustomer::class)]
-    private Collection $customer;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $session = null;
+
+    #[ORM\Column(length: 100)]
+    private ?string $status;
+
+    #[ORM\OneToMany(mappedBy: 'orders', targetEntity: MarketCustomerOrders::class)]
+    private Collection $marketCustomerOrders;
 
     public function __construct()
     {
         $this->created_at = new DateTimeImmutable();
         $this->marketOrdersProducts = new ArrayCollection();
-        $this->customer = new ArrayCollection();
+        $this->status = array_flip(self::STATUS)['Processing'];
+        $this->marketCustomerOrders = new ArrayCollection();
     }
 
     /**
@@ -220,29 +242,60 @@ class MarketOrders
     }
 
     /**
-     * @return Collection<int, MarketCustomer>
+     * @return string|null
      */
-    public function getCustomer(): Collection
+    public function getSession(): ?string
     {
-        return $this->customer;
+        return $this->session;
     }
 
-    public function addCustomer(MarketCustomer $customer): static
+    /**
+     * @param string|null $session
+     * @return $this
+     */
+    public function setSession(?string $session): static
     {
-        if (!$this->customer->contains($customer)) {
-            $this->customer->add($customer);
-            $customer->setMarketOrders($this);
+        $this->session = $session;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketCustomerOrders>
+     */
+    public function getMarketCustomerOrders(): Collection
+    {
+        return $this->marketCustomerOrders;
+    }
+
+    public function addMarketCustomerOrder(MarketCustomerOrders $marketCustomerOrder): static
+    {
+        if (!$this->marketCustomerOrders->contains($marketCustomerOrder)) {
+            $this->marketCustomerOrders->add($marketCustomerOrder);
+            $marketCustomerOrder->setOrders($this);
         }
 
         return $this;
     }
 
-    public function removeCustomer(MarketCustomer $customer): static
+    public function removeMarketCustomerOrder(MarketCustomerOrders $marketCustomerOrder): static
     {
-        if ($this->customer->removeElement($customer)) {
+        if ($this->marketCustomerOrders->removeElement($marketCustomerOrder)) {
             // set the owning side to null (unless already changed)
-            if ($customer->getMarketOrders() === $this) {
-                $customer->setMarketOrders(null);
+            if ($marketCustomerOrder->getOrders() === $this) {
+                $marketCustomerOrder->setOrders(null);
             }
         }
 

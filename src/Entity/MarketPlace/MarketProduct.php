@@ -76,6 +76,9 @@ class MarketProduct
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: MarketProductAttribute::class)]
     private Collection $marketProductAttributes;
 
+    #[ORM\Column(length: 255)]
+    private ?string $sku = null;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
@@ -543,6 +546,18 @@ class MarketProduct
                 $marketProductAttribute->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSku(): ?string
+    {
+        return $this->sku;
+    }
+
+    public function setSku(string $sku): static
+    {
+        $this->sku = $sku;
 
         return $this;
     }
