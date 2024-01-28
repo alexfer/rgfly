@@ -1,8 +1,12 @@
 import $ from 'jquery';
 import ('jquery.cookie');
 
+let container = $('#container');
+let label = $('label[for="mode"]');
+let responsive = $('#responsive').find('.visually-hidden');
+
 $(window).on('load', function () {
-    let label = $('label[for="mode"]'), mode = $('#mode'), responsive = $('#responsive').find('.visually-hidden');
+    let mode = $('#mode');
     if($.cookie('container')) {
         $('#container').removeClass('container').addClass('p-0 ' + $.cookie('container'));
         mode.attr('checked', 'checked');
@@ -16,12 +20,7 @@ $(window).on('load', function () {
 
 $(function () {
     $('#mode').on('change', function (e) {
-
         let mode = $(this);
-        let container = $('#container');
-        let label = $('label[for="mode"]');
-        let responsive = $('#responsive').find('.visually-hidden')
-
         if (mode.is(':checked')) {
             label.html(label.data('responsive-on'));
             mode.attr('checked', 'checked');

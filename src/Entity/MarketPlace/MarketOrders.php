@@ -39,10 +39,14 @@ class MarketOrders
     #[ORM\OneToMany(mappedBy: 'orders', targetEntity: MarketOrdersProduct::class)]
     private Collection $marketOrdersProducts;
 
+    #[ORM\OneToMany(mappedBy: 'marketOrders', targetEntity: MarketCustomer::class)]
+    private Collection $customer;
+
     public function __construct()
     {
         $this->created_at = new DateTimeImmutable();
         $this->marketOrdersProducts = new ArrayCollection();
+        $this->customer = new ArrayCollection();
     }
 
     /**
@@ -209,6 +213,36 @@ class MarketOrders
             // set the owning side to null (unless already changed)
             if ($marketOrdersProduct->getOrders() === $this) {
                 $marketOrdersProduct->setOrders(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketCustomer>
+     */
+    public function getCustomer(): Collection
+    {
+        return $this->customer;
+    }
+
+    public function addCustomer(MarketCustomer $customer): static
+    {
+        if (!$this->customer->contains($customer)) {
+            $this->customer->add($customer);
+            $customer->setMarketOrders($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCustomer(MarketCustomer $customer): static
+    {
+        if ($this->customer->removeElement($customer)) {
+            // set the owning side to null (unless already changed)
+            if ($customer->getMarketOrders() === $this) {
+                $customer->setMarketOrders(null);
             }
         }
 

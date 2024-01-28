@@ -44,21 +44,34 @@ class MarketCustomer
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $deleted_at = null;
 
+    #[ORM\ManyToOne(inversedBy: 'customer')]
+    private ?MarketOrders $marketOrders = null;
+
     public function __construct()
     {
         $this->created_at = new DateTimeImmutable();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return User|null
+     */
     public function getCustomer(): ?User
     {
         return $this->customer;
     }
 
+    /**
+     * @param User|null $customer
+     * @return $this
+     */
     public function setCustomer(?User $customer): static
     {
         $this->customer = $customer;
@@ -66,11 +79,18 @@ class MarketCustomer
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getFirstName(): ?string
     {
         return $this->first_name;
     }
 
+    /**
+     * @param string $first_name
+     * @return $this
+     */
     public function setFirstName(string $first_name): static
     {
         $this->first_name = $first_name;
@@ -78,11 +98,18 @@ class MarketCustomer
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getLastName(): ?string
     {
         return $this->last_name;
     }
 
+    /**
+     * @param string $last_name
+     * @return $this
+     */
     public function setLastName(string $last_name): static
     {
         $this->last_name = $last_name;
@@ -90,11 +117,18 @@ class MarketCustomer
         return $this;
     }
 
+    /**
+     * @return DateTimeInterface|null
+     */
     public function getBirthday(): ?DateTimeInterface
     {
         return $this->birthday;
     }
 
+    /**
+     * @param DateTimeInterface|null $birthday
+     * @return $this
+     */
     public function setBirthday(?DateTimeInterface $birthday): static
     {
         $this->birthday = $birthday;
@@ -102,11 +136,18 @@ class MarketCustomer
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getGender(): ?string
     {
         return $this->gender;
     }
 
+    /**
+     * @param string|null $gender
+     * @return $this
+     */
     public function setGender(?string $gender): static
     {
         $this->gender = $gender;
@@ -114,11 +155,18 @@ class MarketCustomer
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getPhone(): ?string
     {
         return $this->phone;
     }
 
+    /**
+     * @param string|null $phone
+     * @return $this
+     */
     public function setPhone(?string $phone): static
     {
         $this->phone = $phone;
@@ -126,11 +174,18 @@ class MarketCustomer
         return $this;
     }
 
+    /**
+     * @return DateTimeImmutable|null
+     */
     public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->created_at;
     }
 
+    /**
+     * @param DateTimeImmutable $created_at
+     * @return $this
+     */
     public function setCreatedAt(DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;
@@ -138,11 +193,18 @@ class MarketCustomer
         return $this;
     }
 
+    /**
+     * @return DateTimeImmutable|null
+     */
     public function getUpdatedAt(): ?DateTimeImmutable
     {
         return $this->updated_at;
     }
 
+    /**
+     * @param DateTimeImmutable|null $updated_at
+     * @return $this
+     */
     public function setUpdatedAt(?DateTimeImmutable $updated_at): static
     {
         $this->updated_at = $updated_at;
@@ -150,14 +212,40 @@ class MarketCustomer
         return $this;
     }
 
+    /**
+     * @return DateTimeImmutable|null
+     */
     public function getDeletedAt(): ?DateTimeImmutable
     {
         return $this->deleted_at;
     }
 
+    /**
+     * @param DateTimeImmutable|null $deleted_at
+     * @return $this
+     */
     public function setDeletedAt(?DateTimeImmutable $deleted_at): static
     {
         $this->deleted_at = $deleted_at;
+
+        return $this;
+    }
+
+    /**
+     * @return MarketOrders|null
+     */
+    public function getMarketOrders(): ?MarketOrders
+    {
+        return $this->marketOrders;
+    }
+
+    /**
+     * @param MarketOrders|null $marketOrders
+     * @return $this
+     */
+    public function setMarketOrders(?MarketOrders $marketOrders): static
+    {
+        $this->marketOrders = $marketOrders;
 
         return $this;
     }
