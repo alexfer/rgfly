@@ -3,7 +3,6 @@
 {% block title %}{{ category.name }}{% endblock %}
 
 {% block content_body %}
-
     <div class="card border-0 bg-light">
         <div class="card-header py-3 border-bottom-0 display-6 fs-4">{{ category.name }}</div>
     </div>
@@ -25,13 +24,13 @@
                         <img src="{{ asset('img/08.jpg') }}" class="card-img-top h-100" alt="...">
                         <div class="card-img-overlay d-flex flex-column z-index-1 p-3">
                             <div class="d-flex justify-content-between">
-                                        <span class="badge text-bg-dark bg-opacity-75 rounded-1">
-                                            <a href="{{ path('app_market_place_product', {slug: product.slug}) }}"
-                                               class="link-white fw-normal">{{ 'market.product.details'|trans }}</a>
-                                        </span>
+                                <span class="badge text-bg-dark bg-opacity-75 rounded-1">
+                                    <a href="{{ path('app_market_place_product', {slug: product.slug}) }}"
+                                       class="link-white fw-normal">{{ 'market.product.details'|trans }}</a>
+                                </span>
                                 <span class="badge bg-white text-dark fw-normal">
-                                            <i class="bi bi-star-fill text-warning me-2"></i>4.3
-                                        </span>
+                                    <i class="bi bi-star-fill text-warning me-2"></i>4.3
+                                </span>
                             </div>
                             <div class="w-100 mt-auto">
                                 <span class="badge bg-secondary text-dark p-1">
@@ -49,11 +48,14 @@
                     <div class="card-body px-1">
                         <ul class="list-inline text-end me-2 mb-3">
                             <li class="list-inline-item position-absolute start-0 ms-3">
-                                <a class="btn btn-primary rounded-0"
-                                   data-id="{{ product.market_id }}-{{ product.id }}"
-                                   type="button">
-                                    <i class="bi bi-cart me-1"></i>{{ 'market.product.add'|trans }}
-                                </a>
+                                <form class="shopping-cart" method="post"
+                                      action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
+                                    <button class="btn btn-primary rounded-0"
+                                       data-id="{{ product.market_id }}-{{ product.id }}"
+                                       type="submit">
+                                        <i class="bi bi-cart me-1"></i>{{ 'market.product.add'|trans }}
+                                    </button>
+                                </form>
                             </li>
                             <li class="list-inline-item">
                                 <div class="badge bg-success bg-opacity-25 text-success">
@@ -75,7 +77,7 @@
                             <li class="list-group-item small px-1 py-1  border-0">
                                 <i class="bi bi-pin-map-fill me-2 text-opacity-50 text-info"></i>
                                 <a class="text-decoration-none"
-                                   href="#{{ product.market_slug }}">{{ product.market }}</a>
+                                   href="{{ path('app_market_place_market', {slug:  product.market_slug}) }}">{{ product.market }}</a>
                             </li>
                             <li class="list-group-item small px-1 py-1  border-0">
                                 <i class="bi bi-telephone-fill text-secondary me-2"></i> <span
@@ -93,7 +95,8 @@
                 </div>
             </div>
         {% else %}
-            <img class="d-block mx-auto mb-5 border-0 h-25 w-25 shadow-none" src="{{ asset('img/404.png') }}" width="340" alt="{{ 'table.footer.not_found'|trans }}">
+            <img class="d-block mx-auto mb-5 border-0 h-25 w-25 shadow-none" src="{{ asset('img/404.png') }}"
+                 width="340" alt="{{ 'table.footer.not_found'|trans }}">
             <p class="text-center">{{ 'table.footer.not_found'|trans }}</p>
         {% endfor %}
     </div>

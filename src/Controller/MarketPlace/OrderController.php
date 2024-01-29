@@ -25,6 +25,13 @@ class OrderController extends AbstractController
     ): Response
     {
         $data = $request->toArray();
+
+        if(!$data) {
+            return $this->json([
+                'request' => $request->toArray(),
+            ]);
+        }
+
         $session = $request->getSession();
 
         if (!$session->isStarted()) {
@@ -33,10 +40,12 @@ class OrderController extends AbstractController
 
         $product = $em->getRepository(MarketProduct::class)->findOneBy(['slug' => $request->get('product')]);
         $market = $product->getMarket();
+
         $order = $em->getRepository(MarketOrders::class)->findOneBy([
             'market' => $market,
             'session' => $session->getId(),
         ]);
+
         $orderProducts = $em->getRepository(MarketOrdersProduct::class)->findOneBy([
             'product' => $product,
             'size' => $data['size'],
@@ -84,7 +93,6 @@ class OrderController extends AbstractController
             $em->flush();
 
             $session->set('quantity', $session->get('quantity') + 1);
-            //$request->cookies->set('order', serialize(['quantity' => 1]));
         }
 
         $orders = $em->getRepository(MarketOrders::class)->findOneBy(['session' => $session->getId()]);

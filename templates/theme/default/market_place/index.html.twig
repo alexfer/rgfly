@@ -63,10 +63,13 @@
                             <div class="card-body px-1">
                                 <ul class="list-inline text-end me-2 mb-3">
                                     <li class="list-inline-item position-absolute start-0 ms-3">
-                                        <a class="btn btn-primary rounded-0"
-                                           data-slug="{{ product.slug }}" type="button">
-                                            <i class="bi bi-cart me-1"></i>{{ 'market.product.add'|trans }}
-                                        </a>
+                                        <form class="shopping-cart" method="post"
+                                              action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
+                                            <button class="btn btn-primary rounded-0"
+                                                    data-slug="{{ product.slug }}" type="submit">
+                                                <i class="bi bi-cart me-1"></i>{{ 'market.product.add'|trans }}
+                                            </button>
+                                        </form>
                                     </li>
                                     <li class="list-inline-item">
                                         <div class="badge bg-success bg-opacity-25 text-success">
