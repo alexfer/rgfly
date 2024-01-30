@@ -8,9 +8,27 @@ if (typeof cart !== undefined) {
     cart.addEventListener('show.bs.offcanvas', (event) => {
         let url = cart.getAttribute('data-url');
         let body = cart.getElementsByClassName('offcanvas-body');
-        for (let i = 0; i < body.length; i++) {
-            body[i].innerHTML = '';
-        }
+        fetch(url, {
+            headers: {
+                'Content-type': 'application/json; charset=utf-8'
+            }
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                let size = Object.keys(json.orders).length;
+                if (size > 0) {
+                    for (const [key, value] of Object.entries(json.orders)) {
+                        console.log(`${key}: ${value}`);
+                    }
+                } else {
+                    for (let i = 0; i < body.length; i++) {
+                        body.item(i).innerHTML = '';
+                    }
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
 
     });
 }
@@ -52,7 +70,7 @@ if (typeof forms != 'undefined') {
                 }),
                 headers: {
                     'Content-type': 'application/json; charset=utf-8'
-                },
+                }
             })
                 .then((response) => response.json())
                 .then((json) => {

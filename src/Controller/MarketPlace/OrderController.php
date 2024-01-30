@@ -8,6 +8,8 @@ use App\Entity\MarketPlace\MarketOrders;
 use App\Entity\MarketPlace\MarketOrdersProduct;
 use App\Entity\MarketPlace\MarketProduct;
 use App\Helper\MarketPlace\MarketPlaceHelper;
+use App\Repository\MarketPlace\MarketOrdersRepository;
+use App\Service\MarketPlace\Currency;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -94,9 +96,9 @@ class OrderController extends AbstractController
 
             $session->set('quantity', $session->get('quantity') + 1);
         }
-
-        $orders = $em->getRepository(MarketOrders::class)->findOneBy(['session' => $session->getId()]);
-        $session->set('orders', serialize($orders));
+        $orders = $em->getRepository(MarketOrders::class)->findBy(['session' => $session->getId()]);
+        $collection = $em->getRepository(MarketOrders::class)->getSerializedData($orders);
+        $session->set('orders', serialize($collection));
 
         return $this->json([
             'quantity' => $session->get('quantity') ?? 1,
@@ -113,7 +115,7 @@ class OrderController extends AbstractController
 
         return $this->json([
             'orders' => unserialize($session->get('orders')),
-            'quantity' => $session->get('quantity') ?? 1,
+            'quantity' => $session->get('quantity') ?? 0,
         ]);
     }
 }

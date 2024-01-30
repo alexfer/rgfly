@@ -1,17 +1,17 @@
 import $ from 'jquery';
 
-$(window).on('load', function () {
+$(window).on('load', () => {
     $('.preloader').fadeOut('500');
 });
 
-$(window).on('scroll', function () {
+$(window).on('scroll', () => {
     if ($(this).scrollTop() > 120) {
         $('.navbar-area').addClass("is-sticky");
     } else {
         $('.navbar-area').removeClass("is-sticky");
     }
 });
-$(function () {
+$(() => {
     let toast = $('.toast');
     let flash = $('.d-tech-form input[name="flash"], .tech-form input[name="flash"]').attr('value');
 
@@ -24,13 +24,13 @@ $(function () {
     }
     toast.delay(3000).fadeOut(200);
 
-    $('ul[role="tablist"] a[data-bs-toggle="tab"]').on('click', function (e) {
+    $('ul[role="tablist"] a[data-bs-toggle="tab"]').on('click', (e) => {
         e.preventDefault();
         let location = $(this).attr('aria-controls');
         window.history.replaceState({}, '', location);
     });
 
-    $('a[data-bs-toggle="accordion-content"]').on('click', function (e) {
+    $('a[data-bs-toggle="accordion-content"]').on('click', (e) => {
         e.preventDefault();
 
         $(this).toggleClass('active');
@@ -39,7 +39,7 @@ $(function () {
         $('.accordion-title').not($(this)).removeClass('active');
     });
 
-    $('a[data-bs-toggle="collapse"]').on('click', function (e) {
+    $('a[data-bs-toggle="collapse"]').on('click', (e) => {
         e.preventDefault();
 
         let arrow = $(this).children('.arrow');
@@ -51,31 +51,31 @@ $(function () {
         }
     });
 
-    $('.delete-entry').on('click', function () {
+    $('.delete-entry').on('click', () => {
         $('.modal input[name="_token"]').attr('value', $(this).attr('data-token'));
         $('.modal .confirm').attr('action', $(this).attr('data-url'));
     });
 
-    $('.add-entry').on('click', function () {
+    $('.add-entry').on('click', () => {
         let url = $(this).data('url');
         let xhr = $(this).data('xhr');
         let owner = $(this).data('bs-target');
 
-        if(typeof xhr !== 'undefined') {
-            $.get(xhr, function (response) {
-                $.each(response.countries, function(key, text){
+        if (typeof xhr !== 'undefined') {
+            $.get(xhr, (response) => {
+                $.each(response.countries, (key, text) => {
                     $('.modal #suppler_country').append($('<option>', {
                         value: key,
-                        text : text
+                        text: text
                     }));
                 });
             })
         }
 
         $('.modal input[id="_token"]').attr('value', $(this).attr('data-token'));
-        $('.modal form').off().on('submit', function () {
+        $('.modal form').off().on('submit', () => {
             let form = $(this);
-            $.post(url, form.serialize(), function (response) {
+            $.post(url, form.serialize(), (response) => {
                 let data = response.json;
                 let owner = data.id.toString();
                 setTimeout(() => {
@@ -88,14 +88,14 @@ $(function () {
                     text: data.option.name,
                     selected: true,
                 }));
-            }).fail(function(xhr) {
+            }).fail((xhr) => {
                 console.log(xhr);
             });
             return false;
         });
     });
 
-    $('.load-categories').on('click', function (e) {
+    $('.load-categories').on('click', (e) => {
         e.preventDefault();
         $(this).parent('div').children('.visually-hidden').removeClass('visually-hidden');
         $(this).remove();

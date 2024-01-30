@@ -15,7 +15,7 @@ $(function () {
         if (input.files && input.files[0]) {
             let reader = new FileReader();
 
-            reader.onload = function (e) {
+            reader.onload = (e) => {
                 $('#imgProfile').attr('src', e.target.result);
             };
 
@@ -35,7 +35,7 @@ $(function () {
     }
 
     let upload = function (file) {
-        $('button[id="attach"]').on('click', function (e) {
+        $('button[id="attach"]').on('click', (e) => {
             if (file) {
                 formData.append('file', file);
                 loader.toggleClass('show');
@@ -46,7 +46,7 @@ $(function () {
                     data: formData,
                     contentType: false,
                     processData: false,
-                    success: function (response) {
+                    success: (response) => {
                         if (response) {
                             let toast = $('.toast .toast-body');
 
@@ -70,13 +70,13 @@ $(function () {
                                 ).append(
                                     $('<div/>').attr('class', 'handlers').attr('data-id', response.id))).delay(3000).show('slow');
                             if (attachments.length > 6) {
-                                setTimeout(function () {
+                                setTimeout(() => {
                                     attachments.children().last().remove();
                                 }, 2000);
                             }
                         }
                     },
-                    complete: function () {
+                    complete: () => {
                         setTimeout(() => {
                             loader.removeClass('show');
                             attachments.removeClass('blur');
@@ -90,8 +90,8 @@ $(function () {
         });
     };
 
-    attachments.find('.handlers a').off('click').on('click', function (e) {
-        e.preventDefault();
+    attachments.find('.handlers a').off('click').on('click', (event) => {
+        event.preventDefault();
 
         const url = $(this).attr('href');
         const id = $(this).parent('div').attr('data-id');
@@ -139,7 +139,7 @@ $(function () {
         });
     });
 
-    $('input[name="profile[picture]"], input[name="entry[picture]"]').on('change', function (e) {
+    $('input[name="profile[picture]"], input[name="entry[picture]"]').on('change', (e) => {
         e.preventDefault();
         let file = this.files[0];
         info.html(file.name + ', ' + formatBytes(file.size) + ', ' + file.type);
@@ -148,7 +148,7 @@ $(function () {
         upload(file);
     });
 
-    changeBtn.on('click', function () {
+    changeBtn.on('click', () => {
         if (!changeBtn.hasClass('changing')) {
             $('#profilePicture').click();
         } else {
@@ -166,7 +166,7 @@ $(function () {
                 data: formData,
                 contentType: false,
                 processData: false,
-                success: function (response) {
+                success: (response) => {
                     btnChange.show();
                     loading.hide();
                     if (response !== 0) {
@@ -177,21 +177,21 @@ $(function () {
                         $('.toast').show();
                     }
                 },
-                complete: function () {
+                complete: () => {
                     $('.toast').show();
                 }
             });
         }
     });
 
-    $('#profilePicture').on('change', function () {
+    $('#profilePicture').on('change', () => {
         readURL(this);
         let btnChange = $('#btnChangePicture');
         btnChange.html(btnChange.attr('data-confirm')).addClass('changing');
         $('#btnDiscard').removeClass('d-none');
     });
 
-    $('#btnDiscard').on('click', function () {
+    $('#btnDiscard').on('click', () => {
         let btnChange = $('#btnChangePicture');
         btnChange.html(btnChange.attr('data-change')).removeClass('changing');
         $('#btnDiscard').addClass('d-none');

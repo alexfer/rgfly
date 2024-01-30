@@ -3,6 +3,7 @@
 namespace App\Repository\MarketPlace;
 
 use App\Entity\MarketPlace\MarketOrders;
+use App\Service\MarketPlace\Currency;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,33 +17,42 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class MarketOrdersRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, MarketOrders::class);
     }
 
-//    /**
-//     * @return MarketOrders[] Returns an array of MarketOrders objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @param array $orders
+     * @return array
+     */
+    public function getSerializedData(array $orders): array
+    {
+        $collection = $products = [];
 
-//    public function findOneBySomeField($value): ?MarketOrders
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        foreach ($orders as $order) {
+            foreach ($order->getMarketOrdersProducts()->toArray() as $product) {
+                $products[$product->getId()] = [
+                    'name' => $product->getProduct()->getShortName(),
+                    'cost' => $product->getProduct()->getCost(),
+                    'discount' => $product->getProduct()->getDiscount(),
+                    'size' => $product->getSize(),
+                    'color' => $product->getColor(),
+                ];
+            }
+            $collection[$order->getId()] = [
+                'number' => $order->getNumber(),
+                'total' => $order->getTotal(),
+                'market' => [
+                    'name' => $order->getMarket()->getName(),
+                    'currency' => Currency::currency($order->getMarket()->getCurrency()),
+                ],
+                'products' => $products,
+            ];
+        }
+        return $collection;
+    }
 }
