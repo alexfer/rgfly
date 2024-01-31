@@ -7,7 +7,8 @@ let forms = document.querySelectorAll('.shopping-cart') || undefined;
 if (typeof cart !== undefined) {
     cart.addEventListener('show.bs.offcanvas', (event) => {
         let url = cart.getAttribute('data-url');
-        let body = cart.getElementsByClassName('offcanvas-body');
+        let body = cart.querySelectorAll('#order-body');
+        body.item(0).innerHTML = '';
         fetch(url, {
             headers: {
                 'Content-type': 'application/json; charset=utf-8'
@@ -15,21 +16,16 @@ if (typeof cart !== undefined) {
         })
             .then((response) => response.json())
             .then((json) => {
-                let size = Object.keys(json.orders).length;
-                if (size > 0) {
-                    for (const [key, value] of Object.entries(json.orders)) {
-                        console.log(`${key}: ${value}`);
-                    }
+                body.item(0).innerHTML = json.template;
+                if (parseInt(json.quantity) !== 0) {
+                    body.item(0).children[0].classList.remove('visually-hidden');
                 } else {
-                    for (let i = 0; i < body.length; i++) {
-                        body.item(i).innerHTML = '';
-                    }
+                    body.item(0).children[0].classList.toggle('visually-hidden');
                 }
             })
             .catch(err => {
                 console.log(err);
             });
-
     });
 }
 

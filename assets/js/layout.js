@@ -4,7 +4,7 @@ $(window).on('load', () => {
     $('.preloader').fadeOut('500');
 });
 
-$(window).on('scroll', () => {
+$(window).scroll(function () {
     if ($(this).scrollTop() > 120) {
         $('.navbar-area').addClass("is-sticky");
     } else {

@@ -96,8 +96,13 @@ class OrderController extends AbstractController
 
             $session->set('quantity', $session->get('quantity') + 1);
         }
+
         $orders = $em->getRepository(MarketOrders::class)->findBy(['session' => $session->getId()]);
         $collection = $em->getRepository(MarketOrders::class)->getSerializedData($orders);
+
+        if($session->has('orders')) {
+            $session->remove('orders');
+        }
         $session->set('orders', serialize($collection));
 
         return $this->json([
@@ -115,6 +120,7 @@ class OrderController extends AbstractController
 
         return $this->json([
             'orders' => unserialize($session->get('orders')),
+            'template' => $this->renderView('market_place/cart.html.twig', ['orders' =>  unserialize($session->get('orders'))]),
             'quantity' => $session->get('quantity') ?? 0,
         ]);
     }

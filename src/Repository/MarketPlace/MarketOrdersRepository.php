@@ -35,8 +35,11 @@ class MarketOrdersRepository extends ServiceEntityRepository
 
         foreach ($orders as $order) {
             foreach ($order->getMarketOrdersProducts()->toArray() as $product) {
-                $products[$product->getId()] = [
-                    'name' => $product->getProduct()->getShortName(),
+                $products[$order->getId()][$product->getId()] = [
+                    'short_name' => $product->getProduct()->getShortName(),
+                    'name' => $product->getProduct()->getName(),
+                    'slug' => $product->getProduct()->getSlug(),
+                    'order_id' => $order->getId(),
                     'cost' => $product->getProduct()->getCost(),
                     'discount' => $product->getProduct()->getDiscount(),
                     'size' => $product->getSize(),
@@ -44,11 +47,13 @@ class MarketOrdersRepository extends ServiceEntityRepository
                 ];
             }
             $collection[$order->getId()] = [
+                'id' => $order->getId(),
                 'number' => $order->getNumber(),
                 'total' => $order->getTotal(),
                 'market' => [
+                    'slug' => $order->getMarket()->getSlug(),
                     'name' => $order->getMarket()->getName(),
-                    'currency' => Currency::currency($order->getMarket()->getCurrency()),
+                    'currency' => $order->getMarket()->getCurrency(),
                 ],
                 'products' => $products,
             ];

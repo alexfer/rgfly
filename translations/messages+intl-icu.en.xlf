@@ -1004,6 +1004,10 @@
                 <source>market.product.create</source>
                 <target>Add Product</target>
             </trans-unit>
+            <trans-unit id="market.product.remove">
+                <source>market.product.remove</source>
+                <target>Remove</target>
+            </trans-unit>
             <trans-unit id="market.product.details">
                 <source>market.product.details</source>
                 <target>View details</target>
