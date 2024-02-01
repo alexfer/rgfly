@@ -1,5 +1,5 @@
 {% for order in orders %}
-    <a href="" class="lead ms-3">{{ order.market.name }}</a>
+    <a href="{{ path('app_market_place_market', {slug: order.market.slug}) }}" class="lead ms-3">{{ order.market.name }}</a>
     <hr class="my-1">
     <ul class="list-group list-group-lg list-group-flush">
         {% for products in order.products %}
@@ -18,12 +18,15 @@
                                     <a title="{{ product.name }}"
                                        href="{{ path('app_market_place_product', {slug: product.slug}) }}">{{ product.short_name }}</a>
                                     <br>
-                                    {% if product.discount %}
-                                        {% set discount = product.discount %}
+                                    {% if product.percent %}
+                                        {% set percent = product.percent %}
                                         {% set cost = product.cost %}
-                                        {% set discount_cost = (cost - ((cost * discount) - discount)/100) %}
-                                        <span class="fw-bold text-success">{{ discount_cost|round|number_format(2, '.', ' ') }}<small>{{ order.market.currency|currency }}</small></span>
-                                        <span class="text-decoration-line-through text-muted">{{ product.cost|number_format(2, '.', ' ') }}<small>{{ order.market.currency|currency }}</small></span>
+                                        {% set percent_cost = (cost - ((cost * percent) - percent)/100) %}
+                                        <span class="fw-bold text-success">{{ percent_cost|round|number_format(2, '.', ' ') }}<small>{{ order.market.currency|currency }}</small></span>
+                                        <span class="text-decoration-line-through text-muted">
+                                            {{ product.cost|number_format(2, '.', ' ') }}
+                                            <small>{{ order.market.currency|currency }}</small>
+                                        </span><span style="font-size: small" class="ps-2 fw-lighter text-danger">{{ product.percent }}%</span>
                                     {% else %}
                                         {% set result = product.cost * product|length %}
                                         <span class="text-muted">{{ product.cost|number_format(2, '.', ' ') }}<small>{{ order.market.currency|currency }}</small></span>
@@ -43,7 +46,7 @@
     </ul>
     <div class="justify-between lh-base fs-6 fw-bold bg-light py-3 ps-3 shadow-sm mb-3">
         <strong>Subtotal</strong>
-        <strong class="float-end pe-3">{{ order.total|number_format(2, '.', ' ') }}</strong>
+        <strong class="float-end pe-3">{{ order.discount|number_format(2, '.', ' ') }}</strong>
     </div>
 {% else %}
     <div class="text-center visually-hidden">

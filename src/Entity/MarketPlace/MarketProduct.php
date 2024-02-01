@@ -76,7 +76,7 @@ class MarketProduct
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: MarketProductAttribute::class)]
     private Collection $marketProductAttributes;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $sku = null;
 
     public function __construct()
@@ -538,6 +538,10 @@ class MarketProduct
         return $this;
     }
 
+    /**
+     * @param MarketProductAttribute $marketProductAttribute
+     * @return $this
+     */
     public function removeMarketProductAttribute(MarketProductAttribute $marketProductAttribute): static
     {
         if ($this->marketProductAttributes->removeElement($marketProductAttribute)) {
@@ -550,12 +554,19 @@ class MarketProduct
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getSku(): ?string
     {
         return $this->sku;
     }
 
-    public function setSku(string $sku): static
+    /**
+     * @param string|null $sku
+     * @return $this
+     */
+    public function setSku(?string $sku): static
     {
         $this->sku = $sku;
 

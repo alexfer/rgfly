@@ -117,6 +117,19 @@ use Doctrine\ORM\EntityRepository;
                     ]),
                 ],
             ])
+            ->add('sku', TextType::class, [
+                'required' => false,
+                'attr' => [
+                    'min' => 3,
+                    'max' => 80,
+                ],
+                'constraints' => [
+                    new Length([
+                        'max' => 80,
+                        'maxMessage' => 'form.sku.max',
+                    ]),
+                ],
+            ])
             ->add('name', TextareaType::class, [
                 'attr' => [
                     'min' => 3,

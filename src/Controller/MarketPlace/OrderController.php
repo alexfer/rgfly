@@ -28,7 +28,7 @@ class OrderController extends AbstractController
     {
         $data = $request->toArray();
 
-        if(!$data) {
+        if (!$data) {
             return $this->json([
                 'request' => $request->toArray(),
             ]);
@@ -54,10 +54,13 @@ class OrderController extends AbstractController
             'color' => $data['color'],
         ]);
 
+        $discount = fn($cost) => $cost - (($cost * $product->getDiscount()) - $product->getDiscount()) / 100;
+
         if (!$order) {
             $order = new MarketOrders();
             $order->setMarket($market)
                 ->setSession($session->getId())
+                ->setDiscount($discount($product->getCost()))
                 ->setTotal($product->getCost());
 
             $em->persist($order);
@@ -81,7 +84,9 @@ class OrderController extends AbstractController
         }
 
         if (!$orderProducts) {
+
             $order->setTotal($order->getTotal() + $product->getCost())
+                ->setDiscount($order->getDiscount() + $discount($product->getCost()))
                 ->setSession($session->getId());
             $em->persist($order);
 
@@ -100,7 +105,7 @@ class OrderController extends AbstractController
         $orders = $em->getRepository(MarketOrders::class)->findBy(['session' => $session->getId()]);
         $collection = $em->getRepository(MarketOrders::class)->getSerializedData($orders);
 
-        if($session->has('orders')) {
+        if ($session->has('orders')) {
             $session->remove('orders');
         }
         $session->set('orders', serialize($collection));
@@ -120,7 +125,7 @@ class OrderController extends AbstractController
 
         return $this->json([
             'orders' => unserialize($session->get('orders')),
-            'template' => $this->renderView('market_place/cart.html.twig', ['orders' =>  unserialize($session->get('orders'))]),
+            'template' => $this->renderView('market_place/cart.html.twig', ['orders' => unserialize($session->get('orders'))]),
             'quantity' => $session->get('quantity') ?? 0,
         ]);
     }

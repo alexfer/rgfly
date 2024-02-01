@@ -33,7 +33,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/dashboard/market-place/product')]
@@ -72,7 +71,6 @@ class ProductController extends AbstractController
      * @param MarketProduct $product
      * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
-     * @param SluggerInterface $slugger
      * @return Response
      * @throws Exception
      */
@@ -83,7 +81,6 @@ class ProductController extends AbstractController
         MarketProduct          $product,
         EntityManagerInterface $em,
         TranslatorInterface    $translator,
-        SluggerInterface       $slugger,
     ): Response
     {
         $form = $this->createForm(ProductType::class, $product);
@@ -149,6 +146,12 @@ class ProductController extends AbstractController
                 }
             }
 
+            $sku = $form->get('sku')->getData();
+            if (!$sku) {
+                $sku = 'M' . $request->get('market') . '-C' . $form->get('category')->getData() . '-P' . $product->getId() . '-N-' . mb_substr($form->get('name')->getData(), 0, 4, 'utf8') . '-C' . (int)$form->get('cost')->getData();
+            }
+            $product->setSku(strtoupper($sku));
+
             $em->persist($product);
             $em->flush();
 
@@ -168,7 +171,6 @@ class ProductController extends AbstractController
     /**
      * @param Request $request
      * @param UserInterface $user
-     * @param SluggerInterface $slugger
      * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
      * @return Response
@@ -180,13 +182,11 @@ class ProductController extends AbstractController
     public function create(
         Request                $request,
         UserInterface          $user,
-        SluggerInterface       $slugger,
         EntityManagerInterface $em,
         TranslatorInterface    $translator,
     ): Response
     {
         $market = $this->market($request, $user, $em);
-        $categories = $em->getRepository(MarketCategory::class)->findBy([], ['name' => 'asc']);
 
         $product = new MarketProduct();
 
@@ -214,6 +214,11 @@ class ProductController extends AbstractController
 
             $em = $this->handleRelations($em, $form, $product);
             $product->setSlug(MarketPlaceHelper::slug($product->getId()));
+            $sku = $form->get('sku')->getData();
+            if (!$sku) {
+                $sku = 'M' . $request->get('market') . '-C' . $requestCategory . '-P' . $product->getId() . '-N-' . mb_substr($form->get('name')->getData(), 0, 4, 'utf8') . '-C' . (int)$form->get('cost')->getData();
+            }
+            $product->setSku($sku);
             $em->persist($product);
 
             $attributes['colors'] = $form->get('color')->getData();

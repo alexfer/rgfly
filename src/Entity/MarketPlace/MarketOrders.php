@@ -39,8 +39,8 @@ class MarketOrders
     #[ORM\Column(length: 50)]
     private ?string $number = null;
 
-    #[ORM\Column]
-    private ?float $total = null;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0', nullable: true)]
+    private ?string $total = null;
 
     #[ORM\Column]
     private ?DateTimeImmutable $created_at;
@@ -62,6 +62,9 @@ class MarketOrders
 
     #[ORM\OneToMany(mappedBy: 'orders', targetEntity: MarketCustomerOrders::class)]
     private Collection $marketCustomerOrders;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0', nullable: true)]
+    private ?string $discount = null;
 
     public function __construct()
     {
@@ -118,18 +121,18 @@ class MarketOrders
     }
 
     /**
-     * @return float|null
+     * @return string|null
      */
-    public function getTotal(): ?float
+    public function getTotal(): ?string
     {
         return $this->total;
     }
 
     /**
-     * @param float $total
+     * @param string $total
      * @return $this
      */
-    public function setTotal(float $total): static
+    public function setTotal(string $total): static
     {
         $this->total = $total;
 
@@ -298,6 +301,18 @@ class MarketOrders
                 $marketCustomerOrder->setOrders(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDiscount(): ?string
+    {
+        return $this->discount;
+    }
+
+    public function setDiscount(?string $discount): static
+    {
+        $this->discount = $discount;
 
         return $this;
     }

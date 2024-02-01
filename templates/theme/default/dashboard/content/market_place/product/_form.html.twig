@@ -21,9 +21,9 @@
         {{ form_label(form.short_name, 'label.form.product_short_name', {label_attr: {class: 'form-label'}}) }} <span
                 class="text-danger">*</span>
         {{ form_widget(form.short_name, {attr: {class: short_name_error, placeholder: 'label.form.product_short_name'}}) }}
-        <div class="form-text ps-2">{{ 'form.product_short_name.length'|trans }}: <span
+        <div class="form-text">{{ 'form.product_short_name.length'|trans }}: <span
                     id="chars">{{ form.short_name.vars.value|length }}</span>
-            . {{ 'Allowed length'|trans({length: 80}) }}</div>
+            . {{ 'market.product.name.allowed'|trans({length: form.short_name.vars.attr.max}) }}</div>
         <small class="text-danger">{{ form_errors(form.short_name) }}</small>
     </div>
     <div class="form-group mb-3">
@@ -34,19 +34,25 @@
         <small class="text-danger">{{ form_errors(form.name) }}</small>
     </div>
     <div class="form-group mb-3 row">
-        <div class="col-6">
+        <div class="col-4">
             {% set quantity_error = form.quantity.vars.errors|length ? 'form-control error' : 'form-control' %}
             {{ form_label(form.quantity, 'label.form.quantity', {label_attr: {class: 'form-label'}}) }} <span
                     class="text-danger">*</span>
             {{ form_widget(form.quantity, {attr: {class: quantity_error, placeholder: '0'}}) }}
             <small class="text-danger">{{ form_errors(form.quantity) }}</small>
         </div>
-        <div class="col-6">
+        <div class="col-4">
             {% set cost_error = form.cost.vars.errors|length ? 'form-control error' : 'form-control' %}
             {{ form_label(form.cost, 'label.form.cost', {label_attr: {class: 'form-label'}}) }} <span
                     class="text-danger">*</span>
             {{ form_widget(form.cost, {attr: {class: cost_error, placeholder: '0.00'}}) }}
             <small class="text-danger">{{ form_errors(form.cost) }}</small>
+        </div>
+        <div class="col-4">
+            {% set sku_error = form.sku.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.sku, 'label.form.sku', {label_attr: {class: 'form-label'}}) }}
+            {{ form_widget(form.sku, {attr: {class: sku_error, placeholder: 'label.form.sku'}}) }}
+            <small class="text-danger">{{ form_errors(form.sku) }}</small>
         </div>
     </div>
     <div class="form-group mb-3 row">
@@ -77,9 +83,9 @@
                         {% for attributes in form.vars.data.marketProductAttributes.toArray %}
                             {% if attributes.name == 'size' %}
                                 {% for value in attributes.marketProductAttributeValues.toArray %}
-                                   {% if value.value|upper == field.vars.value|upper %}
-                                       {% set _checked_size = true %}
-                                   {% endif%}
+                                    {% if value.value|upper == field.vars.value|upper %}
+                                        {% set _checked_size = true %}
+                                    {% endif %}
                                 {% endfor %}
                             {% endif %}
                         {% endfor %}
@@ -104,7 +110,7 @@
                                     {% for value in attributes.marketProductAttributeValues.toArray %}
                                         {% if value.value == field.vars.label %}
                                             {% set _checked_color = true %}
-                                        {% endif%}
+                                        {% endif %}
                                     {% endfor %}
                                 {% endif %}
                             {% endfor %}

@@ -55,7 +55,7 @@
                         {% if product.discount %}
                             {% set discount = product.discount %}
                             {% set cost = product.cost %}
-                            <span class="fw-bold text-dark">{{ (cost - ((cost * discount) - discount)/100)|round|number_format(2, '.', ' ') }}<small>{{ product.market.currency|currency }}</small></span>
+                            <span class="fw-bold text-success">{{ (cost - ((cost * discount) - discount)/100)|round|number_format(2, '.', ' ') }}<small>{{ product.market.currency|currency }}</small></span>
                             <span class="text-decoration-line-through text-muted">{{ product.cost|number_format(2, '.', ' ') }}<small>{{ product.market.currency|currency }}</small></span>
                         {% else %}
                             <span class="fw-bold text-dark">{{ product.cost|number_format(2, '.', ' ') }}<small>{{ product.market.currency|currency }}</small></span>

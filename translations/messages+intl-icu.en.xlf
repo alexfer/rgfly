@@ -472,6 +472,10 @@
                 <source>label.form.cost</source>
                 <target>Cost</target>
             </trans-unit>
+            <trans-unit id="label.form.sku">
+                <source>label.form.sku</source>
+                <target>SKU</target>
+            </trans-unit>
             <trans-unit id="label.form.discount">
                 <source>label.form.discount</source>
                 <target>Discount</target>
@@ -1007,6 +1011,10 @@
             <trans-unit id="market.product.remove">
                 <source>market.product.remove</source>
                 <target>Remove</target>
+            </trans-unit>
+            <trans-unit id="market.product.name.allowed">
+                <source>market.product.name.allowed</source>
+                <target>Allowed Length {length}</target>
             </trans-unit>
             <trans-unit id="market.product.details">
                 <source>market.product.details</source>

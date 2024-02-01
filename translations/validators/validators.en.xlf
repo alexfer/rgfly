@@ -38,6 +38,14 @@
                 <source>form.cost.max</source>
                 <target>Your cost is too long. It should have {{ limit }} characters or less.</target>
             </trans-unit>
+            <trans-unit id="form.sku.min">
+                <source>form.sku.min</source>
+                <target>Your SKU is too short. It should have {{ limit }} characters or more.</target>
+            </trans-unit>
+            <trans-unit id="form.sku.max">
+                <source>form.sku.max</source>
+                <target>Your SKU is too long. It should have {{ limit }} characters or less.</target>
+            </trans-unit>
             <trans-unit id="form.quantity.min">
                 <source>form.quantity.min</source>
                 <target>Your quantity is too short. It should have {{ limit }} characters or more.</target>
