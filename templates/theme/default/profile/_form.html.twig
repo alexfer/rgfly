@@ -17,7 +17,7 @@
 } %}
 {{ form_start(form, {attr: {class: 'tech-form', novalidate: 'novalidate'}}) }}
 {% if form_errors(form) %}
-    <div class="alert alert-danger">
+    <div class="alert alert-danger mt-3">
         {{ form_errors(form) }}
     </div>
 {% endif %}
@@ -87,21 +87,21 @@
     <div class="col-4">
         {{ form_label(form.facebook_profile, 'Facebook Profile', {label_attr: {class: 'form-label visually-hidden'}}) }}
         <div class="input-group mb-2">
-            <span class="input-group-text" id="twitter-addon"><i class="bi bi-facebook"></i></span>
+            <span class="input-group-text" id="twitter-addon"><i class="bi bi-facebook fs-4"></i></span>
             {{ form_widget(form.facebook_profile, {attr: {class: 'form-control  w-auto', placeholder: 'https://facebook-url'}}) }}
         </div>
     </div>
     <div class="col-4">
         {{ form_label(form.twittetr_profile, 'Twitter Profile', {label_attr: {class: 'form-label visually-hidden'}}) }}
         <div class="input-group mb-3">
-            <span class="input-group-text" id="twitter-addon"><i class="bi bi-twitter"></i></span>
+            <span class="input-group-text" id="twitter-addon"><i class="bi bi-twitter fs-4"></i></span>
             {{ form_widget(form.twittetr_profile, {attr: {class: 'form-control  w-auto', placeholder: 'https://twitter-url'}}) }}
         </div>
     </div>
     <div class="col-4">
         {{ form_label(form.instagram_profile, 'Instagram Profile', {label_attr: {class: 'form-label visually-hidden'}}) }}
         <div class="input-group mb-3">
-            <span class="input-group-text" id="twitter-addon"><i class="bi bi-instagram"></i></span>
+            <span class="input-group-text" id="twitter-addon"><i class="bi bi-instagram fs-4"></i></span>
             {{ form_widget(form.instagram_profile, {attr: {class: 'form-control  w-auto', placeholder: 'https://instagram-url'}}) }}
         </div>
     </div>
@@ -121,23 +121,25 @@
 <div class="card">
     <div class="card-header">{{ 'label.form.user.pictures'|trans }}</div>
     <div class="card-body">
-        <p>{{ 'form.help.pictures'|trans }}</p>
+        <p class="text-muted">{{ 'form.help.pictures'|trans }}</p>
         <div class="loader row mx-auto justify-content-center align-items-center flex-column">
-            <div class="col pt-50 d-inline-block">
+            <div class="d-flex justify-content-center">
                 <div class="spinner-grow text-success" role="status">
-                    <span class="sr-only">Loading...</span>
+                    <span class="visually-hidden">Loading...</span>
                 </div>
             </div>
         </div>
         <div class="table entry-attachments" data-params="{{ _params|json_encode }}">
-            {% for key, picture in app.user.userDetails.attach|slice(0, 16) %}
+            {% for key, picture in app.user.userDetails.attach|reverse|slice(0, 16) %}
                 <div class="d-inline-block mr-3 mb-3">
                     {% set _picture = 'storage/user/picture/' ~ app.user.id ~ '/' ~ picture.name %}
                     <img class="attach"
                          src="{{ asset(_picture) | imagine_filter('user_thumb') }}" alt="...">
                     <div class="handlers" data-id="{{ picture.id }}">
+                        {%  if app.user.attach.id != picture.id %}
                         <a href="{{ path('app_profile_attach_remove') }}" data-action="remove"
                            class="bi bi-trash-fill"></a>
+                        {% endif %}
                         <a href="{{ path('app_profile_attach_default') }}" data-action="default"
                            class="bi bi-person-bounding-box"></a>
                     </div>
@@ -152,11 +154,6 @@
             <button class="btn btn-secondary shadow-none" data-url="{{ path('app_profile_attach') }}" type="button"
                     id="attach"><i class="bi bi-image-fill pe-2"></i>{{ 'label.form.attach'|trans }}</button>
             <small class="text-danger">{{ form_errors(form.picture) }}</small>
-{#            <div class="custom-file">#}
-{#                {{ form_widget(form.picture, {attr: {class: 'custom-file-input', 'aria-describedby': 'picture' }}) }}#}
-{#                {{ form_label(form.picture, 'label.form.picture', {label_attr: {class: 'custom-file-label', 'data-label': 'label.form.picture'|trans}}) }}#}
-{#                <small class="text-danger">{{ form_errors(form.picture) }}</small>#}
-{#            </div>#}
         </div>
         <small class="d-block picture-info text-monospace ms-1"></small>
     </div>

@@ -8,13 +8,6 @@
 {% block title_extend %}{{ _title_extend }} - {% endblock %}
 {% block title_content %}
     {{ _title_extend }}
-    {% if form.vars.data.attach %}
-        {% set _logo = 'storage/market/logo/' ~ form.vars.data.id ~ '/' ~ form.vars.data.attach.name %}
-        <img class="img-rounded float-right" src="{{ asset(_logo) | imagine_filter('market_thumb') }}"
-             style="height: 50px;"
-             alt="{{ form.vars.data.name }}">
-        <div class="clearfix"></div>
-    {% endif %}
 {% endblock %}
 
 {% block content %}

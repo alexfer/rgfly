@@ -20,6 +20,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[Route('/market-place/order')]
 class OrderController extends AbstractController
 {
+    /**
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('/{product}', name: 'app_market_place_product_order', methods: ['POST'])]
     public function order(
         Request                $request,
@@ -98,7 +103,6 @@ class OrderController extends AbstractController
 
             $em->persist($orderProducts);
             $em->flush();
-
             $session->set('quantity', $session->get('quantity') + 1);
         }
 
@@ -115,6 +119,11 @@ class OrderController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('/cart', name: 'app_market_place_product_order_cart', methods: ['POST', 'GET'])]
     public function cart(
         Request                $request,

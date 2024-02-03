@@ -1196,37 +1196,6 @@ a.preview:focus,
     /*border-top: 0;*/
     border: 1px solid #004caa;
 }
-
-.service-message {
-    position: fixed;
-    z-index: 6;
-    top: 14px;
-    right: 20px;
-}
-
-.service-message .toast {
-    width: 300px !important;
-}
-
-.service-message .toast .btn-close {
-    float: right;
-    position: absolute;
-    right: 35px;
-}
-
-.service-message .fade {
-    transition: opacity 0.5s linear !important;
-}
-
-.service-message .toast .toast-body {
-    color: #364870;
-    background-color: #cbd8f2;
-}
-
-.service-message .toast .toast-body.error {
-    background-color: rgba(248, 150, 150, 0.65);
-}
-
 .home-area {
     overflow: hidden;
     position: relative;

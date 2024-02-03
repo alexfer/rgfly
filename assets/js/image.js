@@ -34,14 +34,14 @@ $(function () {
         return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
     }
 
-    let upload = function (file) {
-        $('button[id="attach"]').on('click', (e) => {
+    let upload = (file) => {
+        $('button[id="attach"]').on('click', function (e) {
             if (file) {
                 formData.append('file', file);
                 loader.toggleClass('show');
                 attachments.toggleClass('blur');
                 $.ajax({
-                    url: $(this).attr('data-url'),
+                    url: $(this).data('url'),
                     type: 'post',
                     data: formData,
                     contentType: false,
@@ -57,15 +57,14 @@ $(function () {
                                 toast.removeClass('error').text(response.message);
                             }
 
-                            profile.text(profile.data('label'));
                             entry.text(entry.data('label'));
                             info.text('');
-                            $('.toast').show();
+                            $('.toast').removeClass('hide').toggleClass('show');
                             attachments.prepend(
                                 $('<div/>')
                                     .attr('class', 'd-inline-block  mr-3 mb-3').append(
                                     $('<img/>')
-                                        .attr('class', 'attach lazy')
+                                        .attr('class', 'attach')
                                         .attr('src', response.picture)
                                 ).append(
                                     $('<div/>').attr('class', 'handlers').attr('data-id', response.id))).delay(3000).show('slow');
@@ -80,17 +79,16 @@ $(function () {
                         setTimeout(() => {
                             loader.removeClass('show');
                             attachments.removeClass('blur');
-                        }, 5000);
+                            profile.wrap('<form>').closest('form').get(0).reset();
+                            profile.unwrap();
+                        }, 3000);
                     }
                 });
-                file = null;
-            } else {
-                info.html(profile.attr('data-label'));
             }
         });
     };
 
-    attachments.find('.handlers a').off('click').on('click', (event) => {
+    attachments.find('.handlers a').off().on('click',function (event) {
         event.preventDefault();
 
         const url = $(this).attr('href');
@@ -139,7 +137,7 @@ $(function () {
         });
     });
 
-    $('input[name="profile[picture]"], input[name="entry[picture]"]').on('change', (e) => {
+    $('input[name="profile[picture]"], input[name="entry[picture]"]').on('change', function (e) {
         e.preventDefault();
         let file = this.files[0];
         info.html(file.name + ', ' + formatBytes(file.size) + ', ' + file.type);

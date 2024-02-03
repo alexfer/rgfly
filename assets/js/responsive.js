@@ -20,7 +20,7 @@ $(window).on('load', () => {
 });
 
 $(() => {
-    $('#mode').on('change', (e) => {
+    $('#mode').on('change', function (e) {
         let mode = $(this);
         if (mode.is(':checked')) {
             label.html(label.data('responsive-on'));

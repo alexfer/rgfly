@@ -1148,6 +1148,10 @@
                 <source>label.form.password</source>
                 <target>Your password</target>
             </trans-unit>
+            <trans-unit id="label.form.currency">
+                <source>label.form.currency</source>
+                <target>Currency</target>
+            </trans-unit>
             <trans-unit id="label.form.keep_me_logged_in">
                 <source>label.form.keep_me_logged_in</source>
                 <target>Keep me logged in</target>
