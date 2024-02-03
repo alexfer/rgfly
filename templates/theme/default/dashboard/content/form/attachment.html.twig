@@ -29,35 +29,37 @@
             </div>
             <div class="table entry-attachments" data-params="{{ _params|json_encode }}">
                 {% if app.request.get('id') %}
-                    {% for key, picture in attachments|slice(0, 4) %}
+                    {% for key, picture in attachments|reverse|slice(0, 6) %}
                         {% set _picture = 'storage/'~ storage ~'/picture/' ~ id ~ '/' ~ picture.attach.name %}
-                        <div class="d-inline-block mr-3 mb-3">
+                        <div class="d-inline-block mr-3 mb-4 py-3">
                             <img class="attach" src="{{ asset(_picture) | imagine_filter(filter) }}" alt="...">
                             <div class="handlers" data-id="{{ picture.attach.id }}">
-                                <a href="#" data-action="remove"
+                                <a href="{{ remove }}" data-action="remove"
                                    class="bi bi-trash-fill"></a>
-                                <a href="{{ path('app_dashboard_blog_attach_set_use', {entry: entry.id}) }}"
+                                {% if set_use %}
+                                <a href="{{ set_use }}"
                                    data-action="default"
                                    class="bi bi-person-bounding-box"></a>
+                                {% endif %}
                             </div>
                         </div>
                     {% endfor %}
                 {% endif %}
             </div>
         </div>
-        <div class="card-footer">
+        <div class="card-footer bg-transparent">
             <div class="input-group mb-1">
-                <input type="file" class="form-control border-0 bg-light" name="entry[picture]" id="picture"
+                <input type="file" class="form-control border-0 bg-transparent" name="entry[picture]" id="picture"
                        aria-label="{{ 'label.form.entry_picture'|trans }}"
-                       style="max-width: 400px;"
+                       style="width: auto;"
                        aria-describedby="attach" accept="image/png, image/jpeg">
-                <button class="btn btn-outline-light position-absolute end-0 mx-1 z-3"
+                <button class="btn btn-secondary shadow-none pb-1"
                         type="button"
                         data-label="{{ 'label.form.entry_picture'|trans }}"
-                        data-url="{{ path('app_dashboard_blog_attach', {id: app.request.get('id')}) }}"
-                        id="attach">{{ 'label.form.attach'|trans }}</button>
+                        data-url="{{ data_url }}"
+                        id="attach"><i class="bi bi-image-fill pe-2"></i>{{ 'label.form.attach'|trans }}</button>
             </div>
-            <small class="picture-info text-muted ms-1 pt-1 w-100"></small>
+            <small class="picture-info text-muted ms-4"></small>
         </div>
     </div>
 </div>

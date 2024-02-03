@@ -21,7 +21,13 @@
             <div class="col-sm-6 col-lg-4 col-xl-3">
                 <div class="card shadow-sm h-100">
                     <div class="position-relative">
-                        <img src="{{ asset('img/08.jpg') }}" class="card-img-top h-100" alt="{{ product.name }}">
+                        {% if product.marketProductAttaches %}
+                            {% set _picture = 'storage/product/picture/' ~ product.id ~ '/' ~ product.marketProductAttaches.first.attach.name %}
+                            <img src="{{ asset(_picture)|imagine_filter('product_preview') }}"
+                                 class="card-img-top h-100" alt="{{ product.name }}">
+                        {% else %}
+                            <img src="{{ asset('img/08.jpg') }}" class="card-img-top h-100" alt="{{ product.name }}">
+                        {% endif %}
                         <div class="card-img-overlay d-flex flex-column z-index-1 p-3">
                             <div class="d-flex justify-content-between">
                                 <span class="badge text-bg-dark bg-opacity-75 rounded-1">
@@ -34,12 +40,12 @@
                             </div>
                             <div class="w-100 mt-auto">
                                 <span class="badge bg-secondary text-dark p-1">
-                                    {% if category.parent is null %}
-                                        <a href="{{ path('app_market_place_child_category', {parent:  category.slug, child: product.category_slug }) }}"
-                                           class="link-white fs-6 fw-light px-2">{{ product.category_name }}</a>
+                                    {% if product.marketCategoryProducts.first.category.parent is null %}
+                                        <a href="{{ path('app_market_place_child_category', {parent:  product.marketCategoryProducts.first.category.parent.slug, child: product.marketCategoryProducts.first.category.slug}) }}"
+                                           class="link-white fs-6 fw-light px-2">{{ product.marketCategoryProducts.first.category.name }}</a>
                                     {% else %}
-                                        <a href="{{ path('app_market_place_parent_category', {parent:  product.parent_category_slug }) }}"
-                                           class="link-white fs-6 fw-light px-2">{{ product.parent_category_name }}</a>
+                                        <a href="{{ path('app_market_place_parent_category', {parent:   product.marketCategoryProducts.first.category.parent.slug }) }}"
+                                           class="link-white fs-6 fw-light px-2">{{ product.marketCategoryProducts.first.category.parent.name }}</a>
                                     {% endif %}
                                 </span>
                             </div>
@@ -51,8 +57,8 @@
                                 <form class="shopping-cart" method="post"
                                       action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
                                     <button class="btn btn-primary rounded-0"
-                                       data-id="{{ product.market_id }}-{{ product.id }}"
-                                       type="submit">
+                                            data-id="{{ product.market.id }}-{{ product.id }}"
+                                            type="submit">
                                         <i class="bi bi-cart me-1"></i>{{ 'market.product.add'|trans }}
                                     </button>
                                 </form>
@@ -60,28 +66,29 @@
                             <li class="list-inline-item">
                                 <div class="badge bg-success bg-opacity-25 text-success">
                                     <h5 class="mb-0">{{ product.cost|number_format(2, ',', '') }}
-                                        <small>{{ product.currency|currency }}</small></h5>
+                                        <small>{{ product.market.currency|currency }}</small></h5>
                                 </div>
                             </li>
                         </ul>
                         <h5 class="card-title h-auto mb-1 mt-3 mx-3">
                             <a title="{{ product.name }}"
-                               href="{{ path('app_market_place_product', {slug: product.slug}) }}">{{ product.short_name }}</a>
+                               href="{{ path('app_market_place_product', {slug: product.slug}) }}">{{ product.shortName }}</a>
                         </h5>
                     </div>
-                    <a href="{{ path('app_market_place_child_category', {parent: category.slug, child: product.category_slug}) }}"
+                    <a href="{{ path('app_market_place_child_category', {parent:  product.marketCategoryProducts.first.category.parent.slug, child: product.marketCategoryProducts.first.category.slug}) }}"
                        class="badge-child"><i
-                                class="bi bi-ui-radios-grid text-opacity-50 me-2"></i> {{ product.category_name }}</a>
+                                class="bi bi-ui-radios-grid text-opacity-50 me-2"></i> {{ product.marketCategoryProducts.first.category.name }}
+                    </a>
                     <div class="card-footer border-0 bg-transparent">
                         <ul class="list-group list-group-borderless mt-1 mb-2">
                             <li class="list-group-item small px-1 py-1  border-0">
                                 <i class="bi bi-pin-map-fill me-2 text-opacity-50 text-info"></i>
                                 <a class="text-decoration-none"
-                                   href="{{ path('app_market_place_market', {slug:  product.market_slug}) }}">{{ product.market }}</a>
+                                   href="{{ path('app_market_place_market', {slug:  product.market.slug}) }}">{{ product.market.name }}</a>
                             </li>
                             <li class="list-group-item small px-1 py-1  border-0">
                                 <i class="bi bi-telephone-fill text-secondary me-2"></i> <span
-                                        class="text-secondary">{{ product.phone }}</span>
+                                        class="text-secondary">{{ product.market.phone }}</span>
                             </li>
                         </ul>
                         <div class="d-flex justify-content-between align-items-center">

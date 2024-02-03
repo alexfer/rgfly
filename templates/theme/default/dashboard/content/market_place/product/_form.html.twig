@@ -172,6 +172,18 @@
         {{ form_widget(form.description, {attr: {class: description_error, rows: 6, placeholder: 'label.form.product_description'}}) }}
         <small class="text-danger">{{ form_errors(form.description) }}</small>
     </div>
+    {% if app.request.get('id') %}
+        {% set _args = {market: product.market.id, id: product.id} %}
+        {% include 'dashboard/content/form/attachment.html.twig' with {
+            'attachments': product.marketProductAttaches,
+            'storage': 'product',
+            'id': product.id,
+            'set_use': null,
+            'remove': path('app_dashboard_product_attach_remove', _args),
+            'data_url': path('app_dashboard_product_attach', _args),
+            'filter': 'product_preview'
+        } %}
+    {% endif %}
     <input type="hidden" name="flash" value="{{ _message[0]|default([]|json_encode) }}">
     <div class="form-group text-center  mb-3 my-4">
         {{ form_widget(form.save, { label: form.vars.data.id ? 'form.action.update' : 'form.action.save'}) }}

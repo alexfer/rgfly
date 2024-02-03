@@ -6,8 +6,8 @@ $(function () {
     let changeBtn = $('#btnChangePicture');
     let formData = new FormData();
     let info = $('.card-footer .picture-info');
-    let profile = $('input[id="profile_picture"]');
-    let entry = $('input[id="picture"]');
+    let profile = $('input[id="profile_picture"]') || undefined;
+    let entry = $('input[id="picture"]') || undefined;
     let attachments = $('.entry-attachments');
     let loader = $('.loader');
     let readURL = function (input) {
@@ -60,6 +60,7 @@ $(function () {
                             entry.text(entry.data('label'));
                             info.text('');
                             $('.toast').removeClass('hide').toggleClass('show');
+                            // TODO: fix it
                             attachments.prepend(
                                 $('<div/>')
                                     .attr('class', 'd-inline-block  mr-3 mb-3').append(
@@ -79,8 +80,14 @@ $(function () {
                         setTimeout(() => {
                             loader.removeClass('show');
                             attachments.removeClass('blur');
-                            profile.wrap('<form>').closest('form').get(0).reset();
-                            profile.unwrap();
+                            if(Object.keys(profile).length === 3) {
+                                profile.wrap('<form>').closest('form').get(0).reset();
+                                profile.unwrap();
+                            }
+                            if(Object.keys(entry).length === 3) {
+                                entry.wrap('<form>').closest('form').get(0).reset();
+                                entry.unwrap();
+                            }
                         }, 3000);
                     }
                 });
@@ -92,8 +99,8 @@ $(function () {
         event.preventDefault();
 
         const url = $(this).attr('href');
-        const id = $(this).parent('div').attr('data-id');
-        const action = $(this).attr('data-action');
+        const id = $(this).parent('div').data('id');
+        const action = $(this).data('action');
         const args = JSON.parse(attachments.attr('data-params'));
         let params = {};
 

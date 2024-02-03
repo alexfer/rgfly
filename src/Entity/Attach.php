@@ -127,6 +127,10 @@ class Attach
         return $this->entryAttachments;
     }
 
+    /**
+     * @param EntryAttachment $entryAttachment
+     * @return $this
+     */
     public function addEntryAttachment(EntryAttachment $entryAttachment): static
     {
         if (!$this->entryAttachments->contains($entryAttachment)) {
@@ -137,6 +141,10 @@ class Attach
         return $this;
     }
 
+    /**
+     * @param EntryAttachment $entryAttachment
+     * @return $this
+     */
     public function removeEntryAttachment(EntryAttachment $entryAttachment): static
     {
         if ($this->entryAttachments->removeElement($entryAttachment)) {
@@ -149,11 +157,18 @@ class Attach
         return $this;
     }
 
+    /**
+     * @return UserDetails|null
+     */
     public function getUserDetails(): ?UserDetails
     {
         return $this->userDetails;
     }
 
+    /**
+     * @param UserDetails|null $userDetails
+     * @return $this
+     */
     public function setUserDetails(?UserDetails $userDetails): static
     {
         $this->userDetails = $userDetails;
@@ -161,11 +176,18 @@ class Attach
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @param User|null $user
+     * @return $this
+     */
     public function setUser(?User $user): static
     {
         // unset the owning side of the relation if necessary
@@ -191,6 +213,10 @@ class Attach
         return $this->marketProductAttaches;
     }
 
+    /**
+     * @param MarketProductAttach $marketProductAttach
+     * @return $this
+     */
     public function addMarketProductAttach(MarketProductAttach $marketProductAttach): static
     {
         if (!$this->marketProductAttaches->contains($marketProductAttach)) {
@@ -201,6 +227,10 @@ class Attach
         return $this;
     }
 
+    /**
+     * @param MarketProductAttach $marketProductAttach
+     * @return $this
+     */
     public function removeMarketProductAttach(MarketProductAttach $marketProductAttach): static
     {
         if ($this->marketProductAttaches->removeElement($marketProductAttach)) {
@@ -213,11 +243,18 @@ class Attach
         return $this;
     }
 
+    /**
+     * @return Market|null
+     */
     public function getMarket(): ?Market
     {
         return $this->market;
     }
 
+    /**
+     * @param Market|null $market
+     * @return $this
+     */
     public function setMarket(?Market $market): static
     {
         // unset the owning side of the relation if necessary

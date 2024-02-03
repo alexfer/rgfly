@@ -2,12 +2,22 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Market;
 
+use App\Entity\Attach;
+use App\Entity\EntryAttachment;
 use App\Helper\MarketPlace\MarketAttributeValues;
+use App\Repository\EntryAttachmentRepository;
+use App\Repository\EntryRepository;
+use App\Repository\MarketPlace\MarketProductAttachRepository;
+use App\Repository\MarketPlace\MarketProductRepository;
+use App\Service\FileUploader;
+use App\Service\Interface\ImageValidatorInterface;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use App\Entity\MarketPlace\{MarketBrand,
     MarketCategory,
     MarketCategoryProduct,
     MarketManufacturer,
     MarketProduct,
+    MarketProductAttach,
     MarketProductAttribute,
     MarketProductAttributeValue,
     MarketProductBrand,
@@ -27,12 +37,15 @@ use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/dashboard/market-place/product')]
@@ -165,6 +178,7 @@ class ProductController extends AbstractController
 
         return $this->render('dashboard/content/market_place/product/_form.html.twig', $this->navbar() + [
                 'form' => $form,
+                'product' => $product,
             ]);
     }
 
@@ -360,5 +374,111 @@ class ProductController extends AbstractController
         $em->flush();
 
         return $this->redirectToRoute('app_dashboard_market_place_market_product', ['market' => $market->getId()]);
+    }
+
+    #[Route('/attach/{market}-{id}', name: 'app_dashboard_product_attach')]
+    public function attach(
+        Request                       $request,
+        TranslatorInterface           $translator,
+        MarketProductRepository       $repository,
+        EntityManagerInterface        $em,
+        SluggerInterface              $slugger,
+        CacheManager                  $cacheManager,
+        ParameterBagInterface         $params,
+        MarketProductAttachRepository $productAttachmentRepository,
+        ImageValidatorInterface       $imageValidator,
+    ): Response
+    {
+        $file = $request->files->get('file');
+        $id = $request->get('id');
+        $market = $request->get('market');
+        $product = $repository->findOneBy(['id' => $id]);
+
+        if ($file) {
+            $validate = $imageValidator->validate($file, $translator);
+
+            if ($validate->has(0)) {
+                return $this->json([
+                    'message' => $validate->get(0)->getMessage(),
+                    'picture' => null,
+                ]);
+            }
+
+            $fileUploader = new FileUploader($this->getTargetDir($product->getId(), $params), $slugger, $em);
+
+            try {
+                $attach = $fileUploader->upload($file)->handle();
+            } catch (Exception $ex) {
+                return $this->json([
+                    'success' => false,
+                    'message' => $ex->getMessage(),
+                    'picture' => null,
+                ]);
+            }
+
+            $productAttachment = new MarketProductAttach();
+            $productAttachment->setProduct($product)
+                ->setAttach($attach);
+
+            $em->persist($productAttachment);
+            $em->flush();
+        }
+
+        $storage = $params->get('product_storage_picture');
+
+        $url = "{$storage}/{$product->getId()}/{$attach->getName()}";
+        $picture = $cacheManager->getBrowserPath(parse_url($url, PHP_URL_PATH), 'product_preview');
+
+        return $this->json([
+            'success' => true,
+            'message' => $translator->trans('entry.picture.default'),
+            'picture' => $picture,
+        ]);
+    }
+
+    #[Route('/attach/remove/{market}-{id}', name: 'app_dashboard_product_attach_remove', methods: ['POST'])]
+    public function remove(
+        Request                $request,
+        TranslatorInterface    $translator,
+        CacheManager           $cacheManager,
+        EntityManagerInterface $em,
+        ParameterBagInterface  $params
+    ): Response
+    {
+        $id = $request->getPayload()->get('id');
+        $attach = $em->getRepository(Attach::class)->find($id);
+        $product = $em->getRepository(MarketProduct::class)->find($request->get('id'));
+        $productAttach = $em->getRepository(MarketProductAttach::class)->findOneBy(['attach' => $attach, 'product' => $product]);
+
+        $fs = new Filesystem();
+        $oldFile = $this->getTargetDir($product->getId(), $params) . '/' . $attach->getName();
+
+        // TODO: fix it
+        if ($cacheManager->isStored($oldFile, 'product_preview')) {
+            $cacheManager->remove($oldFile, 'product_preview');
+        }
+
+        if ($fs->exists($oldFile)) {
+            $fs->remove($oldFile);
+        }
+
+        $productAttach->setAttach(null)->setProduct(null);
+
+        $em->remove($productAttach);
+        $em->remove($attach);
+        $em->flush();
+
+        return $this->json(['message' => $translator->trans('user.picture.delete'), 'file' => $attach->getName()]);
+    }
+
+    /**
+     * @param int|null $id
+     * @param ParameterBagInterface $params
+     * @return string
+     */
+    private function getTargetDir(?int $id, ParameterBagInterface $params): string
+    {
+        $storage = sprintf('%s/picture/', $params->get('product_storage_dir'));
+        return $storage . $id;
     }
 }

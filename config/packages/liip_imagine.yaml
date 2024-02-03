@@ -43,12 +43,12 @@ liip_imagine:
         product_preview:
             filters:
                 thumbnail:
-                    size: [ 280, 300 ]
+                    size: [ 600, 400 ]
                     mode: outbound
         product_view:
             filters:
                 thumbnail:
-                    size: [ 1100, 400 ]
+                    size: [ 1280, 800 ]
                     mode: outbound
         user_crop_filter:
             filters:

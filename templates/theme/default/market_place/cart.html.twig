@@ -1,5 +1,6 @@
 {% for order in orders %}
-    <a href="{{ path('app_market_place_market', {slug: order.market.slug}) }}" class="lead ms-3">{{ order.market.name }}</a>
+    <a href="{{ path('app_market_place_market', {slug: order.market.slug}) }}"
+       class="lead ms-3">{{ order.market.name }}</a>
     <hr class="my-1">
     <ul class="list-group list-group-lg list-group-flush">
         {% for products in order.products %}
@@ -9,7 +10,8 @@
                         <div class="row align-items-center">
                             <div class="col-4">
                                 <a class="" href="{{ path('app_market_place_product', {slug: product.slug}) }}">
-                                    <img class="shadow-none rounded-1 position-relative mt-0" src="{{ asset('img/08.jpg') }}"
+                                    <img class="shadow-none rounded-1 position-relative mt-0"
+                                         src="{{ asset('img/08.jpg') }}"
                                          width="100" alt="{{ product.name }}">
                                 </a>
                             </div>
@@ -26,7 +28,8 @@
                                         <span class="text-decoration-line-through text-muted">
                                             {{ product.cost|number_format(2, '.', ' ') }}
                                             <small>{{ order.market.currency|currency }}</small>
-                                        </span><span style="font-size: small" class="ps-2 fw-lighter text-danger">{{ product.percent }}%</span>
+                                        </span><span style="font-size: small"
+                                                     class="ps-2 fw-lighter text-danger">{{ product.percent }}%</span>
                                     {% else %}
                                         {% set result = product.cost * product|length %}
                                         <span class="text-muted">{{ product.cost|number_format(2, '.', ' ') }}<small>{{ order.market.currency|currency }}</small></span>

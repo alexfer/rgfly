@@ -33,7 +33,13 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="p-0" id="{{ product.slug }}">
-                    <img src="{{ asset('img/08.jpg') }}" class="card-img-top h-100" alt="{{ product.name }}">
+                    {% if product.marketProductAttaches %}
+                        {% set _picture = 'storage/product/picture/' ~ product.id ~ '/' ~ product.marketProductAttaches.first.attach.name %}
+                        <img src="{{ asset(_picture)|imagine_filter('product_view') }}"
+                             class="card-img-top h-100" alt="{{ product.name }}">
+                    {% else %}
+                        <img src="{{ asset('img/08.jpg') }}" class="card-img-top h-100" alt="{{ product.name }}">
+                    {% endif %}
                 </div>
             </div>
             <div class="col-md-6 mt-2">

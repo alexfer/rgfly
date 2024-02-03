@@ -2,10 +2,12 @@
 
 namespace App\Repository\MarketPlace;
 
+use App\Entity\Attach;
 use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketCategory;
 use App\Entity\MarketPlace\MarketCategoryProduct;
 use App\Entity\MarketPlace\MarketProduct;
+use App\Entity\MarketPlace\MarketProductAttach;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\Query\Expr;
@@ -57,18 +59,17 @@ class MarketProductRepository extends ServiceEntityRepository
      */
     public function getProducts(int $limit = 10): ?array
     {
-        $select = $this->columns();
-        array_push($select, 'cc.name as parent_category_name', 'cc.slug as parent_category_slug');
-
         $qb = $this->createQueryBuilder('p')
             ->distinct()
-            ->select($select)
             ->join(MarketCategoryProduct::class, 'cp', Expr\Join::WITH, 'p.id = cp.product')
             ->join(MarketCategory::class, 'c', Expr\Join::WITH, 'cp.category = c.id')
             ->leftJoin(MarketCategory::class, 'cc', Expr\Join::WITH, 'c.parent = cc.id')
+            ->join(MarketProductAttach::class, 'pa', Expr\Join::WITH, 'pa.product = p.id')
             ->join(Market::class, 'm', Expr\Join::WITH, 'p.market = m.id')
             ->andWhere('p.deleted_at IS NULL')
-            ->setMaxResults($limit);
+            ->setMaxResults($limit)
+            ->setCacheable(true)
+            ->setCacheMode('p.id');
 
         return $qb->getQuery()->getResult();
     }
@@ -80,12 +81,8 @@ class MarketProductRepository extends ServiceEntityRepository
      */
     public function findProductsByChildrenCategory(int $id, int $limit = 10): ?array
     {
-        $select = $this->columns();
-        array_push($select, 'cc.name as parent_category_name', 'cc.slug as parent_category_slug');
-
         $qb = $this->createQueryBuilder('p')
             ->distinct()
-            ->select($select)
             ->join(MarketCategoryProduct::class, 'cp', Expr\Join::WITH, 'p.id = cp.product')
             ->join(MarketCategory::class, 'c', Expr\Join::WITH, 'cp.category = c.id')
             ->leftJoin(MarketCategory::class, 'cc', Expr\Join::WITH, 'c.parent = cc.id')
@@ -93,7 +90,9 @@ class MarketProductRepository extends ServiceEntityRepository
             ->where('cp.category = :id')
             ->setParameter('id', $id)
             ->andWhere('p.deleted_at IS NULL')
-            ->setMaxResults($limit);
+            ->setMaxResults($limit)
+            ->setCacheable(true)
+            ->setCacheMode('p.id');
 
         return $qb->getQuery()->getResult();
     }
@@ -107,14 +106,15 @@ class MarketProductRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('p')
             ->distinct()
-            ->select($this->columns())
             ->join(MarketCategoryProduct::class, 'cp', Expr\Join::WITH, 'p.id = cp.product')
             ->join(MarketCategory::class, 'c', Expr\Join::WITH, 'cp.category = c.id')
             ->join(Market::class, 'm', Expr\Join::WITH, 'p.market = m.id')
             ->where('cp.category IN (:ids)')
             ->setParameter('ids', $ids)
             ->andWhere('p.deleted_at IS NULL')
-            ->setMaxResults($limit);
+            ->setMaxResults($limit)
+            ->setCacheable(true)
+            ->setCacheMode('p.id');
 
         return $qb->getQuery()->getResult();
 
