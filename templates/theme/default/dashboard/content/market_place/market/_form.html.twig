@@ -50,9 +50,9 @@
             <small class="text-danger">{{ form_errors(form.description) }}</small>
         </div>
         <div class="input-group mb-3">
-            {{ form_label(form.logo, 'label.form.market_logo', {label_attr: {class: 'input-group-text', 'data-label': 'label.form.market_logo'|trans}}) }}
-            {{ form_widget(form.logo, {attr: {class: 'form-controll' }}) }}
-            <small class="text-danger">{{ form_errors(form.logo) }}</small>
+            {{ form_label(form.logo, 'label.form.market_logo', {label_attr: {class: 'input-group-text position-absolute'}}) }}
+            {{ form_widget(form.logo, {attr: {class: 'form-controll'}}) }}
+            <small class="text-danger d-block">{{ form_errors(form.logo) }}</small>
         </div>
 
         <input type="hidden" name="flash" value="{{ _message[0]|default([]|json_encode) }}">
