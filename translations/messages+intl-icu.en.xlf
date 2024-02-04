@@ -468,6 +468,14 @@
                 <source>label.form.quantity</source>
                 <target>Quantity</target>
             </trans-unit>
+            <trans-unit id="label.form.pckg_quantity">
+                <source>label.form.pckg_quantity</source>
+                <target>Package quantity</target>
+            </trans-unit>
+            <trans-unit id="label.form.quantity_pcs">
+                <source>label.form.quantity_pcs</source>
+                <target>pcs.</target>
+            </trans-unit>
             <trans-unit id="label.form.cost">
                 <source>label.form.cost</source>
                 <target>Cost</target>
@@ -624,6 +632,10 @@
             <trans-unit id="market.product.availability">
                 <source>market.product.availability</source>
                 <target>Availability</target>
+            </trans-unit>
+            <trans-unit id="info.no_content">
+                <source>info.no_content</source>
+                <target>No content available.</target>
             </trans-unit>
             <trans-unit id="market.product.add_cart">
                 <source>market.product.add_cart</source>
@@ -1036,6 +1048,10 @@
                 <source>market.brands</source>
                 <target>Brands</target>
             </trans-unit>
+            <trans-unit id="market.brand">
+                <source>market.brand</source>
+                <target>Brand</target>
+            </trans-unit>
             <trans-unit id="market.products">
                 <source>market.products</source>
                 <target>Products</target>
@@ -1064,9 +1080,17 @@
                 <source>market.suppliers</source>
                 <target>Suppliers</target>
             </trans-unit>
+            <trans-unit id="market.supplier">
+                <source>market.supplier</source>
+                <target>Supplier</target>
+            </trans-unit>
             <trans-unit id="market.manufacturers">
                 <source>market.manufacturers</source>
                 <target>Manufacturers</target>
+            </trans-unit>
+            <trans-unit id="market.manufacturer">
+                <source>market.manufacturer</source>
+                <target>Manufacturer</target>
             </trans-unit>
             <trans-unit id="market.attributes">
                 <source>market.attributes</source>

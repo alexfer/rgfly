@@ -51,19 +51,19 @@ $(() => {
         }
     });
 
-    $('.delete-entry').on('click', () => {
+    $('.delete-entry').on('click', function () {
         $('.modal input[name="_token"]').attr('value', $(this).attr('data-token'));
         $('.modal .confirm').attr('action', $(this).attr('data-url'));
     });
 
-    $('.add-entry').on('click', () => {
-        let url = $(this).data('url');
-        let xhr = $(this).data('xhr');
-        let owner = $(this).data('bs-target');
+    $('.add-entry').on('click', function () {
+        let url = $(this).attr('data-url');
+        let xhr = $(this).attr('data-xhr');
+        let owner = $(this).attr('data-bs-target');
 
         if (typeof xhr !== 'undefined') {
-            $.get(xhr, (response) => {
-                $.each(response.countries, (key, text) => {
+            $.get(xhr, function (response) {
+                $.each(response.countries, function (key, text) {
                     $('.modal #suppler_country').append($('<option>', {
                         value: key,
                         text: text
@@ -73,7 +73,7 @@ $(() => {
         }
 
         $('.modal input[id="_token"]').attr('value', $(this).attr('data-token'));
-        $('.modal form').off().on('submit', () => {
+        $('.modal form').off().on('submit', function () {
             let form = $(this);
             $.post(url, form.serialize(), (response) => {
                 let data = response.json;

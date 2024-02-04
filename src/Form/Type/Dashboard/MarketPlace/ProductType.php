@@ -147,6 +147,19 @@ use Doctrine\ORM\EntityRepository;
                     ]),
                 ],
             ])
+            ->add('pckg_quantity', IntegerType::class, [
+                'attr' => [
+                    'min' => 0,
+                    'max' => 100,
+                ],
+                'constraints' => [
+                    new Length([
+                        'min' => 0,
+                        'max' => 100,
+                        'maxMessage' => 'form.quantity.max',
+                    ]),
+                ],
+            ])
             ->add('quantity', IntegerType::class, [
                 'attr' => [
                     'min' => 1,

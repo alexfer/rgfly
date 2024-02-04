@@ -16,33 +16,27 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class MarketProductManufacturerRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, MarketProductManufacturer::class);
     }
 
-//    /**
-//     * @return MarketProductManufacturer[] Returns an array of MarketProductManufacturer objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?MarketProductManufacturer
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+     * @param int $id
+     * @return int|null
+     */
+    public function drop(int $id): ?int
+    {
+        return $this->createQueryBuilder('market_product_manufacturer')
+            ->delete(MarketProductManufacturer::class, 'market_product_manufacturer')
+            ->where('market_product_manufacturer.product is null')
+            ->andWhere('market_product_manufacturer.manufacturer is null')
+            ->andWhere('market_product_manufacturer.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+    }
 }

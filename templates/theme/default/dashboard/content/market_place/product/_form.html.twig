@@ -34,21 +34,27 @@
         <small class="text-danger">{{ form_errors(form.name) }}</small>
     </div>
     <div class="form-group mb-3 row">
-        <div class="col-4">
+        <div class="col-3">
             {% set quantity_error = form.quantity.vars.errors|length ? 'form-control error' : 'form-control' %}
             {{ form_label(form.quantity, 'label.form.quantity', {label_attr: {class: 'form-label'}}) }} <span
                     class="text-danger">*</span>
             {{ form_widget(form.quantity, {attr: {class: quantity_error, placeholder: '0'}}) }}
             <small class="text-danger">{{ form_errors(form.quantity) }}</small>
         </div>
-        <div class="col-4">
+        <div class="col-3">
             {% set cost_error = form.cost.vars.errors|length ? 'form-control error' : 'form-control' %}
             {{ form_label(form.cost, 'label.form.cost', {label_attr: {class: 'form-label'}}) }} <span
                     class="text-danger">*</span>
             {{ form_widget(form.cost, {attr: {class: cost_error, placeholder: '0.00'}}) }}
             <small class="text-danger">{{ form_errors(form.cost) }}</small>
         </div>
-        <div class="col-4">
+        <div class="col-3">
+            {% set pckg_quantity_error = form.pckg_quantity.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.pckg_quantity, 'label.form.pckg_quantity', {label_attr: {class: 'form-label'}}) }}
+            {{ form_widget(form.pckg_quantity, {attr: {class: pckg_quantity_error, placeholder: '0'}}) }}
+            <small class="text-danger">{{ form_errors(form.pckg_quantity) }}</small>
+        </div>
+        <div class="col-3">
             {% set sku_error = form.sku.vars.errors|length ? 'form-control error' : 'form-control' %}
             {{ form_label(form.sku, 'label.form.sku', {label_attr: {class: 'form-label'}}) }}
             {{ form_widget(form.sku, {attr: {class: sku_error, placeholder: 'label.form.sku'}}) }}

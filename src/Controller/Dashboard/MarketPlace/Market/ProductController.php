@@ -276,15 +276,16 @@ class ProductController extends AbstractController
     /**
      * @param EntityManagerInterface $em
      * @param FormInterface $form
-     * @param MarketProduct $entry
+     * @param MarketProduct $product
      * @return EntityManagerInterface
      */
     private function handleRelations(
         EntityManagerInterface $em,
         FormInterface          $form,
-        MarketProduct          $entry,
+        MarketProduct          $product,
     ): EntityManagerInterface
     {
+
         $supplier = $em->getRepository(MarketSupplier::class)
             ->findOneBy(['id' => $form->get('supplier')->getData()]);
         $brand = $em->getRepository(MarketBrand::class)
@@ -293,29 +294,54 @@ class ProductController extends AbstractController
             ->findOneBy(['id' => $form->get('manufacturer')->getData()]);
 
         if ($supplier) {
-            $ps = $entry->getMarketProductSupplier();
+            $ps = $product->getMarketProductSupplier();
             if (!$ps) {
                 $ps = new MarketProductSupplier();
             }
-            $ps->setProduct($entry)->setSupplier($supplier);
+            $ps->setProduct($product)->setSupplier($supplier);
             $em->persist($ps);
+        } else {
+            $ps = $product->getMarketProductSupplier();
+            if ($ps) {
+                $ps->setProduct(null)->setSupplier(null);
+                $em->persist($ps);
+                $em->flush();
+                $em->getRepository(MarketProductSupplier::class)->drop($ps->getId());
+            }
         }
 
         if ($brand) {
-            $pp = $entry->getMarketProductBrand();
-            if (!$pp) {
-                $pp = new MarketProductBrand();
+            $pb = $product->getMarketProductBrand();
+            if (!$pb) {
+                $pb = new MarketProductBrand();
             }
-            $pp->setProduct($entry)->setBrand($brand);
-            $em->persist($pp);
+            $pb->setProduct($product)->setBrand($brand);
+            $em->persist($pb);
+        } else {
+            $pb = $product->getMarketProductBrand();
+            if ($pb) {
+                $pb->setProduct(null)->setBrand(null);
+                $em->persist($pb);
+                $em->flush();
+                $em->getRepository(MarketProductBrand::class)->drop($pb->getId());
+            }
         }
+
         if ($manufacturer) {
-            $pm = $entry->getMarketProductManufacturer();
+            $pm = $product->getMarketProductManufacturer();
             if (!$pm) {
                 $pm = new MarketProductManufacturer();
             }
-            $pm->setProduct($entry)->setManufacturer($manufacturer);
+            $pm->setProduct($product)->setManufacturer($manufacturer);
             $em->persist($pm);
+        } else {
+            $pm = $product->getMarketProductManufacturer();
+            if ($pm) {
+                $pm->setProduct(null)->setManufacturer(null);
+                $em->persist($pm);
+                $em->flush();
+                $em->getRepository(MarketProductManufacturer::class)->drop($pm->getId());
+            }
         }
 
         return $em;
@@ -376,6 +402,18 @@ class ProductController extends AbstractController
         return $this->redirectToRoute('app_dashboard_market_place_market_product', ['market' => $market->getId()]);
     }
 
+    /**
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @param MarketProductRepository $repository
+     * @param EntityManagerInterface $em
+     * @param SluggerInterface $slugger
+     * @param CacheManager $cacheManager
+     * @param ParameterBagInterface $params
+     * @param MarketProductAttachRepository $productAttachmentRepository
+     * @param ImageValidatorInterface $imageValidator
+     * @return Response
+     */
     #[Route('/attach/{market}-{id}', name: 'app_dashboard_product_attach')]
     public function attach(
         Request                       $request,
@@ -436,6 +474,14 @@ class ProductController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @param CacheManager $cacheManager
+     * @param EntityManagerInterface $em
+     * @param ParameterBagInterface $params
+     * @return Response
+     */
     #[Route('/attach/remove/{market}-{id}', name: 'app_dashboard_product_attach_remove', methods: ['POST'])]
     public function remove(
         Request                $request,
@@ -456,6 +502,10 @@ class ProductController extends AbstractController
         // TODO: fix it
         if ($cacheManager->isStored($oldFile, 'product_preview')) {
             $cacheManager->remove($oldFile, 'product_preview');
+        }
+
+        if ($cacheManager->isStored($oldFile, 'product_view')) {
+            $cacheManager->remove($oldFile, 'product_view');
         }
 
         if ($fs->exists($oldFile)) {

@@ -79,6 +79,9 @@ class MarketProduct
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $sku = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $pckg_quantity = null;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
@@ -86,6 +89,7 @@ class MarketProduct
         $this->marketProductAttaches = new ArrayCollection();
         $this->marketOrdersProducts = new ArrayCollection();
         $this->marketProductAttributes = new ArrayCollection();
+        $this->pckg_quantity = 0;
     }
 
     /**
@@ -569,6 +573,25 @@ class MarketProduct
     public function setSku(?string $sku): static
     {
         $this->sku = $sku;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPckgQuantity(): ?int
+    {
+        return $this->pckg_quantity;
+    }
+
+    /**
+     * @param int|null $pckg_quantity
+     * @return $this
+     */
+    public function setPckgQuantity(?int $pckg_quantity): static
+    {
+        $this->pckg_quantity = $pckg_quantity;
 
         return $this;
     }

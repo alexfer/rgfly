@@ -16,33 +16,27 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class MarketProductBrandRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, MarketProductBrand::class);
     }
 
-//    /**
-//     * @return MarketProductBrand[] Returns an array of MarketProductBrand objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?MarketProductBrand
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+     * @param int $id
+     * @return int|null
+     */
+    public function drop(int $id): ?int
+    {
+        return $this->createQueryBuilder('market_product_brand')
+            ->delete(MarketProductBrand::class, 'market_product_brand')
+            ->where('market_product_brand.product is null')
+            ->andWhere('market_product_brand.brand is null')
+            ->andWhere('market_product_brand.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+    }
 }
