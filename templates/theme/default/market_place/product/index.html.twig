@@ -32,14 +32,39 @@
     <div class="container mt-2">
         <div class="row">
             <div class="col-md-6">
-                <div class="p-0" id="{{ product.slug }}">
-                    {% if product.marketProductAttaches %}
-                        {% set _picture = 'storage/product/picture/' ~ product.id ~ '/' ~ product.marketProductAttaches.first.attach.name %}
-                        <img src="{{ asset(_picture)|imagine_filter('product_view') }}"
-                             class="card-img-top h-100" alt="{{ product.name }}">
-                    {% else %}
-                        <img src="{{ asset('img/08.jpg') }}" class="card-img-top h-100" alt="{{ product.name }}">
-                    {% endif %}
+                <div id="carousel-control" class="mt-4 mb-2 row g-3 carousel slide carousel-fade"
+                     data-bs-ride="carousel">
+                    <div class="col-3 carousel-inner"> >
+                        {% if product.marketProductAttaches %}
+                            {% set _picture = 'storage/product/picture/' ~ product.id ~ '/' ~ product.marketProductAttaches.first.attach.name %}
+                            <div class="carousel-item active">
+                                <img src="{{ asset(_picture)|imagine_filter('product_view') }}"
+                                     class="card-img-top h-100" alt="{{ product.name }}">
+                            </div>
+                        {% else %}
+                            <div class="carousel-item active">
+                                <img src="{{ asset('img/08.jpg') }}" class="card-img-top h-100"
+                                     alt="{{ product.name }}">
+                            </div>
+                        {% endif %}
+                        {% for image in product.marketProductAttaches|slice(1, product.marketProductAttaches.count) %}
+                            <div class="thumbnails-img carousel-item">
+                                {% set _image = 'storage/product/picture/' ~ product.id ~ '/' ~ image.attach.name %}
+                                <img src="{{ asset(_image)|imagine_filter('product_view') }}" class="card-img-top h-100"
+                                     alt="{{ product.shortName }}">
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel-control"
+                            data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carousel-control"
+                            data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 </div>
             </div>
             <div class="col-md-6 mt-2">
@@ -131,16 +156,33 @@
                         </tr>
                         <tr>
                             <td>{{ 'market.product.availability'|trans }}:</td>
-                            <td class="text-muted">{{ 'market.product.in_stock'|trans }}</td>
+                            <td class="text-muted">{% if product.quantity == 0 %}}{{ 'market.product.out_stock'|trans }}{% else %}{{ 'market.product.in_stock'|trans }}{% endif %}</td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-        <div class="bg-light shadow-sm rounded-3 mt-2 mb-5 p-2">
-            <strong class="d-block my-3">{{ product.shortName }}</strong>
-            {{ product.description|raw }}
+        <ul class="nav nav-tabs border-bottom product-info" id="info" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link text-secondary border-0 fs-6 active" id="about-tab" data-bs-toggle="tab" data-bs-target="#about"
+                        type="button" role="tab" aria-controls="about"
+                        aria-selected="true">{{ 'Product Info' }}</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link text-secondary border-0 fs-6" id="seller-info-tab" data-bs-toggle="tab" data-bs-target="#seller-info"
+                        type="button" role="tab" aria-controls="seller-info"
+                        aria-selected="false">{{ 'Seller Info' }}</button>
+            </li>
+        </ul>
+        <div class="tab-content bg-light border-top rounded-top-0 shadow-sm rounded-3 mb-5 p-2">
+            <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="about-tab">
+                <strong class="d-block my-1">{{ product.shortName }}</strong>
+                {{ product.description|raw }}
+            </div>
+            <div class="tab-pane fade show" id="seller-info" role="tabpanel" aria-labelledby="seller-info-tab">
+                {{ product.market.description|raw }}
+            </div>
         </div>
     </div>
 {% endblock %}

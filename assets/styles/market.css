@@ -31,3 +31,8 @@
     color: #6c757d;
     padding-left: 1px;
 }
+
+.product-info .nav-link.active {
+    border-bottom: #4e5768 2px solid !important;
+    color: #0e1326 !important;
+}
