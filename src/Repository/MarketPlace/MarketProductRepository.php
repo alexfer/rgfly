@@ -64,7 +64,7 @@ class MarketProductRepository extends ServiceEntityRepository
             ->join(MarketCategoryProduct::class, 'cp', Expr\Join::WITH, 'p.id = cp.product')
             ->join(MarketCategory::class, 'c', Expr\Join::WITH, 'cp.category = c.id')
             ->leftJoin(MarketCategory::class, 'cc', Expr\Join::WITH, 'c.parent = cc.id')
-            ->join(MarketProductAttach::class, 'pa', Expr\Join::WITH, 'pa.product = p.id')
+            ->leftJoin(MarketProductAttach::class, 'pa', Expr\Join::WITH, 'pa.product = p.id')
             ->join(Market::class, 'm', Expr\Join::WITH, 'p.market = m.id')
             ->andWhere('p.deleted_at IS NULL')
             ->setMaxResults($limit)

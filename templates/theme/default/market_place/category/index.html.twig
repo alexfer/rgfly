@@ -8,7 +8,7 @@
     </div>
     <ul class="list-inline my-3">
         {% for child in category.children %}
-            <li class="list-inline-item category">
+            <li class="list-inline-item mb-2 category">
                 <a href="{{ path('app_market_place_child_category', {parent: category.slug, child: child.slug}) }}"
                    class="btn btn-outline-primary rounded-1 bg-opacity-25 category-link">
                     {{ child.name }} <i class="bi bi-arrow-right-short"></i>
@@ -21,7 +21,7 @@
             <div class="col-sm-6 col-lg-4 col-xl-3">
                 <div class="card shadow-sm h-100">
                     <div class="position-relative">
-                        {% if product.marketProductAttaches %}
+                        {% if product.marketProductAttaches.count %}
                             {% set _picture = 'storage/product/picture/' ~ product.id ~ '/' ~ product.marketProductAttaches.first.attach.name %}
                             <img src="{{ asset(_picture)|imagine_filter('product_preview') }}"
                                  class="card-img-top h-100" alt="{{ product.name }}">

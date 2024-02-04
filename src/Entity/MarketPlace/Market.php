@@ -88,6 +88,7 @@ class Market
         $this->marketManufacturers = new ArrayCollection();
         $this->marketOrders = new ArrayCollection();
         $this->marketCustomerMessages = new ArrayCollection();
+        $this->messages = ["email"];
     }
 
     /**

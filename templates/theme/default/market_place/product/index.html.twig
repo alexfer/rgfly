@@ -35,7 +35,7 @@
                 <div id="carousel-control" class="mt-4 mb-2 row g-3 carousel slide carousel-fade"
                      data-bs-ride="carousel">
                     <div class="col-3 carousel-inner"> >
-                        {% if product.marketProductAttaches %}
+                        {% if product.marketProductAttaches.count %}
                             {% set _picture = 'storage/product/picture/' ~ product.id ~ '/' ~ product.marketProductAttaches.first.attach.name %}
                             <div class="carousel-item active">
                                 <img src="{{ asset(_picture)|imagine_filter('product_view') }}"
