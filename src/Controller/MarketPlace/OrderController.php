@@ -2,20 +2,18 @@
 
 namespace App\Controller\MarketPlace;
 
-use App\Entity\MarketPlace\MarketCustomer;
 use App\Entity\MarketPlace\MarketCustomerOrders;
 use App\Entity\MarketPlace\MarketOrders;
 use App\Entity\MarketPlace\MarketOrdersProduct;
 use App\Entity\MarketPlace\MarketProduct;
 use App\Helper\MarketPlace\MarketPlaceHelper;
-use App\Repository\MarketPlace\MarketOrdersRepository;
-use App\Service\MarketPlace\Currency;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
+use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route('/market-place/order')]
 class OrderController extends AbstractController
@@ -28,6 +26,8 @@ class OrderController extends AbstractController
     #[Route('/{product}', name: 'app_market_place_product_order', methods: ['POST'])]
     public function order(
         Request                $request,
+        SessionStorageInterface $sessionStorage,
+        SessionBagInterface $bag,
         EntityManagerInterface $em,
     ): Response
     {
@@ -38,6 +38,8 @@ class OrderController extends AbstractController
                 'request' => $request->toArray(),
             ]);
         }
+
+        $sessionStorage->registerBag($bag);
 
         $session = $request->getSession();
 

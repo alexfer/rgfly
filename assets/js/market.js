@@ -53,7 +53,7 @@ if (attributes.length) {
 if (typeof forms != 'undefined') {
     Array.from(forms).forEach((form) => {
         const url = form.getAttribute('action');
-        form.addEventListener('click', (event) => {
+        form.addEventListener('submit', (event) => {
             event.preventDefault();
             let color = form.querySelector('input[name="color"]');
             let size = form.querySelector('input[name="size"]');
