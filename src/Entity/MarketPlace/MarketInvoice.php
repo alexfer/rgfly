@@ -42,6 +42,7 @@ class MarketInvoice
     {
         $this->created_at = new DateTimeImmutable();
     }
+
     /**
      * @return int|null
      */

@@ -40,9 +40,13 @@ class MarketCustomer
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: MarketCustomerOrders::class)]
     private Collection $marketCustomerOrders;
 
+    #[ORM\OneToMany(mappedBy: 'cusomer', targetEntity: MarketCustomerMessage::class)]
+    private Collection $marketCustomerMessages;
+
     public function __construct()
     {
         $this->marketCustomerOrders = new ArrayCollection();
+        $this->marketCustomerMessages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -146,6 +150,44 @@ class MarketCustomer
             // set the owning side to null (unless already changed)
             if ($marketCustomerOrder->getCustomer() === $this) {
                 $marketCustomerOrder->setCustomer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketCustomerMessage>
+     */
+    public function getMarketCustomerMessages(): Collection
+    {
+        return $this->marketCustomerMessages;
+    }
+
+    /**
+     * @param MarketCustomerMessage $marketCustomerMessage
+     * @return $this
+     */
+    public function addMarketCustomerMessage(MarketCustomerMessage $marketCustomerMessage): static
+    {
+        if (!$this->marketCustomerMessages->contains($marketCustomerMessage)) {
+            $this->marketCustomerMessages->add($marketCustomerMessage);
+            $marketCustomerMessage->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MarketCustomerMessage $marketCustomerMessage
+     * @return $this
+     */
+    public function removeMarketCustomerMessage(MarketCustomerMessage $marketCustomerMessage): static
+    {
+        if ($this->marketCustomerMessages->removeElement($marketCustomerMessage)) {
+            // set the owning side to null (unless already changed)
+            if ($marketCustomerMessage->getCustomer() === $this) {
+                $marketCustomerMessage->setCustomer(null);
             }
         }
 

@@ -25,6 +25,14 @@ class MarketOrdersProduct
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $color = null;
 
+    #[ORM\Column]
+    private ?int $quantity = null;
+
+    public function __construct()
+    {
+        $this->quantity = 1;
+    }
+
     /**
      * @return int|null
      */
@@ -71,11 +79,18 @@ class MarketOrdersProduct
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getSize(): ?string
     {
         return $this->size;
     }
 
+    /**
+     * @param string|null $size
+     * @return $this
+     */
     public function setSize(?string $size): static
     {
         $this->size = $size;
@@ -83,14 +98,40 @@ class MarketOrdersProduct
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getColor(): ?string
     {
         return $this->color;
     }
 
+    /**
+     * @param string|null $color
+     * @return $this
+     */
     public function setColor(?string $color): static
     {
         $this->color = $color;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    /**
+     * @param int $quantity
+     * @return $this
+     */
+    public function setQuantity(int $quantity): static
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }

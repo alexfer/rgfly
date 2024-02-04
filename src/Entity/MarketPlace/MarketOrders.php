@@ -66,12 +66,16 @@ class MarketOrders
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0', nullable: true)]
     private ?string $discount = null;
 
+    #[ORM\OneToMany(mappedBy: 'orders', targetEntity: MarketCustomerMessage::class)]
+    private Collection $marketCustomerMessages;
+
     public function __construct()
     {
         $this->created_at = new DateTimeImmutable();
         $this->marketOrdersProducts = new ArrayCollection();
         $this->status = array_flip(self::STATUS)['Processing'];
         $this->marketCustomerOrders = new ArrayCollection();
+        $this->marketCustomerMessages = new ArrayCollection();
     }
 
     /**
@@ -263,11 +267,18 @@ class MarketOrders
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getStatus(): ?string
     {
         return $this->status;
     }
 
+    /**
+     * @param string|null $status
+     * @return $this
+     */
     public function setStatus(?string $status): static
     {
         $this->status = $status;
@@ -283,6 +294,10 @@ class MarketOrders
         return $this->marketCustomerOrders;
     }
 
+    /**
+     * @param MarketCustomerOrders $marketCustomerOrder
+     * @return $this
+     */
     public function addMarketCustomerOrder(MarketCustomerOrders $marketCustomerOrder): static
     {
         if (!$this->marketCustomerOrders->contains($marketCustomerOrder)) {
@@ -293,6 +308,10 @@ class MarketOrders
         return $this;
     }
 
+    /**
+     * @param MarketCustomerOrders $marketCustomerOrder
+     * @return $this
+     */
     public function removeMarketCustomerOrder(MarketCustomerOrders $marketCustomerOrder): static
     {
         if ($this->marketCustomerOrders->removeElement($marketCustomerOrder)) {
@@ -305,14 +324,59 @@ class MarketOrders
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getDiscount(): ?string
     {
         return $this->discount;
     }
 
+    /**
+     * @param string|null $discount
+     * @return $this
+     */
     public function setDiscount(?string $discount): static
     {
         $this->discount = $discount;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketCustomerMessage>
+     */
+    public function getMarketCustomerMessages(): Collection
+    {
+        return $this->marketCustomerMessages;
+    }
+
+    /**
+     * @param MarketCustomerMessage $marketCustomerMessage
+     * @return $this
+     */
+    public function addMarketCustomerMessage(MarketCustomerMessage $marketCustomerMessage): static
+    {
+        if (!$this->marketCustomerMessages->contains($marketCustomerMessage)) {
+            $this->marketCustomerMessages->add($marketCustomerMessage);
+            $marketCustomerMessage->setOrders($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MarketCustomerMessage $marketCustomerMessage
+     * @return $this
+     */
+    public function removeMarketCustomerMessage(MarketCustomerMessage $marketCustomerMessage): static
+    {
+        if ($this->marketCustomerMessages->removeElement($marketCustomerMessage)) {
+            // set the owning side to null (unless already changed)
+            if ($marketCustomerMessage->getOrders() === $this) {
+                $marketCustomerMessage->setOrders(null);
+            }
+        }
 
         return $this;
     }
