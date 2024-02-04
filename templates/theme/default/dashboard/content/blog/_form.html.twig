@@ -5,8 +5,8 @@
 {% block title_extend %}{{ _title_extend }} - {% endblock %}
 {% block title_content %}
     {{ _title_extend }}
-    {% if form.vars.data.id %}
-        <a type="button" target="_blank" class="btn btn-sm btn-outline-info float-right mt-1 preview"
+    {% if app.request.get('id') %}
+        <a type="button" target="_blank" class="btn btn-sm btn-outline-info float-end mt-1 preview"
            href="{{ path('app_blog_view', {slug: form.vars.data.slug}) }}">{{ 'user.entry.preview'|trans }}</a>
     {% endif %}
 {% endblock %}
@@ -42,22 +42,24 @@
         <small class="text-danger">{{ form_errors(form.content) }}</small>
     </div>
     <div class="form-group mb-3">
-        {% set status_error = form.status.vars.errors|length ? 'form-control error' : 'form-control' %}
+        {% set status_error = form.status.vars.errors|length ? 'form-select error' : 'form-select' %}
         {{ form_label(form.status, 'label.form.status', {label_attr: {class: 'form-label'}}) }}
-        {{ form_widget(form.status, {attr: {class: status_error, disabled: form.vars.data.id ? false : true}}) }}
+        {{ form_widget(form.status, {attr: {class: status_error, disabled: app.request.get('id') ? false : true}}) }}
         <small class="text-danger">{{ form_errors(form.status) }}</small>
     </div>
-    {% if form.vars.data.id %}
+    {% if app.request.get('id') %}
         {% include 'dashboard/content/form/attachment.html.twig' with {
             'attachments': entry.entryAttachments,
             'storage': 'entry',
+            'data_url': path('app_dashboard_blog_attach', {id: app.request.get('id')})
+            'set_use': path('app_dashboard_blog_attach_set_use', {entry: entry.id})
             'id': entry.entryDetails.id,
             'filter': 'entry_preview'
         } %}
     {% endif %}
     <input type="hidden" name="flash" value="{{ _message[0]|default([]|json_encode) }}">
-    <div class="form-group text-center mb-3">
-        {{ form_widget(form.next, { label: form.vars.data.id ? 'form.action.update' : 'form.action.next'}) }}
+    <div class="form-group text-center mx-3">
+        {{ form_widget(form.next, { label: app.request.get('id') ? 'form.action.update' : 'form.action.next'}) }}
         <a type="button" href="{{ url('app_dashboard_blog') }}"
            class="btn btn-secondary shadow shadow-sm">{{ 'form.action.back'|trans }}</a>
     </div>

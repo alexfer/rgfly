@@ -24,7 +24,7 @@ Encore
         .addEntry('layout', './assets/js/layout.js')
         .addEntry('image', './assets/js/image.js')
         .addEntry('responsive', './assets/js/responsive.js')
-//        .addEntry('ckeditor', './assets/js/ckeditor.js')
+        .addEntry('market-js', './assets/js/market.js')
         .addStyleEntry('sidebar', './assets/styles/sidebar.css')
         .addStyleEntry('market', './assets/styles/market.css')
         //.addStyleEntry('global', './assets/styles/global.scss')
@@ -38,29 +38,6 @@ Encore
         // will require an extra script tag for runtime.js
         // but, you probably want this, unless you're building a single-page app
         .enableSingleRuntimeChunk()
-
-//        // Use raw-loader for CKEditor 5 SVG files.
-//        .addRule({
-//            test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
-//            loader: 'raw-loader'
-//        })
-//
-//        // Configure other image loaders to exclude CKEditor 5 SVG files.
-//        .configureLoaderRule('images', loader => {
-//            loader.exclude = /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/;
-//        })
-//        .addLoader({
-//            test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
-//            loader: 'postcss-loader',
-//            options: {
-//                postcssOptions: styles.getPostCssConfig({
-//                    themeImporter: {
-//                        themePath: require.resolve('@ckeditor/ckeditor5-theme-lark')
-//                    },
-//                    minify: true
-//                })
-//            }
-//        })
 
         /*
          * FEATURE CONFIG
@@ -86,7 +63,13 @@ Encore
         })
 
         // enables Sass/SCSS support
-        .enableSassLoader()
+        .enableSassLoader(function (sassOptions) {
+            sassOptions.includePaths = [
+                "assets/styles/"
+            ];
+        }, {
+            resolveUrlLoader: true
+        })
 
         // uncomment if you use TypeScript
         //.enableTypeScriptLoader()

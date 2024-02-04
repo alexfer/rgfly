@@ -57,7 +57,11 @@
             </trans-unit>
             <trans-unit id="site.title">
                 <source>site.title</source>
-                <target>Techspace</target>
+                <target>MRebely</target>
+            </trans-unit>
+            <trans-unit id="site.description">
+                <source>site.description</source>
+                <target>A marketplace with free and paid MRebely solutions - MRebely Online</target>
             </trans-unit>
             <trans-unit id="text.home.header">
                 <source>text.home.header</source>
@@ -211,6 +215,10 @@
             <trans-unit id="title.dashboard.manufacturers">
                 <source>title.dashboard.manufacturers</source>
                 <target>Manufacturers</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.attributes">
+                <source>title.dashboard.attributes</source>
+                <target>Attributes</target>
             </trans-unit>
             <trans-unit id="title.dashboard.overview_gallery">
                 <source>title.dashboard.overview_gallery</source>
@@ -432,6 +440,10 @@
                 <source>label.form.manufacturer_name</source>
                 <target>Manufacturer Name</target>
             </trans-unit>
+            <trans-unit id="label.form.attribute_name">
+                <source>label.form.attribute_name</source>
+                <target>Attribute Name</target>
+            </trans-unit>
             <trans-unit id="label.form.brand_name">
                 <source>label.form.brand_name</source>
                 <target>Brand Name</target>
@@ -456,9 +468,25 @@
                 <source>label.form.quantity</source>
                 <target>Quantity</target>
             </trans-unit>
+            <trans-unit id="label.form.pckg_quantity">
+                <source>label.form.pckg_quantity</source>
+                <target>Package quantity</target>
+            </trans-unit>
+            <trans-unit id="label.form.quantity_pcs">
+                <source>label.form.quantity_pcs</source>
+                <target>pcs.</target>
+            </trans-unit>
             <trans-unit id="label.form.cost">
                 <source>label.form.cost</source>
                 <target>Cost</target>
+            </trans-unit>
+            <trans-unit id="label.form.sku">
+                <source>label.form.sku</source>
+                <target>SKU</target>
+            </trans-unit>
+            <trans-unit id="label.form.discount">
+                <source>label.form.discount</source>
+                <target>Discount</target>
             </trans-unit>
             <trans-unit id="label.form.title">
                 <source>label.form.title</source>
@@ -537,7 +565,6 @@
                 <source>user.info.city</source>
                 <target>City</target>
             </trans-unit>
-
             <trans-unit id="dashboard.market.restrict">
                 <source>dashboard.market.restrict</source>
                 <target>Sorry, but you may create only one store.</target>
@@ -557,6 +584,62 @@
             <trans-unit id="title.dashboard.change_market">
                 <source>title.dashboard.change_market</source>
                 <target>Update Market</target>
+            </trans-unit>
+            <trans-unit id="title.general.market.name">
+                <source>title.general.market.name</source>
+                <target>Market Place</target>
+            </trans-unit>
+            <trans-unit id="market.product.in_stock">
+                <source>market.product.in_stock</source>
+                <target>In Stock</target>
+            </trans-unit>
+            <trans-unit id="market.product.out_stock">
+                <source>market.product.out_stock</source>
+                <target>Out Stock</target>
+            </trans-unit>
+            <trans-unit id="market.product.code">
+                <source>market.product.code</source>
+                <target>Product Code</target>
+            </trans-unit>
+            <trans-unit id="market.product.code_prefix">
+                <source>market.product.code_prefix</source>
+                <target>P</target>
+            </trans-unit>
+            <trans-unit id="market.product.off">
+                <source>market.product.off</source>
+                <target>Off</target>
+            </trans-unit>
+            <trans-unit id="market.product.cart">
+                <source>market.product.cart</source>
+                <target>Shopping Cart</target>
+            </trans-unit>
+            <trans-unit id="market.product.cart.empty">
+                <source>market.product.cart.empty</source>
+                <target>Your cart is currently empty</target>
+            </trans-unit>
+            <trans-unit id="market.product.wishlist">
+                <source>market.product.wishlist</source>
+                <target>Wishlist</target>
+            </trans-unit>
+            <trans-unit id="market.product.compare">
+                <source>market.product.compare</source>
+                <target>Compare</target>
+            </trans-unit>
+            <trans-unit id="market.product.add">
+                <source>market.product.add</source>
+                <target>Add</target>
+            </trans-unit>
+            <trans-unit id="market.product.availability">
+                <source>market.product.availability</source>
+                <target>Availability</target>
+            </trans-unit>
+            <trans-unit id="info.no_content">
+                <source>info.no_content</source>
+                <target>No content available.</target>
+            </trans-unit>
+            <trans-unit id="market.product.add_cart">
+                <source>market.product.add_cart</source>
+                <target>Add to cart</target>
             </trans-unit>
             <trans-unit id="title.dashboard.create_product">
                 <source>title.dashboard.create_product</source>
@@ -643,6 +726,10 @@
             <trans-unit id="option.category.choice_category">
                 <source>option.category.choice_category</source>
                 <target>Choice category ...</target>
+            </trans-unit>
+            <trans-unit id="option.attribute.choice_attribute">
+                <source>option.attribute.choice_attribute</source>
+                <target>Choice attribute ...</target>
             </trans-unit>
             <trans-unit id="entry.form.brands">
                 <source>entry.form.brands</source>
@@ -764,7 +851,7 @@
             <trans-unit id="text.about_us.short_desc">
                 <source>text.about_us.short_desc</source>
                 <target>
-                    <![CDATA[Read more about how Techspace came to be and how we support our customers with IT issues on a daily basis.]]>
+                    <![CDATA[Read more about how MRebely came to be and how we support our customers with IT issues on a daily basis.]]>
                 </target>
             </trans-unit>
             <trans-unit id="text.about_us.long_desc">
@@ -933,6 +1020,14 @@
                 <source>market.product.create</source>
                 <target>Add Product</target>
             </trans-unit>
+            <trans-unit id="market.product.remove">
+                <source>market.product.remove</source>
+                <target>Remove</target>
+            </trans-unit>
+            <trans-unit id="market.product.name.allowed">
+                <source>market.product.name.allowed</source>
+                <target>Allowed Length {length}</target>
+            </trans-unit>
             <trans-unit id="market.product.details">
                 <source>market.product.details</source>
                 <target>View details</target>
@@ -953,6 +1048,10 @@
                 <source>market.brands</source>
                 <target>Brands</target>
             </trans-unit>
+            <trans-unit id="market.brand">
+                <source>market.brand</source>
+                <target>Brand</target>
+            </trans-unit>
             <trans-unit id="market.products">
                 <source>market.products</source>
                 <target>Products</target>
@@ -969,6 +1068,10 @@
                 <source>market.supplier.create</source>
                 <target>Add Supplier</target>
             </trans-unit>
+            <trans-unit id="market.attribute.create">
+                <source>market.attribute.create</source>
+                <target>Add Attribute</target>
+            </trans-unit>
             <trans-unit id="market.manufacturer.create">
                 <source>market.manufacturer.create</source>
                 <target>Add Manufacturer</target>
@@ -977,9 +1080,21 @@
                 <source>market.suppliers</source>
                 <target>Suppliers</target>
             </trans-unit>
+            <trans-unit id="market.supplier">
+                <source>market.supplier</source>
+                <target>Supplier</target>
+            </trans-unit>
             <trans-unit id="market.manufacturers">
                 <source>market.manufacturers</source>
                 <target>Manufacturers</target>
+            </trans-unit>
+            <trans-unit id="market.manufacturer">
+                <source>market.manufacturer</source>
+                <target>Manufacturer</target>
+            </trans-unit>
+            <trans-unit id="market.attributes">
+                <source>market.attributes</source>
+                <target>Attributes</target>
             </trans-unit>
             <trans-unit id="market.products.overview">
                 <source>market.products.overview</source>
@@ -1056,6 +1171,10 @@
             <trans-unit id="label.form.password">
                 <source>label.form.password</source>
                 <target>Your password</target>
+            </trans-unit>
+            <trans-unit id="label.form.currency">
+                <source>label.form.currency</source>
+                <target>Currency</target>
             </trans-unit>
             <trans-unit id="label.form.keep_me_logged_in">
                 <source>label.form.keep_me_logged_in</source>

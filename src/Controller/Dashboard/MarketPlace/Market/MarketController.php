@@ -73,8 +73,8 @@ class MarketController extends AbstractController
         ParameterBagInterface  $params,
     ): Response
     {
-        $entry = new Market();
-        $form = $this->createForm(MarketType::class, $entry);
+        $market = new Market();
+        $form = $this->createForm(MarketType::class, $market);
 
         $markets = $user->getMarkets()->count();
 
@@ -83,29 +83,29 @@ class MarketController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
 
-                $entry->setOwner($user)
+                $market->setOwner($user)
                     ->setSlug($slugger->slug($form->get('name')->getData())->lower());
 
                 $file = $form->get('logo')->getData();
 
                 if ($file) {
-                    $fileUploader = new FileUploader($this->getTargetDir($params, $entry->getId()), $slugger, $em);
+                    $fileUploader = new FileUploader($this->getTargetDir($params, $market->getId()), $slugger, $em);
 
                     try {
-                        $attach = $fileUploader->upload($file)->handle($entry);
+                        $attach = $fileUploader->upload($file)->handle($market);
                     } catch (Exception $ex) {
                         throw new Exception($ex->getMessage());
                     }
 
-                    $entry->setAttach($attach);
+                    $market->setAttach($attach);
                 }
 
-                $em->persist($entry);
+                $em->persist($market);
                 $em->flush();
 
                 $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
 
-                return $this->redirectToRoute('app_dashboard_market_place_edit_market', ['id' => $entry->getId()]);
+                return $this->redirectToRoute('app_dashboard_market_place_edit_market', ['id' => $market->getId()]);
             }
         } else {
             throw new AccessDeniedHttpException('Permission denied.');
@@ -118,7 +118,7 @@ class MarketController extends AbstractController
 
     /**
      * @param Request $request
-     * @param Market $entry
+     * @param Market $market
      * @param EntityManagerInterface $em
      * @param SluggerInterface $slugger
      * @param TranslatorInterface $translator
@@ -128,10 +128,10 @@ class MarketController extends AbstractController
      * @throws Exception
      */
     #[Route('/edit/{id}', name: 'app_dashboard_market_place_edit_market', methods: ['GET', 'POST'])]
-    #[IsGranted(MarketVoter::EDIT, subject: 'entry', statusCode: Response::HTTP_FORBIDDEN)]
+//    #[IsGranted(MarketVoter::EDIT, subject: 'entry', statusCode: Response::HTTP_FORBIDDEN)]
     public function edit(
         Request                $request,
-        Market                 $entry,
+        Market                 $market,
         EntityManagerInterface $em,
         SluggerInterface       $slugger,
         TranslatorInterface    $translator,
@@ -139,7 +139,7 @@ class MarketController extends AbstractController
         CacheManager           $cacheManager,
     ): Response
     {
-        $form = $this->createForm(MarketType::class, $entry);
+        $form = $this->createForm(MarketType::class, $market);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -147,16 +147,16 @@ class MarketController extends AbstractController
             $file = $form->get('logo')->getData();
 
             if ($file) {
-                $fileUploader = new FileUploader($this->getTargetDir($params, $entry->getId()), $slugger, $em);
+                $fileUploader = new FileUploader($this->getTargetDir($params, $market->getId()), $slugger, $em);
 
-                $oldAttach = $entry->getAttach();
+                $oldAttach = $market->getAttach();
 
                 if ($oldAttach) {
                     $em->remove($oldAttach);
-                    $entry->setAttach(null);
+                    $market->setAttach(null);
 
                     $fs = new Filesystem();
-                    $oldFile = $this->getTargetDir($params, $entry->getId()) . '/' . $oldAttach->getName();
+                    $oldFile = $this->getTargetDir($params, $market->getId()) . '/' . $oldAttach->getName();
 
                     $cacheManager->remove($oldFile, 'market_thumb');
 
@@ -166,20 +166,20 @@ class MarketController extends AbstractController
                 }
 
                 try {
-                    $attach = $fileUploader->upload($file)->handle($entry);
+                    $attach = $fileUploader->upload($file)->handle($market);
                 } catch (Exception $ex) {
                     throw new Exception($ex->getMessage());
                 }
 
-                $entry->setAttach($attach);
+                $market->setAttach($attach);
             }
 
-            $em->persist($entry);
+            $em->persist($market);
             $em->flush();
 
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.updated')]));
 
-            return $this->redirectToRoute('app_dashboard_market_place_edit_market', ['id' => $entry->getId()]);
+            return $this->redirectToRoute('app_dashboard_market_place_edit_market', ['id' => $market->getId()]);
         }
 
         return $this->render('dashboard/content/market_place/market/_form.html.twig', $this->navbar() + [
@@ -204,7 +204,7 @@ class MarketController extends AbstractController
         if ($this->isCsrfTokenValid('delete', $request->get('_token'))) {
             $products = $market->getProducts();
             $date = new DateTime('@' . strtotime('now'));
-            foreach($products as $product) {
+            foreach ($products as $product) {
                 $product->setDeletedAt($date);
                 $em->persist($product);
             }
@@ -229,7 +229,7 @@ class MarketController extends AbstractController
     ): Response
     {
         $products = $market->getProducts();
-        foreach($products as $product) {
+        foreach ($products as $product) {
             $product->setDeletedAt(null);
             $em->persist($product);
         }

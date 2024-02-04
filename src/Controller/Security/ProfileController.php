@@ -2,7 +2,8 @@
 
 namespace App\Controller\Security;
 
-use App\Entity\UserDetails;
+use App\Entity\Attach;
+use App\Entity\User;
 use App\Form\Type\User\ProfileType;
 use App\Repository\AttachRepository;
 use App\Repository\UserDetailsRepository;
@@ -20,6 +21,7 @@ use Symfony\Component\HttpFoundation\{
     Request,
     Response,
 };
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -29,50 +31,52 @@ class ProfileController extends AbstractController
 {
 
     /**
-     *
-     * @var string|null
-     */
-    private ?string $storage;
-
-    /**
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @param CacheManager $cacheManager
+     * @param UserInterface $user
+     * @param EntityManagerInterface $em
      * @param ParameterBagInterface $params
+     * @return Response
      */
-    public function __construct(ParameterBagInterface $params)
-    {
-        $this->storage = sprintf('%s/picture/', $params->get('user_storage_dir'));
-    }
-
-    /**
-     * @param Request $request
-     * @param UserDetailsRepository $repository
-     * @return UserDetails|null
-     */
-    private function getRepository(
-        Request               $request,
-        UserDetailsRepository $repository,
-    ): ?UserDetails
-    {
-        return $repository->find($request->get('id'));
-    }
-
-    /**
-     * @param Request $request
-     * @param string $key
-     * @return string
-     */
-    private function getFile(Request $request, string $key): string
-    {
-        return $request->files->get($key);
-    }
-
     #[Route('/profile/attach/remove', name: 'app_profile_attach_remove', methods: ['POST'])]
     public function remove(
-        Request             $request,
-        TranslatorInterface $translator,
+        Request                $request,
+        TranslatorInterface    $translator,
+        CacheManager           $cacheManager,
+        EntityManagerInterface $em,
+        ParameterBagInterface  $params
     ): Response
     {
         $id = $request->getPayload()->get('id');
-        return $this->json(['message' => $translator->trans('user.picture.delete')]);
+        $user = $em->getRepository(User::class)->findOneBy(['email' => $this->getUser()->getUserIdentifier()]);
+        $attach = $em->getRepository(Attach::class)->findOneBy(['id' => $id, 'userDetails' => $user->getUserDetails()]);
+
+        $fs = new Filesystem();
+        $oldFile = $this->getTargetDir($params, $attach->getUserDetails()->getId()) . '/' . $attach->getName();
+
+        if ($cacheManager->isStored($oldFile, 'user_profile')) {
+            $cacheManager->remove($oldFile, 'user_profile');
+        }
+
+        if ($cacheManager->isStored($oldFile, 'user_preview')) {
+            $cacheManager->remove($oldFile, 'user_preview');
+        }
+
+        if ($cacheManager->isStored($oldFile, 'user_thumb')) {
+            $cacheManager->remove($oldFile, 'user_thumb');
+        }
+
+        if ($fs->exists($oldFile)) {
+            $fs->remove($oldFile);
+        }
+
+        $attach->setUserDetails(null);
+        $em->persist($attach);
+        $em->remove($attach);
+        $em->flush();
+
+        return $this->json(['message' => $translator->trans('user.picture.delete'), 'file' => $oldFile]);
     }
 
     /**
@@ -123,7 +127,6 @@ class ProfileController extends AbstractController
      * @param CacheManager $cacheManager
      * @param ParameterBagInterface $params
      * @param ImageValidatorInterface $imageValidator
-     * @param AttachRepository $attachRepository
      * @return Response
      * @throws Exception
      */
@@ -138,7 +141,6 @@ class ProfileController extends AbstractController
         CacheManager            $cacheManager,
         ParameterBagInterface   $params,
         ImageValidatorInterface $imageValidator,
-        AttachRepository        $attachRepository,
     ): Response
     {
         $details = $repository->find($user->getId());
@@ -158,7 +160,7 @@ class ProfileController extends AbstractController
                 );
             }
 
-            $fileUploader = new FileUploader($this->getTargetDir($user->getId()), $slugger, $em);
+            $fileUploader = new FileUploader($this->getTargetDir($params, $user->getId()), $slugger, $em);
 
             try {
                 $attach = $fileUploader->upload($file)->handle($details);
@@ -173,11 +175,8 @@ class ProfileController extends AbstractController
         $em->persist($details);
         $em->flush();
 
-        $storage = $params->get('user_storage_picture');
-
-        $url = "{$storage}/{$user->getId()}/{$attach->getName()}";
-        $picture = $cacheManager->getBrowserPath(parse_url($url, PHP_URL_PATH), 'user_thumb', [], null);
-        //$attachments = $attachRepository->getUserAttachments($details, $cacheManager, $storage, 'user_thumb');
+        $url = $this->getTargetDir($params, $user->getId());
+        $picture = $cacheManager->getBrowserPath(parse_url($url . '/' . $attach->getName(), PHP_URL_PATH), 'user_thumb', [], null);
 
         return $this->json([
             'success' => true,
@@ -185,7 +184,6 @@ class ProfileController extends AbstractController
             'path' => $this->generateUrl('app_profile_attach_remove'),
             'message' => $translator->trans('user.picture.changed'),
             'picture' => $picture,
-            //'attachments' => $attachments,
         ]);
     }
 
@@ -195,6 +193,7 @@ class ProfileController extends AbstractController
      * @param SluggerInterface $slugger
      * @param EntityManagerInterface $em
      * @param UserDetailsRepository $repository
+     * @param ParameterBagInterface $params
      * @param TranslatorInterface $translator
      * @return Response
      * @throws Exception
@@ -206,6 +205,7 @@ class ProfileController extends AbstractController
         SluggerInterface       $slugger,
         EntityManagerInterface $em,
         UserDetailsRepository  $repository,
+        ParameterBagInterface  $params,
         TranslatorInterface    $translator,
     ): Response
     {
@@ -218,7 +218,7 @@ class ProfileController extends AbstractController
             $file = $form->get('picture')->getData();
 
             if ($file) {
-                $fileUploader = new FileUploader($this->getTargetDir($user->getId()), $slugger, $em);
+                $fileUploader = new FileUploader($this->getTargetDir($params, $user->getId()), $slugger, $em);
 
                 try {
                     $attach = $fileUploader->upload($file)->handle($details);
@@ -251,12 +251,12 @@ class ProfileController extends AbstractController
     }
 
     /**
-     *
-     * @param int|null $id
+     * @param ParameterBagInterface $params
+     * @param int $id
      * @return string
      */
-    private function getTargetDir(?int $id): string
+    private function getTargetDir(ParameterBagInterface $params, int $id): string
     {
-        return $this->storage . $id;
+        return sprintf('%s/%d', $params->get('user_storage_picture'), $id);
     }
 }

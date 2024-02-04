@@ -6,6 +6,8 @@ use App\Entity\User;
 use App\Repository\MarketPlace\MarketCustomerRepository;
 use DateTimeImmutable;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -17,53 +19,39 @@ class MarketCustomer
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?User $customer = null;
-
     #[ORM\Column(length: 255)]
     private ?string $first_name = null;
 
     #[ORM\Column(length: 255)]
     private ?string $last_name = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?DateTimeInterface $birthday = null;
-
-    #[ORM\Column(length: 10, nullable: true)]
-    private ?string $gender = null;
-
-    #[ORM\Column(length: 30, nullable: true)]
+    #[ORM\Column(length: 100)]
     private ?string $phone = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?User $member = null;
+
     #[ORM\Column]
-    private ?DateTimeImmutable $created_at;
+    private ?DateTimeImmutable $created_at = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?DateTimeImmutable $updated_at = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $updated_at = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?DateTimeImmutable $deleted_at = null;
+    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: MarketCustomerOrders::class)]
+    private Collection $marketCustomerOrders;
+
+    #[ORM\OneToMany(mappedBy: 'cusomer', targetEntity: MarketCustomerMessage::class)]
+    private Collection $marketCustomerMessages;
 
     public function __construct()
     {
-        $this->created_at = new DateTimeImmutable();
+        $this->marketCustomerOrders = new ArrayCollection();
+        $this->marketCustomerMessages = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCustomer(): ?User
-    {
-        return $this->customer;
-    }
-
-    public function setCustomer(?User $customer): static
-    {
-        $this->customer = $customer;
-
-        return $this;
     }
 
     public function getFirstName(): ?string
@@ -90,38 +78,26 @@ class MarketCustomer
         return $this;
     }
 
-    public function getBirthday(): ?DateTimeInterface
-    {
-        return $this->birthday;
-    }
-
-    public function setBirthday(?DateTimeInterface $birthday): static
-    {
-        $this->birthday = $birthday;
-
-        return $this;
-    }
-
-    public function getGender(): ?string
-    {
-        return $this->gender;
-    }
-
-    public function setGender(?string $gender): static
-    {
-        $this->gender = $gender;
-
-        return $this;
-    }
-
     public function getPhone(): ?string
     {
         return $this->phone;
     }
 
-    public function setPhone(?string $phone): static
+    public function setPhone(string $phone): static
     {
         $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getMember(): ?User
+    {
+        return $this->member;
+    }
+
+    public function setMember(?User $member): static
+    {
+        $this->member = $member;
 
         return $this;
     }
@@ -138,26 +114,82 @@ class MarketCustomer
         return $this;
     }
 
-    public function getUpdatedAt(): ?DateTimeImmutable
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updated_at;
     }
 
-    public function setUpdatedAt(?DateTimeImmutable $updated_at): static
+    public function setUpdatedAt(?DateTimeInterface $updated_at): static
     {
         $this->updated_at = $updated_at;
 
         return $this;
     }
 
-    public function getDeletedAt(): ?DateTimeImmutable
+    /**
+     * @return Collection<int, MarketCustomerOrders>
+     */
+    public function getMarketCustomerOrders(): Collection
     {
-        return $this->deleted_at;
+        return $this->marketCustomerOrders;
     }
 
-    public function setDeletedAt(?DateTimeImmutable $deleted_at): static
+    public function addMarketCustomerOrder(MarketCustomerOrders $marketCustomerOrder): static
     {
-        $this->deleted_at = $deleted_at;
+        if (!$this->marketCustomerOrders->contains($marketCustomerOrder)) {
+            $this->marketCustomerOrders->add($marketCustomerOrder);
+            $marketCustomerOrder->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMarketCustomerOrders(MarketCustomerOrders $marketCustomerOrder): static
+    {
+        if ($this->marketCustomerOrders->removeElement($marketCustomerOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($marketCustomerOrder->getCustomer() === $this) {
+                $marketCustomerOrder->setCustomer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketCustomerMessage>
+     */
+    public function getMarketCustomerMessages(): Collection
+    {
+        return $this->marketCustomerMessages;
+    }
+
+    /**
+     * @param MarketCustomerMessage $marketCustomerMessage
+     * @return $this
+     */
+    public function addMarketCustomerMessage(MarketCustomerMessage $marketCustomerMessage): static
+    {
+        if (!$this->marketCustomerMessages->contains($marketCustomerMessage)) {
+            $this->marketCustomerMessages->add($marketCustomerMessage);
+            $marketCustomerMessage->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MarketCustomerMessage $marketCustomerMessage
+     * @return $this
+     */
+    public function removeMarketCustomerMessage(MarketCustomerMessage $marketCustomerMessage): static
+    {
+        if ($this->marketCustomerMessages->removeElement($marketCustomerMessage)) {
+            // set the owning side to null (unless already changed)
+            if ($marketCustomerMessage->getCustomer() === $this) {
+                $marketCustomerMessage->setCustomer(null);
+            }
+        }
 
         return $this;
     }

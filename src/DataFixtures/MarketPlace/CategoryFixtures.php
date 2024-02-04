@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\DataFixtures\MarketPlace;
 
 use App\Entity\MarketPlace\MarketCategory;
 use DateTimeImmutable;
@@ -8,15 +8,13 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-class MarketPlaceCategoryFixtures extends Fixture
+class CategoryFixtures extends Fixture
 {
 
     /**
      * @var SluggerInterface
      */
     private SluggerInterface $slugger;
-
-    private const string REFERENCE_NAME = 'cat_%d';
 
     /**
      * @param SluggerInterface $slugger
@@ -219,17 +217,72 @@ class MarketPlaceCategoryFixtures extends Fixture
                         'name' => 'Clocks',
                         'description' => 'Clocks',
                     ],
+                    [
+                        'name' => 'Mirrors',
+                        'description' => 'Mirrors',
+                    ],
                 ]],
             [
                 'name' => 'Automotive Tools',
                 'description' => 'Automotive Tools.',
                 'parent' => [
-
+                    [
+                        'name' => 'Jump Starters & Battery Chargers',
+                        'description' => 'Jump Starters & Battery Chargers',
+                    ],
+                    [
+                        'name' => 'Diagnostic, Test & Measurement Tools',
+                        'description' => 'Diagnostic, Test & Measurement Tools',
+                    ],
+                    [
+                        'name' => 'Electrical System Tools',
+                        'description' => 'Electrical System Tools',
+                    ],
+                    [
+                        'name' => 'Wheel & Tire Air Compressors',
+                        'description' => 'Wheel & Tire Air Compressors',
+                    ],
+                    [
+                        'name' => 'Garage & Shop Products',
+                        'description' => 'Garage & Shop Products',
+                    ],
+                    [
+                        'name' => 'Body Repair Tools',
+                        'description' => 'Body Repair Tools',
+                    ],
+                    [
+                        'name' => 'Tool Sets',
+                        'description' => 'Tool Sets',
+                    ],
                 ]],
             [
                 'name' => 'Plumbing and repair',
                 'description' => 'Plumbing and repair.',
                 'parent' => [
+                    [
+                        'name' => 'Well Supplies',
+                        'description' => 'Well Supplies',
+                    ],
+                    [
+                        'name' => 'Plumbing Fittings & Supports',
+                        'description' => 'Plumbing Fittings & Supports',
+                    ],
+                    [
+                        'name' => 'Plumbing Repair Kits',
+                        'description' => 'Plumbing Repair Kits',
+                    ],
+                    [
+                        'name' => 'Furniture\'s for Bathroom',
+                        'description' => 'Furniture\'s for Bathroom',
+                    ],
+                    [
+                        'name' => 'Furniture\'s for Toilet',
+                        'description' => 'Tool Toilet',
+                    ],
+                    [
+                        'name' => 'Bathroom & Toilet Mirrors',
+                        'description' => 'Bathroom & Toilet Mirrors',
+                    ],
 
                 ]],
             [
@@ -258,28 +311,123 @@ class MarketPlaceCategoryFixtures extends Fixture
                     ],
                 ]],
             [
-                'name' => 'Beauty and health',
-                'description' => 'Beauty and health.',
+                'name' => 'Beauty and Health',
+                'description' => 'Beauty and Health.',
                 'parent' => [
-
+                    [
+                        'name' => 'Dermatocosmetics',
+                        'description' => 'Dermatocosmetics',
+                    ],
+                    [
+                        'name' => 'Perfumery',
+                        'description' => 'Perfumery',
+                    ],
+                    [
+                        'name' => 'Decorative cosmetics',
+                        'description' => 'Decorative cosmetics',
+                    ],
+                    [
+                        'name' => 'Gift sets of cosmetics',
+                        'description' => 'Gift sets of cosmetics',
+                    ],
+                    [
+                        'name' => 'Facial',
+                        'description' => 'Facial',
+                    ],
+                    [
+                        'name' => 'Hair care',
+                        'description' => 'Hair care',
+                    ],
+                    [
+                        'name' => 'Cosmetics for children',
+                        'description' => 'Cosmetics for children',
+                    ],
+                    [
+                        'name' => 'Body care',
+                        'description' => 'Body care',
+                    ],
+                    [
+                        'name' => 'Oral care',
+                        'description' => 'Oral care',
+                    ],
+                    [
+                        'name' => 'Shaving products',
+                        'description' => 'Shaving products',
+                    ],
+                    [
+                        'name' => 'Hair dyeing and curling',
+                        'description' => 'Hair dyeing and curling',
+                    ],
                 ]],
             [
                 'name' => 'Goods for Kids',
                 'description' => 'Goods for Kids.',
                 'parent' => [
-
-                ]],
-            [
-                'name' => 'Sales',
-                'description' => 'Sales.',
-                'parent' => [
-
+                    [
+                        'name' => 'Toys',
+                        'description' => 'Toys',
+                    ],
+                    [
+                        'name' => 'LEGO constructors',
+                        'description' => 'LEGO constructors',
+                    ],
+                    [
+                        'name' => 'Creativity',
+                        'description' => 'Creativity',
+                    ],
+                    [
+                        'name' => 'Books',
+                        'description' => 'Books',
+                    ],
+                    [
+                        'name' => 'Diapers',
+                        'description' => 'Diapers',
+                    ],
+                    [
+                        'name' => 'Food and feeding',
+                        'description' => 'Food and feeding',
+                    ],
+                    [
+                        'name' => 'Strollers and car seats',
+                        'description' => 'Strollers and car seats',
+                    ],
+                    [
+                        'name' => 'Walks and rest',
+                        'description' => 'Walks and rest',
+                    ],
                 ]],
             [
                 'name' => 'Handmade',
                 'description' => 'Handmade.',
                 'parent' => [
-
+                    [
+                        'name' => 'Artwork',
+                        'description' => 'Artwork',
+                    ],
+                    [
+                        'name' => 'Accessories',
+                        'description' => 'Accessories',
+                    ],
+                    [
+                        'name' => 'Wooden Toys',
+                        'description' => 'Wooden Toys',
+                    ],
+                    [
+                        'name' => 'Clothing',
+                        'description' => 'Clothing',
+                    ],
+                    [
+                        'name' => 'Jewellery',
+                        'description' => 'Jewellery',
+                    ],
+                    [
+                        'name' => 'Baby',
+                        'description' => 'Baby',
+                    ],
+                    [
+                        'name' => 'Party Supplies',
+                        'description' => 'Party Supplies',
+                    ],
                 ]],
         ];
     }

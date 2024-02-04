@@ -24,8 +24,10 @@ class CategoryController extends AbstractController
     {
         // TODO: Replace with psql function - get_products
         $products = $marketProductRepository->getProducts(8);
-
-        return $this->render('market_place/category/index.html.twig', []);
+        shuffle($products);
+        return $this->render('market_place/category/index.html.twig', [
+            'products' => $products,
+        ]);
     }
 
     /**

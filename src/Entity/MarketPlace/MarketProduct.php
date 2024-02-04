@@ -16,7 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueEntity(fields: ['slug'], message: 'slug.unique', errorPath: 'slug')]
 class MarketProduct
 {
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -71,12 +70,26 @@ class MarketProduct
     #[ORM\Column(length: 80)]
     private ?string $short_name = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $discount = null;
+
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: MarketProductAttribute::class)]
+    private Collection $marketProductAttributes;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $sku = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $pckg_quantity = null;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
         $this->marketCategoryProducts = new ArrayCollection();
         $this->marketProductAttaches = new ArrayCollection();
         $this->marketOrdersProducts = new ArrayCollection();
+        $this->marketProductAttributes = new ArrayCollection();
+        $this->pckg_quantity = 0;
     }
 
     /**
@@ -488,6 +501,97 @@ class MarketProduct
     public function setShortName(?string $short_name): static
     {
         $this->short_name = $short_name;
+
+        return $this;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getDiscount(): ?float
+    {
+        return $this->discount;
+    }
+
+    /**
+     * @param float|null $discount
+     * @return $this
+     */
+    public function setDiscount(?float $discount): static
+    {
+        $this->discount = round($discount, 2);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketProductAttribute>
+     */
+    public function getMarketProductAttributes(): Collection
+    {
+        return $this->marketProductAttributes;
+    }
+
+    public function addMarketProductAttribute(MarketProductAttribute $marketProductAttribute): static
+    {
+        if (!$this->marketProductAttributes->contains($marketProductAttribute)) {
+            $this->marketProductAttributes->add($marketProductAttribute);
+            $marketProductAttribute->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MarketProductAttribute $marketProductAttribute
+     * @return $this
+     */
+    public function removeMarketProductAttribute(MarketProductAttribute $marketProductAttribute): static
+    {
+        if ($this->marketProductAttributes->removeElement($marketProductAttribute)) {
+            // set the owning side to null (unless already changed)
+            if ($marketProductAttribute->getProduct() === $this) {
+                $marketProductAttribute->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSku(): ?string
+    {
+        return $this->sku;
+    }
+
+    /**
+     * @param string|null $sku
+     * @return $this
+     */
+    public function setSku(?string $sku): static
+    {
+        $this->sku = $sku;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPckgQuantity(): ?int
+    {
+        return $this->pckg_quantity;
+    }
+
+    /**
+     * @param int|null $pckg_quantity
+     * @return $this
+     */
+    public function setPckgQuantity(?int $pckg_quantity): static
+    {
+        $this->pckg_quantity = $pckg_quantity;
 
         return $this;
     }

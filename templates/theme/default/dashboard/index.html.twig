@@ -29,6 +29,13 @@
                     <div class="sidebar rounded m-1">
                         {% include 'dashboard/sidebar.html.twig'  with {'navbar': navbar} %}
                     </div>
+                    {% if app.user.markets %}
+                        {% if app.user.markets.count and app.user.markets.first.attach %}
+                            {% set _logo = 'storage/market/logo/' ~ app.user.markets.first.id ~ '/' ~ app.user.markets.first.attach.name %}
+                            <img class="ms-1 img-fluid img-rounded" src="{{ asset(_logo) | imagine_filter('market_thumb') }}"
+                                 alt="{{ app.user.markets.first.name }}">
+                        {% endif %}
+                    {% endif %}
                 </div>
                 <div class="col-md-9 m-1 shadow-sm bg-white rounded">
                     <div class="flex-column content p-3 m-1">

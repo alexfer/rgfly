@@ -19,8 +19,8 @@ class IndexController extends AbstractController
     {
         // TODO: Replace with psql function - get_products
         $products = $marketProductRepository->getProducts(8);
-        //dd($products);
         shuffle($products);
+
         return $this->render('market_place/index.html.twig', [
             'products' => $products,
         ]);

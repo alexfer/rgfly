@@ -2,7 +2,8 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\{Category, User, UserDetails, UserSocial, Faq};
+use App\DataFixtures\MarketPlace\Fixtures;
+use App\Entity\{Category, Faq, User, UserDetails, UserSocial};
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -43,7 +44,7 @@ class AppFixtures extends Fixture
     public function getDependencies(): array
     {
         return [
-            MarketPlaceFixtures::class,
+            Fixtures::class,
         ];
     }
 

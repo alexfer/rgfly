@@ -1,12 +1,13 @@
 {% set _route = app.request.get('_route') %}
+<!--suppress ALL -->
 <div class="navbar-area">
     <div class="tech-responsive-nav">
         <div class="container">
             <div class="tech-responsive-menu">
                 <div class="tech-logo">
                     <a href="{{ path('app_index') }}">
-                        <img src="{{ asset('/img/logo-black.png') }}" class="black-logo" alt="{{ 'site.title'|trans }}">
-                        <img src="{{ asset('/img/logo-white.png') }}" class="white-logo" alt="{{ 'site.title'|trans }}">
+                        <img src="{{ asset('/img/logo-black.png') }}" class="black-logo shadow-none border-0" alt="{{ 'site.title'|trans }}">
+                        <img src="{{ asset('/img/logo-white.png') }}" class="white-logo shadow-none border-0" alt="{{ 'site.title'|trans }}">
                     </a>
                 </div>
             </div>
@@ -112,9 +113,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="#shopping-cart" class="nav-link" data-bs-toggle="offcanvas" role="button" aria-controls="shopping-cart">
                                 <span class="badge bg-opacity-75 rounded-pill bg-success position-absolute top-0 start-100 mt-3 translate-middle-x">
-                                    <small>1</small>
+                                    <small id="qty">{{ app.session.get('quantity')|default(0) }}</small>
                                 </span>
                                 <h4 class="bi bi-cart mt-2"></h4>
                             </a>

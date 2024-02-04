@@ -5,6 +5,8 @@ namespace App\Service;
 use AllowDynamicProperties;
 use App\Entity\Attach;
 use App\Entity\MarketPlace\Market;
+use App\Entity\MarketPlace\MarketProduct;
+use App\Entity\MarketPlace\MarketProductAttach;
 use App\Entity\UserDetails;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -91,6 +93,10 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
         if ($object instanceof Market) {
             $attach->setMarket($object);
+        }
+
+        if ($object instanceof MarketProductAttach) {
+            $attach->addMarketProductAttach($object);
         }
 
         $attach->setName($this->fileName)

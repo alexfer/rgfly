@@ -1,7 +1,3 @@
-.marketplace .dashed {
-    border-style: dashed;
-}
-
 .marketplace .dotted {
     border-style: dotted;
 }
@@ -34,4 +30,14 @@
 .marketplace a.badge-child:hover {
     color: #6c757d;
     padding-left: 1px;
+}
+
+.product-info .nav-link.active {
+    border-bottom: #4e5768 2px solid !important;
+    color: #0e1326 !important;
+}
+
+.product-info .nav-link:hover {
+    border-bottom: #4e5768 2px solid !important;
+    color: #0e1326 !important;
 }

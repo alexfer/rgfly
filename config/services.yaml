@@ -14,7 +14,9 @@ parameters:
     user_storage_picture: 'storage/user/picture'
     market_storage_logo: 'storage/market/logo'
     entry_storage_dir: '%kernel.project_dir%/public/storage/entry'
+    product_storage_dir: '%kernel.project_dir%/public/storage/product'
     entry_storage_picture: 'storage/entry/picture'
+    product_storage_picture: 'storage/product/picture'
     app.notifications.email_sender: '%env(EMAIL_SENDER)%'
     app.notifications.email_sender_name: '%env(EMAIL_SENDER_NAME)%'
 

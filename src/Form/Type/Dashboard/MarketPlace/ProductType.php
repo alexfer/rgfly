@@ -6,12 +6,15 @@ use AllowDynamicProperties;
 use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketCategory;
 use App\Entity\MarketPlace\MarketProduct;
+use Doctrine\DBAL\Types\FloatType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -72,7 +75,7 @@ use Doctrine\ORM\EntityRepository;
 
         if ($marketCategory) {
             foreach ($marketCategory as $category) {
-                if($category->getParent()) {
+                if ($category->getParent()) {
                     $categories[$category->getParent()->getName()][$category->getName()] = $category->getId();
                 }
             }
@@ -114,6 +117,19 @@ use Doctrine\ORM\EntityRepository;
                     ]),
                 ],
             ])
+            ->add('sku', TextType::class, [
+                'required' => false,
+                'attr' => [
+                    'min' => 3,
+                    'max' => 80,
+                ],
+                'constraints' => [
+                    new Length([
+                        'max' => 80,
+                        'maxMessage' => 'form.sku.max',
+                    ]),
+                ],
+            ])
             ->add('name', TextareaType::class, [
                 'attr' => [
                     'min' => 3,
@@ -131,6 +147,19 @@ use Doctrine\ORM\EntityRepository;
                     ]),
                 ],
             ])
+            ->add('pckg_quantity', IntegerType::class, [
+                'attr' => [
+                    'min' => 0,
+                    'max' => 100,
+                ],
+                'constraints' => [
+                    new Length([
+                        'min' => 0,
+                        'max' => 100,
+                        'maxMessage' => 'form.quantity.max',
+                    ]),
+                ],
+            ])
             ->add('quantity', IntegerType::class, [
                 'attr' => [
                     'min' => 1,
@@ -145,6 +174,22 @@ use Doctrine\ORM\EntityRepository;
                         'minMessage' => 'form.quantity.min',
                         'max' => 1000,
                         'maxMessage' => 'form.quantity.max',
+                    ]),
+                ],
+            ])
+            ->add('discount', RangeType::class, [
+                'attr' => [
+                    'min' => 0,
+                    'max' => 100,
+                    'step' => 1,
+                    'value' => $options['data']?->getDiscount() ?? 0,
+                ],
+                'constraints' => [
+                    new Length([
+                        'min' => 1,
+                        'minMessage' => 'form.discount.min',
+                        'max' => 100,
+                        'maxMessage' => 'form.discount.max',
                     ]),
                 ],
             ])
@@ -230,11 +275,18 @@ use Doctrine\ORM\EntityRepository;
      * @param OptionsResolver $resolver
      * @return void
      */
-    public
-    function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => MarketProduct::class,
         ]);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getParent(): ?string
+    {
+        return AttributeType::class;
     }
 }

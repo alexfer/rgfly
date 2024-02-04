@@ -1,0 +1,60 @@
+{% for order in orders %}
+    <a href="{{ path('app_market_place_market', {slug: order.market.slug}) }}"
+       class="lead ms-3">{{ order.market.name }}</a>
+    <hr class="my-1">
+    <ul class="list-group list-group-lg list-group-flush">
+        {% for products in order.products %}
+            {% for product in products %}
+                {% if product.order_id == order.id %}
+                    <li class="list-group-item">
+                        <div class="row align-items-center">
+                            <div class="col-4">
+                                <a class="" href="{{ path('app_market_place_product', {slug: product.slug}) }}">
+                                    <img class="shadow-none rounded-1 position-relative mt-0"
+                                         src="{{ asset('img/08.jpg') }}"
+                                         width="100" alt="{{ product.name }}">
+                                </a>
+                            </div>
+                            <div class="col-8">
+                                <p class="fs-6 fw-bold mb-1 text-truncate">
+                                    <a title="{{ product.name }}"
+                                       href="{{ path('app_market_place_product', {slug: product.slug}) }}">{{ product.short_name }}</a>
+                                    <br>
+                                    {% if product.percent %}
+                                        {% set percent = product.percent %}
+                                        {% set cost = product.cost %}
+                                        {% set percent_cost = (cost - ((cost * percent) - percent)/100) %}
+                                        <span class="fw-bold text-success">{{ percent_cost|round|number_format(2, '.', ' ') }}<small>{{ order.market.currency|currency }}</small></span>
+                                        <span class="text-decoration-line-through text-muted">
+                                            {{ product.cost|number_format(2, '.', ' ') }}
+                                            <small>{{ order.market.currency|currency }}</small>
+                                        </span><span style="font-size: small"
+                                                     class="ps-2 fw-lighter text-danger">{{ product.percent }}%</span>
+                                    {% else %}
+                                        {% set result = product.cost * product|length %}
+                                        <span class="text-muted">{{ product.cost|number_format(2, '.', ' ') }}<small>{{ order.market.currency|currency }}</small></span>
+                                    {% endif %}
+                                </p>
+                                <div class="d-flex align-items-center">
+                                    <a class="fs-6 text-gray-400 ms-auto" href="#">
+                                        <i class="bi bi-x"></i> <small>{{ 'market.product.remove'|trans }}</small>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </ul>
+    <div class="justify-between lh-base fs-6 fw-bold bg-light py-3 ps-3 shadow-sm mb-3">
+        <strong>Subtotal</strong>
+        <strong class="float-end pe-3">{{ order.discount|number_format(2, '.', ' ') }}</strong>
+    </div>
+{% else %}
+    <div class="text-center visually-hidden">
+        <img class="d-block mx-auto mb-5 border-0 h-50 w-50 shadow-none" src="{{ asset('img/404.png') }}"
+             alt="{{ 'market.product.cart.empty'|trans }}">
+        <p class="lead">{{ 'market.product.cart.empty'|trans }}</p>
+    </div>
+{% endfor %}

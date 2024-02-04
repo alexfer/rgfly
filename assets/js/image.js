@@ -6,8 +6,8 @@ $(function () {
     let changeBtn = $('#btnChangePicture');
     let formData = new FormData();
     let info = $('.card-footer .picture-info');
-    let profile = $('label[for="profile_picture"]');
-    let entry = $('label[for="picture"]');
+    let profile = $('input[id="profile_picture"]') || undefined;
+    let entry = $('input[id="picture"]') || undefined;
     let attachments = $('.entry-attachments');
     let loader = $('.loader');
     let readURL = function (input) {
@@ -15,7 +15,7 @@ $(function () {
         if (input.files && input.files[0]) {
             let reader = new FileReader();
 
-            reader.onload = function (e) {
+            reader.onload = (e) => {
                 $('#imgProfile').attr('src', e.target.result);
             };
 
@@ -24,7 +24,7 @@ $(function () {
     }
 
     let formatBytes = function (bytes, decimals = 2) {
-        if (!+bytes) return '0 Bytes'
+        if (!+bytes) return '0 Bytes';
 
         const k = 1024
         const dm = decimals < 0 ? 0 : decimals
@@ -34,21 +34,19 @@ $(function () {
         return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
     }
 
-    let upload = function (file) {
-        alert($('button[id="attach"]'));
+    let upload = (file) => {
         $('button[id="attach"]').on('click', function (e) {
-            formData.append('file', file);
-
             if (file) {
+                formData.append('file', file);
                 loader.toggleClass('show');
                 attachments.toggleClass('blur');
                 $.ajax({
-                    url: $(this).attr('data-url'),
+                    url: $(this).data('url'),
                     type: 'post',
                     data: formData,
                     contentType: false,
                     processData: false,
-                    success: function (response) {
+                    success: (response) => {
                         if (response) {
                             let toast = $('.toast .toast-body');
 
@@ -59,45 +57,50 @@ $(function () {
                                 toast.removeClass('error').text(response.message);
                             }
 
-                            profile.text(profile.attr('data-label'));
-                            entry.text(entry.attr('data-label'));
+                            entry.text(entry.data('label'));
                             info.text('');
-                            $('.toast').toast('show');
+                            $('.toast').removeClass('hide').toggleClass('show');
+                            // TODO: fix it
                             attachments.prepend(
                                 $('<div/>')
                                     .attr('class', 'd-inline-block  mr-3 mb-3').append(
                                     $('<img/>')
-                                        .attr('class', 'attach lazy')
+                                        .attr('class', 'attach')
                                         .attr('src', response.picture)
                                 ).append(
-                                    $('<div/>').attr('class', 'handlers').attr('data-id', response.id))).delay(4000).show('slow');
+                                    $('<div/>').attr('class', 'handlers').attr('data-id', response.id))).delay(3000).show('slow');
                             if (attachments.length > 6) {
-                                setTimeout(function () {
+                                setTimeout(() => {
                                     attachments.children().last().remove();
                                 }, 2000);
                             }
                         }
                     },
-                    complete: function () {
+                    complete: () => {
                         setTimeout(() => {
                             loader.removeClass('show');
                             attachments.removeClass('blur');
-                        }, 5000);
+                            if(Object.keys(profile).length === 3) {
+                                profile.wrap('<form>').closest('form').get(0).reset();
+                                profile.unwrap();
+                            }
+                            if(Object.keys(entry).length === 3) {
+                                entry.wrap('<form>').closest('form').get(0).reset();
+                                entry.unwrap();
+                            }
+                        }, 3000);
                     }
                 });
-                file = null;
-            } else {
-                info.html(profile.attr('data-label'));
             }
         });
     };
 
-    attachments.find('.handlers a').off('click').on('click', function (e) {
-        e.preventDefault();
+    attachments.find('.handlers a').off().on('click',function (event) {
+        event.preventDefault();
 
         const url = $(this).attr('href');
-        const id = $(this).parent('div').attr('data-id');
-        const action = $(this).attr('data-action');
+        const id = $(this).parent('div').data('id');
+        const action = $(this).data('action');
         const args = JSON.parse(attachments.attr('data-params'));
         let params = {};
 
@@ -144,24 +147,13 @@ $(function () {
     $('input[name="profile[picture]"], input[name="entry[picture]"]').on('change', function (e) {
         e.preventDefault();
         let file = this.files[0];
-        let profileInput = document.getElementById('profile_picture');
-        let entryInput = document.getElementById('entry_picture');
         info.html(file.name + ', ' + formatBytes(file.size) + ', ' + file.type);
         profile.html(file.name);
         entry.html(file.name);
         upload(file);
-
-        if (profileInput) {
-            profileInput.parentNode.innerHTML = profileInput.parentNode.innerHTML;
-        }
-
-        if (entryInput) {
-            entryInput.parentNode.innerHTML = entryInput.parentNode.innerHTML;
-        }
-
     });
 
-    changeBtn.on('click', function () {
+    changeBtn.on('click', () => {
         if (!changeBtn.hasClass('changing')) {
             $('#profilePicture').click();
         } else {
@@ -179,7 +171,7 @@ $(function () {
                 data: formData,
                 contentType: false,
                 processData: false,
-                success: function (response) {
+                success: (response) => {
                     btnChange.show();
                     loading.hide();
                     if (response !== 0) {
@@ -187,24 +179,24 @@ $(function () {
                         $('#btnDiscard').hide();
                         $('#imgProfile').attr('src', response.picture);
                         $('.toast .toast-body').text(response.message);
-                        $('.toast').toast('show');
+                        $('.toast').show();
                     }
                 },
-                complete: function () {
-                    $('.toast').toast('show');
+                complete: () => {
+                    $('.toast').show();
                 }
             });
         }
     });
 
-    $('#profilePicture').on('change', function () {
+    $('#profilePicture').on('change', () => {
         readURL(this);
         let btnChange = $('#btnChangePicture');
         btnChange.html(btnChange.attr('data-confirm')).addClass('changing');
         $('#btnDiscard').removeClass('d-none');
     });
 
-    $('#btnDiscard').on('click', function () {
+    $('#btnDiscard').on('click', () => {
         let btnChange = $('#btnChangePicture');
         btnChange.html(btnChange.attr('data-change')).removeClass('changing');
         $('#btnDiscard').addClass('d-none');

@@ -13,6 +13,21 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: MarketOrdersRepository::class)]
 class MarketOrders
 {
+    const array STATUS = [
+        'delivered' => 'Delivered',
+        'unreached' => 'Unreached',
+        'paid' => 'Paid',
+        'confirmed' => 'Confirmed',
+        'processing' => 'Processing',
+        'pending' => 'Pending',
+        'on-hold' => 'On Hold',
+        'shipped' => 'Shipped',
+        'cancelled' => 'Cancelled',
+        'refused' => 'Refused',
+        'awaiting-return' => 'Awaiting Return',
+        'returned' => 'Returned',
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -24,8 +39,8 @@ class MarketOrders
     #[ORM\Column(length: 50)]
     private ?string $number = null;
 
-    #[ORM\Column]
-    private ?float $total = null;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0', nullable: true)]
+    private ?string $total = null;
 
     #[ORM\Column]
     private ?DateTimeImmutable $created_at;
@@ -39,10 +54,28 @@ class MarketOrders
     #[ORM\OneToMany(mappedBy: 'orders', targetEntity: MarketOrdersProduct::class)]
     private Collection $marketOrdersProducts;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $session = null;
+
+    #[ORM\Column(length: 100)]
+    private ?string $status;
+
+    #[ORM\OneToMany(mappedBy: 'orders', targetEntity: MarketCustomerOrders::class)]
+    private Collection $marketCustomerOrders;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0', nullable: true)]
+    private ?string $discount = null;
+
+    #[ORM\OneToMany(mappedBy: 'orders', targetEntity: MarketCustomerMessage::class)]
+    private Collection $marketCustomerMessages;
+
     public function __construct()
     {
         $this->created_at = new DateTimeImmutable();
         $this->marketOrdersProducts = new ArrayCollection();
+        $this->status = array_flip(self::STATUS)['Processing'];
+        $this->marketCustomerOrders = new ArrayCollection();
+        $this->marketCustomerMessages = new ArrayCollection();
     }
 
     /**
@@ -92,18 +125,18 @@ class MarketOrders
     }
 
     /**
-     * @return float|null
+     * @return string|null
      */
-    public function getTotal(): ?float
+    public function getTotal(): ?string
     {
         return $this->total;
     }
 
     /**
-     * @param float $total
+     * @param string $total
      * @return $this
      */
-    public function setTotal(float $total): static
+    public function setTotal(string $total): static
     {
         $this->total = $total;
 
@@ -209,6 +242,139 @@ class MarketOrders
             // set the owning side to null (unless already changed)
             if ($marketOrdersProduct->getOrders() === $this) {
                 $marketOrdersProduct->setOrders(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSession(): ?string
+    {
+        return $this->session;
+    }
+
+    /**
+     * @param string|null $session
+     * @return $this
+     */
+    public function setSession(?string $session): static
+    {
+        $this->session = $session;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string|null $status
+     * @return $this
+     */
+    public function setStatus(?string $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketCustomerOrders>
+     */
+    public function getMarketCustomerOrders(): Collection
+    {
+        return $this->marketCustomerOrders;
+    }
+
+    /**
+     * @param MarketCustomerOrders $marketCustomerOrder
+     * @return $this
+     */
+    public function addMarketCustomerOrder(MarketCustomerOrders $marketCustomerOrder): static
+    {
+        if (!$this->marketCustomerOrders->contains($marketCustomerOrder)) {
+            $this->marketCustomerOrders->add($marketCustomerOrder);
+            $marketCustomerOrder->setOrders($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MarketCustomerOrders $marketCustomerOrder
+     * @return $this
+     */
+    public function removeMarketCustomerOrder(MarketCustomerOrders $marketCustomerOrder): static
+    {
+        if ($this->marketCustomerOrders->removeElement($marketCustomerOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($marketCustomerOrder->getOrders() === $this) {
+                $marketCustomerOrder->setOrders(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDiscount(): ?string
+    {
+        return $this->discount;
+    }
+
+    /**
+     * @param string|null $discount
+     * @return $this
+     */
+    public function setDiscount(?string $discount): static
+    {
+        $this->discount = $discount;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketCustomerMessage>
+     */
+    public function getMarketCustomerMessages(): Collection
+    {
+        return $this->marketCustomerMessages;
+    }
+
+    /**
+     * @param MarketCustomerMessage $marketCustomerMessage
+     * @return $this
+     */
+    public function addMarketCustomerMessage(MarketCustomerMessage $marketCustomerMessage): static
+    {
+        if (!$this->marketCustomerMessages->contains($marketCustomerMessage)) {
+            $this->marketCustomerMessages->add($marketCustomerMessage);
+            $marketCustomerMessage->setOrders($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MarketCustomerMessage $marketCustomerMessage
+     * @return $this
+     */
+    public function removeMarketCustomerMessage(MarketCustomerMessage $marketCustomerMessage): static
+    {
+        if ($this->marketCustomerMessages->removeElement($marketCustomerMessage)) {
+            // set the owning side to null (unless already changed)
+            if ($marketCustomerMessage->getOrders() === $this) {
+                $marketCustomerMessage->setOrders(null);
             }
         }
 

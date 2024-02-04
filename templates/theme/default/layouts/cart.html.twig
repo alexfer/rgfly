@@ -1,0 +1,14 @@
+<div class="offcanvas offcanvas-end bg-white rounded-1" data-bs-scroll="true" tabindex="-1" id="shopping-cart" aria-labelledby="cartLabel" data-url="{{ path('app_market_place_product_order_cart') }}">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="cartLabel">{{ 'market.product.cart'|trans }} ({{ app.session.get('quantity')|default(0) }})</h5>
+        <button type="button" class="btn-close fs-6" data-bs-dismiss="offcanvas"
+                aria-label="{{ 'form.action.close'|trans }}"></button>
+    </div>
+    <div class="offcanvas-body px-0" id="order-body">
+        <div class="text-center visually-hidden">
+            <img class="d-block mx-auto mb-5 border-0 h-50 w-50 shadow-none" src="{{ asset('img/404.png') }}"
+                 alt="{{ 'market.product.cart.empty'|trans }}">
+            <p class="lead">{{ 'market.product.cart.empty'|trans }}</p>
+        </div>
+    </div>
+</div>
