@@ -40,7 +40,7 @@ class MarketCustomer
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: MarketCustomerOrders::class)]
     private Collection $marketCustomerOrders;
 
-    #[ORM\OneToMany(mappedBy: 'cusomer', targetEntity: MarketCustomerMessage::class)]
+    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: MarketCustomerMessage::class)]
     private Collection $marketCustomerMessages;
 
     public function __construct()

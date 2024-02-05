@@ -1,0 +1,76 @@
+{% extends 'market_place/index.html.twig' %}
+
+{% block title %}{{ 'Your Orders' }}{% endblock %}
+{% block description %}{{ 'Your Orders' }}{% endblock %}
+
+{% block content_body %}
+    <div class="card border-0 bg-light">
+        <div class="card-header py-3 border-bottom-0 display-6 fs-4">{{ 'Orders Cart' }}</div>
+    </div>
+    {#    {{ dump(orders.marketOrdersProducts) }} #}
+    <div class="row g-2 my-3">
+        <div class="col-lg-9">
+            <form name="order" action="{{ path('app_market_place_order_update') }}" method="post">
+                <ul>
+                    {% for order in orders %}
+                        <li>
+                            <div class="d-block ps-3 pb-3">{{ order.market.name }}</div>
+                            <input type="hidden" name="order[]" value="{{ order.market.id }}">
+                            <ul class="list-group list-group-flush me-2">
+                                {% for product in order.marketOrdersProducts %}
+                                    <li class="list-group-item py-3 ps-0 border-top">
+                                        <div class="row align-items-center">
+                                            <div class="col-6 col-md-6 col-lg-7">
+                                                <div class="d-flex">
+                                                    <img src="{{ asset('http://placehold.it/100x80') }}" alt="Ecommerce"
+                                                         class="img-fluid">
+                                                    <div class="ms-3 col-lg-8 text-truncate">
+                                                        <a href="" title="{{ product.product.name }}">
+                                                            <h5 class="mb-0 text-truncate">{{ product.product.shortName }}</h5>
+                                                        </a>
+                                                        <span><small
+                                                                    class="text-muted">{{ 'label.form.sku'|trans }}: {{ product.product.sku }}</small></span>
+                                                        <div class="mt-2 small lh-1">
+                                                            <a href="#" class="text-decoration-none">
+                                                                <i class="bi bi-trash text-success"></i>
+                                                                <span class="text-muted">{{ 'market.product.remove'|trans }}</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-4 col-md-3 col-lg-3">
+                                                <div class="input-group input-spinner">
+                                                    <label>
+                                                        <input type="number" step="1" min="{{ product.quantity }}"
+                                                               max="{{ product.product.quantity }}"
+                                                               value="{{ product.quantity }}" name="order[quantity][]"
+                                                               class="col-sm-4 focus-ring-light border-opacity-25 border-1 border-black form-control-sm form-input">
+                                                    </label>
+                                                    <input type="hidden" name="order[product][]" value="{{ product.id }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-2 text-lg-end text-start text-md-end col-md-2">
+                                                <span class="fw-bold">{{ product.product.cost }}{{ order.market.currency|currency }}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="#!" class="btn btn-primary">Continue Shopping</a>
+                    <button type="submit" class="btn btn-dark">Update Cart</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-3">
+            <div class="card">
+                <div class="card-header">{{ 'Summary' }}</div>
+                <div class="card-footer"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

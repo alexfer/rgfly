@@ -50,6 +50,11 @@ liip_imagine:
                 thumbnail:
                     size: [ 1280, 800 ]
                     mode: outbound
+        product_thumb:
+            filters:
+                thumbnail:
+                    size: [ 120, 80 ]
+                    mode: outbound
         user_crop_filter:
             filters:
                 crop:

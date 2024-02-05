@@ -9,27 +9,70 @@ use App\Entity\MarketPlace\MarketProduct;
 use App\Helper\MarketPlace\MarketPlaceHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
-use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/market-place/order')]
 class OrderController extends AbstractController
 {
+
+    public function checkout()
+    {
+
+    }
+
+    #[Route('/summary', name: 'app_market_place_order_update', methods: ['POST'])]
+    public function update(
+        Request                $request,
+        EntityManagerInterface $em,
+    ): Response
+    {
+        dd($request->request->all());
+        return $this->redirectToRoute('app_market_place_order_summary');
+    }
+
+    #[Route('/summary', name: 'app_market_place_order_summary', methods: ['GET'])]
+    public function summary(
+        Request                $request,
+        EntityManagerInterface $em,
+    ): Response
+    {
+        $session = $request->getSession();
+        $orders = $em->getRepository(MarketOrders::class)->findBy(['session' => $session->getId()]);
+
+        return $this->render('market_place/order/summary.html.twig', [
+            'orders' => $orders,
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    #[Route('/cart', name: 'app_market_place_product_order_cart', methods: ['POST', 'GET'])]
+    public function cart(Request $request): JsonResponse
+    {
+        $session = $request->getSession();
+
+        return $this->json([
+            'orders' => unserialize($session->get('orders')),
+            'template' => $this->renderView('market_place/cart.html.twig', ['orders' => unserialize($session->get('orders'))]),
+            'quantity' => $session->get('quantity') ?? 0,
+        ]);
+    }
+
     /**
      * @param Request $request
      * @param EntityManagerInterface $em
-     * @return Response
+     * @return JsonResponse
      */
     #[Route('/{product}', name: 'app_market_place_product_order', methods: ['POST'])]
     public function order(
         Request                $request,
-        SessionStorageInterface $sessionStorage,
-        SessionBagInterface $bag,
         EntityManagerInterface $em,
-    ): Response
+    ): JsonResponse
     {
         $data = $request->toArray();
 
@@ -38,8 +81,6 @@ class OrderController extends AbstractController
                 'request' => $request->toArray(),
             ]);
         }
-
-        $sessionStorage->registerBag($bag);
 
         $session = $request->getSession();
 
@@ -118,26 +159,6 @@ class OrderController extends AbstractController
 
         return $this->json([
             'quantity' => $session->get('quantity') ?? 1,
-        ]);
-    }
-
-    /**
-     * @param Request $request
-     * @param EntityManagerInterface $em
-     * @return Response
-     */
-    #[Route('/cart', name: 'app_market_place_product_order_cart', methods: ['POST', 'GET'])]
-    public function cart(
-        Request                $request,
-        EntityManagerInterface $em,
-    ): Response
-    {
-        $session = $request->getSession();
-
-        return $this->json([
-            'orders' => unserialize($session->get('orders')),
-            'template' => $this->renderView('market_place/cart.html.twig', ['orders' => unserialize($session->get('orders'))]),
-            'quantity' => $session->get('quantity') ?? 0,
         ]);
     }
 }
