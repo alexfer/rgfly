@@ -1,6 +1,7 @@
-DROP ROLE IF EXISTS techspace;
-CREATE USER techspace WITH password '<password>';
-ALTER USER techspace WITH SUPERUSER;
-ALTER USER techspace CREATEDB;
-CREATE DATABASE techspace OWNER techspace;
-GRANT ALL PRIVILEGES ON DATABASE techspace TO techspace;
+-- Change "<database>" name to your database
+DROP ROLE IF EXISTS "<database>";
+CREATE USER "<database>" WITH password '<password>';
+ALTER USER "<database>" WITH SUPERUSER;
+ALTER USER "<database>" CREATEDB;
+CREATE DATABASE "<database>" OWNER "<database>";
+GRANT ALL PRIVILEGES ON DATABASE "<database>" TO "<database>";
