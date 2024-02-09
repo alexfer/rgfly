@@ -23,13 +23,37 @@ class OrderController extends AbstractController
 
     }
 
+    #[Route('/summary', name: 'app_market_place_order_remove_product', methods: ['POST'])]
+    public function remove(
+        Request $request,
+    ): Response
+    {
+        $payload = $request->getPayload();
+        return $this->json([
+            'product' => true,
+            'order' => false,
+            'payload' => $payload,
+            'redirect' => $this->generateUrl('app_market_place_order_summary'),
+        ]);
+    }
+
     #[Route('/summary', name: 'app_market_place_order_update', methods: ['POST'])]
     public function update(
         Request                $request,
         EntityManagerInterface $em,
     ): Response
     {
-        dd($request->request->all());
+        $data = [];
+        $input = $request->request->all();
+        $session = $request->getSession();
+
+        foreach ($input['order']['product'] as $k => $v) {
+            $orders = $em->getRepository(MarketOrders::class)->findOneBy(['id' => $input['order'][$k], 'session' => $session->getId()]);
+            $product = $em->getRepository(MarketOrdersProduct::class)->findOneBy(['id' => $v, 'orders' => $orders]);
+            $product->setQuantity($input['order']['quantity'][$k]);
+            $em->persist($product);
+            $em->flush();
+        }
         return $this->redirectToRoute('app_market_place_order_summary');
     }
 

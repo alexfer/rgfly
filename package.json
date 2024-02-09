@@ -38,12 +38,14 @@
         "ckeditor4": "^4.23.0",
         "core-js": "^3.33.1",
         "font-awesome": "^4.7.0",
+        "i18next": "^23.8.2",
         "jquery.cookie": "^1.4.1",
         "node-sass": "^9.0.0",
         "postcss-loader": "^7.3.3",
         "raw-loader": "^4.0.2",
         "sass-loader": "^13.3.2",
         "sweetalert": "^2.1.2",
+        "sweetalert2": "^11.6.13",
         "ts-loader": "^9.5.1",
         "watch": "^0.13.0"
     }

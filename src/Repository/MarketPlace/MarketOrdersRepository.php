@@ -41,6 +41,7 @@ class MarketOrdersRepository extends ServiceEntityRepository
                 }
 
                 $products[$order->getId()][$product->getId()] = [
+                    'id' => $product->getId(),
                     'short_name' => $product->getProduct()->getShortName(),
                     'name' => $product->getProduct()->getName(),
                     'slug' => $product->getProduct()->getSlug(),

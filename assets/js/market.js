@@ -1,8 +1,57 @@
 'use strict';
 
+import Swal from "sweetalert2";
+import i18next from "i18next";
+import messages from "./i18n";
+
+i18next.init(messages);
+
 const cart = document.getElementById('shopping-cart') || undefined;
 let attributes = document.querySelectorAll('#attributes');
 let forms = document.querySelectorAll('.shopping-cart') || undefined;
+let drops = document.querySelectorAll('.drops') || undefined;
+let headers = {'Content-type': 'application/json; charset=utf-8'};
+
+if (typeof drops !== 'undefined') {
+    Array.from(drops).forEach((drop) => {
+        drop.onclick = (event) => {
+            let url = drop.getAttribute('data-url');
+            let product = drop.getAttribute('data-id');
+            let order = drop.getAttribute('data-order');
+            Swal.fire({
+                text: i18next.t('question'),
+                showCancelButton: true,
+                confirmButtonText: i18next.t('proceed'),
+                denyButtonText: i18next.t('cancel'),
+                icon: "question",
+                showLoaderOnConfirm: true
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const response = await fetch(url, {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                product: product,
+                                order: order
+                            }),
+                            headers: headers
+                        }
+                    );
+                    const data = await response.json();
+                    if (data.order) {
+                        drop.closest('.root').remove();
+                        if (data.redirect) {
+                            document.location.href = data.redirect;
+                        }
+                    }
+                    if (data.product) {
+                        drop.closest('.parent').remove();
+                    }
+                    await Swal.fire(i18next.t('removed'), "", "success");
+                }
+            });
+        };
+    });
+}
 
 if (typeof cart !== undefined) {
     cart.addEventListener('show.bs.offcanvas', (event) => {
@@ -10,9 +59,7 @@ if (typeof cart !== undefined) {
         let body = cart.querySelectorAll('#order-body');
         body.item(0).innerHTML = '';
         fetch(url, {
-            headers: {
-                'Content-type': 'application/json; charset=utf-8'
-            }
+            headers: headers
         })
             .then((response) => response.json())
             .then((json) => {
@@ -64,9 +111,7 @@ if (typeof forms != 'undefined') {
                     color: color ? color.value : null,
                     size: size ? size.value : null,
                 }),
-                headers: {
-                    'Content-type': 'application/json; charset=utf-8'
-                }
+                headers: headers
             })
                 .then((response) => response.json())
                 .then((json) => {
