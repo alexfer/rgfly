@@ -5,9 +5,9 @@
 
 {% block content_body %}
     <div class="card border-0 bg-light">
+        {# TODO: add translations #}
         <div class="card-header py-3 border-bottom-0 display-6 fs-4">{{ 'Orders Cart' }}</div>
     </div>
-    {#    {{ dump(orders.marketOrdersProducts) }} #}
     <div class="row g-2 my-3">
         <div class="col-lg-9">
             <form name="order[]" action="{{ path('app_market_place_order_update') }}" method="post">
@@ -18,10 +18,12 @@
                             <input type="hidden" name="order[]" value="{{ order.market.id }}">
                             <ul class="list-group list-group-flush me-2">
                                 {% for product in order.marketOrdersProducts %}
-                                    <li class="list-group-item py-3 ps-0 border-top parent" data-product-id="{{ product.id }}">
+                                    <li class="list-group-item py-3 ps-0 border-top parent"
+                                        data-product-id="{{ product.id }}">
                                         <div class="row align-items-center">
                                             <div class="col-6 col-md-6 col-lg-7">
                                                 <div class="d-flex">
+                                                    {# TODO: repalce image #}
                                                     <img src="{{ asset('http://placehold.it/100x80') }}" alt="Ecommerce"
                                                          class="img-fluid">
                                                     <div class="ms-3 col-lg-8 text-truncate">
@@ -30,7 +32,7 @@
                                                             <h5 class="mb-0 text-truncate">{{ product.product.shortName }}</h5>
                                                         </a>
                                                         <span><small
-                                                                    class="text-muted">{{ 'label.form.sku'|trans }}: {{ product.product.sku }}</small></span>
+                                                                    class="text-muted fst-italic">{{ 'label.form.sku'|trans }}: {{ product.product.sku }}</small></span>
                                                         <div class="mt-2 small lh-1">
                                                             <a href="#" class="text-decoration-none drops"
                                                                data-order="{{ order.session }}"
@@ -64,12 +66,27 @@
                                 {% endfor %}
                             </ul>
                         </li>
+                    {% else %}
+                        {# TODO: add translations #}
+                        <li class="text-center">
+                            <img class="d-block mx-auto mb-5 border-0 h-50 w-50 shadow-none"
+                                 src="{{ asset('img/404.png') }}"
+                                 alt="{{ 'market.product.cart.empty'|trans }}">
+                            <p class="lead">{{ 'market.product.cart.empty'|trans }}</p>
+                            <div class="d-flex justify-content-center mt-4">
+                                <a href="{{ path('app_market_place_index') }}" class="btn btn-primary">Continue
+                                    Shopping</a>
+                            </div>
+                        </li>
                     {% endfor %}
                 </ul>
-                <div class="d-flex justify-content-between mt-4">
-                    <a href="#!" class="btn btn-primary">Continue Shopping</a>
-                    <button type="submit" class="btn btn-dark">Update Cart</button>
-                </div>
+                {% if orders|length %}
+                    {# TODO: add translations #}
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{{ path('app_market_place_index') }}" class="btn btn-primary">Continue Shopping</a>
+                        <button type="submit" class="btn btn-dark">Update Cart</button>
+                    </div>
+                {% endif %}
             </form>
         </div>
         <div class="col-lg-3">

@@ -23,16 +23,58 @@ class OrderController extends AbstractController
 
     }
 
-    #[Route('/summary', name: 'app_market_place_order_remove_product', methods: ['POST'])]
+    /**
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
+    #[Route('/summary/remove', name: 'app_market_place_order_remove_product', methods: ['POST'])]
     public function remove(
-        Request $request,
+        Request                $request,
+        EntityManagerInterface $em,
     ): Response
     {
-        $payload = $request->getPayload();
+        $payload = $request->getPayload()->all();
+
+        $order = $em->getRepository(MarketOrders::class)->findOneBy(['session' => $payload['order']]);
+        $count = $order->getMarketOrdersProducts()->count();
+        $product = $em->getRepository(MarketOrdersProduct::class)->findOneBy(['id' => $payload['product']]);
+        $customerOrder = $em->getRepository(MarketCustomerOrders::class)->findOneBy(['orders' => $order]);
+
+        $orderProduct = $product->setProduct(null)->setOrders(null);
+        $em->persist($orderProduct);
+        $em->flush();
+
+        if ($orderProduct) {
+            $em->remove($orderProduct);
+            $em->flush();
+        }
+
+        if ($customerOrder) {
+            $em->remove($customerOrder);
+            $em->flush();
+        }
+
+        $removed = false;
+
+        if ($count == 1) {
+            $em->remove($order);
+            $em->flush();
+            $removed = true;
+        }
+
+        $session = $request->getSession();
+
+        $orders = $em->getRepository(MarketOrders::class)->findBy(['session' => $session->getId()]);
+        $collection = $em->getRepository(MarketOrders::class)->getSerializedData($orders);
+        $session->set('orders', serialize($collection));
+        $session->set('quantity', count($orders));
+
         return $this->json([
             'product' => true,
-            'order' => false,
+            'order' => $removed,
             'payload' => $payload,
+            'quantity' => $session->get('quantity'),
             'redirect' => $this->generateUrl('app_market_place_order_summary'),
         ]);
     }
@@ -179,6 +221,7 @@ class OrderController extends AbstractController
         if ($session->has('orders')) {
             $session->remove('orders');
         }
+
         $session->set('orders', serialize($collection));
 
         return $this->json([
