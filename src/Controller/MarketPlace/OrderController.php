@@ -79,6 +79,11 @@ class OrderController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('/summary', name: 'app_market_place_order_update', methods: ['POST'])]
     public function update(
         Request                $request,
@@ -99,6 +104,11 @@ class OrderController extends AbstractController
         return $this->redirectToRoute('app_market_place_order_summary');
     }
 
+    /**
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('/summary', name: 'app_market_place_order_summary', methods: ['GET'])]
     public function summary(
         Request                $request,
@@ -115,11 +125,12 @@ class OrderController extends AbstractController
 
     /**
      * @param Request $request
+     * @param EntityManagerInterface $em
      * @return JsonResponse
      */
     #[Route('/cart', name: 'app_market_place_product_order_cart', methods: ['POST', 'GET'])]
     public function cart(
-        Request $request,
+        Request                $request,
         EntityManagerInterface $em,
     ): JsonResponse
     {
