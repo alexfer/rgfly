@@ -57,11 +57,11 @@
             </trans-unit>
             <trans-unit id="site.title">
                 <source>site.title</source>
-                <target>MRebely</target>
+                <target>RgbFly</target>
             </trans-unit>
             <trans-unit id="site.description">
                 <source>site.description</source>
-                <target>A marketplace with free and paid MRebely solutions - MRebely Online</target>
+                <target>A marketplace with free and paid RgbFly solutions - RgbFly Online</target>
             </trans-unit>
             <trans-unit id="text.home.header">
                 <source>text.home.header</source>
@@ -851,7 +851,7 @@
             <trans-unit id="text.about_us.short_desc">
                 <source>text.about_us.short_desc</source>
                 <target>
-                    <![CDATA[Read more about how MRebely came to be and how we support our customers with IT issues on a daily basis.]]>
+                    <![CDATA[Read more about how RgbFly came to be and how we support our customers with IT issues on a daily basis.]]>
                 </target>
             </trans-unit>
             <trans-unit id="text.about_us.long_desc">
@@ -860,7 +860,6 @@
                     <![CDATA[We started as an internet agency and have increasingly grown to develop applications, mobile apps, platforms and products. For customers and with customers. During the growth we noticed that more and more companies were having trouble attracting personnel, and so we received the first requests whether we wanted to help our customers with this. Because we already had our own nearshore location at that time, the idea arose to provide our customers with developers for the longer term, whom they could manage themselves. We then shifted our focus.]]>
                 </target>
             </trans-unit>
-
             <trans-unit id="text.contact_us.success">
                 <source>text.contact_us.success</source>
                 <target>Let's keep in touch.</target>
@@ -905,7 +904,6 @@
                 <source>text.login.desc</source>
                 <target>Enter your email address and password below.</target>
             </trans-unit>
-
             <trans-unit id="label.agree_terms">
                 <source>label.agree_terms</source>
                 <target><![CDATA[Agree to our Terms & Conditions and Privacy Policy.]]></target>
@@ -1183,6 +1181,62 @@
             <trans-unit id="button.leave.cpmment">
                 <source>button.leave.cpmment</source>
                 <target>Leave a Comment</target>
+            </trans-unit>
+            <trans-unit id="order.subtotal">
+                <source>order.subtotal</source>
+                <target>Subtotal</target>
+            </trans-unit>
+            <trans-unit id="order.view">
+                <source>order.view</source>
+                <target>View Order</target>
+            </trans-unit>
+            <trans-unit id="order.summary">
+                <source>order.summary</source>
+                <target>Summary</target>
+            </trans-unit>
+            <trans-unit id="order.continue.shopping">
+                <source>order.continue.shopping</source>
+                <target>Continue Shopping</target>
+            </trans-unit>
+            <trans-unit id="order.update.cart">
+                <source>order.update.cart</source>
+                <target>Update Cart</target>
+            </trans-unit>
+            <trans-unit id="order.cart">
+                <source>order.cart</source>
+                <target>Order Cart</target>
+            </trans-unit>
+            <trans-unit id="order.your.ordres">
+                <source>order.your.ordres</source>
+                <target>Your Orders</target>
+            </trans-unit>
+            <trans-unit id="product.details">
+                <source>product.details</source>
+                <target>Product Details</target>
+            </trans-unit>
+            <trans-unit id="product.details.short">
+                <source>product.details.short</source>
+                <target>Details</target>
+            </trans-unit>
+            <trans-unit id="product.information">
+                <source>product.information</source>
+                <target>Information</target>
+            </trans-unit>
+            <trans-unit id="product.seller.info">
+                <source>product.seller.info</source>
+                <target>Seller Info</target>
+            </trans-unit>
+            <trans-unit id="product.seller.contact">
+                <source>product.seller.contact</source>
+                <target>Seller Contact</target>
+            </trans-unit>
+            <trans-unit id="element.previous">
+                <source>element.previous</source>
+                <target>Previous</target>
+            </trans-unit>
+            <trans-unit id="element.next">
+                <source>element.next</source>
+                <target>Next</target>
             </trans-unit>
         </body>
     </file>

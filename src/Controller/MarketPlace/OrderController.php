@@ -118,13 +118,19 @@ class OrderController extends AbstractController
      * @return JsonResponse
      */
     #[Route('/cart', name: 'app_market_place_product_order_cart', methods: ['POST', 'GET'])]
-    public function cart(Request $request): JsonResponse
+    public function cart(
+        Request $request,
+        EntityManagerInterface $em,
+    ): JsonResponse
     {
         $session = $request->getSession();
 
+        $orders = $em->getRepository(MarketOrders::class)->findBy(['session' => $session->getId()]);
+        $collection = $em->getRepository(MarketOrders::class)->getSerializedData($orders);
+
         return $this->json([
             'orders' => unserialize($session->get('orders')),
-            'template' => $this->renderView('market_place/cart.html.twig', ['orders' => unserialize($session->get('orders'))]),
+            'template' => $this->renderView('market_place/cart.html.twig', ['orders' => $collection]),
             'quantity' => $session->get('quantity') ?? 0,
         ]);
     }

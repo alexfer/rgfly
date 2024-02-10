@@ -1,12 +1,11 @@
 {% extends 'market_place/index.html.twig' %}
 
-{% block title %}{{ 'Your Orders' }}{% endblock %}
-{% block description %}{{ 'Your Orders' }}{% endblock %}
+{% block title %}{{ 'order.your.ordres'|trans }}{% endblock %}
+{% block description %}{{ 'order.your.ordres'|trans }}{% endblock %}
 
 {% block content_body %}
     <div class="card border-0 bg-light">
-        {# TODO: add translations #}
-        <div class="card-header py-3 border-bottom-0 display-6 fs-4">{{ 'Orders Cart' }}</div>
+        <div class="card-header py-3 border-bottom-0 display-6 fs-4">{{ 'order.cart'|trans }}</div>
     </div>
     <div class="row g-2 my-3">
         <div class="col-lg-9">
@@ -24,7 +23,8 @@
                                             <div class="col-6 col-md-6 col-lg-7">
                                                 <div class="d-flex">
                                                     {# TODO: repalce image #}
-                                                    <img src="{{ asset('http://placehold.it/100x80') }}" alt="Ecommerce"
+                                                    <img src="{{ asset('http://placehold.it/100x80') }}"
+                                                         alt="{{ product.product.name }}"
                                                          class="img-fluid">
                                                     <div class="ms-3 col-lg-8 text-truncate">
                                                         <a href="{{ path('app_market_place_product', {slug: product.product.slug}) }}"
@@ -67,31 +67,30 @@
                             </ul>
                         </li>
                     {% else %}
-                        {# TODO: add translations #}
                         <li class="text-center">
                             <img class="d-block mx-auto mb-5 border-0 h-50 w-50 shadow-none"
                                  src="{{ asset('img/404.png') }}"
                                  alt="{{ 'market.product.cart.empty'|trans }}">
                             <p class="lead">{{ 'market.product.cart.empty'|trans }}</p>
                             <div class="d-flex justify-content-center mt-4">
-                                <a href="{{ path('app_market_place_index') }}" class="btn btn-primary">Continue
-                                    Shopping</a>
+                                <a href="{{ path('app_market_place_index') }}"
+                                   class="btn btn-primary">{{ 'order.continue.shopping'|trans }}</a>
                             </div>
                         </li>
                     {% endfor %}
                 </ul>
                 {% if orders|length %}
-                    {# TODO: add translations #}
                     <div class="d-flex justify-content-between mt-4">
-                        <a href="{{ path('app_market_place_index') }}" class="btn btn-primary">Continue Shopping</a>
-                        <button type="submit" class="btn btn-dark">Update Cart</button>
+                        <a href="{{ path('app_market_place_index') }}"
+                           class="btn btn-primary">{{ 'order.continue.shopping'|trans }}</a>
+                        <button type="submit" class="btn btn-dark">{{ 'order.update.cart'|trans }}</button>
                     </div>
                 {% endif %}
             </form>
         </div>
         <div class="col-lg-3">
             <div class="card">
-                <div class="card-header">{{ 'Summary' }}</div>
+                <div class="card-header">{{ 'order.summary'|trans }}</div>
                 <div class="card-footer"></div>
             </div>
         </div>

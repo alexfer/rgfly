@@ -6,8 +6,8 @@
             <div class="tech-responsive-menu">
                 <div class="tech-logo">
                     <a href="{{ path('app_index') }}">
-                        <img src="{{ asset('/img/logo-black.png') }}" class="black-logo shadow-none border-0" alt="{{ 'site.title'|trans }}">
-                        <img src="{{ asset('/img/logo-white.png') }}" class="white-logo shadow-none border-0" alt="{{ 'site.title'|trans }}">
+                        <img src="{{ asset('/img/rgbfly.png') }}" width="130" class="black-logo shadow-none border-0" alt="{{ 'site.title'|trans }}">
+                        <img src="{{ asset('/img/rgbfly.png') }}" width="130" class="white-logo shadow-none border-0" alt="{{ 'site.title'|trans }}">
                     </a>
                 </div>
             </div>
@@ -16,10 +16,10 @@
     <div class="tech-nav">
         <nav class="navbar navbar-expand-md navbar-light">
             <div class="container">
-                <a class="navbar-brand" href="{{ path('app_index') }}">
-                    <img src="{{ asset('/img/logo-black.png') }}" class="black-logo"
+                <a class="navbar-brand bg-light rounded-5 bg-opacity-25" href="{{ path('app_index') }}">
+                    <img src="{{ asset('/img/rgbfly.png') }}" width="100" class="black-logo"
                          alt="{{ 'site.title'|trans }} - {{ 'text.home.header'|trans }}">
-                    <img src="{{ asset('/img/logo-white.png') }}" class="white-logo"
+                    <img src="{{ asset('/img/rgbfly.png') }}" width="100" class="white-logo"
                          alt="{{ 'site.title'|trans }} - {{ 'text.home.header'|trans }}">
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#tech-navbar"
@@ -104,7 +104,8 @@
                                 {% endif %}
                             </ul>
                         </li>
-                        <li class="nav-item px-1">
+                        {% if 'market' in app.current_route|split('_') %}
+                         <li class="nav-item px-1">
                             <a href="" class="nav-link mx-1">
                                 <span class="badge bg-opacity-75 rounded-pill bg-primary position-absolute top-0 start-50 ms-2 mt-3 translate-middle-x">
                                     <small>1</small>
@@ -120,6 +121,7 @@
                                 <h4 class="bi bi-cart mt-2"></h4>
                             </a>
                         </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

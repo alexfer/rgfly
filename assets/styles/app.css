@@ -1254,7 +1254,7 @@ a.preview:focus,
 }
 
 .page-title-area.home {
-    background-image: linear-gradient(to top, rgba(77, 124, 238, 0.2), rgba(77, 124, 238, 0.2)), url(../img/home-bg1.jpg);
+    background-image: linear-gradient(to right bottom, rgba(77, 124, 238, 0.2), rgba(77, 124, 238, 0.2)), url(../img/page-title-bg1.jpg);
     background-position: bottom center;
 }
 

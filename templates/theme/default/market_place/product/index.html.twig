@@ -58,12 +58,12 @@
                     <button class="carousel-control-prev" type="button" data-bs-target="#carousel-control"
                             data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
+                        <span class="visually-hidden">{{ 'element.previous'|trans }}</span>
                     </button>
                     <button class="carousel-control-next" type="button" data-bs-target="#carousel-control"
                             data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
+                        <span class="visually-hidden">{{ 'element.next'|trans }}</span>
                     </button>
                 </div>
             </div>
@@ -169,25 +169,25 @@
                 <button class="nav-link text-secondary border-0 fs-6 active" id="about-tab" data-bs-toggle="tab"
                         data-bs-target="#about"
                         type="button" role="tab" aria-controls="about"
-                        aria-selected="true">{{ 'Product Details' }}</button>
+                        aria-selected="true">{{ 'product.details'|trans }}</button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link text-secondary border-0 fs-6" id="product-info-tab" data-bs-toggle="tab"
                         data-bs-target="#product-info"
                         type="button" role="tab" aria-controls="product-info"
-                        aria-selected="false">{{ 'Information'|trans }}</button>
+                        aria-selected="false">{{ 'product.information'|trans }}</button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link text-secondary border-0 fs-6" id="seller-info-tab" data-bs-toggle="tab"
                         data-bs-target="#seller-info"
                         type="button" role="tab" aria-controls="seller-info"
-                        aria-selected="false">{{ 'Seller info'|trans }}</button>
+                        aria-selected="false">{{ 'product.seller.info'|trans }}</button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link text-secondary border-0 fs-6" id="seller-contact-tab" data-bs-toggle="tab"
                         data-bs-target="#seller-contact"
                         type="button" role="tab" aria-controls="seller-contact"
-                        aria-selected="false">{{ 'Seller contact'|trans }}</button>
+                        aria-selected="false">{{ 'product.seller.contact'|trans }}</button>
             </li>
         </ul>
         <div class="tab-content border-top rounded-top-0 mb-5 p-2">
@@ -196,7 +196,7 @@
                 {{ product.description|raw }}
             </div>
             <div class="tab-pane fade show" id="product-info" role="tabpanel" aria-labelledby="product-info-tab">
-                <h5 class="d-block my-1 py-2">{{ 'Details'|trans }}</h5>
+                <h5 class="d-block my-1 py-2">{{ 'product.details.short'|trans }}</h5>
                 <table class="table table-striped mb-0">
                     <tbody class="fs-6 fw-light">
                     <tr>
@@ -239,7 +239,7 @@
                 {{ product.market.description|default('info.no_content'|trans)|raw }}
             </div>
             <div class="tab-pane fade show" id="seller-contact" role="tabpanel" aria-labelledby="seller-contact-tab">
-                <h5 class="d-block my-1 py-2">{{ 'Seller contact'|trans }}</h5>
+                <h5 class="d-block my-1 py-2">{{ 'product.seller.contact'|trans }}</h5>
             </div>
         </div>
     </div>
