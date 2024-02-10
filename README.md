@@ -21,13 +21,11 @@ You should change database configuration
     $ cd projectdir/
     $ cp .env.original .env
 ```
-
 ### 3. Install dependencies use Composer
 Use [Composer](https://getcomposer.org/) install to download and install the package.
 ```shell
     $ composer install
 ```
-
 ### 4. Creating a database and fill it with data
 ```shell
     $ php bin/console doctrine:database:drop --force
@@ -42,15 +40,13 @@ Use [Composer](https://getcomposer.org/) install to download and install the pac
 ```
 Code of Conduct
 ============
-
 I as member, contributor, and leader pledge to make participation in  community a harassment-free experience for everyone, regardless of age, body size, visible or invisible disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, caste, color, religion, or sexual identity and orientation.
 
 Contributing
 ============
-
 We welcome contributions to this project, including pull requests and issues (and discussions on existing issues).
 
-If you'd like to contribute code but aren't sure what, the [issues list](https://github.com/alexfer/techspace/issues) is a good place to start.
+If you'd like to contribute code but aren't sure what, the [issues list](https://github.com/alexfer/rgbfly/issues) is a good place to start.
 If you're a first-time code contributor, you may find Github's guide to [forking projects](https://guides.github.com/activities/forking/) helpful.
 
 All contributors (whether contributing code, involved in issue discussions, or involved in any other way) must abide by our [code of conduct](https://github.com/whiteoctober/open-source-code-of-conduct/blob/master/code_of_conduct.md).
