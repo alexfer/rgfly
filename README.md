@@ -9,7 +9,7 @@ Techspace solutions
 - [Node.js `21.2.0` (includes npm 10.2.4)](https://nodejs.org/en/download) or higher
 
 ### Docker
-- [Currently used] (https://github.com/alexfer/techspace/tree/v.0.1-dev/docker)
+- [Currently used](https://github.com/alexfer/techspace/tree/v.0.1-dev/docker)
 
 ### 1. Clone repository
 ```bash
