@@ -9,7 +9,7 @@ Techspace solutions
 - [Node.js `21.2.0` (includes npm 10.2.4)](https://nodejs.org/en/download) or higher
 
 ### Docker
-- [Currently used] (https://github.com/alexfer/docker-symfony)
+- [Currently used] (https://github.com/alexfer/techspace/tree/v.0.1-dev/docker)
 
 ### 1. Clone repository
 ```bash
@@ -36,9 +36,19 @@ Use [Composer](https://getcomposer.org/) install to download and install the pac
     $ php bin/console doctrine:fixtures:load
 ```
 ### 4. Install JavaScript dependencies & Compile scripts
+============
+##### First deploy
 ```bash
     $ npm install
     $ npm run dev --watch
+```
+##### Interactive development
+```bash    
+    $ npm run watch
+```
+##### Production build
+```bash    
+    $ npm run build
 ```
 Code of Conduct
 ============
