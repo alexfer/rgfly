@@ -1,4 +1,4 @@
-Techspace solutions
+Rgbyfly solutions
 ============
 
 ### Requirements:
@@ -12,31 +12,31 @@ Techspace solutions
 - [Currently used] (https://github.com/alexfer/docker-symfony)
 
 ### 1. Clone repository
-```bash
+```shell
     $ git clone git@github.com:alexfer/techspace.git
 ```
 ### 2. Prepare configuration
 You should change database configuration
-```bash
+```shell
     $ cd projectdir/
     $ cp .env.original .env
 ```
 
 ### 3. Install dependencies use Composer
 Use [Composer](https://getcomposer.org/) install to download and install the package.
-```bash
+```shell
     $ composer install
 ```
 
 ### 4. Creating a database and fill it with data
-```bash
+```shell
     $ php bin/console doctrine:database:drop --force
     $ php bin/console doctrine:database:create
     $ php bin/console doctrine:migrations:migrate
     $ php bin/console doctrine:fixtures:load
 ```
 ### 4. Install JavaScript dependencies & Compile scripts
-```bash
+```shell
     $ npm install
     $ npm run dev --watch
 ```
