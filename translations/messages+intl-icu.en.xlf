@@ -1238,6 +1238,24 @@
                 <source>element.next</source>
                 <target>Next</target>
             </trans-unit>
+            <trans-unit id="order.checkout">
+                <source>order.checkout</source>
+                <target>Checkout</target>
+            </trans-unit>
+            <trans-unit id="order.item.subtotal">
+                <source>order.item.subtotal</source>
+                <target>Item Subtotal</target>
+            </trans-unit>
+            <trans-unit id="order.service.fee">
+                <source>order.service.fee</source>
+                <target>Service Fee</target>
+            </trans-unit>
+            <trans-unit id="market.policy">
+                <source>market.policy</source>
+                <target>
+                    <![CDATA[By placing your order, you agree to be bound by the <strong>{ market_name }</strong> <a href="{ link_to_tou }" class="text-success">Terms of Service</a> and <a href="{ link_to_pp }" class="text-success">Privacy Policy.</a>]]>
+                </target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
