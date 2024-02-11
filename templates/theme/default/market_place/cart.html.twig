@@ -7,7 +7,7 @@
             {% for product in products %}
                 {% if product.order_id == order.id %}
                     <li class="list-group-item">
-{#                        {{ dump(product) }}#}
+                        {{ dump(product.id) }}#}
                         <div class="row align-items-center">
                             <div class="col-4">
                                 <a class="" href="{{ path('app_market_place_product', {slug: product.slug}) }}">

@@ -23,7 +23,7 @@
                                             <div class="col-6 col-md-6 col-lg-7">
                                                 <div class="d-flex">
                                                     {% if product.product.marketProductAttaches.count %}
-                                                        {% set _picture = 'storage/product/picture/' ~ product.id ~ '/' ~ product.product.marketProductAttaches.first.attach.name %}
+                                                        {% set _picture = 'storage/product/picture/' ~ product.product.id ~ '/' ~ product.product.marketProductAttaches.first.attach.name %}
                                                         <img src="{{ asset(_picture)|imagine_filter('product_thumb') }}"
                                                              class="img-fluid" alt="{{ product.product.name }}">
                                                     {% else %}
