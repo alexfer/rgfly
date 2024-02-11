@@ -154,13 +154,14 @@
                             </ul>
                         </div>
                         <div class="d-grid mb-1 mt-4">
-                            <button class="btn btn-success mb-2 opacity-75 d-flex justify-content-between align-items-center"
-                                    type="submit">
+                            <a href="{{ path('app_market_place_order_checkout') }}"
+                               class="btn btn-success mb-2 opacity-75 d-flex justify-content-between align-items-center"
+                               type="submit">
                                 {{ 'order.checkout'|trans }}
                                 <span class="fw-bold text-opacity-100">{{ (total_fee + order.discount)|number_format(2, '.', ' ') }}
                                     <small>{{ order.market.currency|currency }}</small>
                                 </span>
-                            </button>
+                            </a>
                             <p class="lh-1 fs-6">
                                 <small>
                                     {{ 'market.policy'|trans({
