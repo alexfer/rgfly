@@ -53,6 +53,12 @@ class MarketController extends AbstractController
             ]);
     }
 
+    #[Route('/market/{website}', name: 'app_dashboard_market_place_market_redirect')]
+    public function redirectTo(Market $market): Response
+    {
+        return $this->redirect($market->getUrl());
+    }
+
     /**
      * @param Request $request
      * @param EntityManagerInterface $em
@@ -128,7 +134,6 @@ class MarketController extends AbstractController
      * @throws Exception
      */
     #[Route('/edit/{id}', name: 'app_dashboard_market_place_edit_market', methods: ['GET', 'POST'])]
-//    #[IsGranted(MarketVoter::EDIT, subject: 'entry', statusCode: Response::HTTP_FORBIDDEN)]
     public function edit(
         Request                $request,
         Market                 $market,
@@ -173,7 +178,11 @@ class MarketController extends AbstractController
 
                 $market->setAttach($attach);
             }
-
+            $url = $form->get('website')->getData();
+            if ($url) {
+                $parse = parse_url($url);
+                $market->setUrl($url)->setWebsite($parse['host']);
+            }
             $em->persist($market);
             $em->flush();
 

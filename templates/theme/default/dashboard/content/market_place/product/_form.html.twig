@@ -16,180 +16,72 @@
         </div>
     {% endif %}
     {{ form_start(form, {attr: {class: 'd-tech-form', novalidate: 'novalidate'}}) }}
-    <div class="form-group mb-3">
-        {% set short_name_error = form.short_name.vars.errors|length ? 'form-control error' : 'form-control' %}
-        {{ form_label(form.short_name, 'label.form.product_short_name', {label_attr: {class: 'form-label'}}) }} <span
-                class="text-danger">*</span>
-        {{ form_widget(form.short_name, {attr: {class: short_name_error, placeholder: 'label.form.product_short_name'}}) }}
-        <div class="form-text">{{ 'form.product_short_name.length'|trans }}: <span
-                    id="chars">{{ form.short_name.vars.value|length }}</span>
-            . {{ 'market.product.name.allowed'|trans({length: form.short_name.vars.attr.max}) }}</div>
-        <small class="text-danger">{{ form_errors(form.short_name) }}</small>
-    </div>
-    <div class="form-group mb-3">
-        {% set name_error = form.name.vars.errors|length ? 'form-control error' : 'form-control' %}
-        {{ form_label(form.name, 'label.form.product_name', {label_attr: {class: 'form-label'}}) }} <span
-                class="text-danger">*</span>
-        {{ form_widget(form.name, {attr: {class: name_error, placeholder: 'label.form.product_name'}}) }}
-        <small class="text-danger">{{ form_errors(form.name) }}</small>
-    </div>
-    <div class="form-group mb-3 row">
-        <div class="col-3">
-            {% set quantity_error = form.quantity.vars.errors|length ? 'form-control error' : 'form-control' %}
-            {{ form_label(form.quantity, 'label.form.quantity', {label_attr: {class: 'form-label'}}) }} <span
-                    class="text-danger">*</span>
-            {{ form_widget(form.quantity, {attr: {class: quantity_error, placeholder: '0'}}) }}
-            <small class="text-danger">{{ form_errors(form.quantity) }}</small>
+    <ul class="nav nav-tabs me-2" id="productTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link border-0 active" id="description-tab" data-bs-toggle="tab"
+                    data-bs-target="#description-tab-pane" type="button" role="tab" aria-controls="description-tab-pane"
+                    aria-selected="true">{{ 'product.details'|trans }}
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link border-0" id="billing-tab" data-bs-toggle="tab" data-bs-target="#billing-tab-pane"
+                    type="button" role="tab" aria-controls="billing-tab-pane"
+                    aria-selected="false">{{ 'product.billing'|trans }}
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link border-0" id="categories-tab" data-bs-toggle="tab" data-bs-target="#categories-tab-pane"
+                    type="button" role="tab" aria-controls="categories-tab-pane"
+                    aria-selected="false">{{ 'entry.form.categories'|trans }}
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link border-0" id="attributes-tab" data-bs-toggle="tab" data-bs-target="#attributes-tab-pane"
+                    type="button" role="tab" aria-controls="attributes-tab-pane"
+                    aria-selected="false">{{ 'market.attributes'|trans }}
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link border-0" id="attachments-tab" data-bs-toggle="tab" data-bs-target="#attachments-tab-pane"
+                    type="button" role="tab" aria-controls="attachments-tab-pane"
+                    aria-selected="false">{{ 'entry.form.attachments'|trans }}
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="productTabContent">
+        <div class="tab-pane fade show active" id="description-tab-pane" role="tabpanel"
+             aria-labelledby="description-tab" tabindex="0">
+            {% include 'dashboard/content/market_place/product/parts/description.html.twig' %}
         </div>
-        <div class="col-3">
-            {% set cost_error = form.cost.vars.errors|length ? 'form-control error' : 'form-control' %}
-            {{ form_label(form.cost, 'label.form.cost', {label_attr: {class: 'form-label'}}) }} <span
-                    class="text-danger">*</span>
-            {{ form_widget(form.cost, {attr: {class: cost_error, placeholder: '0.00'}}) }}
-            <small class="text-danger">{{ form_errors(form.cost) }}</small>
+        <div class="tab-pane fade" id="attributes-tab-pane" role="tabpanel" aria-labelledby="attributes-tab"
+             tabindex="0">
+            {% include 'dashboard/content/market_place/product/parts/attributes.html.twig' %}
         </div>
-        <div class="col-3">
-            {% set pckg_quantity_error = form.pckg_quantity.vars.errors|length ? 'form-control error' : 'form-control' %}
-            {{ form_label(form.pckg_quantity, 'label.form.pckg_quantity', {label_attr: {class: 'form-label'}}) }}
-            {{ form_widget(form.pckg_quantity, {attr: {class: pckg_quantity_error, placeholder: '0'}}) }}
-            <small class="text-danger">{{ form_errors(form.pckg_quantity) }}</small>
+        <div class="tab-pane fade" id="billing-tab-pane" role="tabpanel" aria-labelledby="billing-tab" tabindex="0">
+            {% include 'dashboard/content/market_place/product/parts/billing.html.twig' %}
         </div>
-        <div class="col-3">
-            {% set sku_error = form.sku.vars.errors|length ? 'form-control error' : 'form-control' %}
-            {{ form_label(form.sku, 'label.form.sku', {label_attr: {class: 'form-label'}}) }}
-            {{ form_widget(form.sku, {attr: {class: sku_error, placeholder: 'label.form.sku'}}) }}
-            <small class="text-danger">{{ form_errors(form.sku) }}</small>
+        <div class="tab-pane fade" id="categories-tab-pane" role="tabpanel" aria-labelledby="categories-tab"
+             tabindex="0">
+            {% include 'dashboard/content/market_place/product/parts/categories.html.twig' %}
         </div>
-    </div>
-    <div class="form-group mb-3 row">
-        <div class="col-6">
-            {% set discount_error = form.discount.vars.errors|length ? 'form-range error' : 'form-range border-0' %}
-            {{ form_label(form.discount, 'label.form.discount', {label_attr: {class: 'form-label'}}) }}
-            {{ form_widget(form.discount, {attr: {class: discount_error, placeholder: '0'}}) }}
-            <small class="text-danger">{{ form_errors(form.discount) }}</small>
-        </div>
-        <div class="col-6">
-            <span class="badge bg-secondary text-light fw-normal discount-output mt-4 pt-2 fw-light"
-                  for="product_discount"></span>
-        </div>
-    </div>
-    <div class="card mb-3">
-        <div class="card-body">
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <div class="form-check form-switch">
-                        <input type="checkbox" id="root_size" name="attribute_value_size" class="form-check-input"
-                               role="switch"
-                               value="size" checked disabled>
-                        {{ form_label(form.size, 'Size', {label_attr: {class: 'form-check-label', for: 'root_size'}}) }}
-                    </div>
-                    <hr>
-                    {% for key, field in form.size.children %}
-                        {% set _checked_size = false %}
-                        {% for attributes in form.vars.data.marketProductAttributes.toArray %}
-                            {% if attributes.name == 'size' %}
-                                {% for value in attributes.marketProductAttributeValues.toArray %}
-                                    {% if value.value|upper == field.vars.value|upper %}
-                                        {% set _checked_size = true %}
-                                    {% endif %}
-                                {% endfor %}
-                            {% endif %}
-                        {% endfor %}
-                        <div class="form-check form-switch ms-4">
-                            {{ form_widget(field, {attr: {class: 'form-check-input', role: 'switch', checked: _checked_size}}) }}
-                            {{ form_label(field, field.vars.label, {label_attr: {class: 'form-check-label'}}) }}
-                        </div>
-                    {% endfor %}
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group mb-3">
-                        <div class="form-check form-switch">
-                            <input type="checkbox" id="root_color" name="attribute_value_color" class="form-check-input"
-                                   role="switch" value="color" checked disabled>
-                            {{ form_label(form.color, 'Color', {label_attr: {class: 'form-check-label', for: 'root_color'}}) }}
-                        </div>
-                        <hr>
-                        {% for key, field in form.color.children %}
-                            {% set _checked_color = false %}
-                            {% for attributes in form.vars.data.marketProductAttributes.toArray %}
-                                {% if attributes.name == 'color' %}
-                                    {% for value in attributes.marketProductAttributeValues.toArray %}
-                                        {% if value.value == field.vars.label %}
-                                            {% set _checked_color = true %}
-                                        {% endif %}
-                                    {% endfor %}
-                                {% endif %}
-                            {% endfor %}
-                            <div class="form-check form-switch ms-4">
-                                {{ form_widget(field, {attr: {class: 'form-check-input', role: 'switch', checked: _checked_color}}) }}
-                                {{ form_label(field, field.vars.label, {label_attr: {class: 'form-check-label'}}) }}
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
+        <div class="tab-pane fade" id="attachments-tab-pane" role="tabpanel" aria-labelledby="attachments-tab"
+             tabindex="0">
+            <div class="mt-4 p-2">
+                {% if app.request.get('id') %}
+                    {% set _args = {market: product.market.id, id: product.id} %}
+                    {% include 'dashboard/content/form/attachment.html.twig' with {
+                        'attachments': product.marketProductAttaches,
+                        'storage': 'product',
+                        'id': product.id,
+                        'set_use': null,
+                        'remove': path('app_dashboard_product_attach_remove', _args),
+                        'data_url': path('app_dashboard_product_attach', _args),
+                        'filter': 'product_preview'
+                    } %}
+                {% endif %}
             </div>
         </div>
     </div>
-    <div class="form-group mb-3">
-        {% set category_error = form.category.vars.errors|length ? 'form-select error' : 'form-select' %}
-        {{ form_label(form.category, 'entry.form.categories', {label_attr: {class: 'form-label'}}) }} <span
-                class="text-danger">*</span>
-        {{ form_widget(form.category, {attr: {class: category_error}}) }}
-        <small class="text-danger">{{ form_errors(form.category) }}</small>
-    </div>
-    <div class="form-group mb-3">
-        {% set brand_error = form.brand.vars.errors|length ? 'form-select error' : 'form-select' %}
-        {{ form_label(form.brand, 'label.form.brand_name', {label_attr: {class: 'form-label'}}) }}
-        <a data-bs-toggle="modal"
-           data-bs-target="#modal-brand"
-           data-url="{{ path('app_dashboard_market_place_xhr_create_brand', {market: app.request.get('market')}) }}"
-           data-token="{{ csrf_token('create') }}"
-           href="#"
-           class="fw-medium float-end add-entry">{{ 'market.brand.create'|trans }}</a>
-        {{ form_widget(form.brand, {attr: {class: brand_error}}) }}
-    </div>
-    <div class="form-group mb-3">
-        {% set supplier_error = form.supplier.vars.errors|length ? 'form-select error' : 'form-select' %}
-        <a data-bs-toggle="modal"
-           data-bs-target="#modal-supplier"
-           data-token="{{ csrf_token('create') }}"
-           data-url="{{ path('app_dashboard_market_place_xhr_create_supplier', {market: app.request.get('market')}) }}"
-           data-xhr="{{ path('app_dashboard_market_place_xhr_load_countries', {market: app.request.get('market')}) }}"
-           href="#"
-           class="fw-medium float-end add-entry">{{ 'market.supplier.create'|trans }}</a>
-        {{ form_label(form.supplier, 'label.form.supplier_name', {label_attr: {class: 'form-label'}}) }}
-        {{ form_widget(form.supplier, {attr: {class: supplier_error}}) }}
-    </div>
-    <div class="form-group mb-3">
-        {% set manufacturer_error = form.manufacturer.vars.errors|length ? 'form-select error' : 'form-select' %}
-        {{ form_label(form.manufacturer, 'label.form.manufacturer_name', {label_attr: {class: 'form-label'}}) }}
-        <a data-bs-toggle="modal"
-           data-bs-target="#modal-manufacturer"
-           data-token="{{ csrf_token('create') }}"
-           data-url="{{ path('app_dashboard_market_place_xhr_create_manufacturer', {market: app.request.get('market')}) }}"
-           href="#"
-           class="fw-medium float-end add-entry">{{ 'market.manufacturer.create'|trans }}</a>
-        {{ form_widget(form.manufacturer, {attr: {class: manufacturer_error}}) }}
-    </div>
-    <div class="form-group mb-3">
-        {% set description_error = form.description.vars.errors|length ? 'form-control error' : 'form-control' %}
-        {{ form_label(form.description, 'label.form.product_description', {label_attr: {class: 'form-label'}}) }} <span
-                class="text-danger">*</span>
-        {{ form_widget(form.description, {attr: {class: description_error, rows: 6, placeholder: 'label.form.product_description'}}) }}
-        <small class="text-danger">{{ form_errors(form.description) }}</small>
-    </div>
-    {% if app.request.get('id') %}
-        {% set _args = {market: product.market.id, id: product.id} %}
-        {% include 'dashboard/content/form/attachment.html.twig' with {
-            'attachments': product.marketProductAttaches,
-            'storage': 'product',
-            'id': product.id,
-            'set_use': null,
-            'remove': path('app_dashboard_product_attach_remove', _args),
-            'data_url': path('app_dashboard_product_attach', _args),
-            'filter': 'product_preview'
-        } %}
-    {% endif %}
     <input type="hidden" name="flash" value="{{ _message[0]|default([]|json_encode) }}">
     <div class="form-group text-center  mb-3 my-4">
         {{ form_widget(form.save, { label: form.vars.data.id ? 'form.action.update' : 'form.action.save'}) }}

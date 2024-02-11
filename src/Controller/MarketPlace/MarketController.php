@@ -21,7 +21,7 @@ class MarketController extends AbstractController
     #[Route('/{slug}', name: 'app_market_place_market')]
     public function market(Request $request, Market $market): Response
     {
-        return $this->render('market_place/market/market.html.twig', [
+        return $this->render('market_place/market/index.html.twig', [
             'market' => $market,
         ]);
     }

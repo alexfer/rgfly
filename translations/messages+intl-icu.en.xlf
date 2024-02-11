@@ -986,6 +986,10 @@
                 <source>label.form.phone</source>
                 <target>Your phone number</target>
             </trans-unit>
+            <trans-unit id="label.form.website">
+                <source>label.form.website</source>
+                <target>Website</target>
+            </trans-unit>
             <trans-unit id="label.form.date_birth">
                 <source>label.form.date_birth</source>
                 <target>Date of birth</target>
@@ -1213,6 +1217,10 @@
             <trans-unit id="product.details">
                 <source>product.details</source>
                 <target>Product Details</target>
+            </trans-unit>
+            <trans-unit id="product.billing">
+                <source>product.billing</source>
+                <target>Billing</target>
             </trans-unit>
             <trans-unit id="product.details.short">
                 <source>product.details.short</source>

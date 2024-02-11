@@ -79,6 +79,12 @@ class Market
     #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketCustomerMessage::class)]
     private Collection $marketCustomerMessages;
 
+    #[ORM\Column(length: 1024, nullable: true)]
+    private ?string $website = null;
+
+    #[ORM\Column(length: 1024, nullable: true)]
+    private ?string $url = null;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
@@ -555,6 +561,30 @@ class Market
                 $marketCustomerMessage->setMarket(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getWebsite(): ?string
+    {
+        return $this->website;
+    }
+
+    public function setWebsite(?string $website): static
+    {
+        $this->website = $website;
+
+        return $this;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(?string $url): static
+    {
+        $this->url = $url;
 
         return $this;
     }

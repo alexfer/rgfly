@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
@@ -69,6 +70,18 @@ class MarketType extends AbstractType
                         'pattern' => "/[+0-9]+$/i",
                         'message' => 'form.phone.not_valid',
                     ]),
+                ],
+            ])
+            ->add('website', UrlType::class, [
+                'default_protocol' => 'https',
+                'attr' => [
+                    'placeholder' => 'https://',
+                ],
+                'constraints' => [
+                    new Regex(
+                        '/(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i',
+                        'form.url.not_valid',
+                    )
                 ],
             ])
             ->add('email', EmailType::class, [

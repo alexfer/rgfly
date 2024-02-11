@@ -50,7 +50,7 @@ class MarketProduct
     private ?int $pckg_quantity = null;
 
     #[ORM\Column(nullable: true)]
-    private ?float $fee = null;
+    private ?float $fee;
 
     #[ORM\Column]
     private ?DateTime $created_at;
