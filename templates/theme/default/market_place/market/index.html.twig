@@ -6,7 +6,7 @@
 
 {% block content_body %}
     <div class="card border-0 bg-light">
-        <div class="card-header py-3 border-bottom-0 display-6 fs-4 fw-bolder mb-4">{{ market.name }}</div>
+        <div class="card-header py-3 border-bottom-0 display-2 fs-2 fw-bolder mb-4">{{ market.name }}</div>
     </div>
     <div class="mb-5 pb-3">
         <div class="bg-light shadow-lg rounded-3 overflow-hidden">
@@ -14,51 +14,60 @@
                 <aside class="col-lg-4 pe-xl-5">
                     <div class="bg-white h-100 border-end p-4">
                         <div class="p-2">
-                            <h6>About</h6>
+                            <h6>{{ 'market.about'|trans }}</h6>
                             <p class="fs-ms text-muted">{{ market.description|replace({'<p>': '<p class="lead fs-6">'})|raw }}</p>
                             <hr class="my-4">
-                            <h6>Contacts</h6>
-                            <ul class="fs-6">
-                                <li>
-                                    <a target="_blank" class="nav-link-style d-flex align-items-center"
-                                       href="tel:{{ market.phone }}">
-                                        <i class="bi bi-phone opacity-50 me-2"></i>{{ market.phone }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="nav-link-style d-flex align-items-center"
-                                       href="mailto:{{ market.email }}">
-                                        <i class="bi bi-envelope opacity-50 me-2"></i>{{ market.email }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="nav-link-style d-flex align-items-center"
-                                       href="{{ path('app_dashboard_market_place_market_redirect', {website: market.website}) }}">
-                                        <i class="bi bi-globe opacity-50 me-2"></i>{{ market.website }}
-                                    </a>
-                                </li>
-                            </ul>
-                            <hr class="my-4">
-                            <a class="btn-social me-2 mb-2" href="#">
+                            {% if market.phone is not null or market.email is not null or market.website is not null %}
+                                <h6>{{ 'menu.dashboard.contacts'|trans }}</h6>
+                                <ul class="fs-6">
+                                    {% if market.phone %}
+                                        <li>
+                                            <a class="nav-link-style d-flex align-items-center"
+                                               href="tel:{{ market.phone }}">
+                                                <i class="bi bi-phone opacity-50 me-2"></i>{{ market.phone }}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if market.email %}
+                                        <li>
+                                            <a class="nav-link-style d-flex align-items-center"
+                                               href="mailto:{{ market.email }}">
+                                                <i class="bi bi-envelope opacity-50 me-2"></i>{{ market.email }}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if market.website %}
+                                        <li>
+                                            <a target="_blank" class="nav-link-style d-flex align-items-center"
+                                               href="{{ path('app_dashboard_market_place_market_redirect', {website: market.website}) }}">
+                                                <i class="bi bi-globe opacity-50 me-2"></i>{{ market.website }}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                                <hr class="my-4">
+                            {% endif %}
+                            <a class="me-2 mb-2" href="#">
                                 <i class="bi bi-facebook"></i></a>
-                            <a class="btn-social me-2 mb-2" href="#">
+                            <a class="me-2 mb-2" href="#">
                                 <i class="bi bi-twitter-x"></i>
                             </a>
-                            <a class="btn-social me-2 mb-2" href="#">
+                            <a class="me-2 mb-2" href="#">
                                 <i class="bi bi-dribbble"></i>
                             </a>
-                            <a class="btn-social me-2 mb-2" href="#">
+                            <a class="me-2 mb-2" href="#">
                                 <i class="bu bi-behance"></i>
                             </a>
                             <hr class="my-4">
-                            <h6 class="pb-1">Send message</h6>
+                            <h6 class="pb-1">{{ 'form.header.message'|trans }}</h6>
                             <form class="needs-validation pb-2" method="post" novalidate="">
                                 <div class="mb-3">
-                                    <textarea class="form-control" rows="6" placeholder="Your message"
-                                              required=""></textarea>
-                                    <div class="invalid-feedback">Please wirte your message!</div>
+                                    <label for="message" class="visually-hidden-focusable"></label>
+                                    <textarea id="message" class="form-control" rows="6"
+                                              placeholder="{{ 'form.your.message'|trans }}" required=""></textarea>
+                                    <div class="invalid-feedback">{{ 'form.message.invalid'|trans }}</div>
                                 </div>
-                                <button class="btn btn-primary btn-sm d-block w-100" type="submit">Send</button>
+                                <button class="btn btn-primary btn-sm d-block w-100" type="submit">{{ 'form.action.send'|trans }}</button>
                             </form>
                         </div>
                     </div>
@@ -66,240 +75,39 @@
                 <!-- Content-->
                 <section class="col-lg-8 pt-lg-4 pb-md-4">
                     <div class="pt-2 px-4 ps-lg-0 pe-xl-5">
-                        <h2 class="h3 pt-2 pb-4 mb-4 text-center text-sm-start border-bottom">{{ 'market.products'|trans }}
+                        <h4 class="h3 pt-2 pb-4 mb-4 text-center text-sm-start border-bottom">{{ 'market.products'|trans }}
                             <span class="badge bg-secondary-subtle fs-6 text-body align-middle ms-2">{{ market.products.count }}</span>
-                        </h2>
+                        </h4>
                         <div class="row pt-2">
-                            <!-- Product-->
                             <div class="col-sm-6 mb-grid-gutter">
                                 <div class="card product-card-alt">
-                                    <div class="product-thumb">
-                                        <button class="btn-wishlist btn-sm" type="button"><i class="ci-heart"></i>
-                                        </button>
-                                        <div class="product-card-actions"><a
-                                                    class="btn btn-light btn-icon btn-shadow fs-base mx-2"
-                                                    href="marketplace-single.html"><i class="ci-eye"></i></a>
-                                            <button class="btn btn-light btn-icon btn-shadow fs-base mx-2"
-                                                    type="button"><i class="ci-cart"></i></button>
+                                    <div class="position-relative">
+                                        <a class="" href="#">
+                                            <img class="img-fluid" src="{{ asset('http://placehold.it/400x280') }}" alt="Product">
+                                        </a>
+                                        <div class="position-absolute top-0 mt-xxl-5 d-flex justify-content-center w-100">
+                                            <button class="btn btn-light shadow fs-5 mx-2" type="button">
+                                                <i class="bi bi-heart"></i>
+                                            </button>
+                                            <a class="btn btn-light shadow fs-5 mx-2" href="#"><i class="bi bi-eye"></i></a>
+                                            <button class="btn btn-light shadow fs-5 mx-2" type="button">
+                                                <i class="bi bi-cart"></i>
+                                            </button>
                                         </div>
-                                        <a class="product-thumb-overlay" href="marketplace-single.html"></a><img
-                                                src="img/marketplace/products/04.jpg" alt="Product">
                                     </div>
                                     <div class="card-body">
                                         <div class="d-flex flex-wrap justify-content-between align-items-start pb-2">
-                                            <div class="text-muted fs-xs me-1">by <a class="product-meta fw-medium"
-                                                                                     href="#">Createx Std. </a>in <a
-                                                        class="product-meta fw-medium" href="#">Graphics</a></div>
-                                            <div class="star-rating"><i
-                                                        class="star-rating-icon ci-star-filled active"></i><i
-                                                        class="star-rating-icon ci-star-filled active"></i><i
-                                                        class="star-rating-icon ci-star-filled active"></i><i
-                                                        class="star-rating-icon ci-star-filled active"></i><i
-                                                        class="star-rating-icon ci-star-filled active"></i>
+                                            <div class="text-muted fs-xs me-1">by
+                                                <a class="product-meta fw-medium" href="#">Createx Std. </a>in <a class="product-meta fw-medium" href="#">Graphics</a>
                                             </div>
                                         </div>
-                                        <h3 class="product-title fs-sm mb-2"><a href="marketplace-single.html">Flat-line
-                                                E-Commerce Icons (AI)</a></h3>
-                                        <div class="d-flex flex-wrap justify-content-between align-items-center">
-                                            <div class="fs-sm me-2"><i class="ci-download text-muted me-1"></i>26<span
-                                                        class="fs-xs ms-1">Sales</span></div>
-                                            <div class="bg-faded-accent text-accent rounded-1 py-1 px-2">
-                                                $18.<small>00</small></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Product-->
-                            <div class="col-sm-6 mb-grid-gutter">
-                                <div class="card product-card-alt">
-                                    <div class="product-thumb">
-                                        <button class="btn-wishlist btn-sm" type="button"><i class="ci-heart"></i>
-                                        </button>
-                                        <div class="product-card-actions"><a
-                                                    class="btn btn-light btn-icon btn-shadow fs-base mx-2"
-                                                    href="marketplace-single.html"><i class="ci-eye"></i></a>
-                                            <button class="btn btn-light btn-icon btn-shadow fs-base mx-2"
-                                                    type="button"><i class="ci-cart"></i></button>
-                                        </div>
-                                        <a class="product-thumb-overlay" href="marketplace-single.html"></a><img
-                                                src="img/marketplace/products/01.jpg" alt="Product">
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="d-flex flex-wrap justify-content-between align-items-start pb-2">
-                                            <div class="text-muted fs-xs me-1">by <a class="product-meta fw-medium"
-                                                                                     href="#">Createx Std. </a>in <a
-                                                        class="product-meta fw-medium" href="#">UI Design</a></div>
-                                            <div class="star-rating"><i
-                                                        class="star-rating-icon ci-star-filled active"></i><i
-                                                        class="star-rating-icon ci-star-filled active"></i><i
-                                                        class="star-rating-icon ci-star-filled active"></i><i
-                                                        class="star-rating-icon ci-star-filled active"></i><i
-                                                        class="star-rating-icon ci-star"></i>
-                                            </div>
-                                        </div>
-                                        <h3 class="product-title fs-sm mb-2"><a href="marketplace-single.html">Square
-                                                Style Mobile UI Kit (Sketch)</a></h3>
-                                        <div class="d-flex flex-wrap justify-content-between align-items-center">
-                                            <div class="fs-sm me-2"><i class="ci-download text-muted me-1"></i>153<span
-                                                        class="fs-xs ms-1">Sales</span></div>
-                                            <div class="bg-faded-accent text-accent rounded-1 py-1 px-2">
-                                                $24.<small>00</small></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Product-->
-                            <div class="col-sm-6 mb-grid-gutter">
-                                <div class="card product-card-alt">
-                                    <div class="product-thumb">
-                                        <button class="btn-wishlist btn-sm" type="button"><i class="ci-heart"></i>
-                                        </button>
-                                        <div class="product-card-actions"><a
-                                                    class="btn btn-light btn-icon btn-shadow fs-base mx-2"
-                                                    href="marketplace-single.html"><i class="ci-eye"></i></a>
-                                            <button class="btn btn-light btn-icon btn-shadow fs-base mx-2"
-                                                    type="button"><i class="ci-cart"></i></button>
-                                        </div>
-                                        <a class="product-thumb-overlay" href="marketplace-single.html"></a><img
-                                                src="img/marketplace/products/05.jpg" alt="Product">
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="d-flex flex-wrap justify-content-between align-items-start pb-2">
-                                            <div class="text-muted fs-xs me-1">by <a class="product-meta fw-medium"
-                                                                                     href="#">Createx Std. </a>in <a
-                                                        class="product-meta fw-medium" href="#">UI Design</a></div>
-                                            <div class="star-rating"><i
-                                                        class="star-rating-icon ci-star-filled active"></i><i
-                                                        class="star-rating-icon ci-star-filled active"></i><i
-                                                        class="star-rating-icon ci-star-filled active"></i><i
-                                                        class="star-rating-icon ci-star-filled active"></i><i
-                                                        class="star-rating-icon ci-star"></i>
-                                            </div>
-                                        </div>
-                                        <h3 class="product-title fs-sm mb-2"><a href="marketplace-single.html">Minimal
-                                                Mobile App UI Kit (Sketch)</a></h3>
-                                        <div class="d-flex flex-wrap justify-content-between align-items-center">
-                                            <div class="fs-sm me-2"><i class="ci-download text-muted me-1"></i>117<span
-                                                        class="fs-xs ms-1">Sales</span></div>
-                                            <div class="bg-faded-accent text-accent rounded-1 py-1 px-2">
-                                                $23.<small>00</small></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Product-->
-                            <div class="col-sm-6 mb-grid-gutter">
-                                <div class="card product-card-alt">
-                                    <div class="product-thumb">
-                                        <button class="btn-wishlist btn-sm" type="button"><i class="ci-heart"></i>
-                                        </button>
-                                        <div class="product-card-actions"><a
-                                                    class="btn btn-light btn-icon btn-shadow fs-base mx-2"
-                                                    href="marketplace-single.html"><i class="ci-eye"></i></a>
-                                            <button class="btn btn-light btn-icon btn-shadow fs-base mx-2"
-                                                    type="button"><i class="ci-cart"></i></button>
-                                        </div>
-                                        <a class="product-thumb-overlay" href="marketplace-single.html"></a><img
-                                                src="img/marketplace/products/02.jpg" alt="Product">
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="d-flex flex-wrap justify-content-between align-items-start pb-2">
-                                            <div class="text-muted fs-xs me-1">by <a class="product-meta fw-medium"
-                                                                                     href="#">Createx Std. </a>in <a
-                                                        class="product-meta fw-medium" href="#">Graphics</a></div>
-                                            <div class="star-rating"><i
-                                                        class="star-rating-icon ci-star-filled active"></i><i
-                                                        class="star-rating-icon ci-star-filled active"></i><i
-                                                        class="star-rating-icon ci-star-filled active"></i><i
-                                                        class="star-rating-icon ci-star-filled active"></i><i
-                                                        class="star-rating-icon ci-star-filled active"></i>
-                                            </div>
-                                        </div>
-                                        <h3 class="product-title fs-sm mb-2"><a href="marketplace-single.html">Floating
-                                                Phone and Tablet Mockup (PSD)</a></h3>
+                                        <h3 class="fs-5 mb-2 text-truncate">
+                                            <a href="#" class="">Floating Phone and Tablet Mockup (PSD)</a></h3>
                                         <div class="d-flex flex-wrap justify-content-between align-items-center">
                                             <div class="fs-sm me-2"><i class="ci-download text-muted me-1"></i>109<span
                                                         class="fs-xs ms-1">Sales</span></div>
                                             <div class="bg-faded-accent text-accent rounded-1 py-1 px-2">
                                                 $15.<small>00</small></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Product-->
-                            <div class="col-sm-6 mb-grid-gutter">
-                                <div class="card product-card-alt">
-                                    <div class="product-thumb">
-                                        <button class="btn-wishlist btn-sm" type="button"><i class="ci-heart"></i>
-                                        </button>
-                                        <div class="product-card-actions"><a
-                                                    class="btn btn-light btn-icon btn-shadow fs-base mx-2"
-                                                    href="marketplace-single.html"><i class="ci-eye"></i></a>
-                                            <button class="btn btn-light btn-icon btn-shadow fs-base mx-2"
-                                                    type="button"><i class="ci-cart"></i></button>
-                                        </div>
-                                        <a class="product-thumb-overlay" href="marketplace-single.html"></a><img
-                                                src="img/marketplace/products/06.jpg" alt="Product">
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="d-flex flex-wrap justify-content-between align-items-start pb-2">
-                                            <div class="text-muted fs-xs me-1">by <a class="product-meta fw-medium"
-                                                                                     href="#">Createx Std. </a>in <a
-                                                        class="product-meta fw-medium" href="#">Graphics</a></div>
-                                            <div class="star-rating"><i
-                                                        class="star-rating-icon ci-star-filled active"></i><i
-                                                        class="star-rating-icon ci-star-filled active"></i><i
-                                                        class="star-rating-icon ci-star-filled active"></i><i
-                                                        class="star-rating-icon ci-star-filled active"></i><i
-                                                        class="star-rating-icon ci-star-filled active"></i>
-                                            </div>
-                                        </div>
-                                        <h3 class="product-title fs-sm mb-2"><a href="marketplace-single.html">Travel
-                                                &amp; Landmark Icon Pack (AI)</a></h3>
-                                        <div class="d-flex flex-wrap justify-content-between align-items-center">
-                                            <div class="fs-sm me-2"><i class="ci-download text-muted me-1"></i>21<span
-                                                        class="fs-xs ms-1">Sales</span></div>
-                                            <div class="bg-faded-accent text-accent rounded-1 py-1 px-2">
-                                                $17.<small>00</small></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Product-->
-                            <div class="col-sm-6 mb-grid-gutter">
-                                <div class="card product-card-alt">
-                                    <div class="product-thumb">
-                                        <button class="btn-wishlist btn-sm" type="button"><i class="ci-heart"></i>
-                                        </button>
-                                        <div class="product-card-actions"><a
-                                                    class="btn btn-light btn-icon btn-shadow fs-base mx-2"
-                                                    href="marketplace-single.html"><i class="ci-eye"></i></a>
-                                            <button class="btn btn-light btn-icon btn-shadow fs-base mx-2"
-                                                    type="button"><i class="ci-cart"></i></button>
-                                        </div>
-                                        <a class="product-thumb-overlay" href="marketplace-single.html"></a><img
-                                                src="img/marketplace/products/03.jpg" alt="Product">
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="d-flex flex-wrap justify-content-between align-items-start pb-2">
-                                            <div class="text-muted fs-xs me-1">by <a class="product-meta fw-medium"
-                                                                                     href="#">Createx Std. </a>in <a
-                                                        class="product-meta fw-medium" href="#">Graphics</a></div>
-                                            <div class="star-rating"><i
-                                                        class="star-rating-icon ci-star-filled active"></i><i
-                                                        class="star-rating-icon ci-star-filled active"></i><i
-                                                        class="star-rating-icon ci-star-filled active"></i><i
-                                                        class="star-rating-icon ci-star-filled active"></i><i
-                                                        class="star-rating-icon ci-star"></i>
-                                            </div>
-                                        </div>
-                                        <h3 class="product-title fs-sm mb-2"><a href="marketplace-single.html">Project
-                                                Devices Showcase (PSD)</a></h3>
-                                        <div class="d-flex flex-wrap justify-content-between align-items-center">
-                                            <div class="fs-sm me-2"><i class="ci-download text-muted me-1"></i>95<span
-                                                        class="fs-xs ms-1">Sales</span></div>
-                                            <div class="bg-faded-accent text-accent rounded-1 py-1 px-2">
-                                                $18.<small>00</small></div>
                                         </div>
                                     </div>
                                 </div>
