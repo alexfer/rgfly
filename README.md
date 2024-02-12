@@ -1,4 +1,4 @@
-Rgbyfly solutions
+Rgbyfly ecommerce sollution
 ============
 
 ### Requirements:
@@ -9,7 +9,7 @@ Rgbyfly solutions
 - [Node.js `21.2.0` (includes npm 10.2.4)](https://nodejs.org/en/download) or higher
 
 ### Docker
-- [Currently used] (https://github.com/alexfer/docker-symfony)
+- [Currently used](https://github.com/alexfer/rgbfly/tree/v.0.1-dev/docker)
 
 ### 1. Clone repository
 ```shell
