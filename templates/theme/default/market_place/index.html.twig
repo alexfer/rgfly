@@ -37,8 +37,8 @@
             <div class="row g-4">
                 {% for product in products %}
                     <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card card-hover-shadow h-100">
-                            <div class="card-img-scale-wrapper position-relative">
+                        <div class="card h-100">
+                            <div class="position-relative">
                                 {% if product.marketProductAttaches.count %}
                                     {% set _picture = 'storage/product/picture/' ~ product.id ~ '/' ~ product.marketProductAttaches.first.attach.name %}
                                     <img src="{{ asset(_picture)|imagine_filter('product_preview') }}"
