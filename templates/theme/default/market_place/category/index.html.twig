@@ -26,13 +26,14 @@
                             <img src="{{ asset(_picture)|imagine_filter('product_preview') }}"
                                  class="card-img-top h-100" alt="{{ product.name }}">
                         {% else %}
-                            <img src="{{ asset('http://placehold.it/300x200') }}" class="card-img-top h-100" alt="{{ product.name }}">
+                            <img src="{{ asset('http://placehold.it/300x200') }}" class="card-img-top h-100"
+                                 alt="{{ product.name }}">
                         {% endif %}
                         <div class="card-img-overlay d-flex flex-column z-index-1 p-3">
                             <div class="d-flex justify-content-between">
                                 <span class="badge text-bg-dark bg-opacity-75 rounded-1">
                                     <a href="{{ path('app_market_place_product', {slug: product.slug}) }}"
-                                       class="link-white fw-normal">{{ 'market.product.details'|trans }}</a>
+                                       class="text-white fw-normal">{{ 'market.product.details'|trans }}</a>
                                 </span>
                                 <span class="badge bg-white text-dark fw-normal">
                                     <i class="bi bi-star-fill text-warning me-2"></i>4.3
@@ -42,10 +43,10 @@
                                 <span class="badge bg-secondary text-dark p-1">
                                     {% if product.marketCategoryProducts.first.category.parent is null %}
                                         <a href="{{ path('app_market_place_child_category', {parent:  product.marketCategoryProducts.first.category.parent.slug, child: product.marketCategoryProducts.first.category.slug}) }}"
-                                           class="link-white fs-6 fw-light px-2">{{ product.marketCategoryProducts.first.category.name }}</a>
+                                           class="text-white fs-6 fw-light px-2">{{ product.marketCategoryProducts.first.category.name }}</a>
                                     {% else %}
                                         <a href="{{ path('app_market_place_parent_category', {parent:   product.marketCategoryProducts.first.category.parent.slug }) }}"
-                                           class="link-white fs-6 fw-light px-2">{{ product.marketCategoryProducts.first.category.parent.name }}</a>
+                                           class="text-white fs-6 fw-light px-2">{{ product.marketCategoryProducts.first.category.parent.name }}</a>
                                     {% endif %}
                                 </span>
                             </div>
@@ -75,14 +76,16 @@
                                href="{{ path('app_market_place_product', {slug: product.slug}) }}">{{ product.shortName }}</a>
                         </h5>
                     </div>
-                    <a href="{{ path('app_market_place_child_category', {parent:  product.marketCategoryProducts.first.category.parent.slug, child: product.marketCategoryProducts.first.category.slug}) }}"
-                       class="badge-child"><i
-                                class="bi bi-ui-radios-grid text-opacity-50 me-2"></i> {{ product.marketCategoryProducts.first.category.name }}
+                    <a href="{{ path('app_market_place_child_category', {
+                        parent:  product.marketCategoryProducts.first.category.parent.slug,
+                        child: product.marketCategoryProducts.first.category.slug
+                    }) }}" class="badge-child">
+                        <i class="bi bi-ui-radios-grid text-opacity-50 pe-2"></i> {{ product.marketCategoryProducts.first.category.name }}
                     </a>
                     <div class="card-footer border-0 bg-transparent">
                         <ul class="list-group list-group-borderless mt-1 mb-2">
                             <li class="list-group-item small px-1 py-1  border-0">
-                                <i class="bi bi-pin-map-fill me-2 text-opacity-50 text-info"></i>
+                                <i class="bi bi-shop me-2 text-opacity-50 text-info"></i>
                                 <a class="text-decoration-none"
                                    href="{{ path('app_market_place_market', {slug:  product.market.slug}) }}">{{ product.market.name }}</a>
                             </li>

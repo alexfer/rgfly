@@ -6,13 +6,12 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import './styles/app.css';
-
+import './styles/theme/default.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-select/dist/css/bootstrap-select.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.min.css';
-//import 'font-awesome/css/font-awesome.min.css'
+import 'font-awesome/css/font-awesome.min.css'
+//import 'css.gg/icons/icons.css';
 import './bootstrap';
-import 'bootstrap-select';
 import 'popper.js';
 import './js/layout';

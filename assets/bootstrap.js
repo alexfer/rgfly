@@ -38,6 +38,9 @@ const appendAlert = (message, type) => {
     alertPlaceholder.append(wrapper)
 }
 
+const dropdownElementList = document.querySelectorAll('.dropdown-toggle');
+const dropdownList = [...dropdownElementList].map(dropdownToggleEl => new bootstrap.Dropdown(dropdownToggleEl));
+
 const alertTrigger = document.getElementById('liveAlertBtn')
 if (alertTrigger) {
     alertTrigger.addEventListener('click', () => {

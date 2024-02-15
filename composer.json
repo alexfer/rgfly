@@ -2,7 +2,7 @@
     "type": "project",
     "description": "Blog & Marketplace using the Symfony PHP framework",
     "keywords": ["framework", "symfony", "symfony-7", "dev", "blog",
-        "marketplace", "ecommerce", "online-shop", "bootstrap", "php",
+        "marketplace", "ecommerce", "online-shop", "bootstrap-5", "php",
         "postgred", "jquery", "webpack", "docker", "shopping-cart", "redis"],
     "homepage": "https://github.com/alexfer/rgbfly",
     "license": "MIT",

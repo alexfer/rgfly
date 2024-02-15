@@ -3,25 +3,12 @@
 {% block title %}{{ 'text.about_us.header'|trans }}{% endblock %}
 
 {% block body %}
-    <div class="page-title-area about">
-        <div class="d-table">
-            <div class="d-table-cell">
-                <div class="container">
-                    <div class="page-title-content">
-                        <h2>{{ 'text.about_us.header'|trans }}</h2>
-                        <p>{{ 'text.about_us.short_desc'|trans|raw }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <section class="section-area mb-50">
-        <div class="container">
+    <section class="container mt-lg-5">
             <div class="row d-flex align-items-top">
                 <div class="col-lg-7 col-md-12 col-sm-12">
                     <div class="content-text">
                         <h2>{{ 'title.about_us'|trans }}</h2>
-                        <p>{{ 'text.about_us.long_desc'|trans|raw }}</p>
+                        <p class="lh-lg">{{ 'text.about_us.long_desc'|trans|raw }}</p>
                     </div>
                 </div>
                 <div class="col-lg-5 col-md-12 col-sm-12">
@@ -30,6 +17,5 @@
                     </div>
                 </div>
             </div>
-        </div>
     </section>
 {% endblock %}

@@ -3,21 +3,21 @@
 }
 
 .marketplace a.category-link {
-    border-style: dashed;
-    border-color: #7952B3;
-    color: #7952B3;
+    /*border-style: dashed;*/
+    border-color: #25143f;
+    color: rgba(44, 2, 80, 0.82);
     background-color: rgba(247, 247, 247, 0.55);
 }
 
 .marketplace a.category-link:hover {
-    color: #ffffff;
-    border-color: #eeeeee;
+    color: #fff;
+    border-color: #eee;
     transition: 0.4s;
-    background: #7952B3;
+    background: #542c8c;
 }
 
 .marketplace a.category-link:hover i {
-    color: #ffffff;
+    color: #fff;
 }
 
 .marketplace a.badge-child {
@@ -29,7 +29,6 @@
 
 .marketplace a.badge-child:hover {
     color: #6c757d;
-    padding-left: 1px;
 }
 
 .marketplace .product-info .nav-link.active {

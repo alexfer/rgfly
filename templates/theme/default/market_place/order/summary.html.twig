@@ -10,7 +10,7 @@
     <div class="row g-2 my-3">
         <div class="col-lg-9">
             <form name="order[]" action="{{ path('app_market_place_order_update') }}" method="post">
-                <ul class="mt-2 pe-3">
+                <ul class="mt-2 pe-3 list-unstyled">
                     {% for order in orders %}
                         <li class="root" data-order-id="{{ order.session }}">
                             <div class="d-block ps-3 pb-3">{{ order.market.name }}</div>
@@ -25,7 +25,7 @@
                                                     {% if product.product.marketProductAttaches.count %}
                                                         {% set _picture = 'storage/product/picture/' ~ product.product.id ~ '/' ~ product.product.marketProductAttaches.first.attach.name %}
                                                         <img src="{{ asset(_picture)|imagine_filter('product_thumb') }}"
-                                                             class="img-fluid" alt="{{ product.product.name }}">
+                                                             class="img-fluid" width="150" alt="{{ product.product.name }}">
                                                     {% else %}
                                                         <img src="{{ asset('http://placehold.it/100x80') }}"
                                                              alt="{{ product.product.name }}"

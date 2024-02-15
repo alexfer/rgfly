@@ -32,7 +32,7 @@
     <div class="container mt-2">
         <div class="row">
             <div class="col-md-6">
-                <div id="carousel-control" class="mt-4 mb-2 row g-3 carousel slide carousel-fade"
+                <div id="carousel-control" class="mt-3 mb-2 row g-3 carousel slide carousel-fade"
                      data-bs-ride="carousel">
                     <div class="col-3 carousel-inner"> >
                         {% if product.marketProductAttaches.count %}
@@ -68,7 +68,7 @@
                 </div>
             </div>
             <div class="col-md-6 mt-2">
-                <div class="ps-lg-10 mt-6 mt-md-0">
+                <div class="ps-lg-10 mt-md-4">
                     <a href="{{ path('app_market_place_market', {slug:  product.market.slug}) }}"
                        class="mb-4 d-block"><i class="bi bi-shop me-2"></i>{{ product.market.name }}</a>
                     <h1 class="mb-1 text-truncate">{{ product.shortName }}</h1>

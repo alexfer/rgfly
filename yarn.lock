@@ -970,6 +970,18 @@
   resolved "https://registry.npmjs.org/@hotwired/stimulus/-/stimulus-3.2.2.tgz"
   integrity sha512-eGeIqNOQpXoPAIP7tC1+1Yc1yl1xnwYqg+3mzqxyrbE5pg5YFBZcA6YoTiByJB6DKAEsiWtl6tjTJS4IYtbB7A==
 
+"@iconify-icons/ci@^1.2.9":
+  version "1.2.9"
+  resolved "https://registry.npmjs.org/@iconify-icons/ci/-/ci-1.2.9.tgz"
+  integrity sha512-8LZ6D5xsxagJ+Ef0Xp1J3tYr/bboIgY7W7mpMhjl3xG+58SIh4fOnGl55myL0X+QJTn5Zh9R+d1ziy3QTW6OMw==
+  dependencies:
+    "@iconify/types" "*"
+
+"@iconify/types@*":
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/@iconify/types/-/types-2.0.0.tgz"
+  integrity sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==
+
 "@jest/schemas@^29.6.3":
   version "29.6.3"
   resolved "https://registry.npmjs.org/@jest/schemas/-/schemas-29.6.3.tgz"
@@ -2300,6 +2312,11 @@ css-what@^6.0.1, css-what@^6.1.0:
   resolved "https://registry.npmjs.org/css-what/-/css-what-6.1.0.tgz"
   integrity sha512-HTUrgRJ7r4dsZKU6GjmpfRK1O76h97Z8MfS1G0FozR+oF2kG6Vfe8JE6zwrkbxigziPHinCJ+gCPjA9EaBDtRw==
 
+css.gg@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.npmjs.org/css.gg/-/css.gg-2.1.1.tgz"
+  integrity sha512-OJrjd4+CdjrLvrVB+EFctAnk7eeM+zc8aKfVlO5BfNBgSqcC9wMHQTZ7ALcCiZGpE62kVVhwQ3Mvl1u6RkVFvQ==
+
 cssesc@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmjs.org/cssesc/-/cssesc-3.0.0.tgz"
@@ -2993,6 +3010,11 @@ globule@^1.0.0:
     glob "~7.1.1"
     lodash "^4.17.21"
     minimatch "~3.0.2"
+
+glyphicons@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.npmjs.org/glyphicons/-/glyphicons-0.2.0.tgz"
+  integrity sha512-CgsPMSvzWGcagrdh+uPz3HswI1SkGUCt4B1WBEO3RrlRG27gNiJk+/Z54Dn2AzAN6YV1wp+Ox8oXGTNgoO5vhw==
 
 gopd@^1.0.1:
   version "1.0.1"

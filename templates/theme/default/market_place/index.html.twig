@@ -5,20 +5,12 @@
 {% endblock %}
 {% block title %}{{ 'title.general.market.name'|trans }}{% endblock %}
 {% block body %}
-    <div class="page-title-area user-area">
-        <div class="d-table">
-            <div class="d-table-cell">
-                <div class="container">
-                    <div class="page-title-content">
-                        <h2>{% block extend_title %}{{ 'title.general.market.name'|trans }}{% endblock %}</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container marketplace my-3">
+    <section class="container marketplace mt-lg-5">
         {% block content_body %}
-            <div class="row mb-4">
+            <div class="card border-0 bg-light">
+                <div class="card-header py-3 border-bottom-0 display-6 fs-4">{{ 'title.general.market.name'|trans }}</div>
+            </div>
+            <div class="row my-4">
                 <div class="col-12 text-center">
                     <div class="card border-4 bg-info bg-opacity-25 border-success border-opacity-25 rounded-4 dashed">
                         <div class="display-5 my-3 mb-0">{{ 'market.promotion'|trans }}</div>
@@ -49,18 +41,18 @@
                                 {% endif %}
                                 <div class="card-img-overlay d-flex flex-column z-index-1 p-3">
                                     <div class="d-flex justify-content-between">
-                                        <span class="badge text-bg-dark bg-opacity-75 rounded-1">
+                                        <span class="badge text-bg-dark text-white bg-opacity-75 rounded-1">
                                             <a href="{{ path('app_market_place_product', {slug: product.slug}) }}"
-                                               class="link-white fw-normal">{{ 'market.product.details'|trans }}</a>
+                                               class="text-white fw-normal">{{ 'market.product.details'|trans }}</a>
                                         </span>
-                                        <span class="badge bg-white text-dark fw-normal">
+                                        <span class="badge bg-white d-flex text-dark">
                                             <i class="bi bi-star-fill text-warning me-2"></i>4.3
                                         </span>
                                     </div>
                                     <div class="w-100 mt-auto">
                                         <span class="badge bg-secondary text-dark p-1">
                                             <a href="{{ path('app_market_place_parent_category', {parent:  product.marketCategoryProducts.first.category.parent.slug}) }}"
-                                               class="link-white fs-6 fw-light px-2">
+                                               class="text-white fs-6 fw-light px-2">
                                             {{ product.marketCategoryProducts.first.category.parent.name }}
                                             </a>
                                         </span>
@@ -72,9 +64,9 @@
                                     <li class="list-inline-item position-absolute start-0 ms-3">
                                         <form class="shopping-cart" method="post"
                                               action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
-                                            <button class="btn btn-primary rounded-0"
+                                            <button class="btn btn-primary d-flex rounded-0"
                                                     data-slug="{{ product.slug }}" type="submit">
-                                                <i class="bi bi-cart me-1"></i>{{ 'market.product.add'|trans }}
+                                                <i class="fa fa-shopping-cart me-1"></i>{{ 'market.product.add'|trans }}
                                             </button>
                                         </form>
                                     </li>
@@ -89,19 +81,22 @@
                                     <a title="{{ product.name }}"
                                        href="{{ path('app_market_place_product', {slug: product.slug}) }}">{{ product.shortName }}</a>
                                 </h5>
-                                <a href="{{ path('app_market_place_child_category', {parent: product.marketCategoryProducts.first.category.parent.slug, child:  product.marketCategoryProducts.first.category.slug}) }}"
-                                   class="btn btn-link text-decoration-none text-secondary d-block text-start">
+                                <a href="{{ path('app_market_place_child_category', {
+                                    parent: product.marketCategoryProducts.first.category.parent.slug,
+                                    child:  product.marketCategoryProducts.first.category.slug
+                                }) }}"
+                                   class="btn btn-link text-decoration-none text-secondary d-flex text-start">
                                     <hr>
-                                    <i class="bi bi-ui-radios-grid text-opacity-50 text-success"></i> {{ product.marketCategoryProducts.first.category.name }}
+                                    <i class="bi bi-ui-radios-grid pe-2 badge-child text-opacity-50 text-success"></i> {{ product.marketCategoryProducts.first.category.name }}
                                 </a>
                                 <ul class="list-group list-group-borderless mt-5">
-                                    <li class="list-group-item small pb-0  border-0">
-                                        <i class="bi bi-pin-map-fill me-2 text-opacity-50 text-info"></i>
+                                    <li class="list-group-item pb-0 d-flex border-0">
+                                        <span class="bi bi-shop me-2 text-opacity-50 text-info"></span>
                                         <a class="text-decoration-none"
                                            href="{{ path('app_market_place_market', {slug:  product.market.slug}) }}">{{ product.market.name }}</a>
                                     </li>
-                                    <li class="list-group-item small pb-0  border-0">
-                                        <i class="bi bi-telephone-fill text-secondary me-2"></i> <span
+                                    <li class="list-group-item small pb-0 d-flex border-0">
+                                        <i class="bi bi-phone text-secondary me-2"></i> <span
                                                 class="text-secondary">{{ product.market.phone }}</span>
                                     </li>
                                 </ul>
@@ -109,10 +104,10 @@
                             <div class="card-footer border-top">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <a href="{{ path('app_market_place_product', {slug: product.slug}) }}"
-                                       class="btn btn-link text-decoration-none p-0 mb-0">{{ 'market.product.details'|trans }}
-                                        <i class="bi bi-arrow-right ms-1"></i>
+                                       class="btn btn-link text-decoration-none d-flex p-0 mb-0">{{ 'market.product.details'|trans }}
+                                        <i class="bi bi-arrow-right fw-lighter fs-6 ms-3"></i>
                                     </a>
-                                    <a href="#" class="z-index-2"><i class="bi bi-heart-fill text-danger"></i></a>
+                                    <a href="#"><i class="fa fa-heart text-danger"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -120,7 +115,7 @@
                 {% endfor %}
             </div>
         {% endblock %}
-    </div>
+    </section>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
