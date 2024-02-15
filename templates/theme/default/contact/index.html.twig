@@ -3,14 +3,12 @@
 {% block title %}{{ 'text.contact.header'|trans }}{% endblock %}
 
 {% block body %}
-    <section class="container mt-lg-5">
+    <section class="container mt-lg-2">
             <div class="row">
-                <div class="col-3"></div>
-                <div class="col-6 card card-body bg-light shadow">
-                    <h4 class="ps-2 border-start border-3 border-danger mb-3">{{ 'text.contact.header'|trans }}</h4>
+                <div class="col-12 card card-body bg-white border-bottom-0 border-start-0 border-end-0">
+                    <h4 class="ps-2 border-start border-3 border-danger mb-3">{{ 'title.contact_us'|trans }}</h4>
                     {{ include('contact/_form.html.twig') }}
                 </div>
-                <div class="col-3"></div>
             </div>
     </section>
 {% endblock %}

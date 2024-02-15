@@ -3,19 +3,19 @@
 {% block title %}{{ 'text.about_us.header'|trans }}{% endblock %}
 
 {% block body %}
-    <section class="container mt-lg-5">
-            <div class="row d-flex align-items-top">
-                <div class="col-lg-7 col-md-12 col-sm-12">
-                    <div class="content-text">
-                        <h2>{{ 'title.about_us'|trans }}</h2>
+    <section class="container mt-lg-2">
+        <div class="row">
+            <div class="col-12 card card-body bg-white border-bottom-0 border-start-0 border-end-0">
+                <h4 class="ps-2 border-start border-3 border-danger mb-3">{{ 'title.about_us'|trans }}</h4>
+                <div class="row">
+                    <div class="col-6">
                         <p class="lh-lg">{{ 'text.about_us.long_desc'|trans|raw }}</p>
                     </div>
-                </div>
-                <div class="col-lg-5 col-md-12 col-sm-12">
-                    <div class="content-image">
-                        <img class="img-fluid" src="{{ asset('img/about-section.jpg') }}">
+                    <div class="col-6">
+                        <img class="img-fluid rounded-1" src="{{ asset('img/about-section.jpg') }}" alt="...">
                     </div>
                 </div>
             </div>
+        </div>
     </section>
 {% endblock %}

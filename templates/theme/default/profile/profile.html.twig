@@ -3,14 +3,11 @@
 {% block title %}{{ 'text.profile'|trans }}{% endblock %}
 
 {% block body %}
-    <section class="mt-lg-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-2"></div>
-                <div class="col-8 card p-3 bg-body-secondary bg-opacity-25">
-                    {{ include('profile/_form.html.twig') }}
-                </div>
-                <div class="col-2"></div>
+    <section class="container mt-lg-2">
+        <div class="row">
+            <div class="col-12 card card-body bg-white border-bottom-0 border-start-0 border-end-0">
+                <h4 class="ps-2 border-start border-3 border-danger mb-3">{{ 'text.profile'|trans }}</h4>
+                {{ include('profile/_form.html.twig') }}
             </div>
         </div>
     </section>

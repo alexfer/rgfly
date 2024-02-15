@@ -119,6 +119,21 @@ a:not([href]):hover {
     text-decoration: none
 }
 
+.superNav {
+    font-size: 12px;
+}
+
+.form-control {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+@media screen and (max-width: 540px) {
+    .centerOnMobile {
+        text-align: center
+    }
+}
+
 /*Section content*/
 .section-content .item {
     position: relative;
