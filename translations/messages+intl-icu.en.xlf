@@ -57,11 +57,11 @@
             </trans-unit>
             <trans-unit id="site.title">
                 <source>site.title</source>
-                <target>RgbFly</target>
+                <target>RgFly</target>
             </trans-unit>
             <trans-unit id="site.description">
                 <source>site.description</source>
-                <target>A marketplace with free and paid RgbFly solutions - RgbFly Online</target>
+                <target>A marketplace with free and paid RgFly solutions - RgFly Online</target>
             </trans-unit>
             <trans-unit id="text.home.header">
                 <source>text.home.header</source>
@@ -855,7 +855,7 @@
             <trans-unit id="text.about_us.short_desc">
                 <source>text.about_us.short_desc</source>
                 <target>
-                    <![CDATA[Read more about how RgbFly came to be and how we support our customers with IT issues on a daily basis.]]>
+                    <![CDATA[Read more about how RgFly came to be and how we support our customers with IT issues on a daily basis.]]>
                 </target>
             </trans-unit>
             <trans-unit id="text.about_us.long_desc">
