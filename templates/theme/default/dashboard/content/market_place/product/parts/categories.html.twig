@@ -1,0 +1,43 @@
+<div class="mt-4 p-2">
+    <div class="form-group mb-3">
+        {% set category_error = form.category.vars.errors|length ? 'form-select error' : 'form-select' %}
+        {{ form_label(form.category, 'entry.form.categories', {label_attr: {class: 'form-label'}}) }} <span
+                class="text-danger">*</span>
+        {{ form_widget(form.category, {attr: {class: category_error}}) }}
+        <small class="text-danger">{{ form_errors(form.category) }}</small>
+    </div>
+    <div class="form-group mb-3">
+        {% set brand_error = form.brand.vars.errors|length ? 'form-select error' : 'form-select' %}
+        {{ form_label(form.brand, 'label.form.brand_name', {label_attr: {class: 'form-label'}}) }}
+        <a data-bs-toggle="modal"
+           data-bs-target="#modal-brand"
+           data-url="{{ path('app_dashboard_market_place_xhr_create_brand', {market: app.request.get('market')}) }}"
+           data-token="{{ csrf_token('create') }}"
+           href="#"
+           class="fw-medium float-end add-entry">{{ 'market.brand.create'|trans }}</a>
+        {{ form_widget(form.brand, {attr: {class: brand_error}}) }}
+    </div>
+    <div class="form-group mb-3">
+        {% set supplier_error = form.supplier.vars.errors|length ? 'form-select error' : 'form-select' %}
+        <a data-bs-toggle="modal"
+           data-bs-target="#modal-supplier"
+           data-token="{{ csrf_token('create') }}"
+           data-url="{{ path('app_dashboard_market_place_xhr_create_supplier', {market: app.request.get('market')}) }}"
+           data-xhr="{{ path('app_dashboard_market_place_xhr_load_countries', {market: app.request.get('market')}) }}"
+           href="#"
+           class="fw-medium float-end add-entry">{{ 'market.supplier.create'|trans }}</a>
+        {{ form_label(form.supplier, 'label.form.supplier_name', {label_attr: {class: 'form-label'}}) }}
+        {{ form_widget(form.supplier, {attr: {class: supplier_error}}) }}
+    </div>
+    <div class="form-group mb-3">
+        {% set manufacturer_error = form.manufacturer.vars.errors|length ? 'form-select error' : 'form-select' %}
+        {{ form_label(form.manufacturer, 'label.form.manufacturer_name', {label_attr: {class: 'form-label'}}) }}
+        <a data-bs-toggle="modal"
+           data-bs-target="#modal-manufacturer"
+           data-token="{{ csrf_token('create') }}"
+           data-url="{{ path('app_dashboard_market_place_xhr_create_manufacturer', {market: app.request.get('market')}) }}"
+           href="#"
+           class="fw-medium float-end add-entry">{{ 'market.manufacturer.create'|trans }}</a>
+        {{ form_widget(form.manufacturer, {attr: {class: manufacturer_error}}) }}
+    </div>
+</div>

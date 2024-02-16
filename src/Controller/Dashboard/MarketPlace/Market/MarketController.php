@@ -5,7 +5,6 @@ namespace App\Controller\Dashboard\MarketPlace\Market;
 use App\Entity\MarketPlace\Market;
 use App\Form\Type\Dashboard\MarketPlace\MarketType;
 use App\Repository\MarketPlace\MarketRepository;
-use App\Security\Voter\MarketVoter;
 use App\Service\FileUploader;
 use App\Service\Dashboard;
 use DateTime;
@@ -23,7 +22,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -51,6 +49,16 @@ class MarketController extends AbstractController
         return $this->render('dashboard/content/market_place/market/index.html.twig', $this->navbar() + [
                 'markets' => $markets,
             ]);
+    }
+
+    /**
+     * @param Market $market
+     * @return Response
+     */
+    #[Route('/market/{website}', name: 'app_dashboard_market_place_market_redirect')]
+    public function redirectTo(Market $market): Response
+    {
+        return $this->redirect($market->getUrl());
     }
 
     /**
@@ -128,7 +136,6 @@ class MarketController extends AbstractController
      * @throws Exception
      */
     #[Route('/edit/{id}', name: 'app_dashboard_market_place_edit_market', methods: ['GET', 'POST'])]
-//    #[IsGranted(MarketVoter::EDIT, subject: 'entry', statusCode: Response::HTTP_FORBIDDEN)]
     public function edit(
         Request                $request,
         Market                 $market,
@@ -173,7 +180,11 @@ class MarketController extends AbstractController
 
                 $market->setAttach($attach);
             }
-
+            $url = $form->get('website')->getData();
+            if ($url) {
+                $parse = parse_url($url);
+                $market->setUrl($url)->setWebsite($parse['host']);
+            }
             $em->persist($market);
             $em->flush();
 

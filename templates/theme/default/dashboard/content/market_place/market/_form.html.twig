@@ -32,6 +32,12 @@
             <small class="text-danger">{{ form_errors(form.phone) }}</small>
         </div>
         <div class="form-group mb-3">
+            {% set website_error = form.website.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.website, 'label.form.website') }}
+            {{ form_widget(form.website, {attr: {class: website_error}}) }}
+            <small class="text-danger">{{ form_errors(form.website) }}</small>
+        </div>
+        <div class="form-group mb-3">
             {% set email_error = form.email.vars.errors|length ? 'form-control error' : 'form-control' %}
             {{ form_label(form.email, 'label.form.email') }}
             {{ form_widget(form.email, {attr: {class: email_error, placeholder: 'label.form.email'}}) }}
@@ -51,15 +57,14 @@
         </div>
         <div class="input-group mb-3">
             {{ form_label(form.logo, 'label.form.market_logo', {label_attr: {class: 'input-group-text position-absolute'}}) }}
-            {{ form_widget(form.logo, {attr: {class: 'form-controll'}}) }}
+            {{ form_widget(form.logo, {attr: {class: 'form-controll border'}}) }}
             <small class="text-danger d-block">{{ form_errors(form.logo) }}</small>
         </div>
-
         <input type="hidden" name="flash" value="{{ _message[0]|default([]|json_encode) }}">
         <div class="form-group text-center mb-3">
             {{ form_widget(form.save, { label: form.vars.data.id ? 'form.action.update' : 'form.action.save'}) }}
             <a type="button" href="{{ url('app_dashboard_market_place_market') }}"
-               class="btn btn-secondary shadow-sm">{{ 'form.action.back'|trans }}</a>
+               class="btn btn-secondary shadow">{{ 'form.action.back'|trans }}</a>
         </div>
         {{ form_end(form) }}
     {% endif %}

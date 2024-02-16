@@ -29,7 +29,7 @@
     <div class="form-group text-center my-4">
         {{ form_widget(form.save, { label: form.vars.data.id ? 'form.action.update' : 'form.action.save'}) }}
         <a type="button" href="{{ url('app_dashboard_faq') }}"
-           class="btn btn-secondary shadow-sm">{{ 'form.action.back'|trans }}</a>
+           class="btn btn-secondary shadow">{{ 'form.action.back'|trans }}</a>
     </div>
     {{ form_end(form) }}
 {% endblock %}

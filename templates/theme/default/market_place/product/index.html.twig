@@ -6,241 +6,252 @@
 {% block content_body %}
     {% set parent = product.marketCategoryProducts.first.category.parent %}
     {% set child = product.marketCategoryProducts.first.category %}
-    <div class="card mx-1 bg-light border-0">
-        <div class="card-body p-4">
-            <nav style="--bs-breadcrumb-divider:url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='14' fill='currentColor' class='bi bi-arrow-right' viewBox='0 0 16 14'%3E%3Cpath fill-rule='evenodd' d='M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8'/%3E%3C/svg%3E&#34;);"
-                 aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item">
-                        <a href="{{ path('app_market_place_index') }}">{{ 'title.general.market.name'|trans }}</a>
-                    </li>
-                    <li class="breadcrumb-item">
-                        <a href="{{ path('app_market_place_market', {slug:  product.market.slug}) }}">{{ product.market.name }}</a>
-                    </li>
-                    <li class="breadcrumb-item">
-                        <a href="{{ path('app_market_place_parent_category', {parent: parent.slug}) }}">{{ parent.name }}</a>
-                    </li>
-                    <li class="breadcrumb-item">
-                        <a href="{{ path('app_market_place_child_category', {parent: parent.slug, child: child.slug}) }}">{{ child.name }}</a>
-                    </li>
-                    <li class="breadcrumb-item active text-truncate w-25"
-                        aria-current="page">{{ product.shortName }}</li>
-                </ol>
-            </nav>
-        </div>
-    </div>
-    <div class="container mt-2">
+    <section class="container marketplace mt-lg-5">
         <div class="row">
-            <div class="col-md-6">
-                <div id="carousel-control" class="mt-4 mb-2 row g-3 carousel slide carousel-fade"
-                     data-bs-ride="carousel">
-                    <div class="col-3 carousel-inner"> >
-                        {% if product.marketProductAttaches.count %}
-                            {% set _picture = 'storage/product/picture/' ~ product.id ~ '/' ~ product.marketProductAttaches.first.attach.name %}
-                            <div class="carousel-item active">
-                                <img src="{{ asset(_picture)|imagine_filter('product_view') }}"
-                                     class="card-img-top h-100" alt="{{ product.name }}">
-                            </div>
-                        {% else %}
-                            <div class="carousel-item active">
-                                <img src="{{ asset('img/08.jpg') }}" class="card-img-top h-100"
-                                     alt="{{ product.name }}">
-                            </div>
-                        {% endif %}
-                        {% for image in product.marketProductAttaches|slice(1, product.marketProductAttaches.count) %}
-                            <div class="thumbnails-img carousel-item">
-                                {% set _image = 'storage/product/picture/' ~ product.id ~ '/' ~ image.attach.name %}
-                                <img src="{{ asset(_image)|imagine_filter('product_view') }}" class="card-img-top h-100"
-                                     alt="{{ product.shortName }}">
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel-control"
-                            data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">{{ 'element.previous'|trans }}</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carousel-control"
-                            data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">{{ 'element.next'|trans }}</span>
-                    </button>
+            <div class="col-12 card card-body shadow">
+                <h4 class="ps-2 border-start border-3 border-danger mb-3">{{ product.shortName }}</h4>
+                <div class="card-body py-3">
+                    <nav style="--bs-breadcrumb-divider:url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='14' fill='currentColor' class='bi bi-arrow-right' viewBox='0 0 16 14'%3E%3Cpath fill-rule='evenodd' d='M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8'/%3E%3C/svg%3E&#34;);"
+                         aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item">
+                                <a href="{{ path('app_market_place_index') }}">{{ 'title.general.market.name'|trans }}</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="{{ path('app_market_place_market', {slug:  product.market.slug}) }}">{{ product.market.name }}</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="{{ path('app_market_place_parent_category', {parent: parent.slug}) }}">{{ parent.name }}</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="{{ path('app_market_place_child_category', {parent: parent.slug, child: child.slug}) }}">{{ child.name }}</a>
+                            </li>
+                            <li class="breadcrumb-item active text-truncate"
+                                aria-current="page">{{ product.shortName }}</li>
+                        </ol>
+                    </nav>
                 </div>
-            </div>
-            <div class="col-md-6 mt-2">
-                <div class="ps-lg-10 mt-6 mt-md-0">
-                    <a href="{{ path('app_market_place_market', {slug:  product.market.slug}) }}"
-                       class="mb-4 d-block"><i class="bi bi-shop me-2"></i>{{ product.market.name }}</a>
-                    <h1 class="mb-1 text-truncate">{{ product.shortName }}</h1>
-                    <div class="mb-4">
-                        <small class="text-warning">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-half"></i>
-                            <i class="bi bi-star"></i>
-                        </small>
-                        <a href="#" class="ms-2 fs-6">(30 reviews)</a>
+                <div class="row py-3">
+                    <div class="col-md-6">
+                        <div id="carousel-control" class="mb-2 row g-3 carousel slide carousel-fade"
+                             data-bs-ride="carousel">
+                            <div class="col-3 carousel-inner"> >
+                                {% if product.marketProductAttaches.count %}
+                                    {% set _picture = 'storage/product/picture/' ~ product.id ~ '/' ~ product.marketProductAttaches.first.attach.name %}
+                                    <div class="carousel-item active">
+                                        <img src="{{ asset(_picture)|imagine_filter('product_view') }}"
+                                             class="card-img-top h-100" alt="{{ product.name }}">
+                                    </div>
+                                {% else %}
+                                    <div class="carousel-item active">
+                                        <img src="{{ asset('http://placehold.it/630x390') }}" class="card-img-top h-100"
+                                             alt="{{ product.name }}">
+                                    </div>
+                                {% endif %}
+                                {% for image in product.marketProductAttaches|slice(1, product.marketProductAttaches.count) %}
+                                    <div class="thumbnails-img carousel-item">
+                                        {% set _image = 'storage/product/picture/' ~ product.id ~ '/' ~ image.attach.name %}
+                                        <img src="{{ asset(_image)|imagine_filter('product_view') }}"
+                                             class="card-img-top h-100"
+                                             alt="{{ product.shortName }}">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carousel-control"
+                                    data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">{{ 'element.previous'|trans }}</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carousel-control"
+                                    data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">{{ 'element.next'|trans }}</span>
+                            </button>
+                        </div>
                     </div>
-                    <div class="fs-4">
-                        {% if product.discount %}
-                            {% set discount = product.discount %}
-                            {% set cost = product.cost %}
-                            <span class="fw-bold text-success">{{ (cost - ((cost * discount) - discount)/100)|round|number_format(2, '.', ' ') }}<small>{{ product.market.currency|currency }}</small></span>
-                            <span class="text-decoration-line-through text-muted">{{ product.cost|number_format(2, '.', ' ') }}<small>{{ product.market.currency|currency }}</small></span>
-                        {% else %}
-                            <span class="fw-bold text-dark">{{ product.cost|number_format(2, '.', ' ') }}<small>{{ product.market.currency|currency }}</small></span>
-                        {% endif %}
-                        <span>
+                    <div class="col-md-6">
+                        <div class="ps-lg-10 mt-md-1">
+                            <a href="{{ path('app_market_place_market', {slug:  product.market.slug}) }}"
+                               class="mb-4 d-block"><i class="bi bi-shop me-2"></i>{{ product.market.name }}</a>
+                            <h1 class="mb-1 text-truncate">{{ product.shortName }}</h1>
+                            <div class="mb-4">
+                                <small class="text-warning">
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-half"></i>
+                                    <i class="bi bi-star"></i>
+                                </small>
+                                <a href="#" class="ms-2 fs-6">(30 reviews)</a>
+                            </div>
+                            <div class="fs-4">
+                                {% if product.discount %}
+                                    {% set discount = product.discount %}
+                                    {% set cost = product.cost %}
+                                    <span class="fw-bold text-success">{{ (cost - ((cost * discount) - discount)/100)|round|number_format(2, '.', ' ') }}<small>{{ product.market.currency|currency }}</small></span>
+                                    <span class="text-decoration-line-through text-muted">{{ product.cost|number_format(2, '.', ' ') }}<small>{{ product.market.currency|currency }}</small></span>
+                                {% else %}
+                                    <span class="fw-bold text-dark">{{ product.cost|number_format(2, '.', ' ') }}<small>{{ product.market.currency|currency }}</small></span>
+                                {% endif %}
+                                <span>
                             {% if product.discount %}
                                 <small class="fs-6 ms-2 text-danger">{{ product.discount|number_format(2, ',', '') }}% {{ 'market.product.off'|trans }}</small>
                             {% endif %}
                         </span>
-                    </div>
-                    <form class="shopping-cart" method="post"
-                          action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
-                        {% if product.marketProductAttributes.count %}
-                            <hr class="my-1">
-                            <div id="attributes">
-                                {% for attribute in product.marketProductAttributes.toArray %}
-                                    <input type="hidden" name="color" value="">
-                                    <input type="hidden" name="size" value="">
-                                    {% if attribute.inFront %}
-                                        <small class="d-block mt-2 mb-0 text-muted">{{ attribute.name|capitalize }}</small>
-                                        <div class="form-check-inline me-0" id="{{ attribute.name }}">
-                                            {% for attr in attribute.marketProductAttributeValues %}
-                                                <input type="radio" name="attr[{{ attribute.name }}]" class="btn-check"
-                                                       data-name="{{ attr.value }}"
-                                                       data-root-name="{{ attribute.name }}"
-                                                       id="btn-check-{{ attr.id }}" value="{{ attr.id }}"
-                                                       autocomplete="off">
-                                                <label class="btn btn-link-secondary{% if attribute.name == 'color' %} rounded-circle{% endif %} btn-sm"
-                                                       for="btn-check-{{ attr.id }}" {% if attribute.name == 'color' %} style="background-color: {{ attr.extra|join }};"{% endif %}>
-                                                    {% if attribute.name == 'size' %}
-                                                        <span class="px-1">{{ attr.value|capitalize }}</span>
-                                                    {% else %}
-                                                        <span class="py-1 px-2"></span>
-                                                    {% endif %}
-                                                </label>
-                                            {% endfor %}
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
                             </div>
-                        {% endif %}
-                        <div class="mt-3 row justify-content-start g-2 align-items-center">
-                            <div class="col-xxl-4 col-lg-4 col-md-5 col-5 d-grid">
-                                <button type="submit" id="order"
-                                        class="btn btn-primary opacity-75"{% if product.quantity == 0 %} disabled{% endif %}>
-                                    <i class="bi bi-basket me-2"></i>{{ 'market.product.add_cart'|trans }}
-                                </button>
-                            </div>
-                            <div class="col-md-4 col-4">
-                                <a class="btn btn-light" href="#" data-bs-toggle="tooltip" data-bs-html="true"
-                                   data-bs-placement="top"
-                                   title="{{ 'market.product.compare'|trans }}"><i
-                                            class="bi bi-arrow-left-right"></i></a>
-                                <a class="btn btn-light" href="#" data-bs-toggle="tooltip" data-bs-html="true"
-                                   data-bs-placement="top" title="{{ 'market.product.wishlist'|trans }}"><i
-                                            class="bi bi-heart"></i></a>
-                            </div>
+                            <form class="shopping-cart" method="post"
+                                  action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
+                                {% if product.marketProductAttributes.count %}
+                                    <hr class="my-1">
+                                    <div id="attributes">
+                                        {% for attribute in product.marketProductAttributes.toArray %}
+                                            <input type="hidden" name="color" value="">
+                                            <input type="hidden" name="size" value="">
+                                            {% if attribute.inFront %}
+                                                <small class="d-block mt-2 mb-0 text-muted">{{ attribute.name|capitalize }}</small>
+                                                <div class="form-check-inline me-0" id="{{ attribute.name }}">
+                                                    {% for attr in attribute.marketProductAttributeValues %}
+                                                        <input type="radio" name="attr[{{ attribute.name }}]"
+                                                               class="btn-check"
+                                                               data-name="{{ attr.value }}"
+                                                               data-root-name="{{ attribute.name }}"
+                                                               id="btn-check-{{ attr.id }}" value="{{ attr.id }}"
+                                                               autocomplete="off">
+                                                        <label class="btn btn-link-secondary{% if attribute.name == 'color' %} rounded-circle{% endif %} btn-sm"
+                                                               for="btn-check-{{ attr.id }}" {% if attribute.name == 'color' %} style="background-color: {{ attr.extra|join }};"{% endif %}>
+                                                            {% if attribute.name == 'size' %}
+                                                                <span class="px-1">{{ attr.value|capitalize }}</span>
+                                                            {% else %}
+                                                                <span class="py-1 px-2"></span>
+                                                            {% endif %}
+                                                        </label>
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                <div class="mt-3 row justify-content-start g-2 align-items-center">
+                                    <div class="col-xxl-4 col-lg-4 col-md-5 col-5 d-grid">
+                                        <button type="submit" id="order"
+                                                class="btn btn-primary opacity-75"{% if product.quantity == 0 %} disabled{% endif %}>
+                                            <i class="bi bi-basket me-2"></i>{{ 'market.product.add_cart'|trans }}
+                                        </button>
+                                    </div>
+                                    <div class="col-md-4 col-4">
+                                        <a class="btn btn-light" href="#" data-bs-toggle="tooltip" data-bs-html="true"
+                                           data-bs-placement="top"
+                                           title="{{ 'market.product.compare'|trans }}"><i
+                                                    class="bi bi-arrow-left-right"></i></a>
+                                        <a class="btn btn-light" href="#" data-bs-toggle="tooltip" data-bs-html="true"
+                                           data-bs-placement="top" title="{{ 'market.product.wishlist'|trans }}"><i
+                                                    class="bi bi-heart"></i></a>
+                                    </div>
+                                </div>
+                            </form>
+                            <hr class="my-3">
+                            {% set code = product.slug|split('-')|last|upper %}
+                            <table class="table table-borderless mb-0">
+                                <tbody>
+                                <tr>
+                                    <td>{{ 'market.product.code'|trans }}:</td>
+                                    <td class="text-muted">{{ 'market.product.code_prefix'|trans }}{{ product.id }}
+                                        -{{ code }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ 'market.product.availability'|trans }}:</td>
+                                    <td class="text-muted">{% if product.quantity == 0 %}{{ 'market.product.out_stock'|trans }}{% else %}{{ 'market.product.in_stock'|trans }}{% endif %}</td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
-                    </form>
-                    <hr class="my-3">
-                    {% set code = product.slug|split('-')|last|upper %}
-                    <table class="table table-borderless mb-0">
-                        <tbody>
+                    </div>
+                </div>
+            </div>
+            <ul class="nav nav-tabs border-bottom product-info mt-lg-5" id="info" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link text-secondary border-0 fs-6 active" id="about-tab" data-bs-toggle="tab"
+                            data-bs-target="#about"
+                            type="button" role="tab" aria-controls="about"
+                            aria-selected="true">{{ 'product.details'|trans }}</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link text-secondary border-0 fs-6" id="product-info-tab" data-bs-toggle="tab"
+                            data-bs-target="#product-info"
+                            type="button" role="tab" aria-controls="product-info"
+                            aria-selected="false">{{ 'product.information'|trans }}</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link text-secondary border-0 fs-6" id="seller-info-tab" data-bs-toggle="tab"
+                            data-bs-target="#seller-info"
+                            type="button" role="tab" aria-controls="seller-info"
+                            aria-selected="false">{{ 'product.seller.info'|trans }}</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link text-secondary border-0 fs-6" id="seller-contact-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#seller-contact"
+                            type="button" role="tab" aria-controls="seller-contact"
+                            aria-selected="false">{{ 'product.seller.contact'|trans }}</button>
+                </li>
+            </ul>
+            <div class="tab-content border-top rounded-top-0 mb-5 p-2">
+                <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="about-tab">
+                    <h5 class="d-block my-1 py-2">{{ product.shortName }}</h5>
+                    {{ product.description|raw }}
+                </div>
+                <div class="tab-pane fade show" id="product-info" role="tabpanel"
+                     aria-labelledby="product-info-tab">
+                    <h5 class="d-block my-1 py-2">{{ 'product.details.short'|trans }}</h5>
+                    <table class="table table-striped mb-0">
+                        <tbody class="fs-6 fw-light">
                         <tr>
-                            <td>{{ 'market.product.code'|trans }}:</td>
-                            <td class="text-muted">{{ 'market.product.code_prefix'|trans }}{{ product.id }}
-                                -{{ code }}</td>
+                            <th class="fw-medium">{{ 'label.form.sku'|trans }}</th>
+                            <td class="text-secondary">{{ product.sku }}</td>
+                        </tr>
+                        {% if product.pckgQuantity %}
+                            <tr>
+                                <th class="fw-medium">{{ 'label.form.pckg_quantity'|trans }}</th>
+                                <td class="text-secondary">{{ product.pckgQuantity }}</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <th class="fw-medium">{{ 'label.form.quantity'|trans }}</th>
+                            <td class="text-secondary">
+                                {% if product.quantity == 0 %}
+                                    {{ 'market.product.out_stock'|trans }}
+                                {% else %}
+                                    {{ product.quantity }}{{ 'label.form.quantity_pcs'|trans }}
+                                {% endif %}
+                            </td>
                         </tr>
                         <tr>
-                            <td>{{ 'market.product.availability'|trans }}:</td>
-                            <td class="text-muted">{% if product.quantity == 0 %}{{ 'market.product.out_stock'|trans }}{% else %}{{ 'market.product.in_stock'|trans }}{% endif %}</td>
+                            <th class="fw-medium">{{ 'market.brand'|trans }}</th>
+                            <td class="text-secondary">{{ product.marketProductBrand.brand.name|default('N/a') }}</td>
+                        </tr>
+                        <tr>
+                            <th class="fw-medium">{{ 'market.supplier'|trans }}</th>
+                            <td class="text-secondary">{{ product.marketProductSupplier.supplier.name|default('N/a') }}</td>
+                        </tr>
+                        <tr>
+                            <th class="fw-medium">{{ 'market.manufacturer'|trans }}</th>
+                            <td class="text-secondary">{{ product.marketProductManufacturer.manufacturer.name|default('N/a') }}</td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
+                <div class="tab-pane fade show" id="seller-info" role="tabpanel" aria-labelledby="seller-info-tab">
+                    <h5 class="d-block my-1 py-2">{{ product.market.name }}</h5>
+                    {{ product.market.description|default('info.no_content'|trans)|raw }}
+                </div>
+                <div class="tab-pane fade show" id="seller-contact" role="tabpanel"
+                     aria-labelledby="seller-contact-tab">
+                    <h5 class="d-block my-1 py-2">{{ 'product.seller.contact'|trans }}</h5>
+                    <div class="row g-2">
+
+                    </div>
+                </div>
             </div>
         </div>
-        <ul class="nav nav-tabs border-bottom product-info" id="info" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link text-secondary border-0 fs-6 active" id="about-tab" data-bs-toggle="tab"
-                        data-bs-target="#about"
-                        type="button" role="tab" aria-controls="about"
-                        aria-selected="true">{{ 'product.details'|trans }}</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link text-secondary border-0 fs-6" id="product-info-tab" data-bs-toggle="tab"
-                        data-bs-target="#product-info"
-                        type="button" role="tab" aria-controls="product-info"
-                        aria-selected="false">{{ 'product.information'|trans }}</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link text-secondary border-0 fs-6" id="seller-info-tab" data-bs-toggle="tab"
-                        data-bs-target="#seller-info"
-                        type="button" role="tab" aria-controls="seller-info"
-                        aria-selected="false">{{ 'product.seller.info'|trans }}</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link text-secondary border-0 fs-6" id="seller-contact-tab" data-bs-toggle="tab"
-                        data-bs-target="#seller-contact"
-                        type="button" role="tab" aria-controls="seller-contact"
-                        aria-selected="false">{{ 'product.seller.contact'|trans }}</button>
-            </li>
-        </ul>
-        <div class="tab-content border-top rounded-top-0 mb-5 p-2">
-            <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="about-tab">
-                <h5 class="d-block my-1 py-2">{{ product.shortName }}</h5>
-                {{ product.description|raw }}
-            </div>
-            <div class="tab-pane fade show" id="product-info" role="tabpanel" aria-labelledby="product-info-tab">
-                <h5 class="d-block my-1 py-2">{{ 'product.details.short'|trans }}</h5>
-                <table class="table table-striped mb-0">
-                    <tbody class="fs-6 fw-light">
-                    <tr>
-                        <th class="fw-medium">{{ 'label.form.sku'|trans }}</th>
-                        <td class="text-secondary">{{ product.sku }}</td>
-                    </tr>
-                    {% if product.pckgQuantity %}
-                        <tr>
-                            <th class="fw-medium">{{ 'label.form.pckg_quantity'|trans }}</th>
-                            <td class="text-secondary">{{ product.pckgQuantity }}</td>
-                        </tr>
-                    {% endif %}
-                    <tr>
-                        <th class="fw-medium">{{ 'label.form.quantity'|trans }}</th>
-                        <td class="text-secondary">
-                            {% if product.quantity == 0 %}
-                                {{ 'market.product.out_stock'|trans }}
-                            {% else %}
-                                {{ product.quantity }}{{ 'label.form.quantity_pcs'|trans }}
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="fw-medium">{{ 'market.brand'|trans }}</th>
-                        <td class="text-secondary">{{ product.marketProductBrand.brand.name|default('N/a') }}</td>
-                    </tr>
-                    <tr>
-                        <th class="fw-medium">{{ 'market.supplier'|trans }}</th>
-                        <td class="text-secondary">{{ product.marketProductSupplier.supplier.name|default('N/a') }}</td>
-                    </tr>
-                    <tr>
-                        <th class="fw-medium">{{ 'market.manufacturer'|trans }}</th>
-                        <td class="text-secondary">{{ product.marketProductManufacturer.manufacturer.name|default('N/a') }}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="tab-pane fade show" id="seller-info" role="tabpanel" aria-labelledby="seller-info-tab">
-                <h5 class="d-block my-1 py-2">{{ product.market.name }}</h5>
-                {{ product.market.description|default('info.no_content'|trans)|raw }}
-            </div>
-            <div class="tab-pane fade show" id="seller-contact" role="tabpanel" aria-labelledby="seller-contact-tab">
-                <h5 class="d-block my-1 py-2">{{ 'product.seller.contact'|trans }}</h5>
-            </div>
-        </div>
-    </div>
+    </section>
 {% endblock %}

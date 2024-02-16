@@ -71,6 +71,10 @@
                 <source>title.blogs</source>
                 <target>Blogs</target>
             </trans-unit>
+            <trans-unit id="title.account">
+                <source>title.account</source>
+                <target>Account</target>
+            </trans-unit>
             <trans-unit id="title.questions">
                 <source>title.questions</source>
                 <target>Questions</target>
@@ -986,6 +990,10 @@
                 <source>label.form.phone</source>
                 <target>Your phone number</target>
             </trans-unit>
+            <trans-unit id="label.form.website">
+                <source>label.form.website</source>
+                <target>Website</target>
+            </trans-unit>
             <trans-unit id="label.form.date_birth">
                 <source>label.form.date_birth</source>
                 <target>Date of birth</target>
@@ -1138,9 +1146,21 @@
                 <source>form.action.close</source>
                 <target>Close</target>
             </trans-unit>
+            <trans-unit id="form.header.message">
+                <source>form.header.message</source>
+                <target>Send Message</target>
+            </trans-unit>
             <trans-unit id="form.action.send">
                 <source>form.action.send</source>
-                <target>Send Message</target>
+                <target>Send</target>
+            </trans-unit>
+            <trans-unit id="form.your.message">
+                <source>form.your.message</source>
+                <target>Your Message</target>
+            </trans-unit>
+            <trans-unit id="form.message.invalid">
+                <source>form.message.invalid</source>
+                <target>Please write your message!</target>
             </trans-unit>
             <trans-unit id="form.action.register">
                 <source>form.action.register</source>
@@ -1214,6 +1234,10 @@
                 <source>product.details</source>
                 <target>Product Details</target>
             </trans-unit>
+            <trans-unit id="product.billing">
+                <source>product.billing</source>
+                <target>Billing</target>
+            </trans-unit>
             <trans-unit id="product.details.short">
                 <source>product.details.short</source>
                 <target>Details</target>
@@ -1255,6 +1279,10 @@
                 <target>
                     <![CDATA[By placing your order, you agree to be bound by the <strong>{ market_name }</strong> <a href="{ link_to_tou }" class="text-success">Terms of Service</a> and <a href="{ link_to_pp }" class="text-success">Privacy Policy.</a>]]>
                 </target>
+            </trans-unit>
+            <trans-unit id="market.about">
+                <source>market.about</source>
+                <target>About</target>
             </trans-unit>
         </body>
     </file>

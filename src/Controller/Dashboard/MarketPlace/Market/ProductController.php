@@ -3,10 +3,7 @@
 namespace App\Controller\Dashboard\MarketPlace\Market;
 
 use App\Entity\Attach;
-use App\Entity\EntryAttachment;
 use App\Helper\MarketPlace\MarketAttributeValues;
-use App\Repository\EntryAttachmentRepository;
-use App\Repository\EntryRepository;
 use App\Repository\MarketPlace\MarketProductAttachRepository;
 use App\Repository\MarketPlace\MarketProductRepository;
 use App\Service\FileUploader;

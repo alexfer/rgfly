@@ -51,7 +51,7 @@
             <div class="row">
                 {% for entry in entries %}
                     <div class="blog-block col-sm-8 col-lg-6 col-xl-4">
-                        <div class="card shadow-sm h-100">
+                        <div class="card shadow h-100">
                             <div class="blog-img-block">
                                 {% set _picture = 'storage/entry/picture/' ~ entry.id ~ '/' ~ entry.attach %}
                                 <a href="{{ path('app_blog_view', {slug: entry.slug}) }}">

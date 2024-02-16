@@ -37,11 +37,20 @@ class Market
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phone = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $description = null;
-
     #[ORM\Column(length: 512, unique: true, nullable: true)]
     private ?string $slug = null;
+
+    #[ORM\Column(length: 5, nullable: true)]
+    private ?string $currency = null;
+
+    #[ORM\Column(length: 1024, nullable: true)]
+    private ?string $website = null;
+
+    #[ORM\Column(length: 1024, nullable: true)]
+    private ?string $url = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
 
     #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketProduct::class)]
     private Collection $products;
@@ -66,9 +75,6 @@ class Market
 
     #[ORM\OneToOne(inversedBy: 'market', cascade: ['persist', 'remove'])]
     private ?Attach $attach = null;
-
-    #[ORM\Column(length: 5, nullable: true)]
-    private ?string $currency = null;
 
     #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketOrders::class)]
     private Collection $marketOrders;
@@ -173,10 +179,10 @@ class Market
     }
 
     /**
-     * @param string $email
+     * @param string|null $email
      * @return $this
      */
-    public function setEmail(string $email): static
+    public function setEmail(?string $email): static
     {
         $this->email = $email;
 
@@ -192,10 +198,10 @@ class Market
     }
 
     /**
-     * @param string $phone
+     * @param string|null $phone
      * @return $this
      */
-    public function setPhone(string $phone): static
+    public function setPhone(?string $phone): static
     {
         $this->phone = $phone;
 
@@ -452,11 +458,18 @@ class Market
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getCurrency(): ?string
     {
         return $this->currency;
     }
 
+    /**
+     * @param string|null $currency
+     * @return $this
+     */
     public function setCurrency(?string $currency): static
     {
         $this->currency = $currency;
@@ -555,6 +568,44 @@ class Market
                 $marketCustomerMessage->setMarket(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getWebsite(): ?string
+    {
+        return $this->website;
+    }
+
+    /**
+     * @param string|null $website
+     * @return $this
+     */
+    public function setWebsite(?string $website): static
+    {
+        $this->website = $website;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param string|null $url
+     * @return $this
+     */
+    public function setUrl(?string $url): static
+    {
+        $this->url = $url;
 
         return $this;
     }

@@ -1,13 +1,153 @@
 {% extends 'market_place/index.html.twig' %}
 
-{% block title %}Hello MarketController!{% endblock %}
+{% block title %}{{ market.name }}{% endblock %}
+{% block description %}{{ market.name }}{% endblock %}
+{% block extend_title %}{{ market.name }}{% endblock %}
 
 {% block content_body %}
-    <div class="row g-4">
-        <div class="col-sm-6 col-lg-4 col-xl-3">
-            <div class="card shadow h-100">
-                markets
+    <section class="container marketplace mt-lg-2">
+        <div class="row">
+            <div class="col-12 card card-body shadow">
+                <h4 class="ps-2 border-start border-3 border-danger mb-3">{{ market.name }}</h4>
+                <div class="mt-lg-3">
+                    <div class="bg-light rounded-3 overflow-hidden">
+                        <div class="row">
+                            <aside class="col-lg-4 pe-xl-5">
+                                <div class="bg-white h-100 border-end p-4">
+                                    <div class="p-2">
+                                        <h6>{{ 'market.about'|trans }}</h6>
+                                        <p class="fs-ms text-muted">{{ market.description|replace({'<p>': '<p class="lead fs-6">'})|raw }}</p>
+                                        <hr class="my-4">
+                                        {% if market.phone is not null or market.email is not null or market.website is not null %}
+                                            <h6>{{ 'menu.dashboard.contacts'|trans }}</h6>
+                                            <ul class="list-unstyled fs-6">
+                                                {% if market.phone %}
+                                                    <li>
+                                                        <a class="nav-link-style d-flex align-items-center"
+                                                           href="tel:{{ market.phone }}">
+                                                            <i class="bi bi-phone opacity-50 me-2"></i>{{ market.phone }}
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
+                                                {% if market.email %}
+                                                    <li>
+                                                        <a class="nav-link-style d-flex align-items-center"
+                                                           href="mailto:{{ market.email }}">
+                                                            <i class="bi bi-envelope opacity-50 me-2"></i>{{ market.email }}
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
+                                                {% if market.website %}
+                                                    <li>
+                                                        <a target="_blank"
+                                                           class="nav-link-style d-flex align-items-center"
+                                                           href="{{ path('app_dashboard_market_place_market_redirect', {website: market.website}) }}">
+                                                            <i class="bi bi-globe opacity-50 me-2"></i>{{ market.website }}
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
+                                            </ul>
+                                        {% endif %}
+                                        <div class="mt-2 d-flex">
+                                            <a class="me-3 mb-2" href="#"><h4 class="bi bi-facebook"></h4></a>
+                                            <a class="me-3 mb-2" href="#"><h4 class="bi bi-twitter-x"></h4></a>
+                                            <a class="me-3 mb-2" href="#"><h4 class="bi bi-dribbble"></h4></a>
+                                            <a class="me-3 mb-2" href="#"><h4 class="bi bi-behance"></h4></a>
+                                            <a class="me-3 mb-2" href="#"><h4 class="bi bi-instagram"></h4></a>
+                                            <hr class="my-4">
+                                        </div>
+                                        <h6 class="pb-1">{{ 'form.header.message'|trans }}</h6>
+                                        <form class="needs-validation pb-2" method="post" novalidate="">
+                                            <div class="mb-3">
+                                                <label for="message" class="visually-hidden-focusable"></label>
+                                                <textarea id="message" class="form-control" rows="6"
+                                                          placeholder="{{ 'form.your.message'|trans }}"
+                                                          required=""></textarea>
+                                                <div class="invalid-feedback">{{ 'form.message.invalid'|trans }}</div>
+                                            </div>
+                                            <button class="btn btn-primary btn-sm d-block w-100"
+                                                    type="submit">{{ 'form.action.send'|trans }}</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </aside>
+                            <section class="col-lg-8 pb-md-4">
+                                <div class="pt-2 px-4 ps-lg-0 pe-xl-5">
+                                    <h4 class="pt-2 pb-4 mb-4 text-center text-sm-start border-bottom">{{ 'market.products'|trans }}
+                                        <span class="badge bg-secondary-subtle fs-6 text-body align-middle ms-2">{{ market.products.count }}</span>
+                                    </h4>
+                                    <div class="row pt-2">
+                                        {% for product in market.products %}
+                                            <div class="col-sm-6 mb-grid-gutter">
+                                                <div class="card shadow">
+                                                    <div class="position-relative">
+                                                        <a class="product-overlay"
+                                                           href="{{ path('app_market_place_product', {slug: product.slug}) }}">
+                                                            {% if product.marketProductAttaches.first %}
+                                                                {% set _picture= 'storage/product/picture/' ~ product.id ~ '/' ~ product.marketProductAttaches.last.attach.name %}
+                                                                <img class="img-fluid shadow-none rounded-bottom-0"
+                                                                     src="{{ asset(_picture)|imagine_filter('product_preview') }}"
+                                                                     alt="{{ product.name }}">
+                                                            {% else %}
+                                                                <img class="img-fluid shadow-none rounded-bottom-0"
+                                                                     src="{{ asset('http://placehold.it/390x260') }}"
+                                                                     alt="{{ product.name }}">
+                                                            {% endif %}
+                                                        </a>
+                                                        <div class="buttons d-flex justify-content-center w-100">
+                                                            <button class="btn btn-light shadow fs-6 mx-2"
+                                                                    type="button">
+                                                                <i class="bi bi-heart"></i>
+                                                            </button>
+                                                            <a class="btn btn-light shadow fs-6 mx-2"
+                                                               href="{{ path('app_market_place_product', {slug: product.slug}) }}">
+                                                                <i class="bi bi-eye"></i>
+                                                            </a>
+                                                            <form class="shopping-cart" method="post"
+                                                                  action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
+                                                                <button class="btn btn-light shadow fs-6 mx-2"
+                                                                        data-slug="{{ product.slug }}" type="submit">
+                                                                    <i class="bi bi-cart"></i>
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="d-flex flex-wrap justify-content-between align-items-start pb-2">
+                                                            <div class="text-muted fs-6 me-1">
+                                                                <i class="bi bi-transparency text-secondary text-opacity-75"></i>
+                                                                <a class="fw-medium"
+                                                                   href="{{ path('app_market_place_child_category', {parent: product.marketCategoryProducts.first.category.parent.slug, child:  product.marketCategoryProducts.first.category.slug}) }}">
+                                                                    {{ product.marketCategoryProducts.first.category.name }}
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        <h6 class="fs-5 fw-medium mb-2 text-truncate mb-4"
+                                                            data-bs-toggle="tooltip" title="{{ product.name }}">
+                                                            <a href="{{ path('app_market_place_product', {slug: product.slug}) }}"
+                                                               class="">{{ product.shortName }}</a>
+                                                        </h6>
+                                                        <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                                            <div class="me-2">
+                                                                <i class="bi bi-download text-muted me-1"></i>0<small
+                                                                        class="fs-6 ms-1">Sales</small>
+                                                            </div>
+                                                            <div class="bg-success bg-opacity-75 text-white rounded-1 py-1 px-2">
+                                                                {{ product.cost|number_format(2, ',', '') }}
+                                                                <small>{{ market.currency|currency }}</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 {% endblock %}

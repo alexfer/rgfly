@@ -51,8 +51,8 @@
         {% include 'dashboard/content/form/attachment.html.twig' with {
             'attachments': entry.entryAttachments,
             'storage': 'entry',
-            'data_url': path('app_dashboard_blog_attach', {id: app.request.get('id')})
-            'set_use': path('app_dashboard_blog_attach_set_use', {entry: entry.id})
+            'data_url': path('app_dashboard_blog_attach', {id: app.request.get('id')}),
+            'set_use': path('app_dashboard_blog_attach_set_use', {entry: entry.id}),
             'id': entry.entryDetails.id,
             'filter': 'entry_preview'
         } %}
@@ -61,7 +61,7 @@
     <div class="form-group text-center mx-3">
         {{ form_widget(form.next, { label: app.request.get('id') ? 'form.action.update' : 'form.action.next'}) }}
         <a type="button" href="{{ url('app_dashboard_blog') }}"
-           class="btn btn-secondary shadow shadow-sm">{{ 'form.action.back'|trans }}</a>
+           class="btn btn-secondary shadow shadow">{{ 'form.action.back'|trans }}</a>
     </div>
     {{ form_end(form) }}
 {% endblock %}

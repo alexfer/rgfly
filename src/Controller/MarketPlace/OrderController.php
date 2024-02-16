@@ -17,12 +17,6 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/market-place/order')]
 class OrderController extends AbstractController
 {
-
-    public function checkout()
-    {
-
-    }
-
     /**
      * @param Request $request
      * @param EntityManagerInterface $em

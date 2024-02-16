@@ -30,15 +30,6 @@ $(() => {
         window.history.replaceState({}, '', location);
     });
 
-    $('a[data-bs-toggle="accordion-content"]').on('click', (e) => {
-        e.preventDefault();
-
-        $(this).toggleClass('active');
-        $(this).next().slideToggle('slow');
-        $('.accordion-content').not($(this).next()).slideUp('toggle');
-        $('.accordion-title').not($(this)).removeClass('active');
-    });
-
     $('a[data-bs-toggle="collapse"]').on('click', (e) => {
         e.preventDefault();
 

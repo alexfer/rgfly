@@ -1,0 +1,43 @@
+<div class="mt-4 p-2">
+    <div class="form-group mb-3 row">
+        <div class="col-3">
+            {% set quantity_error = form.quantity.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.quantity, 'label.form.quantity', {label_attr: {class: 'form-label'}}) }} <span
+                    class="text-danger">*</span>
+            {{ form_widget(form.quantity, {attr: {class: quantity_error, placeholder: '0'}}) }}
+            <small class="text-danger">{{ form_errors(form.quantity) }}</small>
+        </div>
+        <div class="col-3">
+            {% set cost_error = form.cost.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.cost, 'label.form.cost', {label_attr: {class: 'form-label'}}) }} <span
+                    class="text-danger">*</span>
+            {{ form_widget(form.cost, {attr: {class: cost_error, placeholder: '0.00'}}) }}
+            <small class="text-danger">{{ form_errors(form.cost) }}</small>
+        </div>
+        <div class="col-3">
+            {% set pckg_quantity_error = form.pckg_quantity.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.pckg_quantity, 'label.form.pckg_quantity', {label_attr: {class: 'form-label'}}) }}
+            {{ form_widget(form.pckg_quantity, {attr: {class: pckg_quantity_error, placeholder: '0'}}) }}
+            <small class="text-danger">{{ form_errors(form.pckg_quantity) }}</small>
+        </div>
+        <div class="col-3">
+            {% set sku_error = form.sku.vars.errors|length ? 'form-control error' : 'form-control' %}
+            {{ form_label(form.sku, 'label.form.sku', {label_attr: {class: 'form-label'}}) }}
+            {{ form_widget(form.sku, {attr: {class: sku_error, placeholder: 'label.form.sku'}}) }}
+            <small class="text-danger">{{ form_errors(form.sku) }}</small>
+        </div>
+    </div>
+    <div class="form-group mb-3 row">
+        <div class="col-5">
+            {{ form_label(form.discount, 'label.form.discount', {label_attr: {class: 'form-label'}}) }}
+            {{ form_widget(form.discount, {attr: {class: 'form-range border-0 mt-2', placeholder: '0'}}) }}
+        </div>
+        <div class="col-1">
+            <span class="badge bg-secondary text-light fw-normal discount-output mt-lg-2 mb-5 pt-2 fw-light"></span>
+        </div>
+        <div class="col">
+            {{ form_label(form.fee, 'label.form.discount', {label_attr: {class: 'form-label'}}) }}
+            {{ form_widget(form.fee, {attr: {class: 'form-control', placeholder: '0'}}) }}
+        </div>
+    </div>
+</div>

@@ -5,7 +5,7 @@
     </div>
 {% endif %}
 <div class="form-row">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <div class="form-group mb-3">
             {% set email_error = form.email.vars.errors|length ? 'form-control error' : 'form-control' %}
             {{ form_label(form.email, 'label.form.email', {label_attr: {class: 'form-label'}}) }} <span class="text-danger">*</span>
@@ -17,7 +17,7 @@
             {% endif %}
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-12">
         <div class="form-group mb-3">
             {% set password_error = form.plainPassword.vars.errors|length ? 'form-control error' : 'form-control' %}
             {{ form_label(form.plainPassword, 'label.form.password', {label_attr: {class: 'form-label'}}) }} <span class="text-danger">*</span>
@@ -31,7 +31,7 @@
     </div>
 </div>
 <div class="form-row">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <div class="form-group mb-3">
             {% set first_name_error = form.first_name.vars.errors|length ? 'form-control error' : 'form-control' %}
             {{ form_label(form.first_name, 'label.form.first_name', {label_attr: {class: 'form-label'}}) }} <span class="text-danger">*</span>
@@ -43,7 +43,7 @@
             {% endif %}
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-12">
         <div class="form-group mb-3">
             {% set last_name_error = form.last_name.vars.errors|length ? 'form-control error' : 'form-control' %}
             {{ form_label(form.last_name, 'label.form.last_name', {label_attr: {class: 'form-label'}}) }} <span class="text-danger">*</span>
@@ -51,7 +51,7 @@
             {% if form_errors(form.last_name) %}
                 <small class="text-danger">{{ form_errors(form.last_name) }}</small>
             {% else %}
-                <small class="form-text text-muted">{{ 'form.last_name.help'|trans({ '%min%': form.last_name.vars.attr.min, '%max%': form.last_name.vars.attr.max }) }}</small>
+                <small class="d-block form-text text-muted">{{ 'form.last_name.help'|trans({ '%min%': form.last_name.vars.attr.min, '%max%': form.last_name.vars.attr.max }) }}</small>
             {% endif %}
         </div>
     </div>
@@ -63,7 +63,7 @@
             {% if form_errors(form.agreeTerms) %}
                 <small class="text-danger">{{ form_errors(form.agreeTerms) }}</small>
             {% else %}
-                <small class="form-text text-muted">{{ 'form.agree_terms.help'|trans({
+                <small class="d-block form-text text-muted">{{ 'form.agree_terms.help'|trans({
                         '%policy%': url('policy'),
                         '%terms%': url('terms')
                     })|raw }}</small>

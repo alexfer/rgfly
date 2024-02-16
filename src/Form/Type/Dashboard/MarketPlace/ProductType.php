@@ -193,6 +193,14 @@ use Doctrine\ORM\EntityRepository;
                     ]),
                 ],
             ])
+            ->add('fee', MoneyType::class, [
+                'attr' => [
+                    'min' => '0.00',
+                    'step' => '1',
+                ],
+                'html5' => true,
+                'currency' => $this->market->getCurrency() ?? 'EUR',
+            ])
             ->add('cost', MoneyType::class, [
                 'attr' => [
                     'min' => '0.00',

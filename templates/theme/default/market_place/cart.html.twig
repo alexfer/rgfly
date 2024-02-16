@@ -7,7 +7,6 @@
             {% for product in products %}
                 {% if product.order_id == order.id %}
                     <li class="list-group-item">
-                        {{ dump(product.id) }}#}
                         <div class="row align-items-center">
                             <div class="col-4">
                                 <a class="" href="{{ path('app_market_place_product', {slug: product.slug}) }}">
@@ -50,13 +49,13 @@
             {% endfor %}
         {% endfor %}
     </ul>
-    <div class="justify-between lh-base fs-6 fw-bold bg-light py-3 ps-3 shadow-sm mb-3">
+    <div class="justify-between lh-base fs-6 fw-bold bg-light py-3 ps-3 mb-3">
         <strong>{{ 'order.subtotal'|trans }}</strong>
         <strong class="float-end pe-3">{{ order.discount|number_format(2, '.', ' ') }}</strong>
     </div>
     <div class="d-flex justify-content-center mt-4">
         <a href="{{ path('app_market_place_order_summary') }}"
-           class="btn btn-outline-success">{{ 'order.view'|trans }}</a>
+           class="btn btn-outline-danger rounded-0">{{ 'order.view'|trans }}</a>
     </div>
 {% else %}
     <div class="text-center visually-hidden">

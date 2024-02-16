@@ -3,28 +3,12 @@
 {% block title %}{{ 'text.contact.header'|trans }}{% endblock %}
 
 {% block body %}
-    <div class="page-title-area contact">
-        <div class="d-table">
-            <div class="d-table-cell">
-                <div class="container">
-                    <div class="page-title-content">
-                        <h2>{{ 'text.contact.header'|trans }}</h2>
-                        <p>{{ 'text.contact.desc'|trans|raw }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <section class="section-area default">
-        <div class="container">
+    <section class="container mt-lg-2">
             <div class="row">
-                <div class="col-4">
-                    <h5>Coming soon</h5>
-                </div>
-                <div class="col-8 card">
+                <div class="col-12 card card-body shadow">
+                    <h4 class="ps-2 border-start border-3 border-danger mb-3">{{ 'title.contact_us'|trans }}</h4>
                     {{ include('contact/_form.html.twig') }}
                 </div>
             </div>
-        </div>
     </section>
 {% endblock %}
