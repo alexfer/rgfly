@@ -1,4 +1,4 @@
-Rgbyfly ecommerce sollution
+RgFly ecommerce solution
 ============
 
 ### Requirements:
@@ -9,11 +9,11 @@ Rgbyfly ecommerce sollution
 - [Node.js `21.2.0` (includes npm 10.2.4)](https://nodejs.org/en/download) or higher
 
 ### Docker
-- [Currently used](https://github.com/alexfer/rgbfly/tree/v.0.1-dev/docker)
+- [Currently used](https://github.com/alexfer/rgfly/tree/v.0.1-dev/docker)
 
 ### 1. Clone repository
 ```shell
-    $ git clone git@github.com:alexfer/techspace.git
+    $ git clone git@github.com:alexfer/rgfly.git
 ```
 ### 2. Prepare configuration
 You should change database configuration
