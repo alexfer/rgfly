@@ -5,8 +5,8 @@ Creating and deploying postgres database
 #### Make rhe followings command:
 ```shell
 $ cd dev/projects/
-$ git clone git@github.com:alexfer/rgbfly.git
-$ cd rgbfly
+$ git clone git@github.com:alexfer/rgfly.git
+$ cd rgfly
 $ composer install
 $ npm install
 $ npm run dev --watch
@@ -25,17 +25,17 @@ plsql -U postgres
 ````
 Next step:
 ````sql
-DROP ROLE IF EXISTS rgbfly;
-CREATE USER rgbfly WITH password 'rgbfly';
-ALTER USER rgbfly WITH SUPERUSER;
-ALTER USER rgbfly CREATEDB;
-CREATE DATABASE rgbfly OWNER rgbfly;
-GRANT ALL PRIVILEGES ON DATABASE rgbfly TO rgbfly;
+DROP ROLE IF EXISTS rgfly;
+CREATE USER rgfly WITH password 'rgfly';
+ALTER USER rgfly WITH SUPERUSER;
+ALTER USER rgfly CREATEDB;
+CREATE DATABASE rgfly OWNER rgfly;
+GRANT ALL PRIVILEGES ON DATABASE rgfly TO rgfly;
 ````
 Deploy database:
 ````shell
 $ docker exec -it bash
-$ cd rgbbfly
+$ cd rgfly
 $ rm -rfv migrations/*
 $ php bin/console doctrine:database:drop --if-exists --force
 $ php bin/console doctrine:database:create
