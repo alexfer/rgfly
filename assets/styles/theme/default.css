@@ -128,9 +128,12 @@ a:not([href]):hover {
     box-shadow: none !important;
 }
 
-@media screen and (max-width: 540px) {
+@media screen and (max-width: 760px) {
     .centerOnMobile {
-        text-align: center
+        text-align: center;
+    }
+    body {
+        background-color: #dc3545 !important;
     }
 }
 

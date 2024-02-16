@@ -71,6 +71,10 @@
                 <source>title.blogs</source>
                 <target>Blogs</target>
             </trans-unit>
+            <trans-unit id="title.account">
+                <source>title.account</source>
+                <target>Account</target>
+            </trans-unit>
             <trans-unit id="title.questions">
                 <source>title.questions</source>
                 <target>Questions</target>

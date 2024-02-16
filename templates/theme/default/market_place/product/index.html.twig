@@ -6,11 +6,11 @@
 {% block content_body %}
     {% set parent = product.marketCategoryProducts.first.category.parent %}
     {% set child = product.marketCategoryProducts.first.category %}
-    <section class="container mt-lg-5">
+    <section class="container marketplace mt-lg-5">
         <div class="row">
-            <div class="col-12 card card-body bg-white border-bottom-0 border-start-0 border-end-0">
+            <div class="col-12 card card-body shadow">
                 <h4 class="ps-2 border-start border-3 border-danger mb-3">{{ product.shortName }}</h4>
-                <div class="card-body pt-2">
+                <div class="card-body py-3">
                     <nav style="--bs-breadcrumb-divider:url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='14' fill='currentColor' class='bi bi-arrow-right' viewBox='0 0 16 14'%3E%3Cpath fill-rule='evenodd' d='M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8'/%3E%3C/svg%3E&#34;);"
                          aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0">
@@ -26,13 +26,12 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ path('app_market_place_child_category', {parent: parent.slug, child: child.slug}) }}">{{ child.name }}</a>
                             </li>
-                            <li class="breadcrumb-item active text-truncate w-25"
+                            <li class="breadcrumb-item active text-truncate"
                                 aria-current="page">{{ product.shortName }}</li>
                         </ol>
                     </nav>
                 </div>
-            </div>
-                <div class="row">
+                <div class="row py-3">
                     <div class="col-md-6">
                         <div id="carousel-control" class="mb-2 row g-3 carousel slide carousel-fade"
                              data-bs-ride="carousel">
@@ -168,87 +167,91 @@
                         </div>
                     </div>
                 </div>
-                <ul class="nav nav-tabs border-bottom product-info" id="info" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link text-secondary border-0 fs-6 active" id="about-tab" data-bs-toggle="tab"
-                                data-bs-target="#about"
-                                type="button" role="tab" aria-controls="about"
-                                aria-selected="true">{{ 'product.details'|trans }}</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link text-secondary border-0 fs-6" id="product-info-tab" data-bs-toggle="tab"
-                                data-bs-target="#product-info"
-                                type="button" role="tab" aria-controls="product-info"
-                                aria-selected="false">{{ 'product.information'|trans }}</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link text-secondary border-0 fs-6" id="seller-info-tab" data-bs-toggle="tab"
-                                data-bs-target="#seller-info"
-                                type="button" role="tab" aria-controls="seller-info"
-                                aria-selected="false">{{ 'product.seller.info'|trans }}</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link text-secondary border-0 fs-6" id="seller-contact-tab"
-                                data-bs-toggle="tab"
-                                data-bs-target="#seller-contact"
-                                type="button" role="tab" aria-controls="seller-contact"
-                                aria-selected="false">{{ 'product.seller.contact'|trans }}</button>
-                    </li>
-                </ul>
-                <div class="tab-content border-top rounded-top-0 mb-5 p-2">
-                    <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="about-tab">
-                        <h5 class="d-block my-1 py-2">{{ product.shortName }}</h5>
-                        {{ product.description|raw }}
-                    </div>
-                    <div class="tab-pane fade show" id="product-info" role="tabpanel"
-                         aria-labelledby="product-info-tab">
-                        <h5 class="d-block my-1 py-2">{{ 'product.details.short'|trans }}</h5>
-                        <table class="table table-striped mb-0">
-                            <tbody class="fs-6 fw-light">
+            </div>
+            <ul class="nav nav-tabs border-bottom product-info mt-lg-5" id="info" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link text-secondary border-0 fs-6 active" id="about-tab" data-bs-toggle="tab"
+                            data-bs-target="#about"
+                            type="button" role="tab" aria-controls="about"
+                            aria-selected="true">{{ 'product.details'|trans }}</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link text-secondary border-0 fs-6" id="product-info-tab" data-bs-toggle="tab"
+                            data-bs-target="#product-info"
+                            type="button" role="tab" aria-controls="product-info"
+                            aria-selected="false">{{ 'product.information'|trans }}</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link text-secondary border-0 fs-6" id="seller-info-tab" data-bs-toggle="tab"
+                            data-bs-target="#seller-info"
+                            type="button" role="tab" aria-controls="seller-info"
+                            aria-selected="false">{{ 'product.seller.info'|trans }}</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link text-secondary border-0 fs-6" id="seller-contact-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#seller-contact"
+                            type="button" role="tab" aria-controls="seller-contact"
+                            aria-selected="false">{{ 'product.seller.contact'|trans }}</button>
+                </li>
+            </ul>
+            <div class="tab-content border-top rounded-top-0 mb-5 p-2">
+                <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="about-tab">
+                    <h5 class="d-block my-1 py-2">{{ product.shortName }}</h5>
+                    {{ product.description|raw }}
+                </div>
+                <div class="tab-pane fade show" id="product-info" role="tabpanel"
+                     aria-labelledby="product-info-tab">
+                    <h5 class="d-block my-1 py-2">{{ 'product.details.short'|trans }}</h5>
+                    <table class="table table-striped mb-0">
+                        <tbody class="fs-6 fw-light">
+                        <tr>
+                            <th class="fw-medium">{{ 'label.form.sku'|trans }}</th>
+                            <td class="text-secondary">{{ product.sku }}</td>
+                        </tr>
+                        {% if product.pckgQuantity %}
                             <tr>
-                                <th class="fw-medium">{{ 'label.form.sku'|trans }}</th>
-                                <td class="text-secondary">{{ product.sku }}</td>
+                                <th class="fw-medium">{{ 'label.form.pckg_quantity'|trans }}</th>
+                                <td class="text-secondary">{{ product.pckgQuantity }}</td>
                             </tr>
-                            {% if product.pckgQuantity %}
-                                <tr>
-                                    <th class="fw-medium">{{ 'label.form.pckg_quantity'|trans }}</th>
-                                    <td class="text-secondary">{{ product.pckgQuantity }}</td>
-                                </tr>
-                            {% endif %}
-                            <tr>
-                                <th class="fw-medium">{{ 'label.form.quantity'|trans }}</th>
-                                <td class="text-secondary">
-                                    {% if product.quantity == 0 %}
-                                        {{ 'market.product.out_stock'|trans }}
-                                    {% else %}
-                                        {{ product.quantity }}{{ 'label.form.quantity_pcs'|trans }}
-                                    {% endif %}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="fw-medium">{{ 'market.brand'|trans }}</th>
-                                <td class="text-secondary">{{ product.marketProductBrand.brand.name|default('N/a') }}</td>
-                            </tr>
-                            <tr>
-                                <th class="fw-medium">{{ 'market.supplier'|trans }}</th>
-                                <td class="text-secondary">{{ product.marketProductSupplier.supplier.name|default('N/a') }}</td>
-                            </tr>
-                            <tr>
-                                <th class="fw-medium">{{ 'market.manufacturer'|trans }}</th>
-                                <td class="text-secondary">{{ product.marketProductManufacturer.manufacturer.name|default('N/a') }}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="tab-pane fade show" id="seller-info" role="tabpanel" aria-labelledby="seller-info-tab">
-                        <h5 class="d-block my-1 py-2">{{ product.market.name }}</h5>
-                        {{ product.market.description|default('info.no_content'|trans)|raw }}
-                    </div>
-                    <div class="tab-pane fade show" id="seller-contact" role="tabpanel"
-                         aria-labelledby="seller-contact-tab">
-                        <h5 class="d-block my-1 py-2">{{ 'product.seller.contact'|trans }}</h5>
+                        {% endif %}
+                        <tr>
+                            <th class="fw-medium">{{ 'label.form.quantity'|trans }}</th>
+                            <td class="text-secondary">
+                                {% if product.quantity == 0 %}
+                                    {{ 'market.product.out_stock'|trans }}
+                                {% else %}
+                                    {{ product.quantity }}{{ 'label.form.quantity_pcs'|trans }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="fw-medium">{{ 'market.brand'|trans }}</th>
+                            <td class="text-secondary">{{ product.marketProductBrand.brand.name|default('N/a') }}</td>
+                        </tr>
+                        <tr>
+                            <th class="fw-medium">{{ 'market.supplier'|trans }}</th>
+                            <td class="text-secondary">{{ product.marketProductSupplier.supplier.name|default('N/a') }}</td>
+                        </tr>
+                        <tr>
+                            <th class="fw-medium">{{ 'market.manufacturer'|trans }}</th>
+                            <td class="text-secondary">{{ product.marketProductManufacturer.manufacturer.name|default('N/a') }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade show" id="seller-info" role="tabpanel" aria-labelledby="seller-info-tab">
+                    <h5 class="d-block my-1 py-2">{{ product.market.name }}</h5>
+                    {{ product.market.description|default('info.no_content'|trans)|raw }}
+                </div>
+                <div class="tab-pane fade show" id="seller-contact" role="tabpanel"
+                     aria-labelledby="seller-contact-tab">
+                    <h5 class="d-block my-1 py-2">{{ 'product.seller.contact'|trans }}</h5>
+                    <div class="row g-2">
+
                     </div>
                 </div>
             </div>
+        </div>
     </section>
 {% endblock %}

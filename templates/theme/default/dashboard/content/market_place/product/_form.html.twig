@@ -87,7 +87,7 @@
         {{ form_widget(form.save, { label: form.vars.data.id ? 'form.action.update' : 'form.action.save'}) }}
         <a type="button"
            href="{{ url('app_dashboard_market_place_market_product', {market: app.request.get('market')}) }}"
-           class="btn btn-secondary shadow-sm">{{ 'form.action.back'|trans }}</a>
+           class="btn btn-secondary shadow">{{ 'form.action.back'|trans }}</a>
     </div>
     {{ form_end(form) }}
 {% endblock %}

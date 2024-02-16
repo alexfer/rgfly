@@ -1,34 +1,10 @@
-.marketplace .dotted {
-    border-style: dotted;
-}
-
-.marketplace a.category-link {
-    /*border-style: dashed;*/
-    border-color: #25143f;
-    color: rgba(44, 2, 80, 0.82);
-    background-color: rgba(247, 247, 247, 0.55);
-}
-
-.marketplace a.category-link:hover {
-    color: #fff;
-    border-color: #eee;
-    transition: 0.4s;
-    background: #542c8c;
-}
-
-.marketplace a.category-link:hover i {
-    color: #fff;
-}
-
-.marketplace a.badge-child {
-    color: #7952B3;
-    font-weight: 400;
-    font-size: 16px;
-    margin-left: 17px;
-}
-
-.marketplace a.badge-child:hover {
-    color: #6c757d;
+a.category-link {
+    text-rendering: geometricprecision;
+    text-transform: uppercase;
+    transition: opacity 300ms cubic-bezier(.694, 0, 0.335, 1), background-color 100ms cubic-bezier(.694, 0, 0.335, 1), color 100ms cubic-bezier(.694, 0, 0.335, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
 }
 
 .marketplace .product-info .nav-link.active {
@@ -53,7 +29,7 @@
 .marketplace .buttons {
     transition: .5s ease;
     opacity: 0.6;
-    position: absolute;
+    position: absolute !important;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);

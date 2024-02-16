@@ -1,12 +1,12 @@
 {% set _route = app.request.get('_route') %}
-<nav class="navbar navbar-expand-lg bg-transparent navbar-dark p-3 shadow-sm">
+<nav class="navbar navbar-expand-lg bg-transparent navbar-dark p-3 centerOnMobile">
     <div class="container">
-        <a class="navbar-brand bg-light rounded-5 bg-opacity-25" href="{{ path('app_index') }}">
+        <a class="navbar-brand" href="{{ path('app_index') }}">
             <img src="{{ asset('/img/rgbfly.png') }}" width="90" class="black-logo"
                  alt="{{ 'site.title'|trans }} - {{ 'text.home.header'|trans }}">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="...">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -34,6 +34,13 @@
             </ul>
             <ul class="navbar-nav ms-auto ">
                 <li class="nav-item">
+                    <label>
+                        <select name="locale" class="form-select border-danger bg-danger text-white focus-ring-danger" disabled>
+                            <option value="{{ app.request.locale }}">{{ 'English'|upper }}</option>
+                        </select>
+                    </label>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link mx-2 text-uppercase" href="#shopping-cart"
                        data-bs-toggle="offcanvas"
                        role="button"
@@ -41,14 +48,14 @@
                         <i class="fa fa-shopping-cart me-1"></i> {{ 'market.product.cart'|trans }}
                     </a>
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown dropend">
                     <a class="nav-link mx-2 text-uppercase dropdown-toggle"
                        id="useMenu"
                        data-bs-toggle="dropdown"
                        aria-expanded="false" href="#">
-                        <i class="fa fa-user-o me-1"></i> {{ 'account'|trans }}
+                        <i class="fa fa-user-o me-1"></i> {{ 'title.account'|trans }}
                     </a>
-                    <ul class="dropdown-menu border-0 shadow-sm  dropdown-menu-dark rounded-1"
+                    <ul class="dropdown-menu border-0 shadow  dropdown-menu-dark rounded-1"
                         aria-labelledby="useMenu">
                         {% if not app.user %}
                             <li>

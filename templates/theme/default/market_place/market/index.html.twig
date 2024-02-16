@@ -5,12 +5,12 @@
 {% block extend_title %}{{ market.name }}{% endblock %}
 
 {% block content_body %}
-    <section class="container mt-lg-2">
+    <section class="container marketplace mt-lg-2">
         <div class="row">
-            <div class="col-12 card card-body bg-white border-bottom-0 border-start-0 border-end-0">
+            <div class="col-12 card card-body shadow">
                 <h4 class="ps-2 border-start border-3 border-danger mb-3">{{ market.name }}</h4>
-                <div class="mt-lg-3 mb-5 pb-3">
-                    <div class="bg-light shadow-lg rounded-3 overflow-hidden">
+                <div class="mt-lg-3">
+                    <div class="bg-light rounded-3 overflow-hidden">
                         <div class="row">
                             <aside class="col-lg-4 pe-xl-5">
                                 <div class="bg-white h-100 border-end p-4">
@@ -20,7 +20,7 @@
                                         <hr class="my-4">
                                         {% if market.phone is not null or market.email is not null or market.website is not null %}
                                             <h6>{{ 'menu.dashboard.contacts'|trans }}</h6>
-                                            <ul class="fs-6">
+                                            <ul class="list-unstyled fs-6">
                                                 {% if market.phone %}
                                                     <li>
                                                         <a class="nav-link-style d-flex align-items-center"
@@ -48,12 +48,12 @@
                                                 {% endif %}
                                             </ul>
                                         {% endif %}
-                                        <div class="mt-2 d-flex ">
-                                            <a class="me-2 mb-2" href="#"><i class="bi bi-facebook"></i></a>
-                                            <a class="me-2 mb-2" href="#"><i class="bi bi-twitter-x"></i></a>
-                                            <a class="me-2 mb-2" href="#"><i class="bi bi-dribbble"></i></a>
-                                            <a class="me-2 mb-2" href="#"><i class="bi bi-behance"></i></a>
-                                            <a class="me-2 mb-2" href="#"><i class="bi bi-instagram"></i></a>
+                                        <div class="mt-2 d-flex">
+                                            <a class="me-3 mb-2" href="#"><h4 class="bi bi-facebook"></h4></a>
+                                            <a class="me-3 mb-2" href="#"><h4 class="bi bi-twitter-x"></h4></a>
+                                            <a class="me-3 mb-2" href="#"><h4 class="bi bi-dribbble"></h4></a>
+                                            <a class="me-3 mb-2" href="#"><h4 class="bi bi-behance"></h4></a>
+                                            <a class="me-3 mb-2" href="#"><h4 class="bi bi-instagram"></h4></a>
                                             <hr class="my-4">
                                         </div>
                                         <h6 class="pb-1">{{ 'form.header.message'|trans }}</h6>
@@ -71,7 +71,6 @@
                                     </div>
                                 </div>
                             </aside>
-                            <!-- Content-->
                             <section class="col-lg-8 pb-md-4">
                                 <div class="pt-2 px-4 ps-lg-0 pe-xl-5">
                                     <h4 class="pt-2 pb-4 mb-4 text-center text-sm-start border-bottom">{{ 'market.products'|trans }}
@@ -80,7 +79,7 @@
                                     <div class="row pt-2">
                                         {% for product in market.products %}
                                             <div class="col-sm-6 mb-grid-gutter">
-                                                <div class="card shadow-sm">
+                                                <div class="card shadow">
                                                     <div class="position-relative">
                                                         <a class="product-overlay"
                                                            href="{{ path('app_market_place_product', {slug: product.slug}) }}">
