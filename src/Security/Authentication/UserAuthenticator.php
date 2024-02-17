@@ -13,13 +13,13 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
-use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\CsrfTokenBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\SecurityRequestAttributes;
 
 class UserAuthenticator extends AbstractAuthenticator
 {
@@ -93,7 +93,10 @@ class UserAuthenticator extends AbstractAuthenticator
                     throw new UserNotFoundException();
                 }
                 $user->setIp($request->getClientIp());
-                $user->getUserDetails()->setUpdatedAt(new DateTime());
+
+                if (!in_array(User::ROLE_CUSTOMER, $user->getRoles(), true)) {
+                    $user->getUserDetails()->setUpdatedAt(new DateTime());
+                }
                 $this->entityManager->persist($user);
                 $this->entityManager->flush();
                 return $user;
@@ -120,7 +123,7 @@ class UserAuthenticator extends AbstractAuthenticator
         } elseif (in_array(User::ROLE_USER, $user->getRoles(), true)) {
             return new RedirectResponse($this->router->generate('app_dashboard'));
         } elseif (in_array(User::ROLE_CUSTOMER, $user->getRoles(), true)) {
-            return new RedirectResponse($this->router->generate('app_index'));
+            return new RedirectResponse($this->router->generate('app_cabinet'));
         }
 
         return new RedirectResponse($this->router->generate('app_index'));

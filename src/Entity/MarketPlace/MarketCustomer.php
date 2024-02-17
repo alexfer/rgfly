@@ -51,6 +51,7 @@ class MarketCustomer
 
     public function __construct()
     {
+        $this->created_at = new DateTimeImmutable();
         $this->marketCustomerOrders = new ArrayCollection();
         $this->marketCustomerMessages = new ArrayCollection();
     }

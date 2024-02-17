@@ -1314,6 +1314,10 @@
                 <source>order.checkout</source>
                 <target>Checkout</target>
             </trans-unit>
+            <trans-unit id="order.checkout.completed">
+                <source>order.checkout.completed</source>
+                <target>Order Completed</target>
+            </trans-unit>
             <trans-unit id="order.item.subtotal">
                 <source>order.item.subtotal</source>
                 <target>Item Subtotal</target>
@@ -1331,6 +1335,10 @@
             <trans-unit id="market.about">
                 <source>market.about</source>
                 <target>About</target>
+            </trans-unit>
+            <trans-unit id="customer.temporary.passwod">
+                <source>customer.temporary.passwod</source>
+                <target>Your temporary password to log in. You may change that in your cabinet</target>
             </trans-unit>
         </body>
     </file>

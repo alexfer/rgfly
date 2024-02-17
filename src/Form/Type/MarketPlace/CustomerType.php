@@ -1,23 +1,21 @@
 <?php
 
-namespace App\Form\Type\Dashboard\MarketPlace;
+namespace App\Form\Type\MarketPlace;
 
 use App\Entity\MarketPlace\MarketCustomer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Intl\{Countries, Locale,};
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
-use Symfony\Component\Intl\{
-    Countries,
-    Locale,
-};
 
 class CustomerType extends AbstractType
 {
@@ -25,7 +23,6 @@ class CustomerType extends AbstractType
     {
         $builder
             ->add('first_name', TextType::class, [
-                'mapped' => false,
                 'data' => $options['data']?->getFirstName(),
                 'attr' => [
                     'min' => 3,
@@ -77,7 +74,6 @@ class CustomerType extends AbstractType
                 ],
             ])
             ->add('last_name', TextType::class, [
-                'mapped' => false,
                 'data' => $options['data']?->getLastName(),
                 'attr' => [
                     'min' => 2,
@@ -94,6 +90,12 @@ class CustomerType extends AbstractType
                         'maxMessage' => 'form.last_name.max',
                     ]),
                 ],
+            ])
+            ->add('cash', SubmitType::class, [
+                'label' => 'order.checkout'
+            ])
+            ->add('paypal', SubmitType::class, [
+                'label' => 'form.paypal.checkout'
             ]);
     }
 

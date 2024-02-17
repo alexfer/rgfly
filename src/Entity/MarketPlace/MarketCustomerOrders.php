@@ -31,7 +31,7 @@ class MarketCustomerOrders
 
     public function setCustomer(?MarketCustomer $customer): static
     {
-        $this->cusomer = $customer;
+        $this->customer = $customer;
 
         return $this;
     }
