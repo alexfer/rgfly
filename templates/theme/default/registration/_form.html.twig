@@ -4,7 +4,7 @@
         {{ form_errors(form) }}
     </div>
 {% endif %}
-<div class="form-row">
+<div class="row mt-3">
     <div class="col-md-12">
         <div class="form-group mb-3">
             {% set email_error = form.email.vars.errors|length ? 'form-control error' : 'form-control' %}

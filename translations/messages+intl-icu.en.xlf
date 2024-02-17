@@ -428,6 +428,54 @@
                 <source>label.form.product_short_name</source>
                 <target>Product short name</target>
             </trans-unit>
+            <trans-unit id="form.first_name.invalid">
+                <source>form.first_name.invalid</source>
+                <target>Please enter your first name</target>
+            </trans-unit>
+            <trans-unit id="form.last_name.invalid">
+                <source>form.last_name.invalid</source>
+                <target>Please enter your last name</target>
+            </trans-unit>
+            <trans-unit id="form.email.invalid">
+                <source>form.email.invalid</source>
+                <target>Please enter valid email address</target>
+            </trans-unit>
+            <trans-unit id="form.phone.invalid">
+                <source>form.phone.invalid</source>
+                <target>Please enter valid phone number</target>
+            </trans-unit>
+            <trans-unit id="form.country.invalid">
+                <source>form.country.invalid</source>
+                <target>Choice country</target>
+            </trans-unit>
+            <trans-unit id="form.paypal">
+                <source>form.paypal</source>
+                <target>PatPal</target>
+            </trans-unit>
+            <trans-unit id="form.paypal.text">
+                <source>form.paypal.text</source>
+                <target>the safer, easier way to pay</target>
+            </trans-unit>
+            <trans-unit id="form.paypal.pay">
+                <source>form.paypal.pay</source>
+                <target>Pay with PayPal</target>
+            </trans-unit>
+            <trans-unit id="form.paypal.checkout">
+                <source>form.paypal.checkout</source>
+                <target>Checkout with PayPal</target>
+            </trans-unit>
+            <trans-unit id="form.cash.delivery">
+                <source>form.cash.delivery</source>
+                <target>Cash on Delivery</target>
+            </trans-unit>
+            <trans-unit id="form.cash.delivery.text">
+                <source>form.cash.delivery.text</source>
+                <target>Pay with cash when your order is delivered.</target>
+            </trans-unit>
+            <trans-unit id="form.cash.checkout">
+                <source>form.cash.checkout</source>
+                <target>Checkout</target>
+            </trans-unit>
             <trans-unit id="form.product_short_name.length">
                 <source>form.product_short_name.length</source>
                 <target>Length is</target>

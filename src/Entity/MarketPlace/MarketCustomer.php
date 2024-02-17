@@ -28,6 +28,12 @@ class MarketCustomer
     #[ORM\Column(length: 100)]
     private ?string $phone = null;
 
+    #[ORM\Column(length: 5)]
+    private ?string $country = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $email = null;
+
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?User $member = null;
 
@@ -190,6 +196,30 @@ class MarketCustomer
                 $marketCustomerMessage->setCustomer(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(string $country): static
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): static
+    {
+        $this->email = $email;
 
         return $this;
     }

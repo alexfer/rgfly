@@ -84,7 +84,6 @@ class OrderController extends AbstractController
         EntityManagerInterface $em,
     ): Response
     {
-        $data = [];
         $input = $request->request->all();
         $session = $request->getSession();
 
@@ -179,7 +178,9 @@ class OrderController extends AbstractController
             'color' => $data['color'],
         ]);
 
-        $discount = fn($cost) => $cost - (($cost * $product->getDiscount()) - $product->getDiscount()) / 100;
+        $productDiscount = $product->getDiscount();
+
+        $discount = fn($cost) => $cost - (($cost * $productDiscount) - $productDiscount) / 100;
 
         if (!$order) {
             $order = new MarketOrders();
@@ -200,7 +201,7 @@ class OrderController extends AbstractController
                 ->setSize($data['size'])
                 ->setProduct($product)
                 ->getOrders()
-                ->setNumber(MarketPlaceHelper::slug(1, 10, 'o'));
+                ->setNumber(MarketPlaceHelper::slug($order->getId(), 10, 'o'));
 
             $em->persist($orderProducts);
             $em->flush();

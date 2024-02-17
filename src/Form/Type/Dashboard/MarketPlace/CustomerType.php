@@ -1,0 +1,110 @@
+<?php
+
+namespace App\Form\Type\Dashboard\MarketPlace;
+
+use App\Entity\MarketPlace\MarketCustomer;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Intl\{
+    Countries,
+    Locale,
+};
+
+class CustomerType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('first_name', TextType::class, [
+                'mapped' => false,
+                'data' => $options['data']?->getFirstName(),
+                'attr' => [
+                    'min' => 3,
+                    'max' => 200,
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'form.first_name.not_blank',
+                    ]),
+                    new Length([
+                        'min' => 3,
+                        'minMessage' => 'form.first_name.min',
+                        'max' => 200,
+                        'maxMessage' => 'form.first_name.max',
+                    ]),
+                ],
+            ])
+            ->add('email', EmailType::class, [
+                'attr' => [
+                    'min' => 5,
+                    'max' => 180,
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'form.email.not_blank',
+                    ]),
+                    new Email(
+                        message: 'form.email.not_valid'
+                    ),
+                ],
+            ])
+            ->add('country', ChoiceType::class, [
+                'placeholder' => 'form.country.placeholder',
+                'label' => 'label.country',
+                'required' => true,
+                'multiple' => false,
+                'expanded' => false,
+                'choices' => array_flip(Countries::getNames(Locale::getDefault())),
+            ])
+            ->add('phone', TelType::class, [
+                'attr' => [
+                    'pattern' => "[+0-9]+$",
+                ],
+                'constraints' => [
+                    new Regex([
+                        'pattern' => "/[+0-9]+$/i",
+                        'message' => 'form.phone.not_valid',
+                    ]),
+                ],
+            ])
+            ->add('last_name', TextType::class, [
+                'mapped' => false,
+                'data' => $options['data']?->getLastName(),
+                'attr' => [
+                    'min' => 2,
+                    'max' => 200,
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'form.last_name.not_blank',
+                    ]),
+                    new Length([
+                        'min' => 2,
+                        'minMessage' => 'form.last_name.min',
+                        'max' => 200,
+                        'maxMessage' => 'form.last_name.max',
+                    ]),
+                ],
+            ]);
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     * @return void
+     */
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => MarketCustomer::class,
+        ]);
+    }
+}

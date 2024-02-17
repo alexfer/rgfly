@@ -46,14 +46,14 @@
 
 .form-control,
 .form-select {
-    border: 1px rgba(55, 63, 80, 0.75) solid;
+    border: 1px rgba(55, 63, 80, 0.75) dot-dash;
     border-radius: 0.15rem;
     box-shadow: none;
 }
 
 .form-control:focus,
 .form-select:focus {
-    border: 1px rgba(55, 63, 80, 0.85) solid;
+    border: 1px rgba(55, 63, 80, 0.85) dot-dash;
     box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
 }
 
@@ -83,15 +83,11 @@ html {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
 }
 
-*, *::before, *::after {
-    box-sizing: border-box
-}
-
 body {
     margin: 0;
     font-family: "Rubik", sans-serif;
     font-size: 1rem;
-    font-weight: 400;
+    font-weight: 300;
     line-height: 1.5;
     color: #4b566b;
     text-align: left;
@@ -99,13 +95,13 @@ body {
 }
 
 a {
-    color: #272d79;
+    color: #193279;
     text-decoration: none;
     background-color: transparent
 }
 
 a:hover {
-    color: rgba(39, 45, 121, 0.76);
+    color: #dc3545;
     text-decoration: none
 }
 
@@ -130,14 +126,17 @@ a:not([href]):hover {
 
 @media screen and (max-width: 760px) {
     .centerOnMobile {
-        text-align: center;
+        text-align: right;
     }
+
     body {
         background-color: #dc3545 !important;
     }
 }
 
-/*Section content*/
+/*
+    Section content
+*/
 .section-content .item {
     position: relative;
     z-index: 1;
@@ -173,10 +172,7 @@ a:not([href]):hover {
     transform: translateY(-5px);
 }
 
-.section-content .item:hover h4 {
-    color: #fff;
-}
-
+.section-content .item:hover h4,
 .section-content .item:hover p {
     color: #fff;
 }
@@ -201,6 +197,9 @@ a:not([href]):hover {
     opacity: 1;
 }
 
+/*
+    Preloader
+*/
 .preloader {
     position: fixed;
     z-index: 999999;

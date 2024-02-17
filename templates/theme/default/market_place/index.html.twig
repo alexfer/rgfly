@@ -20,27 +20,29 @@
                                             <img src="{{ asset(_picture)|imagine_filter('product_preview') }}"
                                                  class="card-img-top h-auto" alt="{{ product.name }}">
                                         {% else %}
-                                            <img src="{{ asset('http://placehold.it/300x200') }}"
+                                            <img src="{{ asset('https://placehold.it/300x200') }}"
                                                  class="card-img-top h-auto"
                                                  alt="{{ product.name }}">
                                         {% endif %}
-                                        <div class="card-img-overlay d-flex flex-column z-index-1 p-3">
+                                        <div class="card-img-overlay d-flex flex-column z-1 p-3">
                                             <div class="d-flex justify-content-between">
-                                        <span class="badge text-bg-dark text-white bg-opacity-75 rounded-1">
-                                            <a href="{{ path('app_market_place_product', {slug: product.slug}) }}"
-                                               class="text-white fw-normal">{{ 'market.product.details'|trans }}</a>
-                                        </span>
-                                                <span class="badge bg-white d-flex text-dark">
-                                            <i class="bi bi-star-fill text-warning me-2"></i>4.3
-                                        </span>
+                                                <span class="badge text-bg-warning text-white bg-opacity-75 p-1 rounded-1">
+                                                    <a title="{{ product.name }}"
+                                                       href="{{ path('app_market_place_product', {slug: product.slug}) }}"
+                                                       class="text-dark-emphasis fs-6 fw-normal">{{ 'market.product.details'|trans }}
+                                                    </a>
+                                                </span>
+                                                {% if product.discount %}
+                                                    <span class="badge bg-danger fw-normal text-white">{{ product.discount }}% {{ 'market.product.off'|trans }}</span>
+                                                {% endif %}
                                             </div>
                                             <div class="w-100 mt-auto">
-                                        <span class="badge bg-secondary text-dark p-1">
-                                            <a href="{{ path('app_market_place_parent_category', {parent:  product.marketCategoryProducts.first.category.parent.slug}) }}"
-                                               class="text-white fs-6 fw-light px-2">
-                                            {{ product.marketCategoryProducts.first.category.parent.name }}
-                                            </a>
-                                        </span>
+                                                <span class="badge bg-secondary text-dark p-1">
+                                                    <a href="{{ path('app_market_place_parent_category', {parent:  product.marketCategoryProducts.first.category.parent.slug}) }}"
+                                                       class="text-white fs-6 fw-light px-2">
+                                                    {{ product.marketCategoryProducts.first.category.parent.name }}
+                                                    </a>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -49,9 +51,9 @@
                                             <li class="list-inline-item position-absolute start-0 ms-3">
                                                 <form class="shopping-cart" method="post"
                                                       action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
-                                                    <button class="btn btn-primary d-flex rounded-0"
+                                                    <button class="btn btn-dark d-flex rounded-1"
                                                             data-slug="{{ product.slug }}" type="submit">
-                                                        <i class="fa fa-shopping-cart me-1"></i>{{ 'market.product.add'|trans }}
+                                                        <i class="fa fa-shopping-cart mt-1 me-2"></i>{{ 'market.product.add'|trans }}
                                                     </button>
                                                 </form>
                                             </li>
@@ -69,14 +71,15 @@
                                         <a href="{{ path('app_market_place_child_category', {
                                             parent: product.marketCategoryProducts.first.category.parent.slug,
                                             child:  product.marketCategoryProducts.first.category.slug
-                                        }) }}" class="btn btn-link text-decoration-none text-secondary d-flex text-start">
+                                        }) }}"
+                                           class="btn btn-link text-decoration-none text-secondary d-flex text-start">
                                             <hr>
                                             <i class="bi bi-ui-radios-grid pe-2 badge-child text-opacity-50 text-success"></i> {{ product.marketCategoryProducts.first.category.name }}
                                         </a>
                                         <ul class="list-group list-group-borderless mt-2">
                                             <li class="list-group-item pb-0 d-flex border-0">
-                                                <i class="bi bi-chat-dots-fill me-2 text-opacity-50 text-danger"></i>
-                                                <a class="text-decoration-none text-success"
+                                                <i class="bi bi-chat-dots-fill me-2 text-opacity-75 text-primary"></i>
+                                                <a class="text-decoration-none text-primary"
                                                    href="#">{{ 'label.form.message'|trans }}</a>
                                             </li>
                                             <li class="list-group-item pb-0 d-flex border-0">
