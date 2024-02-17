@@ -13,19 +13,19 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: MarketOrdersRepository::class)]
 class MarketOrders
 {
-    const array STATUS = [
-        'delivered' => 'Delivered',
-        'unreached' => 'Unreached',
-        'paid' => 'Paid',
-        'confirmed' => 'Confirmed',
-        'processing' => 'Processing',
-        'pending' => 'Pending',
-        'on-hold' => 'On Hold',
-        'shipped' => 'Shipped',
-        'cancelled' => 'Cancelled',
-        'refused' => 'Refused',
-        'awaiting-return' => 'Awaiting Return',
-        'returned' => 'Returned',
+    const  STATUS = [
+        'delivered' => 'delivered',
+        'unreached' => 'unreached',
+        'paid' => 'paid',
+        'confirmed' => 'confirmed',
+        'processing' => 'processing',
+        'pending' => 'pending',
+        'on-hold' => 'on-hold',
+        'shipped' => 'shipped',
+        'cancelled' => 'cancelled',
+        'refused' => 'refused',
+        'awaiting-return' => 'awaiting-return',
+        'returned' => 'returned',
     ];
 
     #[ORM\Id]
@@ -41,6 +41,9 @@ class MarketOrders
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0', nullable: true)]
     private ?string $total = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0', nullable: true)]
+    private ?string $discount = null;
 
     #[ORM\Column]
     private ?DateTimeImmutable $created_at;
@@ -63,9 +66,6 @@ class MarketOrders
     #[ORM\OneToMany(mappedBy: 'orders', targetEntity: MarketCustomerOrders::class)]
     private Collection $marketCustomerOrders;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0', nullable: true)]
-    private ?string $discount = null;
-
     #[ORM\OneToMany(mappedBy: 'orders', targetEntity: MarketCustomerMessage::class)]
     private Collection $marketCustomerMessages;
 
@@ -73,7 +73,7 @@ class MarketOrders
     {
         $this->created_at = new DateTimeImmutable();
         $this->marketOrdersProducts = new ArrayCollection();
-        $this->status = array_flip(self::STATUS)['Processing'];
+        $this->status = self::STATUS['processing'];
         $this->marketCustomerOrders = new ArrayCollection();
         $this->marketCustomerMessages = new ArrayCollection();
     }

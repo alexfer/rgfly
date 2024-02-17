@@ -38,8 +38,9 @@
                                                                        title="{{ product.product.name }}">
                                                                         <h5 class="mb-0 text-truncate">{{ product.product.shortName }}</h5>
                                                                     </a>
-                                                                    <span><small
-                                                                                class="text-muted fst-italic">{{ 'label.form.sku'|trans }}: {{ product.product.sku }}</small></span>
+                                                                    <span>
+                                                                        <small class="text-muted fst-italic">{{ 'label.form.sku'|trans }}: {{ product.product.sku }}</small>
+                                                                    </span>
                                                                     <div class="mt-2 small lh-1">
                                                                         <a href="#" class="text-decoration-none drops"
                                                                            data-order="{{ order.session }}"
@@ -135,29 +136,29 @@
                                                     <div>{{ 'order.item.subtotal'|trans }}</div>
                                                 </div>
                                                 <span>{{ item_subtotal }}
-                                    <small>{{ order.market.currency|currency }}</small>
-                                </span>
+                                                    <small>{{ order.market.currency|currency }}</small>
+                                                </span>
                                             </li>
                                             <li class="list-group-item d-flex justify-content-between align-items-start">
                                                 <div class="me-auto">
                                                     <div>{{ 'order.service.fee'|trans }}</div>
                                                 </div>
                                                 <span>{{ total_fee|number_format(2, '.', ' ') }}
-                                    <small>{{ order.market.currency|currency }}</small>
-                                    </span>
+                                                <small>{{ order.market.currency|currency }}</small>
+                                                </span>
                                             </li>
                                             <li class="list-group-item d-flex justify-content-between align-items-start">
                                                 <div class="me-auto">
                                                     <div>{{ 'order.subtotal'|trans }}</div>
                                                 </div>
                                                 <span>{{ order.discount|number_format(2, '.', ' ') }}
-                                    <small>{{ order.market.currency|currency }}</small>
-                                </span>
+                                                    <small>{{ order.market.currency|currency }}</small>
+                                                </span>
                                             </li>
                                         </ul>
                                     </div>
                                     <div class="d-grid mb-1 mt-4">
-                                        <a href="{{ path('app_market_place_order_checkout') }}"
+                                        <a href="{{ path('app_market_place_order_checkout', {order: order.number}) }}"
                                            class="btn btn-success mb-2 opacity-75 d-flex justify-content-between align-items-center"
                                            type="submit">
                                             {{ 'order.checkout'|trans }}

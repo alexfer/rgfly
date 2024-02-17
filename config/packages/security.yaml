@@ -42,7 +42,7 @@ security:
     access_control:
         - { path: ^/dashboard/(faq|user|contact)/*, roles: [ROLE_ADMIN] }
         - { path: ^/(dashboard)|(profile)/*, roles: [ROLE_ADMIN, ROLE_USER] }
-        - { path: ^/(cabinet)|(profile)/*, roles: [ROLE_USER,ROLE_CUSTOMER] }
+        - { path: ^/cabinet/*, roles: [ROLE_USER, ROLE_CUSTOMER] }
 
 
 when@test:
