@@ -11,40 +11,28 @@
 </head>
 <body>
 <div class="preloader">
-    <div class="d-table">
-        <div class="d-table-cell">
-            <div class="lds-spinner">
-                {% for i in range(0, 12) %}
-                    <div></div>
-                {% endfor %}
-            </div>
+    <div class="position-absolute justify-content-between top-50 start-50">
+        <div class="lds-spinner">
+            {% for i in range(0, 11) %}
+                <div></div>
+            {% endfor %}
         </div>
     </div>
 </div>
+<div class=" container-fluid bg-danger position-absolute h-25 z-n1"></div>
 {% include 'layouts/navbar.html.twig' %}
-{% block body %}{% endblock %}
-{{ include ('layouts/footer.html.twig') }}
-<div class="copyright-area">
+<main class="main-container mb-xxl-5">
+    {% block body %}{% endblock %}
+</main>
+<footer class="footer mt-auto py-3 bg-dark mt-5">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 col-md-6">
-                {% set year =  'now' | date('Y') %}
-                {% set build_year = '2023' %}
-                <span>&copy; {{ year == build_year ? build_year : build_year ~ '-' ~ year }} Techspace - {{ 'text.all_right_reserved'|trans }}</span>
-            </div>
-            <div class="col-lg-6 col-md-6">
-                <ul>
-                    <li>
-                        <a href="{{ path('terms') }}">{{ 'title.terms'|trans|raw }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('policy') }}">{{ 'title.privacy_policy'|trans }}</a>
-                    </li>
-                </ul>
-            </div>
+        <div class="text-center text-white">
+            {% set year =  'now' | date('Y') %}
+            {% set build_year = '2023' %}
+            <span>&copy; {{ year == build_year ? build_year : build_year ~ '-' ~ year }} {{ 'site.title'|trans }} - {{ 'text.all_right_reserved'|trans }}</span>
         </div>
     </div>
-</div>
+</footer>
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
 {% endblock %}

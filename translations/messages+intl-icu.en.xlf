@@ -1340,6 +1340,26 @@
                 <source>customer.temporary.passwod</source>
                 <target>Your temporary password to log in. You may change that in your cabinet</target>
             </trans-unit>
+            <trans-unit id="customer.cabinet">
+                <source>customer.cabinet</source>
+                <target>Your cabinet</target>
+            </trans-unit>
+            <trans-unit id="title.customer.cabinet">
+                <source>title.customer.cabinet</source>
+                <target>Cabinet</target>
+            </trans-unit>
+            <trans-unit id="customer.cabinet.personal_information">
+                <source>customer.cabinet.personal_information</source>
+                <target>Personal information</target>
+            </trans-unit>
+            <trans-unit id="customer.cabinet.orders">
+                <source>customer.cabinet.orders</source>
+                <target>Orders</target>
+            </trans-unit>
+            <trans-unit id="customer.cabinet.wishlist">
+                <source>customer.cabinet.wishlist</source>
+                <target>Wishlist</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

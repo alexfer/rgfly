@@ -42,12 +42,16 @@
                     </label>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link mx-2 text-uppercase" href="#shopping-cart"
+                    <button class="nav-link mx-2 text-uppercase position-relative float-end" href="#shopping-cart"
                        data-bs-toggle="offcanvas"
-                       role="button"
+                       type="button"
                        aria-controls="shopping-cart">
                         <i class="fa fa-shopping-cart me-1"></i> {{ 'market.product.cart'|trans }}
-                    </a>
+                        <span class="position-absolute top-0 start-100 mt-2 translate-middle badge rounded-pill fw-light bg-warning">
+                            {{ app.session.get('quantity')|default(0) }}
+                            <span class="visually-hidden">{{ app.session.get('quantity')|default(0) }}</span>
+                        </span>
+                    </button>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link mx-2 text-uppercase dropdown-toggle"
@@ -56,7 +60,7 @@
                        aria-expanded="false" href="#">
                         <i class="fa fa-user-o me-1"></i> {{ 'title.account'|trans }}
                     </a>
-                    <ul class="dropdown-menu border-0 shadow dropdown-menu-dark rounded-1"
+                    <ul class="dropdown-menu border-0 shadow rounded-1"
                         aria-labelledby="useMenu">
                         {% if not app.user %}
                             <li>
