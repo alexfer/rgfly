@@ -68,7 +68,7 @@ $(function () {
                                         .attr('class', 'attach')
                                         .attr('src', response.picture)
                                 ).append(
-                                    $('<div/>').attr('class', 'handlers').attr('data-id', response.id))).delay(3000).show('slow');
+                                    $('<div/>').attr('class', 'handler').attr('data-id', response.id))).delay(3000).show('slow');
                             if (attachments.length > 6) {
                                 setTimeout(() => {
                                     attachments.children().last().remove();
@@ -95,7 +95,7 @@ $(function () {
         });
     };
 
-    attachments.find('.handlers a').off().on('click',function (event) {
+    attachments.find('.handler a').off().on('click',function (event) {
         event.preventDefault();
 
         const url = $(this).attr('href');

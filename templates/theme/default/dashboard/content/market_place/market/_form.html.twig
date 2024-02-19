@@ -19,46 +19,107 @@
     {% else %}
         {% set _message = app.flashes('success') %}
         {{ form_start(form, {attr: {class: 'd-tech-form', novalidate: 'novalidate'}}) }}
-        <div class="form-group mb-3">
-            {% set name_error = form.name.vars.errors|length ? 'form-control error' : 'form-control' %}
-            {{ form_label(form.name, 'label.form.market_name', {label_attr: {class: 'form-label'}}) }} <span class="text-danger">*</span>
-            {{ form_widget(form.name, {attr: {class: name_error, placeholder: 'label.form.market_name'}}) }}
-            <small class="text-danger">{{ form_errors(form.name) }}</small>
-        </div>
-        <div class="form-group mb-3">
-            {% set phone_error = form.phone.vars.errors|length ? 'form-control error' : 'form-control' %}
-            {{ form_label(form.phone, 'label.form.phone') }}
-            {{ form_widget(form.phone, {attr: {class: phone_error, placeholder: 'label.form.phone'}}) }}
-            <small class="text-danger">{{ form_errors(form.phone) }}</small>
-        </div>
-        <div class="form-group mb-3">
-            {% set website_error = form.website.vars.errors|length ? 'form-control error' : 'form-control' %}
-            {{ form_label(form.website, 'label.form.website') }}
-            {{ form_widget(form.website, {attr: {class: website_error}}) }}
-            <small class="text-danger">{{ form_errors(form.website) }}</small>
-        </div>
-        <div class="form-group mb-3">
-            {% set email_error = form.email.vars.errors|length ? 'form-control error' : 'form-control' %}
-            {{ form_label(form.email, 'label.form.email') }}
-            {{ form_widget(form.email, {attr: {class: email_error, placeholder: 'label.form.email'}}) }}
-            <small class="text-danger">{{ form_errors(form.email) }}</small>
-        </div>
-        <div class="form-group mb-3">
-            {% set currency_error = form.currency.vars.errors|length ? 'form-control error' : 'form-control' %}
-            {{ form_label(form.currency, 'label.form.currency') }}
-            {{ form_widget(form.currency, {attr: {class: currency_error, placeholder: 'label.form.currency'}}) }}
-            <small class="text-danger">{{ form_errors(form.currency) }}</small>
-        </div>
-        <div class="form-group mb-3">
-            {% set description_error = form.description.vars.errors|length ? 'form-control error' : 'form-control' %}
-            {{ form_label(form.description, 'label.form.market_description') }}
-            {{ form_widget(form.description, {attr: {class: description_error, rows: 6, placeholder: 'label.form.market_description'}}) }}
-            <small class="text-danger">{{ form_errors(form.description) }}</small>
-        </div>
-        <div class="input-group mb-3">
-            {{ form_label(form.logo, 'label.form.market_logo', {label_attr: {class: 'input-group-text position-absolute'}}) }}
-            {{ form_widget(form.logo, {attr: {class: 'form-controll border'}}) }}
-            <small class="text-danger d-block">{{ form_errors(form.logo) }}</small>
+        {% set _tab = app.request.get('tab') %}
+        <ul class="nav nav-tabs me-2" id="marketTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link border-0 {{ _tab == 'details' ? 'active' : null }}" id="details-tab" data-bs-toggle="tab"
+                        data-bs-target="#details" type="button" role="tab"
+                        aria-controls="details"
+                        aria-selected="true">{{ 'entry.form.market_details'|trans }}
+                </a>
+            </li>
+            {% if form.vars.data.id %}
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link border-0 {{ _tab == 'billing' ? 'active' : null }}" id="billing-tab" data-bs-toggle="tab"
+                            data-bs-target="#billing" type="button" role="tab"
+                            aria-controls="billing"
+                            aria-selected="false">{{ 'entry.form.billing'|trans }}
+                    </a>
+                </li>
+            {% endif %}
+            <li class="nav-item" role="presentation">
+                <a class="nav-link border-0 {{ _tab == 'attachments' ? 'active' : null }}" id="attachments-tab" data-bs-toggle="tab"
+                        data-bs-target="#attachments" type="button" role="tab"
+                        aria-controls="attachments"
+                        aria-selected="false">{{ 'entry.form.attachments'|trans }}
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content" id="marketTabContent">
+            <div class="tab-pane fade {{ _tab == 'details' ? 'show active' : null }}" id="details" role="tabpanel"
+                 aria-labelledby="details-tab" tabindex="0">
+                <div class="mt-4 p-2">
+                    <div class="form-group mb-3">
+                        {% set name_error = form.name.vars.errors|length ? 'form-control error' : 'form-control' %}
+                        {{ form_label(form.name, 'label.form.market_name', {label_attr: {class: 'form-label'}}) }} <span
+                                class="text-danger">*</span>
+                        {{ form_widget(form.name, {attr: {class: name_error, placeholder: 'label.form.market_name'}}) }}
+                        <small class="text-danger">{{ form_errors(form.name) }}</small>
+                    </div>
+                    <div class="form-group mb-3">
+                        {% set phone_error = form.phone.vars.errors|length ? 'form-control error' : 'form-control' %}
+                        {{ form_label(form.phone, 'label.form.phone', {label_attr: {class: 'form-label'}}) }}
+                        {{ form_widget(form.phone, {attr: {class: phone_error, placeholder: 'label.form.phone'}}) }}
+                        <small class="text-danger">{{ form_errors(form.phone) }}</small>
+                    </div>
+                    <div class="form-group mb-3">
+                        {% set website_error = form.website.vars.errors|length ? 'form-control error' : 'form-control' %}
+                        {{ form_label(form.website, 'label.form.website', {label_attr: {class: 'form-label'}}) }}
+                        {{ form_widget(form.website, {attr: {class: website_error}}) }}
+                        <small class="text-danger">{{ form_errors(form.website) }}</small>
+                    </div>
+                    <div class="form-group mb-3">
+                        {% set email_error = form.email.vars.errors|length ? 'form-control error' : 'form-control' %}
+                        {{ form_label(form.email, 'label.form.email', {label_attr: {class: 'form-label'}}) }}
+                        {{ form_widget(form.email, {attr: {class: email_error, placeholder: 'label.form.email'}}) }}
+                        <small class="text-danger">{{ form_errors(form.email) }}</small>
+                    </div>
+                    <div class="form-group mb-3">
+                        {% set description_error = form.description.vars.errors|length ? 'form-control error' : 'form-control' %}
+                        {{ form_label(form.description, 'label.form.market_description', {label_attr: {class: 'form-label'}}) }}
+                        {{ form_widget(form.description, {attr: {class: description_error, rows: 6, placeholder: 'label.form.market_description'}}) }}
+                        <small class="text-danger">{{ form_errors(form.description) }}</small>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade {{ _tab == 'billing' ? 'show active' : null }}" id="billing" role="tabpanel"
+                 aria-labelledby="billing-tab"
+                 tabindex="0">
+                <div class="mt-4 p-2">
+                    <div class="form-group mb-3">
+                        {% set currency_error = form.currency.vars.errors|length ? 'form-select error' : 'form-select' %}
+                        {{ form_label(form.currency, 'label.form.currency', {label_attr: {class: 'form-label'}}) }}
+                        {{ form_widget(form.currency, {attr: {class: currency_error, placeholder: 'label.form.currency'}}) }}
+                        <small class="text-danger">{{ form_errors(form.currency) }}</small>
+                    </div>
+                    <div class="form-group mb-3">
+                        {{ form_label(form.gateway, 'Payment Gateways', {label_attr: {class: 'mb-3 fs-6 fw-normal'}}) }}
+                        {% for key, field in form.gateway %}
+                            {% set _checked = false %}
+                            {% for gateway in form.vars.data.marketPaymentGatewayMarkets.toArray %}
+                                {% if field.vars.value == gateway.gateway.id and gateway.active %}
+                                    {% set _checked = true %}
+                                {% endif %}
+                            {% endfor %}
+                            <div class="form-check form-switch ms-1">
+                                {{ form_widget(field, {attr: {class: 'form-check-input', role: 'switch', checked: _checked}}) }}
+                                {{ form_label(field, field.vars.label, {label_attr: {class: 'form-check-label'}}) }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade {{ _tab == 'attachments' ? 'show active' : null }}" id="attachments" role="tabpanel"
+                 aria-labelledby="attachments-tab"
+                 tabindex="0">
+                <div class="mt-4 p-2">
+                    <div class="input-group mb-3">
+                        {{ form_label(form.logo, 'label.form.market_logo', {label_attr: {class: 'input-group-text w-100 position-absolute'}}) }}
+                        {{ form_widget(form.logo, {attr: {class: 'form-controll border'}}) }}
+                        <small class="text-danger d-block">{{ form_errors(form.logo) }}</small>
+                    </div>
+                </div>
+            </div>
         </div>
         <input type="hidden" name="flash" value="{{ _message[0]|default([]|json_encode) }}">
         <div class="form-group text-center mb-3">

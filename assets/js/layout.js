@@ -24,22 +24,10 @@ $(() => {
     }
     toast.delay(3000).fadeOut(200);
 
-    $('ul[role="tablist"] a[data-bs-toggle="tab"]').on('click', (e) => {
+    $('ul[role="tablist"] a[data-bs-toggle="tab"]').on('click', function (e) {
         e.preventDefault();
         let location = $(this).attr('aria-controls');
         window.history.replaceState({}, '', location);
-    });
-
-    $('a[data-bs-toggle="collapse"]').on('click', (e) => {
-        e.preventDefault();
-
-        let arrow = $(this).children('.arrow');
-
-        if (arrow.hasClass('bi-arrow-down-short')) {
-            arrow.removeClass('bi-arrow-down-short').addClass('bi-arrow-right-short');
-        } else {
-            arrow.removeClass('bi-arrow-right-short').addClass('bi-arrow-down-short');
-        }
     });
 
     $('.delete-entry').on('click', function () {

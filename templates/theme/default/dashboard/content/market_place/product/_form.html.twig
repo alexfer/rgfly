@@ -16,55 +16,66 @@
         </div>
     {% endif %}
     {{ form_start(form, {attr: {class: 'd-tech-form', novalidate: 'novalidate'}}) }}
+    {% set _tab = app.request.get('tab') %}
     <ul class="nav nav-tabs me-2" id="productTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link border-0 active" id="description-tab" data-bs-toggle="tab"
-                    data-bs-target="#description-tab-pane" type="button" role="tab" aria-controls="description-tab-pane"
-                    aria-selected="true">{{ 'product.details'|trans }}
-            </button>
+            <a class="nav-link border-0 {{ _tab == 'details' ? 'active' : null }}"
+               id="description-tab" data-bs-toggle="tab"
+               data-bs-target="#details" type="button" role="tab" aria-controls="details"
+               aria-selected="false">{{ 'product.details'|trans }}
+            </a>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link border-0" id="billing-tab" data-bs-toggle="tab" data-bs-target="#billing-tab-pane"
-                    type="button" role="tab" aria-controls="billing-tab-pane"
-                    aria-selected="false">{{ 'product.billing'|trans }}
-            </button>
+            <a class="nav-link border-0 {{ _tab == 'billing' ? 'active' : null }}"
+               id="billing-tab" data-bs-toggle="tab" data-bs-target="#billing"
+               type="button" role="tab" aria-controls="billing"
+               aria-selected="false">{{ 'product.billing'|trans }}
+            </a>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link border-0" id="categories-tab" data-bs-toggle="tab" data-bs-target="#categories-tab-pane"
-                    type="button" role="tab" aria-controls="categories-tab-pane"
-                    aria-selected="false">{{ 'entry.form.categories'|trans }}
-            </button>
+            <a class="nav-link border-0 {{ _tab == 'categories' ? 'active' : null }}"
+               id="categories-tab" data-bs-toggle="tab" data-bs-target="#categories"
+               type="button" role="tab" aria-controls="categories"
+               aria-selected="false">{{ 'entry.form.categories'|trans }}
+            </a>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link border-0" id="attributes-tab" data-bs-toggle="tab" data-bs-target="#attributes-tab-pane"
-                    type="button" role="tab" aria-controls="attributes-tab-pane"
-                    aria-selected="false">{{ 'market.attributes'|trans }}
-            </button>
+            <a class="nav-link border-0 {{ _tab == 'attributes' ? 'active' : null }}"
+               id="attributes-tab" data-bs-toggle="tab" data-bs-target="#attributes"
+               type="button" role="tab" aria-controls="attributes"
+               aria-selected="false">{{ 'market.attributes'|trans }}
+            </a>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link border-0" id="attachments-tab" data-bs-toggle="tab" data-bs-target="#attachments-tab-pane"
-                    type="button" role="tab" aria-controls="attachments-tab-pane"
-                    aria-selected="false">{{ 'entry.form.attachments'|trans }}
-            </button>
+            <a class="nav-link border-0 {{ _tab == 'attachments' ? 'active' : null }}"
+               id="attachments-tab"
+               data-bs-toggle="tab" data-bs-target="#attachments"
+               type="button" role="tab" aria-controls="attachments"
+               aria-selected="false">{{ 'entry.form.attachments'|trans }}
+            </a>
         </li>
     </ul>
     <div class="tab-content" id="productTabContent">
-        <div class="tab-pane fade show active" id="description-tab-pane" role="tabpanel"
-             aria-labelledby="description-tab" tabindex="0">
+        <div class="tab-pane fade {{ _tab == 'details' ? 'show active' : null }}" id="details" role="tabpanel"
+             aria-labelledby="details-tab" tabindex="0">
             {% include 'dashboard/content/market_place/product/parts/description.html.twig' %}
         </div>
-        <div class="tab-pane fade" id="attributes-tab-pane" role="tabpanel" aria-labelledby="attributes-tab"
+        <div class="tab-pane fade {{ _tab == 'attributes' ? 'show active' : null }}" id="attributes" role="tabpanel"
+             aria-labelledby="attributes-tab"
              tabindex="0">
             {% include 'dashboard/content/market_place/product/parts/attributes.html.twig' %}
         </div>
-        <div class="tab-pane fade" id="billing-tab-pane" role="tabpanel" aria-labelledby="billing-tab" tabindex="0">
+        <div class="tab-pane fade {{ _tab == 'billing' ? 'show active' : null }}" id="billing" role="tabpanel"
+             aria-labelledby="billing-tab" tabindex="0">
             {% include 'dashboard/content/market_place/product/parts/billing.html.twig' %}
         </div>
-        <div class="tab-pane fade" id="categories-tab-pane" role="tabpanel" aria-labelledby="categories-tab"
+        <div class="tab-pane fade {{ _tab == 'categories' ? 'show active' : null }}" id="categories" role="tabpanel"
+             aria-labelledby="categories-tab"
              tabindex="0">
             {% include 'dashboard/content/market_place/product/parts/categories.html.twig' %}
         </div>
-        <div class="tab-pane fade" id="attachments-tab-pane" role="tabpanel" aria-labelledby="attachments-tab"
+        <div class="tab-pane fade {{ _tab == 'attachments' ? 'show active' : null }}" id="attachments" role="tabpanel"
+             aria-labelledby="attachments-tab"
              tabindex="0">
             <div class="mt-4 p-2">
                 {% if app.request.get('id') %}

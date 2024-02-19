@@ -2,6 +2,7 @@
 
 namespace App\Controller\Dashboard;
 
+use App\Entity\User;
 use App\Form\Type\User\ChangePasswordProfileType;
 use App\Repository\{
     UserDetailsRepository,
@@ -48,9 +49,8 @@ class UserController extends AbstractController
         UserInterface  $user,
     ): Response
     {
-        return $this->render('dashboard/content/user/index.html.twig', $this->navbar() + [
-                'entries' => $repository->findBy([], ['id' => 'desc']),
-            ]);
+        $users =  $repository->findBy([], ['id' => 'desc']);
+        return $this->render('dashboard/content/user/index.html.twig', $this->navbar() + ['users' => $users]);
     }
 
     /**
@@ -61,6 +61,8 @@ class UserController extends AbstractController
      * @param SluggerInterface $slugger
      * @param CacheManager $cacheManager
      * @param ParameterBagInterface $params
+     * @param AttachRepository $attachRepository
+     * @param ImageValidatorInterface $imageValidator
      * @return Response
      * @throws Exception
      */

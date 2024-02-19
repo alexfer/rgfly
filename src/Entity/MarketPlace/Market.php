@@ -55,12 +55,6 @@ class Market
     #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketProduct::class)]
     private Collection $products;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?DateTime $created_at;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTimeInterface $deleted_at = null;
-
     #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketBrand::class)]
     #[ORM\OrderBy(['name' => 'asc'])]
     private Collection $marketBrands;
@@ -85,6 +79,15 @@ class Market
     #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketCustomerMessage::class)]
     private Collection $marketCustomerMessages;
 
+    #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketPaymentGatewayMarket::class)]
+    private Collection $marketPaymentGatewayMarkets;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?DateTime $created_at;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $deleted_at = null;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
@@ -95,6 +98,7 @@ class Market
         $this->marketOrders = new ArrayCollection();
         $this->marketCustomerMessages = new ArrayCollection();
         $this->messages = ["email"];
+        $this->marketPaymentGatewayMarkets = new ArrayCollection();
     }
 
     /**
@@ -606,6 +610,44 @@ class Market
     public function setUrl(?string $url): static
     {
         $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketPaymentGatewayMarket>
+     */
+    public function getMarketPaymentGatewayMarkets(): Collection
+    {
+        return $this->marketPaymentGatewayMarkets;
+    }
+
+    /**
+     * @param MarketPaymentGatewayMarket $marketPaymentGatewayMarket
+     * @return $this
+     */
+    public function addMarketPaymentGatewayMarket(MarketPaymentGatewayMarket $marketPaymentGatewayMarket): static
+    {
+        if (!$this->marketPaymentGatewayMarkets->contains($marketPaymentGatewayMarket)) {
+            $this->marketPaymentGatewayMarkets->add($marketPaymentGatewayMarket);
+            $marketPaymentGatewayMarket->setMarket($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MarketPaymentGatewayMarket $marketPaymentGatewayMarket
+     * @return $this
+     */
+    public function removeMarketPaymentGatewayMarket(MarketPaymentGatewayMarket $marketPaymentGatewayMarket): static
+    {
+        if ($this->marketPaymentGatewayMarkets->removeElement($marketPaymentGatewayMarket)) {
+            // set the owning side to null (unless already changed)
+            if ($marketPaymentGatewayMarket->getMarket() === $this) {
+                $marketPaymentGatewayMarket->setMarket(null);
+            }
+        }
 
         return $this;
     }

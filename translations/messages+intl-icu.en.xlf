@@ -799,6 +799,14 @@
                 <source>entry.form.attachments</source>
                 <target>Attachments</target>
             </trans-unit>
+            <trans-unit id="entry.form.billing">
+                <source>entry.form.billing</source>
+                <target>Billing</target>
+            </trans-unit>
+            <trans-unit id="entry.form.market_details">
+                <source>entry.form.market_details</source>
+                <target>Market Details</target>
+            </trans-unit>
             <trans-unit id="user.entry.updated">
                 <source>user.entry.updated</source>
                 <target><![CDATA[Entry has been updated successfully.]]></target>
@@ -839,6 +847,12 @@
                 <source>text.blog.desc</source>
                 <target>
                     <![CDATA[View our most recent news blog]]>
+                </target>
+            </trans-unit>
+            <trans-unit id="alert.confirm.delete">
+                <source>alert.confirm.delete</source>
+                <target>
+                    <![CDATA[Are you sure you want to delete this item?]]>
                 </target>
             </trans-unit>
             <trans-unit id="text.faq.desc">
@@ -1339,6 +1353,30 @@
             <trans-unit id="customer.temporary.passwod">
                 <source>customer.temporary.passwod</source>
                 <target>Your temporary password to log in. You may change that in your cabinet</target>
+            </trans-unit>
+            <trans-unit id="customer.cabinet">
+                <source>customer.cabinet</source>
+                <target>Your cabinet</target>
+            </trans-unit>
+            <trans-unit id="title.customer.cabinet">
+                <source>title.customer.cabinet</source>
+                <target>Cabinet</target>
+            </trans-unit>
+            <trans-unit id="customer.cabinet.personal_information">
+                <source>customer.cabinet.personal_information</source>
+                <target>Personal information</target>
+            </trans-unit>
+            <trans-unit id="customer.cabinet.orders">
+                <source>customer.cabinet.orders</source>
+                <target>Orders</target>
+            </trans-unit>
+            <trans-unit id="customer.cabinet.wishlist">
+                <source>customer.cabinet.wishlist</source>
+                <target>Wishlist</target>
+            </trans-unit>
+            <trans-unit id="customer.cabinet.order.notpaid">
+                <source>customer.cabinet.order.notpaid</source>
+                <target>Not paid yet.</target>
             </trans-unit>
         </body>
     </file>

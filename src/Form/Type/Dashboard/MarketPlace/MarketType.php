@@ -3,7 +3,9 @@
 namespace App\Form\Type\Dashboard\MarketPlace;
 
 use App\Entity\MarketPlace\Market;
+use App\Entity\MarketPlace\MarketPaymentGateway;
 use App\Service\MarketPlace\Currency;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -23,6 +25,24 @@ use Symfony\Component\Validator\Constraints\Regex;
 
 class MarketType extends AbstractType
 {
+
+    /**
+     * @var array
+     */
+    private array $gateways = [];
+
+    /**
+     * @param EntityManagerInterface $em
+     */
+    public function __construct(EntityManagerInterface $em)
+    {
+        $gateways = $em->getRepository(MarketPaymentGateway::class)->findBy(['active' => true]);
+
+        foreach ($gateways as $gateway) {
+            $this->gateways[$gateway->getName()] = $gateway->getId();
+        }
+    }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -47,6 +67,13 @@ class MarketType extends AbstractType
                         'maxMessage' => 'form.name.max',
                     ]),
                 ],
+            ])
+            ->add('gateway', ChoiceType::class, [
+                'mapped' => false,
+                'required' => true,
+                'multiple' => true,
+                'expanded' => true,
+                'choices' => $this->gateways,
             ])
             ->add('currency', ChoiceType::class, [
                 'placeholder' => 'label.form.market_currency.placeholder',

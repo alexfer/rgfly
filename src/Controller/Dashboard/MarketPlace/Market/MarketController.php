@@ -3,10 +3,12 @@
 namespace App\Controller\Dashboard\MarketPlace\Market;
 
 use App\Entity\MarketPlace\Market;
+use App\Entity\MarketPlace\MarketPaymentGateway;
+use App\Entity\MarketPlace\MarketPaymentGatewayMarket;
 use App\Form\Type\Dashboard\MarketPlace\MarketType;
 use App\Repository\MarketPlace\MarketRepository;
-use App\Service\FileUploader;
 use App\Service\Dashboard;
+use App\Service\FileUploader;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -71,7 +73,7 @@ class MarketController extends AbstractController
      * @return Response
      * @throws Exception
      */
-    #[Route('/create', name: 'app_dashboard_market_place_create_market')]
+    #[Route('/create/{tab}', name: 'app_dashboard_market_place_create_market')]
     public function create(
         Request                $request,
         EntityManagerInterface $em,
@@ -108,12 +110,22 @@ class MarketController extends AbstractController
                     $market->setAttach($attach);
                 }
 
+                $paymentGateways = $em->getRepository(MarketPaymentGateway::class)->findBy(['active' => true]);
+
+                foreach ($paymentGateways as $gateway) {
+                    $paymentGatewayMarket = new MarketPaymentGatewayMarket();
+                    $paymentGatewayMarket->setMarket($market)
+                        ->setGateway($gateway)
+                        ->setActive(true);
+                    $em->persist($paymentGatewayMarket);
+                }
+
                 $em->persist($market);
                 $em->flush();
 
                 $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
 
-                return $this->redirectToRoute('app_dashboard_market_place_edit_market', ['id' => $market->getId()]);
+                return $this->redirectToRoute('app_dashboard_market_place_edit_market', ['id' => $market->getId(), 'tab' => $request->get('tab')]);
             }
         } else {
             throw new AccessDeniedHttpException('Permission denied.');
@@ -135,7 +147,7 @@ class MarketController extends AbstractController
      * @return Response
      * @throws Exception
      */
-    #[Route('/edit/{id}', name: 'app_dashboard_market_place_edit_market', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}/{tab}', name: 'app_dashboard_market_place_edit_market', methods: ['GET', 'POST'])]
     public function edit(
         Request                $request,
         Market                 $market,
@@ -180,22 +192,57 @@ class MarketController extends AbstractController
 
                 $market->setAttach($attach);
             }
+
+            $gateways = $form->get('gateway')->getData();
+
+            if ($gateways) {
+                $em = $this->resetGateways($market, $em);
+                foreach ($gateways as $gateway) {
+                    $paymentGateways = $em->getRepository(MarketPaymentGatewayMarket::class)
+                        ->findOneBy([
+                            'gateway' => $gateway,
+                            'market' => $market,
+                        ]);
+                    $paymentGateways->setActive(true);
+                    $em->persist($paymentGateways);
+                }
+            } else {
+                $em = $this->resetGateways($market, $em);
+                $em->flush();
+            }
+
             $url = $form->get('website')->getData();
+
             if ($url) {
                 $parse = parse_url($url);
                 $market->setUrl($url)->setWebsite($parse['host']);
             }
+
             $em->persist($market);
             $em->flush();
 
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.updated')]));
 
-            return $this->redirectToRoute('app_dashboard_market_place_edit_market', ['id' => $market->getId()]);
+            return $this->redirectToRoute('app_dashboard_market_place_edit_market', ['id' => $market->getId(), 'tab' => $request->get('tab')]);
         }
 
         return $this->render('dashboard/content/market_place/market/_form.html.twig', $this->navbar() + [
                 'form' => $form,
             ]);
+    }
+
+    /**
+     * @param Market $market
+     * @param EntityManagerInterface $em
+     * @return EntityManagerInterface
+     */
+    private function resetGateways(Market $market, EntityManagerInterface $em): EntityManagerInterface
+    {
+        foreach ($market->getMarketPaymentGatewayMarkets() as $gatewayMarket) {
+            $gatewayMarket->setActive(false);
+            $em->persist($gatewayMarket);
+        }
+        return $em;
     }
 
     /**
