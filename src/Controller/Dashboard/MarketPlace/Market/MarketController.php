@@ -73,7 +73,7 @@ class MarketController extends AbstractController
      * @return Response
      * @throws Exception
      */
-    #[Route('/create', name: 'app_dashboard_market_place_create_market')]
+    #[Route('/create/{tab}', name: 'app_dashboard_market_place_create_market')]
     public function create(
         Request                $request,
         EntityManagerInterface $em,
@@ -125,7 +125,7 @@ class MarketController extends AbstractController
 
                 $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
 
-                return $this->redirectToRoute('app_dashboard_market_place_edit_market', ['id' => $market->getId()]);
+                return $this->redirectToRoute('app_dashboard_market_place_edit_market', ['id' => $market->getId(), 'tab' => $request->get('tab')]);
             }
         } else {
             throw new AccessDeniedHttpException('Permission denied.');
@@ -147,7 +147,7 @@ class MarketController extends AbstractController
      * @return Response
      * @throws Exception
      */
-    #[Route('/edit/{id}', name: 'app_dashboard_market_place_edit_market', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}/{tab}', name: 'app_dashboard_market_place_edit_market', methods: ['GET', 'POST'])]
     public function edit(
         Request                $request,
         Market                 $market,
@@ -223,7 +223,7 @@ class MarketController extends AbstractController
 
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.updated')]));
 
-            return $this->redirectToRoute('app_dashboard_market_place_edit_market', ['id' => $market->getId()]);
+            return $this->redirectToRoute('app_dashboard_market_place_edit_market', ['id' => $market->getId(), 'tab' => $request->get('tab')]);
         }
 
         return $this->render('dashboard/content/market_place/market/_form.html.twig', $this->navbar() + [

@@ -84,7 +84,7 @@ class ProductController extends AbstractController
      * @return Response
      * @throws Exception
      */
-    #[Route('/edit/{market}-{id}', name: 'app_dashboard_market_place_edit_product', methods: ['GET', 'POST'])]
+    #[Route('/edit/{market}-{id}/{tab}', name: 'app_dashboard_market_place_edit_product', methods: ['GET', 'POST'])]
     #[IsGranted(ProductVoter::EDIT, subject: 'product', statusCode: Response::HTTP_FORBIDDEN)]
     public function edit(
         Request                $request,
@@ -170,6 +170,7 @@ class ProductController extends AbstractController
             return $this->redirectToRoute('app_dashboard_market_place_edit_product', [
                 'market' => $request->get('market'),
                 'id' => $product->getId(),
+                'tab' => $request->get('tab'),
             ]);
         }
 
@@ -189,7 +190,7 @@ class ProductController extends AbstractController
      * @throws NotFoundExceptionInterface
      * @throws Exception
      */
-    #[Route('/create/{market}', name: 'app_dashboard_market_place_create_product', methods: ['GET', 'POST'])]
+    #[Route('/create/{market}/{tab}', name: 'app_dashboard_market_place_create_product', methods: ['GET', 'POST'])]
     public function create(
         Request                $request,
         UserInterface          $user,
@@ -262,7 +263,11 @@ class ProductController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
-            return $this->redirectToRoute('app_dashboard_market_place_edit_product', ['market' => $request->get('market'), 'id' => $product->getId()]);
+            return $this->redirectToRoute('app_dashboard_market_place_edit_product', [
+                'market' => $request->get('market'),
+                'id' => $product->getId(),
+                'tab' => $request->get('tab'),
+            ]);
         }
 
         return $this->render('dashboard/content/market_place/product/_form.html.twig', $this->navbar() + [

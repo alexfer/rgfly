@@ -2,7 +2,7 @@
     <div class="collapse navbar-collapse ms-3" id="navbar-market">
         <div class="navbar-nav">
             <a class="nav-item nav-link active" aria-current="page"
-               href="{{ path('app_dashboard_market_place_create_product', {market: market.id}) }}">{{ 'market.product.create'|trans }}</a>
+               href="{{ path('app_dashboard_market_place_create_product', {market: market.id, tab: 'details'}) }}">{{ 'market.product.create'|trans }}</a>
             <a class="nav-item nav-link"
                href="{{ path('app_dashboard_market_place_market_product', {market: market.id}) }}">{{ 'market.products'|trans }}</a>
             <a class="nav-item nav-link"

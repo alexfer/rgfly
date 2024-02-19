@@ -849,6 +849,12 @@
                     <![CDATA[View our most recent news blog]]>
                 </target>
             </trans-unit>
+            <trans-unit id="alert.confirm.delete">
+                <source>alert.confirm.delete</source>
+                <target>
+                    <![CDATA[Are you sure you want to delete this item?]]>
+                </target>
+            </trans-unit>
             <trans-unit id="text.faq.desc">
                 <source>text.faq.desc</source>
                 <target>

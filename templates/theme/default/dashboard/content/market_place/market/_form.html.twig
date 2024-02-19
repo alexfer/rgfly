@@ -19,33 +19,34 @@
     {% else %}
         {% set _message = app.flashes('success') %}
         {{ form_start(form, {attr: {class: 'd-tech-form', novalidate: 'novalidate'}}) }}
+        {% set _tab = app.request.get('tab') %}
         <ul class="nav nav-tabs me-2" id="marketTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link border-0 active" id="details-tab" data-bs-toggle="tab"
-                        data-bs-target="#details-tab-pane" type="button" role="tab"
-                        aria-controls="details-tab-pane"
+                <a class="nav-link border-0 {{ _tab == 'details' ? 'active' : null }}" id="details-tab" data-bs-toggle="tab"
+                        data-bs-target="#details" type="button" role="tab"
+                        aria-controls="details"
                         aria-selected="true">{{ 'entry.form.market_details'|trans }}
-                </button>
+                </a>
             </li>
             {% if form.vars.data.id %}
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link border-0" id="billing-tab" data-bs-toggle="tab"
-                            data-bs-target="#billing-tab-pane" type="button" role="tab"
-                            aria-controls="billing-tab-pane"
+                    <a class="nav-link border-0 {{ _tab == 'billing' ? 'active' : null }}" id="billing-tab" data-bs-toggle="tab"
+                            data-bs-target="#billing" type="button" role="tab"
+                            aria-controls="billing"
                             aria-selected="false">{{ 'entry.form.billing'|trans }}
-                    </button>
+                    </a>
                 </li>
             {% endif %}
             <li class="nav-item" role="presentation">
-                <button class="nav-link border-0" id="attachments-tab" data-bs-toggle="tab"
-                        data-bs-target="#attachments-tab-pane" type="button" role="tab"
-                        aria-controls="attachments-tab-pane"
+                <a class="nav-link border-0 {{ _tab == 'attachments' ? 'active' : null }}" id="attachments-tab" data-bs-toggle="tab"
+                        data-bs-target="#attachments" type="button" role="tab"
+                        aria-controls="attachments"
                         aria-selected="false">{{ 'entry.form.attachments'|trans }}
-                </button>
+                </a>
             </li>
         </ul>
         <div class="tab-content" id="marketTabContent">
-            <div class="tab-pane fade show active" id="details-tab-pane" role="tabpanel"
+            <div class="tab-pane fade {{ _tab == 'details' ? 'show active' : null }}" id="details" role="tabpanel"
                  aria-labelledby="details-tab" tabindex="0">
                 <div class="mt-4 p-2">
                     <div class="form-group mb-3">
@@ -81,7 +82,7 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane fade" id="billing-tab-pane" role="tabpanel"
+            <div class="tab-pane fade {{ _tab == 'billing' ? 'show active' : null }}" id="billing" role="tabpanel"
                  aria-labelledby="billing-tab"
                  tabindex="0">
                 <div class="mt-4 p-2">
@@ -108,7 +109,7 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane fade" id="attachments-tab-pane" role="tabpanel"
+            <div class="tab-pane fade {{ _tab == 'attachments' ? 'show active' : null }}" id="attachments" role="tabpanel"
                  aria-labelledby="attachments-tab"
                  tabindex="0">
                 <div class="mt-4 p-2">
