@@ -799,6 +799,14 @@
                 <source>entry.form.attachments</source>
                 <target>Attachments</target>
             </trans-unit>
+            <trans-unit id="entry.form.billing">
+                <source>entry.form.billing</source>
+                <target>Billing</target>
+            </trans-unit>
+            <trans-unit id="entry.form.market_details">
+                <source>entry.form.market_details</source>
+                <target>Market Details</target>
+            </trans-unit>
             <trans-unit id="user.entry.updated">
                 <source>user.entry.updated</source>
                 <target><![CDATA[Entry has been updated successfully.]]></target>

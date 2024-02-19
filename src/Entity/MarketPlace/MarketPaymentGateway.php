@@ -4,6 +4,8 @@ namespace App\Entity\MarketPlace;
 
 use App\Repository\MarketPlace\MarketPaymentGatewayRepository;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -21,8 +23,19 @@ class MarketPaymentGateway
     #[ORM\Column(type: Types::TEXT)]
     private ?string $summary = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $active = null;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $deleted_at = null;
+
+    #[ORM\OneToMany(mappedBy: 'gateway', targetEntity: MarketPaymentGatewayMarket::class)]
+    private Collection $marketPaymentGatewayMarkets;
+
+    public function __construct()
+    {
+        $this->marketPaymentGatewayMarkets = new ArrayCollection();
+    }
 
     /**
      * @return int|null
@@ -71,6 +84,25 @@ class MarketPaymentGateway
     }
 
     /**
+     * @return bool|null
+     */
+    public function isActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool|null $active
+     * @return $this
+     */
+    public function setActive(?bool $active): static
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
      * @return DateTimeInterface|null
      */
     public function getDeletedAt(): ?DateTimeInterface
@@ -85,6 +117,44 @@ class MarketPaymentGateway
     public function setDeletedAt(?DateTimeInterface $deleted_at): static
     {
         $this->deleted_at = $deleted_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketPaymentGatewayMarket>
+     */
+    public function getMarketPaymentGatewayMarkets(): Collection
+    {
+        return $this->marketPaymentGatewayMarkets;
+    }
+
+    /**
+     * @param MarketPaymentGatewayMarket $marketPaymentGatewayMarket
+     * @return $this
+     */
+    public function addMarketPaymentGatewayMarket(MarketPaymentGatewayMarket $marketPaymentGatewayMarket): static
+    {
+        if (!$this->marketPaymentGatewayMarkets->contains($marketPaymentGatewayMarket)) {
+            $this->marketPaymentGatewayMarkets->add($marketPaymentGatewayMarket);
+            $marketPaymentGatewayMarket->setGateway($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MarketPaymentGatewayMarket $marketPaymentGatewayMarket
+     * @return $this
+     */
+    public function removeMarketPaymentGatewayMarket(MarketPaymentGatewayMarket $marketPaymentGatewayMarket): static
+    {
+        if ($this->marketPaymentGatewayMarkets->removeElement($marketPaymentGatewayMarket)) {
+            // set the owning side to null (unless already changed)
+            if ($marketPaymentGatewayMarket->getGateway() === $this) {
+                $marketPaymentGatewayMarket->setGateway(null);
+            }
+        }
 
         return $this;
     }

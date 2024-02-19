@@ -3,10 +3,12 @@
 namespace App\Controller\Dashboard\MarketPlace\Market;
 
 use App\Entity\MarketPlace\Market;
+use App\Entity\MarketPlace\MarketPaymentGateway;
+use App\Entity\MarketPlace\MarketPaymentGatewayMarket;
 use App\Form\Type\Dashboard\MarketPlace\MarketType;
 use App\Repository\MarketPlace\MarketRepository;
-use App\Service\FileUploader;
 use App\Service\Dashboard;
+use App\Service\FileUploader;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -108,6 +110,16 @@ class MarketController extends AbstractController
                     $market->setAttach($attach);
                 }
 
+                $paymentGateways = $em->getRepository(MarketPaymentGateway::class)->findBy(['active' => true]);
+
+                foreach ($paymentGateways as $gateway) {
+                    $paymentGatewayMarket = new MarketPaymentGatewayMarket();
+                    $paymentGatewayMarket->setMarket($market)
+                        ->setGateway($gateway)
+                        ->setActive(true);
+                    $em->persist($paymentGatewayMarket);
+                }
+
                 $em->persist($market);
                 $em->flush();
 
@@ -180,11 +192,32 @@ class MarketController extends AbstractController
 
                 $market->setAttach($attach);
             }
+
+            $gateways = $form->get('gateway')->getData();
+
+            if ($gateways) {
+                $em = $this->resetGateways($market, $em);
+                foreach ($gateways as $gateway) {
+                    $paymentGateways = $em->getRepository(MarketPaymentGatewayMarket::class)
+                        ->findOneBy([
+                            'gateway' => $gateway,
+                            'market' => $market,
+                        ]);
+                    $paymentGateways->setActive(true);
+                    $em->persist($paymentGateways);
+                }
+            } else {
+                $em = $this->resetGateways($market, $em);
+                $em->flush();
+            }
+
             $url = $form->get('website')->getData();
+
             if ($url) {
                 $parse = parse_url($url);
                 $market->setUrl($url)->setWebsite($parse['host']);
             }
+
             $em->persist($market);
             $em->flush();
 
@@ -196,6 +229,20 @@ class MarketController extends AbstractController
         return $this->render('dashboard/content/market_place/market/_form.html.twig', $this->navbar() + [
                 'form' => $form,
             ]);
+    }
+
+    /**
+     * @param Market $market
+     * @param EntityManagerInterface $em
+     * @return EntityManagerInterface
+     */
+    private function resetGateways(Market $market, EntityManagerInterface $em): EntityManagerInterface
+    {
+        foreach ($market->getMarketPaymentGatewayMarkets() as $gatewayMarket) {
+            $gatewayMarket->setActive(false);
+            $em->persist($gatewayMarket);
+        }
+        return $em;
     }
 
     /**
