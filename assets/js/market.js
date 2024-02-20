@@ -116,7 +116,9 @@ if (typeof forms != 'undefined') {
                 .then((response) => response.json())
                 .then((json) => {
                     let qty = document.getElementById('qty');
-                    qty.innerHTML = json.quantity;
+                    if(qty) {
+                        qty.innerHTML = json.quantity;
+                    }
                 })
                 .catch(err => {
                     console.log(err);

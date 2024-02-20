@@ -27,7 +27,7 @@ class CabinetController extends AbstractController
 
         $orders = $em->getRepository(MarketCustomerOrders::class)->findBy([
             'customer' => $customer,
-        ]);
+        ], ['id' => 'desc']);
 
         return $this->render('market_place/cabinet/index.html.twig', [
             'customer' => $customer,

@@ -26,11 +26,20 @@ class MarketPaymentGateway
     #[ORM\Column(nullable: true)]
     private ?bool $active = null;
 
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $icon = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $translation_id = null;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $deleted_at = null;
 
     #[ORM\OneToMany(mappedBy: 'gateway', targetEntity: MarketPaymentGatewayMarket::class)]
     private Collection $marketPaymentGatewayMarkets;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $handler_translation_id = null;
 
     public function __construct()
     {
@@ -103,6 +112,44 @@ class MarketPaymentGateway
     }
 
     /**
+     * @return string|null
+     */
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    /**
+     * @param string|null $icon
+     * @return $this
+     */
+    public function setIcon(?string $icon): static
+    {
+        $this->icon = $icon;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTranslationId(): ?string
+    {
+        return $this->translation_id;
+    }
+
+    /**
+     * @param string|null $translation_id
+     * @return $this
+     */
+    public function setTranslationId(?string $translation_id): static
+    {
+        $this->translation_id = $translation_id;
+
+        return $this;
+    }
+
+    /**
      * @return DateTimeInterface|null
      */
     public function getDeletedAt(): ?DateTimeInterface
@@ -155,6 +202,18 @@ class MarketPaymentGateway
                 $marketPaymentGatewayMarket->setGateway(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getHandlerTranslationId(): ?string
+    {
+        return $this->handler_translation_id;
+    }
+
+    public function setHandlerTranslationId(?string $handler_translation_id): static
+    {
+        $this->handler_translation_id = $handler_translation_id;
 
         return $this;
     }
