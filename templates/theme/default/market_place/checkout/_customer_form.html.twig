@@ -1,3 +1,8 @@
+{% for message in app.flashes('danger') %}
+    <div class="alert alert-danger">
+        {{ message }}
+    </div>
+{% endfor %}
 <div class="pt-2 px-2 pe-lg-0">
     <h2 class="h6 border-bottom pb-3 mb-3">{{ 'product.billing'|trans }}</h2>
     {{ form_start(form, {attr: {class: 'needs-validation', novalidate: ''}}) }}
@@ -29,64 +34,37 @@
         </div>
     </div>
     <div class="accordion mb-2" id="payment-method" role="tablist">
-        {% for gateway in order.market.marketPaymentGatewayMarkets.toArray %}
-        <div class="accordion-item">
-            <h3 class="accordion-header" id="header-{{ gateway.gateway.id }}">
-                <a class="accordion-button {% if not loop.first %}collapsed{% endif %}" href="#gateway-{{ gateway.gateway.id }}"
-                   role="button"
-                   data-bs-toggle="collapse"
-                   aria-expanded="{% if loop.first %}true{% else %}false{% endif %}">
-                    <i class="{{ gateway.gateway.icon}} me-2"></i>{{ gateway.gateway.name }}
-                </a>
-            </h3>
-            <div class="accordion-collapse collapse {% if loop.first %}show{% endif %}" id="gateway-{{ gateway.gateway.id }}"
-                 aria-labelledby="header-{{ gateway.gateway.id }}"
-                 data-bs-parent="#payment-method"
-                 role="tabpanel">
-                <div class="accordion-body">
-                    <p>
-                       {% if gateway.gateway.name == 'PayPal' %}<span class="fw-medium">{{ 'form.paypal'|trans }}</span> - {% endif %}{{ gateway.gateway.translationId|trans }}
-                    </p>
-                    <button type="submit" id="gateway-{{ gateway.gateway.id }}" class="btn btn-danger rounded-1">{{ gateway.gateway.handlerTranslationId|trans }}</button>
+        {% for key, gateway in order.market.marketPaymentGatewayMarkets.toArray %}
+            <div class="accordion-item">
+                <h3 class="accordion-header">
+                    <a class="accordion-button{% if key != 0 %} collapsed{% endif %}" href="#gateway-{{ key }}"
+                       role="button"
+                       data-bs-toggle="collapse"
+                       aria-expanded="{% if loop.first %}true{% else %}false{% endif %}">
+                        <i class="{{ gateway.gateway.icon }} me-2"></i>{{ gateway.gateway.name }}
+                    </a>
+                </h3>
+                <div class="accordion-collapse collapse {% if loop.first %}show{% endif %}"
+                     id="gateway-{{ key }}" data-bs-parent="#payment-method" role="tabpanel">
+{#                    <div class="accordion-body">#}
+{#                        <p>#}
+{#                            {% if gateway.gateway.name == 'PayPal' %}<span#}
+{#                                    class="fw-medium">{{ 'form.paypal'|trans }}</span> - {% endif %}#}
+{#                            {{ gateway.gateway.translationId|trans }}#}
+{#                        </p>#}
+{#                        {% if gateway.gateway.name == 'PayPal' %}#}
+{#                            {{ form_widget(form.paypal, {attr: {class: 'btn btn-danger rounded-1'}}) }}#}
+{#                        {% endif %}#}
+{#                        {% if gateway.gateway.name == 'Cash on delivery' %}#}
+{#                            {{ form_widget(form.cash, {attr: {class: 'btn btn-danger rounded-1'}}) }}#}
+{#                        {% endif %}#}
+{#                    </div>#}
+                    <div class="accordion-body">
+                         <button type="submit" name="{{ gateway.gateway.slug }}"  class="btn btn-danger rounded-1">{{ gateway.gateway.handlerText }}</button>
+                    </div>
                 </div>
             </div>
-        </div>
         {% endfor %}
     </div>
-
-
-{#    <div class="accordion mb-2" id="payment-method" role="tablist">#}
-{#        <div class="accordion-item">#}
-{#            <h3 class="accordion-header">#}
-{#                <a class="accordion-button collapsed" href="#points" data-bs-toggle="collapse"#}
-{#                   aria-expanded="false">#}
-{#                    <i class="bi bi-wallet2 me-2"></i>{{ 'form.cash.delivery'|trans }}#}
-{#                </a>#}
-{#            </h3>#}
-{#            <div class="accordion-collapse collapse show" id="points" data-bs-parent="#payment-method"#}
-{#                 role="tabpanel">#}
-{#                <div class="accordion-body">#}
-{#                    <p>{{ 'form.cash.delivery.text'|trans }}</p>#}
-{#                    {{ form_widget(form.cash, {attr: {class: 'btn btn-danger rounded-1'}}) }}#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="accordion-item">#}
-{#            <h3 class="accordion-header">#}
-{#                <a class="accordion-button collapsed" href="#paypal" data-bs-toggle="collapse"#}
-{#                   aria-expanded="false">#}
-{#                    <i class="pi bi-paypal me-2 align-middle"></i>{{ 'form.paypal.pay'|trans }}#}
-{#                </a>#}
-{#            </h3>#}
-{#            <div class="accordion-collapse collapse" id="paypal" data-bs-parent="#payment-method" role="tabpanel">#}
-{#                <div class="accordion-body fs-sm">#}
-{#                    <p>#}
-{#                        <span class="fw-medium">{{ 'form.paypal'|trans }}</span> - {{ 'form.paypal.text'|trans }}#}
-{#                    </p>#}
-{#                    {{ form_widget(form.paypal, {attr: {class: 'btn btn-danger rounded-1', disabled: true}}) }}#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
     {{ form_end(form) }}
 </div>

@@ -63,7 +63,7 @@
             </a>
             {% if app.user.markets|length == 0 %}
                 <a class="nav-link {{ _route == 'app_dashboard_market_place_create_market' ? 'active' : '' }}"
-                   href="{{ path('app_dashboard_market_place_create_market') }}">
+                   href="{{ path('app_dashboard_market_place_create_market', {tab: 'details'}) }}">
                     <i class="bi bi-arrow-right-short"></i>
                     {{ 'menu.dashboard.create.market'|trans }}
                 </a>

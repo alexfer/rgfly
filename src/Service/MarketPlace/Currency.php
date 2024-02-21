@@ -262,11 +262,14 @@ class Currency
     private static string $code;
 
     /**
-     * @param string $code
+     * @param string|null $code
      * @return array
      */
-    public static function currency(string $code = 'USD'): array
+    public static function currency(?string $code): array
     {
+        if (!$code) {
+            $code = 'USD';
+        }
         self::$code = $code;
         return self::$currencies[self::$code];
     }

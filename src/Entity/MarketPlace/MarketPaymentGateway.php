@@ -23,23 +23,23 @@ class MarketPaymentGateway
     #[ORM\Column(type: Types::TEXT)]
     private ?string $summary = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?bool $active = null;
+    #[ORM\Column]
+    private bool $active;
 
-    #[ORM\Column(length: 50, nullable: true)]
+    #[ORM\Column(length: 50)]
     private ?string $icon = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $translation_id = null;
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
+
+    #[ORM\Column(length: 100)]
+    private ?string $handler_text = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $deleted_at = null;
 
     #[ORM\OneToMany(mappedBy: 'gateway', targetEntity: MarketPaymentGatewayMarket::class)]
     private Collection $marketPaymentGatewayMarkets;
-
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $handler_translation_id = null;
 
     public function __construct()
     {
@@ -93,18 +93,18 @@ class MarketPaymentGateway
     }
 
     /**
-     * @return bool|null
+     * @return bool
      */
-    public function isActive(): ?bool
+    public function isActive(): bool
     {
         return $this->active;
     }
 
     /**
-     * @param bool|null $active
+     * @param bool $active
      * @return $this
      */
-    public function setActive(?bool $active): static
+    public function setActive(bool $active): static
     {
         $this->active = $active;
 
@@ -112,18 +112,18 @@ class MarketPaymentGateway
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getIcon(): ?string
+    public function getIcon(): string
     {
         return $this->icon;
     }
 
     /**
-     * @param string|null $icon
+     * @param string $icon
      * @return $this
      */
-    public function setIcon(?string $icon): static
+    public function setIcon(string $icon): static
     {
         $this->icon = $icon;
 
@@ -131,20 +131,35 @@ class MarketPaymentGateway
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getTranslationId(): ?string
+    public function getSlug(): string
     {
-        return $this->translation_id;
+        return $this->slug;
     }
 
     /**
-     * @param string|null $translation_id
+     * @param string $slug
      * @return $this
      */
-    public function setTranslationId(?string $translation_id): static
+    public function setSlug(string $slug): static
     {
-        $this->translation_id = $translation_id;
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHandlerText(): string
+    {
+        return $this->handler_text;
+    }
+
+    public function setHandlerText(?string $handler_text): static
+    {
+        $this->handler_text = $handler_text;
 
         return $this;
     }
@@ -202,18 +217,6 @@ class MarketPaymentGateway
                 $marketPaymentGatewayMarket->setGateway(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getHandlerTranslationId(): ?string
-    {
-        return $this->handler_translation_id;
-    }
-
-    public function setHandlerTranslationId(?string $handler_translation_id): static
-    {
-        $this->handler_translation_id = $handler_translation_id;
 
         return $this;
     }

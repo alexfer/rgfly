@@ -199,7 +199,7 @@ use Doctrine\ORM\EntityRepository;
                     'step' => '1',
                 ],
                 'html5' => true,
-                'currency' => $this->market->getCurrency() ?? 'EUR',
+                'currency' => $this->market->getCurrency() ?? 'USD',
             ])
             ->add('cost', MoneyType::class, [
                 'attr' => [
@@ -207,7 +207,7 @@ use Doctrine\ORM\EntityRepository;
                     'step' => '0.01',
                 ],
                 'html5' => true,
-                'currency' => $this->market->getCurrency() ?? 'EUR',
+                'currency' => $this->market->getCurrency() ?? 'USD',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'form.cost.not_blank',

@@ -54,11 +54,16 @@ class CheckoutController extends AbstractController
 
         $form = $this->createForm(CustomerType::class, $customer);
         $form->handleRequest($request);
-
+        //$all = $request->request->has('PayPal');
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $checkEmail = $em->getRepository(User::class)->findOneBy(['email' => $form->get('email')->getData()]);
+            if($checkEmail) {
+                $this->addFlash('danger', 'This email already in use');
+                return $this->redirectToRoute('app_market_place_order_checkout', ['order' => $request->get('order')]);
+            }
 
-            if (!$customer) {
+            if(!$customer){
 
                 $password = substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 8);
                 $session->set('_temp_password', $password);

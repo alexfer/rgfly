@@ -5,14 +5,14 @@
 {% block body %}
     <section class="container mt-lg-2">
         <div class="row">
-            {% if error %}
-                <div class="alert alert-danger mt-3">
-                    {{ error.message }}
-                </div>
-            {% endif %}
             <div class="col-3"></div>
             <div class="col-6 card card-body bg-light shadow">
                 <h4 class="ps-2 border-start border-3 border-danger mb-3">{{ 'text.login'|trans }}</h4>
+                {% if error %}
+                    <div class="alert alert-danger text-center mx-sm-4 mt-3">
+                        {{ error.message }}
+                    </div>
+                {% endif %}
                 {{ include('security/_form.html.twig') }}
             </div>
             <div class="col-3"></div>
