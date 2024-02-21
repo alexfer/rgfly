@@ -176,7 +176,7 @@ class MarketController extends AbstractController
 
             if ($markets) {
                 $this->addFlash('danger', $translator->trans('slug.unique', [
-                    '%name%' => 'Market name',
+                    '%name%' => $translator->trans('label.form.market_name'),
                     '%value%' => $form->get('name')->getData(),
                 ], 'validators'));
                 return $this->redirectToRoute('app_dashboard_market_place_edit_market', ['id' => $request->get('id'), 'tab' => $request->get('tab')]);
