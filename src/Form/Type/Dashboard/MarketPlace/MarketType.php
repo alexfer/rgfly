@@ -78,9 +78,14 @@ class MarketType extends AbstractType
             ->add('currency', ChoiceType::class, [
                 'placeholder' => 'label.form.market_currency.placeholder',
                 'label' => 'label.currency',
-                'required' => false,
+                'required' => true,
                 'multiple' => false,
                 'expanded' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'form.currency.not_blank',
+                    ]),
+                ],
                 'choices' => [
                     Currency::USD => Currency::USD,
                     Currency::EUR => Currency::EUR,

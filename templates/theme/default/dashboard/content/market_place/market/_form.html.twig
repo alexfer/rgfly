@@ -22,26 +22,29 @@
         {% set _tab = app.request.get('tab') %}
         <ul class="nav nav-tabs me-2" id="marketTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <a class="nav-link border-0 {{ _tab == 'details' ? 'active' : null }}" id="details-tab" data-bs-toggle="tab"
-                        data-bs-target="#details" type="button" role="tab"
-                        aria-controls="details"
-                        aria-selected="true">{{ 'entry.form.market_details'|trans }}
+                <a class="nav-link border-0 {{ _tab == 'details' ? 'active' : null }}" id="details-tab"
+                   data-bs-toggle="tab"
+                   data-bs-target="#details" type="button" role="tab"
+                   aria-controls="details"
+                   aria-selected="true">{{ 'entry.form.market_details'|trans }}
                 </a>
             </li>
             {% if form.vars.data.id %}
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link border-0 {{ _tab == 'billing' ? 'active' : null }}" id="billing-tab" data-bs-toggle="tab"
-                            data-bs-target="#billing" type="button" role="tab"
-                            aria-controls="billing"
-                            aria-selected="false">{{ 'entry.form.billing'|trans }}
+                    <a class="nav-link border-0 {{ _tab == 'billing' ? 'active' : null }}" id="billing-tab"
+                       data-bs-toggle="tab"
+                       data-bs-target="#billing" type="button" role="tab"
+                       aria-controls="billing"
+                       aria-selected="false">{{ 'entry.form.billing'|trans }}
                     </a>
                 </li>
             {% endif %}
             <li class="nav-item" role="presentation">
-                <a class="nav-link border-0 {{ _tab == 'attachments' ? 'active' : null }}" id="attachments-tab" data-bs-toggle="tab"
-                        data-bs-target="#attachments" type="button" role="tab"
-                        aria-controls="attachments"
-                        aria-selected="false">{{ 'entry.form.attachments'|trans }}
+                <a class="nav-link border-0 {{ _tab == 'attachments' ? 'active' : null }}" id="attachments-tab"
+                   data-bs-toggle="tab"
+                   data-bs-target="#attachments" type="button" role="tab"
+                   aria-controls="attachments"
+                   aria-selected="false">{{ 'label.form.market_logo'|trans }}
                 </a>
             </li>
         </ul>
@@ -88,7 +91,8 @@
                 <div class="mt-4 p-2">
                     <div class="form-group mb-3">
                         {% set currency_error = form.currency.vars.errors|length ? 'form-select error' : 'form-select' %}
-                        {{ form_label(form.currency, 'label.form.currency', {label_attr: {class: 'form-label'}}) }}
+                        {{ form_label(form.currency, 'label.form.currency', {label_attr: {class: 'form-label'}}) }}<span
+                                class="text-danger">*</span>
                         {{ form_widget(form.currency, {attr: {class: currency_error, placeholder: 'label.form.currency'}}) }}
                         <small class="text-danger">{{ form_errors(form.currency) }}</small>
                     </div>
@@ -109,13 +113,20 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane fade {{ _tab == 'attachments' ? 'show active' : null }}" id="attachments" role="tabpanel"
+            <div class="tab-pane fade {{ _tab == 'attachments' ? 'show active' : null }}" id="attachments"
+                 role="tabpanel"
                  aria-labelledby="attachments-tab"
                  tabindex="0">
                 <div class="mt-4 p-2">
+                    {% if app.user.markets.first.attach %}
+                        {% set _picture = 'storage/market/logo/' ~ form.vars.data.id ~ '/' ~ app.user.markets.first.attach.name %}
+                        <div class="card card-body mb-2">
+                            <img class="image-grayscale" src="{{ asset(_picture)|imagine_filter('market_view') }}" alt="{{ app.user.markets.first.attach.name }}">
+                        </div>
+                    {% endif %}
                     <div class="input-group mb-3">
-                        {{ form_label(form.logo, 'label.form.market_logo', {label_attr: {class: 'input-group-text w-100 position-absolute'}}) }}
-                        {{ form_widget(form.logo, {attr: {class: 'form-controll border'}}) }}
+                        {{ form_label(form.logo, 'label.form.market_logo', {label_attr: {class: 'input-group-text bg-white pb-2 position-relative z-1'}}) }}
+                        {{ form_widget(form.logo, {attr: {class: 'form-controll border p-1 position-absolute w-auto', style: 'left: 35px'}}) }}
                         <small class="text-danger d-block">{{ form_errors(form.logo) }}</small>
                     </div>
                 </div>
