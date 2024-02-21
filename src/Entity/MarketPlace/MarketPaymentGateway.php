@@ -23,8 +23,17 @@ class MarketPaymentGateway
     #[ORM\Column(type: Types::TEXT)]
     private ?string $summary = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?bool $active = null;
+    #[ORM\Column]
+    private bool $active;
+
+    #[ORM\Column(length: 50)]
+    private ?string $icon = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
+
+    #[ORM\Column(length: 100)]
+    private ?string $handler_text = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $deleted_at = null;
@@ -84,20 +93,73 @@ class MarketPaymentGateway
     }
 
     /**
-     * @return bool|null
+     * @return bool
      */
-    public function isActive(): ?bool
+    public function isActive(): bool
     {
         return $this->active;
     }
 
     /**
-     * @param bool|null $active
+     * @param bool $active
      * @return $this
      */
-    public function setActive(?bool $active): static
+    public function setActive(bool $active): static
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return $this->icon;
+    }
+
+    /**
+     * @param string $icon
+     * @return $this
+     */
+    public function setIcon(string $icon): static
+    {
+        $this->icon = $icon;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     * @return $this
+     */
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHandlerText(): string
+    {
+        return $this->handler_text;
+    }
+
+    public function setHandlerText(?string $handler_text): static
+    {
+        $this->handler_text = $handler_text;
 
         return $this;
     }

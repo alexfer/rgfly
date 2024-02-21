@@ -6,7 +6,6 @@ use App\Entity\MarketPlace\MarketCustomer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,7 +22,6 @@ class CustomerType extends AbstractType
     {
         $builder
             ->add('first_name', TextType::class, [
-                'data' => $options['data']?->getFirstName(),
                 'attr' => [
                     'min' => 3,
                     'max' => 200,
@@ -74,7 +72,6 @@ class CustomerType extends AbstractType
                 ],
             ])
             ->add('last_name', TextType::class, [
-                'data' => $options['data']?->getLastName(),
                 'attr' => [
                     'min' => 2,
                     'max' => 200,
@@ -90,12 +87,6 @@ class CustomerType extends AbstractType
                         'maxMessage' => 'form.last_name.max',
                     ]),
                 ],
-            ])
-            ->add('cash', SubmitType::class, [
-                'label' => 'order.checkout'
-            ])
-            ->add('paypal', SubmitType::class, [
-                'label' => 'form.paypal.checkout'
             ]);
     }
 

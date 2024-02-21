@@ -15,6 +15,11 @@ liip_imagine:
                 thumbnail:
                     size: [ 315, 200 ]
                     mode: outbound
+        market_view:
+            filters:
+                thumbnail:
+                    size: [ 1024, 780 ]
+                    mode: outbound
         user_thumb:
             filters:
                 thumbnail:

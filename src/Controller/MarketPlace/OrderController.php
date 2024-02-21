@@ -2,6 +2,7 @@
 
 namespace App\Controller\MarketPlace;
 
+use App\Entity\MarketPlace\MarketCustomer;
 use App\Entity\MarketPlace\MarketCustomerOrders;
 use App\Entity\MarketPlace\MarketOrders;
 use App\Entity\MarketPlace\MarketOrdersProduct;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route('/market-place/order')]
 class OrderController extends AbstractController
@@ -141,12 +143,14 @@ class OrderController extends AbstractController
 
     /**
      * @param Request $request
+     * @param UserInterface|null $user
      * @param EntityManagerInterface $em
      * @return JsonResponse
      */
     #[Route('/{product}', name: 'app_market_place_product_order', methods: ['POST'])]
     public function order(
         Request                $request,
+        ?UserInterface $user,
         EntityManagerInterface $em,
     ): JsonResponse
     {
@@ -164,6 +168,7 @@ class OrderController extends AbstractController
             $session->start();
         }
 
+        $customer = $em->getRepository(MarketCustomer::class)->findOneBy(['member' => $user]);
         $product = $em->getRepository(MarketProduct::class)->findOneBy(['slug' => $request->get('product')]);
         $market = $product->getMarket();
 
@@ -179,7 +184,6 @@ class OrderController extends AbstractController
         ]);
 
         $productDiscount = $product->getDiscount();
-
         $discount = fn($cost) => $cost - (($cost * $productDiscount) - $productDiscount) / 100;
 
         if (!$order) {
@@ -192,7 +196,7 @@ class OrderController extends AbstractController
             $em->persist($order);
 
             $orderCustomer = new MarketCustomerOrders();
-            $orderCustomer->setOrders($order)->setCustomer(null);
+            $orderCustomer->setOrders($order)->setCustomer($customer);
             $em->persist($orderCustomer);
 
             $orderProducts = new MarketOrdersProduct();

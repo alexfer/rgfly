@@ -13,7 +13,10 @@
                     - {{ order.market.name }}</h4>
                 <div class="row g-2">
                     <div class="col-lg-8 pb-4 mb-3">
-                        {% include 'market_place/checkout/_customer_form.html.twig' %}
+                        {% include 'market_place/checkout/_customer_form.html.twig' with {
+                            'order': order,
+                            'form': form
+                        } %}
                     </div>
                     <div class="col-lg-4 d-none d-lg-block ps-xl-5">
                         <hr class="d-lg-none">
@@ -44,9 +47,9 @@
                                                      width="64" alt="{{ product.product.shortName }}">
                                             {% endif %}
                                         </a>
-                                        <div class="ps-1">
-                                            <h5 class="fw-normal text-truncate w-50">
-                                                <a title="{{ product.product.name }}"
+                                        <div class="ps-1 w-75">
+                                            <h5 class="fw-normal text-truncate">
+                                                <a class="text-truncate" title="{{ product.product.name }}"
                                                    href="{{ path('app_market_place_product', {slug: product.product.slug}) }}">{{ product.product.shortName }}</a>
                                             </h5>
                                             <span class="fs-5 text-muted">

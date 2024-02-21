@@ -2,17 +2,13 @@
     <div class="user-pic">
         {% if app.user.attach %}
             {% set _picture = 'storage/user/picture/' ~ app.user.id ~ '/' ~ app.user.attach.name %}
-            <img class="img-responsive img-rounded" src="{{ asset(_picture) | imagine_filter('user_thumb') }}"
+            <img class="img-thumbnail bg-transparent border-0"
+                 src="{{ asset(_picture) | imagine_filter('user_thumb') }}"
                  alt="{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}">
         {% else %}
-            {% for picture in app.user.userDetails.attach|slice(0, 1) %}
-                {% set _picture = 'storage/user/picture/' ~ app.user.id ~ '/' ~ picture.name %}
-                <img class="img-responsive img-rounded" src="{{ asset(_picture) | imagine_filter('user_thumb') }}"
-                     alt="{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}">
-            {% else %}
-                <img class="img-responsive img-rounded" src="{{ asset('img/user-picture.jpg') }}"
-                     alt="{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}">
-            {% endfor %}
+            <img class="img-thumbnail bg-transparent border-0"  src="{{ asset('img/user-picture.jpg') }}"
+                 alt="{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}">
+
         {% endif %}
     </div>
     <div class="user-info">
@@ -63,7 +59,7 @@
             </a>
             {% if app.user.markets|length == 0 %}
                 <a class="nav-link {{ _route == 'app_dashboard_market_place_create_market' ? 'active' : '' }}"
-                   href="{{ path('app_dashboard_market_place_create_market') }}">
+                   href="{{ path('app_dashboard_market_place_create_market', {tab: 'details'}) }}">
                     <i class="bi bi-arrow-right-short"></i>
                     {{ 'menu.dashboard.create.market'|trans }}
                 </a>

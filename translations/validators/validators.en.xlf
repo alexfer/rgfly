@@ -6,6 +6,10 @@
                 <source>form.name.not_blank</source>
                 <target>The name can't be blank.</target>
             </trans-unit>
+            <trans-unit id="form.currency.not_blank">
+                <source>form.currency.not_blank</source>
+                <target>The currency can't be blank.</target>
+            </trans-unit>
             <trans-unit id="form.short_name.not_blank">
                 <source>form.short_name.not_blank</source>
                 <target>The short name can't be blank.</target>

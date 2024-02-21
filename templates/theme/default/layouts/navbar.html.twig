@@ -47,7 +47,7 @@
                        type="button"
                        aria-controls="shopping-cart">
                         <i class="fa fa-shopping-cart me-1"></i> {{ 'market.product.cart'|trans }}
-                        <span class="position-absolute top-0 start-100 mt-2 translate-middle badge rounded-pill fw-light bg-warning">
+                        <span id="qty" class="position-absolute top-0 start-100 mt-2 translate-middle badge rounded-pill fw-light bg-warning">
                             {{ app.session.get('quantity')|default(0) }}
                             <span class="visually-hidden">{{ app.session.get('quantity')|default(0) }}</span>
                         </span>
@@ -74,10 +74,7 @@
                                 </a>
                             </li>
                         {% else %}
-                            {% if 'ROLE_USER' in app.user.roles %}
-                                <li>
-                                    <h6 class="text-center">{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}</h6>
-                                </li>
+                            {% if 'ROLE_USER' in app.user.roles or 'ROLE_ADMIN' in app.user.roles %}
                                 <li>
                                     <a href="{{ path('app_dashboard') }}" class="dropdown-item">
                                         <i class="bi bi-arrow-right-short me-1"></i>
@@ -93,7 +90,7 @@
                                     </a>
                                 </li>
                             {% endif %}
-                            {% if 'ROLE_CUSTOMER' in app.user.roles %}
+                            {% if 'ROLE_CUSTOMER' in app.user.roles and 'ROLE_ADMIN' not in app.user.roles and 'ROLE_USER' not in app.user.roles %}
                                 <li>
                                     <a href="{{ path('app_cabinet') }}" class="dropdown-item">
                                         <i class="bi bi-arrow-right-short me-1"></i>

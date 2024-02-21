@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route('/market-place/checkout')]
 class CheckoutController extends AbstractController
@@ -20,6 +21,7 @@ class CheckoutController extends AbstractController
 
     /**
      * @param Request $request
+     * @param UserInterface|null $user
      * @param UserPasswordHasherInterface $userPasswordHasher
      * @param EntityManagerInterface $em
      * @return Response
@@ -27,6 +29,7 @@ class CheckoutController extends AbstractController
     #[Route('/{order}', name: 'app_market_place_order_checkout', methods: ['GET', 'POST'])]
     public function checkout(
         Request                     $request,
+        ?UserInterface              $user,
         UserPasswordHasherInterface $userPasswordHasher,
         EntityManagerInterface      $em,
     ): Response
@@ -43,44 +46,55 @@ class CheckoutController extends AbstractController
             $this->redirectToRoute('app_market_place_order_summary');
         }
 
-        $customer = new MarketCustomer();
+        $customer = $em->getRepository(MarketCustomer::class)->findOneBy(['member' => $user]);
+
+        if (!$customer) {
+            $customer = new MarketCustomer();
+        }
 
         $form = $this->createForm(CustomerType::class, $customer);
         $form->handleRequest($request);
+        //$all = $request->request->has('PayPal');
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $checkEmail = $em->getRepository(User::class)->findOneBy(['email' => $form->get('email')->getData()]);
+            if($checkEmail) {
+                $this->addFlash('danger', 'This email already in use');
+                return $this->redirectToRoute('app_market_place_order_checkout', ['order' => $request->get('order')]);
+            }
 
-            $password = substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 8);
-            // rjz7ry8i
-            $session->set('_temp_password', $password);
+            if(!$customer){
 
-            $user = new User();
+                $password = substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 8);
+                $session->set('_temp_password', $password);
 
-            $user->setEmail($form->get('email')->getData())
-                ->setPassword($userPasswordHasher->hashPassword($user, $password));
+                $user = new User();
 
-            $user->setIp($request->getClientIp())->setRoles([User::ROLE_CUSTOMER]);
-            $em->persist($user);
-            $em->flush();
+                $user->setEmail($form->get('email')->getData())
+                    ->setPassword($userPasswordHasher->hashPassword($user, $password));
 
-            $customer->setMember($user);
-            $em->persist($customer);
-            $em->flush();
+                $user->setIp($request->getClientIp())->setRoles([User::ROLE_CUSTOMER]);
+                $em->persist($user);
+                $em->flush();
 
-            $customerOrder = $em->getRepository(MarketCustomerOrders::class)->findOneBy(['orders' => $order]);
+                $customer->setMember($user);
+                $em->persist($customer);
+                $em->flush();
 
-            $customerOrder->setCustomer($customer);
-            $em->persist($customerOrder);
-            $em->flush();
+                $customerOrder = $em->getRepository(MarketCustomerOrders::class)->findOneBy(['orders' => $order]);
 
-            $order->setSession(null)
-                ->setStatus(MarketOrders::STATUS['confirmed']);
+                $customerOrder->setCustomer($customer);
+                $em->persist($customerOrder);
+                $em->flush();
 
-            $em->persist($order);
-            $em->flush();
+                $order->setSession(null)
+                    ->setStatus(MarketOrders::STATUS['confirmed']);
+
+                $em->persist($order);
+                $em->flush();
+            }
 
             $session->remove('orders');
-
 
             // TODO: change it
             if ($form->get('paypal')->isSubmitted()) {

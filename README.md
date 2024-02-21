@@ -36,7 +36,11 @@ Use [Composer](https://getcomposer.org/) install to download and install the pac
 ### 4. Install JavaScript dependencies & Compile scripts
 ```shell
     $ npm install
-    $ npm run dev --watch
+    $ npm run watch
+```
+Build production:
+```shell
+    $ npm run build
 ```
 Code of Conduct
 ============
