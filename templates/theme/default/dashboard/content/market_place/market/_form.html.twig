@@ -12,6 +12,14 @@
 
 {% block content %}
     <hr>
+    {% for message in app.flashes('danger') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
+{#    {% if form.vars %}#}
+{#        <div class="alert alert-danger">{{ 'Please check errors bellow' }}</div>#}
+{#    {% endif %}#}
     {% if app.user.markets|length and not form.vars.data.id %}
         <div class="alert alert-warning">
             <h6 class="text-center py-3">{{ 'dashboard.market.restrict'|trans }}</h6>
@@ -29,16 +37,14 @@
                    aria-selected="true">{{ 'entry.form.market_details'|trans }}
                 </a>
             </li>
-            {% if form.vars.data.id %}
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link border-0 {{ _tab == 'billing' ? 'active' : null }}" id="billing-tab"
-                       data-bs-toggle="tab"
-                       data-bs-target="#billing" type="button" role="tab"
-                       aria-controls="billing"
-                       aria-selected="false">{{ 'entry.form.billing'|trans }}
-                    </a>
-                </li>
-            {% endif %}
+            <li class="nav-item" role="presentation">
+                <a class="nav-link border-0 {{ _tab == 'billing' ? 'active' : null }}" id="billing-tab"
+                   data-bs-toggle="tab"
+                   data-bs-target="#billing" type="button" role="tab"
+                   aria-controls="billing"
+                   aria-selected="false">{{ 'entry.form.billing'|trans }}
+                </a>
+            </li>
             <li class="nav-item" role="presentation">
                 <a class="nav-link border-0 {{ _tab == 'attachments' ? 'active' : null }}" id="attachments-tab"
                    data-bs-toggle="tab"
@@ -118,10 +124,11 @@
                  aria-labelledby="attachments-tab"
                  tabindex="0">
                 <div class="mt-4 p-2">
-                    {% if app.user.markets.first.attach %}
-                        {% set _picture = 'storage/market/logo/' ~ form.vars.data.id ~ '/' ~ app.user.markets.first.attach.name %}
+                    {% if form.vars.data.attach %}
+                        {% set _picture = 'storage/market/logo/' ~ form.vars.data.id ~ '/' ~ form.vars.data.attach.name %}
                         <div class="card card-body mb-2">
-                            <img class="image-grayscale" src="{{ asset(_picture)|imagine_filter('market_view') }}" alt="{{ app.user.markets.first.attach.name }}">
+                            <img class="image-grayscale" src="{{ asset(_picture)|imagine_filter('market_view') }}"
+                                 alt="{{ app.user.markets.first.attach.name }}">
                         </div>
                     {% endif %}
                     <div class="input-group mb-3">

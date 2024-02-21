@@ -93,8 +93,17 @@ class MarketController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
 
-                $market->setOwner($user)
-                    ->setSlug($slugger->slug($form->get('name')->getData())->lower());
+                $markets = $em->getRepository(Market::class)->findBy(['name' => $form->get('name')->getData()]);
+
+                if ($markets) {
+                    $this->addFlash('danger', $translator->trans('slug.unique', [
+                        '%name%' => 'Market name',
+                        '%value%' => $form->get('name')->getData(),
+                    ], 'validators'));
+                    return $this->redirectToRoute('app_dashboard_market_place_create_market', ['tab' => $request->get('tab')]);
+                }
+
+                $market->setOwner($user)->setName($slugger->slug($form->get('name')->getData())->lower());
 
                 $file = $form->get('logo')->getData();
 
@@ -162,6 +171,18 @@ class MarketController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $markets = $em->getRepository(Market::class)->findBy(['name' => $form->get('name')->getData()]);
+
+            if ($markets) {
+                $this->addFlash('danger', $translator->trans('slug.unique', [
+                    '%name%' => 'Market name',
+                    '%value%' => $form->get('name')->getData(),
+                ], 'validators'));
+                return $this->redirectToRoute('app_dashboard_market_place_edit_market', ['id' => $request->get('id'), 'tab' => $request->get('tab')]);
+            }
+
+            $market->setSlug($slugger->slug($form->get('name')->getData())->lower());
 
             $file = $form->get('logo')->getData();
 
