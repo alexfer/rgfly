@@ -9,7 +9,10 @@
         <table class="table table-hover table-borderless mb-0">
             <thead>
             <tr>
-                <th class="text-bg-secondary fw-normal text-center col" scope="col">{{ 'table.header.order_number'|trans }}</th>
+                <th class="text-bg-secondary fw-normal text-center col"
+                    scope="col">{{ 'table.header.order_number'|trans }}</th>
+                <th class="text-bg-secondary fw-normal text-center col"
+                    scope="col">{{ 'table.header.products'|trans }}</th>
                 <th class="text-bg-secondary fw-normal col" scope="col">{{ 'table.header.created_at'|trans }}</th>
                 <th class="text-bg-secondary fw-normal col" scope="col">{{ 'table.header.status'|trans }}</th>
                 <th class="text-bg-secondary fw-normal col" scope="col">{{ 'table.header.total'|trans }}</th>
@@ -21,6 +24,9 @@
                 <tr>
                     <td class="text-center">
                         <a href="#" class="fw-normal">{{ order.number|upper }}</a>
+                    </td>
+                    <td class="text-center">
+                        {{ order.marketOrdersProducts.count }} <small>{{ 'label.form.quantity_pcs'|trans }}</small>
                     </td>
                     <td>{{ order.createdAt|date('D, d M Y H:i') }}</td>
                     <td>{{ order.status }}</td>

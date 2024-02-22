@@ -28,7 +28,7 @@ class OrderController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/{market}', name: 'app_dashboard_market_place_market_order')]
+    #[Route('/{market}', name: 'app_dashboard_market_place_order_market')]
     public function index(
         Request                $request,
         UserInterface          $user,

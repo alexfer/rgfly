@@ -58,8 +58,8 @@
                 {{ 'menu.dashboard.overview'|trans }}
             </a>
             {% if app.user.markets|length %}
-                <a class="nav-link {{ _route == 'app_dashboard_market_place_market_order' ? 'active' : '' }}"
-                   href="{{ path('app_dashboard_market_place_market_order', {market: app.user.markets.first.id}) }}">
+                <a class="nav-link {{ _route == 'app_dashboard_market_place_order_market' ? 'active' : '' }}"
+                   href="{{ path('app_dashboard_market_place_order_market', {market: app.user.markets.first.id}) }}">
                     <i class="bi bi-arrow-right-short"></i>
                     {{ 'menu.dashboard.orders'|trans }}
                 </a>
