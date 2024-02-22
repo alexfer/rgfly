@@ -13,13 +13,18 @@
 {% block content %}
     <hr>
     {% for message in app.flashes('danger') %}
-        <div class="alert alert-danger">
+        <div class="alert alert-danger alert-dismissible" role="alert">
             {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ 'form.action.close'|trans }}"></button>
         </div>
     {% endfor %}
-{#    {% if form.vars %}#}
-{#        <div class="alert alert-danger">{{ 'Please check errors bellow' }}</div>#}
-{#    {% endif %}#}
+    {% if errors.count %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            {{ errors.current.message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ 'form.action.close'|trans }}"></button>
+        </div>
+        <hr class="text-danger"/>
+    {% endif %}
     {% if app.user.markets|length and not form.vars.data.id %}
         <div class="alert alert-warning">
             <h6 class="text-center py-3">{{ 'dashboard.market.restrict'|trans }}</h6>
@@ -28,9 +33,9 @@
         {% set _message = app.flashes('success') %}
         {{ form_start(form, {attr: {class: 'd-tech-form', novalidate: 'novalidate'}}) }}
         {% set _tab = app.request.get('tab') %}
-        <ul class="nav nav-tabs me-2" id="marketTab" role="tablist">
+        <ul class="nav nav-tabs nav-fill me-2" id="marketTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <a class="nav-link border-0 {{ _tab == 'details' ? 'active' : null }}" id="details-tab"
+                <a class="nav-link {{ _tab == 'details' ? 'active' : null }}" id="details-tab"
                    data-bs-toggle="tab"
                    data-bs-target="#details" type="button" role="tab"
                    aria-controls="details"
@@ -38,7 +43,7 @@
                 </a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link border-0 {{ _tab == 'billing' ? 'active' : null }}" id="billing-tab"
+                <a class="nav-link {{ _tab == 'billing' ? 'active' : null }}" id="billing-tab"
                    data-bs-toggle="tab"
                    data-bs-target="#billing" type="button" role="tab"
                    aria-controls="billing"
@@ -46,7 +51,7 @@
                 </a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link border-0 {{ _tab == 'attachments' ? 'active' : null }}" id="attachments-tab"
+                <a class="nav-link {{ _tab == 'attachments' ? 'active' : null }}" id="attachments-tab"
                    data-bs-toggle="tab"
                    data-bs-target="#attachments" type="button" role="tab"
                    aria-controls="attachments"

@@ -176,6 +176,7 @@ class ProductController extends AbstractController
 
         return $this->render('dashboard/content/market_place/product/_form.html.twig', $this->navbar() + [
                 'form' => $form,
+                'errors' => $form->getErrors(true),
                 'product' => $product,
             ]);
     }
@@ -272,6 +273,7 @@ class ProductController extends AbstractController
 
         return $this->render('dashboard/content/market_place/product/_form.html.twig', $this->navbar() + [
                 'form' => $form,
+                'errors' => $form->getErrors(true),
             ]);
     }
 

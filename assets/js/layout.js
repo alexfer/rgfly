@@ -60,7 +60,7 @@ $(() => {
                 setTimeout(() => {
                     form.trigger('reset');
                     $('.modal button[data-bs-dismiss="modal"]').click();
-                }, 2000);
+                }, 700);
 
                 $(owner).append($('<option/>', {
                     value: data.option.id,

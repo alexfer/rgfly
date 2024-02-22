@@ -1,0 +1,38 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% set _title_extend = 'menu.dashboard.orders'|trans %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}{{ _title_extend }}{% endblock %}
+
+{% block content %}
+    <div class="table-responsive card">
+        <table class="table table-hover table-borderless mb-0">
+            <thead>
+            <tr>
+                <th class="text-bg-secondary fw-normal text-center col" scope="col">{{ 'table.header.order_number'|trans }}</th>
+                <th class="text-bg-secondary fw-normal col" scope="col">{{ 'table.header.created_at'|trans }}</th>
+                <th class="text-bg-secondary fw-normal col" scope="col">{{ 'table.header.status'|trans }}</th>
+                <th class="text-bg-secondary fw-normal col" scope="col">{{ 'table.header.total'|trans }}</th>
+                <th class="text-bg-secondary fw-normal col" scope="col">{{ 'table.header.discount'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for order in orders %}
+                <tr>
+                    <td class="text-center">
+                        <a href="#" class="fw-normal">{{ order.number|upper }}</a>
+                    </td>
+                    <td>{{ order.createdAt|date('D, d M Y H:i') }}</td>
+                    <td>{{ order.status }}</td>
+                    <td>{{ order.market.currency|currency }}{{ order.total|number_format(2, ',', '') }}</td>
+                    <td>{{ order.market.currency|currency }}{{ order.discount|number_format(2, ',', '') }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center text-danger bg-grey">{{ 'table.footer.not_found'|trans }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -192,6 +192,10 @@
                 <source>menu.dashboard.overview</source>
                 <target>Overview</target>
             </trans-unit>
+            <trans-unit id="menu.dashboard.orders">
+                <source>menu.dashboard.orders</source>
+                <target>Orders</target>
+            </trans-unit>
             <trans-unit id="menu.dashboard.contacts">
                 <source>menu.dashboard.contacts</source>
                 <target>Contacts</target>
@@ -311,6 +315,18 @@
             <trans-unit id="table.header.id">
                 <source>table.header.id</source>
                 <target>#</target>
+            </trans-unit>
+            <trans-unit id="table.header.order_number">
+                <source>table.header.order_number</source>
+                <target>Order Number</target>
+            </trans-unit>
+            <trans-unit id="table.header.total">
+                <source>table.header.total</source>
+                <target>Total</target>
+            </trans-unit>
+            <trans-unit id="table.header.discount">
+                <source>table.header.discount</source>
+                <target>Discount</target>
             </trans-unit>
             <trans-unit id="table.header.amount">
                 <source>table.header.amount</source>
