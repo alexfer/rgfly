@@ -15,13 +15,15 @@
     {% for message in app.flashes('danger') %}
         <div class="alert alert-danger alert-dismissible" role="alert">
             {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ 'form.action.close'|trans }}"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                    aria-label="{{ 'form.action.close'|trans }}"></button>
         </div>
     {% endfor %}
     {% if errors.count %}
         <div class="alert alert-danger alert-dismissible" role="alert">
             {{ errors.current.message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ 'form.action.close'|trans }}"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                    aria-label="{{ 'form.action.close'|trans }}"></button>
         </div>
         <hr class="text-danger"/>
     {% endif %}
@@ -71,8 +73,16 @@
                         <small class="text-danger">{{ form_errors(form.name) }}</small>
                     </div>
                     <div class="form-group mb-3">
+                        {% set address_error = form.address.vars.errors|length ? 'form-control error' : 'form-control' %}
+                        {{ form_label(form.address, 'label.form.address', {label_attr: {class: 'form-label'}}) }} <span
+                                class="text-danger">*</span>
+                        {{ form_widget(form.address, {attr: {class: address_error, placeholder: 'label.form.address'}}) }}
+                        <small class="text-danger">{{ form_errors(form.address) }}</small>
+                    </div>
+                    <div class="form-group mb-3">
                         {% set phone_error = form.phone.vars.errors|length ? 'form-control error' : 'form-control' %}
-                        {{ form_label(form.phone, 'label.form.phone', {label_attr: {class: 'form-label'}}) }}
+                        {{ form_label(form.phone, 'label.form.phone', {label_attr: {class: 'form-label'}}) }} <span
+                                class="text-danger">*</span>
                         {{ form_widget(form.phone, {attr: {class: phone_error, placeholder: 'label.form.phone'}}) }}
                         <small class="text-danger">{{ form_errors(form.phone) }}</small>
                     </div>

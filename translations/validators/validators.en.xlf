@@ -6,6 +6,10 @@
                 <source>form.name.not_blank</source>
                 <target>The name can't be blank.</target>
             </trans-unit>
+            <trans-unit id="form.address.not_blank">
+                <source>form.address.not_blank</source>
+                <target>The address can't be blank.</target>
+            </trans-unit>
             <trans-unit id="form.currency.not_blank">
                 <source>form.currency.not_blank</source>
                 <target>The currency can't be blank.</target>
@@ -49,6 +53,14 @@
             <trans-unit id="form.sku.max">
                 <source>form.sku.max</source>
                 <target>Your SKU is too long. It should have {{ limit }} characters or less.</target>
+            </trans-unit>
+            <trans-unit id="form.address.min">
+                <source>form.address.min</source>
+                <target>Your address is too short. It should have {{ limit }} characters or more.</target>
+            </trans-unit>
+            <trans-unit id="form.address.max">
+                <source>form.address.max</source>
+                <target>Your address is too long. It should have {{ limit }} characters or less.</target>
             </trans-unit>
             <trans-unit id="form.quantity.min">
                 <source>form.quantity.min</source>
@@ -113,6 +125,10 @@
             <trans-unit id="form.last_name.max">
                 <source>form.last_name.max</source>
                 <target>The last name is too long. It should have {{ limit }} characters or less.</target>
+            </trans-unit>
+            <trans-unit id="form.phone.not_blank">
+                <source>form.phone.not_blank</source>
+                <target>The phone can't be blank.</target>
             </trans-unit>
             <trans-unit id="form.phone.not_valid">
                 <source>form.phone.not_valid</source>

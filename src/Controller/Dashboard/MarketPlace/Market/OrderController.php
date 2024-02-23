@@ -46,4 +46,22 @@ class OrderController extends AbstractController
                 'orders' => $orders,
             ]);
     }
+
+    #[Route('/{market}/{number}', name: 'app_dashboard_market_place_order_details_market')]
+    public function details(
+        Request                $request,
+        MarketOrders           $order,
+        UserInterface          $user,
+        EntityManagerInterface $em,
+    ): Response
+    {
+        $market = $this->market($request, $user, $em);
+        $currency = Currency::currency($market->getCurrency());
+
+        return $this->render('dashboard/content/market_place/order/order.html.twig', $this->navbar() + [
+                'market' => $market,
+                'currency' => $currency,
+                'order' => $order,
+            ]);
+    }
 }

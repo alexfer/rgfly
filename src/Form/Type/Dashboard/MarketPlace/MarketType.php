@@ -68,6 +68,23 @@ class MarketType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('address', TextType::class, [
+                'attr' => [
+                    'min' => 3,
+                    'max' => 250,
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'form.address.not_blank',
+                    ]),
+                    new Length([
+                        'min' => 3,
+                        'minMessage' => 'form.address.min',
+                        'max' => 250,
+                        'maxMessage' => 'form.address.max',
+                    ]),
+                ],
+            ])
             ->add('gateway', ChoiceType::class, [
                 'mapped' => false,
                 'required' => true,
@@ -98,6 +115,9 @@ class MarketType extends AbstractType
                     'pattern' => "[+0-9]+$",
                 ],
                 'constraints' => [
+                    new NotBlank([
+                        'message' => 'form.phone.not_blank',
+                    ]),
                     new Regex([
                         'pattern' => "/[+0-9]+$/i",
                         'message' => 'form.phone.not_valid',
