@@ -405,8 +405,8 @@
                 <target>Requested</target>
             </trans-unit>
             <trans-unit id="table.header.planned_delivered_at">
-                <source>table.header.planned_delivered_at</source>
-                <target>Planned Delivered</target>
+                <source>table.header.planned_delivery_at</source>
+                <target>Planned Delivery</target>
             </trans-unit>
             <trans-unit id="table.header.author">
                 <source>table.header.author</source>

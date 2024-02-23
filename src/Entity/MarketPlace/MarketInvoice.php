@@ -28,15 +28,14 @@ class MarketInvoice
     #[ORM\Column]
     private ?float $amount = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?MarketPaymentGateway $payment_gateway = null;
+
     #[ORM\Column]
     private ?DateTimeImmutable $created_at;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $paid_at = null;
-
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?MarketPaymentGateway $payment_gateway = null;
-
 
     public function __construct()
     {

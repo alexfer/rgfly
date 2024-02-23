@@ -46,21 +46,12 @@
                 </h3>
                 <div class="accordion-collapse collapse {% if loop.first %}show{% endif %}"
                      id="gateway-{{ key }}" data-bs-parent="#payment-method" role="tabpanel">
-{#                    <div class="accordion-body">#}
-{#                        <p>#}
-{#                            {% if gateway.gateway.name == 'PayPal' %}<span#}
-{#                                    class="fw-medium">{{ 'form.paypal'|trans }}</span> - {% endif %}#}
-{#                            {{ gateway.gateway.translationId|trans }}#}
-{#                        </p>#}
-{#                        {% if gateway.gateway.name == 'PayPal' %}#}
-{#                            {{ form_widget(form.paypal, {attr: {class: 'btn btn-danger rounded-1'}}) }}#}
-{#                        {% endif %}#}
-{#                        {% if gateway.gateway.name == 'Cash on delivery' %}#}
-{#                            {{ form_widget(form.cash, {attr: {class: 'btn btn-danger rounded-1'}}) }}#}
-{#                        {% endif %}#}
-{#                    </div>#}
                     <div class="accordion-body">
-                         <button type="submit" name="{{ gateway.gateway.slug }}"  class="btn btn-danger rounded-1">{{ gateway.gateway.handlerText }}</button>
+                        <div class="mb-2">{{ gateway.gateway.summary }}</div>
+                        <button type="submit" name="gateway[{{ gateway.gateway.slug }}]"
+                                class="btn btn-danger rounded-1">
+                            {{ gateway.gateway.handlerText }}
+                        </button>
                     </div>
                 </div>
             </div>
