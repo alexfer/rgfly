@@ -2,12 +2,14 @@
 
 namespace App\Controller\MarketPlace;
 
+use App\Entity\MarketPlace\MarketAddress;
 use App\Entity\MarketPlace\MarketCustomer;
 use App\Entity\MarketPlace\MarketCustomerOrders;
 use App\Entity\MarketPlace\MarketInvoice;
 use App\Entity\MarketPlace\MarketOrders;
 use App\Entity\MarketPlace\MarketPaymentGateway;
 use App\Entity\User;
+use App\Form\Type\MarketPlace\AddressType;
 use App\Form\Type\MarketPlace\CustomerType;
 use App\Helper\MarketPlace\MarketPlaceHelper;
 use Doctrine\ORM\EntityManagerInterface;
@@ -54,8 +56,12 @@ class CheckoutController extends AbstractController
         if (!$userCustomer) {
             $customer = new MarketCustomer();
             $form = $this->createForm(CustomerType::class, $customer);
+            $address = new MarketAddress();
+            $formAddress = $this->createForm(AddressType::class, $address);
         } else {
             $form = $this->createForm(CustomerType::class, $userCustomer);
+            $address = $userCustomer->getMember()->getMarketAddresses()->first();
+            $formAddress = $this->createForm(AddressType::class, $address);
         }
 
         $form->handleRequest($request);

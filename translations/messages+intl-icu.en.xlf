@@ -1418,6 +1418,14 @@
                 <source>customer.cabinet.personal_information</source>
                 <target>Personal information</target>
             </trans-unit>
+            <trans-unit id="customer.cabinet.address">
+                <source>customer.cabinet.address</source>
+                <target>Address</target>
+            </trans-unit>
+            <trans-unit id="customer.cabinet.delivery_address">
+                <source>customer.cabinet.delivery_address</source>
+                <target>Delivery Address</target>
+            </trans-unit>
             <trans-unit id="customer.cabinet.orders">
                 <source>customer.cabinet.orders</source>
                 <target>Orders</target>
