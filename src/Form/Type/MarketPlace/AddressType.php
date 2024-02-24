@@ -27,6 +27,7 @@ class AddressType extends AbstractType
     {
         $builder
             ->add('line1', TextType::class, [
+                'mapped' => false,
                 'attr' => [
                     'min' => 10,
                     'max' => 250,
@@ -44,6 +45,7 @@ class AddressType extends AbstractType
                 ],
             ])
             ->add('line2', TextType::class, [
+                'mapped' => false,
                 'required' => false,
                 'attr' => [
                     'min' => 10,
@@ -59,6 +61,7 @@ class AddressType extends AbstractType
                 ],
             ])
             ->add('country', ChoiceType::class, [
+                'mapped' => false,
                 'placeholder' => 'form.country.placeholder',
                 'label' => 'label.country',
                 'required' => true,
@@ -67,6 +70,7 @@ class AddressType extends AbstractType
                 'choices' => array_flip(Countries::getNames(Locale::getDefault())),
             ])
             ->add('city', TextType::class, [
+                'mapped' => false,
                 'attr' => [
                     'min' => 10,
                     'max' => 250,
@@ -84,6 +88,7 @@ class AddressType extends AbstractType
                 ],
             ])
             ->add('region', TextType::class, [
+                'mapped' => false,
                 'required' => false,
                 'attr' => [
                     'min' => 3,
@@ -99,6 +104,7 @@ class AddressType extends AbstractType
                 ],
             ])
             ->add('postal', TextType::class, [
+                'mapped' => false,
                 'required' => false,
                 'attr' => [
                     'min' => 5,
@@ -117,6 +123,7 @@ class AddressType extends AbstractType
                 ],
             ])
             ->add('phone', TelType::class, [
+                'mapped' => false,
                 'required' => false,
                 'attr' => [
                     'pattern' => "[+0-9]+$",

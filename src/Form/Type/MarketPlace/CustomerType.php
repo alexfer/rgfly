@@ -105,4 +105,9 @@ class CustomerType extends AbstractType
             'data_class' => MarketCustomer::class,
         ]);
     }
+
+    public function getParent()
+    {
+        return AddressType::class;
+    }
 }

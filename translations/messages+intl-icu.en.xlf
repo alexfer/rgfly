@@ -472,6 +472,18 @@
                 <source>form.last_name.invalid</source>
                 <target>Please enter your last name</target>
             </trans-unit>
+            <trans-unit id="form.address.invalid">
+                <source>form.address.invalid</source>
+                <target>Please enter your address</target>
+            </trans-unit>
+            <trans-unit id="form.city.invalid">
+                <source>form.city.invalid</source>
+                <target>Please enter your city</target>
+            </trans-unit>
+            <trans-unit id="form.postal.invalid">
+                <source>form.postal.invalid</source>
+                <target>Please enter your Zip/Postal code</target>
+            </trans-unit>
             <trans-unit id="form.email.invalid">
                 <source>form.email.invalid</source>
                 <target>Please enter valid email address</target>
@@ -1054,6 +1066,10 @@
                 <source>label.form.city</source>
                 <target>Your City</target>
             </trans-unit>
+            <trans-unit id="label.form.postal">
+                <source>label.form.postal</source>
+                <target>Your Zip/Postal code</target>
+            </trans-unit>
             <trans-unit id="form.agree_terms.help">
                 <source>form.agree_terms.help</source>
                 <target>
@@ -1091,6 +1107,14 @@
             <trans-unit id="label.form.address">
                 <source>label.form.address</source>
                 <target>Your address</target>
+            </trans-unit>
+            <trans-unit id="label.form.address_line_1">
+                <source>label.form.address_line_1</source>
+                <target>Address line 1</target>
+            </trans-unit>
+            <trans-unit id="label.form.address_line_2">
+                <source>label.form.address_line_2</source>
+                <target>Address line 2</target>
             </trans-unit>
             <trans-unit id="label.form.website">
                 <source>label.form.website</source>

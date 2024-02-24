@@ -57,11 +57,11 @@ class CheckoutController extends AbstractController
             $customer = new MarketCustomer();
             $form = $this->createForm(CustomerType::class, $customer);
             $address = new MarketAddress();
-            $formAddress = $this->createForm(AddressType::class, $address);
+//            $formAddress = $this->createForm(AddressType::class, $address);
         } else {
-            $form = $this->createForm(CustomerType::class, $userCustomer);
-            $address = $userCustomer->getMember()->getMarketAddresses()->first();
-            $formAddress = $this->createForm(AddressType::class, $address);
+//            $form = $this->createForm(CustomerType::class, $userCustomer);
+//            $address = $userCustomer->getMember()->getMarketAddresses()->first();
+//            $formAddress = $this->createForm(AddressType::class, $address);
         }
 
         $form->handleRequest($request);
