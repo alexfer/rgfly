@@ -158,7 +158,7 @@
         <div class="form-group text-center mb-3">
             {{ form_widget(form.save, { label: form.vars.data.id ? 'form.action.update' : 'form.action.save'}) }}
             <a type="button" href="{{ url('app_dashboard_market_place_market') }}"
-               class="btn btn-secondary shadow">{{ 'form.action.back'|trans }}</a>
+               class="btn btn-secondary rounded-1 shadow-sm">{{ 'form.action.back'|trans }}</a>
         </div>
         {{ form_end(form) }}
     {% endif %}

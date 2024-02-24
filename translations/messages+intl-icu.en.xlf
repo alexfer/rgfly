@@ -1340,6 +1340,14 @@
                 <source>product.billing</source>
                 <target>Billing</target>
             </trans-unit>
+            <trans-unit id="product.unavailable">
+                <source>product.unavailable</source>
+                <target>Your marketplace has been deleted. Your products unavailable.</target>
+            </trans-unit>
+            <trans-unit id="product.attachments.available">
+                <source>product.attachments.available</source>
+                <target>The attachments will available after the product has created.</target>
+            </trans-unit>
             <trans-unit id="product.details.short">
                 <source>product.details.short</source>
                 <target>Details</target>

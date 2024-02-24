@@ -51,7 +51,7 @@ class ChangePasswordProfileType extends AbstractType
         ])
             ->add('change', SubmitType::class, [
                 'attr' => [
-                    'class' => 'btn btn-primary',
+                    'class' => 'btn btn-primary rounded-1 shadow-sm',
                 ],
             ]);
     }

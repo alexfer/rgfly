@@ -51,7 +51,7 @@ class SupplerType extends AbstractType
             ])
             ->add('save', SubmitType::class, [
                 'attr' => [
-                    'class' => 'btn btn-primary shadow',
+                    'class' => 'btn btn-primary rounded-1 shadow-sm',
                 ],
             ]);
     }
