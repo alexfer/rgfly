@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\MarketPlace\Market;
+use App\Entity\MarketPlace\MarketAddress;
 use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -51,9 +52,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Market::class)]
     private Collection $markets;
 
-    final public const ROLE_USER = 'ROLE_USER';
-    final public const ROLE_ADMIN = 'ROLE_ADMIN';
-    final public const ROLE_CUSTOMER = 'ROLE_CUSTOMER';
+    final public const string ROLE_USER = 'ROLE_USER';
+
+    final public const string ROLE_ADMIN = 'ROLE_ADMIN';
+    final public const string ROLE_CUSTOMER = 'ROLE_CUSTOMER';
 
     public function __construct()
     {
@@ -291,6 +293,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->markets;
     }
 
+    /**
+     * @param Market $market
+     * @return $this
+     */
     public function addMarket(Market $market): static
     {
         if (!$this->markets->contains($market)) {
@@ -301,6 +307,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @param Market $market
+     * @return $this
+     */
     public function removeMarket(Market $market): static
     {
         if ($this->markets->removeElement($market)) {
@@ -312,4 +322,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
 }

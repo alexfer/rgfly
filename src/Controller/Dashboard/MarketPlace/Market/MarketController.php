@@ -142,6 +142,7 @@ class MarketController extends AbstractController
 
         return $this->render('dashboard/content/market_place/market/_form.html.twig', $this->navbar() + [
                 'form' => $form,
+                'errors' => $form->getErrors(true),
             ]);
     }
 
@@ -171,19 +172,6 @@ class MarketController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $markets = $em->getRepository(Market::class)->findBy(['name' => $form->get('name')->getData()]);
-
-            if ($markets) {
-                $this->addFlash('danger', $translator->trans('slug.unique', [
-                    '%name%' => $translator->trans('label.form.market_name'),
-                    '%value%' => $form->get('name')->getData(),
-                ], 'validators'));
-                return $this->redirectToRoute('app_dashboard_market_place_edit_market', ['id' => $request->get('id'), 'tab' => $request->get('tab')]);
-            }
-
-            $market->setSlug($slugger->slug($form->get('name')->getData())->lower());
-
             $file = $form->get('logo')->getData();
 
             if ($file) {
@@ -249,6 +237,7 @@ class MarketController extends AbstractController
 
         return $this->render('dashboard/content/market_place/market/_form.html.twig', $this->navbar() + [
                 'form' => $form,
+                'errors' => $form->getErrors(true),
             ]);
     }
 

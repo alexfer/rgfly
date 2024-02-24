@@ -10,44 +10,45 @@
 
 {% block content %}
     {% set _message = app.flashes('success') %}
-    {% if form_errors(form) %}
-        <div class="alert alert-danger">
-            {{ form_errors(form) }}
+    {% if errors.count %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            {{ errors.current.message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ 'form.action.close'|trans }}"></button>
         </div>
     {% endif %}
     {{ form_start(form, {attr: {class: 'd-tech-form', novalidate: 'novalidate'}}) }}
     {% set _tab = app.request.get('tab') %}
-    <ul class="nav nav-tabs me-2" id="productTab" role="tablist">
+    <ul class="nav nav-tabs nav-fill me-2" id="productTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <a class="nav-link border-0 {{ _tab == 'details' ? 'active' : null }}"
+            <a class="nav-link {{ _tab == 'details' ? 'active' : null }}"
                id="description-tab" data-bs-toggle="tab"
                data-bs-target="#details" type="button" role="tab" aria-controls="details"
                aria-selected="false">{{ 'product.details'|trans }}
             </a>
         </li>
         <li class="nav-item" role="presentation">
-            <a class="nav-link border-0 {{ _tab == 'billing' ? 'active' : null }}"
+            <a class="nav-link {{ _tab == 'billing' ? 'active' : null }}"
                id="billing-tab" data-bs-toggle="tab" data-bs-target="#billing"
                type="button" role="tab" aria-controls="billing"
                aria-selected="false">{{ 'product.billing'|trans }}
             </a>
         </li>
         <li class="nav-item" role="presentation">
-            <a class="nav-link border-0 {{ _tab == 'categories' ? 'active' : null }}"
+            <a class="nav-link {{ _tab == 'categories' ? 'active' : null }}"
                id="categories-tab" data-bs-toggle="tab" data-bs-target="#categories"
                type="button" role="tab" aria-controls="categories"
                aria-selected="false">{{ 'entry.form.categories'|trans }}
             </a>
         </li>
         <li class="nav-item" role="presentation">
-            <a class="nav-link border-0 {{ _tab == 'attributes' ? 'active' : null }}"
+            <a class="nav-link {{ _tab == 'attributes' ? 'active' : null }}"
                id="attributes-tab" data-bs-toggle="tab" data-bs-target="#attributes"
                type="button" role="tab" aria-controls="attributes"
                aria-selected="false">{{ 'market.attributes'|trans }}
             </a>
         </li>
         <li class="nav-item" role="presentation">
-            <a class="nav-link border-0 {{ _tab == 'attachments' ? 'active' : null }}"
+            <a class="nav-link {{ _tab == 'attachments' ? 'active' : null }}"
                id="attachments-tab"
                data-bs-toggle="tab" data-bs-target="#attachments"
                type="button" role="tab" aria-controls="attachments"

@@ -2,11 +2,16 @@
 
 namespace App\Controller\MarketPlace;
 
+use App\Entity\MarketPlace\MarketAddress;
 use App\Entity\MarketPlace\MarketCustomer;
 use App\Entity\MarketPlace\MarketCustomerOrders;
+use App\Entity\MarketPlace\MarketInvoice;
 use App\Entity\MarketPlace\MarketOrders;
+use App\Entity\MarketPlace\MarketPaymentGateway;
 use App\Entity\User;
+use App\Form\Type\MarketPlace\AddressType;
 use App\Form\Type\MarketPlace\CustomerType;
+use App\Helper\MarketPlace\MarketPlaceHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,24 +51,29 @@ class CheckoutController extends AbstractController
             $this->redirectToRoute('app_market_place_order_summary');
         }
 
-        $customer = $em->getRepository(MarketCustomer::class)->findOneBy(['member' => $user]);
+        $userCustomer = $em->getRepository(MarketCustomer::class)->findOneBy(['member' => $user]);
 
-        if (!$customer) {
+        if (!$userCustomer) {
             $customer = new MarketCustomer();
+            $form = $this->createForm(CustomerType::class, $customer);
+            $address = new MarketAddress();
+            $formAddress = $this->createForm(AddressType::class, $address);
+        } else {
+            $form = $this->createForm(CustomerType::class, $userCustomer);
+            $address = $userCustomer->getMember()->getMarketAddresses()->first();
+            $formAddress = $this->createForm(AddressType::class, $address);
         }
 
-        $form = $this->createForm(CustomerType::class, $customer);
         $form->handleRequest($request);
-        //$all = $request->request->has('PayPal');
 
         if ($form->isSubmitted() && $form->isValid()) {
             $checkEmail = $em->getRepository(User::class)->findOneBy(['email' => $form->get('email')->getData()]);
-            if($checkEmail) {
+
+            if ($checkEmail) {
                 $this->addFlash('danger', 'This email already in use');
                 return $this->redirectToRoute('app_market_place_order_checkout', ['order' => $request->get('order')]);
             }
-
-            if(!$customer){
+            if (!$userCustomer) {
 
                 $password = substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 8);
                 $session->set('_temp_password', $password);
@@ -90,20 +100,27 @@ class CheckoutController extends AbstractController
                 $order->setSession(null)
                     ->setStatus(MarketOrders::STATUS['confirmed']);
 
+                $paymentGateway = $em->getRepository(MarketPaymentGateway::class)->findOneBy([
+                    'slug' => key($request->request->all('gateway')),
+                ]);
+
+                $invoice = new MarketInvoice();
+
+                $invoice->setOrders($order)
+                    ->setPaymentGateway($paymentGateway)
+                    ->setNumber(MarketPlaceHelper::slug($order->getId(), 6, 'i'))
+                    ->setAmount($order->getTotal())
+                    ->setTax(0);
+
+                $em->persist($invoice);
                 $em->persist($order);
                 $em->flush();
             }
 
+            $session->set('quantity', 0);
             $session->remove('orders');
 
-            // TODO: change it
-            if ($form->get('paypal')->isSubmitted()) {
-                return $this->redirectToRoute('app_market_place_order_paypal_success', ['order' => $order->getNumber()]);
-            }
-
-            if ($form->get('cash')->isSubmitted()) {
-                return $this->redirectToRoute('app_market_place_order_success', ['order' => $order->getNumber()]);
-            }
+            return $this->redirectToRoute('app_market_place_order_success', ['order' => $order->getNumber()]);
         }
 
         return $this->render('market_place/checkout/index.html.twig', [
@@ -129,23 +146,4 @@ class CheckoutController extends AbstractController
             'order' => $order,
         ]);
     }
-
-    /**
-     * @param Request $request
-     * @param EntityManagerInterface $em
-     * @return Response
-     */
-    #[Route('/paypal-success/{order}', name: 'app_market_place_order_paypal_success', methods: ['GET'])]
-    public function paypalSuccess(
-        Request                $request,
-        EntityManagerInterface $em,
-    ): Response
-    {
-        $order = $request->get('order');
-
-        return $this->render('market_place/checkout/paypal_success.html.twig', [
-            'order' => $order,
-        ]);
-    }
-
 }

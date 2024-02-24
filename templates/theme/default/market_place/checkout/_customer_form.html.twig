@@ -3,6 +3,20 @@
         {{ message }}
     </div>
 {% endfor %}
+<ul class="nav nav-tabs border-bottom customer-info mt-lg-2" id="info" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link text-secondary border-0 fs-6 active" id="customer-tab" data-bs-toggle="tab"
+                data-bs-target="#customer-info"
+                type="button" role="tab" aria-controls="customer-info"
+                aria-selected="true">{{ 'customer.cabinet.personal_information'|trans }}</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link text-secondary border-0 fs-6" id="product-info-tab" data-bs-toggle="tab"
+                data-bs-target="#product-info"
+                type="button" role="tab" aria-controls="product-info"
+                aria-selected="false">{{ 'customer.cabinet.delivery_address'|trans }}</button>
+    </li>
+</ul>
 <div class="pt-2 px-2 pe-lg-0">
     <h2 class="h6 border-bottom pb-3 mb-3">{{ 'product.billing'|trans }}</h2>
     {{ form_start(form, {attr: {class: 'needs-validation', novalidate: ''}}) }}
@@ -46,21 +60,12 @@
                 </h3>
                 <div class="accordion-collapse collapse {% if loop.first %}show{% endif %}"
                      id="gateway-{{ key }}" data-bs-parent="#payment-method" role="tabpanel">
-{#                    <div class="accordion-body">#}
-{#                        <p>#}
-{#                            {% if gateway.gateway.name == 'PayPal' %}<span#}
-{#                                    class="fw-medium">{{ 'form.paypal'|trans }}</span> - {% endif %}#}
-{#                            {{ gateway.gateway.translationId|trans }}#}
-{#                        </p>#}
-{#                        {% if gateway.gateway.name == 'PayPal' %}#}
-{#                            {{ form_widget(form.paypal, {attr: {class: 'btn btn-danger rounded-1'}}) }}#}
-{#                        {% endif %}#}
-{#                        {% if gateway.gateway.name == 'Cash on delivery' %}#}
-{#                            {{ form_widget(form.cash, {attr: {class: 'btn btn-danger rounded-1'}}) }}#}
-{#                        {% endif %}#}
-{#                    </div>#}
                     <div class="accordion-body">
-                         <button type="submit" name="{{ gateway.gateway.slug }}"  class="btn btn-danger rounded-1">{{ gateway.gateway.handlerText }}</button>
+                        <div class="mb-2">{{ gateway.gateway.summary }}</div>
+                        <button type="submit" name="gateway[{{ gateway.gateway.slug }}]"
+                                class="btn btn-danger rounded-1">
+                            {{ gateway.gateway.handlerText }}
+                        </button>
                     </div>
                 </div>
             </div>

@@ -49,6 +49,9 @@ class MarketCustomer
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: MarketCustomerMessage::class)]
     private Collection $marketCustomerMessages;
 
+    #[ORM\OneToOne(mappedBy: 'customer', cascade: ['persist', 'remove'])]
+    private ?MarketAddress $marketAddress = null;
+
     public function __construct()
     {
         $this->created_at = new DateTimeImmutable();
@@ -221,6 +224,28 @@ class MarketCustomer
     public function setEmail(?string $email): static
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getMarketAddress(): ?MarketAddress
+    {
+        return $this->marketAddress;
+    }
+
+    public function setMarketAddress(?MarketAddress $marketAddress): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($marketAddress === null && $this->marketAddress !== null) {
+            $this->marketAddress->setCustomer(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($marketAddress !== null && $marketAddress->getCustomer() !== $this) {
+            $marketAddress->setCustomer($this);
+        }
+
+        $this->marketAddress = $marketAddress;
 
         return $this;
     }

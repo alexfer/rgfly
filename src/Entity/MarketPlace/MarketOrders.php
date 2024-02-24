@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: MarketOrdersRepository::class)]
 class MarketOrders
 {
-    const  STATUS = [
+    const array STATUS = [
         'delivered' => 'delivered',
         'unreached' => 'unreached',
         'paid' => 'paid',
@@ -45,6 +45,12 @@ class MarketOrders
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0', nullable: true)]
     private ?string $discount = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $session = null;
+
+    #[ORM\Column(length: 100)]
+    private ?string $status;
+
     #[ORM\Column]
     private ?DateTimeImmutable $created_at;
 
@@ -56,12 +62,6 @@ class MarketOrders
 
     #[ORM\OneToMany(mappedBy: 'orders', targetEntity: MarketOrdersProduct::class)]
     private Collection $marketOrdersProducts;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $session = null;
-
-    #[ORM\Column(length: 100)]
-    private ?string $status;
 
     #[ORM\OneToMany(mappedBy: 'orders', targetEntity: MarketCustomerOrders::class)]
     private Collection $marketCustomerOrders;

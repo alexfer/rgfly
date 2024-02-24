@@ -192,6 +192,14 @@
                 <source>menu.dashboard.overview</source>
                 <target>Overview</target>
             </trans-unit>
+            <trans-unit id="menu.dashboard.orders">
+                <source>menu.dashboard.orders</source>
+                <target>Orders</target>
+            </trans-unit>
+            <trans-unit id="menu.dashboard.order">
+                <source>menu.dashboard.order</source>
+                <target>Order</target>
+            </trans-unit>
             <trans-unit id="menu.dashboard.contacts">
                 <source>menu.dashboard.contacts</source>
                 <target>Contacts</target>
@@ -312,6 +320,26 @@
                 <source>table.header.id</source>
                 <target>#</target>
             </trans-unit>
+            <trans-unit id="table.header.code">
+                <source>table.header.code</source>
+                <target>Code</target>
+            </trans-unit>
+            <trans-unit id="table.header.order_number">
+                <source>table.header.order_number</source>
+                <target>Order number</target>
+            </trans-unit>
+            <trans-unit id="table.header.payment_type">
+                <source>table.header.payment_type</source>
+                <target>Payment type</target>
+            </trans-unit>
+            <trans-unit id="table.header.total">
+                <source>table.header.total</source>
+                <target>Total</target>
+            </trans-unit>
+            <trans-unit id="table.header.discount">
+                <source>table.header.discount</source>
+                <target>Discount</target>
+            </trans-unit>
             <trans-unit id="table.header.amount">
                 <source>table.header.amount</source>
                 <target>Amount</target>
@@ -371,6 +399,14 @@
             <trans-unit id="table.header.created_at">
                 <source>table.header.created_at</source>
                 <target>Created</target>
+            </trans-unit>
+            <trans-unit id="table.header.requested_at">
+                <source>table.header.requested_at</source>
+                <target>Requested</target>
+            </trans-unit>
+            <trans-unit id="table.header.planned_delivered_at">
+                <source>table.header.planned_delivery_at</source>
+                <target>Planned Delivery</target>
             </trans-unit>
             <trans-unit id="table.header.author">
                 <source>table.header.author</source>
@@ -1052,6 +1088,10 @@
                 <source>label.form.phone</source>
                 <target>Your phone number</target>
             </trans-unit>
+            <trans-unit id="label.form.address">
+                <source>label.form.address</source>
+                <target>Your address</target>
+            </trans-unit>
             <trans-unit id="label.form.website">
                 <source>label.form.website</source>
                 <target>Website</target>
@@ -1358,6 +1398,18 @@
                 <source>customer.cabinet</source>
                 <target>Your cabinet</target>
             </trans-unit>
+            <trans-unit id="customer.header">
+                <source>customer.header</source>
+                <target>Customer</target>
+            </trans-unit>
+            <trans-unit id="customer.name">
+                <source>customer.name</source>
+                <target>Name</target>
+            </trans-unit>
+            <trans-unit id="customer.phone">
+                <source>customer.phone</source>
+                <target>Phone</target>
+            </trans-unit>
             <trans-unit id="title.customer.cabinet">
                 <source>title.customer.cabinet</source>
                 <target>Cabinet</target>
@@ -1365,6 +1417,14 @@
             <trans-unit id="customer.cabinet.personal_information">
                 <source>customer.cabinet.personal_information</source>
                 <target>Personal information</target>
+            </trans-unit>
+            <trans-unit id="customer.cabinet.address">
+                <source>customer.cabinet.address</source>
+                <target>Address</target>
+            </trans-unit>
+            <trans-unit id="customer.cabinet.delivery_address">
+                <source>customer.cabinet.delivery_address</source>
+                <target>Delivery Address</target>
             </trans-unit>
             <trans-unit id="customer.cabinet.orders">
                 <source>customer.cabinet.orders</source>

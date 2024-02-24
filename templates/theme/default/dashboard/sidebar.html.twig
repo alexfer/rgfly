@@ -6,7 +6,7 @@
                  src="{{ asset(_picture) | imagine_filter('user_thumb') }}"
                  alt="{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}">
         {% else %}
-            <img class="img-thumbnail bg-transparent border-0"  src="{{ asset('img/user-picture.jpg') }}"
+            <img class="img-thumbnail bg-transparent border-0" src="{{ asset('img/user-picture.jpg') }}"
                  alt="{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}">
 
         {% endif %}
@@ -57,6 +57,13 @@
                 <i class="bi bi-arrow-right-short"></i>
                 {{ 'menu.dashboard.overview'|trans }}
             </a>
+            {% if app.user.markets|length %}
+                <a class="nav-link {{ _route == 'app_dashboard_market_place_order_market' ? 'active' : '' }}"
+                   href="{{ path('app_dashboard_market_place_order_market', {market: app.user.markets.first.id}) }}">
+                    <i class="bi bi-arrow-right-short"></i>
+                    {{ 'menu.dashboard.orders'|trans }}
+                </a>
+            {% endif %}
             {% if app.user.markets|length == 0 %}
                 <a class="nav-link {{ _route == 'app_dashboard_market_place_create_market' ? 'active' : '' }}"
                    href="{{ path('app_dashboard_market_place_create_market', {tab: 'details'}) }}">

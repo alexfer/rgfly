@@ -1,6 +1,7 @@
 #!/bin/bash
 
-rm -rfv migrations/*
+rm -rfv src/Migrations/migrations/*
+touch src/Migrations/.gitkeep
 
 php bin/console doctrine:database:drop --if-exists --force
 php bin/console doctrine:database:create
