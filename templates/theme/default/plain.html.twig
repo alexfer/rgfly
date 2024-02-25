@@ -9,7 +9,7 @@
     {% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 <div class="preloader">
     <div class="position-absolute justify-content-between top-50 start-50">
         <div class="lds-spinner">
@@ -35,6 +35,7 @@
 </footer>
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
+    {{ encore_entry_script_tags('market-js') }}
 {% endblock %}
 </body>
 </html>

@@ -2,11 +2,9 @@
 
 namespace App\Controller\Security;
 
-use App\Entity\{
-    User,
-    UserDetails,
-    UserSocial,
-};
+use App\Form\Type\MarketPlace\CustomerRegistrationType;
+use App\Form\Type\MarketPlace\CustomerType;
+use App\Entity\{MarketPlace\MarketCustomer, User, UserDetails, UserSocial};
 use App\Form\Type\User\DetailsType;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
@@ -23,6 +21,29 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class RegistrationController extends AbstractController
 {
+
+
+    #[Route('/customer', name: 'app_customer_register', methods: ['GET', 'POST'])]
+    public function customerRegister(
+        Request                     $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        EntityManagerInterface      $em,
+        ParameterBagInterface       $params,
+    ): Response
+    {
+        $customer = new MarketCustomer();
+
+        $form = $this->createForm(CustomerRegistrationType::class, $customer);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+        }
+
+        return $this->render('registration/customer_register.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
 
     /**
      * @param Request $request

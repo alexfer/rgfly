@@ -18,7 +18,8 @@
             <trans-unit id="http_error.suggestion">
                 <source>http_error.suggestion</source>
                 <target>
-                    <![CDATA[Try loading this page again in some minutes or go back to the <a cass="link" href="{ url }">Homepage</a>.]]></target>
+                    <![CDATA[Try loading this page again in some minutes or go back to the <a cass="link" href="{ url }">Homepage</a>.]]>
+                </target>
             </trans-unit>
             <trans-unit id="http_error_403.description">
                 <source>http_error_403.description</source>
@@ -919,7 +920,7 @@
             </trans-unit>
             <trans-unit id="text.register">
                 <source>text.register</source>
-                <target>Registration a new member</target>
+                <target>Registration</target>
             </trans-unit>
             <trans-unit id="text.register.desc">
                 <source>text.register.desc</source>
@@ -1013,6 +1014,10 @@
             <trans-unit id="text.login">
                 <source>text.login</source>
                 <target>Security Login</target>
+            </trans-unit>
+            <trans-unit id="text.forgot_password">
+                <source>text.forgot_password</source>
+                <target>Forgot password?</target>
             </trans-unit>
             <trans-unit id="text.login.desc">
                 <source>text.login.desc</source>
@@ -1308,6 +1313,30 @@
                 <source>form.email.help</source>
                 <target>We'll never share your email with anyone else.</target>
             </trans-unit>
+            <trans-unit id="button.reset_password">
+                <source>button.reset_password</source>
+                <target>Send password reset email</target>
+            </trans-unit>
+            <trans-unit id="text.reset_password">
+                <source>text.reset_password</source>
+                <target>Reset password</target>
+            </trans-unit>
+            <trans-unit id="text.reset_password.sent">
+                <source>text.reset_password.sent</source>
+                <target>Password Reset Email Sent</target>
+            </trans-unit>
+            <trans-unit id="text.reset_password.infio">
+                <source>text.reset_password.infio</source>
+                <target>If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password. This link will expire in</target>
+            </trans-unit>
+            <trans-unit id="text.reset_password.resend">
+                <source>text.reset_password.resend</source>
+                <target><![CDATA[f you don't receive an email please check your spam folder or  <a href="{ link }">try again</a>.]]></target>
+            </trans-unit>
+            <trans-unit id="form.email.info">
+                <source>form.email.info</source>
+                <target>Enter your email address, and we will send you a link to reset your password.</target>
+            </trans-unit>
             <trans-unit id="form.password.help">
                 <source>form.password.help</source>
                 <target>Security password.</target>
@@ -1315,6 +1344,14 @@
             <trans-unit id="label.form.password">
                 <source>label.form.password</source>
                 <target>Your password</target>
+            </trans-unit>
+            <trans-unit id="form.password.text">
+                <source>form.password.text</source>
+                <target>Reset password</target>
+            </trans-unit>
+            <trans-unit id="form.password.invalid">
+                <source>form.password.invalid</source>
+                <target>The password can't by blank</target>
             </trans-unit>
             <trans-unit id="label.form.currency">
                 <source>label.form.currency</source>

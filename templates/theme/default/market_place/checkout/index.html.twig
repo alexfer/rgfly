@@ -75,6 +75,7 @@
                                 <h3 class="fw-normal text-danger text-center my-4">{{ (order.discount + total_fee)|number_format(2, '.', ' ') }}
                                     <small>{{ order.market.currency|currency }}</small></h3>
                             </div>
+                            <a href="{{ path('app_market_place_order_summary') }}" class="btn btn-dark rounded-1 shadow-sm w-100">Back to Order</a>
                         </div>
                     </div>
                 </div>

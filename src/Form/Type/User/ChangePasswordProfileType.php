@@ -29,12 +29,11 @@ class ChangePasswordProfileType extends AbstractType
             'first_options' => [
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        'message' => 'form.password.invalid',
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
+                        'minMessage' => 'form.password.min',
                         'max' => 4096,
                     ]),
                 ],
@@ -42,7 +41,7 @@ class ChangePasswordProfileType extends AbstractType
             'second_options' => [
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a confirmation password',
+                        'message' => 'form.password.invalid',
                     ]),
                 ],
             ],

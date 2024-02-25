@@ -9,9 +9,16 @@
             <div class="col-12 card card-body shadow">
                 <h4 class="ps-2 border-start border-3 border-danger mb-3">{{ 'order.checkout.completed'|trans }}</h4>
                 {% if app.session.get('_temp_password') %}
-                    <p class="lead text-center pt-5 fs-5 text-danger fw-normal">{{ 'customer.temporary.passwod'|trans }}. <span class="d-inline rounded-1 text-dark-emphasis badge bg-secondary-subtle w-25 p-2">{{ app.session.get('_temp_password') }}</span></p>
+                    <p class="lead text-center pt-5 fs-5 text-danger fw-normal">{{ 'customer.temporary.passwod'|trans }}
+                        .
+                        <span class="d-inline rounded-1 text-dark-emphasis badge bg-secondary-subtle w-25 p-2">{{ app.session.get('_temp_password') }}</span>
+                    </p>
                 {% endif %}
-                {% include 'market_place/checkout/_customer_login_form.html.twig' %}
+                <div class="start-50">
+                    <div class="d-flex mt-4 align-items-center justify-content-center">
+                        {% include 'market_place/checkout/_customer_login_form.html.twig' %}
+                    </div>
+                </div>
             </div>
         </div>
     </section>
