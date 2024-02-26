@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Entity\MarketPlace\Market;
-use App\Entity\MarketPlace\MarketAddress;
 use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;

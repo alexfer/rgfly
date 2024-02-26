@@ -13,6 +13,8 @@ use App\Form\Type\MarketPlace\CustomerType;
 use App\Form\Type\User\LoginType;
 use App\Helper\MarketPlace\MarketPlaceHelper;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,6 +23,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/market-place/checkout')]
 class CheckoutController extends AbstractController
@@ -31,6 +34,7 @@ class CheckoutController extends AbstractController
      * @param UserInterface|null $user
      * @param UserPasswordHasherInterface $userPasswordHasher
      * @param EntityManagerInterface $em
+     * @param TranslatorInterface $translator
      * @return Response
      */
     #[Route('/{order}', name: 'app_market_place_order_checkout', methods: ['GET', 'POST'])]
@@ -39,6 +43,7 @@ class CheckoutController extends AbstractController
         ?UserInterface              $user,
         UserPasswordHasherInterface $userPasswordHasher,
         EntityManagerInterface      $em,
+        TranslatorInterface         $translator,
     ): Response
     {
         $session = $request->getSession();
@@ -68,7 +73,7 @@ class CheckoutController extends AbstractController
             $checkEmail = $em->getRepository(User::class)->findOneBy(['email' => $form->get('email')->getData()]);
 
             if ($checkEmail) {
-                $this->addFlash('danger', 'This email already in use');
+                $this->addFlash('danger', $translator->trans('email.unique', [], 'validators'));
                 return $this->redirectToRoute('app_market_place_order_checkout', ['order' => $request->get('order')]);
             }
             if (!$userCustomer) {
@@ -141,14 +146,14 @@ class CheckoutController extends AbstractController
      * @param EntityManagerInterface $em
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/order-success/login', name: 'app_market_place_order_success', methods: ['GET', 'POST'])]
     public function cashSuccess(
         Request                $request,
         EntityManagerInterface $em,
-        AuthenticationUtils $authenticationUtils,
+        AuthenticationUtils    $authenticationUtils,
     ): Response
     {
         //$order = $request->get('order');

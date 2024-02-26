@@ -3,7 +3,9 @@
 namespace App\Form\Type\MarketPlace;
 
 use App\Entity\MarketPlace\MarketCustomer;
+use App\Entity\User;
 use App\Form\Type\User\RegistrationType;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -45,12 +47,33 @@ class CustomerRegistrationType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('last_name', TextType::class, [
+                'attr' => [
+                    'min' => 2,
+                    'max' => 200,
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'form.last_name.not_blank',
+                    ]),
+                    new Length([
+                        'min' => 2,
+                        'minMessage' => 'form.last_name.min',
+                        'max' => 200,
+                        'maxMessage' => 'form.last_name.max',
+                    ]),
+                ],
+            ])
             ->add('email', EmailType::class, [
                 'attr' => [
                     'min' => 5,
                     'max' => 180,
                 ],
                 'constraints' => [
+//                    new UniqueEntity([
+//                        'fields' => ['email'],
+//                        'message' => 'email.unique',
+//                    ]),
                     new NotBlank([
                         'message' => 'form.email.not_blank',
                     ]),
@@ -62,7 +85,7 @@ class CustomerRegistrationType extends AbstractType
             ->add('city', TextType::class, [
                 'mapped' => false,
                 'attr' => [
-                    'min' => 10,
+                    'min' => 3,
                     'max' => 250,
                 ],
                 'constraints' => [
@@ -70,10 +93,10 @@ class CustomerRegistrationType extends AbstractType
                         'message' => 'form.city.not_blank',
                     ]),
                     new Length([
-                        'min' => 10,
-                        'minMessage' => 'form.address.min',
+                        'min' => 3,
+                        'minMessage' => 'form.city.min',
                         'max' => 250,
-                        'maxMessage' => 'form.address.max',
+                        'maxMessage' => 'form.city.max',
                     ]),
                 ],
             ])
@@ -87,6 +110,8 @@ class CustomerRegistrationType extends AbstractType
             ])
             ->add('phone', TelType::class, [
                 'attr' => [
+                    'min' => 3,
+                    'max' => 200,
                     'pattern' => "[+0-9]+$",
                 ],
                 'constraints' => [
@@ -111,23 +136,6 @@ class CustomerRegistrationType extends AbstractType
                         'minMessage' => 'form.address.min',
                         'max' => 250,
                         'maxMessage' => 'form.address.max',
-                    ]),
-                ],
-            ])
-            ->add('last_name', TextType::class, [
-                'attr' => [
-                    'min' => 2,
-                    'max' => 200,
-                ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'form.last_name.not_blank',
-                    ]),
-                    new Length([
-                        'min' => 2,
-                        'minMessage' => 'form.last_name.min',
-                        'max' => 200,
-                        'maxMessage' => 'form.last_name.max',
                     ]),
                 ],
             ]);
