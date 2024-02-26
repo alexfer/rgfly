@@ -69,7 +69,9 @@ class UserAuthenticator extends AbstractAuthenticator
      */
     public function supports(Request $request): ?bool
     {
-        return ($request->getPathInfo() === '/web/login' && $request->isMethod('POST'));
+        return (
+            ($request->getPathInfo() === '/web/login' || $request->getPathInfo() === '/market-place/checkout/order-success/login') && $request->isMethod('POST')
+        );
     }
 
     /**
@@ -140,6 +142,10 @@ class UserAuthenticator extends AbstractAuthenticator
     ): ?Response
     {
         $request->getSession()->set(SecurityRequestAttributes::AUTHENTICATION_ERROR, $exception);
+
+        if ($request->getPathInfo() === '/market-place/checkout/order-success/login') {
+            return new RedirectResponse($this->router->generate('app_market_place_order_success'));
+        }
 
         return new RedirectResponse($this->router->generate('app_login'));
     }

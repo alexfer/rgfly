@@ -103,7 +103,7 @@ class MarketController extends AbstractController
                     return $this->redirectToRoute('app_dashboard_market_place_create_market', ['tab' => $request->get('tab')]);
                 }
 
-                $market->setOwner($user)->setName($slugger->slug($form->get('name')->getData())->lower());
+                $market->setOwner($user)->setSlug($slugger->slug($form->get('name')->getData())->lower());
 
                 $file = $form->get('logo')->getData();
 

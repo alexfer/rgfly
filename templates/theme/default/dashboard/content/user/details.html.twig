@@ -39,7 +39,7 @@
                                         class="bi bi-envelope-fill pr-2"></i> {{ entry.email }}</a></h6>
                     </div>
                     <div class="mx-auto position-relative">
-                        <input type="button" class="btn btn-sm btn-secondary d-none offset-me-6" id="btnDiscard"
+                        <input type="button" class="btn btn-sm btn-secondary rounded-1 shadow-sm d-none offset-me-6" id="btnDiscard"
                                value="{{ 'form.action.cancel'|trans }}"/>
                     </div>
                 </div>
@@ -162,7 +162,7 @@
                         </div>
                         <div class="tab-pane fade {{ _tab == 'security' ? 'show active' : null }}" id="security"
                              role="tabpanel" aria-labelledby="security-tab">
-                            {% include 'dashboard/content/user/_form.html.twig' %}
+                            {% include 'dashboard/content/user/_customer_form.html.twig' %}
                         </div>
                         <div class="tab-pane fade {{ _tab == 'social' ? 'show active' : null }}" id="social"
                              role="tabpanel" aria-labelledby="social-tab">

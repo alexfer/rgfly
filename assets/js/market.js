@@ -81,14 +81,16 @@ if (attributes.length) {
         if (el.children !== null) {
             Array.from(el.children).forEach((item) => {
                 if (item.hasAttribute('id')) {
-                    Array.from(item.children).forEach((input) => {
-                        input.addEventListener("change", (event) => {
-                            if (event.currentTarget.checked) {
-                                let root = input.getAttribute('data-root-name');
-                                let value = input.getAttribute('data-name');
-                                el.querySelector('input[name="' + root + '"]').value = value;
-                                input.parentElement.previousElementSibling.innerHTML = value;
-                            }
+                    Array.from(item.children).forEach((wrapper, index) => {
+                        Array.from(wrapper.children).forEach((input, index) => {
+                            input.addEventListener("change", (event) => {
+                                if (event.currentTarget.checked) {
+                                    let root = input.getAttribute('data-root-name');
+                                    let value = input.getAttribute('data-name');
+                                    el.querySelector('input[name="' + root + '"]').value = value;
+                                    input.parentElement.parentElement.previousElementSibling.innerHTML = value;
+                                }
+                            });
                         });
                     });
                 }
@@ -116,7 +118,7 @@ if (typeof forms != 'undefined') {
                 .then((response) => response.json())
                 .then((json) => {
                     let qty = document.getElementById('qty');
-                    if(qty) {
+                    if (qty) {
                         qty.innerHTML = json.quantity;
                     }
                 })

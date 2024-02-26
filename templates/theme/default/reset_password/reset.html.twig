@@ -1,12 +1,34 @@
 {% extends 'plain.html.twig' %}
 
-{% block title %}Reset your password{% endblock %}
+{% block title %}{{ 'form.password.text'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Reset your password</h1>
-
-    {{ form_start(resetForm) }}
-    {{ form_row(resetForm.plainPassword) }}
-    <button class="btn btn-primary">Reset password</button>
-    {{ form_end(resetForm) }}
+    <section class="container mt-lg-2">
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6 card card-body bg-light shadow">
+                <h4 class="ps-2 border-start border-3 border-danger mb-3">{{ 'form.password.text'|trans }}</h4>
+                {{ form_start(resetForm, {attr: {class: 'needs-validation', novalidate: ''}}) }}
+                <div class="row my-3">
+                    <div class="col-12 form-floating mb-3">
+                        {{ form_widget(resetForm.plainPassword.children.first, {attr: {class: 'form-control ps-sm-3'}}) }}
+                        {{ form_label(resetForm.plainPassword.children.first, 'label.form.new_password', {label_attr: {class: 'form-label ms-3'}}) }}
+                        <div class="invalid-feedback">{{ 'form.password.invalid'|trans }}</div>
+                        <span class="text-danger">{{ form_errors(resetForm.plainPassword.children.first) }}</span>
+                    </div>
+                    <div class="col-12 form-floating">
+                        {{ form_widget(resetForm.plainPassword.children.second, {attr: {class: 'form-control ps-sm-3'}}) }}
+                        {{ form_label(resetForm.plainPassword.children.second, 'label.form.repeat_password', {label_attr: {class: 'form-label ms-3'}}) }}
+                        <div class="invalid-feedback">{{ 'form.password.invalid'|trans }}</div>
+                        <span class="text-danger">{{ form_errors(resetForm.plainPassword.children.second) }}</span>
+                    </div>
+                </div>
+                <div class="text-center my-3">
+                    <button class="btn btn-dark rounded-1 shadow-sm">{{ 'form.password.text'|trans }}</button>
+                </div>
+                {{ form_end(resetForm) }}
+            </div>
+            <div class="col-3"></div>
+        </div>
+    </section>
 {% endblock %}

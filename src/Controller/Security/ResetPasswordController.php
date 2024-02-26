@@ -42,7 +42,7 @@ class ResetPasswordController extends AbstractController
      * Display & process form to request a password reset.
      * @throws TransportExceptionInterface
      */
-    #[Route('/', name: 'app_forgot_password_request')]
+    #[Route('', name: 'app_forgot_password_request')]
     public function request(
         Request             $request,
         MailerInterface     $mailer,
@@ -103,6 +103,7 @@ class ResetPasswordController extends AbstractController
         }
 
         $token = $this->getTokenFromSession();
+
         if (null === $token) {
             throw $this->createNotFoundException('No reset password token found in the URL or in the session.');
         }
@@ -128,10 +129,7 @@ class ResetPasswordController extends AbstractController
             $this->resetPasswordHelper->removeResetRequest($token);
 
             // Encode(hash) the plain password, and set it.
-            $encodedPassword = $passwordHasher->hashPassword(
-                $user,
-                $form->get('plainPassword')->getData()
-            );
+            $encodedPassword = $passwordHasher->hashPassword($user, $form->get('plainPassword')->getData());
 
             $user->setPassword($encodedPassword);
             $this->entityManager->flush();

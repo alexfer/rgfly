@@ -18,6 +18,10 @@
                 <source>form.city.not_blank</source>
                 <target>The city can't be blank.</target>
             </trans-unit>
+            <trans-unit id="form.postal.not_blank">
+                <source>form.postal.not_blank</source>
+                <target>The Zip/Postal can't be blank.</target>
+            </trans-unit>
             <trans-unit id="form.short_name.not_blank">
                 <source>form.short_name.not_blank</source>
                 <target>The short name can't be blank.</target>
@@ -121,6 +125,10 @@
             <trans-unit id="form.about.max">
                 <source>form.about.max</source>
                 <target>The about is too long. It should have {{ limit }} characters or less.</target>
+            </trans-unit>
+            <trans-unit id="form.password.invalid_message">
+                <source>form.password.invalid_message</source>
+                <target>The password fields must match.</target>
             </trans-unit>
             <trans-unit id="form.password.min">
                 <source>form.password.min</source>

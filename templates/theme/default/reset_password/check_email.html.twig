@@ -4,15 +4,17 @@
 
 {% block body %}
     <section class="container mt-lg-2">
-        <h3 class="mb-3">Password Reset Email Sent</h3>
-        <p class="mb-2">
-            If an account matching your email exists, then an email was just sent that contains a link that you can
-            use to reset your password.
-            This link will expire
-            in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
-        </p>
-        <p class="mb-5">If you don't receive an email please check your spam folder or
-            <a class="link" href="{{ path('app_forgot_password_request') }}">try again</a>.
-        </p>
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8 card card-body bg-light shadow">
+                <h4 class="ps-2 border-start border-3 border-danger mb-3">{{ 'text.reset_password.sent'|trans }}</h4>
+                <p class="mb-2">
+                    {{ 'text.reset_password.infio'|trans }} {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}
+                </p>
+                <hr>
+                <p class="mb-5">{{ 'text.reset_password.resend'|trans({'link':  path('app_forgot_password_request') })|raw }}</p>
+            </div>
+            <div class="col-2"></div>
+        </div>
     </section>
 {% endblock %}

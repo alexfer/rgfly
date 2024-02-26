@@ -9,16 +9,21 @@ use App\Entity\MarketPlace\MarketInvoice;
 use App\Entity\MarketPlace\MarketOrders;
 use App\Entity\MarketPlace\MarketPaymentGateway;
 use App\Entity\User;
-use App\Form\Type\MarketPlace\AddressType;
 use App\Form\Type\MarketPlace\CustomerType;
+use App\Form\Type\User\LoginType;
 use App\Helper\MarketPlace\MarketPlaceHelper;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Http\SecurityRequestAttributes;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/market-place/checkout')]
 class CheckoutController extends AbstractController
@@ -29,6 +34,7 @@ class CheckoutController extends AbstractController
      * @param UserInterface|null $user
      * @param UserPasswordHasherInterface $userPasswordHasher
      * @param EntityManagerInterface $em
+     * @param TranslatorInterface $translator
      * @return Response
      */
     #[Route('/{order}', name: 'app_market_place_order_checkout', methods: ['GET', 'POST'])]
@@ -37,6 +43,7 @@ class CheckoutController extends AbstractController
         ?UserInterface              $user,
         UserPasswordHasherInterface $userPasswordHasher,
         EntityManagerInterface      $em,
+        TranslatorInterface         $translator,
     ): Response
     {
         $session = $request->getSession();
@@ -56,12 +63,8 @@ class CheckoutController extends AbstractController
         if (!$userCustomer) {
             $customer = new MarketCustomer();
             $form = $this->createForm(CustomerType::class, $customer);
-            $address = new MarketAddress();
-            $formAddress = $this->createForm(AddressType::class, $address);
         } else {
             $form = $this->createForm(CustomerType::class, $userCustomer);
-            $address = $userCustomer->getMember()->getMarketAddresses()->first();
-            $formAddress = $this->createForm(AddressType::class, $address);
         }
 
         $form->handleRequest($request);
@@ -70,7 +73,7 @@ class CheckoutController extends AbstractController
             $checkEmail = $em->getRepository(User::class)->findOneBy(['email' => $form->get('email')->getData()]);
 
             if ($checkEmail) {
-                $this->addFlash('danger', 'This email already in use');
+                $this->addFlash('danger', $translator->trans('email.unique', [], 'validators'));
                 return $this->redirectToRoute('app_market_place_order_checkout', ['order' => $request->get('order')]);
             }
             if (!$userCustomer) {
@@ -85,17 +88,25 @@ class CheckoutController extends AbstractController
 
                 $user->setIp($request->getClientIp())->setRoles([User::ROLE_CUSTOMER]);
                 $em->persist($user);
-                $em->flush();
 
                 $customer->setMember($user);
                 $em->persist($customer);
-                $em->flush();
+
+                $address = new MarketAddress();
+                $address->setCustomer($customer)
+                    ->setLine1($form->get('line1')->getData())
+                    ->setLine2($form->get('line2')->getData())
+                    ->setCity($form->get('city')->getData())
+                    ->setCountry($form->get('country')->getData())
+                    ->setPostal($form->get('postal')->getData())
+                    ->setPhone($form->get('phone')->getData())
+                    ->setRegion($form->get('region')->getData());
+                $em->persist($address);
 
                 $customerOrder = $em->getRepository(MarketCustomerOrders::class)->findOneBy(['orders' => $order]);
 
                 $customerOrder->setCustomer($customer);
                 $em->persist($customerOrder);
-                $em->flush();
 
                 $order->setSession(null)
                     ->setStatus(MarketOrders::STATUS['confirmed']);
@@ -126,24 +137,49 @@ class CheckoutController extends AbstractController
         return $this->render('market_place/checkout/index.html.twig', [
             'order' => $order,
             'form' => $form,
+            'errors' => $form->getErrors(true),
         ]);
     }
 
     /**
      * @param Request $request
      * @param EntityManagerInterface $em
+     * @param AuthenticationUtils $authenticationUtils
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    #[Route('/order-success/{order}', name: 'app_market_place_order_success', methods: ['GET'])]
+    #[Route('/order-success/login', name: 'app_market_place_order_success', methods: ['GET', 'POST'])]
     public function cashSuccess(
         Request                $request,
         EntityManagerInterface $em,
+        AuthenticationUtils    $authenticationUtils,
     ): Response
     {
-        $order = $request->get('order');
+        //$order = $request->get('order');
+// rgpadt8c
+
+        $securityContext = $this->container->get('security.authorization_checker');
+
+        if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            return $this->redirectToRoute('app_index');
+        }
+
+        $default = [
+            'email' => $authenticationUtils->getLastUsername(),
+        ];
+
+        $form = $this->createForm(LoginType::class, $default);
+        $form->handleRequest($request);
+
+        $error = $request->getSession()->get(SecurityRequestAttributes::AUTHENTICATION_ERROR);
+        $request->getSession()->clear();
 
         return $this->render('market_place/checkout/order_success.html.twig', [
-            'order' => $order,
+            //'order' => $order,
+            'error' => $error,
+            'last_username' => $default['email'],
+            'form' => $form->createView(),
         ]);
     }
 }
