@@ -937,7 +937,7 @@
             <trans-unit id="text.register.success.text_help">
                 <source>text.register.success.text_help</source>
                 <target>
-                    <![CDATA[You can log in by going to the page: <a class="link" href="{ app_login }">Login</a> using your email and password specified during registration.]]>
+                    <![CDATA[You can log in by going to the page: <a class="link-danger" href="{ app_login }">Login</a> using your email and password specified during registration.]]>
                 </target>
             </trans-unit>
             <trans-unit id="text.rquired">
