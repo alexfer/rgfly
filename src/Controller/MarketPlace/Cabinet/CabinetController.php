@@ -64,4 +64,20 @@ class CabinetController extends AbstractController
             'customer' => $customer,
         ]);
     }
+
+    #[Route('/address', name: 'app_cabinet_address', methods: ['GET'])]
+    public function address(
+        Request $request,
+        UserInterface          $user,
+        EntityManagerInterface $em,
+    ): Response
+    {
+        $customer = $em->getRepository(MarketCustomer::class)->findOneBy([
+            'member' => $user,
+        ]);
+        return $this->render('market_place/cabinet/address.html.twig', [
+            'customer' => $customer,
+        ]);
+    }
+
 }
