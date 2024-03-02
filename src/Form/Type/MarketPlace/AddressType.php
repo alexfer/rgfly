@@ -28,7 +28,7 @@ class AddressType extends AbstractType
             ->add('line1', TextType::class, [
                 'mapped' => false,
                 'attr' => [
-                    'min' => 10,
+                    'min' => 5,
                     'max' => 250,
                 ],
                 'data' => $options['data']?->getLine1(),
@@ -37,7 +37,7 @@ class AddressType extends AbstractType
                         'message' => 'form.address.not_blank',
                     ]),
                     new Length([
-                        'min' => 10,
+                        'min' => 5,
                         'minMessage' => 'form.address.min',
                         'max' => 250,
                         'maxMessage' => 'form.address.max',
@@ -49,12 +49,12 @@ class AddressType extends AbstractType
                 'required' => false,
                 'data' => $options['data']?->getLine2(),
                 'attr' => [
-                    'min' => 10,
+                    'min' => 6,
                     'max' => 250,
                 ],
                 'constraints' => [
                     new Length([
-                        'min' => 10,
+                        'min' => 6,
                         'minMessage' => 'form.address.min',
                         'max' => 250,
                         'maxMessage' => 'form.address.max',
@@ -75,7 +75,7 @@ class AddressType extends AbstractType
                 'mapped' => false,
                 'data' => $options['data']?->getCity(),
                 'attr' => [
-                    'min' => 10,
+                    'min' => 3,
                     'max' => 250,
                 ],
                 'constraints' => [
@@ -83,7 +83,7 @@ class AddressType extends AbstractType
                         'message' => 'form.city.not_blank',
                     ]),
                     new Length([
-                        'min' => 10,
+                        'min' => 3,
                         'minMessage' => 'form.address.min',
                         'max' => 250,
                         'maxMessage' => 'form.address.max',
@@ -112,12 +112,12 @@ class AddressType extends AbstractType
                 'required' => false,
                 'data' => $options['data']?->getPostal(),
                 'attr' => [
-                    'min' => 5,
+                    'min' => 3,
                     'max' => 50,
                 ],
                 'constraints' => [
                     new Length([
-                        'min' => 5,
+                        'min' => 3,
                         'minMessage' => 'form.postal.min',
                         'max' => 50,
                         'maxMessage' => 'form.postal.max',

@@ -21,7 +21,7 @@
                                         {% for order in orders %}
                                             <div class="accordion-item">
                                                 <h2 class="accordion-header" id="heading-{{ order.id }}">
-                                                    <button class="accordion-button"
+                                                    <button class="accordion-button p-2 text-bg-light"
                                                             type="button"
                                                             data-bs-toggle="collapse"
                                                             data-bs-target="#collapse-{{ order.id }}"
@@ -35,7 +35,7 @@
                                                      class="accordion-collapse collapse{{ loop.first ? ' show' : '' }}"
                                                      aria-labelledby="heading-{{ order.id }}"
                                                      data-bs-parent="#accordion">
-                                                    <div class="accordion-body">
+                                                    <div class="accordion-body p-2">
                                                         <div class="row">
                                                             <div class="col fw-medium">{{ order.orders.number|upper }}</div>
                                                             <div class="col ms-5">{{ order.orders.status|capitalize }}</div>

@@ -16,9 +16,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
 //     // });
 // }
 
-$(() => {
+$(function () {
     let toast = $('.toast');
-    let flash = $('.d-tech-form input[name="flash"], .tech-form input[name="flash"]').attr('value');
+    let flash = $('form input[name="flash"]').attr('value');
 
     if (typeof flash !== 'undefined') {
         let messages = $.parseJSON(flash);

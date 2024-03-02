@@ -17,6 +17,14 @@
                             <section class="col-lg-9 pb-md-4">
                                 <div class="pt-2 px-4 ps-lg-0 pe-xl-5">
                                     <h4 class="pt-2 pb-4 mb-4 text-center text-sm-start border-bottom">{{ 'title.address'|trans }}</h4>
+                                    {% if errors.count %}
+                                        <div class="alert alert-warning alert-dismissible" role="alert">
+                                            {{ errors.current.message }}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                    aria-label="{{ 'form.action.close'|trans }}"></button>
+                                        </div>
+                                    {% endif %}
+                                    {% set _message = app.flashes('success') %}
                                     {{ form_start(form, {attr: {class: 'needs-validation', novalidate: ''}}) }}
                                     <div class="row pb-4 gx-4 gy-3">
                                         <div class="form-floating col-sm-6">
@@ -55,14 +63,20 @@
                                             <div class="invalid-feedback">{{ 'form.country.invalid'|trans }}</div>
                                         </div>
                                     </div>
+                                    <input type="hidden" name="flash" value="{{ _message[0]|default([]|json_encode) }}">
+                                    <div class="text-xxl-end">
+                                        <button class="btn btn-dark shadow-sm rounded-1" type="submit">{{ 'form.action.change'|trans }}</button>
+                                    </div>
                                     {{ form_end(form) }}
                                 </div>
                             </section>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
+{% endblock %}
+{% block toast %}
+    {{ include ('layouts/toast.html.twig') }}
 {% endblock %}

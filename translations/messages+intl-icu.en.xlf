@@ -868,6 +868,10 @@
                 <source>user.profile.updated</source>
                 <target><![CDATA[Your profile has been updated successfully.]]></target>
             </trans-unit>
+            <trans-unit id="user.address.updated">
+                <source>user.address.updated</source>
+                <target><![CDATA[Your address has been updated successfully.]]></target>
+            </trans-unit>
             <trans-unit id="user.entry.created">
                 <source>user.entry.created</source>
                 <target><![CDATA[Entry has been created successfully.]]></target>
