@@ -11,8 +11,8 @@
     </div>
     <div class="form-floating col-sm-6">
         {{ form_widget(form.region, {attr: {class: 'form-control ps-sm-3', placeholder: ''}}) }}
-        {{ form_label(form.region, 'label.form.address_line_1', {label_attr: {class: 'form-label ms-3'}}) }}
-        <div class="invalid-feedback">{{ 'form.address.invalid'|trans }}</div>
+        {{ form_label(form.region, 'label.form.region', {label_attr: {class: 'form-label ms-3'}}) }}
+        <div class="invalid-feedback">{{ 'form.region.invalid'|trans }}</div>
     </div>
     <div class="form-floating col-sm-6">
         {{ form_widget(form.city, {attr: {class: 'form-control ps-sm-3', placeholder: ''}}) }}

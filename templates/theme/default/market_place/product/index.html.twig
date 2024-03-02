@@ -73,17 +73,12 @@
                         <div class="ps-lg-10 mx-2 mt-md-1">
                             <a href="{{ path('app_market_place_market', {slug:  product.market.slug}) }}"
                                class="mb-1 d-block"><i class="bi bi-shop me-2"></i>{{ product.market.name }}</a>
-                            <h2 class="mb-4 text-truncate">{{ product.shortName }}</h2>
-{#                            <div class="mb-4">#}
-{#                                <small class="text-warning">#}
-{#                                    <i class="bi bi-star-fill"></i>#}
-{#                                    <i class="bi bi-star-fill"></i>#}
-{#                                    <i class="bi bi-star-fill"></i>#}
-{#                                    <i class="bi bi-star-half"></i>#}
-{#                                    <i class="bi bi-star"></i>#}
-{#                                </small>#}
-{#                                <a href="#" class="ms-2 fs-6">(30 reviews)</a>#}
-{#                            </div>#}
+                            <h2 class="mb-2 text-truncate">{{ product.shortName }}</h2>
+                            {% if product.discount %}
+                                <div class="badge bg-danger bg-opacity-50 fs-5 fw-normal p-2">
+                                    {{ product.discount|number_format(2, ',', '') }}% {{ 'market.product.off'|trans }}
+                                </div>
+                            {% endif %}
                             <div class="fs-3 mt-5 d-flex align-content-end justify-content-end">
                                 {% if product.discount %}
                                     {% set discount = product.discount %}
@@ -99,11 +94,6 @@
                                 {% else %}
                                     <span class="fw-bold text-dark-emphasis">{{ product.cost|number_format(2, '.', ' ') }}<small>{{ product.market.currency|currency }}</small></span>
                                 {% endif %}
-                                <span>
-                                    {% if product.discount %}
-                                        <small class="fs-6 ms-2 text-danger">{{ product.discount|number_format(2, ',', '') }}% {{ 'market.product.off'|trans }}</small>
-                                    {% endif %}
-                                </span>
                             </div>
                             <form class="shopping-cart" method="post"
                                   action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
@@ -114,7 +104,7 @@
                                             <input type="hidden" name="color" value="">
                                             <input type="hidden" name="size" value="">
                                             {% if attribute.inFront %}
-                                                <small class="d-block mt-2 mb-2 text-muted">{{ attribute.name|capitalize }}</small>
+                                                <small class="d-block my-2 fs-6 text-muted">{{ attribute.name|capitalize }}</small>
                                                 <div class="form-check-inline me-0" id="{{ attribute.name }}">
                                                     {% for attr in attribute.marketProductAttributeValues %}
                                                         <div class="d-inline-block p-1 border border-secondary rounded-circle">

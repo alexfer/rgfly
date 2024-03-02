@@ -477,6 +477,10 @@
                 <source>form.address.invalid</source>
                 <target>Please enter your address</target>
             </trans-unit>
+            <trans-unit id="form.region.invalid">
+                <source>form.region.invalid</source>
+                <target>Please enter your region</target>
+            </trans-unit>
             <trans-unit id="form.city.invalid">
                 <source>form.city.invalid</source>
                 <target>Please enter your city</target>
@@ -1124,6 +1128,10 @@
             <trans-unit id="label.form.address_line_2">
                 <source>label.form.address_line_2</source>
                 <target>Address line 2</target>
+            </trans-unit>
+            <trans-unit id="label.form.region">
+                <source>label.form.region</source>
+                <target>Region</target>
             </trans-unit>
             <trans-unit id="label.form.website">
                 <source>label.form.website</source>
