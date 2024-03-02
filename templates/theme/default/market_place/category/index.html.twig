@@ -116,10 +116,13 @@
                             </div>
                         </div>
                     {% else %}
-                        <img class="d-block mx-auto mb-5 border-0 h-50 w-25 shadow-none"
+                        <img class="d-block mx-auto mb-5 border-0 w-25 shadow-none"
                              src="{{ asset('img/404.png') }}"
                              width="340" alt="{{ 'table.footer.not_found'|trans }}">
-                        <p class="text-center">{{ 'table.footer.not_found'|trans }}</p>
+                        <p class="text-center">
+                            {{ 'table.footer.not_found'|trans }}
+                            <a class="d-block fs-5" href="{{ path('app_market_place_index') }}">{{ 'form.action.back'|trans }}</a>
+                        </p>
                     {% endfor %}
                 </div>
             </div>

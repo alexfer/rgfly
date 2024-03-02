@@ -41,10 +41,10 @@
                         </div>
                     {% endif %}
                 </div>
-                <div class="row">
+                <div class="row mb-xxl-5">
                     {% for entry in entries %}
                         <div class="blog-block col-sm-8 col-lg-6 col-xl-4">
-                            <div class="card shadow">
+                            <div class="card">
                                 <div class="blog-img-block">
                                     {% set _picture = 'storage/entry/picture/' ~ entry.id ~ '/' ~ entry.attach %}
                                     <a href="{{ path('app_blog_view', {slug: entry.slug}) }}">
@@ -99,8 +99,8 @@
                             </div>
                         </div>
                     {% else %}
-                        <img class="d-block mx-auto mb-5 border-0 h-25 w-25 shadow-none"
-                             src="{{ asset('img/404.png') }}" width="340" alt="{{ 'table.footer.not_found'|trans }}">
+                        <img class="d-block mx-auto my-xxl-5 mb-5 border-0 w-25 shadow-none"
+                             src="{{ asset('img/404-page-not-found.png') }}" alt="{{ 'table.footer.not_found'|trans }}">
                         <p class="text-center">{{ 'table.footer.not_found'|trans }}</p>
                     {% endfor %}
                 </div>
