@@ -884,6 +884,10 @@
                 <source>entry.picture.default</source>
                 <target><![CDATA[This picture has been used by default.]]></target>
             </trans-unit>
+            <trans-unit id="entry.picture.remove">
+                <source>entry.picture.remove</source>
+                <target><![CDATA[This picture has been deleted.]]></target>
+            </trans-unit>
             <trans-unit id="user.picture.delete">
                 <source>user.picture.delete</source>
                 <target><![CDATA[This picture has been removed.]]></target>

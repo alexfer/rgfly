@@ -2,23 +2,13 @@
 
 namespace App\Controller\Dashboard;
 
-use App\Entity\{
-    Entry,
-    EntryAttachment,
-    EntryCategory,
-    EntryDetails
-};
+use App\Entity\{Entry, EntryAttachment, EntryCategory, EntryDetails};
 use App\Form\Type\Dashboard\EntryDetailsType;
+use App\Repository\{CategoryRepository, EntryAttachmentRepository, EntryCategoryRepository, EntryRepository,};
 use App\Repository\AttachRepository;
-use App\Repository\{
-    CategoryRepository,
-    EntryAttachmentRepository,
-    EntryCategoryRepository,
-    EntryRepository,
-};
+use App\Service\Dashboard;
 use App\Service\FileUploader;
 use App\Service\Interface\ImageValidatorInterface;
-use App\Service\Dashboard;
 use DateTime;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,10 +18,8 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\{
-    Request,
-    Response
-};
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -327,6 +315,63 @@ class BlogController extends AbstractController
             'success' => true,
             'message' => $translator->trans('entry.picture.appended'),
             'picture' => $picture,
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @param EntryRepository $entryRepository
+     * @param EntityManagerInterface $em
+     * @param EntryAttachmentRepository $entryAttachmentRepository
+     * @param CacheManager $cacheManager
+     * @param AttachRepository $attachRepository
+     * @param ParameterBagInterface $params
+     * @return Response
+     */
+    #[Route('/attach-remove/{entry}', name: 'app_dashboard_blog_attach_remove', methods: ['POST'])]
+    public function remove(
+        Request                   $request,
+        TranslatorInterface       $translator,
+        EntryRepository           $entryRepository,
+        EntityManagerInterface    $em,
+        EntryAttachmentRepository $entryAttachmentRepository,
+        CacheManager              $cacheManager,
+        AttachRepository          $attachRepository,
+        ParameterBagInterface     $params
+    ): Response
+    {
+        $entry = $entryRepository->find($request->get('entry'));
+        $details = $entry->getEntryDetails();
+
+        $attachments = $entryAttachmentRepository->findAll();
+        foreach ($attachments as $attachment) {
+            $attach = $attachment->getAttach();
+            $fs = new Filesystem();
+            $oldFile = $this->getTargetDir($details->getId(), $params) . '/' . $attach->getName();
+
+            if ($cacheManager->isStored($oldFile, 'entry_preview')) {
+                $cacheManager->remove($oldFile, 'entry_preview');
+            }
+
+            if ($cacheManager->isStored($oldFile, 'entry_view')) {
+                $cacheManager->remove($oldFile, 'entry_view');
+            }
+
+            if ($fs->exists($oldFile)) {
+                $fs->remove($oldFile);
+            }
+
+            $attachment->setInUse(0)->setAttach(null)->setDetails(null);
+            $em->persist($attachment);
+            $em->remove($attachment);
+            $em->remove($attach);
+            $em->flush();
+        }
+
+        return $this->json([
+            'success' => true,
+            'message' => $translator->trans('entry.picture.remove'),
         ]);
     }
 
