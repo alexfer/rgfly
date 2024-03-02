@@ -477,6 +477,10 @@
                 <source>form.address.invalid</source>
                 <target>Please enter your address</target>
             </trans-unit>
+            <trans-unit id="form.region.invalid">
+                <source>form.region.invalid</source>
+                <target>Please enter your region</target>
+            </trans-unit>
             <trans-unit id="form.city.invalid">
                 <source>form.city.invalid</source>
                 <target>Please enter your city</target>
@@ -864,6 +868,10 @@
                 <source>user.profile.updated</source>
                 <target><![CDATA[Your profile has been updated successfully.]]></target>
             </trans-unit>
+            <trans-unit id="user.address.updated">
+                <source>user.address.updated</source>
+                <target><![CDATA[Your address has been updated successfully.]]></target>
+            </trans-unit>
             <trans-unit id="user.entry.created">
                 <source>user.entry.created</source>
                 <target><![CDATA[Entry has been created successfully.]]></target>
@@ -883,6 +891,10 @@
             <trans-unit id="entry.picture.default">
                 <source>entry.picture.default</source>
                 <target><![CDATA[This picture has been used by default.]]></target>
+            </trans-unit>
+            <trans-unit id="entry.picture.remove">
+                <source>entry.picture.remove</source>
+                <target><![CDATA[This picture has been deleted.]]></target>
             </trans-unit>
             <trans-unit id="user.picture.delete">
                 <source>user.picture.delete</source>
@@ -1120,6 +1132,10 @@
             <trans-unit id="label.form.address_line_2">
                 <source>label.form.address_line_2</source>
                 <target>Address line 2</target>
+            </trans-unit>
+            <trans-unit id="label.form.region">
+                <source>label.form.region</source>
+                <target>Region</target>
             </trans-unit>
             <trans-unit id="label.form.website">
                 <source>label.form.website</source>

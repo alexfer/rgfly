@@ -55,7 +55,7 @@ class CheckoutController extends AbstractController
         ]);
 
         if (!$order) {
-            $this->redirectToRoute('app_market_place_order_summary');
+            return $this->redirectToRoute('app_market_place_order_summary');
         }
 
         $userCustomer = $em->getRepository(MarketCustomer::class)->findOneBy(['member' => $user]);
@@ -156,8 +156,6 @@ class CheckoutController extends AbstractController
         AuthenticationUtils    $authenticationUtils,
     ): Response
     {
-        //$order = $request->get('order');
-// rgpadt8c
 
         $securityContext = $this->container->get('security.authorization_checker');
 

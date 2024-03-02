@@ -198,6 +198,107 @@ a:not([href]):hover {
     opacity: 1;
 }
 
+.entry-tags {
+    -webkit-box-flex: 0;
+    max-width: 90%;
+    color: #5f5f5f;
+    margin-bottom: 20px;
+}
+
+.entry-tags a {
+    display: inline-block;
+    color: #505060;
+    font-weight: 400;
+    font-size: 16px !important;
+    padding: 6px 13px;
+    border: 1px solid #ebebeb;
+    background: #f8f8f8;
+    margin-top: 8px;
+    margin-right: 4px;
+}
+
+.entry-tags a.active,
+.entry-tags a:hover {
+    color: #ffffff !important;
+    background-color: #5e87eb;
+    border-color: #5e87eb;
+}
+
+.blog-block .blog-img-block {
+    height: 200px;
+    white-space: nowrap;
+    transition: 0.5s;
+    overflow: hidden;
+}
+
+.blog-block img.blog-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0;
+    box-shadow: none;
+    transition: transform .4s;
+}
+
+.blog-block img.blog-img:hover {
+    -webkit-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    transform: scale(1.1);
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.blog-block .card .card-footer {
+    border-top: 0;
+    margin-top: -20px;
+    background-color: transparent;
+}
+
+.blog-block .card .card-footer ul li {
+    display: inline-block;
+}
+
+.blog-block .card .card-footer ul li:first-child {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.blog-block .card .card-footer ul li:first-child a {
+    font-size: 17px;
+    color: #5e87eb;
+}
+
+.blog-block .card .card-footer ul li:nth-child(2) {
+    display: block;
+    float: left;
+    padding-right: 15px;
+}
+
+.blog-block .card .card-footer ul li:nth-child(2) i {
+    margin-right: 5px;
+}
+
+.blog-block .card .card-footer ul li a {
+    font-size: 18px;
+    color: rgba(32, 52, 170, 0.87);
+    margin-left: 2px;
+}
+
+.blog-block .card .card-footer ul li a:hover {
+    color: rgba(21, 33, 109, 0.87);
+}
+
+.blog-block .card .card-body a {
+    max-height: 70px;
+    font-size: 18px;
+    font-weight: 600;
+    color: rgba(4, 83, 94, 0.85);
+}
+
+.blog-block.card .card-body a:hover {
+    color: rgba(12, 123, 140, 0.7);
+}
+
 /*
     Preloader
 */

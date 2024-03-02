@@ -3,7 +3,6 @@
 namespace App\Form\Type\MarketPlace;
 
 use App\Entity\MarketPlace\MarketAddress;
-use App\Entity\MarketPlace\MarketCustomer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
@@ -29,15 +28,16 @@ class AddressType extends AbstractType
             ->add('line1', TextType::class, [
                 'mapped' => false,
                 'attr' => [
-                    'min' => 10,
+                    'min' => 5,
                     'max' => 250,
                 ],
+                'data' => $options['data']?->getLine1(),
                 'constraints' => [
                     new NotBlank([
                         'message' => 'form.address.not_blank',
                     ]),
                     new Length([
-                        'min' => 10,
+                        'min' => 5,
                         'minMessage' => 'form.address.min',
                         'max' => 250,
                         'maxMessage' => 'form.address.max',
@@ -47,13 +47,14 @@ class AddressType extends AbstractType
             ->add('line2', TextType::class, [
                 'mapped' => false,
                 'required' => false,
+                'data' => $options['data']?->getLine2(),
                 'attr' => [
-                    'min' => 10,
+                    'min' => 6,
                     'max' => 250,
                 ],
                 'constraints' => [
                     new Length([
-                        'min' => 10,
+                        'min' => 6,
                         'minMessage' => 'form.address.min',
                         'max' => 250,
                         'maxMessage' => 'form.address.max',
@@ -64,6 +65,7 @@ class AddressType extends AbstractType
                 'mapped' => false,
                 'placeholder' => 'form.country.placeholder',
                 'label' => 'label.country',
+                'data' => $options['data']?->getCountry(),
                 'required' => true,
                 'multiple' => false,
                 'expanded' => false,
@@ -71,8 +73,9 @@ class AddressType extends AbstractType
             ])
             ->add('city', TextType::class, [
                 'mapped' => false,
+                'data' => $options['data']?->getCity(),
                 'attr' => [
-                    'min' => 10,
+                    'min' => 3,
                     'max' => 250,
                 ],
                 'constraints' => [
@@ -80,7 +83,7 @@ class AddressType extends AbstractType
                         'message' => 'form.city.not_blank',
                     ]),
                     new Length([
-                        'min' => 10,
+                        'min' => 3,
                         'minMessage' => 'form.address.min',
                         'max' => 250,
                         'maxMessage' => 'form.address.max',
@@ -90,6 +93,7 @@ class AddressType extends AbstractType
             ->add('region', TextType::class, [
                 'mapped' => false,
                 'required' => false,
+                'data' => $options['data']?->getRegion(),
                 'attr' => [
                     'min' => 3,
                     'max' => 250,
@@ -106,13 +110,14 @@ class AddressType extends AbstractType
             ->add('postal', TextType::class, [
                 'mapped' => false,
                 'required' => false,
+                'data' => $options['data']?->getPostal(),
                 'attr' => [
-                    'min' => 5,
+                    'min' => 3,
                     'max' => 50,
                 ],
                 'constraints' => [
                     new Length([
-                        'min' => 5,
+                        'min' => 3,
                         'minMessage' => 'form.postal.min',
                         'max' => 50,
                         'maxMessage' => 'form.postal.max',
@@ -122,6 +127,7 @@ class AddressType extends AbstractType
             ->add('phone', TelType::class, [
                 'mapped' => false,
                 'required' => false,
+                'data' => $options['data']?->getPhone(),
                 'attr' => [
                     'pattern' => "[+0-9]+$",
                     'min' => 10,

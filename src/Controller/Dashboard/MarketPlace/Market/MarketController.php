@@ -129,6 +129,13 @@ class MarketController extends AbstractController
                     $em->persist($paymentGatewayMarket);
                 }
 
+                $url = $form->get('website')->getData();
+
+                if ($url) {
+                    $parse = parse_url($url);
+                    $market->setUrl($url)->setWebsite($parse['host']);
+                }
+
                 $em->persist($market);
                 $em->flush();
 

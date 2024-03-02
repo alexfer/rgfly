@@ -28,6 +28,10 @@
                        href="{{ path('contact') }}">{{ 'title.contact_us'|trans }}</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link mx-2 text-uppercase {{ _route == 'app_blog'? 'active': '' }}"
+                       href="{{ path('app_blog') }}">{{ 'title.blogs'|trans }}</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link mx-2 text-uppercase {{ _route == 'app_market_place_index'? 'active': '' }}"
                        href="{{ path('app_market_place_index') }}">{{ 'title.market_places'|trans }}</a>
                 </li>
