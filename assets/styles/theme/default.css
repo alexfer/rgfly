@@ -557,3 +557,27 @@ ul.pictures .nav-link.inactive img {
 ul.pictures .nav-link.active img {
     opacity: 1 !important;
 }
+
+.color-trashed {
+    color: rgba(0, 0, 0, .75);
+}
+
+.color-published {
+    color: rgba(94, 116, 244, 0.75);
+}
+
+.color-draft {
+    color: rgba(255, 113, 113, 0.75);
+}
+
+.bg-trashed {
+    background-color: rgba(0, 0, 0, .14) !important;
+}
+
+.bg-published {
+    background-color: rgba(94, 116, 244, 0.21) !important;
+}
+
+.bg-draft {
+    background-color: rgba(255, 113, 113, 0.21) !important;
+}
