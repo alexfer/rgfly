@@ -28,8 +28,8 @@
                         </a>
                     </td>
                     <td class="text-center">
-                        <code>{{ order.marketOrdersProducts.count }}
-                            <small>{{ 'label.form.quantity_pcs'|trans }}</small></code>
+                        <span>{{ order.marketOrdersProducts.count }}
+                            <small>{{ 'label.form.quantity_pcs'|trans }}</small></span>
                     </td>
                     <td>{{ order.createdAt|date(datetime_format) }}</td>
                     <td>{{ order.status }}</td>
