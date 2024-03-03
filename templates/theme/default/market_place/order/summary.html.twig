@@ -21,12 +21,13 @@
                                                 <li class="list-group-item py-3 ps-0 border-top parent"
                                                     data-product-id="{{ product.id }}">
                                                     <div class="row align-items-center">
-                                                        <div class="col-6 col-md-6 col-lg-7">
+                                                        <div class="col-7 col-md-7 col-lg-7">
                                                             <div class="d-flex">
                                                                 {% if product.product.marketProductAttaches.count %}
                                                                     {% set _picture = 'storage/product/picture/' ~ product.product.id ~ '/' ~ product.product.marketProductAttaches.first.attach.name %}
-                                                                    <img src="{{ asset(_picture)|imagine_filter('product_thumb') }}"
-                                                                         class="img-fluid" width="150"
+                                                                    <img src="{{ asset(_picture)|imagine_filter('product_preview') }}"
+                                                                         class="img-fluid"
+                                                                         width="170"
                                                                          alt="{{ product.product.name }}">
                                                                 {% else %}
                                                                     <img src="{{ asset('http://placehold.it/100x80') }}"
@@ -38,6 +39,12 @@
                                                                        title="{{ product.product.name }}">
                                                                         <h5 class="mb-0 text-truncate">{{ product.product.shortName }}</h5>
                                                                     </a>
+                                                                    {% if product.color %}
+                                                                        <div class="pt-1">{{ product.color }}</div>
+                                                                    {% endif %}
+                                                                    {% if product.size %}
+                                                                        <div class="pt-1">{{ product.size }}</div>
+                                                                    {% endif %}
                                                                     <span>
                                                                         <small class="text-muted fst-italic">{{ 'label.form.sku'|trans }}: {{ product.product.sku }}</small>
                                                                     </span>
@@ -53,28 +60,30 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-4 col-md-3 col-lg-3">
+                                                        <div class="col-2 col-md-2 text-lg-end col-lg-2">
                                                             <div class="input-group input-spinner">
                                                                 <label>
                                                                     <input type="number" step="1" min="1"
                                                                            max="{{ product.product.quantity }}"
                                                                            value="{{ product.quantity }}"
                                                                            name="order[quantity][]"
-                                                                           class="col-sm-4 focus-ring-light border-opacity-25 border-1 border-black form-control-sm form-input"
+                                                                           class="col-sm-5 focus-ring-light border-opacity-25 border-1 border-black form-control-sm form-input"
                                                                            readonly>
                                                                 </label>
                                                                 <input type="hidden" name="order[product][]"
                                                                        value="{{ product.id }}">
                                                             </div>
                                                         </div>
-                                                        <div class="col-2 text-lg-end text-start text-md-end col-md-2">
+                                                        <div class="col-3 text-lg-end text-start text-md-end col-md-3">
                                                             {% if product.product.discount %}
                                                                 {% set percent = product.product.discount %}
                                                                 {% set cost = product.product.cost %}
                                                                 {% set percent_cost = (cost - ((cost * percent) - percent)/100) %}
-                                                                <span class="fw-bold">
-                                                        {{ (percent_cost * product.quantity)|round|number_format(2, '.', ' ') }}<small>{{ order.market.currency|currency }}</small>
-                                                    </span>
+                                                                <span class="badge text-bg-danger">{{ product.product.discount }}% {{ 'market.product.off'|trans }}</span>
+                                                                <span class="fs-5 fw-normal">
+                                                                    {{ (percent_cost * product.quantity)|round|number_format(2, '.', ' ') }}
+                                                                    <small>{{ order.market.currency|currency }}</small>
+                                                                </span>
                                                             {% else %}
                                                                 <span class="fw-bold">{{ (product.product.cost * product.quantity)|number_format(2, '.', ' ') }}<small>{{ order.market.currency|currency }}</small></span>
                                                             {% endif %}

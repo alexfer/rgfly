@@ -16,7 +16,7 @@
                 <th class="text-bg-secondary fw-normal col" scope="col">{{ 'table.header.created_at'|trans }}</th>
                 <th class="text-bg-secondary fw-normal col" scope="col">{{ 'table.header.status'|trans }}</th>
                 <th class="text-bg-secondary fw-normal col" scope="col">{{ 'table.header.total'|trans }}</th>
-{#                <th class="text-bg-secondary fw-normal col" scope="col">{{ 'table.header.discount'|trans }}</th>#}
+                <th class="text-bg-secondary fw-normal col" scope="col">{{ 'table.header.discount'|trans }}</th>
             </tr>
             </thead>
             <tbody>
@@ -28,17 +28,17 @@
                         </a>
                     </td>
                     <td class="text-center">
-                        <code>{{ order.marketOrdersProducts.count }}
-                            <small>{{ 'label.form.quantity_pcs'|trans }}</small></code>
+                        <span>{{ order.marketOrdersProducts.count }}
+                            <small>{{ 'label.form.quantity_pcs'|trans }}</small></span>
                     </td>
                     <td>{{ order.createdAt|date(datetime_format) }}</td>
                     <td>{{ order.status }}</td>
                     <td>
                         {{ order.market.currency|currency }}{{ order.total|number_format(2, ',', '') }}
                     </td>
-{#                    <td>#}
-{#                        <code>{{ order.market.currency|currency }}{{ order.discount|number_format(2, ',', '') }}</code>#}
-{#                    </td>#}
+                    <td>
+                        <code>{{ order.market.currency|currency }}{{ order.discount|number_format(2, ',', '') }}</code>
+                    </td>
                 </tr>
             {% else %}
                 <tr>

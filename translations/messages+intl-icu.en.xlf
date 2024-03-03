@@ -1495,6 +1495,10 @@
                 <source>customer.phone</source>
                 <target>Phone</target>
             </trans-unit>
+            <trans-unit id="customer.address">
+                <source>customer.address</source>
+                <target>Address</target>
+            </trans-unit>
             <trans-unit id="title.customer.cabinet">
                 <source>title.customer.cabinet</source>
                 <target>Cabinet</target>

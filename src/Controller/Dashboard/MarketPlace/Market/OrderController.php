@@ -12,6 +12,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Intl\Countries;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -47,6 +48,15 @@ class OrderController extends AbstractController
             ]);
     }
 
+    /**
+     * @param Request $request
+     * @param MarketOrders $order
+     * @param UserInterface $user
+     * @param EntityManagerInterface $em
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     #[Route('/{market}/{number}', name: 'app_dashboard_market_place_order_details_market')]
     public function details(
         Request                $request,
@@ -61,6 +71,7 @@ class OrderController extends AbstractController
         return $this->render('dashboard/content/market_place/order/order.html.twig', $this->navbar() + [
                 'market' => $market,
                 'currency' => $currency,
+                'country' => Countries::getNames(\Locale::getDefault()),
                 'order' => $order,
             ]);
     }

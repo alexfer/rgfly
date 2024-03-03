@@ -7,10 +7,12 @@
 {% block content %}
     <div class="row mt-xxl-5">
         <div class="col-md-6">
-            <div class="fw-bold mb-2">{{ 'table.header.order_number'|trans }}: <span
-                        class="ps-2 fw-normal">{{ order.number|upper }}</span></div>
-            <div class="fw-bold">{{ 'table.header.payment_type'|trans }}: <span
-                        class="ps-2 fw-normal">{{ order.marketInvoice.paymentGateway.name }}</span></div>
+            <div class="fw-bold mb-2">{{ 'table.header.order_number'|trans }}:
+                <span class="ps-2 fw-normal">{{ order.number|upper }}</span>
+            </div>
+            <div class="fw-bold">{{ 'table.header.payment_type'|trans }}:
+                <span class="ps-2 fw-normal">{{ order.marketInvoice.paymentGateway.name }}</span>
+            </div>
         </div>
         <div class="col-md-6">
             <div class="row">
@@ -35,10 +37,22 @@
                 '--' }}</span>
         </div>
         <div class="col-md-3"></div>
-        <div class="col-md-9 fw-bold">{{ 'customer.phone'|trans }}:
-            <span class="fw-normal">{{ order.marketCustomerOrders.first.customer ?
-                order.marketCustomerOrders.first.customer.phone :
-                '--' }}</span>
+        <div class="col-md-9 mb-2 fw-bold">{{ 'customer.phone'|trans }}:
+            <span class="fw-normal">{{ order.marketCustomerOrders.first.customer.phone }}</span>
+        </div>
+        <div class="col-md-3"></div>
+        <div class="col-md-9 fw-bold">{{ 'customer.address'|trans }}:
+            <span class="fw-normal">
+                <span class="pe-1">{{ order.marketCustomerOrders.first.customer.marketAddress.line1 }},</span>
+                <span class="pe-1">{{ order.marketCustomerOrders.first.customer.marketAddress.city }},</span>
+                <span class="pe-1">{{ country[order.marketCustomerOrders.first.customer.marketAddress.country] }}</span>
+                {% if order.marketCustomerOrders.first.customer.marketAddress.region %}
+                    <span class="pe-1">{{ order.marketCustomerOrders.first.customer.marketAddress.region }}</span>
+                {% endif %}
+                {% if order.marketCustomerOrders.first.customer.marketAddress.postal %}
+                    <span class="pe-1">{{ order.marketCustomerOrders.first.customer.marketAddress.postal }}</span>
+                {% endif %}
+            </span>
         </div>
     </div>
     <hr>
@@ -89,9 +103,9 @@
                 <td>{{ loop.index }}</td>
                 <td>{{ orderProduct.product.id }}</td>
                 <td>{{ orderProduct.product.shortName }}</td>
-                <td class="text-end">{{ order.market.currency|currency }} {{ orderProduct.product.cost|number_format(2, ',', '') }}</td>
+                <td class="text-end">{{ order.market.currency|currency }} {{ percent_cost|round|number_format(2, ',', '') }}</td>
                 <td class="text-end">{{ orderProduct.quantity }}</td>
-                <td class="text-end">{{ order.market.currency|currency }} {{ (orderProduct.product.cost * orderProduct.quantity)|number_format(2, ',', '') }}</td>
+                <td class="text-end">{{ order.market.currency|currency }} {{ (percent_cost * orderProduct.quantity)|round|number_format(2, ',', '') }}</td>
             </tr>
         {% endfor %}
         <tr>
@@ -103,7 +117,7 @@
         </tr>
         <tr>
             <td colspan="5"></td>
-            <td class="text-end">{{ order.market.currency|currency }} {{ order.total|number_format(2, ',', '') }}</td>
+            <td class="text-end">{{ order.market.currency|currency }} {{ order.discount|number_format(2, ',', '') }}</td>
         </tr>
         </tbody>
     </table>

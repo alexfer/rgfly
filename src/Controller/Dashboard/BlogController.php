@@ -2,7 +2,7 @@
 
 namespace App\Controller\Dashboard;
 
-use App\Entity\{Entry, EntryAttachment, EntryCategory, EntryDetails};
+use App\Entity\{Attach, Entry, EntryAttachment, EntryCategory, EntryDetails};
 use App\Form\Type\Dashboard\EntryDetailsType;
 use App\Repository\{CategoryRepository, EntryAttachmentRepository, EntryCategoryRepository, EntryRepository,};
 use App\Repository\AttachRepository;
@@ -291,7 +291,7 @@ class BlogController extends AbstractController
 
             $attachments = $entryAttachmentRepository->findAll();
             foreach ($attachments as $attachment) {
-                $attachment->getInUse(0);
+                $attachment->setInUse(0);
             }
             unset($attachment);
 
@@ -341,33 +341,37 @@ class BlogController extends AbstractController
         ParameterBagInterface     $params
     ): Response
     {
-        $entry = $entryRepository->find($request->get('entry'));
-        $details = $entry->getEntryDetails();
 
-        $attachments = $entryAttachmentRepository->findAll();
-        foreach ($attachments as $attachment) {
-            $attach = $attachment->getAttach();
-            $fs = new Filesystem();
-            $oldFile = $this->getTargetDir($details->getId(), $params) . '/' . $attach->getName();
+        $parameters = json_decode($request->getContent(), true);
 
-            if ($cacheManager->isStored($oldFile, 'entry_preview')) {
-                $cacheManager->remove($oldFile, 'entry_preview');
-            }
+        $details = $em->getRepository(EntryDetails::class)->find($request->get('entry'));
+        $attach = $em->getRepository(Attach::class)->find($parameters['id']);
 
-            if ($cacheManager->isStored($oldFile, 'entry_view')) {
-                $cacheManager->remove($oldFile, 'entry_view');
-            }
+        $attachment = $entryAttachmentRepository->findOneBy([
+            'attach' => $attach,
+            'details' => $details,
+        ]);
 
-            if ($fs->exists($oldFile)) {
-                $fs->remove($oldFile);
-            }
+        $fs = new Filesystem();
+        $attach = $attachment->getAttach();
 
-            $attachment->setInUse(0)->setAttach(null)->setDetails(null);
-            $em->persist($attachment);
-            $em->remove($attachment);
-            $em->remove($attach);
-            $em->flush();
+        $oldFile = $this->getTargetDir($details->getId(), $params) . '/' . $attach->getName();
+
+        if ($cacheManager->isStored($oldFile, 'entry_preview')) {
+            $cacheManager->remove($oldFile, 'entry_preview');
         }
+
+        if ($cacheManager->isStored($oldFile, 'entry_view')) {
+            $cacheManager->remove($oldFile, 'entry_view');
+        }
+
+        if ($fs->exists($oldFile)) {
+            $fs->remove($oldFile);
+        }
+
+        $em->remove($attach);
+        $em->remove($attachment);
+        $em->flush();
 
         return $this->json([
             'success' => true,
