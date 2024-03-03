@@ -204,6 +204,8 @@ class OrderController extends AbstractController
                 ->setColor($data['color'])
                 ->setSize($data['size'])
                 ->setProduct($product)
+                ->setCost($product->getCost())
+                ->setDiscount($product->getDiscount())
                 ->getOrders()
                 ->setNumber(MarketPlaceHelper::slug($order->getId(), 10, 'o'));
 
@@ -224,6 +226,8 @@ class OrderController extends AbstractController
             $orderProducts->setOrders($order)
                 ->setColor($data['color'])
                 ->setSize($data['size'])
+                ->setCost($product->getCost())
+                ->setDiscount($product->getDiscount())
                 ->setProduct($product);
 
             $em->persist($orderProducts);

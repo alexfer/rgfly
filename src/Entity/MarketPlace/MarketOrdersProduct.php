@@ -28,6 +28,12 @@ class MarketOrdersProduct
     #[ORM\Column]
     private ?int $quantity = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $discount = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $cost = null;
+
     public function __construct()
     {
         $this->quantity = 1;
@@ -132,6 +138,44 @@ class MarketOrdersProduct
     public function setQuantity(int $quantity): static
     {
         $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getDiscount(): ?int
+    {
+        return $this->discount;
+    }
+
+    /**
+     * @param int|null $discount
+     * @return $this
+     */
+    public function setDiscount(?int $discount): static
+    {
+        $this->discount = $discount;
+
+        return $this;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getCost(): ?float
+    {
+        return number_format($this->cost, 2);
+    }
+
+    /**
+     * @param float|null $cost
+     * @return $this
+     */
+    public function setCost(?float $cost): static
+    {
+        $this->cost = number_format($cost, 2);
 
         return $this;
     }

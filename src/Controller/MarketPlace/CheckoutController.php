@@ -72,6 +72,10 @@ class CheckoutController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $checkEmail = $em->getRepository(User::class)->findOneBy(['email' => $form->get('email')->getData()]);
 
+            $paymentGateway = $em->getRepository(MarketPaymentGateway::class)->findOneBy([
+                'slug' => key($request->request->all('gateway')),
+            ]);
+
             if ($checkEmail) {
                 $this->addFlash('danger', $translator->trans('email.unique', [], 'validators'));
                 return $this->redirectToRoute('app_market_place_order_checkout', ['order' => $request->get('order')]);
@@ -104,29 +108,24 @@ class CheckoutController extends AbstractController
                 $em->persist($address);
 
                 $customerOrder = $em->getRepository(MarketCustomerOrders::class)->findOneBy(['orders' => $order]);
-
                 $customerOrder->setCustomer($customer);
                 $em->persist($customerOrder);
-
-                $order->setSession(null)
-                    ->setStatus(MarketOrders::STATUS['confirmed']);
-
-                $paymentGateway = $em->getRepository(MarketPaymentGateway::class)->findOneBy([
-                    'slug' => key($request->request->all('gateway')),
-                ]);
-
-                $invoice = new MarketInvoice();
-
-                $invoice->setOrders($order)
-                    ->setPaymentGateway($paymentGateway)
-                    ->setNumber(MarketPlaceHelper::slug($order->getId(), 6, 'i'))
-                    ->setAmount($order->getTotal())
-                    ->setTax(0);
-
-                $em->persist($invoice);
-                $em->persist($order);
-                $em->flush();
             }
+
+            $invoice = new MarketInvoice();
+
+            $invoice->setOrders($order)
+                ->setPaymentGateway($paymentGateway)
+                ->setNumber(MarketPlaceHelper::slug($order->getId(), 6, 'i'))
+                ->setAmount($order->getTotal())
+                ->setTax(0);
+
+            $order->setSession(null)
+                ->setStatus(MarketOrders::STATUS['confirmed']);
+
+            $em->persist($invoice);
+            $em->persist($order);
+            $em->flush();
 
             $session->set('quantity', 0);
             $session->remove('orders');

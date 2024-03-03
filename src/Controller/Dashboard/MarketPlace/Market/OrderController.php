@@ -47,6 +47,15 @@ class OrderController extends AbstractController
             ]);
     }
 
+    /**
+     * @param Request $request
+     * @param MarketOrders $order
+     * @param UserInterface $user
+     * @param EntityManagerInterface $em
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     #[Route('/{market}/{number}', name: 'app_dashboard_market_place_order_details_market')]
     public function details(
         Request                $request,

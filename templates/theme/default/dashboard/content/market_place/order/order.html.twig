@@ -7,10 +7,12 @@
 {% block content %}
     <div class="row mt-xxl-5">
         <div class="col-md-6">
-            <div class="fw-bold mb-2">{{ 'table.header.order_number'|trans }}: <span
-                        class="ps-2 fw-normal">{{ order.number|upper }}</span></div>
-            <div class="fw-bold">{{ 'table.header.payment_type'|trans }}: <span
-                        class="ps-2 fw-normal">{{ order.marketInvoice.paymentGateway.name }}</span></div>
+            <div class="fw-bold mb-2">{{ 'table.header.order_number'|trans }}:
+                <span class="ps-2 fw-normal">{{ order.number|upper }}</span>
+            </div>
+            <div class="fw-bold">{{ 'table.header.payment_type'|trans }}:
+{#                <span class="ps-2 fw-normal">{{ order.marketInvoice.paymentGateway.name }}</span>#}
+            </div>
         </div>
         <div class="col-md-6">
             <div class="row">
