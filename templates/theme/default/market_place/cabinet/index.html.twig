@@ -43,9 +43,9 @@
                                                                 {{ order.orders.completedAt is null ? 'customer.cabinet.order.notpaid'|trans : order.orders.completedAt|date(datetime_format) }}
                                                             </div>
                                                             <div class="col d-flex justify-content-end">
-                                                                <div class="badge text-bg-secondary fs-5 fw-normal">
+                                                                <div class="fs-5 fw-normal">
+                                                                    <small class="me-1">{{ order.orders.market.currency|currency }}</small>
                                                                     {{ order.orders.discount|number_format(2, '.', ' ') }}
-                                                                    <small>{{ order.orders.market.currency|currency }}</small>
                                                                 </div>
                                                             </div>
                                                         </div>
