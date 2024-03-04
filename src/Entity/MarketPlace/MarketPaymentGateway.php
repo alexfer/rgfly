@@ -41,9 +41,13 @@ class MarketPaymentGateway
     #[ORM\OneToMany(mappedBy: 'gateway', targetEntity: MarketPaymentGatewayMarket::class)]
     private Collection $marketPaymentGatewayMarkets;
 
+    #[ORM\OneToMany(mappedBy: 'payment_gateway', targetEntity: MarketInvoice::class)]
+    private Collection $marketInvoices;
+
     public function __construct()
     {
         $this->marketPaymentGatewayMarkets = new ArrayCollection();
+        $this->marketInvoices = new ArrayCollection();
     }
 
     /**
@@ -215,6 +219,36 @@ class MarketPaymentGateway
             // set the owning side to null (unless already changed)
             if ($marketPaymentGatewayMarket->getGateway() === $this) {
                 $marketPaymentGatewayMarket->setGateway(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketInvoice>
+     */
+    public function getMarketInvoices(): Collection
+    {
+        return $this->marketInvoices;
+    }
+
+    public function addMarketInvoice(MarketInvoice $marketInvoice): static
+    {
+        if (!$this->marketInvoices->contains($marketInvoice)) {
+            $this->marketInvoices->add($marketInvoice);
+            $marketInvoice->setPaymentGateway($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMarketInvoice(MarketInvoice $marketInvoice): static
+    {
+        if ($this->marketInvoices->removeElement($marketInvoice)) {
+            // set the owning side to null (unless already changed)
+            if ($marketInvoice->getPaymentGateway() === $this) {
+                $marketInvoice->setPaymentGateway(null);
             }
         }
 

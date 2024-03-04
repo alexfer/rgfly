@@ -16,9 +16,6 @@ class MarketInvoice
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(inversedBy: 'marketInvoice', cascade: ['persist', 'remove'])]
-    private ?MarketOrders $orders = null;
-
     #[ORM\Column(length: 50)]
     private ?string $number = null;
 
@@ -28,7 +25,10 @@ class MarketInvoice
     #[ORM\Column]
     private ?float $amount = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'marketInvoice', cascade: ['persist', 'remove'])]
+    private ?MarketOrders $orders = null;
+
+    #[ORM\ManyToOne(inversedBy: 'marketInvoices')]
     private ?MarketPaymentGateway $payment_gateway = null;
 
     #[ORM\Column]
@@ -182,4 +182,5 @@ class MarketInvoice
 
         return $this;
     }
+
 }

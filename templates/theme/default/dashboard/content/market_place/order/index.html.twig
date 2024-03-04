@@ -23,9 +23,13 @@
             {% for order in orders %}
                 <tr>
                     <td class="text-center">
-                        <a href="{{ path('app_dashboard_market_place_order_details_market', {market: order.market.id, number: order.number }) }}"
-                           class="fw-normal">{{ order.number|upper }}
-                        </a>
+                        {% if order.status == 'processing' %}
+                            <span class="text-danger fw-normal">{{ order.number|upper }}</span>
+                        {% else %}
+                            <a href="{{ path('app_dashboard_market_place_order_details_market', {market: order.market.id, number: order.number }) }}"
+                               class="fw-normal">{{ order.number|upper }}
+                            </a>
+                        {% endif %}
                     </td>
                     <td class="text-center">
                         <span>{{ order.marketOrdersProducts.count }}
