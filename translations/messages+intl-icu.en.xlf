@@ -722,6 +722,10 @@
                 <source>market.product.cart.empty</source>
                 <target>Your cart is currently empty</target>
             </trans-unit>
+            <trans-unit id="market.product.wishlist.empty">
+                <source>market.product.wishlist.empty</source>
+                <target>Your wishlist is currently empty</target>
+            </trans-unit>
             <trans-unit id="market.product.wishlist">
                 <source>market.product.wishlist</source>
                 <target>Wishlist</target>

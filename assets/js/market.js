@@ -12,6 +12,49 @@ let forms = document.querySelectorAll('.shopping-cart') || undefined;
 let wishlists = document.querySelectorAll('.add-wishlist') || undefined;
 let drops = document.querySelectorAll('.drops') || undefined;
 let headers = {'Content-type': 'application/json; charset=utf-8'};
+const bulkRemoveWishlist = document.getElementById('bulk-remove') || undefined;
+
+if (typeof bulkRemoveWishlist !== 'undefined') {
+    bulkRemoveWishlist.addEventListener('click', (event) => {
+        event.preventDefault();
+        let url = bulkRemoveWishlist.getAttribute('data-url');
+        let tbody = document.getElementById('bulk-item');
+        let items = [];
+        let els = [];
+        Array.from(tbody.children).forEach((el) => {
+            let children = el.firstElementChild.getElementsByTagName('input');
+            Array.from(children).forEach((checkbox) => {
+                if (checkbox.checked) {
+                    items.push(checkbox.value);
+                    els.push(el);
+                }
+            });
+        });
+        if (els.length > 0) {
+            fetch(url, {
+                method: 'POST',
+                body: JSON.stringify({items: items}),
+                headers: headers
+            })
+                .then((response) => {
+                    if (response.status === 204) {
+                        for (let i in els) {
+                            els[i].remove();
+                        }
+                        if (tbody.children.length === 0) {
+                            tbody.parentElement.parentElement.remove();
+                            bulkRemoveWishlist.remove();
+                            let notFound = document.getElementById('not-found');
+                            notFound.classList.remove('visually-hidden');
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                });
+        }
+    });
+}
 
 if (typeof drops !== 'undefined') {
     Array.from(drops).forEach((drop) => {
@@ -116,6 +159,7 @@ if (typeof wishlists != 'undefined') {
                         return false;
                     }
                     button.children.item(0).classList.replace('text-secondary', 'text-danger');
+                    button.children.item(0).classList.replace('bi-heart', 'bi-heart-fill');
                     button.disabled = true;
                     return response.json();
                 })

@@ -16,12 +16,19 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[Route('/market-place/wishlist')]
 class WishlistController extends AbstractController
 {
+    /**
+     * @param Request $request
+     * @param MarketProduct $product
+     * @param EntityManagerInterface $em
+     * @param UserInterface|null $user
+     * @return Response
+     */
     #[Route('/add/{slug}', name: 'app_market_place_add_wishlist', methods: ['POST'])]
     public function add(
         Request                $request,
         MarketProduct          $product,
         EntityManagerInterface $em,
-        ?UserInterface          $user,
+        ?UserInterface         $user,
     ): Response
     {
         $parameters = json_decode($request->getContent(), true);
@@ -36,9 +43,10 @@ class WishlistController extends AbstractController
             $customer = null;
             $responseStatus = Response::HTTP_UNAUTHORIZED;
         }
+
         $market = $em->getRepository(Market::class)->find($parameters['market']);
 
-        if($market && $customer && $product) {
+        if ($market && $customer) {
             $wishlist = new MarketWishlist();
             $wishlist->setMarket($market)
                 ->setCustomer($customer)

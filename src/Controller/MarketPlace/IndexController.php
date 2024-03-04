@@ -31,7 +31,7 @@ class IndexController extends AbstractController
     {
         // TODO: Replace with psql function - get_products
         $products = $marketProductRepository->getProducts(8);
-        //dd($products);
+
         shuffle($products);
 
         $customer = $em->getRepository(MarketCustomer::class)->findOneBy([
