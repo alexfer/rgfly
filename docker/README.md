@@ -12,9 +12,13 @@ $ npm install
 $ npm run dev --watch
 ````
 ### Build docker
-#### Run following commands:
+#### Run following commands and fill .env file:
 ````shell
 $ cd docker
+````
+#### Fill out .env file:
+````shell
+$ cp .env.dist .env
 $ docker-compose up -d --buig
 ````
 ### Create database & grant privileges to database
