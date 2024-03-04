@@ -10,7 +10,7 @@
             <div class="row">
                 <div class="col-12 card card-body shadow">
                     <h4 class="ps-2 border-start border-3 border-danger mb-3">{{ 'title.general.market.name'|trans }}</h4>
-                    <div class="row mt-lg-2 g-4">
+                    <div class="row mt-lg-2 mb-4 g-4">
                         {% for product in products %}
                             <div class="col-sm-6 col-lg-4 col-xl-3">
                                 <div class="card product-card h-auto">
@@ -102,7 +102,11 @@
                                                class="btn btn-link text-decoration-none d-flex p-0 mb-0">{{ 'market.product.details'|trans }}
                                                 <i class="bi bi-arrow-right fw-lighter fs-6 ms-3"></i>
                                             </a>
-                                            <a href="#"><i class="fa fa-heart text-danger"></i></a>
+                                            <form class="add-wishlist" name="wishlist"
+                                                  action="{{ path('app_market_place_add_wishlist', {slug: product.slug}) }}">
+                                                <input name="market" type="hidden" value="{{ product.market.id }}">
+                                                {% include 'market_place/wishlist.html.twig' with {'extra': null} %}
+                                            </form>
                                         </div>
                                     </div>
                                 </div>

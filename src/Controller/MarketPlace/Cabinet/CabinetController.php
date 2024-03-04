@@ -4,6 +4,7 @@ namespace App\Controller\MarketPlace\Cabinet;
 
 use App\Entity\MarketPlace\MarketCustomer;
 use App\Entity\MarketPlace\MarketCustomerOrders;
+use App\Entity\MarketPlace\MarketWishlist;
 use App\Form\Type\MarketPlace\AddressType;
 use App\Form\Type\MarketPlace\CustomerProfileType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -107,15 +108,52 @@ class CabinetController extends AbstractController
      * @return Response
      */
     #[Route('/wishlist', name: 'app_cabinet_wishlist', methods: ['GET'])]
-    public function orders(
+    public function wishlist(
         Request                $request,
         UserInterface          $user,
         EntityManagerInterface $em,
     ): Response
     {
+        $customer = $this->customer($user, $em);
+
+        $wishlist = $em->getRepository(MarketWishlist::class)->findBy([
+            'customer' => $customer,
+        ], ['created_at' => 'desc']);
+
         return $this->render('market_place/cabinet/wishlist.html.twig', [
-            'customer' => $this->customer($user, $em),
+            'customer' => $customer,
+            'wishlist' => $wishlist,
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param UserInterface $user
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
+    #[Route('/wishlist/bulk-delete', name: 'app_cabinet_wishlist_bulk_delete', methods: ['POST'])]
+    public function wishlistBulkDelete(
+        Request                $request,
+        UserInterface          $user,
+        EntityManagerInterface $em,
+    ): Response
+    {
+        $customer = $this->customer($user, $em);
+        $parameters = json_decode($request->getContent(), true);
+        $items = $parameters['items'];
+
+        foreach ($parameters['items'] as $key => $item) {
+            $wishlist = $em->getRepository(MarketWishlist::class)
+                ->findOneBy(['customer' => $customer, 'id' => $item]);
+            $em->remove($wishlist);
+        }
+        $em->flush();
+
+        $response = new Response();
+        $response->setStatusCode(Response::HTTP_NO_CONTENT);
+
+        return $response->send();
     }
 
     /**

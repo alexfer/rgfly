@@ -110,7 +110,11 @@
                                            class="btn btn-link text-decoration-none p-0 mb-0">{{ 'market.product.details'|trans }}
                                             <i class="bi bi-arrow-right ms-1"></i>
                                         </a>
-                                        <a href="#" class="z-index-2"><i class="bi bi-heart-fill text-danger"></i></a>
+                                        <form class="add-wishlist" name="wishlist"
+                                              action="{{ path('app_market_place_add_wishlist', {slug: product.slug}) }}">
+                                            <input name="market" type="hidden" value="{{ product.market.id }}">
+                                            {% include 'market_place/wishlist.html.twig' with {'extra': null} %}
+                                        </form>
                                     </div>
                                 </div>
                             </div>

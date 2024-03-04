@@ -95,10 +95,11 @@
                                                             {% endif %}
                                                         </a>
                                                         <div class="buttons d-flex justify-content-center w-100">
-                                                            <button class="btn btn-light shadow fs-6 mx-2"
-                                                                    type="button">
-                                                                <i class="bi bi-heart"></i>
-                                                            </button>
+                                                            <form class="add-wishlist" name="wishlist"
+                                                                  action="{{ path('app_market_place_add_wishlist', {slug: product.slug}) }}">
+                                                                <input name="market" type="hidden" value="{{ product.market.id }}">
+                                                                {% include 'market_place/wishlist.html.twig' with {'extra': 'shadow fs-6 mx-2'} %}
+                                                            </form>
                                                             <a class="btn btn-light shadow fs-6 mx-2"
                                                                href="{{ path('app_market_place_product', {slug: product.slug}) }}">
                                                                 <i class="bi bi-eye"></i>

@@ -88,6 +88,9 @@ class Market
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $deleted_at = null;
 
+    #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketWishlist::class)]
+    private Collection $marketWishlists;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
@@ -99,6 +102,7 @@ class Market
         $this->marketCustomerMessages = new ArrayCollection();
         $this->messages = ["email"];
         $this->marketPaymentGatewayMarkets = new ArrayCollection();
+        $this->marketWishlists = new ArrayCollection();
     }
 
     /**
@@ -646,6 +650,44 @@ class Market
             // set the owning side to null (unless already changed)
             if ($marketPaymentGatewayMarket->getMarket() === $this) {
                 $marketPaymentGatewayMarket->setMarket(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketWishlist>
+     */
+    public function getMarketWishlists(): Collection
+    {
+        return $this->marketWishlists;
+    }
+
+    /**
+     * @param MarketWishlist $marketWishlist
+     * @return $this
+     */
+    public function addMarketWishlist(MarketWishlist $marketWishlist): static
+    {
+        if (!$this->marketWishlists->contains($marketWishlist)) {
+            $this->marketWishlists->add($marketWishlist);
+            $marketWishlist->setMarket($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MarketWishlist $marketWishlist
+     * @return $this
+     */
+    public function removeMarketWishlist(MarketWishlist $marketWishlist): static
+    {
+        if ($this->marketWishlists->removeElement($marketWishlist)) {
+            // set the owning side to null (unless already changed)
+            if ($marketWishlist->getMarket() === $this) {
+                $marketWishlist->setMarket(null);
             }
         }
 

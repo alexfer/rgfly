@@ -8,6 +8,7 @@ use App\Entity\MarketPlace\MarketCategory;
 use App\Entity\MarketPlace\MarketCategoryProduct;
 use App\Entity\MarketPlace\MarketProduct;
 use App\Entity\MarketPlace\MarketProductAttach;
+use App\Entity\MarketPlace\MarketWishlist;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\Query\Expr;
@@ -65,6 +66,7 @@ class MarketProductRepository extends ServiceEntityRepository
             ->join(MarketCategory::class, 'c', Expr\Join::WITH, 'cp.category = c.id')
             ->leftJoin(MarketCategory::class, 'cc', Expr\Join::WITH, 'c.parent = cc.id')
             ->leftJoin(MarketProductAttach::class, 'pa', Expr\Join::WITH, 'pa.product = p.id')
+            ->leftJoin(MarketWishlist::class, 'w', Expr\Join::WITH, 'w.product = p.id')
             ->join(Market::class, 'm', Expr\Join::WITH, 'p.market = m.id')
             ->andWhere('p.deleted_at IS NULL')
             ->setMaxResults($limit)

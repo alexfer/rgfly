@@ -95,58 +95,60 @@
                                     <span class="fw-bold text-dark-emphasis">{{ product.cost|number_format(2, '.', ' ') }}<small>{{ product.market.currency|currency }}</small></span>
                                 {% endif %}
                             </div>
-                            <form class="shopping-cart" method="post"
-                                  action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
-                                {% if product.marketProductAttributes.count %}
-                                    <hr class="my-1">
-                                    <div id="attributes">
-                                        {% for attribute in product.marketProductAttributes.toArray %}
-                                            <input type="hidden" name="color" value="">
-                                            <input type="hidden" name="size" value="">
-                                            {% if attribute.inFront %}
-                                                <small class="d-block my-2 fs-6 text-muted">{{ attribute.name|capitalize }}</small>
-                                                <div class="form-check-inline me-0" id="{{ attribute.name }}">
-                                                    {% for attr in attribute.marketProductAttributeValues %}
-                                                        <div class="d-inline-block p-1 border border-secondary rounded-circle">
-                                                            <input type="radio" name="attr[{{ attribute.name }}]"
-                                                                   class="btn-check"
-                                                                   data-name="{{ attr.value }}"
-                                                                   data-root-name="{{ attribute.name }}"
-                                                                   id="btn-check-{{ attr.id }}" value="{{ attr.id }}"
-                                                                   autocomplete="off">
-                                                            <label class="btn btn-link-secondary{% if attribute.name == 'color' %} rounded-circle{% endif %} btn-sm"
-                                                                   for="btn-check-{{ attr.id }}" {% if attribute.name == 'color' %} style="background-color: {{ attr.extra|join }};"{% endif %}>
-                                                                {% if attribute.name == 'size' %}
-                                                                    <span class="px-1">{{ attr.value|capitalize }}</span>
-                                                                {% else %}
-                                                                    <span class="py-1 px-2"></span>
-                                                                {% endif %}
-                                                            </label>
-                                                        </div>
-                                                    {% endfor %}
-                                                </div>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                                <div class="mt-3 row justify-content-start g-2 align-items-center">
-                                    <div class="col-xxl-4 col-lg-4 col-md-5 col-5 d-grid">
+                            {% if product.marketProductAttributes.count %}
+                                <hr class="my-1">
+                                <div id="attributes">
+                                    {% for attribute in product.marketProductAttributes.toArray %}
+                                        <input type="hidden" name="color" value="">
+                                        <input type="hidden" name="size" value="">
+                                        {% if attribute.inFront %}
+                                            <small class="d-block my-2 fs-6 text-muted">{{ attribute.name|capitalize }}</small>
+                                            <div class="form-check-inline me-0" id="{{ attribute.name }}">
+                                                {% for attr in attribute.marketProductAttributeValues %}
+                                                    <div class="d-inline-block p-1 border border-secondary {% if attribute.name == 'color' %} rounded-circle{% endif %}">
+                                                        <input type="radio" name="attr[{{ attribute.name }}]"
+                                                               class="btn-check"
+                                                               data-name="{{ attr.value }}"
+                                                               data-root-name="{{ attribute.name }}"
+                                                               id="btn-check-{{ attr.id }}" value="{{ attr.id }}"
+                                                               autocomplete="off">
+                                                        <label class="btn btn-link-secondary{% if attribute.name == 'color' %} rounded-circle{% endif %} btn-sm"
+                                                               for="btn-check-{{ attr.id }}" {% if attribute.name == 'color' %} style="background-color: {{ attr.extra|join }};"{% endif %}>
+                                                            {% if attribute.name == 'size' %}
+                                                                <span class="px-1">{{ attr.value|capitalize }}</span>
+                                                            {% else %}
+                                                                <span class="py-1 px-2"></span>
+                                                            {% endif %}
+                                                        </label>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="mt-3 row justify-content-start g-2 align-items-center">
+                                <div class="col-xxl-3 col-lg-3 col-md-4 col-4 d-grid">
+                                    <form class="shopping-cart form-inline" method="post"
+                                          action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
                                         <button type="submit" id="order"
                                                 class="btn btn-warning rounded-1 shadow-sm opacity-75"{% if product.quantity == 0 %} disabled{% endif %}>
                                             <i class="bi bi-basket me-2"></i>{{ 'market.product.add_cart'|trans }}
                                         </button>
-                                    </div>
-                                    <div class="col-md-4 col-4">
-                                        <a class="btn btn-light" href="#" data-bs-toggle="tooltip" data-bs-html="true"
-                                           data-bs-placement="top"
-                                           title="{{ 'market.product.compare'|trans }}"><i
-                                                    class="bi bi-arrow-left-right"></i></a>
-                                        <a class="btn btn-light" href="#" data-bs-toggle="tooltip" data-bs-html="true"
-                                           data-bs-placement="top" title="{{ 'market.product.wishlist'|trans }}"><i
-                                                    class="bi bi-heart"></i></a>
-                                    </div>
+                                    </form>
                                 </div>
-                            </form>
+                                <div class="col-md-4 col-4">
+                                    <a class="btn btn-light" href="#" data-bs-toggle="tooltip" data-bs-html="true"
+                                       data-bs-placement="top"
+                                       title="{{ 'market.product.compare'|trans }}"><i
+                                                class="bi bi-arrow-left-right"></i></a>
+                                    <form class="add-wishlist d-inline" name="wishlist"
+                                          action="{{ path('app_market_place_add_wishlist', {slug: product.slug}) }}">
+                                        <input name="market" type="hidden" value="{{ product.market.id }}">
+                                        {% include 'market_place/wishlist.html.twig' with {'extra': null} %}
+                                    </form>
+                                </div>
+                            </div>
                             <hr class="my-3">
                             {% set code = product.slug|split('-')|last|upper %}
                             <table class="table table-borderless mb-0">
