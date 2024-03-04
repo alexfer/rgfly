@@ -9,6 +9,7 @@ i18next.init(messages);
 const cart = document.getElementById('shopping-cart') || undefined;
 let attributes = document.querySelectorAll('#attributes');
 let forms = document.querySelectorAll('.shopping-cart') || undefined;
+let wishlists = document.querySelectorAll('.add-wishlist') || undefined;
 let drops = document.querySelectorAll('.drops') || undefined;
 let headers = {'Content-type': 'application/json; charset=utf-8'};
 
@@ -96,6 +97,32 @@ if (attributes.length) {
                 }
             });
         }
+    });
+}
+
+if (typeof wishlists != 'undefined') {
+    Array.from(wishlists).forEach((form) => {
+        const url = form.getAttribute('action');
+        let market = form.querySelector('input[name="market"]');
+        let button = form.querySelector('button[type="submit"]');
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            fetch(url, {
+                method: 'POST',
+                body: JSON.stringify({market: market.value})
+            })
+                .then((response) => {
+                    if (response.status === 401) {
+                        return false;
+                    }
+                    button.children.item(0).classList.replace('text-secondary', 'text-danger');
+                    button.disabled = true;
+                    return response.json();
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        });
     });
 }
 

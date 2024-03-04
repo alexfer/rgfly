@@ -726,6 +726,10 @@
                 <source>market.product.wishlist</source>
                 <target>Wishlist</target>
             </trans-unit>
+            <trans-unit id="market.unauthorized">
+                <source>market.unauthorized</source>
+                <target>Please login in to store it to your wishlist.</target>
+            </trans-unit>
             <trans-unit id="market.product.compare">
                 <source>market.product.compare</source>
                 <target>Compare</target>

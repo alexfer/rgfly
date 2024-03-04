@@ -33,10 +33,11 @@ CREATE DATABASE rgfly OWNER rgfly;
 GRANT ALL PRIVILEGES ON DATABASE rgfly TO rgfly;
 ````
 Deploy database:
-````shell
+````
 $ docker exec -it bash
 $ cd rgfly
-$ rm -rfv migrations/*
+$ rm -rfv src/Migrations/migrations/*
+$ touch src/Migrations/.gitkeep
 $ php bin/console doctrine:database:drop --if-exists --force
 $ php bin/console doctrine:database:create
 $ php bin/console make:migration --no-interaction

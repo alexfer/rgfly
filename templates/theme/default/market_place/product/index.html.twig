@@ -107,7 +107,7 @@
                                                 <small class="d-block my-2 fs-6 text-muted">{{ attribute.name|capitalize }}</small>
                                                 <div class="form-check-inline me-0" id="{{ attribute.name }}">
                                                     {% for attr in attribute.marketProductAttributeValues %}
-                                                        <div class="d-inline-block p-1 border border-secondary rounded-circle">
+                                                        <div class="d-inline-block p-1 border border-secondary {% if attribute.name == 'color' %} rounded-circle{% endif %}">
                                                             <input type="radio" name="attr[{{ attribute.name }}]"
                                                                    class="btn-check"
                                                                    data-name="{{ attr.value }}"

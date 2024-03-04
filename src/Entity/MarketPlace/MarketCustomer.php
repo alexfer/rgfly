@@ -52,11 +52,15 @@ class MarketCustomer
     #[ORM\OneToOne(mappedBy: 'customer', cascade: ['persist', 'remove'])]
     private ?MarketAddress $marketAddress = null;
 
+    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: MarketWishlist::class)]
+    private Collection $marketWishlists;
+
     public function __construct()
     {
         $this->created_at = new DateTimeImmutable();
         $this->marketCustomerOrders = new ArrayCollection();
         $this->marketCustomerMessages = new ArrayCollection();
+        $this->marketWishlists = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -246,6 +250,44 @@ class MarketCustomer
         }
 
         $this->marketAddress = $marketAddress;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketWishlist>
+     */
+    public function getMarketWishlists(): Collection
+    {
+        return $this->marketWishlists;
+    }
+
+    /**
+     * @param MarketWishlist $marketWishlist
+     * @return $this
+     */
+    public function addMarketWishlist(MarketWishlist $marketWishlist): static
+    {
+        if (!$this->marketWishlists->contains($marketWishlist)) {
+            $this->marketWishlists->add($marketWishlist);
+            $marketWishlist->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MarketWishlist $marketWishlist
+     * @return $this
+     */
+    public function removeMarketWishlist(MarketWishlist $marketWishlist): static
+    {
+        if ($this->marketWishlists->removeElement($marketWishlist)) {
+            // set the owning side to null (unless already changed)
+            if ($marketWishlist->getCustomer() === $this) {
+                $marketWishlist->setCustomer(null);
+            }
+        }
 
         return $this;
     }
