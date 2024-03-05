@@ -37,6 +37,21 @@ class MarketProduct
     #[ORM\Column(type: 'float')]
     private ?float $cost;
 
+    #[ORM\Column(length: 80)]
+    private ?string $short_name = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $discount = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $sku = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $pckg_quantity = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $fee;
+
     #[ORM\Column]
     private ?DateTime $created_at;
 
@@ -67,20 +82,11 @@ class MarketProduct
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: MarketOrdersProduct::class)]
     private Collection $marketOrdersProducts;
 
-    #[ORM\Column(length: 80)]
-    private ?string $short_name = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?float $discount = null;
-
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: MarketProductAttribute::class)]
     private Collection $marketProductAttributes;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $sku = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $pckg_quantity = null;
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: MarketWishlist::class)]
+    private Collection $marketWishlists;
 
     public function __construct()
     {
@@ -90,6 +96,8 @@ class MarketProduct
         $this->marketOrdersProducts = new ArrayCollection();
         $this->marketProductAttributes = new ArrayCollection();
         $this->pckg_quantity = 0;
+        $this->fee = 0;
+        $this->marketWishlists = new ArrayCollection();
     }
 
     /**
@@ -592,6 +600,63 @@ class MarketProduct
     public function setPckgQuantity(?int $pckg_quantity): static
     {
         $this->pckg_quantity = $pckg_quantity;
+
+        return $this;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getFee(): ?float
+    {
+        return $this->fee;
+    }
+
+    /**
+     * @param float|null $fee
+     * @return $this
+     */
+    public function setFee(?float $fee): static
+    {
+        $this->fee = $fee;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketWishlist>
+     */
+    public function getMarketWishlists(): Collection
+    {
+        return $this->marketWishlists;
+    }
+
+    /**
+     * @param MarketWishlist $marketWishlist
+     * @return $this
+     */
+    public function addMarketWishlist(MarketWishlist $marketWishlist): static
+    {
+        if (!$this->marketWishlists->contains($marketWishlist)) {
+            $this->marketWishlists->add($marketWishlist);
+            $marketWishlist->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MarketWishlist $marketWishlist
+     * @return $this
+     */
+    public function removeMarketWishlist(MarketWishlist $marketWishlist): static
+    {
+        if ($this->marketWishlists->removeElement($marketWishlist)) {
+            // set the owning side to null (unless already changed)
+            if ($marketWishlist->getProduct() === $this) {
+                $marketWishlist->setProduct(null);
+            }
+        }
 
         return $this;
     }

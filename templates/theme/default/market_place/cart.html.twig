@@ -10,9 +10,14 @@
                         <div class="row align-items-center">
                             <div class="col-4">
                                 <a class="" href="{{ path('app_market_place_product', {slug: product.slug}) }}">
-                                    <img class="shadow-none rounded-1 position-relative mt-0"
-                                         src="{{ asset('img/08.jpg') }}"
-                                         width="100" alt="{{ product.name }}">
+                                    {% if product.attach %}
+                                        {% set _picture = 'storage/product/picture/' ~ product.id ~ '/' ~  product.attach %}
+                                        <img src="{{ asset(_picture)|imagine_filter('product_thumb') }}"
+                                             class="img-fluid" alt="{{ product.name }}">
+                                    {% else %}
+                                        <img class="shadow-none rounded-1 position-relative mt-0 img-fluid"
+                                             src="{{ asset('http://placehold.it/100x80') }}" alt="{{ product.name }}">
+                                    {% endif %}
                                 </a>
                             </div>
                             <div class="col-8">
@@ -24,7 +29,9 @@
                                         {% set percent = product.percent %}
                                         {% set cost = product.cost %}
                                         {% set percent_cost = (cost - ((cost * percent) - percent)/100) %}
-                                        <span class="fw-bold text-success">{{ percent_cost|round|number_format(2, '.', ' ') }}<small>{{ order.market.currency|currency }}</small></span>
+                                        <span class="fw-bold text-success">{{ percent_cost|round|number_format(2, '.', ' ') }}
+                                            <small>{{ order.market.currency|currency }}</small>
+                                        </span>
                                         <span class="text-decoration-line-through text-muted">
                                             {{ product.cost|number_format(2, '.', ' ') }}
                                             <small>{{ order.market.currency|currency }}</small>
@@ -35,11 +42,6 @@
                                         <span class="text-muted">{{ product.cost|number_format(2, '.', ' ') }}<small>{{ order.market.currency|currency }}</small></span>
                                     {% endif %}
                                 </p>
-                                <div class="d-flex align-items-center">
-                                    <a class="fs-6 text-gray-400 ms-auto" href="#">
-                                        <i class="bi bi-x"></i> <small>{{ 'market.product.remove'|trans }}</small>
-                                    </a>
-                                </div>
                             </div>
                         </div>
                     </li>
@@ -47,9 +49,13 @@
             {% endfor %}
         {% endfor %}
     </ul>
-    <div class="justify-between lh-base fs-6 fw-bold bg-light py-3 ps-3 shadow-sm mb-3">
-        <strong>Subtotal</strong>
+    <div class="justify-between lh-base fs-6 fw-bold bg-light py-3 ps-3 mb-3">
+        <strong>{{ 'order.subtotal'|trans }}</strong>
         <strong class="float-end pe-3">{{ order.discount|number_format(2, '.', ' ') }}</strong>
+    </div>
+    <div class="d-flex justify-content-center mt-4">
+        <a href="{{ path('app_market_place_order_summary') }}"
+           class="btn btn-outline-danger rounded-0">{{ 'order.view'|trans }}</a>
     </div>
 {% else %}
     <div class="text-center visually-hidden">

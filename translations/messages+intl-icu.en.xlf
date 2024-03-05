@@ -18,7 +18,8 @@
             <trans-unit id="http_error.suggestion">
                 <source>http_error.suggestion</source>
                 <target>
-                    <![CDATA[Try loading this page again in some minutes or go back to the <a cass="link" href="{ url }">Homepage</a>.]]></target>
+                    <![CDATA[Try loading this page again in some minutes or go back to the <a cass="link" href="{ url }">Homepage</a>.]]>
+                </target>
             </trans-unit>
             <trans-unit id="http_error_403.description">
                 <source>http_error_403.description</source>
@@ -57,11 +58,11 @@
             </trans-unit>
             <trans-unit id="site.title">
                 <source>site.title</source>
-                <target>MRebely</target>
+                <target>RgFly</target>
             </trans-unit>
             <trans-unit id="site.description">
                 <source>site.description</source>
-                <target>A marketplace with free and paid MRebely solutions - MRebely Online</target>
+                <target>A marketplace with free and paid RgFly solutions - RgFly Online</target>
             </trans-unit>
             <trans-unit id="text.home.header">
                 <source>text.home.header</source>
@@ -70,6 +71,10 @@
             <trans-unit id="title.blogs">
                 <source>title.blogs</source>
                 <target>Blogs</target>
+            </trans-unit>
+            <trans-unit id="title.account">
+                <source>title.account</source>
+                <target>Account</target>
             </trans-unit>
             <trans-unit id="title.questions">
                 <source>title.questions</source>
@@ -187,6 +192,14 @@
             <trans-unit id="menu.dashboard.overview">
                 <source>menu.dashboard.overview</source>
                 <target>Overview</target>
+            </trans-unit>
+            <trans-unit id="menu.dashboard.orders">
+                <source>menu.dashboard.orders</source>
+                <target>Orders</target>
+            </trans-unit>
+            <trans-unit id="menu.dashboard.order">
+                <source>menu.dashboard.order</source>
+                <target>Order</target>
             </trans-unit>
             <trans-unit id="menu.dashboard.contacts">
                 <source>menu.dashboard.contacts</source>
@@ -308,6 +321,26 @@
                 <source>table.header.id</source>
                 <target>#</target>
             </trans-unit>
+            <trans-unit id="table.header.code">
+                <source>table.header.code</source>
+                <target>Code</target>
+            </trans-unit>
+            <trans-unit id="table.header.order_number">
+                <source>table.header.order_number</source>
+                <target>Order number</target>
+            </trans-unit>
+            <trans-unit id="table.header.payment_type">
+                <source>table.header.payment_type</source>
+                <target>Payment type</target>
+            </trans-unit>
+            <trans-unit id="table.header.total">
+                <source>table.header.total</source>
+                <target>Total</target>
+            </trans-unit>
+            <trans-unit id="table.header.discount">
+                <source>table.header.discount</source>
+                <target>Discount</target>
+            </trans-unit>
             <trans-unit id="table.header.amount">
                 <source>table.header.amount</source>
                 <target>Amount</target>
@@ -368,6 +401,14 @@
                 <source>table.header.created_at</source>
                 <target>Created</target>
             </trans-unit>
+            <trans-unit id="table.header.requested_at">
+                <source>table.header.requested_at</source>
+                <target>Requested</target>
+            </trans-unit>
+            <trans-unit id="table.header.planned_delivered_at">
+                <source>table.header.planned_delivery_at</source>
+                <target>Planned Delivery</target>
+            </trans-unit>
             <trans-unit id="table.header.author">
                 <source>table.header.author</source>
                 <target>Author</target>
@@ -423,6 +464,70 @@
             <trans-unit id="label.form.product_short_name">
                 <source>label.form.product_short_name</source>
                 <target>Product short name</target>
+            </trans-unit>
+            <trans-unit id="form.first_name.invalid">
+                <source>form.first_name.invalid</source>
+                <target>Please enter your first name</target>
+            </trans-unit>
+            <trans-unit id="form.last_name.invalid">
+                <source>form.last_name.invalid</source>
+                <target>Please enter your last name</target>
+            </trans-unit>
+            <trans-unit id="form.address.invalid">
+                <source>form.address.invalid</source>
+                <target>Please enter your address</target>
+            </trans-unit>
+            <trans-unit id="form.region.invalid">
+                <source>form.region.invalid</source>
+                <target>Please enter your region</target>
+            </trans-unit>
+            <trans-unit id="form.city.invalid">
+                <source>form.city.invalid</source>
+                <target>Please enter your city</target>
+            </trans-unit>
+            <trans-unit id="form.postal.invalid">
+                <source>form.postal.invalid</source>
+                <target>Please enter your Zip/Postal code</target>
+            </trans-unit>
+            <trans-unit id="form.email.invalid">
+                <source>form.email.invalid</source>
+                <target>Please enter valid email address</target>
+            </trans-unit>
+            <trans-unit id="form.phone.invalid">
+                <source>form.phone.invalid</source>
+                <target>Please enter valid phone number</target>
+            </trans-unit>
+            <trans-unit id="form.country.invalid">
+                <source>form.country.invalid</source>
+                <target>Choice country</target>
+            </trans-unit>
+            <trans-unit id="form.paypal">
+                <source>form.paypal</source>
+                <target>PatPal</target>
+            </trans-unit>
+            <trans-unit id="form.paypal.text">
+                <source>form.paypal.text</source>
+                <target>the safer, easier way to pay</target>
+            </trans-unit>
+            <trans-unit id="form.paypal.pay">
+                <source>form.paypal.pay</source>
+                <target>Pay with PayPal</target>
+            </trans-unit>
+            <trans-unit id="form.paypal.checkout">
+                <source>form.paypal.checkout</source>
+                <target>Checkout with PayPal</target>
+            </trans-unit>
+            <trans-unit id="form.cash.delivery">
+                <source>form.cash.delivery</source>
+                <target>Cash on Delivery</target>
+            </trans-unit>
+            <trans-unit id="form.cash.delivery.text">
+                <source>form.cash.delivery.text</source>
+                <target>Pay with cash when your order is delivered.</target>
+            </trans-unit>
+            <trans-unit id="form.cash.checkout">
+                <source>form.cash.checkout</source>
+                <target>Checkout</target>
             </trans-unit>
             <trans-unit id="form.product_short_name.length">
                 <source>form.product_short_name.length</source>
@@ -617,9 +722,17 @@
                 <source>market.product.cart.empty</source>
                 <target>Your cart is currently empty</target>
             </trans-unit>
+            <trans-unit id="market.product.wishlist.empty">
+                <source>market.product.wishlist.empty</source>
+                <target>Your wishlist is currently empty</target>
+            </trans-unit>
             <trans-unit id="market.product.wishlist">
                 <source>market.product.wishlist</source>
                 <target>Wishlist</target>
+            </trans-unit>
+            <trans-unit id="market.unauthorized">
+                <source>market.unauthorized</source>
+                <target>Please login in to store it to your wishlist.</target>
             </trans-unit>
             <trans-unit id="market.product.compare">
                 <source>market.product.compare</source>
@@ -747,6 +860,14 @@
                 <source>entry.form.attachments</source>
                 <target>Attachments</target>
             </trans-unit>
+            <trans-unit id="entry.form.billing">
+                <source>entry.form.billing</source>
+                <target>Billing</target>
+            </trans-unit>
+            <trans-unit id="entry.form.market_details">
+                <source>entry.form.market_details</source>
+                <target>Market Details</target>
+            </trans-unit>
             <trans-unit id="user.entry.updated">
                 <source>user.entry.updated</source>
                 <target><![CDATA[Entry has been updated successfully.]]></target>
@@ -754,6 +875,10 @@
             <trans-unit id="user.profile.updated">
                 <source>user.profile.updated</source>
                 <target><![CDATA[Your profile has been updated successfully.]]></target>
+            </trans-unit>
+            <trans-unit id="user.address.updated">
+                <source>user.address.updated</source>
+                <target><![CDATA[Your address has been updated successfully.]]></target>
             </trans-unit>
             <trans-unit id="user.entry.created">
                 <source>user.entry.created</source>
@@ -775,6 +900,10 @@
                 <source>entry.picture.default</source>
                 <target><![CDATA[This picture has been used by default.]]></target>
             </trans-unit>
+            <trans-unit id="entry.picture.remove">
+                <source>entry.picture.remove</source>
+                <target><![CDATA[This picture has been deleted.]]></target>
+            </trans-unit>
             <trans-unit id="user.picture.delete">
                 <source>user.picture.delete</source>
                 <target><![CDATA[This picture has been removed.]]></target>
@@ -787,6 +916,12 @@
                 <source>text.blog.desc</source>
                 <target>
                     <![CDATA[View our most recent news blog]]>
+                </target>
+            </trans-unit>
+            <trans-unit id="alert.confirm.delete">
+                <source>alert.confirm.delete</source>
+                <target>
+                    <![CDATA[Are you sure you want to delete this item?]]>
                 </target>
             </trans-unit>
             <trans-unit id="text.faq.desc">
@@ -805,7 +940,7 @@
             </trans-unit>
             <trans-unit id="text.register">
                 <source>text.register</source>
-                <target>Registration a new member</target>
+                <target>Registration</target>
             </trans-unit>
             <trans-unit id="text.register.desc">
                 <source>text.register.desc</source>
@@ -822,7 +957,7 @@
             <trans-unit id="text.register.success.text_help">
                 <source>text.register.success.text_help</source>
                 <target>
-                    <![CDATA[You can log in by going to the page: <a class="link" href="{ app_login }">Login</a> using your email and password specified during registration.]]>
+                    <![CDATA[You can log in by going to the page: <a class="link-danger" href="{ app_login }">Login</a> using your email and password specified during registration.]]>
                 </target>
             </trans-unit>
             <trans-unit id="text.rquired">
@@ -851,7 +986,7 @@
             <trans-unit id="text.about_us.short_desc">
                 <source>text.about_us.short_desc</source>
                 <target>
-                    <![CDATA[Read more about how MRebely came to be and how we support our customers with IT issues on a daily basis.]]>
+                    <![CDATA[Read more about how RgFly came to be and how we support our customers with IT issues on a daily basis.]]>
                 </target>
             </trans-unit>
             <trans-unit id="text.about_us.long_desc">
@@ -860,7 +995,6 @@
                     <![CDATA[We started as an internet agency and have increasingly grown to develop applications, mobile apps, platforms and products. For customers and with customers. During the growth we noticed that more and more companies were having trouble attracting personnel, and so we received the first requests whether we wanted to help our customers with this. Because we already had our own nearshore location at that time, the idea arose to provide our customers with developers for the longer term, whom they could manage themselves. We then shifted our focus.]]>
                 </target>
             </trans-unit>
-
             <trans-unit id="text.contact_us.success">
                 <source>text.contact_us.success</source>
                 <target>Let's keep in touch.</target>
@@ -901,11 +1035,14 @@
                 <source>text.login</source>
                 <target>Security Login</target>
             </trans-unit>
+            <trans-unit id="text.forgot_password">
+                <source>text.forgot_password</source>
+                <target>Forgot password?</target>
+            </trans-unit>
             <trans-unit id="text.login.desc">
                 <source>text.login.desc</source>
                 <target>Enter your email address and password below.</target>
             </trans-unit>
-
             <trans-unit id="label.agree_terms">
                 <source>label.agree_terms</source>
                 <target><![CDATA[Agree to our Terms & Conditions and Privacy Policy.]]></target>
@@ -954,6 +1091,10 @@
                 <source>label.form.city</source>
                 <target>Your City</target>
             </trans-unit>
+            <trans-unit id="label.form.postal">
+                <source>label.form.postal</source>
+                <target>Your Zip/Postal code</target>
+            </trans-unit>
             <trans-unit id="form.agree_terms.help">
                 <source>form.agree_terms.help</source>
                 <target>
@@ -987,6 +1128,26 @@
             <trans-unit id="label.form.phone">
                 <source>label.form.phone</source>
                 <target>Your phone number</target>
+            </trans-unit>
+            <trans-unit id="label.form.address">
+                <source>label.form.address</source>
+                <target>Your address</target>
+            </trans-unit>
+            <trans-unit id="label.form.address_line_1">
+                <source>label.form.address_line_1</source>
+                <target>Address line 1</target>
+            </trans-unit>
+            <trans-unit id="label.form.address_line_2">
+                <source>label.form.address_line_2</source>
+                <target>Address line 2</target>
+            </trans-unit>
+            <trans-unit id="label.form.region">
+                <source>label.form.region</source>
+                <target>Region</target>
+            </trans-unit>
+            <trans-unit id="label.form.website">
+                <source>label.form.website</source>
+                <target>Website</target>
             </trans-unit>
             <trans-unit id="label.form.date_birth">
                 <source>label.form.date_birth</source>
@@ -1140,9 +1301,21 @@
                 <source>form.action.close</source>
                 <target>Close</target>
             </trans-unit>
+            <trans-unit id="form.header.message">
+                <source>form.header.message</source>
+                <target>Send Message</target>
+            </trans-unit>
             <trans-unit id="form.action.send">
                 <source>form.action.send</source>
-                <target>Send Message</target>
+                <target>Send</target>
+            </trans-unit>
+            <trans-unit id="form.your.message">
+                <source>form.your.message</source>
+                <target>Your Message</target>
+            </trans-unit>
+            <trans-unit id="form.message.invalid">
+                <source>form.message.invalid</source>
+                <target>Please write your message!</target>
             </trans-unit>
             <trans-unit id="form.action.register">
                 <source>form.action.register</source>
@@ -1164,6 +1337,34 @@
                 <source>form.email.help</source>
                 <target>We'll never share your email with anyone else.</target>
             </trans-unit>
+            <trans-unit id="button.reset_password">
+                <source>button.reset_password</source>
+                <target>Send password reset email</target>
+            </trans-unit>
+            <trans-unit id="text.reset_password">
+                <source>text.reset_password</source>
+                <target>Reset password</target>
+            </trans-unit>
+            <trans-unit id="text.reset_password.sent">
+                <source>text.reset_password.sent</source>
+                <target>Password Reset Email Sent</target>
+            </trans-unit>
+            <trans-unit id="email.not_found">
+                <source>email.not_found</source>
+                <target>Provided email not found</target>
+            </trans-unit>
+            <trans-unit id="text.reset_password.infio">
+                <source>text.reset_password.infio</source>
+                <target>If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password. This link will expire in</target>
+            </trans-unit>
+            <trans-unit id="text.reset_password.resend">
+                <source>text.reset_password.resend</source>
+                <target><![CDATA[f you don't receive an email please check your spam folder or  <a href="{ link }">try again</a>.]]></target>
+            </trans-unit>
+            <trans-unit id="form.email.info">
+                <source>form.email.info</source>
+                <target>Enter your email address, and we will send you a link to reset your password.</target>
+            </trans-unit>
             <trans-unit id="form.password.help">
                 <source>form.password.help</source>
                 <target>Security password.</target>
@@ -1171,6 +1372,14 @@
             <trans-unit id="label.form.password">
                 <source>label.form.password</source>
                 <target>Your password</target>
+            </trans-unit>
+            <trans-unit id="form.password.text">
+                <source>form.password.text</source>
+                <target>Reset password</target>
+            </trans-unit>
+            <trans-unit id="form.password.invalid">
+                <source>form.password.invalid</source>
+                <target>The password can't by blank</target>
             </trans-unit>
             <trans-unit id="label.form.currency">
                 <source>label.form.currency</source>
@@ -1183,6 +1392,152 @@
             <trans-unit id="button.leave.cpmment">
                 <source>button.leave.cpmment</source>
                 <target>Leave a Comment</target>
+            </trans-unit>
+            <trans-unit id="order.subtotal">
+                <source>order.subtotal</source>
+                <target>Subtotal</target>
+            </trans-unit>
+            <trans-unit id="order.view">
+                <source>order.view</source>
+                <target>View Order</target>
+            </trans-unit>
+            <trans-unit id="order.summary">
+                <source>order.summary</source>
+                <target>Summary</target>
+            </trans-unit>
+            <trans-unit id="order.continue.shopping">
+                <source>order.continue.shopping</source>
+                <target>Continue Shopping</target>
+            </trans-unit>
+            <trans-unit id="order.update.cart">
+                <source>order.update.cart</source>
+                <target>Update Cart</target>
+            </trans-unit>
+            <trans-unit id="order.cart">
+                <source>order.cart</source>
+                <target>Order Cart</target>
+            </trans-unit>
+            <trans-unit id="order.your.ordres">
+                <source>order.your.ordres</source>
+                <target>Your Orders</target>
+            </trans-unit>
+            <trans-unit id="product.details">
+                <source>product.details</source>
+                <target>Product Details</target>
+            </trans-unit>
+            <trans-unit id="product.billing">
+                <source>product.billing</source>
+                <target>Billing</target>
+            </trans-unit>
+            <trans-unit id="product.unavailable">
+                <source>product.unavailable</source>
+                <target>Your marketplace has been deleted. Your products unavailable.</target>
+            </trans-unit>
+            <trans-unit id="product.attachments.available">
+                <source>product.attachments.available</source>
+                <target>The attachments will available after the product has created.</target>
+            </trans-unit>
+            <trans-unit id="product.details.short">
+                <source>product.details.short</source>
+                <target>Details</target>
+            </trans-unit>
+            <trans-unit id="product.information">
+                <source>product.information</source>
+                <target>Information</target>
+            </trans-unit>
+            <trans-unit id="product.seller.info">
+                <source>product.seller.info</source>
+                <target>Seller Info</target>
+            </trans-unit>
+            <trans-unit id="product.seller.contact">
+                <source>product.seller.contact</source>
+                <target>Seller Contact</target>
+            </trans-unit>
+            <trans-unit id="element.previous">
+                <source>element.previous</source>
+                <target>Previous</target>
+            </trans-unit>
+            <trans-unit id="element.next">
+                <source>element.next</source>
+                <target>Next</target>
+            </trans-unit>
+            <trans-unit id="order.checkout">
+                <source>order.checkout</source>
+                <target>Checkout</target>
+            </trans-unit>
+            <trans-unit id="order.checkout.completed">
+                <source>order.checkout.completed</source>
+                <target>Order Completed</target>
+            </trans-unit>
+            <trans-unit id="order.item.subtotal">
+                <source>order.item.subtotal</source>
+                <target>Item Subtotal</target>
+            </trans-unit>
+            <trans-unit id="order.service.fee">
+                <source>order.service.fee</source>
+                <target>Service Fee</target>
+            </trans-unit>
+            <trans-unit id="market.policy">
+                <source>market.policy</source>
+                <target>
+                    <![CDATA[By placing your order, you agree to be bound by the <strong>{ market_name }</strong> <a href="{ link_to_tou }" class="text-success">Terms of Service</a> and <a href="{ link_to_pp }" class="text-success">Privacy Policy.</a>]]>
+                </target>
+            </trans-unit>
+            <trans-unit id="market.about">
+                <source>market.about</source>
+                <target>About</target>
+            </trans-unit>
+            <trans-unit id="customer.temporary.passwod">
+                <source>customer.temporary.passwod</source>
+                <target>Your temporary password to log in. You may change that in your cabinet</target>
+            </trans-unit>
+            <trans-unit id="customer.cabinet">
+                <source>customer.cabinet</source>
+                <target>Your cabinet</target>
+            </trans-unit>
+            <trans-unit id="customer.header">
+                <source>customer.header</source>
+                <target>Customer</target>
+            </trans-unit>
+            <trans-unit id="customer.name">
+                <source>customer.name</source>
+                <target>Name</target>
+            </trans-unit>
+            <trans-unit id="customer.phone">
+                <source>customer.phone</source>
+                <target>Phone</target>
+            </trans-unit>
+            <trans-unit id="customer.address">
+                <source>customer.address</source>
+                <target>Address</target>
+            </trans-unit>
+            <trans-unit id="title.customer.cabinet">
+                <source>title.customer.cabinet</source>
+                <target>Cabinet</target>
+            </trans-unit>
+            <trans-unit id="customer.cabinet.personal_information">
+                <source>customer.cabinet.personal_information</source>
+                <target>Personal information</target>
+            </trans-unit>
+            <trans-unit id="customer.cabinet.address">
+                <source>customer.cabinet.address</source>
+                <target>Address</target>
+            </trans-unit>
+            <trans-unit id="customer.cabinet.delivery_address">
+                <source>customer.cabinet.delivery_address</source>
+                <target>Delivery Address</target>
+            </trans-unit>
+            <trans-unit id="customer.cabinet.orders">
+                <source>customer.cabinet.orders</source>
+                <target>Orders</target>
+            </trans-unit>
+            <trans-unit id="customer.cabinet.wishlist">
+                <source>customer.cabinet.wishlist</source>
+                <target>Wishlist</target>
+            </trans-unit>
+            <trans-unit id="customer.cabinet.order.notpaid">
+                <source>customer.cabinet.order.notpaid</source>
+                <target>Not paid yet.</target>
             </trans-unit>
         </body>
     </file>

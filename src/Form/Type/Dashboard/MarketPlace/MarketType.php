@@ -3,7 +3,9 @@
 namespace App\Form\Type\Dashboard\MarketPlace;
 
 use App\Entity\MarketPlace\Market;
+use App\Entity\MarketPlace\MarketPaymentGateway;
 use App\Service\MarketPlace\Currency;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -12,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
@@ -22,6 +25,24 @@ use Symfony\Component\Validator\Constraints\Regex;
 
 class MarketType extends AbstractType
 {
+
+    /**
+     * @var array
+     */
+    private array $gateways = [];
+
+    /**
+     * @param EntityManagerInterface $em
+     */
+    public function __construct(EntityManagerInterface $em)
+    {
+        $gateways = $em->getRepository(MarketPaymentGateway::class)->findBy(['active' => true]);
+
+        foreach ($gateways as $gateway) {
+            $this->gateways[$gateway->getName()] = $gateway->getId();
+        }
+    }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -47,12 +68,41 @@ class MarketType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('address', TextType::class, [
+                'attr' => [
+                    'min' => 3,
+                    'max' => 250,
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'form.address.not_blank',
+                    ]),
+                    new Length([
+                        'min' => 3,
+                        'minMessage' => 'form.address.min',
+                        'max' => 250,
+                        'maxMessage' => 'form.address.max',
+                    ]),
+                ],
+            ])
+            ->add('gateway', ChoiceType::class, [
+                'mapped' => false,
+                'required' => true,
+                'multiple' => true,
+                'expanded' => true,
+                'choices' => $this->gateways,
+            ])
             ->add('currency', ChoiceType::class, [
                 'placeholder' => 'label.form.market_currency.placeholder',
                 'label' => 'label.currency',
-                'required' => false,
+                'required' => true,
                 'multiple' => false,
                 'expanded' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'form.currency.not_blank',
+                    ]),
+                ],
                 'choices' => [
                     Currency::USD => Currency::USD,
                     Currency::EUR => Currency::EUR,
@@ -65,10 +115,25 @@ class MarketType extends AbstractType
                     'pattern' => "[+0-9]+$",
                 ],
                 'constraints' => [
+                    new NotBlank([
+                        'message' => 'form.phone.not_blank',
+                    ]),
                     new Regex([
                         'pattern' => "/[+0-9]+$/i",
                         'message' => 'form.phone.not_valid',
                     ]),
+                ],
+            ])
+            ->add('website', UrlType::class, [
+                'default_protocol' => 'https',
+                'attr' => [
+                    'placeholder' => 'https://',
+                ],
+                'constraints' => [
+                    new Regex(
+                        '/(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i',
+                        'form.url.not_valid',
+                    )
                 ],
             ])
             ->add('email', EmailType::class, [
@@ -115,7 +180,7 @@ class MarketType extends AbstractType
             ])
             ->add('save', SubmitType::class, [
                 'attr' => [
-                    'class' => 'btn btn-primary shadow',
+                    'class' => 'btn btn-primary rounded-1 shadow-sm',
                 ],
             ]);
     }

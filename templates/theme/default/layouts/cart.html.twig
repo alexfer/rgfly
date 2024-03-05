@@ -1,4 +1,4 @@
-<div class="offcanvas offcanvas-end bg-white rounded-1" data-bs-scroll="true" tabindex="-1" id="shopping-cart" aria-labelledby="cartLabel" data-url="{{ path('app_market_place_product_order_cart') }}">
+<div class="offcanvas offcanvas-end bg-white rounded-0" data-bs-scroll="true" tabindex="-1" id="shopping-cart" aria-labelledby="cartLabel" data-url="{{ path('app_market_place_product_order_cart') }}">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="cartLabel">{{ 'market.product.cart'|trans }} ({{ app.session.get('quantity')|default(0) }})</h5>
         <button type="button" class="btn-close fs-6" data-bs-dismiss="offcanvas"

@@ -1,0 +1,59 @@
+<div class="mt-4 p-2">
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="form-check form-switch">
+                        <input type="checkbox" id="root_size" name="attribute_value_size" class="form-check-input"
+                               role="switch"
+                               value="size" checked disabled>
+                        {{ form_label(form.size, 'Size', {label_attr: {class: 'form-check-label', for: 'root_size'}}) }}
+                    </div>
+                    <hr>
+                    {% for key, field in form.size.children %}
+                        {% set _checked_size = false %}
+                        {% for attributes in form.vars.data.marketProductAttributes.toArray %}
+                            {% if attributes.name == 'size' %}
+                                {% for value in attributes.marketProductAttributeValues.toArray %}
+                                    {% if value.value|upper == field.vars.value|upper %}
+                                        {% set _checked_size = true %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                        <div class="form-check form-switch ms-4">
+                            {{ form_widget(field, {attr: {class: 'form-check-input', role: 'switch', checked: _checked_size}}) }}
+                            {{ form_label(field, field.vars.label, {label_attr: {class: 'form-check-label'}}) }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <div class="form-check form-switch">
+                            <input type="checkbox" id="root_color" name="attribute_value_color" class="form-check-input"
+                                   role="switch" value="color" checked disabled>
+                            {{ form_label(form.color, 'Color', {label_attr: {class: 'form-check-label', for: 'root_color'}}) }}
+                        </div>
+                        <hr>
+                        {% for key, field in form.color.children %}
+                            {% set _checked_color = false %}
+                            {% for attributes in form.vars.data.marketProductAttributes.toArray %}
+                                {% if attributes.name == 'color' %}
+                                    {% for value in attributes.marketProductAttributeValues.toArray %}
+                                        {% if value.value == field.vars.label %}
+                                            {% set _checked_color = true %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            <div class="form-check form-switch ms-4">
+                                {{ form_widget(field, {attr: {class: 'form-check-input', role: 'switch', checked: _checked_color}}) }}
+                                {{ form_label(field, field.vars.label, {label_attr: {class: 'form-check-label'}}) }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

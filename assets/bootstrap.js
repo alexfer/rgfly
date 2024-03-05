@@ -9,20 +9,23 @@ export const app = startStimulusApp(require.context(
     /\.(j|t)sx?$/
 ));
 
+const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+const popoverList = [...popoverTriggerList].map(el => new bootstrap.Popover(el));
+
 // register any custom, 3rd party controllers here
 // app.register('some_controller_name', SomeImportedController);
 let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl)
+let tooltipList = tooltipTriggerList.map(function (el) {
+    return new bootstrap.Tooltip(el);
 });
+
 let toastTrigger = document.getElementById('liveToastBtn');
 let toastLiveExample = document.getElementById('liveToast');
 if (toastTrigger) {
     toastTrigger.addEventListener('click', function () {
         let toast = new bootstrap.Toast(toastLiveExample);
-
-        toast.show()
-    })
+        toast.show();
+    });
 }
 
 const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
@@ -37,6 +40,9 @@ const appendAlert = (message, type) => {
 
     alertPlaceholder.append(wrapper)
 }
+
+const dropdownElementList = document.querySelectorAll('.dropdown-toggle');
+const dropdownList = [...dropdownElementList].map(el => new bootstrap.Dropdown(el));
 
 const alertTrigger = document.getElementById('liveAlertBtn')
 if (alertTrigger) {
@@ -61,4 +67,4 @@ if (alertTrigger) {
                 form.classList.add('was-validated')
             }, false)
         })
-})()
+})();

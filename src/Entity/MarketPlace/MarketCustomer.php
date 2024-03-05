@@ -28,6 +28,12 @@ class MarketCustomer
     #[ORM\Column(length: 100)]
     private ?string $phone = null;
 
+    #[ORM\Column(length: 5)]
+    private ?string $country = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $email = null;
+
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?User $member = null;
 
@@ -40,13 +46,21 @@ class MarketCustomer
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: MarketCustomerOrders::class)]
     private Collection $marketCustomerOrders;
 
-    #[ORM\OneToMany(mappedBy: 'cusomer', targetEntity: MarketCustomerMessage::class)]
+    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: MarketCustomerMessage::class)]
     private Collection $marketCustomerMessages;
+
+    #[ORM\OneToOne(mappedBy: 'customer', cascade: ['persist', 'remove'])]
+    private ?MarketAddress $marketAddress = null;
+
+    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: MarketWishlist::class)]
+    private Collection $marketWishlists;
 
     public function __construct()
     {
+        $this->created_at = new DateTimeImmutable();
         $this->marketCustomerOrders = new ArrayCollection();
         $this->marketCustomerMessages = new ArrayCollection();
+        $this->marketWishlists = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -188,6 +202,90 @@ class MarketCustomer
             // set the owning side to null (unless already changed)
             if ($marketCustomerMessage->getCustomer() === $this) {
                 $marketCustomerMessage->setCustomer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(string $country): static
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): static
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getMarketAddress(): ?MarketAddress
+    {
+        return $this->marketAddress;
+    }
+
+    public function setMarketAddress(?MarketAddress $marketAddress): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($marketAddress === null && $this->marketAddress !== null) {
+            $this->marketAddress->setCustomer(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($marketAddress !== null && $marketAddress->getCustomer() !== $this) {
+            $marketAddress->setCustomer($this);
+        }
+
+        $this->marketAddress = $marketAddress;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketWishlist>
+     */
+    public function getMarketWishlists(): Collection
+    {
+        return $this->marketWishlists;
+    }
+
+    /**
+     * @param MarketWishlist $marketWishlist
+     * @return $this
+     */
+    public function addMarketWishlist(MarketWishlist $marketWishlist): static
+    {
+        if (!$this->marketWishlists->contains($marketWishlist)) {
+            $this->marketWishlists->add($marketWishlist);
+            $marketWishlist->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MarketWishlist $marketWishlist
+     * @return $this
+     */
+    public function removeMarketWishlist(MarketWishlist $marketWishlist): static
+    {
+        if ($this->marketWishlists->removeElement($marketWishlist)) {
+            // set the owning side to null (unless already changed)
+            if ($marketWishlist->getCustomer() === $this) {
+                $marketWishlist->setCustomer(null);
             }
         }
 

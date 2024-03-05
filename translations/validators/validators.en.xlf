@@ -6,6 +6,22 @@
                 <source>form.name.not_blank</source>
                 <target>The name can't be blank.</target>
             </trans-unit>
+            <trans-unit id="form.address.not_blank">
+                <source>form.address.not_blank</source>
+                <target>The address can't be blank.</target>
+            </trans-unit>
+            <trans-unit id="form.currency.not_blank">
+                <source>form.currency.not_blank</source>
+                <target>The currency can't be blank.</target>
+            </trans-unit>
+            <trans-unit id="form.city.not_blank">
+                <source>form.city.not_blank</source>
+                <target>The city can't be blank.</target>
+            </trans-unit>
+            <trans-unit id="form.postal.not_blank">
+                <source>form.postal.not_blank</source>
+                <target>The Zip/Postal can't be blank.</target>
+            </trans-unit>
             <trans-unit id="form.short_name.not_blank">
                 <source>form.short_name.not_blank</source>
                 <target>The short name can't be blank.</target>
@@ -38,6 +54,22 @@
                 <source>form.cost.max</source>
                 <target>Your cost is too long. It should have {{ limit }} characters or less.</target>
             </trans-unit>
+            <trans-unit id="form.city.min">
+                <source>form.city.min</source>
+                <target>Your city is too short. It should have {{ limit }} characters or more.</target>
+            </trans-unit>
+            <trans-unit id="form.city.max">
+                <source>form.city.max</source>
+                <target>Your city is too long. It should have {{ limit }} characters or less.</target>
+            </trans-unit>
+            <trans-unit id="form.region.min">
+                <source>form.region.min</source>
+                <target>Your State/Province is too short. It should have {{ limit }} characters or more.</target>
+            </trans-unit>
+            <trans-unit id="form.region.max">
+                <source>form.region.max</source>
+                <target>Your State/Province is too long. It should have {{ limit }} characters or less.</target>
+            </trans-unit>
             <trans-unit id="form.sku.min">
                 <source>form.sku.min</source>
                 <target>Your SKU is too short. It should have {{ limit }} characters or more.</target>
@@ -45,6 +77,14 @@
             <trans-unit id="form.sku.max">
                 <source>form.sku.max</source>
                 <target>Your SKU is too long. It should have {{ limit }} characters or less.</target>
+            </trans-unit>
+            <trans-unit id="form.address.min">
+                <source>form.address.min</source>
+                <target>Your address is too short. It should have {{ limit }} characters or more.</target>
+            </trans-unit>
+            <trans-unit id="form.address.max">
+                <source>form.address.max</source>
+                <target>Your address is too long. It should have {{ limit }} characters or less.</target>
             </trans-unit>
             <trans-unit id="form.quantity.min">
                 <source>form.quantity.min</source>
@@ -86,6 +126,10 @@
                 <source>form.about.max</source>
                 <target>The about is too long. It should have {{ limit }} characters or less.</target>
             </trans-unit>
+            <trans-unit id="form.password.invalid_message">
+                <source>form.password.invalid_message</source>
+                <target>The password fields must match.</target>
+            </trans-unit>
             <trans-unit id="form.password.min">
                 <source>form.password.min</source>
                 <target>The password is too short. It should have {{ limit }} characters or more.</target>
@@ -110,9 +154,21 @@
                 <source>form.last_name.max</source>
                 <target>The last name is too long. It should have {{ limit }} characters or less.</target>
             </trans-unit>
+            <trans-unit id="form.phone.not_blank">
+                <source>form.phone.not_blank</source>
+                <target>The phone can't be blank.</target>
+            </trans-unit>
             <trans-unit id="form.phone.not_valid">
                 <source>form.phone.not_valid</source>
                 <target>The phone number '{{ value }}' is not a valid. Please provide a valid phone number.</target>
+            </trans-unit>
+            <trans-unit id="form.phone.min">
+                <source>form.phone.min</source>
+                <target>Your phone number is too short. It should have {{ limit }} characters or more.</target>
+            </trans-unit>
+            <trans-unit id="form.phone.max">
+                <source>form.phone.max</source>
+                <target>Your phone number is too long. It should have {{ limit }} characters or less.</target>
             </trans-unit>
             <trans-unit id="form.url.not_valid">
                 <source>form.url.not_valid</source>

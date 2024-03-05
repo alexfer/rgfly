@@ -1,0 +1,27 @@
+<div class="row pb-4 gx-4 gy-3">
+    <div class="form-floating col-sm-6">
+        {{ form_widget(form.first_name, {attr: {class: 'form-control ps-sm-3', placeholder: ''}}) }}
+        {{ form_label(form.first_name, 'label.form.first_name', {label_attr: {class: 'form-label ms-3'}}) }}
+        <div class="invalid-feedback">{{ 'form.first_name.invalid'|trans }}</div>
+    </div>
+    <div class="form-floating col-sm-6">
+        {{ form_widget(form.last_name, {attr: {class: 'form-control ps-sm-3', placeholder: ''}}) }}
+        {{ form_label(form.last_name, 'label.form.last_name', {label_attr: {class: 'form-label ms-3'}}) }}
+        <div class="invalid-feedback">{{ 'form.last_name.invalid'|trans }}</div>
+    </div>
+    <div class="form-floating col-12">
+        {{ form_widget(form.email, {attr: {class: 'form-control ps-sm-3', placeholder: ''}}) }}
+        {{ form_label(form.email, 'label.form.email', {label_attr: {class: 'form-label ms-3'}}) }}
+        <div class="invalid-feedback">{{ 'form.country.invalid'|trans }}</div>
+    </div>
+    <div class="form-floating col-sm-6">
+        {{ form_widget(form.phone, {attr: {class: 'form-control ps-sm-3', placeholder: ''}}) }}
+        {{ form_label(form.phone, 'label.form.phone', {label_attr: {class: 'form-label ms-3'}}) }}
+        <div class="invalid-feedback">{{ 'form.phone.invalid'|trans }}</div>
+    </div>
+    <div class="form-floating col-sm-6">
+        {{ form_widget(form.country, {attr: {class: 'form-select ps-sm-3', placeholder: ''}}) }}
+        {{ form_label(form.country, 'label.form.country', {label_attr: {class: 'form-label ms-3'}}) }}
+        <div class="invalid-feedback">{{ 'form.country.invalid'|trans }}</div>
+    </div>
+</div>

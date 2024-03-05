@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <section class="container marketplace mt-lg-2">
+        <div class="row">
+            <div class="col-12 card card-body shadow">
+                <h4 class="ps-2 border-start border-3 border-danger mb-3">{{ 'customer.cabinet'|trans }}</h4>
+                <span class="position-absolute end-0 ms-2 fs-5 pe-4 fw-normal">{{ customer.firstName }} {{ customer.lastName }}</span>
+                <div class="mt-lg-3">
+                    <div class="bg-light rounded-3 overflow-hidden">
+                        <div class="row">
+                            <aside class="col-lg-3 pe-xl-2">
+                                <div class="bg-white h-100 border-end p-4">
+                                    {% include 'market_place/cabinet/aside.html.twig' %}
+                                </div>
+                            </aside>
+                            <section class="col-lg-9 pb-md-4">
+                                <div class="pt-2 px-4 ps-lg-0 pe-xl-5">
+                                    <h4 class="pt-2 pb-4 mb-4 text-center text-sm-start border-bottom">{{ 'customer.cabinet.orders'|trans }}</h4>
+                                    <div class="accordion mx-2" id="accordion">
+                                        {% for order in orders %}
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="heading-{{ order.id }}">
+                                                    <button class="accordion-button p-2 text-bg-light"
+                                                            type="button"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#collapse-{{ order.id }}"
+                                                            aria-expanded="{{ loop.first ? 'true' : 'false' }}"
+                                                            aria-controls="collapse-{{ order.id }}"
+                                                    >
+                                                        {{ order.orders.createdAt|date(datetime_format) }}
+                                                    </button>
+                                                </h2>
+                                                <div id="collapse-{{ order.id }}"
+                                                     class="accordion-collapse collapse{{ loop.first ? ' show' : '' }}"
+                                                     aria-labelledby="heading-{{ order.id }}"
+                                                     data-bs-parent="#accordion">
+                                                    <div class="accordion-body p-2">
+                                                        <div class="row">
+                                                            <div class="col fw-medium">{{ order.orders.number|upper }}</div>
+                                                            <div class="col ms-5">{{ order.orders.status|capitalize }}</div>
+                                                            <div class="col text-{{ order.orders.completedAt is null ? 'danger': 'success' }}">
+                                                                {{ order.orders.completedAt is null ? 'customer.cabinet.order.notpaid'|trans : order.orders.completedAt|date(datetime_format) }}
+                                                            </div>
+                                                            <div class="col d-flex justify-content-end">
+                                                                <div class="fs-5 fw-normal">
+                                                                    <small class="me-1">{{ order.orders.market.currency|currency }}</small>
+                                                                    {{ order.orders.discount|number_format(2, '.', ' ') }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% for message in app.flashes('danger') %}
+    <div class="alert alert-danger">
+        {{ message }}
+    </div>
+{% endfor %}
+<h2 class="h6 border-bottom pb-3 mx-2 mb-3">{{ 'product.billing'|trans }}</h2>
+<ul class="nav nav-tabs border-bottom product-info mx-2 mt-lg-1" id="customerTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link text-secondary border-0 fs-6 active" id="customer-tab" data-bs-toggle="tab"
+                data-bs-target="#customer-info"
+                type="button" role="tab" aria-controls="customer-info"
+                aria-selected="true">{{ 'customer.cabinet.personal_information'|trans }}</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link text-secondary border-0 fs-6" id="address-info-tab" data-bs-toggle="tab"
+                data-bs-target="#address-info"
+                type="button" role="tab" aria-controls="address-info"
+                aria-selected="false">{{ 'customer.cabinet.delivery_address'|trans }}</button>
+    </li>
+</ul>
+<div class="pt-2 px-2 pe-lg-0">
+    {% if errors.count %}
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            {{ errors.current.message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                    aria-label="{{ 'form.action.close'|trans }}"></button>
+        </div>
+    {% endif %}
+    {{ form_start(form, {attr: {class: 'needs-validation', novalidate: ''}}) }}
+    <div class="tab-content" id="customerTabContent">
+        <div class="tab-pane fade show active" id="customer-info" role="tabpanel"
+             aria-labelledby="customer-tab" tabindex="0">
+            {% include 'market_place/checkout/parts/customer.html.twig' %}
+        </div>
+        <div class="tab-pane fade" id="address-info" role="tabpanel"
+             aria-labelledby="address-tab" tabindex="0">
+            {% include 'market_place/checkout/parts/address.html.twig' %}
+        </div>
+    </div>
+    <div class="accordion mb-2" id="payment-method" role="tablist">
+        {% for key, gateway in order.market.marketPaymentGatewayMarkets.toArray %}
+            <div class="accordion-item">
+                <h3 class="accordion-header">
+                    <a class="accordion-button{% if key != 0 %} collapsed{% endif %}" href="#gateway-{{ key }}"
+                       role="button"
+                       data-bs-toggle="collapse"
+                       aria-expanded="{% if loop.first %}true{% else %}false{% endif %}">
+                        <i class="{{ gateway.gateway.icon }} me-2"></i>{{ gateway.gateway.name }}
+                    </a>
+                </h3>
+                <div class="accordion-collapse collapse {% if loop.first %}show{% endif %}"
+                     id="gateway-{{ key }}" data-bs-parent="#payment-method" role="tabpanel">
+                    <div class="accordion-body">
+                        <div class="mb-2">{{ gateway.gateway.summary }}</div>
+                        <button type="submit" name="gateway[{{ gateway.gateway.slug }}]"
+                                class="btn btn-danger rounded-1">
+                            {{ gateway.gateway.handlerText }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {{ form_end(form) }}
+</div>

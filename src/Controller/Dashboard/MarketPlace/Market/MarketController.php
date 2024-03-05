@@ -3,11 +3,12 @@
 namespace App\Controller\Dashboard\MarketPlace\Market;
 
 use App\Entity\MarketPlace\Market;
+use App\Entity\MarketPlace\MarketPaymentGateway;
+use App\Entity\MarketPlace\MarketPaymentGatewayMarket;
 use App\Form\Type\Dashboard\MarketPlace\MarketType;
 use App\Repository\MarketPlace\MarketRepository;
-use App\Security\Voter\MarketVoter;
-use App\Service\FileUploader;
 use App\Service\Dashboard;
+use App\Service\FileUploader;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -23,7 +24,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -54,6 +54,16 @@ class MarketController extends AbstractController
     }
 
     /**
+     * @param Market $market
+     * @return Response
+     */
+    #[Route('/market/{website}', name: 'app_dashboard_market_place_market_redirect')]
+    public function redirectTo(Market $market): Response
+    {
+        return $this->redirect($market->getUrl());
+    }
+
+    /**
      * @param Request $request
      * @param EntityManagerInterface $em
      * @param UserInterface $user
@@ -63,7 +73,7 @@ class MarketController extends AbstractController
      * @return Response
      * @throws Exception
      */
-    #[Route('/create', name: 'app_dashboard_market_place_create_market')]
+    #[Route('/create/{tab}', name: 'app_dashboard_market_place_create_market')]
     public function create(
         Request                $request,
         EntityManagerInterface $em,
@@ -83,8 +93,17 @@ class MarketController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
 
-                $market->setOwner($user)
-                    ->setSlug($slugger->slug($form->get('name')->getData())->lower());
+                $markets = $em->getRepository(Market::class)->findBy(['name' => $form->get('name')->getData()]);
+
+                if ($markets) {
+                    $this->addFlash('danger', $translator->trans('slug.unique', [
+                        '%name%' => 'Market name',
+                        '%value%' => $form->get('name')->getData(),
+                    ], 'validators'));
+                    return $this->redirectToRoute('app_dashboard_market_place_create_market', ['tab' => $request->get('tab')]);
+                }
+
+                $market->setOwner($user)->setSlug($slugger->slug($form->get('name')->getData())->lower());
 
                 $file = $form->get('logo')->getData();
 
@@ -100,12 +119,29 @@ class MarketController extends AbstractController
                     $market->setAttach($attach);
                 }
 
+                $paymentGateways = $em->getRepository(MarketPaymentGateway::class)->findBy(['active' => true]);
+
+                foreach ($paymentGateways as $gateway) {
+                    $paymentGatewayMarket = new MarketPaymentGatewayMarket();
+                    $paymentGatewayMarket->setMarket($market)
+                        ->setGateway($gateway)
+                        ->setActive(true);
+                    $em->persist($paymentGatewayMarket);
+                }
+
+                $url = $form->get('website')->getData();
+
+                if ($url) {
+                    $parse = parse_url($url);
+                    $market->setUrl($url)->setWebsite($parse['host']);
+                }
+
                 $em->persist($market);
                 $em->flush();
 
                 $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
 
-                return $this->redirectToRoute('app_dashboard_market_place_edit_market', ['id' => $market->getId()]);
+                return $this->redirectToRoute('app_dashboard_market_place_edit_market', ['id' => $market->getId(), 'tab' => $request->get('tab')]);
             }
         } else {
             throw new AccessDeniedHttpException('Permission denied.');
@@ -113,6 +149,7 @@ class MarketController extends AbstractController
 
         return $this->render('dashboard/content/market_place/market/_form.html.twig', $this->navbar() + [
                 'form' => $form,
+                'errors' => $form->getErrors(true),
             ]);
     }
 
@@ -127,8 +164,7 @@ class MarketController extends AbstractController
      * @return Response
      * @throws Exception
      */
-    #[Route('/edit/{id}', name: 'app_dashboard_market_place_edit_market', methods: ['GET', 'POST'])]
-//    #[IsGranted(MarketVoter::EDIT, subject: 'entry', statusCode: Response::HTTP_FORBIDDEN)]
+    #[Route('/edit/{id}/{tab}', name: 'app_dashboard_market_place_edit_market', methods: ['GET', 'POST'])]
     public function edit(
         Request                $request,
         Market                 $market,
@@ -143,7 +179,6 @@ class MarketController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $file = $form->get('logo')->getData();
 
             if ($file) {
@@ -174,17 +209,57 @@ class MarketController extends AbstractController
                 $market->setAttach($attach);
             }
 
+            $gateways = $form->get('gateway')->getData();
+
+            if ($gateways) {
+                $em = $this->resetGateways($market, $em);
+                foreach ($gateways as $gateway) {
+                    $paymentGateways = $em->getRepository(MarketPaymentGatewayMarket::class)
+                        ->findOneBy([
+                            'gateway' => $gateway,
+                            'market' => $market,
+                        ]);
+                    $paymentGateways->setActive(true);
+                    $em->persist($paymentGateways);
+                }
+            } else {
+                $em = $this->resetGateways($market, $em);
+                $em->flush();
+            }
+
+            $url = $form->get('website')->getData();
+
+            if ($url) {
+                $parse = parse_url($url);
+                $market->setUrl($url)->setWebsite($parse['host']);
+            }
+
             $em->persist($market);
             $em->flush();
 
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.updated')]));
 
-            return $this->redirectToRoute('app_dashboard_market_place_edit_market', ['id' => $market->getId()]);
+            return $this->redirectToRoute('app_dashboard_market_place_edit_market', ['id' => $market->getId(), 'tab' => $request->get('tab')]);
         }
 
         return $this->render('dashboard/content/market_place/market/_form.html.twig', $this->navbar() + [
                 'form' => $form,
+                'errors' => $form->getErrors(true),
             ]);
+    }
+
+    /**
+     * @param Market $market
+     * @param EntityManagerInterface $em
+     * @return EntityManagerInterface
+     */
+    private function resetGateways(Market $market, EntityManagerInterface $em): EntityManagerInterface
+    {
+        foreach ($market->getMarketPaymentGatewayMarkets() as $gatewayMarket) {
+            $gatewayMarket->setActive(false);
+            $em->persist($gatewayMarket);
+        }
+        return $em;
     }
 
     /**

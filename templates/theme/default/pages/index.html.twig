@@ -3,27 +3,12 @@
 {% block title %}{{ 'site.title'|trans }}{% endblock %}
 
 {% block body %}
-    <div class="page-title-area home">
-        <div class="d-table">
-            <div class="d-table-cell">
-                <div class="container">
-                    <div class="page-title-content">
-                        <h2>{{ 'text.home.header'|trans }}</h2>
-                        <p>{{ 'text.home.desc'|trans|raw }}</p>
-                    </div>
-                </div>
+    <section class="container mt-lg-2">
+        <div class="row">
+            <div class="col-12 card card-body shadow">
+                <h4 class="ps-2 border-start border-3 border-danger mb-3">{{ 'title.home'|trans }}</h4>
+                <p class="lead lh-lg">home page</p>
             </div>
         </div>
-    </div>
-    <div class="page-title-area home-area">
-        <div class="d-table">
-            <div class="d-table-cell">
-                <div class="container">
-                    <div class="page-title-content">
-                        <h2 class="text-dark">Home Block</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    </section>
 {% endblock %}

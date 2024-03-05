@@ -34,7 +34,6 @@ class ProfileController extends AbstractController
      * @param Request $request
      * @param TranslatorInterface $translator
      * @param CacheManager $cacheManager
-     * @param UserInterface $user
      * @param EntityManagerInterface $em
      * @param ParameterBagInterface $params
      * @return Response

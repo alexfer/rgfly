@@ -1,128 +1,115 @@
 {% set _route = app.request.get('_route') %}
-<!--suppress ALL -->
-<div class="navbar-area">
-    <div class="tech-responsive-nav">
-        <div class="container">
-            <div class="tech-responsive-menu">
-                <div class="tech-logo">
-                    <a href="{{ path('app_index') }}">
-                        <img src="{{ asset('/img/logo-black.png') }}" class="black-logo shadow-none border-0" alt="{{ 'site.title'|trans }}">
-                        <img src="{{ asset('/img/logo-white.png') }}" class="white-logo shadow-none border-0" alt="{{ 'site.title'|trans }}">
+<nav class="navbar navbar-expand-lg bg-transparent navbar-dark p-3 centerOnMobile">
+    <div class="container">
+        <a class="navbar-brand" href="{{ path('app_index') }}">
+            <img src="{{ asset('/img/rgbfly.png') }}" width="90" class="black-logo"
+                 alt="{{ 'site.title'|trans }} - {{ 'text.home.header'|trans }}">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="...">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto ">
+                <li class="nav-item">
+                    <a class="nav-link mx-2 text-uppercase {{ _route == 'about'? 'active': '' }}"
+                       href="{{ path('about') }}">{{ 'title.about_us'|trans }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mx-2 text-uppercase {{ _route == 'faq'? 'active': '' }}"
+                       href="{{ path('faq') }}">{{ 'title.questions'|trans }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mx-2 text-uppercase {{ _route == 'service'? 'active': '' }}"
+                       href="{{ path('service') }}">{{ 'title.service'|trans }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mx-2 text-uppercase {{ _route == 'contact'? 'active': '' }}"
+                       href="{{ path('contact') }}">{{ 'title.contact_us'|trans }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mx-2 text-uppercase {{ _route == 'app_blog'? 'active': '' }}"
+                       href="{{ path('app_blog') }}">{{ 'title.blogs'|trans }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mx-2 text-uppercase {{ _route == 'app_market_place_index'? 'active': '' }}"
+                       href="{{ path('app_market_place_index') }}">{{ 'title.market_places'|trans }}</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto ">
+                <li class="nav-item">
+                    <label>
+                        <select name="locale" class="form-select border-danger bg-danger text-white focus-ring-danger"
+                                disabled>
+                            <option value="{{ app.request.locale }}">{{ 'English'|upper }}</option>
+                        </select>
+                    </label>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link mx-2 text-uppercase position-relative float-end" href="#shopping-cart"
+                       data-bs-toggle="offcanvas"
+                       type="button"
+                       aria-controls="shopping-cart">
+                        <i class="fa fa-shopping-cart me-1"></i> {{ 'market.product.cart'|trans }}
+                        <span id="qty" class="position-absolute top-0 start-100 mt-2 translate-middle badge rounded-pill fw-light bg-warning">
+                            {{ app.session.get('quantity')|default(0) }}
+                            <span class="visually-hidden">{{ app.session.get('quantity')|default(0) }}</span>
+                        </span>
+                    </button>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link mx-2 text-uppercase dropdown-toggle"
+                       id="useMenu"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false" href="#">
+                        <i class="fa fa-user-o me-1"></i> {{ 'title.account'|trans }}
                     </a>
-                </div>
-            </div>
+                    <ul class="dropdown-menu border-0 shadow rounded-1"
+                        aria-labelledby="useMenu">
+                        {% if not app.user %}
+                            <li>
+                                <a href="{{ path('app_login') }}" class="dropdown-item">
+                                    <i class="bi bi-arrow-right-short me-1"></i>{{ 'title.user.login'|trans }}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('app_register') }}" class="dropdown-item">
+                                    <i class="bi bi-arrow-right-short me-1"></i>{{ 'title.user.register'|trans }}
+                                </a>
+                            </li>
+                        {% else %}
+                            {% if 'ROLE_USER' in app.user.roles or 'ROLE_ADMIN' in app.user.roles %}
+                                <li>
+                                    <a href="{{ path('app_dashboard') }}" class="dropdown-item">
+                                        <i class="bi bi-arrow-right-short me-1"></i>
+                                        {{ 'text.dashboard'|trans }}
+                                    </a>
+                                    <a href="{{ path('app_profile') }}" class="dropdown-item">
+                                        <i class="bi bi-arrow-right-short me-1"></i>
+                                        {{ 'text.profile'|trans }}
+                                    </a>
+                                    <a href="{{ path('app_logout') }}" class="dropdown-item">
+                                        <i class="bi bi-arrow-right-short me-1"></i>
+                                        {{ 'title.user.logoff'|trans }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if 'ROLE_CUSTOMER' in app.user.roles and 'ROLE_ADMIN' not in app.user.roles and 'ROLE_USER' not in app.user.roles %}
+                                <li>
+                                    <a href="{{ path('app_cabinet') }}" class="dropdown-item">
+                                        <i class="bi bi-arrow-right-short me-1"></i>
+                                        {{ 'title.customer.cabinet'|trans }}
+                                    </a>
+                                    <a href="{{ path('app_logout') }}" class="dropdown-item">
+                                        <i class="bi bi-arrow-right-short me-1"></i>
+                                        {{ 'title.user.logoff'|trans }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
-    <div class="tech-nav">
-        <nav class="navbar navbar-expand-md navbar-light">
-            <div class="container">
-                <a class="navbar-brand" href="{{ path('app_index') }}">
-                    <img src="{{ asset('/img/logo-black.png') }}" class="black-logo"
-                         alt="{{ 'site.title'|trans }} - {{ 'text.home.header'|trans }}">
-                    <img src="{{ asset('/img/logo-white.png') }}" class="white-logo"
-                         alt="{{ 'site.title'|trans }} - {{ 'text.home.header'|trans }}">
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#tech-navbar"
-                        aria-controls="tech-navbar" aria-expanded="false">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link {{ _route == 'app_index'? 'active': '' }}"
-                               href="{{ path('app_index') }}">{{ 'title.home'|trans }}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ _route == 'about'? 'active': '' }}"
-                               href="{{ path('about') }}">{{ 'title.about_us'|trans }}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ _route == 'faq'? 'active': '' }}"
-                               href="{{ path('faq') }}">{{ 'title.questions'|trans }}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ _route == 'service'? 'active': '' }}"
-                               href="{{ path('service') }}">{{ 'title.service'|trans }}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ _route == 'contact'? 'active': '' }}"
-                               href="{{ path('contact') }}">{{ 'title.contact_us'|trans }}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ _route == 'app_market_place_index'? 'active': '' }}"
-                               href="{{ path('app_market_place_index') }}">{{ 'title.market_places'|trans }}</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav me-0 d-flex justify-content-end">
-                        <li class="nav-item">
-                            <a class="btn btn-primary nav-link" id="userMenu" role="button">
-                                {% if app.user and app.user.userDetails.attach|length %}
-                                    {% for picture in app.user.userDetails.attach|slice(0, 1) %}
-                                        {% set _picture = 'storage/user/picture/' ~ app.user.id ~ '/' ~ picture.name %}
-                                        <img class="img-fluid rounded-2"
-                                             src="{{ asset(_picture) | imagine_filter('user_thumb') }}" width="40"
-                                             height="40" alt="...">
-                                    {% else %}
-                                        <h3 class="bi bi-person-circle mb-0"></h3>
-                                    {% endfor %}
-                                {% else %}
-                                    <h3 class="bi bi-person-circle mb-0"></h3>
-                                {% endif %}
-                            </a>
-                            <ul class="dropdown-menu shadow-sm border mt-2 rounded">
-                                {% if not app.user %}
-                                    <li class="nav-item">
-                                        <a href="{{ path('app_login') }}" class="nav-link">
-                                            <i class="bi bi-arrow-right-short"></i>
-                                            {{ 'title.user.login'|trans }}
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="{{ path('app_register') }}" class="nav-link">
-                                            <i class="bi bi-arrow-right-short"></i>
-                                            {{ 'title.user.register'|trans }}
-                                        </a>
-                                    </li>
-                                {% else %}
-                                    <li class="nav-item p-2">
-                                        {{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="{{ path('app_dashboard') }}" class="nav-link">
-                                            <i class="bi bi-arrow-right-short"></i>
-                                            {{ 'text.dashboard'|trans }}
-                                        </a>
-                                        <a href="{{ path('app_profile') }}" class="nav-link">
-                                            <i class="bi bi-arrow-right-short"></i>
-                                            {{ 'text.profile'|trans }}
-                                        </a>
-                                        <a href="{{ path('app_logout') }}" class="nav-link">
-                                            <i class="bi bi-arrow-right-short"></i>
-                                            {{ 'title.user.logoff'|trans }}
-                                        </a>
-                                    </li>
-                                {% endif %}
-                            </ul>
-                        </li>
-                        <li class="nav-item px-1">
-                            <a href="" class="nav-link mx-1">
-                                <span class="badge bg-opacity-75 rounded-pill bg-primary position-absolute top-0 start-50 ms-2 mt-3 translate-middle-x">
-                                    <small>1</small>
-                                </span>
-                                <h4 class="bi bi-heart mt-2"></h4>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#shopping-cart" class="nav-link" data-bs-toggle="offcanvas" role="button" aria-controls="shopping-cart">
-                                <span class="badge bg-opacity-75 rounded-pill bg-success position-absolute top-0 start-100 mt-3 translate-middle-x">
-                                    <small id="qty">{{ app.session.get('quantity')|default(0) }}</small>
-                                </span>
-                                <h4 class="bi bi-cart mt-2"></h4>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </div>
-</div>
+</nav>

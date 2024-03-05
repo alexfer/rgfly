@@ -15,51 +15,47 @@
     }
 } %}
 <div class="form-group mb-3 card">
-    <a class="form-title card-header" data-bs-toggle="collapse" href="#attachments" role="button"
-       aria-expanded="true"
-       aria-controls="attachments">{{ 'entry.form.attachments'|trans }}</a>
-    <div class="collapse show mt-2" id="attachments">
-        <div class="card-body">
-            <div class="loader row mx-auto justify-content-center align-items-center flex-column">
-                <div class="col pt-50 d-inline-block">
-                    <div class="spinner-grow text-success" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
+    <div class="card-header">{{ 'entry.form.attachments'|trans }}</div>
+    <div class="card-body">
+        <div class="loader row mx-auto justify-content-center align-items-center flex-column">
+            <div class="col pt-50 d-inline-block">
+                <div class="spinner-grow text-success" role="status">
+                    <span class="visually-hidden">Loading...</span>
                 </div>
             </div>
-            <div class="table entry-attachments" data-params="{{ _params|json_encode }}">
-                {% if app.request.get('id') %}
-                    {% for key, picture in attachments|reverse|slice(0, 6) %}
-                        {% set _picture = 'storage/'~ storage ~'/picture/' ~ id ~ '/' ~ picture.attach.name %}
-                        <div class="d-inline-block mr-3 mb-4 py-3">
-                            <img class="attach" src="{{ asset(_picture) | imagine_filter(filter) }}" alt="...">
-                            <div class="handlers" data-id="{{ picture.attach.id }}">
-                                <a href="{{ remove }}" data-action="remove"
-                                   class="bi bi-trash-fill"></a>
-                                {% if set_use %}
+        </div>
+        <div class="table entry-attachments" data-params="{{ _params|json_encode }}">
+            {% if app.request.get('id') %}
+                {% for key, picture in attachments|reverse|slice(0, 6) %}
+                    {% set _picture = 'storage/'~ storage ~'/picture/' ~ id ~ '/' ~ picture.attach.name %}
+                    <div class="d-inline-block">
+                        <img class="attach" src="{{ asset(_picture) | imagine_filter(filter) }}" alt="...">
+                        <div class="handler" data-id="{{ picture.attach.id }}">
+                            <a href="{{ remove }}" data-action="remove"
+                               class="bi bi-trash-fill"></a>
+                            {% if set_use %}
                                 <a href="{{ set_use }}"
                                    data-action="default"
                                    class="bi bi-person-bounding-box"></a>
-                                {% endif %}
-                            </div>
+                            {% endif %}
                         </div>
-                    {% endfor %}
-                {% endif %}
-            </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
         </div>
-        <div class="card-footer bg-transparent">
-            <div class="input-group mb-1">
-                <input type="file" class="form-control border-0 bg-transparent" name="entry[picture]" id="picture"
-                       aria-label="{{ 'label.form.entry_picture'|trans }}"
-                       style="width: auto;"
-                       aria-describedby="attach" accept="image/png, image/jpeg">
-                <button class="btn btn-secondary shadow-none pb-1"
-                        type="button"
-                        data-label="{{ 'label.form.entry_picture'|trans }}"
-                        data-url="{{ data_url }}"
-                        id="attach"><i class="bi bi-image-fill pe-2"></i>{{ 'label.form.attach'|trans }}</button>
-            </div>
-            <small class="picture-info text-muted ms-4"></small>
+    </div>
+    <div class="card-footer bg-transparent">
+        <div class="input-group mb-1">
+            <input type="file" class="form-control border-0 bg-transparent" name="entry[picture]" id="picture"
+                   aria-label="{{ 'label.form.entry_picture'|trans }}"
+                   style="width: auto;"
+                   aria-describedby="attach" accept="image/png, image/jpeg">
+            <button class="btn btn-secondary shadow-none pb-1"
+                    type="button"
+                    data-label="{{ 'label.form.entry_picture'|trans }}"
+                    data-url="{{ data_url }}"
+                    id="attach"><i class="bi bi-image-fill pe-2"></i>{{ 'label.form.attach'|trans }}</button>
         </div>
+        <small class="picture-info text-muted ms-4"></small>
     </div>
 </div>

@@ -193,13 +193,21 @@ use Doctrine\ORM\EntityRepository;
                     ]),
                 ],
             ])
+            ->add('fee', MoneyType::class, [
+                'attr' => [
+                    'min' => '0.00',
+                    'step' => '1',
+                ],
+                'html5' => true,
+                'currency' => $this->market->getCurrency() ?? 'USD',
+            ])
             ->add('cost', MoneyType::class, [
                 'attr' => [
                     'min' => '0.00',
                     'step' => '0.01',
                 ],
                 'html5' => true,
-                'currency' => $this->market->getCurrency() ?? 'EUR',
+                'currency' => $this->market->getCurrency() ?? 'USD',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'form.cost.not_blank',
@@ -266,7 +274,7 @@ use Doctrine\ORM\EntityRepository;
             ])
             ->add('save', SubmitType::class, [
                 'attr' => [
-                    'class' => 'btn btn-primary shadow',
+                    'class' => 'btn btn-primary rounded-1 shadow-sm',
                 ],
             ]);
     }

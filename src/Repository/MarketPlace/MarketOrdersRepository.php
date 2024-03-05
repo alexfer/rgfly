@@ -36,11 +36,19 @@ class MarketOrdersRepository extends ServiceEntityRepository
             foreach ($order->getMarketOrdersProducts()->toArray() as $product) {
 
                 $discount = 0;
+                $attach = [];
+
                 if ($product->getProduct()->getDiscount()) {
                     $discount = ($product->getProduct()->getCost() - (($product->getProduct()->getCost() * $product->getProduct()->getDiscount()) - $product->getProduct()->getDiscount()) / 100);
                 }
 
+                foreach ($product->getProduct()->getMarketProductAttaches() as $marketProductAttach) {
+                    $attachment = $marketProductAttach->getAttach();
+                    $attach[$attachment->getId()] = $attachment->getName();
+                }
+
                 $products[$order->getId()][$product->getId()] = [
+                    'id' => $product->getProduct()->getId(),
                     'short_name' => $product->getProduct()->getShortName(),
                     'name' => $product->getProduct()->getName(),
                     'slug' => $product->getProduct()->getSlug(),
@@ -50,6 +58,7 @@ class MarketOrdersRepository extends ServiceEntityRepository
                     'discount' => round($discount, 2),
                     'size' => $product->getSize(),
                     'color' => $product->getColor(),
+                    'attach' => reset($attach),
                 ];
             }
             $collection[$order->getId()] = [

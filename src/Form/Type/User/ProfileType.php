@@ -3,7 +3,10 @@
 namespace App\Form\Type\User;
 
 use App\Entity\UserDetails;
-use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\{
+    AbstractType,
+    FormBuilderInterface,
+};
 use Symfony\Component\Form\Extension\Core\Type\{
     ChoiceType,
     DateType,
@@ -12,9 +15,8 @@ use Symfony\Component\Form\Extension\Core\Type\{
     SubmitType,
     TelType,
     TextareaType,
-    TextType
+    TextType,
 };
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Intl\{
     Countries,
     Locale,
@@ -146,7 +148,7 @@ class ProfileType extends AbstractType
             ])
             ->add('update', SubmitType::class, [
                 'attr' => [
-                    'class' => 'btn btn-primary',
+                    'class' => 'btn btn-primary rounded-1 shadow-sm',
                 ],
             ]);
     }

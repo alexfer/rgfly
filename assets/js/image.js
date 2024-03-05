@@ -11,14 +11,11 @@ $(function () {
     let attachments = $('.entry-attachments');
     let loader = $('.loader');
     let readURL = function (input) {
-
         if (input.files && input.files[0]) {
             let reader = new FileReader();
-
             reader.onload = (e) => {
                 $('#imgProfile').attr('src', e.target.result);
             };
-
             reader.readAsDataURL(input.files[0]);
         }
     }
@@ -46,7 +43,7 @@ $(function () {
                     data: formData,
                     contentType: false,
                     processData: false,
-                    success: (response) => {
+                    success: function (response) {
                         if (response) {
                             let toast = $('.toast .toast-body');
 
@@ -63,12 +60,12 @@ $(function () {
                             // TODO: fix it
                             attachments.prepend(
                                 $('<div/>')
-                                    .attr('class', 'd-inline-block  mr-3 mb-3').append(
+                                    .attr('class', 'd-inline-block me-3 mb-3').append(
                                     $('<img/>')
                                         .attr('class', 'attach')
                                         .attr('src', response.picture)
                                 ).append(
-                                    $('<div/>').attr('class', 'handlers').attr('data-id', response.id))).delay(3000).show('slow');
+                                    $('<div/>').attr('class', 'handler').attr('data-id', response.id))).delay(3000).show('slow');
                             if (attachments.length > 6) {
                                 setTimeout(() => {
                                     attachments.children().last().remove();
@@ -76,17 +73,18 @@ $(function () {
                             }
                         }
                     },
-                    complete: () => {
+                    complete: function () {
                         setTimeout(() => {
                             loader.removeClass('show');
                             attachments.removeClass('blur');
-                            if(Object.keys(profile).length === 3) {
+                            if (Object.keys(profile).length === 3) {
                                 profile.wrap('<form>').closest('form').get(0).reset();
                                 profile.unwrap();
                             }
-                            if(Object.keys(entry).length === 3) {
+                            if (Object.keys(entry).length === 3) {
                                 entry.wrap('<form>').closest('form').get(0).reset();
                                 entry.unwrap();
+                                file = null;
                             }
                         }, 3000);
                     }
@@ -95,7 +93,7 @@ $(function () {
         });
     };
 
-    attachments.find('.handlers a').off().on('click',function (event) {
+    attachments.find('.handler a').off().on('click', function (event) {
         event.preventDefault();
 
         const url = $(this).attr('href');

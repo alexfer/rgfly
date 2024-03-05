@@ -1,12 +1,6 @@
 {{ form_start(form, {attr: {class: 'tech-form', novalidate: 'novalidate'}}) }}
-{% if error %}
-    <div class="alert alert-danger mt-3">
-        {{ error.message }}
-    </div>
-{% endif %}
-<div class="row py-3">
-    <div class="col"></div>
-    <div class="col-6 pt-5">
+<div class="row">
+    <div class="col-12 pt-2 px-xxl-5">
         <div class="form-group mb-3">
             {{ form_label(form.email, 'label.form.email', {label_attr: {class: 'form-label'}}) }}
             <span class="text-danger">*</span>
@@ -26,16 +20,29 @@
                 <small class="form-text text-muted">{{ 'form.password.help'|trans }}</small>
             {% endif %}
         </div>
-        <div class="form-check pl-1">
+        <div class="form-check ps-1">
             {{ form_widget(form._remember_me, {attr: {checked: 'checked'}}) }}
             {{ form_label(form._remember_me, 'label.form.keep_me_logged_in', {attr: {class: 'form-check-label'}}) }}
         </div>
     </div>
-    <div class="col"></div>
-    <div class="col-md-12 text-center my-4">
+    <div class="col-md-12 my-4">
         <input type="hidden" name="_target_path" value="{{ path('app_dashboard') }}"/>
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-        {{ form_widget(form.login, { label: 'form.action.login' }) }}
+        <div class="row d-flex justify-content-center">
+            <div class="col-6">
+                <ul class="list-unstyled">
+                    <li class="text-end">
+                        <a href="{{ path('app_forgot_password_request') }}">{{ 'text.forgot_password'|trans }}</a>
+                    </li>
+                    <li class="text-end">
+                        <a href="{{ path('app_register') }}">{{ 'text.register'|trans }}</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-6">
+                {{ form_widget(form.login, { label: 'form.action.login' }) }}
+            </div>
+        </div>
     </div>
 </div>
 {{ form_end(form) }}

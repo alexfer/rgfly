@@ -6,7 +6,7 @@
 parameters:
     hwi_oauth.connect.registration_form: ''
     auto_login: true
-    app.datetime_format: 'M d, Y H:i'
+    app.datetime_format: 'D, d M Y H:i'
     app.date_format: 'M d, Y'
     locale: 'en'
     theme: 'default'
@@ -17,6 +17,7 @@ parameters:
     product_storage_dir: '%kernel.project_dir%/public/storage/product'
     entry_storage_picture: 'storage/entry/picture'
     product_storage_picture: 'storage/product/picture'
+    app.notifications.subject: '%env(EMAIL_SUBJECT)%'
     app.notifications.email_sender: '%env(EMAIL_SENDER)%'
     app.notifications.email_sender_name: '%env(EMAIL_SENDER_NAME)%'
 
@@ -36,6 +37,7 @@ services:
         exclude:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
+            - '../src/Migrations/'
             - '../src/Kernel.php'
 
     # add more service definitions when explicit configuration is needed

@@ -5,123 +5,116 @@
 {% endblock %}
 {% block title %}{{ 'title.general.market.name'|trans }}{% endblock %}
 {% block body %}
-    <div class="page-title-area user-area">
-        <div class="d-table">
-            <div class="d-table-cell">
-                <div class="container">
-                    <div class="page-title-content">
-                        <h2>{% block extend_title %}{{ 'title.general.market.name'|trans }}{% endblock %}</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container marketplace my-3">
-        {% block content_body %}
-            <div class="row mb-4">
-                <div class="col-12 text-center">
-                    <div class="card border-4 bg-info bg-opacity-25 border-success border-opacity-25 rounded-4 dashed">
-                        <div class="display-5 my-3 mb-0">{{ 'market.promotion'|trans }}</div>
-                        <div class="card-body">
-                            <p class="mb-0">{{ 'market.promotion.text'|trans({
-                                    '%company%': 'site.title'|trans,
-                                    '%discount%': 25,
-                                    '%code%': random(1000, 1000000)|upper,
-                                    '%link%': path('app_index')
-                                })|raw }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row g-4">
-                {% for product in products %}
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card card-hover-shadow h-100">
-                            <div class="card-img-scale-wrapper position-relative">
-                                {% if product.marketProductAttaches.count %}
-                                    {% set _picture = 'storage/product/picture/' ~ product.id ~ '/' ~ product.marketProductAttaches.first.attach.name %}
-                                    <img src="{{ asset(_picture)|imagine_filter('product_preview') }}"
-                                         class="card-img-top h-100" alt="{{ product.name }}">
-                                {% else %}
-                                    <img src="{{ asset('img/08.jpg') }}" class="card-img-top h-100" alt="{{ product.name }}">
-                                {% endif %}
-                                <div class="card-img-overlay d-flex flex-column z-index-1 p-3">
-                                    <div class="d-flex justify-content-between">
-                                        <span class="badge text-bg-dark bg-opacity-75 rounded-1">
-                                            <a href="{{ path('app_market_place_product', {slug: product.slug}) }}"
-                                               class="link-white fw-normal">{{ 'market.product.details'|trans }}</a>
-                                        </span>
-                                        <span class="badge bg-white text-dark fw-normal">
-                                            <i class="bi bi-star-fill text-warning me-2"></i>4.3
-                                        </span>
-                                    </div>
-                                    <div class="w-100 mt-auto">
-                                        <span class="badge bg-secondary text-dark p-1">
-                                            <a href="{{ path('app_market_place_parent_category', {parent:  product.marketCategoryProducts.first.category.parent.slug}) }}"
-                                               class="link-white fs-6 fw-light px-2">
-                                            {{ product.marketCategoryProducts.first.category.parent.name }}
-                                            </a>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body px-1">
-                                <ul class="list-inline text-end me-2 mb-3">
-                                    <li class="list-inline-item position-absolute start-0 ms-3">
-                                        <form class="shopping-cart" method="post"
-                                              action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
-                                            <button class="btn btn-primary rounded-0"
-                                                    data-slug="{{ product.slug }}" type="submit">
-                                                <i class="bi bi-cart me-1"></i>{{ 'market.product.add'|trans }}
-                                            </button>
-                                        </form>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <div class="badge bg-success bg-opacity-25 text-success">
-                                            <h5 class="mb-0">{{ product.cost|number_format(2, ',', '') }}
-                                                <small>{{ product.market.currency|currency }}</small></h5>
+    {% block content_body %}
+        <section class="container marketplace mt-lg-2">
+            <div class="row">
+                <div class="col-12 card card-body shadow">
+                    <h4 class="ps-2 border-start border-3 border-danger mb-3">{{ 'title.general.market.name'|trans }}</h4>
+                    <div class="row mt-lg-2 mb-4 g-4">
+                        {% for product in products %}
+                            <div class="col-sm-6 col-lg-4 col-xl-3">
+                                <div class="card product-card h-auto">
+                                    <div class="position-relative">
+                                        {% if product.marketProductAttaches.count %}
+                                            {% set _picture = 'storage/product/picture/' ~ product.id ~ '/' ~ product.marketProductAttaches.first.attach.name %}
+                                            <img src="{{ asset(_picture)|imagine_filter('product_preview') }}"
+                                                 class="card-img-top h-auto" alt="{{ product.name }}">
+                                        {% else %}
+                                            <img src="{{ asset('https://placehold.it/300x200') }}"
+                                                 class="card-img-top h-auto"
+                                                 alt="{{ product.name }}">
+                                        {% endif %}
+                                        <div class="card-img-overlay d-flex flex-column z-1 p-3">
+                                            <div class="d-flex justify-content-between">
+                                                <span class="badge text-bg-warning text-white bg-opacity-75 p-1 rounded-1">
+                                                    <a title="{{ product.name }}"
+                                                       href="{{ path('app_market_place_product', {slug: product.slug}) }}"
+                                                       class="text-dark-emphasis fs-6 fw-normal">{{ 'market.product.details'|trans }}
+                                                    </a>
+                                                </span>
+                                                {% if product.discount %}
+                                                    <span class="badge bg-danger fw-normal text-white">{{ product.discount }}% {{ 'market.product.off'|trans }}</span>
+                                                {% endif %}
+                                            </div>
+                                            <div class="w-100 mt-auto">
+                                                <span class="badge bg-secondary text-dark p-1">
+                                                    <a href="{{ path('app_market_place_parent_category', {parent:  product.marketCategoryProducts.first.category.parent.slug}) }}"
+                                                       class="text-white fs-6 fw-light px-2">
+                                                    {{ product.marketCategoryProducts.first.category.parent.name }}
+                                                    </a>
+                                                </span>
+                                            </div>
                                         </div>
-                                    </li>
-                                </ul>
-                                <h5 class="card-title h-25 mb-1 mt-3 mx-3">
-                                    <a title="{{ product.name }}"
-                                       href="{{ path('app_market_place_product', {slug: product.slug}) }}">{{ product.shortName }}</a>
-                                </h5>
-                                <a href="{{ path('app_market_place_child_category', {parent: product.marketCategoryProducts.first.category.parent.slug, child:  product.marketCategoryProducts.first.category.slug}) }}"
-                                   class="btn btn-link text-decoration-none text-secondary d-block text-start">
-                                    <hr>
-                                    <i class="bi bi-ui-radios-grid text-opacity-50 text-success"></i> {{ product.marketCategoryProducts.first.category.name }}
-                                </a>
-                                <ul class="list-group list-group-borderless mt-5">
-                                    <li class="list-group-item small pb-0  border-0">
-                                        <i class="bi bi-pin-map-fill me-2 text-opacity-50 text-info"></i>
-                                        <a class="text-decoration-none"
-                                           href="{{ path('app_market_place_market', {slug:  product.market.slug}) }}">{{ product.market.name }}</a>
-                                    </li>
-                                    <li class="list-group-item small pb-0  border-0">
-                                        <i class="bi bi-telephone-fill text-secondary me-2"></i> <span
-                                                class="text-secondary">{{ product.market.phone }}</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="card-footer border-top">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <a href="{{ path('app_market_place_product', {slug: product.slug}) }}"
-                                       class="btn btn-link text-decoration-none p-0 mb-0">{{ 'market.product.details'|trans }}
-                                        <i class="bi bi-arrow-right ms-1"></i>
-                                    </a>
-                                    <a href="#" class="z-index-2"><i class="bi bi-heart-fill text-danger"></i></a>
+                                    </div>
+                                    <div class="card-body px-1">
+                                        <ul class="list-inline text-end me-2 mb-3">
+                                            <li class="list-inline-item position-absolute start-0 ms-3">
+                                                <form class="shopping-cart" method="post"
+                                                      action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
+                                                    <button class="btn btn-dark d-flex rounded-1"
+                                                            data-slug="{{ product.slug }}" type="submit">
+                                                        <i class="fa fa-shopping-cart mt-1 me-2"></i>{{ 'market.product.add'|trans }}
+                                                    </button>
+                                                </form>
+                                            </li>
+                                            <li class="list-inline-item">
+                                                <div class="badge bg-success bg-opacity-25 text-success">
+                                                    <h5 class="mb-0">{{ product.cost|number_format(2, ',', '') }}
+                                                        <small>{{ product.market.currency|currency }}</small></h5>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <h5 class="card-title mb-1 mt-3 mx-3">
+                                            <a title="{{ product.name }}"
+                                               href="{{ path('app_market_place_product', {slug: product.slug}) }}">{{ product.shortName }}</a>
+                                        </h5>
+                                        <a href="{{ path('app_market_place_child_category', {
+                                            parent: product.marketCategoryProducts.first.category.parent.slug,
+                                            child:  product.marketCategoryProducts.first.category.slug
+                                        }) }}"
+                                           class="btn btn-link text-decoration-none text-secondary d-flex text-start">
+                                            <hr>
+                                            <i class="bi bi-ui-radios-grid pe-2 badge-child text-opacity-50 text-success"></i> {{ product.marketCategoryProducts.first.category.name }}
+                                        </a>
+                                        <ul class="list-group list-group-borderless mt-2">
+                                            <li class="list-group-item pb-0 d-flex border-0">
+                                                <i class="bi bi-chat-dots-fill me-2 text-opacity-75 text-primary"></i>
+                                                <a class="text-decoration-none text-primary"
+                                                   href="#">{{ 'label.form.message'|trans }}</a>
+                                            </li>
+                                            <li class="list-group-item pb-0 d-flex border-0">
+                                                <i class="bi bi-shop me-2 text-opacity-50 text-info"></i>
+                                                <a class="text-decoration-none"
+                                                   href="{{ path('app_market_place_market', {slug:  product.market.slug}) }}">{{ product.market.name }}</a>
+                                            </li>
+                                            {% if product.market.phone %}
+                                                <li class="list-group-item small pb-0 d-flex border-0">
+                                                    <i class="bi bi-phone text-secondary me-2"></i>
+                                                    <a href="tel:{{ product.market.phone }}"
+                                                       class="text-secondary">{{ product.market.phone }}</a>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                    <div class="card-footer border-top">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <a href="{{ path('app_market_place_product', {slug: product.slug}) }}"
+                                               class="btn btn-link text-decoration-none d-flex p-0 mb-0">{{ 'market.product.details'|trans }}
+                                                <i class="bi bi-arrow-right fw-lighter fs-6 ms-3"></i>
+                                            </a>
+                                            <form class="add-wishlist" name="wishlist"
+                                                  action="{{ path('app_market_place_add_wishlist', {slug: product.slug}) }}">
+                                                <input name="market" type="hidden" value="{{ product.market.id }}">
+                                                {% include 'market_place/wishlist.html.twig' with {'extra': null} %}
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        {% endfor %}
                     </div>
-                {% endfor %}
+                </div>
             </div>
-        {% endblock %}
-    </div>
-{% endblock %}
-{% block javascripts %}
-    {{ parent() }}
-    {{ encore_entry_script_tags('market-js') }}
+        </section>
+    {% endblock %}
 {% endblock %}
