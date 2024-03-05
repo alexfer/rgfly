@@ -26,7 +26,7 @@ class ContactController extends AbstractController
         Request                    $request,
         EntityManagerInterface     $em,
         EmailNotificationInterface $emailNotification,
-        ParameterBagInterface $params,
+        ParameterBagInterface      $params,
     ): Response
     {
         $contact = new Contact();
@@ -35,6 +35,11 @@ class ContactController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $contact->setSubject(
+                $form->get('subject')->getData() ?:
+                    $params->get('app.notifications.subject')
+            );
+
             $em->persist($contact);
             $em->flush();
 
@@ -44,6 +49,7 @@ class ContactController extends AbstractController
                 'subject' => $params->get('app.notifications.subject'),
                 'index' => $this->generateUrl('app_index')
             ]);
+
             $emailNotification->send($args['contact'], $template);
 
             return $this->redirectToRoute('contact_success');

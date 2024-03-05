@@ -34,7 +34,7 @@ readonly class EmailNotification implements EmailNotificationInterface
             ->from(new Address($args['email'], $args['name']))
             ->to(new Address($this->params->get('app.notifications.email_sender'), $this->params->get('app.notifications.email_sender_name')))
             ->subject($args['subject'] ?: $this->params->get('app.notifications.subject'))
-            ->html($template ?? $args['message']);
+            ->html($template ?: $args['message']);
 
         try {
             $this->mailer->send($email);

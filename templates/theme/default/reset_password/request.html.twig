@@ -11,11 +11,12 @@
                 <h4 class="ps-2 border-start border-3 border-danger mb-3">{{ 'text.reset_password'|trans }}</h4>
                 {% for flash_error in app.flashes('reset_password_error') %}
                     <div class="alert alert-danger mx-3 mb-0" role="alert">{{ flash_error }}</div>
+                {% else %}
+                    <div class="alert alert-info mt-4 mx-3" role="alert">
+                        <p class="mb-0">{{ 'form.email.info'|trans }}</p>
+                    </div>
                 {% endfor %}
-                <div class="alert alert-info mt-4 mx-3" role="alert">
-                    <p class="mb-0">{{ 'form.email.info'|trans }}</p>
-                </div>
-                <div class="row">
+                <div class="row mx-1">
                     <div class="form-floating col-12 pt-2">
                         {{ form_widget(requestForm.email, {attr: {class: 'form-control ps-sm-3', placeholder: ''}}) }}
                         {{ form_label(requestForm.email, 'label.form.email', {label_attr: {class: 'form-label ms-3 mt-2'}}) }}
