@@ -19,7 +19,7 @@ RgFly ecommerce solution
 You should change database configuration
 ```shell
     $ cd projectdir/
-    $ cp .env.original .env
+    $ cp .env.dist .env
 ```
 ### 3. Install dependencies use Composer
 Use [Composer](https://getcomposer.org/) install to download and install the package.

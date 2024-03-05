@@ -1349,6 +1349,10 @@
                 <source>text.reset_password.sent</source>
                 <target>Password Reset Email Sent</target>
             </trans-unit>
+            <trans-unit id="email.not_found">
+                <source>email.not_found</source>
+                <target>Provided email not found</target>
+            </trans-unit>
             <trans-unit id="text.reset_password.infio">
                 <source>text.reset_password.infio</source>
                 <target>If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password. This link will expire in</target>
