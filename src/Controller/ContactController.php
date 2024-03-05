@@ -4,11 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Contact;
 use App\Form\Type\ContactType;
+use App\Service\Mailer\EmailNotificationInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 class ContactController extends AbstractController
@@ -17,14 +18,15 @@ class ContactController extends AbstractController
     /**
      * @param Request $request
      * @param EntityManagerInterface $em
-     * @param MailerInterface $mailer
+     * @param EmailNotificationInterface $emailNotification
      * @return Response
      */
     #[Route('/contact', name: 'contact', methods: ['GET', 'POST'])]
     public function index(
-        Request                $request,
-        EntityManagerInterface $em,
-        MailerInterface        $mailer,
+        Request                    $request,
+        EntityManagerInterface     $em,
+        EmailNotificationInterface $emailNotification,
+        ParameterBagInterface $params,
     ): Response
     {
         $contact = new Contact();
@@ -36,22 +38,13 @@ class ContactController extends AbstractController
             $em->persist($contact);
             $em->flush();
 
-//            $email = (new Email())
-//                    ->from(new Address($form->get('email')->getData(), $form->get('name')->getData()))
-//                    ->to(new Address('alexandershtyher@gmail.com', 'Alexander Sh'))
-//                    //->cc('cc@example.com')
-//                    //->bcc('bcc@example.com')
-//                    ->replyTo(new Address('julyshtyher@gmail.com', 'July Sh'))
-//                    //->priority(Email::PRIORITY_HIGH)
-//                    ->subject($form->get('subject')->getData())
-//                    ->text('Sending emails is fun again!')
-//                    ->html($form->get('message')->getData());
-//
-//            try {
-//                $mailer->send($email);
-//            } catch (TransportExceptionInterface $e) {
-//                throw new \Exception($e->getMessage());
-//            }
+            $args = $request->request->all();
+            $template = $this->renderView('mail/default.html.twig', [
+                'args' => $args['contact'],
+                'subject' => $params->get('app.notifications.subject'),
+                'index' => $this->generateUrl('app_index')
+            ]);
+            $emailNotification->send($args['contact'], $template);
 
             return $this->redirectToRoute('contact_success');
         }

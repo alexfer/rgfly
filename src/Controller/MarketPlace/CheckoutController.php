@@ -173,7 +173,6 @@ class CheckoutController extends AbstractController
         $request->getSession()->clear();
 
         return $this->render('market_place/checkout/order_success.html.twig', [
-            //'order' => $order,
             'error' => $error,
             'last_username' => $default['email'],
             'form' => $form->createView(),
