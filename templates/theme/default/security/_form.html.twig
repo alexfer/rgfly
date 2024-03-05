@@ -1,24 +1,17 @@
-{{ form_start(form, {attr: {class: 'tech-form', novalidate: 'novalidate'}}) }}
+{{ form_start(form, {attr: {class: 'needs-validation', novalidate: ''}}) }}
 <div class="row">
     <div class="col-12 pt-2 px-xxl-5">
-        <div class="form-group mb-3">
+        <div class="form-floating mb-3">
+            {{ form_widget(form.email, {attr: {value: last_username, class: 'form-control', placeholder: ''}}) }}
             {{ form_label(form.email, 'label.form.email', {label_attr: {class: 'form-label'}}) }}
-            <span class="text-danger">*</span>
-            {{ form_widget(form.email, {attr: {value: last_username, class: 'form-control', placeholder: 'label.form.email'}}) }}
-            {% if form_errors(form.email) %}
-                <small class="form-text text-danger">{{ form_errors(form.email) }}</small>
-            {% else %}
-                <small class="form-text text-muted">{{ 'form.email.help'|trans }}</small>
-            {% endif %}
+            <div class="invalid-feedback">{{ 'form.email.invalid'|trans }}</div>
+            <small class="form-text text-muted">{{ 'form.email.help'|trans }}</small>
         </div>
-        <div class="form-group mb-3">
-            {{ form_label(form.password, 'label.form.password') }} <span class="text-danger">*</span>
-            {{ form_widget(form.password, {attr: {class: 'form-control', placeholder: 'label.form.password'}}) }}
-            {% if form_errors(form.email) %}
-                <small class="form-text text-danger">{{ form_errors(form.password) }}</small>
-            {% else %}
-                <small class="form-text text-muted">{{ 'form.password.help'|trans }}</small>
-            {% endif %}
+        <div class="form-floating mb-3">
+            {{ form_widget(form.password, {attr: {class: 'form-control', placeholder: ''}}) }}
+            {{ form_label(form.password, 'label.form.password') }}
+            <div class="invalid-feedback">{{ 'form.password.invalid'|trans }}</div>
+            <small class="form-text text-muted">{{ 'form.password.help'|trans }}</small>
         </div>
         <div class="form-check ps-1">
             {{ form_widget(form._remember_me, {attr: {checked: 'checked'}}) }}
@@ -29,18 +22,21 @@
         <input type="hidden" name="_target_path" value="{{ path('app_dashboard') }}"/>
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
         <div class="row d-flex justify-content-center">
-            <div class="col-6">
-                <ul class="list-unstyled">
-                    <li class="text-end">
-                        <a href="{{ path('app_forgot_password_request') }}">{{ 'text.forgot_password'|trans }}</a>
-                    </li>
-                    <li class="text-end">
-                        <a href="{{ path('app_register') }}">{{ 'text.register'|trans }}</a>
-                    </li>
-                </ul>
+            <div class="col-6 text-end pt-1">
+                {{ form_widget(form.login, { label: 'form.action.login' }) }}
             </div>
             <div class="col-6">
-                {{ form_widget(form.login, { label: 'form.action.login' }) }}
+                <ul class="list-unstyled">
+                    <li class="text-start">
+                        <a href="{{ path('app_register') }}"><i
+                                    class="bi bi-person-circle me-2"></i>{{ 'text.register'|trans }}</a>
+                    </li>
+                    <li class="text-start">
+                        <a href="{{ path('app_forgot_password_request') }}"><i
+                                    class="bi bi-question-circle me-2"></i>{{ 'text.forgot_password'|trans }}</a>
+                    </li>
+                </ul>
+
             </div>
         </div>
     </div>

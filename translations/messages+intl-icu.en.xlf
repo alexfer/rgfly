@@ -1037,7 +1037,7 @@
             </trans-unit>
             <trans-unit id="text.forgot_password">
                 <source>text.forgot_password</source>
-                <target>Forgot password?</target>
+                <target>Forgot password</target>
             </trans-unit>
             <trans-unit id="text.login.desc">
                 <source>text.login.desc</source>
