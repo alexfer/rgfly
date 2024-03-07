@@ -52,6 +52,15 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        {% else %}
+                                            <img class="d-block mx-auto mb-5 border-0 w-25 shadow-none"
+                                                 src="{{ asset('img/404.png') }}"
+                                                 width="340" alt="{{ 'market.product.orders.empty'|trans }}">
+                                            <p class="text-center">
+                                                {{ 'market.product.orders.empty'|trans }}
+                                                <a class="d-block fs-6"
+                                                   href="{{ path('app_market_place_index') }}">{{ 'form.action.back'|trans }}</a>
+                                            </p>
                                         {% endfor %}
                                     </div>
                                 </div>

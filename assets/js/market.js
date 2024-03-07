@@ -62,6 +62,8 @@ if (typeof drops !== 'undefined') {
             let url = drop.getAttribute('data-url');
             let product = drop.getAttribute('data-id');
             let order = drop.getAttribute('data-order');
+            let market = drop.getAttribute('data-market');
+            let quantity = document.getElementById('qty');
             Swal.fire({
                 text: i18next.t('question'),
                 showCancelButton: true,
@@ -75,12 +77,14 @@ if (typeof drops !== 'undefined') {
                             method: 'POST',
                             body: JSON.stringify({
                                 product: product,
-                                order: order
+                                order: order,
+                                market: market
                             }),
                             headers: headers
                         }
                     );
                     const data = await response.json();
+                    quantity.innerHTML = data.quantity;
                     if (data.order) {
                         drop.closest('.root').remove();
                         if (data.redirect) {

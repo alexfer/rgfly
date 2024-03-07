@@ -128,7 +128,6 @@ class CheckoutController extends AbstractController
             $em->flush();
 
             $session->set('quantity', 0);
-            $session->remove('orders');
 
             return $this->redirectToRoute('app_market_place_order_success', ['order' => $order->getNumber()]);
         }

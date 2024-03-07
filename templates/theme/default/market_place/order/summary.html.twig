@@ -51,6 +51,7 @@
                                                                     <div class="mt-2 small lh-1">
                                                                         <a href="#" class="text-decoration-none drops"
                                                                            data-order="{{ order.session }}"
+                                                                           data-market="{{ order.market.id }}"
                                                                            data-url="{{ path('app_market_place_order_remove_product') }}"
                                                                            data-id="{{ product.id }}">
                                                                             <i class="bi bi-trash text-success"></i>
@@ -126,7 +127,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h6 class="mb-1">{{ 'order.summary'|trans }}</h6>
-                                    <div class="card fs-6">
+                                    <div id="{{ order.market.id }}" class="markets-summary card fs-6">
                                         {% set product_count = order.marketOrdersProducts.count() %}
                                         {% for product in order.marketOrdersProducts %}
                                             {% if product.product.discount %}
@@ -144,7 +145,7 @@
                                                 <div class="me-auto">
                                                     <div>{{ 'order.item.subtotal'|trans }}</div>
                                                 </div>
-                                                <span>{{ item_subtotal }}
+                                                <span id="item-subtotal">{{ item_subtotal }}
                                                     <small>{{ order.market.currency|currency }}</small>
                                                 </span>
                                             </li>
@@ -152,7 +153,7 @@
                                                 <div class="me-auto">
                                                     <div>{{ 'order.service.fee'|trans }}</div>
                                                 </div>
-                                                <span>{{ total_fee|number_format(2, '.', ' ') }}
+                                                <span id="fee">{{ total_fee|number_format(2, '.', ' ') }}
                                                 <small>{{ order.market.currency|currency }}</small>
                                                 </span>
                                             </li>
@@ -160,7 +161,7 @@
                                                 <div class="me-auto">
                                                     <div>{{ 'order.subtotal'|trans }}</div>
                                                 </div>
-                                                <span>{{ order.discount|number_format(2, '.', ' ') }}
+                                                <span id="total">{{ order.discount|number_format(2, '.', ' ') }}
                                                     <small>{{ order.market.currency|currency }}</small>
                                                 </span>
                                             </li>

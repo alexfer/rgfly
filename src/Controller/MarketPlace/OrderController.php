@@ -2,6 +2,7 @@
 
 namespace App\Controller\MarketPlace;
 
+use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketCustomer;
 use App\Entity\MarketPlace\MarketCustomerOrders;
 use App\Entity\MarketPlace\MarketOrders;
@@ -27,49 +28,66 @@ class OrderController extends AbstractController
     #[Route('/summary/remove', name: 'app_market_place_order_remove_product', methods: ['POST'])]
     public function remove(
         Request                $request,
+        ?UserInterface         $user,
         EntityManagerInterface $em,
     ): Response
     {
         $payload = $request->getPayload()->all();
 
-        $order = $em->getRepository(MarketOrders::class)->findOneBy(['session' => $payload['order']]);
-        $count = $order->getMarketOrdersProducts()->count();
-        $product = $em->getRepository(MarketOrdersProduct::class)->findOneBy(['id' => $payload['product']]);
-        $customerOrder = $em->getRepository(MarketCustomerOrders::class)->findOneBy(['orders' => $order]);
+        $productsRepository = $em->getRepository(MarketOrdersProduct::class);
 
-        $orderProduct = $product->setProduct(null)->setOrders(null);
-        $em->persist($orderProduct);
-        $em->flush();
+        $customer = $em->getRepository(MarketCustomer::class)->findOneBy(['member' => $user]);
+        $market = $em->getRepository(Market::class)->find($payload['market']);
+        $order = $em->getRepository(MarketOrders::class)->findOneBy(['session' => $payload['order'], 'market' => $market]);
+        $product = $productsRepository->find($payload['product']);
+        $customerOrder = $em->getRepository(MarketCustomerOrders::class)->findOneBy(['orders' => $order, 'customer' => $customer]);
+        $products = $productsRepository->findBy(['orders' => $order]);
+        $order->removeMarketOrdersProduct($product);
+        $em->remove($product);
 
-        if ($orderProduct) {
-            $em->remove($orderProduct);
-            $em->flush();
-        }
-
-        if ($customerOrder) {
+        if (count($products) == 1) {
+            $order->removeMarketCustomerOrder($customerOrder);
             $em->remove($customerOrder);
-            $em->flush();
-        }
-
-        $removed = false;
-
-        if ($count == 1) {
             $em->remove($order);
-            $em->flush();
-            $removed = true;
+        } else {
+            $order->setTotal($order->getTotal() - $product->getCost())->setDiscount($order->getDiscount() - $product->getCost());
+            $em->persist($order);
         }
+
+        $em->flush();
 
         $session = $request->getSession();
 
+        $summary = [];
         $orders = $em->getRepository(MarketOrders::class)->findBy(['session' => $session->getId()]);
-        $collection = $em->getRepository(MarketOrders::class)->getSerializedData($orders);
-        $session->set('orders', serialize($collection));
+
+        foreach($orders as $k => $v) {
+            $products = $v->getMarketOrdersProducts()->toArray();
+            $arrayProducts = [];
+            foreach ($products as $product) {
+                $arrayProducts[$product->getOrders()->getId()] = [
+                    'cost' => $product->getCost(),
+                    'discount' => $product->getDiscount(),
+                    'quantity' => $product->getQuantity(),
+                ];
+            }
+            $summary[$v->getMarket()->getId()] = [
+                'market' => $v->getMarket()->getId(),
+                'total' => $v->getTotal(),
+                'discount' => $v->getDiscount(),
+                'products' => $arrayProducts,
+            ];
+        }
+
         $session->set('quantity', count($orders));
 
         return $this->json([
             'product' => true,
-            'order' => $removed,
-            'payload' => $payload,
+            'summary' => [
+                'summary' => $summary,
+
+            ],
+            'order' => count($orders) == 0,
             'quantity' => $session->get('quantity'),
             'redirect' => $this->generateUrl('app_market_place_order_summary'),
         ]);
@@ -135,9 +153,8 @@ class OrderController extends AbstractController
         $collection = $em->getRepository(MarketOrders::class)->getSerializedData($orders);
 
         return $this->json([
-            'orders' => unserialize($session->get('orders')),
             'template' => $this->renderView('market_place/cart.html.twig', ['orders' => $collection]),
-            'quantity' => $session->get('quantity') ?? 0,
+            'quantity' => $session->get('quantity') ?: 0,
         ]);
     }
 
@@ -150,7 +167,7 @@ class OrderController extends AbstractController
     #[Route('/{product}', name: 'app_market_place_product_order', methods: ['POST'])]
     public function order(
         Request                $request,
-        ?UserInterface $user,
+        ?UserInterface         $user,
         EntityManagerInterface $em,
     ): JsonResponse
     {
@@ -236,13 +253,14 @@ class OrderController extends AbstractController
         }
 
         $orders = $em->getRepository(MarketOrders::class)->findBy(['session' => $session->getId()]);
-        $collection = $em->getRepository(MarketOrders::class)->getSerializedData($orders);
 
-        if ($session->has('orders')) {
-            $session->remove('orders');
+        $serialized = [];
+
+        foreach ($orders as $order) {
+            $serialized[$order->getId()] = $order->getNumber();
         }
 
-        $session->set('orders', serialize($collection));
+        $session->set('orders', serialize($serialized));
 
         return $this->json([
             'quantity' => $session->get('quantity') ?? 1,

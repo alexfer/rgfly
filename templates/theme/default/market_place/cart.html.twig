@@ -53,10 +53,6 @@
         <strong>{{ 'order.subtotal'|trans }}</strong>
         <strong class="float-end pe-3">{{ order.discount|number_format(2, '.', ' ') }}</strong>
     </div>
-    <div class="d-flex justify-content-center mt-4">
-        <a href="{{ path('app_market_place_order_summary') }}"
-           class="btn btn-outline-danger rounded-0">{{ 'order.view'|trans }}</a>
-    </div>
 {% else %}
     <div class="text-center visually-hidden">
         <img class="d-block mx-auto mb-5 border-0 h-50 w-50 shadow-none" src="{{ asset('img/404.png') }}"
@@ -64,3 +60,9 @@
         <p class="lead">{{ 'market.product.cart.empty'|trans }}</p>
     </div>
 {% endfor %}
+{% if orders|length != 0 %}
+    <div class="d-flex justify-content-center mt-4 mb-xxl-5">
+        <a href="{{ path('app_market_place_order_summary') }}"
+           class="btn btn-outline-danger rounded-0">{{ 'order.view'|trans }}</a>
+    </div>
+{% endif %}
