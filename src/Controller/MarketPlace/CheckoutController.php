@@ -48,7 +48,9 @@ class CheckoutController extends AbstractController
     {
         $session = $request->getSession();
 
-        $order = $em->getRepository(MarketOrders::class)->findOneBy([
+        $repository = $em->getRepository(MarketOrders::class);
+
+        $order = $repository->findOneBy([
             'number' => $request->get('order'),
             'session' => $session->getId(),
             'status' => MarketOrders::STATUS['processing'],
@@ -127,14 +129,26 @@ class CheckoutController extends AbstractController
             $em->persist($order);
             $em->flush();
 
-            $session->set('quantity', 0);
-            $session->remove('orders');
+            $orders = $repository->findBy(['session' => $session->getId()]);
+            $session->set('quantity', count($orders));
 
             return $this->redirectToRoute('app_market_place_order_success', ['order' => $order->getNumber()]);
         }
 
+        $sum = [];
+        $items = $order->getMarketOrdersProducts()->toArray();
+
+        foreach ($items as $product) {
+            $sum['itemSubtotal'][] = $product->getCost() - ((($product->getCost() * $product->getQuantity()) * $product->getDiscount()) - $product->getDiscount()) / 100;
+            $sum['fee'][] = $product->getProduct()->getFee();
+        }
+
         return $this->render('market_place/checkout/index.html.twig', [
             'order' => $order,
+            'itemSubtotal' => array_sum($sum['itemSubtotal']),
+            'subtotal' => array_sum($sum['itemSubtotal']),
+            'fee' => array_sum($sum['fee']),
+            'total' => array_sum($sum['fee']) + array_sum($sum['itemSubtotal']),
             'form' => $form,
             'errors' => $form->getErrors(true),
         ]);

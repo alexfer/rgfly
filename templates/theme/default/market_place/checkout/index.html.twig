@@ -4,8 +4,6 @@
 {% block description %}{{ 'order.checkout'|trans }}{% endblock %}
 
 {% block content_body %}
-    {% set item_subtotal = 0 %}
-    {% set total_fee = 0 %}
     <section class="container marketplace mt-lg-2">
         <div class="row">
             <div class="col-12 card card-body shadow">
@@ -26,21 +24,20 @@
                                 {% set product_count = order.marketOrdersProducts.count() %}
                                 {% for product in order.marketOrdersProducts %}
                                     {% if product.product.discount %}
-                                        {% set percent = product.product.discount %}
-                                        {% set cost = product.product.cost %}
-                                        {% set percent_cost = (cost - ((cost * percent) - percent)/100) %}
-                                        {% set item_subtotal = (percent_cost * product.quantity)|round|number_format(2, '.', ' ') %}
+                                        {% set percent = product.discount %}
+                                        {% set cost = product.cost %}
+                                        {% set discount_cost = (cost - ((cost * product.quantity * percent) - percent)/100) %}
+                                        {% set item_cost = (discount_cost)|round|number_format(2, '.', ' ') %}
                                     {% else %}
-                                        {% set item_subtotal = (product.product.cost * product.quantity)|round|number_format(2, '.', ' ') %}
+                                        {% set item_cost = (product.cost * product.quantity)|round|number_format(2, '.', ' ') %}
                                     {% endif %}
-                                    {% set total_fee = (product.product.fee * product.quantity) / product_count %}
                                     <div class="d-flex align-items-center pb-2 border-bottom">
                                         <a class="d-block flex-shrink-0 me-2"
                                            href="{{ path('app_market_place_product', {slug: product.product.slug}) }}">
                                             {% if product.product.marketProductAttaches.count %}
                                                 {% set _picture = 'storage/product/picture/' ~ product.product.id ~ '/' ~ product.product.marketProductAttaches.first.attach.name %}
                                                 <img src="{{ asset(_picture)|imagine_filter('product_thumb') }}"
-                                                     class="rounded-1" width="80"
+                                                     class="rounded-1" width="90"
                                                      alt="{{ product.product.name }}">
                                             {% else %}
                                                 <img class="rounded-1" src="{{ asset('https://placehold.it/64x64') }}"
@@ -53,7 +50,7 @@
                                                    href="{{ path('app_market_place_product', {slug: product.product.slug}) }}">{{ product.product.shortName }}</a>
                                             </h5>
                                             <span class="fs-5 text-muted">
-                                            <small class="fw-light fs-6 text-primary-emphasis">{{ product.product.cost }}<small>{{ order.market.currency|currency }}</small> &times;{{ product.quantity }} {{ 'label.form.quantity_pcs'|trans }}</small>
+                                            <small class="fw-light fs-6 text-primary-emphasis">{{ item_cost }}<small>{{ order.market.currency|currency }}</small>&times;{{ product.quantity }} {{ 'label.form.quantity_pcs'|trans }}</small>
                                         </span>
                                         </div>
                                     </div>
@@ -61,18 +58,18 @@
                                 <ul class="list-unstyled fs-sm pt-3 pb-2 border-bottom mt-2">
                                     <li class="d-flex justify-content-between align-items-center mb-2">
                                         <span class="fw-normal me-2">{{ 'order.item.subtotal'|trans }}:</span>
-                                        <span class="text-end text-primary-emphasis">{{ item_subtotal }}<small>{{ order.market.currency|currency }}</small></span>
+                                        <span class="text-end text-primary-emphasis">{{ itemSubtotal|round|number_format(2, '.', ' ') }}<small>{{ order.market.currency|currency }}</small></span>
                                     </li>
                                     <li class="d-flex justify-content-between align-items-center mb-2">
                                         <span class="fw-normal me-2">{{ 'order.subtotal'|trans }}:</span>
-                                        <span class="text-end text-primary-emphasis">{{ order.discount|number_format(2, '.', ' ') }}<small>{{ order.market.currency|currency }}</small></span>
+                                        <span class="text-end text-primary-emphasis">{{ subtotal|round|number_format(2, '.', ' ') }}<small>{{ order.market.currency|currency }}</small></span>
                                     </li>
                                     <li class="d-flex justify-content-between align-items-center">
                                         <span class="fw-normal me-2">{{ 'order.service.fee'|trans }}:</span>
-                                        <span class="text-end text-primary-emphasis">{{ total_fee|number_format(2, '.', ' ') }}<small>{{ order.market.currency|currency }}</small></span>
+                                        <span class="text-end text-primary-emphasis">{{ fee|round|number_format(2, '.', ' ') }}<small>{{ order.market.currency|currency }}</small></span>
                                     </li>
                                 </ul>
-                                <h3 class="fw-normal text-danger text-center my-4">{{ (order.discount + total_fee)|number_format(2, '.', ' ') }}
+                                <h3 class="fw-normal text-danger text-center my-4">{{ total|round|number_format(2, '.', ' ') }}
                                     <small>{{ order.market.currency|currency }}</small></h3>
                             </div>
                             <a href="{{ path('app_market_place_order_summary') }}" class="btn btn-dark rounded-1 shadow-sm w-100">Back to Order</a>

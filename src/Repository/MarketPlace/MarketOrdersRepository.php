@@ -30,17 +30,14 @@ class MarketOrdersRepository extends ServiceEntityRepository
      */
     public function getSerializedData(array $orders): array
     {
-        $collection = $products = [];
+        $collection = $totalWithDiscount = $products = [];
 
         foreach ($orders as $order) {
-            foreach ($order->getMarketOrdersProducts()->toArray() as $product) {
 
-                $discount = 0;
+            $marketProducts = $order->getMarketOrdersProducts()->toArray();
+            foreach ($marketProducts as $product) {
+
                 $attach = [];
-
-                if ($product->getProduct()->getDiscount()) {
-                    $discount = ($product->getProduct()->getCost() - (($product->getProduct()->getCost() * $product->getProduct()->getDiscount()) - $product->getProduct()->getDiscount()) / 100);
-                }
 
                 foreach ($product->getProduct()->getMarketProductAttaches() as $marketProductAttach) {
                     $attachment = $marketProductAttach->getAttach();
@@ -53,19 +50,22 @@ class MarketOrdersRepository extends ServiceEntityRepository
                     'name' => $product->getProduct()->getName(),
                     'slug' => $product->getProduct()->getSlug(),
                     'order_id' => $order->getId(),
-                    'cost' => $product->getProduct()->getCost(),
-                    'percent' => $product->getProduct()->getDiscount(),
-                    'discount' => round($discount, 2),
+                    'cost' => $product->getCost(),
+                    'percent' => $product->getDiscount(),
+                    'quantity' => $product->getQuantity(),
                     'size' => $product->getSize(),
                     'color' => $product->getColor(),
                     'attach' => reset($attach),
                 ];
+                //(cost - ((cost * product.quantity * percent) - percent)/100)
+                $totalWithDiscount[$order->getId()][] = $product->getCost() - ((($product->getCost() * $product->getQuantity()) * $product->getDiscount()) - $product->getDiscount()) / 100;
+
             }
             $collection[$order->getId()] = [
                 'id' => $order->getId(),
                 'number' => $order->getNumber(),
                 'total' => $order->getTotal(),
-                'discount' => $order->getDiscount(),
+                'totalWithDiscount' => array_sum($totalWithDiscount[$order->getId()]),
                 'market' => [
                     'slug' => $order->getMarket()->getSlug(),
                     'name' => $order->getMarket()->getName(),

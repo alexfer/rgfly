@@ -726,6 +726,10 @@
                 <source>market.product.wishlist.empty</source>
                 <target>Your wishlist is currently empty</target>
             </trans-unit>
+            <trans-unit id="market.product.orders.empty">
+                <source>market.product.orders.empty</source>
+                <target>Your orders is currently empty</target>
+            </trans-unit>
             <trans-unit id="market.product.wishlist">
                 <source>market.product.wishlist</source>
                 <target>Wishlist</target>
