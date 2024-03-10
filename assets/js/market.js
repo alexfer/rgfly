@@ -84,17 +84,37 @@ if (typeof drops !== 'undefined') {
                         }
                     );
                     const data = await response.json();
-                    quantity.innerHTML = data.quantity;
-                    if (data.order) {
-                        drop.closest('.root').remove();
-                        if (data.redirect) {
-                            document.location.href = data.redirect;
+                    const summary = data.summary;
+                    summary.map((item, key) => {
+                        let market = document.getElementById('market-' + item.market);
+                        let fee = document.getElementById('fee-' + item.market);
+                        let total = document.getElementById('total-' + item.market);
+                        let checkout = document.getElementById('checkout-' + item.market);
+                        let itemSubtotal = document.getElementById('item-subtotal-' + item.market);
+                        let currency = '<small>' + item.currency + '</small>';
+
+                        checkout.innerHTML = item.total + currency;
+                        fee.innerHTML = item.fee + currency;
+                        itemSubtotal.innerHTML = item.itemSubtotalDiscount + currency;
+                        total.innerHTML = item.total + currency;
+                        if(data.products === 1) {
+                            document.getElementById('market-' + data.removed).remove();
                         }
-                    }
-                    if (data.product) {
+                    });
+
+                    quantity.innerHTML = data.quantity;
+
+                    if (data.products > 1) {
                         drop.closest('.parent').remove();
                     }
-                    await Swal.fire(i18next.t('removed'), "", "success");
+                    if (data.products === 1) {
+                        drop.closest('.root').remove();
+                    }
+                    if (data.redirect && data.order) {
+                        document.location.href = data.redirect;
+                    } else {
+                        await Swal.fire(i18next.t('removed'), "", "success");
+                    }
                 }
             });
         };

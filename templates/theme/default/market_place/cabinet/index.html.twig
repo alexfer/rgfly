@@ -45,7 +45,7 @@
                                                             <div class="col d-flex justify-content-end">
                                                                 <div class="fs-5 fw-normal">
                                                                     <small class="me-1">{{ order.orders.market.currency|currency }}</small>
-                                                                    {{ order.orders.discount|number_format(2, '.', ' ') }}
+                                                                    {{ order.orders.total|number_format(2, '.', ' ') }}
                                                                 </div>
                                                             </div>
                                                         </div>

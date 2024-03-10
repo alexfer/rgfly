@@ -76,17 +76,17 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-3 text-lg-end text-start text-md-end col-md-3">
-                                                            {% if product.product.discount %}
-                                                                {% set percent = product.product.discount %}
-                                                                {% set cost = product.product.cost %}
-                                                                {% set percent_cost = (cost - ((cost * percent) - percent)/100) %}
-                                                                <span class="badge text-bg-danger">{{ product.product.discount }}% {{ 'market.product.off'|trans }}</span>
+                                                            {% if product.discount %}
+                                                                {% set percent = product.discount %}
+                                                                {% set cost = product.cost %}
+                                                                {% set discount_cost = (cost - ((product.quantity * cost) * percent)/100) %}
+                                                                <span class="badge text-bg-danger">{{ product.discount }}% {{ 'market.product.off'|trans }}</span>
                                                                 <span class="fs-5 fw-normal">
-                                                                    {{ (percent_cost * product.quantity)|round|number_format(2, '.', ' ') }}
+                                                                    {{ discount_cost|round|number_format(2, '.',' ') }}
                                                                     <small>{{ order.market.currency|currency }}</small>
                                                                 </span>
                                                             {% else %}
-                                                                <span class="fw-bold">{{ (product.product.cost * product.quantity)|number_format(2, '.', ' ') }}<small>{{ order.market.currency|currency }}</small></span>
+                                                                <span class="fw-bold">{{ (product.cost * product.quantity)|number_format(2, '.',' ') }}<small>{{ order.market.currency|currency }}</small></span>
                                                             {% endif %}
                                                         </div>
                                                     </div>
@@ -118,73 +118,52 @@
                         </form>
                     </div>
                     <div class="col-lg-3">
-                        {% for order in orders %}
-                            {% set item_subtotal = 0 %}
-                            {% set total_fee = 0 %}
-                            <div class="card card-body border-0 pb-0 ps-1">
-                                <h5>{{ order.market.name }}</h5>
-                            </div>
-                            <div class="card">
-                                <div class="card-body">
-                                    <h6 class="mb-1">{{ 'order.summary'|trans }}</h6>
-                                    <div id="{{ order.market.id }}" class="markets-summary card fs-6">
-                                        {% set product_count = order.marketOrdersProducts.count() %}
-                                        {% for product in order.marketOrdersProducts %}
-                                            {% if product.product.discount %}
-                                                {% set percent = product.product.discount %}
-                                                {% set cost = product.product.cost %}
-                                                {% set percent_cost = (cost - ((cost * percent) - percent)/100) %}
-                                                {% set item_subtotal = (percent_cost * product.quantity)|round|number_format(2, '.', ' ') %}
-                                            {% else %}
-                                                {% set item_subtotal = (product.product.cost * product.quantity)|round|number_format(2, '.', ' ') %}
-                                            {% endif %}
-                                            {% set total_fee = (product.product.fee * product.quantity) / product_count %}
-                                        {% endfor %}
-                                        <ul class="list-group list-group-flush">
-                                            <li class="list-group-item d-flex justify-content-between align-items-start">
-                                                <div class="me-auto">
-                                                    <div>{{ 'order.item.subtotal'|trans }}</div>
-                                                </div>
-                                                <span id="item-subtotal">{{ item_subtotal }}
-                                                    <small>{{ order.market.currency|currency }}</small>
+                        {% for order in summary %}
+                            <div id="market-{{ order.market_id }}">
+                                <div class="card card-body border-0 pb-0 ps-1">
+                                    <h5>{{ order.market_name }}</h5>
+                                </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="mb-1">{{ 'order.summary'|trans }}</h6>
+                                        <div class="markets-summary card fs-6">
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                    <div class="me-auto">{{ 'order.item.subtotal'|trans }}</div>
+                                                    <span id="item-subtotal-{{ order.market_id }}">{{ order.itemSubtotalDiscount|number_format(2, '.', ' ') }}<small>{{ order.currency }}</small>
                                                 </span>
-                                            </li>
-                                            <li class="list-group-item d-flex justify-content-between align-items-start">
-                                                <div class="me-auto">
-                                                    <div>{{ 'order.service.fee'|trans }}</div>
-                                                </div>
-                                                <span id="fee">{{ total_fee|number_format(2, '.', ' ') }}
-                                                <small>{{ order.market.currency|currency }}</small>
+                                                </li>
+                                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                    <div class="me-auto">{{ 'order.service.fee'|trans }}</div>
+                                                    <span id="fee-{{ order.market_id }}">{{ order.fee|number_format(2, '.', ' ') }}<small>{{ order.currency }}</small>
                                                 </span>
-                                            </li>
-                                            <li class="list-group-item d-flex justify-content-between align-items-start">
-                                                <div class="me-auto">
-                                                    <div>{{ 'order.subtotal'|trans }}</div>
-                                                </div>
-                                                <span id="total">{{ order.discount|number_format(2, '.', ' ') }}
-                                                    <small>{{ order.market.currency|currency }}</small>
+                                                </li>
+                                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                    <div class="me-auto">{{ 'order.subtotal'|trans }}</div>
+                                                    <span id="total-{{ order.market_id }}">{{ (order.itemSubtotalDiscount + order.fee)|number_format(2, '.', ' ') }}<small>{{ order.currency }}</small>
                                                 </span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="d-grid mb-1 mt-4">
-                                        <a href="{{ path('app_market_place_order_checkout', {order: order.number}) }}"
-                                           class="btn btn-success mb-2 opacity-75 d-flex justify-content-between align-items-center"
-                                           type="submit">
-                                            {{ 'order.checkout'|trans }}
-                                            <span class="fw-bold text-opacity-100">{{ (total_fee + order.discount)|number_format(2, '.', ' ') }}
-                                    <small>{{ order.market.currency|currency }}</small>
-                                </span>
-                                        </a>
-                                        <p class="lh-1 fs-6">
-                                            <small>
-                                                {{ 'market.policy'|trans({
-                                                    'market_name': order.market.name,
-                                                    'link_to_tou': '#',
-                                                    'link_to_pp': '#'
-                                                })|raw }}
-                                            </small>
-                                        </p>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="d-grid mb-1 mt-4">
+                                            <a href="{{ path('app_market_place_order_checkout', {order: order.number}) }}"
+                                               class="btn btn-success mb-2 opacity-75 d-flex justify-content-between align-items-center"
+                                               type="submit">
+                                                {{ 'order.checkout'|trans }}
+                                                <span id="checkout-{{ order.market_id }}"
+                                                      class="fw-normal text-opacity-100">{{ (order.itemSubtotalDiscount + order.fee)|number_format(2, '.', ' ') }}<small>{{ order.currency }}</small>
+                                            </span>
+                                            </a>
+                                            <p class="lh-1 fs-6">
+                                                <small>
+                                                    {{ 'market.policy'|trans({
+                                                        'market_name': order.market_name,
+                                                        'link_to_tou': '#',
+                                                        'link_to_pp': '#'
+                                                    })|raw }}
+                                                </small>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

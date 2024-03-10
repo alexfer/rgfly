@@ -75,8 +75,8 @@
                                class="mb-1 d-block"><i class="bi bi-shop me-2"></i>{{ product.market.name }}</a>
                             <h2 class="mb-2 text-truncate">{{ product.shortName }}</h2>
                             {% if product.discount %}
-                                <div class="badge bg-danger bg-opacity-50 fs-5 fw-normal p-2">
-                                    {{ product.discount|number_format(2, ',', '') }}% {{ 'market.product.off'|trans }}
+                                <div class="badge bg-danger bg-opacity-50 fs-5 fw-light p-2">
+                                    {{ product.discount|number_format(2, '.', '') }}% {{ 'market.product.off'|trans }}
                                 </div>
                             {% endif %}
                             <div class="fs-3 mt-5 d-flex align-content-end justify-content-end">
@@ -84,7 +84,7 @@
                                     {% set discount = product.discount %}
                                     {% set cost = product.cost %}
                                     <span class="fw-bold text-success pe-2">
-                                        {{ (cost - ((cost * discount) - discount)/100)|round|number_format(2, '.', ' ') }}
+                                        {{ (cost - ((cost * discount) * discount)/100)|round|number_format(2, '.',' ') }}
                                         <small>{{ product.market.currency|currency }}</small>
                                     </span>
                                     <span class="text-decoration-line-through fs-5 pt-2 text-muted">

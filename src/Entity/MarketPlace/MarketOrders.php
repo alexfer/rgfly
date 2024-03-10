@@ -42,9 +42,6 @@ class MarketOrders
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0', nullable: true)]
     private ?string $total = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0', nullable: true)]
-    private ?string $discount = null;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $session = null;
 
@@ -320,25 +317,6 @@ class MarketOrders
                 $marketCustomerOrder->setOrders(null);
             }
         }
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getDiscount(): ?string
-    {
-        return $this->discount;
-    }
-
-    /**
-     * @param string|null $discount
-     * @return $this
-     */
-    public function setDiscount(?string $discount): static
-    {
-        $this->discount = $discount;
 
         return $this;
     }
