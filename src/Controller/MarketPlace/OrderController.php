@@ -2,12 +2,15 @@
 
 namespace App\Controller\MarketPlace;
 
+use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketCustomer;
 use App\Entity\MarketPlace\MarketCustomerOrders;
 use App\Entity\MarketPlace\MarketOrders;
 use App\Entity\MarketPlace\MarketOrdersProduct;
 use App\Entity\MarketPlace\MarketProduct;
 use App\Helper\MarketPlace\MarketPlaceHelper;
+use App\Repository\MarketPlace\MarketOrdersProductRepository;
+use App\Service\MarketPlace\Currency;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,52 +30,93 @@ class OrderController extends AbstractController
     #[Route('/summary/remove', name: 'app_market_place_order_remove_product', methods: ['POST'])]
     public function remove(
         Request                $request,
+        ?UserInterface         $user,
         EntityManagerInterface $em,
     ): Response
     {
         $payload = $request->getPayload()->all();
 
-        $order = $em->getRepository(MarketOrders::class)->findOneBy(['session' => $payload['order']]);
-        $count = $order->getMarketOrdersProducts()->count();
-        $product = $em->getRepository(MarketOrdersProduct::class)->findOneBy(['id' => $payload['product']]);
-        $customerOrder = $em->getRepository(MarketCustomerOrders::class)->findOneBy(['orders' => $order]);
+        $productsRepository = $em->getRepository(MarketOrdersProduct::class);
 
-        $orderProduct = $product->setProduct(null)->setOrders(null);
-        $em->persist($orderProduct);
-        $em->flush();
-
-        if ($orderProduct) {
-            $em->remove($orderProduct);
-            $em->flush();
-        }
-
-        if ($customerOrder) {
-            $em->remove($customerOrder);
-            $em->flush();
-        }
+        $customer = $em->getRepository(MarketCustomer::class)->findOneBy(['member' => $user]);
+        $market = $em->getRepository(Market::class)->find($payload['market']);
+        $order = $em->getRepository(MarketOrders::class)->findOneBy(['session' => $payload['order'], 'market' => $market]);
+        $product = $productsRepository->find($payload['product']);
+        $customerOrder = $em->getRepository(MarketCustomerOrders::class)->findOneBy(['orders' => $order, 'customer' => $customer]);
+        $products = $productsRepository->findBy(['orders' => $order]);
+        $order->removeMarketOrdersProduct($product);
+        $em->remove($product);
 
         $removed = false;
-
-        if ($count == 1) {
+        if (count($products) == 1) {
+            $order->removeMarketCustomerOrder($customerOrder);
+            $em->remove($customerOrder);
             $em->remove($order);
-            $em->flush();
             $removed = true;
+        } else {
+            $rewind = $order->getTotal() - ($product->getCost() * $product->getQuantity());
+            $order->setTotal($rewind);
+            $em->persist($order);
         }
+        $em->flush();
 
         $session = $request->getSession();
-
         $orders = $em->getRepository(MarketOrders::class)->findBy(['session' => $session->getId()]);
-        $collection = $em->getRepository(MarketOrders::class)->getSerializedData($orders);
-        $session->set('orders', serialize($collection));
+
         $session->set('quantity', count($orders));
 
         return $this->json([
-            'product' => true,
-            'order' => $removed,
-            'payload' => $payload,
+            'products' => count($products),
+            'summary' => $this->getSummary($orders, true),
+            'removed' => $market->getId(),
+            'order' => count($orders) == 0,
             'quantity' => $session->get('quantity'),
             'redirect' => $this->generateUrl('app_market_place_order_summary'),
         ]);
+    }
+
+    /**
+     * @param array $orders
+     * @param bool $formatted
+     * @return array
+     */
+    private function getSummary(array $orders, bool $formatted = false): array
+    {
+        $summary = [];
+        foreach ($orders as $order) {
+            $products = $order->getMarketOrdersProducts()->toArray();
+            $itemSubtotal = $fee = $itemSubtotalDiscount = [];
+            foreach ($products as $product) {
+                $cost = $product->getCost() * $product->getQuantity();
+                $discount = $product->getDiscount();
+                $fee[$order->getId()][] = $product->getProduct()->getFee();
+                $itemSubtotal[$order->getId()][] = $product->getCost() * $product->getQuantity();
+                $itemSubtotalDiscount[$order->getId()][] = $cost - (($cost * $discount) - $discount) / 100;
+            }
+
+            if($formatted) {
+                $summary[] = [
+                    'market' => $order->getMarket()->getId(),
+                    'currency' => Currency::currency($order->getMarket()->getCurrency())['symbol'],
+                    'fee' => number_format(array_sum($fee[$order->getId()]), 2, '.', ' '),
+                    'total' => number_format(round(array_sum($fee[$order->getId()]) + array_sum($itemSubtotalDiscount[$order->getId()])), 2, '.', ' '),
+                    'itemSubtotal' => number_format(round(array_sum($itemSubtotal[$order->getId()])), 2, '.', ' '),
+                    'itemSubtotalDiscount' => number_format(round(array_sum($itemSubtotalDiscount[$order->getId()])), 2, '.', ' '),
+                ];
+            } else {
+                $summary[] = [
+                    'number' => $order->getNumber(),
+                    'market_id' => $order->getMarket()->getId(),
+                    'market_name' => $order->getMarket()->getName(),
+                    'currency' => Currency::currency($order->getMarket()->getCurrency())['symbol'],
+                    'fee' => array_sum($fee[$order->getId()]),
+                    'total' => $order->getTotal(),
+                    'itemSubtotal' => round(array_sum($itemSubtotal[$order->getId()])),
+                    'itemSubtotalDiscount' => round(array_sum($itemSubtotalDiscount[$order->getId()])),
+                ];
+            }
+        }
+        return $summary;
     }
 
     /**
@@ -106,8 +150,9 @@ class OrderController extends AbstractController
      */
     #[Route('/summary', name: 'app_market_place_order_summary', methods: ['GET'])]
     public function summary(
-        Request                $request,
-        EntityManagerInterface $em,
+        Request                       $request,
+        EntityManagerInterface        $em,
+        MarketOrdersProductRepository $repository,
     ): Response
     {
         $session = $request->getSession();
@@ -115,6 +160,7 @@ class OrderController extends AbstractController
 
         return $this->render('market_place/order/summary.html.twig', [
             'orders' => $orders,
+            'summary' => $this->getSummary($orders),
         ]);
     }
 
@@ -135,9 +181,8 @@ class OrderController extends AbstractController
         $collection = $em->getRepository(MarketOrders::class)->getSerializedData($orders);
 
         return $this->json([
-            'orders' => unserialize($session->get('orders')),
             'template' => $this->renderView('market_place/cart.html.twig', ['orders' => $collection]),
-            'quantity' => $session->get('quantity') ?? 0,
+            'quantity' => $session->get('quantity') ?: 0,
         ]);
     }
 
@@ -150,7 +195,7 @@ class OrderController extends AbstractController
     #[Route('/{product}', name: 'app_market_place_product_order', methods: ['POST'])]
     public function order(
         Request                $request,
-        ?UserInterface $user,
+        ?UserInterface         $user,
         EntityManagerInterface $em,
     ): JsonResponse
     {
@@ -184,13 +229,12 @@ class OrderController extends AbstractController
         ]);
 
         $productDiscount = $product->getDiscount();
-        $discount = fn($cost) => $cost - (($cost * $productDiscount) - $productDiscount) / 100;
+        $discount = fn($cost) => $cost - (($cost * $productDiscount) * $productDiscount) / 100;
 
         if (!$order) {
             $order = new MarketOrders();
             $order->setMarket($market)
                 ->setSession($session->getId())
-                ->setDiscount($discount($product->getCost()))
                 ->setTotal($product->getCost());
 
             $em->persist($order);
@@ -218,7 +262,6 @@ class OrderController extends AbstractController
         if (!$orderProducts) {
 
             $order->setTotal($order->getTotal() + $product->getCost())
-                ->setDiscount($order->getDiscount() + $discount($product->getCost()))
                 ->setSession($session->getId());
             $em->persist($order);
 
@@ -236,13 +279,14 @@ class OrderController extends AbstractController
         }
 
         $orders = $em->getRepository(MarketOrders::class)->findBy(['session' => $session->getId()]);
-        $collection = $em->getRepository(MarketOrders::class)->getSerializedData($orders);
 
-        if ($session->has('orders')) {
-            $session->remove('orders');
+        $serialized = [];
+
+        foreach ($orders as $order) {
+            $serialized[$order->getId()] = $order->getNumber();
         }
 
-        $session->set('orders', serialize($collection));
+        $session->set('orders', serialize($serialized));
 
         return $this->json([
             'quantity' => $session->get('quantity') ?? 1,

@@ -69,12 +69,15 @@
                                         </li>
                                         <li class="list-inline-item">
                                             <div class="badge bg-success bg-opacity-25 text-success">
-                                                <h5 class="mb-0">{{ product.cost|number_format(2, ',', '') }}
+                                                {% set percent = product.discount %}
+                                                {% set cost = product.cost %}
+                                                {% set discount_cost = (cost - ((cost * percent) - percent)/100) %}
+                                                <h5 class="mb-0">{{ discount_cost|round|number_format(2, ',', '') }}
                                                     <small>{{ product.market.currency|currency }}</small></h5>
                                             </div>
                                         </li>
                                     </ul>
-                                    <h5 class="card-title h-auto mb-1 mt-3 mx-3">
+                                    <h5 class="card-title h-auto mb-1 mt-3 mx-3 fw-normal">
                                         <a title="{{ product.name }}"
                                            href="{{ path('app_market_place_product', {slug: product.slug}) }}">{{ product.shortName }}</a>
                                     </h5>
