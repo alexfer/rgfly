@@ -120,7 +120,7 @@
         </tr>
         <tr>
             <td colspan="5"></td>
-            <td class="text-end">{{ order.market.currency|currency }} {{ order.discount|number_format(2, ',', '') }}</td>
+            <td class="text-end">{{ order.market.currency|currency }} {{ total|round|number_format(2, ',', '') }}</td>
         </tr>
         </tbody>
     </table>

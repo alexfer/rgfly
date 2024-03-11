@@ -41,10 +41,21 @@ class OrderController extends AbstractController
         $currency = Currency::currency($market->getCurrency());
         $orders = $em->getRepository(MarketOrders::class)->findBy(['market' => $market], ['id' => 'desc']);
 
+        $summary = $products = [];
+        foreach ($orders as $order) {
+            foreach ($order->getMarketOrdersProducts() as $item) {
+                $products[$order->getId()][] = $item->getCost() - ((($item->getCost() * $item->getQuantity()) * $item->getDiscount()) - $item->getDiscount()) / 100;
+            }
+            $summary[$order->getId()] = [
+                'total' => array_sum($products[$order->getId()]),
+            ];
+        }
+
         return $this->render('dashboard/content/market_place/order/index.html.twig', $this->navbar() + [
                 'market' => $market,
                 'currency' => $currency,
                 'orders' => $orders,
+                'summary' => $summary,
             ]);
     }
 
@@ -68,11 +79,17 @@ class OrderController extends AbstractController
         $market = $this->market($request, $user, $em);
         $currency = Currency::currency($market->getCurrency());
 
+        $products = [];
+        foreach ($order->getMarketOrdersProducts() as $item) {
+            $products[] = $item->getCost() - ((($item->getCost() * $item->getQuantity()) * $item->getDiscount()) - $item->getDiscount()) / 100;
+        }
+
         return $this->render('dashboard/content/market_place/order/order.html.twig', $this->navbar() + [
                 'market' => $market,
                 'currency' => $currency,
                 'country' => Countries::getNames(\Locale::getDefault()),
                 'order' => $order,
+                'total' => array_sum($products),
             ]);
     }
 }

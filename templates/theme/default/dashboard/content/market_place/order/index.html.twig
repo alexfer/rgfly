@@ -38,10 +38,10 @@
                     <td>{{ order.createdAt|date(datetime_format) }}</td>
                     <td>{{ order.status }}</td>
                     <td>
-                        {{ order.market.currency|currency }}{{ order.total|number_format(2, ',', '') }}
+                        <small>{{ order.market.currency|currency }}</small>{{ order.total|number_format(2, ',', '') }}
                     </td>
                     <td>
-                        <code>{{ order.market.currency|currency }}{{ order.discount|number_format(2, ',', '') }}</code>
+                        <small>{{ order.market.currency|currency }}</small>{{ summary[order.id].total|round|number_format(2, '.', ' ') }}
                     </td>
                 </tr>
             {% else %}

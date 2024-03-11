@@ -48,14 +48,24 @@ class CabinetController extends AbstractController
     ): Response
     {
         $customer = $this->customer($user, $em);
-
         $orders = $em->getRepository(MarketCustomerOrders::class)->findBy([
             'customer' => $customer,
         ], ['id' => 'desc']);
 
+        $summary = $products = [];
+        foreach ($orders as $order) {
+            foreach ($order->getOrders()->getMarketOrdersProducts() as $item) {
+                $products[$order->getId()][] = $item->getCost() - ((($item->getCost() * $item->getQuantity()) * $item->getDiscount()) - $item->getDiscount()) / 100;
+            }
+            $summary[$order->getId()] = [
+                'total' => array_sum($products[$order->getId()]),
+            ];
+        }
+
         return $this->render('market_place/cabinet/index.html.twig', [
             'customer' => $customer,
             'orders' => $orders,
+            'summary' => $summary,
         ]);
     }
 

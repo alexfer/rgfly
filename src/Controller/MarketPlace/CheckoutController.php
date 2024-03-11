@@ -8,6 +8,7 @@ use App\Entity\MarketPlace\MarketCustomerOrders;
 use App\Entity\MarketPlace\MarketInvoice;
 use App\Entity\MarketPlace\MarketOrders;
 use App\Entity\MarketPlace\MarketPaymentGateway;
+use App\Entity\MarketPlace\MarketProduct;
 use App\Entity\User;
 use App\Form\Type\MarketPlace\CustomerType;
 use App\Form\Type\User\LoginType;
@@ -60,6 +61,7 @@ class CheckoutController extends AbstractController
             return $this->redirectToRoute('app_market_place_order_summary');
         }
 
+        $orderProducts = $order->getMarketOrdersProducts();
         $userCustomer = $em->getRepository(MarketCustomer::class)->findOneBy(['member' => $user]);
 
         if (!$userCustomer) {
@@ -125,6 +127,13 @@ class CheckoutController extends AbstractController
             $order->setSession(null)
                 ->setStatus(MarketOrders::STATUS['confirmed']);
 
+            foreach ($orderProducts as $product) {
+                $marketProduct = $em->getRepository(MarketProduct::class)->find($product->getProduct());
+                $marketProduct->setQuantity($marketProduct->getQuantity() - $product->getQuantity())
+                    ->setUpdatedAt(new \DateTimeImmutable());
+                $em->persist($marketProduct);
+            }
+
             $em->persist($invoice);
             $em->persist($order);
             $em->flush();
@@ -136,9 +145,7 @@ class CheckoutController extends AbstractController
         }
 
         $sum = [];
-        $items = $order->getMarketOrdersProducts()->toArray();
-
-        foreach ($items as $product) {
+        foreach ($orderProducts as $product) {
             $sum['itemSubtotal'][] = $product->getCost() - ((($product->getCost() * $product->getQuantity()) * $product->getDiscount()) - $product->getDiscount()) / 100;
             $sum['fee'][] = $product->getProduct()->getFee();
         }
