@@ -1297,6 +1297,10 @@
                 <source>form.action.back</source>
                 <target>Back</target>
             </trans-unit>
+            <trans-unit id="form.action.back_order">
+                <source>form.action.back_order</source>
+                <target>Back to Order</target>
+            </trans-unit>
             <trans-unit id="form.action.confirm">
                 <source>form.action.confirm</source>
                 <target>Confirm</target>

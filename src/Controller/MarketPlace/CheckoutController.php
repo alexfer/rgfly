@@ -38,7 +38,7 @@ class CheckoutController extends AbstractController
      * @param TranslatorInterface $translator
      * @return Response
      */
-    #[Route('/{order}', name: 'app_market_place_order_checkout', methods: ['GET', 'POST'])]
+    #[Route('/{order}/{session?}', name: 'app_market_place_order_checkout', methods: ['GET', 'POST'])]
     public function checkout(
         Request                     $request,
         ?UserInterface              $user,
@@ -49,11 +49,18 @@ class CheckoutController extends AbstractController
     {
         $session = $request->getSession();
 
+        $session = $request->getSession();
+        $sessId = $session->getId();
+
+        if ($request->get('session') !== null) {
+            $sessId = $request->get('session');
+        }
+
         $repository = $em->getRepository(MarketOrders::class);
 
         $order = $repository->findOneBy([
             'number' => $request->get('order'),
-            'session' => $session->getId(),
+            'session' => $sessId,
             'status' => MarketOrders::STATUS['processing'],
         ]);
 
@@ -82,7 +89,7 @@ class CheckoutController extends AbstractController
 
             if ($checkEmail) {
                 $this->addFlash('danger', $translator->trans('email.unique', [], 'validators'));
-                return $this->redirectToRoute('app_market_place_order_checkout', ['order' => $request->get('order')]);
+                return $this->redirectToRoute('app_market_place_order_checkout', ['order' => $request->get('order'), 'session' => $sessId]);
             }
             if (!$userCustomer) {
 
@@ -134,6 +141,26 @@ class CheckoutController extends AbstractController
                 $em->persist($marketProduct);
             }
 
+            $userCustomer->setFirstName($form->get('first_name')->getData())
+                ->setLastName($form->get('last_name')->getData())
+                ->setEmail($form->get('email')->getData())
+                ->setCountry($form->get('country')->getData())
+                ->setPhone($form->get('phone')->getData())
+                ->setUpdatedAt(new \DateTime());
+
+            $em->persist($userCustomer);
+
+            $address = $userCustomer->getMarketAddress();
+
+            $address->setLine1($form->get('line1')->getData())
+                ->setLine2($form->get('line2')->getData())
+                ->setCity($form->get('city')->getData())
+                ->setCountry($form->get('country')->getData())
+                ->setRegion($form->get('region')->getData())
+                ->setPostal($form->get('postal')->getData())
+                ->setUpdatedAt(new \DateTime());
+
+            $em->persist($address);
             $em->persist($invoice);
             $em->persist($order);
             $em->flush();
@@ -180,7 +207,7 @@ class CheckoutController extends AbstractController
         $securityContext = $this->container->get('security.authorization_checker');
 
         if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            return $this->redirectToRoute('app_index');
+            return $this->redirectToRoute('app_cabinet');
         }
 
         $default = [

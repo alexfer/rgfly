@@ -62,7 +62,7 @@ class CabinetController extends AbstractController
             ];
         }
 
-        return $this->render('market_place/cabinet/index.html.twig', [
+        return $this->render('market_place/cabinet/orders.html.twig', [
             'customer' => $customer,
             'orders' => $orders,
             'summary' => $summary,

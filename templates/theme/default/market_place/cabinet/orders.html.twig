@@ -38,12 +38,19 @@
                                                     <div class="accordion-body p-2">
                                                         <div class="row">
                                                             <div class="col-3 fw-medium">{{ item.orders.number|upper }}</div>
-                                                            <div class="col ms-5">{{ item.orders.status|capitalize }}</div>
+                                                            <div class="col ms-5">
+                                                                {% if item.orders.status == 'processing' %}
+                                                                    <a href="{{ path('app_market_place_order_checkout', {order: item.orders.number, session: item.orders.session}) }}">{{ 'order.checkout'|trans }}</a>
+                                                                {% else %}
+                                                                    {{ item.orders.status|capitalize }}
+                                                                {% endif %}
+                                                            </div>
                                                             <div class="dropdown col">
-                                                                <a class="dropdown-toggle" data-bs-toggle="dropdown"
+                                                                <a class="dropdown-toggle text-primary fw-normal" data-bs-toggle="dropdown"
                                                                    aria-expanded="false"
                                                                    href="#">{{ 'label.form.status'|trans }}</a>
                                                                 <ul class="dropdown-menu z-3">
+{#                                                                    {% if item.orders.session %}#}
                                                                     <li>
                                                                         <a class="dropdown-item"
                                                                            href="#">{{ 'order.action.cancel'|trans }}</a>
