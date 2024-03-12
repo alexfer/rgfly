@@ -72,7 +72,9 @@
                                 <h3 class="fw-normal text-danger text-center my-4">{{ total|round|number_format(2, '.', ' ') }}
                                     <small>{{ order.market.currency|currency }}</small></h3>
                             </div>
-                            <a href="{{ path('app_market_place_order_summary') }}" class="btn btn-dark rounded-1 shadow-sm w-100">Back to Order</a>
+                            {% if app.request.get('session') == null %}
+                                <a href="{{ path('app_market_place_order_summary') }}" class="btn btn-dark rounded-1 shadow-sm w-100">{{ 'form.action.back_order'|trans }}</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

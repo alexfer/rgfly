@@ -94,7 +94,7 @@ class OrderController extends AbstractController
                 $itemSubtotalDiscount[$order->getId()][] = $cost - (($cost * $discount) - $discount) / 100;
             }
 
-            if($formatted) {
+            if ($formatted) {
                 $summary[] = [
                     'market' => $order->getMarket()->getId(),
                     'currency' => Currency::currency($order->getMarket()->getCurrency())['symbol'],
@@ -227,9 +227,6 @@ class OrderController extends AbstractController
             'size' => $data['size'],
             'color' => $data['color'],
         ]);
-
-        $productDiscount = $product->getDiscount();
-        $discount = fn($cost) => $cost - (($cost * $productDiscount) * $productDiscount) / 100;
 
         if (!$order) {
             $order = new MarketOrders();

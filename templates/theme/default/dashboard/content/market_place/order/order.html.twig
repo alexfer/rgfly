@@ -1,4 +1,4 @@
-{% extends 'dashboard/index.html.twig' %}
+{% extends 'dashboard/orders.html.twig' %}
 
 {% set _title_extend = 'table.header.order_number'|trans ~ ': ' ~ order.number|upper %}
 {% block title_extend %}{{ _title_extend }} - {% endblock %}
@@ -120,7 +120,7 @@
         </tr>
         <tr>
             <td colspan="5"></td>
-            <td class="text-end">{{ order.market.currency|currency }} {{ order.discount|number_format(2, ',', '') }}</td>
+            <td class="text-end">{{ order.market.currency|currency }} {{ total|round|number_format(2, ',', '') }}</td>
         </tr>
         </tbody>
     </table>

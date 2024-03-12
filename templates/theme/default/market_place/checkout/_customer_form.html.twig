@@ -26,7 +26,7 @@
                     aria-label="{{ 'form.action.close'|trans }}"></button>
         </div>
     {% endif %}
-    {{ form_start(form, {attr: {class: 'needs-validation', novalidate: ''}}) }}
+    {{ form_start(form, {attr: {class: 'needs-validation', novalidate: '', action: path('app_market_place_order_checkout', {order: order.number, session: app.request.get('session')})}}) }}
     <div class="tab-content" id="customerTabContent">
         <div class="tab-pane fade show active" id="customer-info" role="tabpanel"
              aria-labelledby="customer-tab" tabindex="0">
