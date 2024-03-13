@@ -8,6 +8,7 @@ use App\Entity\MarketPlace\MarketCustomerOrders;
 use App\Entity\MarketPlace\MarketInvoice;
 use App\Entity\MarketPlace\MarketOrders;
 use App\Entity\MarketPlace\MarketPaymentGateway;
+use App\Entity\MarketPlace\MarketProduct;
 use App\Entity\User;
 use App\Form\Type\MarketPlace\CustomerType;
 use App\Form\Type\User\LoginType;
@@ -37,7 +38,7 @@ class CheckoutController extends AbstractController
      * @param TranslatorInterface $translator
      * @return Response
      */
-    #[Route('/{order}', name: 'app_market_place_order_checkout', methods: ['GET', 'POST'])]
+    #[Route('/{order}/{session?}', name: 'app_market_place_order_checkout', methods: ['GET', 'POST'])]
     public function checkout(
         Request                     $request,
         ?UserInterface              $user,
@@ -48,11 +49,18 @@ class CheckoutController extends AbstractController
     {
         $session = $request->getSession();
 
+        $session = $request->getSession();
+        $sessId = $session->getId();
+
+        if ($request->get('session') !== null) {
+            $sessId = $request->get('session');
+        }
+
         $repository = $em->getRepository(MarketOrders::class);
 
         $order = $repository->findOneBy([
             'number' => $request->get('order'),
-            'session' => $session->getId(),
+            'session' => $sessId,
             'status' => MarketOrders::STATUS['processing'],
         ]);
 
@@ -60,6 +68,7 @@ class CheckoutController extends AbstractController
             return $this->redirectToRoute('app_market_place_order_summary');
         }
 
+        $orderProducts = $order->getMarketOrdersProducts();
         $userCustomer = $em->getRepository(MarketCustomer::class)->findOneBy(['member' => $user]);
 
         if (!$userCustomer) {
@@ -80,7 +89,7 @@ class CheckoutController extends AbstractController
 
             if ($checkEmail) {
                 $this->addFlash('danger', $translator->trans('email.unique', [], 'validators'));
-                return $this->redirectToRoute('app_market_place_order_checkout', ['order' => $request->get('order')]);
+                return $this->redirectToRoute('app_market_place_order_checkout', ['order' => $request->get('order'), 'session' => $sessId]);
             }
             if (!$userCustomer) {
 
@@ -125,6 +134,33 @@ class CheckoutController extends AbstractController
             $order->setSession(null)
                 ->setStatus(MarketOrders::STATUS['confirmed']);
 
+            foreach ($orderProducts as $product) {
+                $marketProduct = $em->getRepository(MarketProduct::class)->find($product->getProduct());
+                $marketProduct->setQuantity($marketProduct->getQuantity() - $product->getQuantity())
+                    ->setUpdatedAt(new \DateTimeImmutable());
+                $em->persist($marketProduct);
+            }
+
+            $userCustomer->setFirstName($form->get('first_name')->getData())
+                ->setLastName($form->get('last_name')->getData())
+                ->setEmail($form->get('email')->getData())
+                ->setCountry($form->get('country')->getData())
+                ->setPhone($form->get('phone')->getData())
+                ->setUpdatedAt(new \DateTime());
+
+            $em->persist($userCustomer);
+
+            $address = $userCustomer->getMarketAddress();
+
+            $address->setLine1($form->get('line1')->getData())
+                ->setLine2($form->get('line2')->getData())
+                ->setCity($form->get('city')->getData())
+                ->setCountry($form->get('country')->getData())
+                ->setRegion($form->get('region')->getData())
+                ->setPostal($form->get('postal')->getData())
+                ->setUpdatedAt(new \DateTime());
+
+            $em->persist($address);
             $em->persist($invoice);
             $em->persist($order);
             $em->flush();
@@ -136,9 +172,7 @@ class CheckoutController extends AbstractController
         }
 
         $sum = [];
-        $items = $order->getMarketOrdersProducts()->toArray();
-
-        foreach ($items as $product) {
+        foreach ($orderProducts as $product) {
             $sum['itemSubtotal'][] = $product->getCost() - ((($product->getCost() * $product->getQuantity()) * $product->getDiscount()) - $product->getDiscount()) / 100;
             $sum['fee'][] = $product->getProduct()->getFee();
         }
@@ -173,7 +207,7 @@ class CheckoutController extends AbstractController
         $securityContext = $this->container->get('security.authorization_checker');
 
         if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            return $this->redirectToRoute('app_index');
+            return $this->redirectToRoute('app_cabinet');
         }
 
         $default = [

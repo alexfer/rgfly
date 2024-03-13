@@ -62,7 +62,7 @@
                                                   action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
                                                 <button class="btn btn-dark rounded-1"
                                                         data-id="{{ product.market.id }}-{{ product.id }}"
-                                                        type="submit">
+                                                        type="submit" {% if product.quantity == 0 %}disabled{% endif %}>
                                                     <i class="fa fa-shopping-cart mt-1 me-2"></i>{{ 'market.product.add'|trans }}
                                                 </button>
                                             </form>

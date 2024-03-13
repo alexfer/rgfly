@@ -3,30 +3,18 @@
 namespace App\Form\Type\User;
 
 use App\Entity\UserDetails;
-use Symfony\Component\Form\{
-    AbstractType,
-    FormBuilderInterface,
-};
-use Symfony\Component\Form\Extension\Core\Type\{
-    ChoiceType,
+use Symfony\Component\Form\{AbstractType, FormBuilderInterface,};
+use Symfony\Component\Form\Extension\Core\Type\{ChoiceType,
     DateType,
     FileType,
     HiddenType,
     SubmitType,
     TelType,
     TextareaType,
-    TextType,
-};
-use Symfony\Component\Intl\{
-    Countries,
-    Locale,
-};
+    TextType,};
+use Symfony\Component\Intl\{Countries, Locale,};
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\{
-    Length,
-    NotBlank,
-    Regex,
-};
+use Symfony\Component\Validator\Constraints\{Length, NotBlank, Regex,};
 use Symfony\Component\Validator\Constraints\Image;
 use function array_flip;
 

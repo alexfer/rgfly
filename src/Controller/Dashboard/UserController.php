@@ -2,29 +2,18 @@
 
 namespace App\Controller\Dashboard;
 
-use App\Entity\User;
 use App\Form\Type\User\ChangePasswordProfileType;
-use App\Repository\{
-    UserDetailsRepository,
-    UserRepository,
-    AttachRepository,
-};
+use App\Repository\{AttachRepository, UserDetailsRepository, UserRepository,};
+use App\Service\Dashboard;
 use App\Service\FileUploader;
 use App\Service\Interface\ImageValidatorInterface;
-use App\Service\Dashboard;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\{
-    Request,
-    Response,
-};
-use Symfony\Component\Intl\{
-    Countries,
-    Locale,
-};
+use Symfony\Component\HttpFoundation\{Request, Response,};
+use Symfony\Component\Intl\{Countries, Locale,};
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -49,7 +38,7 @@ class UserController extends AbstractController
         UserInterface  $user,
     ): Response
     {
-        $users =  $repository->findBy([], ['id' => 'desc']);
+        $users = $repository->findBy([], ['id' => 'desc']);
         return $this->render('dashboard/content/user/index.html.twig', $this->navbar() + ['users' => $users]);
     }
 

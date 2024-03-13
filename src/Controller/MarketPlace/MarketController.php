@@ -6,9 +6,7 @@ use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketCustomer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\{
-    Request, Response,
-};
+use Symfony\Component\HttpFoundation\{Request, Response,};
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -23,10 +21,10 @@ class MarketController extends AbstractController
 
     #[Route('/{slug}', name: 'app_market_place_market')]
     public function market(
-        Request $request,
-        ?UserInterface          $user,
-        EntityManagerInterface  $em,
-        Market $market,
+        Request                $request,
+        ?UserInterface         $user,
+        EntityManagerInterface $em,
+        Market                 $market,
     ): Response
     {
         $customer = $em->getRepository(MarketCustomer::class)->findOneBy([

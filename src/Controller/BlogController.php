@@ -5,10 +5,7 @@ namespace App\Controller;
 use App\Repository\CategoryRepository;
 use App\Repository\EntryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\{
-    Request,
-    Response
-};
+use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 

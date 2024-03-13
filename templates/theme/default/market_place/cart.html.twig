@@ -30,7 +30,7 @@
                                         {% set cost = product.cost %}
                                         {% set discount_cost = (cost - ((cost * product.quantity * percent) - percent)/100) %}
                                         <small class="pe-1 fw-lighter text-danger">{{ product.percent }}%</small>
-                                        <span class="fw-light text-success">{{ discount_cost|round|number_format(2, '.', ' ') }}<small>{{ order.market.currency|currency }}</small>
+                                        <span class="fw-light text-success">{{ discount_cost|amount_format }}<small>{{ order.market.currency|currency }}</small>
                                         </span>
                                         <span class="d-block text-decoration-line-through fw-light text-secondary">
                                             {{ product.cost|number_format(2, '.', ' ') }}
@@ -50,7 +50,7 @@
     </ul>
     <div class="justify-between lh-base fs-6 fw-bold bg-light py-3 ps-3 mb-3">
         <strong>{{ 'order.subtotal'|trans }}</strong>
-        <strong class="float-end pe-3">{{ order.totalWithDiscount|round|number_format(2, '.', ' ') }}</strong>
+        <strong class="float-end pe-3">{{ order.totalWithDiscount|amount_format }}</strong>
     </div>
 {% else %}
     <div class="text-center visually-hidden">

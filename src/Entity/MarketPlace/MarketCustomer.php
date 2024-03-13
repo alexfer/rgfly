@@ -63,16 +63,26 @@ class MarketCustomer
         $this->marketWishlists = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getFirstName(): ?string
     {
         return $this->first_name;
     }
 
+    /**
+     * @param string $first_name
+     * @return $this
+     */
     public function setFirstName(string $first_name): static
     {
         $this->first_name = $first_name;
@@ -80,11 +90,18 @@ class MarketCustomer
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getLastName(): ?string
     {
         return $this->last_name;
     }
 
+    /**
+     * @param string $last_name
+     * @return $this
+     */
     public function setLastName(string $last_name): static
     {
         $this->last_name = $last_name;
@@ -92,11 +109,18 @@ class MarketCustomer
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getPhone(): ?string
     {
         return $this->phone;
     }
 
+    /**
+     * @param string $phone
+     * @return $this
+     */
     public function setPhone(string $phone): static
     {
         $this->phone = $phone;
@@ -104,11 +128,18 @@ class MarketCustomer
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getMember(): ?User
     {
         return $this->member;
     }
 
+    /**
+     * @param User|null $member
+     * @return $this
+     */
     public function setMember(?User $member): static
     {
         $this->member = $member;
@@ -116,11 +147,18 @@ class MarketCustomer
         return $this;
     }
 
+    /**
+     * @return DateTimeImmutable|null
+     */
     public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->created_at;
     }
 
+    /**
+     * @param DateTimeImmutable $created_at
+     * @return $this
+     */
     public function setCreatedAt(DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;
@@ -128,11 +166,18 @@ class MarketCustomer
         return $this;
     }
 
+    /**
+     * @return DateTimeInterface|null
+     */
     public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updated_at;
     }
 
+    /**
+     * @param DateTimeInterface|null $updated_at
+     * @return $this
+     */
     public function setUpdatedAt(?DateTimeInterface $updated_at): static
     {
         $this->updated_at = $updated_at;
@@ -148,6 +193,10 @@ class MarketCustomer
         return $this->marketCustomerOrders;
     }
 
+    /**
+     * @param MarketCustomerOrders $marketCustomerOrder
+     * @return $this
+     */
     public function addMarketCustomerOrder(MarketCustomerOrders $marketCustomerOrder): static
     {
         if (!$this->marketCustomerOrders->contains($marketCustomerOrder)) {
@@ -158,6 +207,10 @@ class MarketCustomer
         return $this;
     }
 
+    /**
+     * @param MarketCustomerOrders $marketCustomerOrder
+     * @return $this
+     */
     public function removeMarketCustomerOrders(MarketCustomerOrders $marketCustomerOrder): static
     {
         if ($this->marketCustomerOrders->removeElement($marketCustomerOrder)) {
@@ -208,11 +261,18 @@ class MarketCustomer
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getCountry(): ?string
     {
         return $this->country;
     }
 
+    /**
+     * @param string $country
+     * @return $this
+     */
     public function setCountry(string $country): static
     {
         $this->country = $country;
@@ -220,11 +280,18 @@ class MarketCustomer
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * @param string|null $email
+     * @return $this
+     */
     public function setEmail(?string $email): static
     {
         $this->email = $email;
@@ -232,11 +299,18 @@ class MarketCustomer
         return $this;
     }
 
+    /**
+     * @return MarketAddress|null
+     */
     public function getMarketAddress(): ?MarketAddress
     {
         return $this->marketAddress;
     }
 
+    /**
+     * @param MarketAddress|null $marketAddress
+     * @return $this
+     */
     public function setMarketAddress(?MarketAddress $marketAddress): static
     {
         // unset the owning side of the relation if necessary

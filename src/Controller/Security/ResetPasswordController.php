@@ -5,7 +5,7 @@ namespace App\Controller\Security;
 use App\Entity\User;
 use App\Form\Type\User\ChangePasswordFormType;
 use App\Form\Type\User\ResetPasswordRequestFormType;
-use App\Service\Mailer\EmailNotificationInterface;
+use App\Service\Interface\EmailNotificationInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;

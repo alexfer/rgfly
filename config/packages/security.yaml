@@ -20,7 +20,7 @@ security:
                 - App\Security\Authentication\UserAuthenticator
             remember_me:
                 secret:   '%kernel.secret%' # required
-                lifetime: 604800 # 1 week in seconds
+                lifetime: 31556926 # 1 year in seconds
                 token_provider:
                     doctrine: true
             form_login:

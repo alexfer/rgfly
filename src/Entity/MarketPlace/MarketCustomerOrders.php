@@ -19,16 +19,26 @@ class MarketCustomerOrders
     #[ORM\ManyToOne(inversedBy: 'marketCustomerOrders')]
     private ?MarketOrders $orders = null;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return MarketCustomer|null
+     */
     public function getCustomer(): ?MarketCustomer
     {
         return $this->customer;
     }
 
+    /**
+     * @param MarketCustomer|null $customer
+     * @return $this
+     */
     public function setCustomer(?MarketCustomer $customer): static
     {
         $this->customer = $customer;
@@ -36,11 +46,18 @@ class MarketCustomerOrders
         return $this;
     }
 
+    /**
+     * @return MarketOrders|null
+     */
     public function getOrders(): ?MarketOrders
     {
         return $this->orders;
     }
 
+    /**
+     * @param MarketOrders|null $orders
+     * @return $this
+     */
     public function setOrders(?MarketOrders $orders): static
     {
         $this->orders = $orders;

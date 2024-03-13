@@ -2,7 +2,6 @@
 
 namespace App\Repository\MarketPlace;
 
-use App\Entity\Attach;
 use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketCategory;
 use App\Entity\MarketPlace\MarketCategoryProduct;
@@ -10,7 +9,6 @@ use App\Entity\MarketPlace\MarketProduct;
 use App\Entity\MarketPlace\MarketProductAttach;
 use App\Entity\MarketPlace\MarketWishlist;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Connection;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\Persistence\ManagerRegistry;
 

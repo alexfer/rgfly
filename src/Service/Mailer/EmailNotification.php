@@ -2,6 +2,7 @@
 
 namespace App\Service\Mailer;
 
+use App\Service\Interface\EmailNotificationInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;

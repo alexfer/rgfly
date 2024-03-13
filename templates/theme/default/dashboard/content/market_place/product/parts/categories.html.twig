@@ -14,7 +14,7 @@
            data-url="{{ path('app_dashboard_market_place_xhr_create_brand', {market: app.request.get('market')}) }}"
            data-token="{{ csrf_token('create') }}"
            href="#"
-           class="fw-medium float-end add-entry">{{ 'market.brand.create'|trans }}</a>
+           class="fw-normal float-end add-entry">{{ 'market.brand.create'|trans }}<i class="bi bi-plus-circle-dotted ms-2"></i></a>
         {{ form_widget(form.brand, {attr: {class: brand_error}}) }}
     </div>
     <div class="form-group mb-3">
@@ -25,7 +25,7 @@
            data-url="{{ path('app_dashboard_market_place_xhr_create_supplier', {market: app.request.get('market')}) }}"
            data-xhr="{{ path('app_dashboard_market_place_xhr_load_countries', {market: app.request.get('market')}) }}"
            href="#"
-           class="fw-medium float-end add-entry">{{ 'market.supplier.create'|trans }}</a>
+           class="fw-normal float-end add-entry">{{ 'market.supplier.create'|trans }}<i class="bi bi-plus-circle-dotted ms-2"></i></a>
         {{ form_label(form.supplier, 'label.form.supplier_name', {label_attr: {class: 'form-label'}}) }}
         {{ form_widget(form.supplier, {attr: {class: supplier_error}}) }}
     </div>
@@ -37,7 +37,7 @@
            data-token="{{ csrf_token('create') }}"
            data-url="{{ path('app_dashboard_market_place_xhr_create_manufacturer', {market: app.request.get('market')}) }}"
            href="#"
-           class="fw-medium float-end add-entry">{{ 'market.manufacturer.create'|trans }}</a>
+           class="fw-normal float-end add-entry">{{ 'market.manufacturer.create'|trans }}<i class="bi bi-plus-circle-dotted ms-2"></i></a>
         {{ form_widget(form.manufacturer, {attr: {class: manufacturer_error}}) }}
     </div>
 </div>

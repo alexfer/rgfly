@@ -10,8 +10,8 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\{Request, Response,};
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\{Request, Response,};
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -62,7 +62,7 @@ class RegistrationController extends AbstractController
                 $form->addError(new FormError($error));
             }
 
-            if(!$error) {
+            if (!$error) {
                 $user->setEmail($form->get('email')->getData());
 
                 $user->setPassword($userPasswordHasher->hashPassword($user, $form->get('plainPassword')->getData()));
