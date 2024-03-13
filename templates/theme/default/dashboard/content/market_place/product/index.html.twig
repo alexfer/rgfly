@@ -1,4 +1,4 @@
-{% extends 'dashboard/orders.html.twig' %}
+{% extends 'dashboard/index.html.twig' %}
 
 {% set _title_extend = 'title.dashboard.overview_product'|trans %}
 {% block title_extend %}{{ _title_extend }} - {% endblock %}
@@ -46,7 +46,7 @@
                     <td class="text-center">{{ product.cost|number_format(2) }}<small class="text-muted">{{ currency['symbol_native'] }}</small></td>
                     <td class="text-center">{{ product.quantity }}</td>
                     <td class="text-center visually-hidden">
-                        <small>{{ currency['symbol_native'] }} {{ (product.cost * product.quantity)|number_format(2) }}</small>
+                        <small>{{ currency['symbol_native'] }} {{ (product.cost * product.quantity)|amount_format }}</small>
                     </td>
                     <td class="text-center bd-highlight">{{ product.createdAt|date(date_format) }}</td>
                     <td class="text-center">

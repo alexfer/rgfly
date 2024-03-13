@@ -23,4 +23,5 @@ class MarketRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Market::class);
     }
+
 }

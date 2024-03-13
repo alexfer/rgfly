@@ -16,10 +16,10 @@ class ProductController extends AbstractController
 {
     #[Route('/{slug}', name: 'app_market_place_product')]
     public function index(
-        Request $request,
-        MarketProduct $product,
-        ?UserInterface          $user,
-        EntityManagerInterface  $em,
+        Request                $request,
+        MarketProduct          $product,
+        ?UserInterface         $user,
+        EntityManagerInterface $em,
     ): Response
     {
         $customer = $em->getRepository(MarketCustomer::class)->findOneBy([

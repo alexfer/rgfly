@@ -5,7 +5,6 @@ namespace App\Service;
 use AllowDynamicProperties;
 use App\Entity\Attach;
 use App\Entity\MarketPlace\Market;
-use App\Entity\MarketPlace\MarketProduct;
 use App\Entity\MarketPlace\MarketProductAttach;
 use App\Entity\UserDetails;
 use Doctrine\ORM\EntityManagerInterface;

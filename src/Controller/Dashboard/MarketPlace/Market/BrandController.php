@@ -4,8 +4,8 @@ namespace App\Controller\Dashboard\MarketPlace\Market;
 
 use App\Entity\MarketPlace\MarketBrand;
 use App\Form\Type\Dashboard\MarketPlace\BrandType;
-use App\Service\MarketPlace\MarketTrait;
 use App\Service\Dashboard;
+use App\Service\MarketPlace\MarketTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

@@ -1,4 +1,4 @@
-{% extends 'dashboard/orders.html.twig' %}
+{% extends 'dashboard/index.html.twig' %}
 
 {% set _title_extend = 'table.header.order_number'|trans ~ ': ' ~ order.number|upper %}
 {% block title_extend %}{{ _title_extend }} - {% endblock %}
@@ -86,41 +86,38 @@
         </tr>
         </thead>
         <tbody>
-        {% set item_subtotal = 0 %}
-        {% set total_fee = 0 %}
-        {% set product_count = order.marketOrdersProducts.count() %}
         {% for orderProduct in order.marketOrdersProducts %}
-            {% if orderProduct.product.discount %}
+
                 {% set percent = orderProduct.product.discount %}
                 {% set cost = orderProduct.product.cost %}
-                {% set percent_cost = (cost - ((cost * percent) - percent)/100) %}
-                {% set item_subtotal = (percent_cost * orderProduct.quantity)|round|number_format(2, '.', ' ') %}
-            {% else %}
-                {% set item_subtotal = (orderProduct.product.cost * orderProduct.quantity)|round|number_format(2, '.', ' ') %}
-            {% endif %}
-            {% set total_fee = (orderProduct.product.fee * orderProduct.quantity) / product_count %}
+                {% set amount = (cost - ((cost * percent) - percent)/100) %}
+
             <tr>
                 <td>{{ loop.index }}</td>
                 <td>{{ orderProduct.product.id }}</td>
                 <td>{{ orderProduct.product.shortName }}</td>
-                {% if percent_cost is not defined %}
-                    {% set percent_cost = orderProduct.product.cost %}
+                {% if amount is not defined %}
+                    {% set amount = orderProduct.product.cost %}
                 {% endif %}
-                <td class="text-end">{{ order.market.currency|currency }} {{ percent_cost|round|number_format(2, ',', '') }}</td>
+                <td class="text-end">{{ amount|amount_format }}{{ order.market.currency|currency }}</td>
                 <td class="text-end">{{ orderProduct.quantity }}</td>
-                <td class="text-end">{{ order.market.currency|currency }} {{ (percent_cost * orderProduct.quantity)|round|number_format(2, ',', '') }}</td>
+                <td class="text-end">
+                    {{ (amount * orderProduct.quantity)|amount_format }}{{ order.market.currency|currency }}
+                </td>
             </tr>
         {% endfor %}
         <tr>
             <td colspan="5"></td>
-            <td class="text-end">{{ order.market.currency|currency }} {{ item_subtotal }}</td>
+            <td class="text-end">
+                {{ itemSubtotal|amount_format }}{{ order.market.currency|currency }}
+            </td>
         </tr>
         <tr>
-            <td colspan="6" class="bg-transparent p-3"></td>
+            <td colspan="6" class="bg-transparent text-end">{{ fee|amount_format }}{{ order.market.currency|currency }}</td>
         </tr>
         <tr>
             <td colspan="5"></td>
-            <td class="text-end">{{ order.market.currency|currency }} {{ total|round|number_format(2, ',', '') }}</td>
+            <td class="text-end">{{ order.market.currency|currency }} {{ (total + fee)|amount_format }}</td>
         </tr>
         </tbody>
     </table>
