@@ -3,9 +3,7 @@
 namespace App\Form\Type\MarketPlace;
 
 use App\Entity\MarketPlace\MarketCustomer;
-use App\Entity\User;
 use App\Form\Type\User\RegistrationType;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;

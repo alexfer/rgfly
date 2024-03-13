@@ -3,12 +3,6 @@
 namespace App\Controller\Dashboard\MarketPlace\Market;
 
 use App\Entity\Attach;
-use App\Helper\MarketPlace\MarketAttributeValues;
-use App\Repository\MarketPlace\MarketProductAttachRepository;
-use App\Repository\MarketPlace\MarketProductRepository;
-use App\Service\FileUploader;
-use App\Service\Interface\ImageValidatorInterface;
-use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use App\Entity\MarketPlace\{MarketBrand,
     MarketCategory,
     MarketCategoryProduct,
@@ -20,17 +14,22 @@ use App\Entity\MarketPlace\{MarketBrand,
     MarketProductBrand,
     MarketProductManufacturer,
     MarketProductSupplier,
-    MarketSupplier
-};
+    MarketSupplier};
 use App\Form\Type\Dashboard\MarketPlace\ProductType;
+use App\Helper\MarketPlace\MarketAttributeValues;
 use App\Helper\MarketPlace\MarketPlaceHelper;
+use App\Repository\MarketPlace\MarketProductAttachRepository;
+use App\Repository\MarketPlace\MarketProductRepository;
 use App\Security\Voter\ProductVoter;
 use App\Service\Dashboard;
+use App\Service\FileUploader;
+use App\Service\Interface\ImageValidatorInterface;
 use App\Service\MarketPlace\Currency;
 use App\Service\MarketPlace\MarketTrait;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

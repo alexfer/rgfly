@@ -1,4 +1,4 @@
-{% extends 'dashboard/orders.html.twig' %}
+{% extends 'dashboard/index.html.twig' %}
 
 {% set _title_extend = 'menu.dashboard.orders'|trans %}
 {% block title_extend %}{{ _title_extend }} - {% endblock %}
@@ -38,10 +38,10 @@
                     <td>{{ order.createdAt|date(datetime_format) }}</td>
                     <td>{{ order.status }}</td>
                     <td>
-                        <small>{{ order.market.currency|currency }}</small>{{ order.total|number_format(2, ',', '') }}
+                        {{ order.total|amount_format }}<small>{{ order.market.currency|currency }}</small>
                     </td>
                     <td>
-                        <small>{{ order.market.currency|currency }}</small>{{ summary[order.id].total|round|number_format(2, '.', ' ') }}
+                        {{ summary[order.id].total|amount_format }}<small>{{ order.market.currency|currency }}</small>
                     </td>
                 </tr>
             {% else %}

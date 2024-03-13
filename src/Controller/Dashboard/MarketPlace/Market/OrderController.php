@@ -79,9 +79,12 @@ class OrderController extends AbstractController
         $market = $this->market($request, $user, $em);
         $currency = Currency::currency($market->getCurrency());
 
-        $products = [];
+        $products = $fee = $itemSubtotal = [];
         foreach ($order->getMarketOrdersProducts() as $item) {
-            $products[] = $item->getCost() - ((($item->getCost() * $item->getQuantity()) * $item->getDiscount()) - $item->getDiscount()) / 100;
+            $amountDiscount = $item->getCost() - ((($item->getCost() * $item->getQuantity()) * $item->getDiscount()) - $item->getDiscount()) / 100;
+            $products[] = $amountDiscount;
+            $itemSubtotal[] = $amountDiscount;
+            $fee[] = $item->getProduct()->getFee();
         }
 
         return $this->render('dashboard/content/market_place/order/order.html.twig', $this->navbar() + [
@@ -90,6 +93,8 @@ class OrderController extends AbstractController
                 'country' => Countries::getNames(\Locale::getDefault()),
                 'order' => $order,
                 'total' => array_sum($products),
+                'fee' => array_sum($fee),
+                'itemSubtotal' => array_sum($itemSubtotal),
             ]);
     }
 }

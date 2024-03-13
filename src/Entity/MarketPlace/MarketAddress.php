@@ -49,16 +49,26 @@ class MarketAddress
         $this->created_at = new \DateTimeImmutable();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return MarketCustomer|null
+     */
     public function getCustomer(): ?MarketCustomer
     {
         return $this->customer;
     }
 
+    /**
+     * @param MarketCustomer|null $customer
+     * @return $this
+     */
     public function setCustomer(?MarketCustomer $customer): static
     {
         $this->customer = $customer;
@@ -66,11 +76,18 @@ class MarketAddress
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getLine1(): ?string
     {
         return $this->line1;
     }
 
+    /**
+     * @param string $line1
+     * @return $this
+     */
     public function setLine1(string $line1): static
     {
         $this->line1 = $line1;
@@ -78,11 +95,18 @@ class MarketAddress
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getLine2(): ?string
     {
         return $this->line2;
     }
 
+    /**
+     * @param string|null $line2
+     * @return $this
+     */
     public function setLine2(?string $line2): static
     {
         $this->line2 = $line2;
@@ -90,11 +114,18 @@ class MarketAddress
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getPhone(): ?string
     {
         return $this->phone;
     }
 
+    /**
+     * @param string|null $phone
+     * @return $this
+     */
     public function setPhone(?string $phone): static
     {
         $this->phone = $phone;
@@ -102,11 +133,18 @@ class MarketAddress
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getCountry(): ?string
     {
         return $this->country;
     }
 
+    /**
+     * @param string $country
+     * @return $this
+     */
     public function setCountry(string $country): static
     {
         $this->country = $country;
@@ -114,11 +152,18 @@ class MarketAddress
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getCity(): ?string
     {
         return $this->city;
     }
 
+    /**
+     * @param string|null $city
+     * @return $this
+     */
     public function setCity(?string $city): static
     {
         $this->city = $city;
@@ -126,11 +171,18 @@ class MarketAddress
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getRegion(): ?string
     {
         return $this->region;
     }
 
+    /**
+     * @param string|null $region
+     * @return $this
+     */
     public function setRegion(?string $region): static
     {
         $this->region = $region;
@@ -138,11 +190,18 @@ class MarketAddress
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getPostal(): ?string
     {
         return $this->postal;
     }
 
+    /**
+     * @param string|null $postal
+     * @return $this
+     */
     public function setPostal(?string $postal): static
     {
         $this->postal = $postal;
@@ -150,11 +209,18 @@ class MarketAddress
         return $this;
     }
 
+    /**
+     * @return \DateTimeImmutable|null
+     */
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->created_at;
     }
 
+    /**
+     * @param \DateTimeImmutable $created_at
+     * @return $this
+     */
     public function setCreatedAt(\DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;
@@ -162,11 +228,18 @@ class MarketAddress
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updated_at;
     }
 
+    /**
+     * @param \DateTimeInterface|null $updated_at
+     * @return $this
+     */
     public function setUpdatedAt(?\DateTimeInterface $updated_at): static
     {
         $this->updated_at = $updated_at;
