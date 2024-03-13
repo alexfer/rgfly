@@ -5,7 +5,7 @@ namespace App\Twig\Extension;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
-class AmountFormat extends AbstractExtension
+class AmountFormatExtension extends AbstractExtension
 {
     /**
      * @return TwigFilter[]
