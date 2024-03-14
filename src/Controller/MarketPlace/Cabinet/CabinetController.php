@@ -52,13 +52,14 @@ class CabinetController extends AbstractController
             'customer' => $customer,
         ], ['id' => 'desc']);
 
-        $summary = $products = [];
+        $summary = $fee = $products = [];
         foreach ($orders as $order) {
             foreach ($order->getOrders()->getMarketOrdersProducts() as $item) {
                 $products[$order->getId()][] = $item->getCost() - ((($item->getCost() * $item->getQuantity()) * $item->getDiscount()) - $item->getDiscount()) / 100;
+                $fee[$order->getId()][] = $item->getProduct()->getFee();
             }
             $summary[$order->getId()] = [
-                'total' => array_sum($products[$order->getId()]),
+                'total' => array_sum($products[$order->getId()]) + array_sum($fee[$order->getId()]),
             ];
         }
 

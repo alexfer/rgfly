@@ -85,13 +85,13 @@ class OrderController extends AbstractController
         $summary = [];
         foreach ($orders as $order) {
             $products = $order->getMarketOrdersProducts()->toArray();
-            $itemSubtotal = $fee = $itemSubtotalDiscount = [];
+            $itemSubtotal = $fee = $total = [];
             foreach ($products as $product) {
                 $cost = $product->getCost() * $product->getQuantity();
                 $discount = $product->getDiscount();
                 $fee[$order->getId()][] = $product->getProduct()->getFee();
                 $itemSubtotal[$order->getId()][] = $product->getCost() * $product->getQuantity();
-                $itemSubtotalDiscount[$order->getId()][] = $cost - (($cost * $discount) - $discount) / 100;
+                $total[$order->getId()][] = $cost - (($cost * $discount) - $discount) / 100;
             }
 
             if ($formatted) {
@@ -99,9 +99,9 @@ class OrderController extends AbstractController
                     'market' => $order->getMarket()->getId(),
                     'currency' => Currency::currency($order->getMarket()->getCurrency())['symbol'],
                     'fee' => number_format(array_sum($fee[$order->getId()]), 2, '.', ' '),
-                    'total' => number_format(round(array_sum($fee[$order->getId()]) + array_sum($itemSubtotalDiscount[$order->getId()])), 2, '.', ' '),
+                    'total' => number_format(round(array_sum($fee[$order->getId()]) + array_sum($total[$order->getId()])), 2, '.', ' '),
                     'itemSubtotal' => number_format(round(array_sum($itemSubtotal[$order->getId()])), 2, '.', ' '),
-                    'itemSubtotalDiscount' => number_format(round(array_sum($itemSubtotalDiscount[$order->getId()])), 2, '.', ' '),
+                    //'itemSubtotalDiscount' => number_format(round(array_sum($itemSubtotalDiscount[$order->getId()])), 2, '.', ' '),
                 ];
             } else {
                 $summary[] = [
@@ -110,9 +110,8 @@ class OrderController extends AbstractController
                     'market_name' => $order->getMarket()->getName(),
                     'currency' => Currency::currency($order->getMarket()->getCurrency())['symbol'],
                     'fee' => array_sum($fee[$order->getId()]),
-                    'total' => $order->getTotal(),
-                    'itemSubtotal' => round(array_sum($itemSubtotal[$order->getId()])),
-                    'itemSubtotalDiscount' => round(array_sum($itemSubtotalDiscount[$order->getId()])),
+                    'itemSubtotal' => array_sum($itemSubtotal[$order->getId()]),
+                    'total' => array_sum($total[$order->getId()]),
                 ];
             }
         }
@@ -152,7 +151,6 @@ class OrderController extends AbstractController
     public function summary(
         Request                       $request,
         EntityManagerInterface        $em,
-        MarketOrdersProductRepository $repository,
     ): Response
     {
         $session = $request->getSession();
@@ -286,7 +284,7 @@ class OrderController extends AbstractController
         $session->set('orders', serialize($serialized));
 
         return $this->json([
-            'quantity' => $session->get('quantity') ?? 1,
+            'quantity' => $session->get('quantity') ?: 1,
         ]);
     }
 }

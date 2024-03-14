@@ -30,7 +30,7 @@ class MarketOrdersRepository extends ServiceEntityRepository
      */
     public function getSerializedData(array $orders): array
     {
-        $collection = $totalWithDiscount = $products = [];
+        $collection = $total = $fee = $products = [];
 
         foreach ($orders as $order) {
 
@@ -51,6 +51,7 @@ class MarketOrdersRepository extends ServiceEntityRepository
                     'slug' => $product->getProduct()->getSlug(),
                     'order_id' => $order->getId(),
                     'cost' => $product->getCost(),
+                    'fee' => $product->getProduct()->getFee(),
                     'percent' => $product->getDiscount(),
                     'quantity' => $product->getQuantity(),
                     'size' => $product->getSize(),
@@ -58,14 +59,15 @@ class MarketOrdersRepository extends ServiceEntityRepository
                     'attach' => reset($attach),
                 ];
                 //(cost - ((cost * product.quantity * percent) - percent)/100)
-                $totalWithDiscount[$order->getId()][] = $product->getCost() - ((($product->getCost() * $product->getQuantity()) * $product->getDiscount()) - $product->getDiscount()) / 100;
+                $cost = $product->getCost() * $product->getQuantity();
+                $total[$order->getId()][] = $cost - ($cost * $product->getDiscount() - $product->getDiscount()) / 100;
+                $fee[$order->getId()][] = $product->getProduct()->getFee();
 
             }
             $collection[$order->getId()] = [
                 'id' => $order->getId(),
                 'number' => $order->getNumber(),
-                'total' => $order->getTotal(),
-                'totalWithDiscount' => array_sum($totalWithDiscount[$order->getId()]),
+                'total' => array_sum($total[$order->getId()]) + array_sum($fee[$order->getId()]),
                 'market' => [
                     'slug' => $order->getMarket()->getSlug(),
                     'name' => $order->getMarket()->getName(),

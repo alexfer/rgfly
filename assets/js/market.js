@@ -95,7 +95,7 @@ if (typeof drops !== 'undefined') {
 
                         checkout.innerHTML = item.total + currency;
                         fee.innerHTML = item.fee + currency;
-                        itemSubtotal.innerHTML = item.itemSubtotalDiscount + currency;
+                        itemSubtotal.innerHTML = item.total + currency;
                         total.innerHTML = item.total + currency;
                         if(data.products === 1) {
                             document.getElementById('market-' + data.removed).remove();
