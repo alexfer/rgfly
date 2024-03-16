@@ -33,11 +33,12 @@
             {{ form_widget(form.discount, {attr: {class: 'form-range border-0 mt-2', placeholder: '0'}}) }}
         </div>
         <div class="col-1">
-            <span class="badge bg-secondary text-light fw-normal discount-output mt-lg-2 mb-5 fw-light"></span>
+            - <span class="badge bg-secondary text-light fw-normal discount-output mt-lg-2 mb-5 fw-light"></span>
         </div>
         <div class="col">
-            {{ form_label(form.fee, 'label.form.discount', {label_attr: {class: 'form-label'}}) }}
+            {{ form_label(form.fee, 'label.form.fee', {label_attr: {class: 'form-label'}}) }}
             {{ form_widget(form.fee, {attr: {class: 'form-control', placeholder: '0'}}) }}
+            <div class="form-text">{{ 'label.form.fee.help'|trans }}</div>
         </div>
     </div>
 </div>

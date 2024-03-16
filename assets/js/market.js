@@ -86,24 +86,21 @@ if (typeof drops !== 'undefined') {
                     const data = await response.json();
                     const summary = data.summary;
                     summary.map((item, key) => {
-                        let market = document.getElementById('market-' + item.market);
-                        let fee = document.getElementById('fee-' + item.market);
                         let total = document.getElementById('total-' + item.market);
                         let checkout = document.getElementById('checkout-' + item.market);
                         let itemSubtotal = document.getElementById('item-subtotal-' + item.market);
                         let currency = '<small>' + item.currency + '</small>';
 
                         checkout.innerHTML = item.total + currency;
-                        fee.innerHTML = item.fee + currency;
-                        itemSubtotal.innerHTML = item.itemSubtotalDiscount + currency;
+                        itemSubtotal.innerHTML = item.total + currency;
                         total.innerHTML = item.total + currency;
-                        if(data.products === 1) {
+                        if (data.products === 1) {
                             document.getElementById('market-' + data.removed).remove();
                         }
                     });
 
                     quantity.innerHTML = data.quantity;
-
+                    console.log(data.products);
                     if (data.products > 1) {
                         drop.closest('.parent').remove();
                     }

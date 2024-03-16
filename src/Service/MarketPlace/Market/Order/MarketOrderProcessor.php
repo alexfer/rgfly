@@ -1,0 +1,198 @@
+<?php
+
+namespace App\Service\MarketPlace\Market\Order;
+
+use App\Entity\MarketPlace\Market;
+use App\Entity\MarketPlace\MarketCustomer;
+use App\Entity\MarketPlace\MarketCustomerOrders;
+use App\Entity\MarketPlace\MarketOrders;
+use App\Entity\MarketPlace\MarketOrdersProduct;
+use App\Entity\MarketPlace\MarketProduct;
+use App\Helper\MarketPlace\MarketPlaceHelper;
+use App\Service\MarketPlace\Market\Order\Interface\MarketOrderProcessorInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+
+class MarketOrderProcessor implements MarketOrderProcessorInterface
+{
+
+    /**
+     * @var Request|null
+     */
+    protected ?Request $request;
+
+    /**
+     * @var string|null
+     */
+    private ?string $sessionId;
+
+    /**
+     * @var array|null
+     */
+    private ?array $data;
+
+    /**
+     * @param RequestStack $requestStack
+     * @param EntityManagerInterface $em
+     */
+    public function __construct(
+        protected RequestStack                  $requestStack,
+        private readonly EntityManagerInterface $em,
+    )
+    {
+        $this->request = $requestStack->getCurrentRequest();
+        $this->data = $this->request->toArray();
+    }
+
+    /**
+     * @param string|null $sessionId
+     * @return MarketOrders|null
+     */
+    public function findOrder(
+        ?string $sessionId,
+    ): ?MarketOrders
+    {
+        $this->sessionId = $sessionId;
+
+        return $this->em->getRepository(MarketOrders::class)->findOneBy([
+            'market' => $this->market(),
+            'session' => $this->sessionId,
+        ]);
+    }
+
+    /**
+     * @param MarketOrders|null $order
+     * @param MarketCustomer|null $customer
+     * @return MarketOrders|null
+     */
+    public function processOrder(
+        ?MarketOrders   $order,
+        ?MarketCustomer $customer,
+    ): MarketOrders
+    {
+        if (!$order) {
+            $order = $this->setOrder($customer);
+        }
+        if ($order) {
+            $product = $this->existsProduct();
+
+            if (!$product) {
+                $order = $this->updateOrder($order);
+            }
+        }
+
+        return $order;
+    }
+
+    /**
+     * @param MarketCustomer|null $customer
+     * @return MarketOrders
+     */
+    private function setOrder(?MarketCustomer $customer): MarketOrders
+    {
+        $order = new MarketOrders();
+        $order->setMarket($this->market())
+            ->setSession($this->sessionId)
+            ->setTotal($this->getProduct()->getCost());
+
+        $this->setCustomer($order, $customer);
+        $this->em->persist($order);
+        $this->setProduct($order);
+        $this->flush();
+        return $order;
+    }
+
+    /**
+     * @param MarketOrders $order
+     * @return MarketOrders
+     */
+    private function updateOrder(MarketOrders $order): MarketOrders
+    {
+        $order->setTotal($order->getTotal() + $this->getProduct()->getCost())
+            ->setSession($this->sessionId);
+        $this->em->persist($order);
+
+        $this->setProduct($order, false);
+        $this->em->flush();
+        return $order;
+    }
+
+    /**
+     * @param MarketOrders $order
+     * @param bool $withNumber
+     * @return void
+     */
+    private function setProduct(MarketOrders $order, bool $withNumber = true): void
+    {
+        $product = new MarketOrdersProduct();
+        $product->setOrders($order)
+            ->setColor($this->data['color'])
+            ->setSize($this->data['size'])
+            ->setProduct($this->getProduct())
+            ->setCost($this->getProduct()->getCost())
+            ->setDiscount($this->getProduct()->getDiscount());
+
+        if ($withNumber) {
+            $product->getOrders()
+                ->setNumber(MarketPlaceHelper::slug($order->getId(), 10, 'o'));
+        }
+
+        $this->em->persist($product);
+    }
+
+    /**
+     * @param MarketOrders $order
+     * @param MarketCustomer|null $customer
+     * @return void
+     */
+    private function setCustomer(MarketOrders $order, ?MarketCustomer $customer): void
+    {
+        $customerOrder = new MarketCustomerOrders();
+        $customerOrder->setOrders($order);
+        if ($customer->getId()) {
+            $customerOrder->setCustomer($customer);
+        }
+        $this->em->persist($customerOrder);
+    }
+
+    /**
+     * @return Market
+     */
+    protected function market(): Market
+    {
+        return $this->getProduct()->getMarket();
+    }
+
+    /**
+     * @return MarketOrdersProduct|null
+     */
+    protected function existsProduct(): ?MarketOrdersProduct
+    {
+        return $this->em->getRepository(MarketOrdersProduct::class)
+            ->findOneBy([
+                'product' => $this->getProduct(),
+                'size' => $this->data['size'] ?: null,
+                'color' => $this->data['color'] ?: null,
+            ]);
+    }
+
+    /**
+     * @return MarketProduct|null
+     */
+    protected function getProduct(): ?MarketProduct
+    {
+        return $this->em->getRepository(MarketProduct::class)
+            ->findOneBy([
+                'slug' => $this->request->get('product'),
+            ]);
+    }
+
+    /**
+     * @return void
+     */
+    private function flush(): void
+    {
+        $this->em->flush();
+    }
+}

@@ -14,7 +14,7 @@ class MarketPlaceHelper
     public static function slug(int $id, int $length = 10, string $key = null): string
     {
         $parts = [
-            $key ?? 'p',
+            $key ?: 'p',
             $id,
             substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $length),
         ];

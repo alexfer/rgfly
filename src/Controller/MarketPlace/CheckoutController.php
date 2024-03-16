@@ -179,8 +179,8 @@ class CheckoutController extends AbstractController
 
         return $this->render('market_place/checkout/index.html.twig', [
             'order' => $order,
-            'itemSubtotal' => array_sum($sum['itemSubtotal']),
-            'subtotal' => array_sum($sum['itemSubtotal']),
+            'itemSubtotal' => array_sum($sum['itemSubtotal']) + array_sum($sum['fee']),
+            //'subtotal' => array_sum($sum['itemSubtotal']),
             'fee' => array_sum($sum['fee']),
             'total' => array_sum($sum['fee']) + array_sum($sum['itemSubtotal']),
             'form' => $form,
