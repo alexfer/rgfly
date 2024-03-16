@@ -67,25 +67,19 @@ class OrderController extends AbstractController
 
     /**
      * @param Request $request
-     * @param EntityManagerInterface $em
+     * @param MarketOrderProcessorInterface $orderProcessor
      * @return Response
      */
     #[Route('/summary', name: 'app_market_place_order_update', methods: ['POST'])]
     public function update(
         Request                $request,
-        EntityManagerInterface $em,
+        MarketOrderProcessorInterface $orderProcessor,
     ): Response
     {
         $input = $request->request->all();
         $session = $request->getSession();
+        $orderProcessor->updateQuantity($session->getId(), $input);
 
-        foreach ($input['order']['product'] as $k => $v) {
-            $orders = $em->getRepository(MarketOrders::class)->findOneBy(['id' => $input['order'][$k], 'session' => $session->getId()]);
-            $product = $em->getRepository(MarketOrdersProduct::class)->findOneBy(['id' => $v, 'orders' => $orders]);
-            $product->setQuantity($input['order']['quantity'][$k]);
-            $em->persist($product);
-            $em->flush();
-        }
         return $this->redirectToRoute('app_market_place_order_summary');
     }
 

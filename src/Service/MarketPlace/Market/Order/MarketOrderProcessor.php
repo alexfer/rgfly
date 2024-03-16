@@ -49,22 +49,44 @@ class MarketOrderProcessor implements MarketOrderProcessorInterface
      * @param string|null $sessionId
      * @return MarketOrders|null
      */
-    public function findOrder(
-        ?string $sessionId,
-    ): ?MarketOrders
+    public function findOrder(?string $sessionId, int $id = null): ?MarketOrders
     {
         $this->sessionId = $sessionId;
 
-        return $this->em->getRepository(MarketOrders::class)->findOneBy([
+        $condition = [
             'market' => $this->market(),
             'session' => $this->sessionId,
-        ]);
+        ];
+
+        if ($id) {
+            unset($condition['market']);
+            $condition['id'] = $id;
+        }
+
+        return $this->em->getRepository(MarketOrders::class)->findOneBy($condition);
+    }
+
+    /**
+     * @param string|null $sessionId
+     * @param array $input
+     * @return void
+     */
+    public function updateQuantity(?string $sessionId, array $input): void
+    {
+        foreach ($input['order']['product'] as $key => $value) {
+            $order = $this->findOrder($sessionId, $input['order'][$key]);
+            $product = $this->em->getRepository(MarketOrdersProduct::class)
+                ->findOneBy(['id' => $value, 'orders' => $order]);
+            $product->setQuantity($input['order']['quantity'][$key]);
+            $this->em->persist($product);
+            $this->em->flush();
+        }
     }
 
     /**
      * @param MarketOrders|null $order
      * @param MarketCustomer|null $customer
-     * @return MarketOrders|null
+     * @return MarketOrders
      */
     public function processOrder(
         ?MarketOrders   $order,
