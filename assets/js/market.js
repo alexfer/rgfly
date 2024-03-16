@@ -94,18 +94,16 @@ if (typeof drops !== 'undefined') {
                         checkout.innerHTML = item.total + currency;
                         itemSubtotal.innerHTML = item.total + currency;
                         total.innerHTML = item.total + currency;
-                        if (data.products === 1) {
-                            document.getElementById('market-' + data.removed).remove();
-                        }
                     });
 
                     quantity.innerHTML = data.quantity;
-                    console.log(data.products);
-                    if (data.products > 1) {
+
+                    if (data.products >= 1) {
                         drop.closest('.parent').remove();
                     }
-                    if (data.products === 1) {
+                    if (data.products === 0) {
                         drop.closest('.root').remove();
+                        document.getElementById('market-' + data.removed).remove();
                     }
                     if (data.redirect && data.order) {
                         document.location.href = data.redirect;
