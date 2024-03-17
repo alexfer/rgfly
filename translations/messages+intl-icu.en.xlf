@@ -593,6 +593,14 @@
                 <source>label.form.discount</source>
                 <target>Discount</target>
             </trans-unit>
+            <trans-unit id="label.form.fee">
+                <source>label.form.fee</source>
+                <target>Fee</target>
+            </trans-unit>
+            <trans-unit id="label.form.fee.help">
+                <source>label.form.fee.help</source>
+                <target>Included fee to cost of product</target>
+            </trans-unit>
             <trans-unit id="label.form.title">
                 <source>label.form.title</source>
                 <target>Title</target>

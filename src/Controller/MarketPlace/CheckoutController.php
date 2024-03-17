@@ -2,24 +2,17 @@
 
 namespace App\Controller\MarketPlace;
 
-use App\Entity\MarketPlace\MarketAddress;
-use App\Entity\MarketPlace\MarketCustomer;
-use App\Entity\MarketPlace\MarketCustomerOrders;
 use App\Entity\MarketPlace\MarketInvoice;
-use App\Entity\MarketPlace\MarketOrders;
-use App\Entity\MarketPlace\MarketPaymentGateway;
-use App\Entity\MarketPlace\MarketProduct;
-use App\Entity\User;
 use App\Form\Type\MarketPlace\CustomerType;
 use App\Form\Type\User\LoginType;
-use App\Helper\MarketPlace\MarketPlaceHelper;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\MarketPlace\Market\Checkout\Interface\ProcessorInterface as CheckoutProcessorInterface;
+use App\Service\MarketPlace\Market\Customer\Interface\ProcessorInterface as CustomerProcessorInterface;
+use App\Service\MarketPlace\Market\Customer\Interface\UserManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -33,154 +26,87 @@ class CheckoutController extends AbstractController
     /**
      * @param Request $request
      * @param UserInterface|null $user
-     * @param UserPasswordHasherInterface $userPasswordHasher
-     * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
+     * @param UserManagerInterface $userManager
+     * @param CheckoutProcessorInterface $checkoutProcessor
+     * @param CustomerProcessorInterface $customerProcessor
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    #[Route('/{order}/{session?}', name: 'app_market_place_order_checkout', methods: ['GET', 'POST'])]
+    #[Route('/{order}', name: 'app_market_place_order_checkout', methods: ['GET', 'POST'])]
     public function checkout(
-        Request                     $request,
-        ?UserInterface              $user,
-        UserPasswordHasherInterface $userPasswordHasher,
-        EntityManagerInterface      $em,
-        TranslatorInterface         $translator,
+        Request                    $request,
+        ?UserInterface             $user,
+        TranslatorInterface        $translator,
+        UserManagerInterface       $userManager,
+        CheckoutProcessorInterface $checkoutProcessor,
+        CustomerProcessorInterface $customerProcessor,
     ): Response
     {
         $session = $request->getSession();
-
-        $session = $request->getSession();
-        $sessId = $session->getId();
+        $sessionId = $session->getId();
 
         if ($request->get('session') !== null) {
-            $sessId = $request->get('session');
+            $sessionId = $request->get('session');
         }
 
-        $repository = $em->getRepository(MarketOrders::class);
-
-        $order = $repository->findOneBy([
-            'number' => $request->get('order'),
-            'session' => $sessId,
-            'status' => MarketOrders::STATUS['processing'],
-        ]);
-
-        if (!$order) {
-            return $this->redirectToRoute('app_market_place_order_summary');
-        }
-
-        $orderProducts = $order->getMarketOrdersProducts();
-        $userCustomer = $em->getRepository(MarketCustomer::class)->findOneBy(['member' => $user]);
-
-        if (!$userCustomer) {
-            $customer = new MarketCustomer();
-            $form = $this->createForm(CustomerType::class, $customer);
-        } else {
-            $form = $this->createForm(CustomerType::class, $userCustomer);
-        }
+        $customer = $userManager->getUserCustomer($user);
+        $form = $this->createForm(CustomerType::class, $customer);
+        $order = $checkoutProcessor->findOrder($sessionId);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $checkEmail = $em->getRepository(User::class)->findOneBy(['email' => $form->get('email')->getData()]);
 
-            $paymentGateway = $em->getRepository(MarketPaymentGateway::class)->findOneBy([
-                'slug' => key($request->request->all('gateway')),
-            ]);
-
-            if ($checkEmail) {
-                $this->addFlash('danger', $translator->trans('email.unique', [], 'validators'));
-                return $this->redirectToRoute('app_market_place_order_checkout', ['order' => $request->get('order'), 'session' => $sessId]);
+            if (!$order) {
+                return $this->redirectToRoute('app_market_place_order_summary');
             }
-            if (!$userCustomer) {
+
+            $securityContext = $this->container->get('security.authorization_checker');
+            $isGranted = $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED');
+
+            if ($userManager->existsCustomer($form->get('email')->getData()) && !$isGranted) {
+                $this->addFlash('danger', $translator->trans('email.unique', [], 'validators'));
+                return $this->redirectToRoute('app_market_place_order_checkout', ['order' => $request->get('order')]);
+            }
+
+            $args = [
+                'line1' => $form->get('line1')->getData(),
+                'line2' => $form->get('line2')->getData(),
+                'city' => $form->get('city')->getData(),
+                'region' => $form->get('region')->getData(),
+                'postal' => $form->get('postal')->getData(),
+                'country' => $form->get('country')->getData(),
+                'phone' => $form->get('phone')->getData(),
+            ];
+
+            if (!$customer->getId()) {
 
                 $password = substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 8);
                 $session->set('_temp_password', $password);
 
-                $user = new User();
+                $customerProcessor->process($customer, $form->getData(), $order);
 
-                $user->setEmail($form->get('email')->getData())
-                    ->setPassword($userPasswordHasher->hashPassword($user, $password));
+                $user = $customerProcessor->addUser($password);
 
-                $user->setIp($request->getClientIp())->setRoles([User::ROLE_CUSTOMER]);
-                $em->persist($user);
-
-                $customer->setMember($user);
-                $em->persist($customer);
-
-                $address = new MarketAddress();
-                $address->setCustomer($customer)
-                    ->setLine1($form->get('line1')->getData())
-                    ->setLine2($form->get('line2')->getData())
-                    ->setCity($form->get('city')->getData())
-                    ->setCountry($form->get('country')->getData())
-                    ->setPostal($form->get('postal')->getData())
-                    ->setPhone($form->get('phone')->getData())
-                    ->setRegion($form->get('region')->getData());
-                $em->persist($address);
-
-                $customerOrder = $em->getRepository(MarketCustomerOrders::class)->findOneBy(['orders' => $order]);
-                $customerOrder->setCustomer($customer);
-                $em->persist($customerOrder);
+                $customerProcessor->bind($form)->addCustomer($user);
+            } else {
+                $customerProcessor->bind($form)->updateCustomer($customer, $form->getData());
             }
 
-            $invoice = new MarketInvoice();
+            $checkoutProcessor->addInvoice(new MarketInvoice());
+            $checkoutProcessor->updateOrder();
+            $session->set('quantity', $checkoutProcessor->countOrders());
 
-            $invoice->setOrders($order)
-                ->setPaymentGateway($paymentGateway)
-                ->setNumber(MarketPlaceHelper::slug($order->getId(), 6, 'i'))
-                ->setAmount($order->getTotal())
-                ->setTax(0);
-
-            $order->setSession(null)
-                ->setStatus(MarketOrders::STATUS['confirmed']);
-
-            foreach ($orderProducts as $product) {
-                $marketProduct = $em->getRepository(MarketProduct::class)->find($product->getProduct());
-                $marketProduct->setQuantity($marketProduct->getQuantity() - $product->getQuantity())
-                    ->setUpdatedAt(new \DateTimeImmutable());
-                $em->persist($marketProduct);
-            }
-
-            $userCustomer->setFirstName($form->get('first_name')->getData())
-                ->setLastName($form->get('last_name')->getData())
-                ->setEmail($form->get('email')->getData())
-                ->setCountry($form->get('country')->getData())
-                ->setPhone($form->get('phone')->getData())
-                ->setUpdatedAt(new \DateTime());
-
-            $em->persist($userCustomer);
-
-            $address = $userCustomer->getMarketAddress();
-
-            $address->setLine1($form->get('line1')->getData())
-                ->setLine2($form->get('line2')->getData())
-                ->setCity($form->get('city')->getData())
-                ->setCountry($form->get('country')->getData())
-                ->setRegion($form->get('region')->getData())
-                ->setPostal($form->get('postal')->getData())
-                ->setUpdatedAt(new \DateTime());
-
-            $em->persist($address);
-            $em->persist($invoice);
-            $em->persist($order);
-            $em->flush();
-
-            $orders = $repository->findBy(['session' => $session->getId()]);
-            $session->set('quantity', count($orders));
-
-            return $this->redirectToRoute('app_market_place_order_success', ['order' => $order->getNumber()]);
+            return $this->redirectToRoute('app_market_place_order_success');
         }
 
-        $sum = [];
-        foreach ($orderProducts as $product) {
-            $sum['itemSubtotal'][] = $product->getCost() - ((($product->getCost() * $product->getQuantity()) * $product->getDiscount()) - $product->getDiscount()) / 100;
-            $sum['fee'][] = $product->getProduct()->getFee();
-        }
+        $sum = $checkoutProcessor->sum();
 
         return $this->render('market_place/checkout/index.html.twig', [
             'order' => $order,
-            'itemSubtotal' => array_sum($sum['itemSubtotal']),
-            'subtotal' => array_sum($sum['itemSubtotal']),
+            'itemSubtotal' => array_sum($sum['itemSubtotal']) + array_sum($sum['fee']),
             'fee' => array_sum($sum['fee']),
             'total' => array_sum($sum['fee']) + array_sum($sum['itemSubtotal']),
             'form' => $form,
@@ -190,20 +116,17 @@ class CheckoutController extends AbstractController
 
     /**
      * @param Request $request
-     * @param EntityManagerInterface $em
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     #[Route('/order-success/login', name: 'app_market_place_order_success', methods: ['GET', 'POST'])]
-    public function cashSuccess(
-        Request                $request,
-        EntityManagerInterface $em,
-        AuthenticationUtils    $authenticationUtils,
+    public function checkoutSuccess(
+        Request             $request,
+        AuthenticationUtils $authenticationUtils,
     ): Response
     {
-
         $securityContext = $this->container->get('security.authorization_checker');
 
         if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
@@ -217,11 +140,16 @@ class CheckoutController extends AbstractController
         $form = $this->createForm(LoginType::class, $default);
         $form->handleRequest($request);
 
+        $session = $request->getSession();
+        $temp_password = $session->get('_temp_password');
+        $session->remove('_temp_password');
+
         $error = $request->getSession()->get(SecurityRequestAttributes::AUTHENTICATION_ERROR);
         $request->getSession()->clear();
 
         return $this->render('market_place/checkout/order_success.html.twig', [
             'error' => $error,
+            'temp_password' => $temp_password,
             'last_username' => $default['email'],
             'form' => $form->createView(),
         ]);

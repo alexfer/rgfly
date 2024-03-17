@@ -62,7 +62,7 @@
                                                     {% set percent = product.discount %}
                                                     {% set cost = product.cost %}
                                                     {% set discount_cost = (cost - ((cost * percent) - percent)/100) %}
-                                                    <h5 class="mb-0">{{ discount_cost|round|number_format(2, '.', '') }}
+                                                    <h5 class="mb-0">{{ (discount_cost + product.fee)|amount_format }}
                                                         <small>{{ product.market.currency|currency }}</small></h5>
                                                 </div>
                                             </li>

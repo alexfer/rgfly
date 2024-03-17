@@ -50,7 +50,7 @@
                                                    href="{{ path('app_market_place_product', {slug: product.product.slug}) }}">{{ product.product.shortName }}</a>
                                             </h5>
                                             <span class="fs-5 text-muted">
-                                            <small class="fw-light fs-6 text-primary-emphasis">{{ item_cost }}<small>{{ order.market.currency|currency }}</small>&times;{{ product.quantity }} {{ 'label.form.quantity_pcs'|trans }}</small>
+                                            <small class="fw-light fs-6 text-primary-emphasis">{{ (item_cost + product.product.fee) }}<small>{{ order.market.currency|currency }}</small>&times;{{ product.quantity }} {{ 'label.form.quantity_pcs'|trans }}</small>
                                         </span>
                                         </div>
                                     </div>
@@ -60,6 +60,7 @@
                                         <span class="fw-normal me-2">{{ 'order.item.subtotal'|trans }}:</span>
                                         <span class="text-end text-primary-emphasis">{{ itemSubtotal|amount_format }}<small>{{ order.market.currency|currency }}</small></span>
                                     </li>
+                                    {#
                                     <li class="d-flex justify-content-between align-items-center mb-2">
                                         <span class="fw-normal me-2">{{ 'order.subtotal'|trans }}:</span>
                                         <span class="text-end text-primary-emphasis">{{ subtotal|amount_format }}<small>{{ order.market.currency|currency }}</small></span>
@@ -68,6 +69,7 @@
                                         <span class="fw-normal me-2">{{ 'order.service.fee'|trans }}:</span>
                                         <span class="text-end text-primary-emphasis">{{ fee|amount_format }}<small>{{ order.market.currency|currency }}</small></span>
                                     </li>
+                                    #}
                                 </ul>
                                 <h3 class="fw-normal text-danger text-center my-4">{{ total|amount_format }}
                                     <small>{{ order.market.currency|currency }}</small></h3>

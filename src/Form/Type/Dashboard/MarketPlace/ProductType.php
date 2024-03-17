@@ -179,7 +179,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
                     'min' => 0,
                     'max' => 100,
                     'step' => 1,
-                    'value' => $options['data']?->getDiscount() ?? 0,
+                    'value' => $options['data']?->getDiscount() ?: 0,
                 ],
                 'constraints' => [
                     new Length([
@@ -196,7 +196,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
                     'step' => '1',
                 ],
                 'html5' => true,
-                'currency' => $this->market->getCurrency() ?? 'USD',
+                'currency' => $this->market->getCurrency() ?: 'USD',
             ])
             ->add('cost', MoneyType::class, [
                 'attr' => [
@@ -204,7 +204,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
                     'step' => '0.01',
                 ],
                 'html5' => true,
-                'currency' => $this->market->getCurrency() ?? 'USD',
+                'currency' => $this->market->getCurrency() ?: 'USD',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'form.cost.not_blank',

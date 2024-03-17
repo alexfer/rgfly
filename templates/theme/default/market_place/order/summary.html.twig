@@ -82,11 +82,11 @@
                                                                 {% set discount_cost = (cost - ((product.quantity * cost) * percent)/100) %}
                                                                 <span class="badge text-bg-danger">{{ product.discount }}% {{ 'market.product.off'|trans }}</span>
                                                                 <span class="fs-5 fw-normal">
-                                                                    {{ discount_cost|round|number_format(2, '.',' ') }}
+                                                                    {{ (discount_cost + product.product.fee)|amount_format }}
                                                                     <small>{{ order.market.currency|currency }}</small>
                                                                 </span>
                                                             {% else %}
-                                                                <span class="fw-bold">{{ (product.cost * product.quantity)|number_format(2, '.',' ') }}<small>{{ order.market.currency|currency }}</small></span>
+                                                                <span class="fw-bold">{{ ((product.cost * product.quantity) + product.product.fee)|amount_format }}<small>{{ order.market.currency|currency }}</small></span>
                                                             {% endif %}
                                                         </div>
                                                     </div>
@@ -130,17 +130,17 @@
                                             <ul class="list-group list-group-flush">
                                                 <li class="list-group-item d-flex justify-content-between align-items-start">
                                                     <div class="me-auto">{{ 'order.item.subtotal'|trans }}</div>
-                                                    <span id="item-subtotal-{{ order.market_id }}">{{ order.itemSubtotalDiscount|number_format(2, '.', ' ') }}<small>{{ order.currency }}</small>
+                                                    <span id="item-subtotal-{{ order.market_id }}">{{ (order.total + order.fee)|amount_format }}<small>{{ order.currency }}</small>
                                                 </span>
                                                 </li>
-                                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                <li class="list-group-item d-flex justify-content-between align-items-start visually-hidden">
                                                     <div class="me-auto">{{ 'order.service.fee'|trans }}</div>
-                                                    <span id="fee-{{ order.market_id }}">{{ order.fee|number_format(2, '.', ' ') }}<small>{{ order.currency }}</small>
+                                                    <span id="fee-{{ order.market_id }}">{{ order.fee|amount_format }}<small>{{ order.currency }}</small>
                                                 </span>
                                                 </li>
                                                 <li class="list-group-item d-flex justify-content-between align-items-start">
                                                     <div class="me-auto">{{ 'order.subtotal'|trans }}</div>
-                                                    <span id="total-{{ order.market_id }}">{{ (order.itemSubtotalDiscount + order.fee)|number_format(2, '.', ' ') }}<small>{{ order.currency }}</small>
+                                                    <span id="total-{{ order.market_id }}">{{ (order.total + order.fee)|amount_format }}<small>{{ order.currency }}</small>
                                                 </span>
                                                 </li>
                                             </ul>
@@ -151,7 +151,7 @@
                                                type="submit">
                                                 {{ 'order.checkout'|trans }}
                                                 <span id="checkout-{{ order.market_id }}"
-                                                      class="fw-normal text-opacity-100">{{ (order.itemSubtotalDiscount + order.fee)|number_format(2, '.', ' ') }}<small>{{ order.currency }}</small>
+                                                      class="fw-normal text-opacity-100">{{ (order.total + order.fee)|amount_format }}<small>{{ order.currency }}</small>
                                             </span>
                                             </a>
                                             <p class="lh-1 fs-6">
