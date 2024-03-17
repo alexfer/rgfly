@@ -1,4 +1,5 @@
 {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+{{ dump(form_errors(form)) }}
 <div class="row border mb-5 pt-3 rounded-1 shadow-sm">
     <div class="col-12 pt-2 px-xxl-5">
         <h4 class="pb-2">{{ 'text.login'|trans }}</h4>

@@ -5,7 +5,7 @@ namespace App\Service\MarketPlace\Market\Order\Interface;
 use App\Entity\MarketPlace\MarketCustomer;
 use App\Entity\MarketPlace\MarketOrders;
 
-interface MarketOrderProcessorInterface
+interface ProcessorInterface
 {
     /**
      * @param string|null $sessionId

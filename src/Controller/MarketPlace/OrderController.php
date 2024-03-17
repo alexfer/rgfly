@@ -2,14 +2,11 @@
 
 namespace App\Controller\MarketPlace;
 
-use App\Entity\MarketPlace\MarketOrders;
-use App\Entity\MarketPlace\MarketOrdersProduct;
-use App\Service\MarketPlace\Market\Customer\Interface\MarketUserManagerInterface;
-use App\Service\MarketPlace\Market\Order\Interface\{MarketOrderCollectionInterface,
-    MarketOrderProcessorInterface,
-    MarketOrderProductInterface,
-    MarketOrderSummaryInterface};
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\MarketPlace\Market\Customer\Interface\UserManagerInterface;
+use App\Service\MarketPlace\Market\Order\Interface\{CollectionInterface,
+    ProcessorInterface,
+    ProductInterface,
+    SummaryInterface,};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,20 +20,20 @@ class OrderController extends AbstractController
     /**
      * @param Request $request
      * @param UserInterface|null $user
-     * @param MarketUserManagerInterface $userManager
-     * @param MarketOrderSummaryInterface $orderSummary
-     * @param MarketOrderCollectionInterface $orderCollection
-     * @param MarketOrderProductInterface $orderProduct
+     * @param UserManagerInterface $userManager
+     * @param SummaryInterface $orderSummary
+     * @param CollectionInterface $orderCollection
+     * @param ProductInterface $orderProduct
      * @return Response
      */
     #[Route('/summary/remove', name: 'app_market_place_order_remove_product', methods: ['POST'])]
     public function remove(
-        Request                        $request,
-        ?UserInterface                 $user,
-        MarketUserManagerInterface     $userManager,
-        MarketOrderSummaryInterface    $orderSummary,
-        MarketOrderCollectionInterface $orderCollection,
-        MarketOrderProductInterface    $orderProduct,
+        Request              $request,
+        ?UserInterface       $user,
+        UserManagerInterface $userManager,
+        SummaryInterface     $orderSummary,
+        CollectionInterface  $orderCollection,
+        ProductInterface     $orderProduct,
     ): Response
     {
         $customer = $userManager->getUserCustomer($user);
@@ -48,7 +45,7 @@ class OrderController extends AbstractController
         $countProducts = 0;
         $order = $orderProduct->getOrder();
 
-        if($order) {
+        if ($order) {
             $products = $order->getMarketOrdersProducts();
             $countProducts = count($products);
         }
@@ -67,13 +64,13 @@ class OrderController extends AbstractController
 
     /**
      * @param Request $request
-     * @param MarketOrderProcessorInterface $orderProcessor
+     * @param ProcessorInterface $orderProcessor
      * @return Response
      */
     #[Route('/summary', name: 'app_market_place_order_update', methods: ['POST'])]
     public function update(
-        Request                $request,
-        MarketOrderProcessorInterface $orderProcessor,
+        Request            $request,
+        ProcessorInterface $orderProcessor,
     ): Response
     {
         $input = $request->request->all();
@@ -85,15 +82,15 @@ class OrderController extends AbstractController
 
     /**
      * @param Request $request
-     * @param MarketOrderSummaryInterface $orderSummary
-     * @param MarketOrderCollectionInterface $orderCollection
+     * @param SummaryInterface $orderSummary
+     * @param CollectionInterface $orderCollection
      * @return Response
      */
     #[Route('/summary', name: 'app_market_place_order_summary', methods: ['GET'])]
     public function summary(
-        Request                        $request,
-        MarketOrderSummaryInterface    $orderSummary,
-        MarketOrderCollectionInterface $orderCollection,
+        Request             $request,
+        SummaryInterface    $orderSummary,
+        CollectionInterface $orderCollection,
     ): Response
     {
         $session = $request->getSession();
@@ -107,13 +104,13 @@ class OrderController extends AbstractController
 
     /**
      * @param Request $request
-     * @param MarketOrderCollectionInterface $orderCollection
+     * @param CollectionInterface $orderCollection
      * @return JsonResponse
      */
     #[Route('/cart', name: 'app_market_place_product_order_cart', methods: ['POST', 'GET'])]
     public function cart(
-        Request                        $request,
-        MarketOrderCollectionInterface $orderCollection,
+        Request             $request,
+        CollectionInterface $orderCollection,
     ): JsonResponse
     {
         $session = $request->getSession();
@@ -128,18 +125,18 @@ class OrderController extends AbstractController
     /**
      * @param Request $request
      * @param UserInterface|null $user
-     * @param MarketOrderProcessorInterface $orderProcessor
-     * @param MarketUserManagerInterface $userManager
-     * @param MarketOrderCollectionInterface $orderCollection
+     * @param ProcessorInterface $orderProcessor
+     * @param UserManagerInterface $userManager
+     * @param CollectionInterface $orderCollection
      * @return JsonResponse
      */
     #[Route('/{product}', name: 'app_market_place_product_order', methods: ['POST'])]
     public function order(
-        Request                        $request,
-        ?UserInterface                 $user,
-        MarketOrderProcessorInterface  $orderProcessor,
-        MarketUserManagerInterface     $userManager,
-        MarketOrderCollectionInterface $orderCollection,
+        Request              $request,
+        ?UserInterface       $user,
+        ProcessorInterface   $orderProcessor,
+        UserManagerInterface $userManager,
+        CollectionInterface  $orderCollection,
     ): JsonResponse
     {
         $data = $request->toArray();

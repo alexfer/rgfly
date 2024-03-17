@@ -9,18 +9,18 @@ use App\Entity\MarketPlace\MarketOrders;
 use App\Entity\MarketPlace\MarketOrdersProduct;
 use App\Entity\MarketPlace\MarketProduct;
 use App\Helper\MarketPlace\MarketPlaceHelper;
-use App\Service\MarketPlace\Market\Order\Interface\MarketOrderProcessorInterface;
+use App\Service\MarketPlace\Market\Order\Interface\ProcessorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class MarketOrderProcessor implements MarketOrderProcessorInterface
+class Processor implements ProcessorInterface
 {
 
     /**
-     * @var Request|null
+     * @var Request
      */
-    protected ?Request $request;
+    protected Request $request;
 
     /**
      * @var string|null

@@ -3,17 +3,18 @@
 namespace App\Service\MarketPlace\Market\Customer;
 
 use App\Entity\MarketPlace\MarketCustomer;
-use App\Service\MarketPlace\Market\Customer\Interface\MarketUserManagerInterface;
+use App\Entity\User;
+use App\Service\MarketPlace\Market\Customer\Interface\UserManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class MarketUserManager implements MarketUserManagerInterface
+readonly class UserManager implements UserManagerInterface
 {
 
     /**
      * @param EntityManagerInterface $em
      */
-    public function __construct(private readonly EntityManagerInterface $em)
+    public function __construct(private EntityManagerInterface $em)
     {
 
     }
@@ -31,5 +32,10 @@ class MarketUserManager implements MarketUserManagerInterface
             $customer = new MarketCustomer();
         }
         return $customer;
+    }
+
+    public function existsCustomer(string $email): ?User
+    {
+        return $this->em->getRepository(User::class)->findOneBy(['email' => $email]);
     }
 }

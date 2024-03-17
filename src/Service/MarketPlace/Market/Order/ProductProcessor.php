@@ -7,12 +7,12 @@ use App\Entity\MarketPlace\MarketCustomer;
 use App\Entity\MarketPlace\MarketCustomerOrders;
 use App\Entity\MarketPlace\MarketOrders;
 use App\Entity\MarketPlace\MarketOrdersProduct;
-use App\Service\MarketPlace\Market\Order\Interface\MarketOrderProductInterface;
+use App\Service\MarketPlace\Market\Order\Interface\ProductInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class MarketOrderProductProcessor implements MarketOrderProductInterface
+class ProductProcessor implements ProductInterface
 {
 
     private readonly array $payload;

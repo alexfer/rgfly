@@ -3,9 +3,9 @@
 namespace App\Service\MarketPlace\Market\Order;
 
 use App\Service\MarketPlace\Currency;
-use App\Service\MarketPlace\Market\Order\Interface\MarketOrderSummaryInterface;
+use App\Service\MarketPlace\Market\Order\Interface\SummaryInterface;
 
-class MarketOrderSummary implements MarketOrderSummaryInterface
+class Summary implements SummaryInterface
 {
     public function summary(array $orders, bool $formatted = false): array
     {
