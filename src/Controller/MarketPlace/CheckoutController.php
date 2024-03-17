@@ -8,7 +8,6 @@ use App\Form\Type\User\LoginType;
 use App\Service\MarketPlace\Market\Checkout\Interface\ProcessorInterface as CheckoutProcessorInterface;
 use App\Service\MarketPlace\Market\Customer\Interface\ProcessorInterface as CustomerProcessorInterface;
 use App\Service\MarketPlace\Market\Customer\Interface\UserManagerInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,8 +31,10 @@ class CheckoutController extends AbstractController
      * @param CheckoutProcessorInterface $checkoutProcessor
      * @param CustomerProcessorInterface $customerProcessor
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    #[Route('/{order}/{session?}', name: 'app_market_place_order_checkout', methods: ['GET', 'POST'])]
+    #[Route('/{order}', name: 'app_market_place_order_checkout', methods: ['GET', 'POST'])]
     public function checkout(
         Request                    $request,
         ?UserInterface             $user,
@@ -62,9 +63,12 @@ class CheckoutController extends AbstractController
                 return $this->redirectToRoute('app_market_place_order_summary');
             }
 
-            if ($userManager->existsCustomer($form->get('email')->getData())) {
+            $securityContext = $this->container->get('security.authorization_checker');
+            $isGranted = $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED');
+
+            if ($userManager->existsCustomer($form->get('email')->getData()) && !$isGranted) {
                 $this->addFlash('danger', $translator->trans('email.unique', [], 'validators'));
-                return $this->redirectToRoute('app_market_place_order_checkout', ['order' => $request->get('order'), 'session' => $sessionId]);
+                return $this->redirectToRoute('app_market_place_order_checkout', ['order' => $request->get('order')]);
             }
 
             $args = [
@@ -86,16 +90,16 @@ class CheckoutController extends AbstractController
 
                 $user = $customerProcessor->addUser($password);
 
-                $customerProcessor->addCustomer($user, $args);
+                $customerProcessor->bind($form)->addCustomer($user);
             } else {
-                $customerProcessor->updateCustomer($args);
+                $customerProcessor->bind($form)->updateCustomer($customer, $form->getData());
             }
 
             $checkoutProcessor->addInvoice(new MarketInvoice());
             $checkoutProcessor->updateOrder();
             $session->set('quantity', $checkoutProcessor->countOrders());
 
-            return $this->redirectToRoute('app_market_place_order_success', ['order' => $order->getNumber(), 'session' => $sessionId]);
+            return $this->redirectToRoute('app_market_place_order_success');
         }
 
         $sum = $checkoutProcessor->sum();
@@ -117,10 +121,10 @@ class CheckoutController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/order-success/login/{session?}', name: 'app_market_place_order_success', methods: ['GET', 'POST'])]
-    public function cashSuccess(
-        Request                $request,
-        AuthenticationUtils    $authenticationUtils,
+    #[Route('/order-success/login', name: 'app_market_place_order_success', methods: ['GET', 'POST'])]
+    public function checkoutSuccess(
+        Request             $request,
+        AuthenticationUtils $authenticationUtils,
     ): Response
     {
         $securityContext = $this->container->get('security.authorization_checker');

@@ -5,6 +5,7 @@ namespace App\Service\MarketPlace\Market\Customer\Interface;
 use App\Entity\MarketPlace\MarketCustomer;
 use App\Entity\MarketPlace\MarketOrders;
 use App\Entity\User;
+use Symfony\Component\Form\FormInterface;
 
 interface ProcessorInterface
 {
@@ -24,14 +25,20 @@ interface ProcessorInterface
 
     /**
      * @param User $user
-     * @param array $args
      * @return void
      */
-    public function addCustomer(User $user, array $args): void;
+    public function addCustomer(User $user): void;
 
     /**
-     * @param array $args
+     * @param MarketCustomer $customer
+     * @param mixed $formData
      * @return void
      */
-    public function updateCustomer(array $args): void;
+    public function updateCustomer(MarketCustomer $customer, mixed $formData): void;
+
+    /**
+     * @param FormInterface $form
+     * @return self
+     */
+    public function bind(FormInterface $form): self;
 }

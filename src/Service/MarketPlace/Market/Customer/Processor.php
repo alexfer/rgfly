@@ -9,6 +9,7 @@ use App\Entity\MarketPlace\MarketOrders;
 use App\Entity\User;
 use App\Service\MarketPlace\Market\Customer\Interface\ProcessorInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -19,6 +20,8 @@ class Processor implements ProcessorInterface
      * @var mixed
      */
     protected mixed $formData;
+
+    protected array $args;
 
     /**
      * @var MarketCustomer
@@ -36,7 +39,7 @@ class Processor implements ProcessorInterface
      * @param UserPasswordHasherInterface $userPasswordHasher
      */
     public function __construct(
-        protected RequestStack                  $requestStack,
+        protected RequestStack                       $requestStack,
         private readonly EntityManagerInterface      $em,
         private readonly UserPasswordHasherInterface $userPasswordHasher,
     )
@@ -74,32 +77,34 @@ class Processor implements ProcessorInterface
 
     /**
      * @param User $user
-     * @param array $args
      * @return void
      */
-    public function addCustomer(User $user, array $args): void
+    public function addCustomer(User $user): void
     {
         $this->customer->setMember($user);
         $this->em->persist($this->customer);
-        $this->postUpdateAddress(new MarketAddress(), $args);
+        $this->postUpdateAddress(new MarketAddress(), null);
         $this->updateOrder();
     }
 
     /**
      * @param MarketAddress $address
-     * @param array $args
+     * @param MarketCustomer|null $customer
      * @return void
      */
-    protected function postUpdateAddress(MarketAddress $address, array $args): void
+    protected function postUpdateAddress(MarketAddress $address, ?MarketCustomer $customer): void
     {
-        $address->setCustomer($this->customer)
-            ->setLine1($args['line1'])
-            ->setLine2($args['line2'])
-            ->setCity($args['city'])
-            ->setCountry($args['country'])
-            ->setPostal($args['postal'])
-            ->setPhone($args['phone'])
-            ->setRegion($args['region']);
+        $address->setCustomer($customer ?: $this->customer)
+            ->setLine1($this->args['line1'])
+            ->setLine2($this->args['line2'])
+            ->setCity($this->args['city'])
+            ->setCountry($this->args['country'])
+            ->setPostal($this->args['postal'])
+            ->setPhone($this->args['phone'])
+            ->setRegion($this->args['region']);
+        if ($customer) {
+            $address->setUpdatedAt(new \DateTime());
+        }
         $this->em->persist($address);
     }
 
@@ -116,23 +121,42 @@ class Processor implements ProcessorInterface
 
     /**
      * @param array $args
+     * @param mixed $formData
      * @return void
      */
-    public function updateCustomer(array $args): void
+    public function updateCustomer(MarketCustomer $customer, mixed $formData): void
     {
-        $this->customer->setFirstName($this->formData->getFirstName())
-            ->setLastName($this->formData->getLastName())
-            ->setEmail($this->formData->getEmail())
-            ->setCountry($this->formData->getCountry())
-            ->setPhone($this->formData->getPhone())
+        $customer->setFirstName($formData->getFirstName())
+            ->setLastName($formData->getLastName())
+            ->setEmail($formData->getEmail())
+            ->setCountry($formData->getCountry())
+            ->setPhone($formData->getPhone())
             ->setUpdatedAt(new \DateTime());
 
-        $this->em->persist($this->customer);
-        $this->postUpdateAddress($this->customer->getMarketAddress(), $args);
+        $this->em->persist($customer);
+        $this->postUpdateAddress($customer->getMarketAddress(), $customer);
     }
 
     public function __destruct()
     {
         $this->em->flush();
+    }
+
+    /**
+     * @param FormInterface $form
+     * @return $this
+     */
+    public function bind(FormInterface $form): self
+    {
+        $this->args = [
+            'line1' => $form->get('line1')->getData(),
+            'line2' => $form->get('line2')->getData(),
+            'city' => $form->get('city')->getData(),
+            'region' => $form->get('region')->getData(),
+            'postal' => $form->get('postal')->getData(),
+            'country' => $form->get('country')->getData(),
+            'phone' => $form->get('phone')->getData(),
+        ];
+        return $this;
     }
 }
