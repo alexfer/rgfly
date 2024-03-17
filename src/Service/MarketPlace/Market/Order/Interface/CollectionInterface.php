@@ -2,7 +2,7 @@
 
 namespace App\Service\MarketPlace\Market\Order\Interface;
 
-interface MarketOrderCollectionInterface
+interface CollectionInterface
 {
     /**
      * @param string|null $sessionId

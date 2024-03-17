@@ -2,7 +2,7 @@
 
 namespace App\Service\MarketPlace\Market\Order\Interface;
 
-interface MarketOrderSummaryInterface
+interface SummaryInterface
 {
     /**
      * @param array $orders

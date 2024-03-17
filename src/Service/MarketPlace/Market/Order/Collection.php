@@ -3,10 +3,10 @@
 namespace App\Service\MarketPlace\Market\Order;
 
 use App\Entity\MarketPlace\MarketOrders;
-use App\Service\MarketPlace\Market\Order\Interface\MarketOrderCollectionInterface;
+use App\Service\MarketPlace\Market\Order\Interface\CollectionInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
-readonly class MarketOrderCollection implements MarketOrderCollectionInterface
+readonly class Collection implements CollectionInterface
 {
 
     /**

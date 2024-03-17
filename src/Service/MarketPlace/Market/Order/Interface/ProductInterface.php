@@ -6,7 +6,7 @@ use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketCustomer;
 use App\Entity\MarketPlace\MarketOrders;
 
-interface MarketOrderProductInterface
+interface ProductInterface
 {
     /**
      * @param MarketCustomer|null $customer
