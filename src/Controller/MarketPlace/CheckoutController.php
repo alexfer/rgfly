@@ -6,8 +6,8 @@ use App\Entity\MarketPlace\MarketInvoice;
 use App\Form\Type\MarketPlace\CustomerType;
 use App\Form\Type\User\LoginType;
 use App\Service\MarketPlace\Market\Checkout\Interface\ProcessorInterface as CheckoutProcessorInterface;
-use App\Service\MarketPlace\Market\Customer\Interface\ProcessorInterface as CustomerProcessorInterface;
-use App\Service\MarketPlace\Market\Customer\Interface\UserManagerInterface;
+use App\Service\MarketPlace\Market\Customer\Interface\{ProcessorInterface as CustomerProcessorInterface,
+    UserManagerInterface,};
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -70,16 +70,6 @@ class CheckoutController extends AbstractController
                 $this->addFlash('danger', $translator->trans('email.unique', [], 'validators'));
                 return $this->redirectToRoute('app_market_place_order_checkout', ['order' => $request->get('order')]);
             }
-
-            $args = [
-                'line1' => $form->get('line1')->getData(),
-                'line2' => $form->get('line2')->getData(),
-                'city' => $form->get('city')->getData(),
-                'region' => $form->get('region')->getData(),
-                'postal' => $form->get('postal')->getData(),
-                'country' => $form->get('country')->getData(),
-                'phone' => $form->get('phone')->getData(),
-            ];
 
             if (!$customer->getId()) {
 
