@@ -33,7 +33,7 @@ class Processor implements ProcessorInterface
      * @param EntityManagerInterface $em
      */
     public function __construct(
-        protected RequestStack                  $requestStack,
+        private readonly RequestStack           $requestStack,
         private readonly EntityManagerInterface $em,
     )
     {

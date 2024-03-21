@@ -6,9 +6,8 @@ use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketCategory;
 use App\Entity\MarketPlace\MarketCategoryProduct;
 use App\Entity\MarketPlace\MarketProduct;
-use App\Entity\MarketPlace\MarketProductAttach;
-use App\Entity\MarketPlace\MarketWishlist;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -22,6 +21,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class MarketProductRepository extends ServiceEntityRepository
 {
+    private string $sql;
+
     /**
      *
      * @param ManagerRegistry $registry
@@ -32,46 +33,24 @@ class MarketProductRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return string[]
-     */
-    private function columns(): array
-    {
-        return [
-            'p.id',
-            'p.slug',
-            'p.cost',
-            'p.name',
-            'p.short_name',
-            'c.name as category_name',
-            'c.slug as category_slug',
-            'm.name as market',
-            'm.phone',
-            'm.id as market_id',
-            'm.currency',
-            'm.slug as market_slug',
-        ];
-    }
-
-    /**
+     * @param int $offset
      * @param int $limit
-     * @return array|null
+     * @return array
+     * @throws Exception
      */
-    public function getProducts(int $limit = 10): ?array
+    public function getProductsFromSql(int $offset = 0, int $limit = 10): array
     {
-        $qb = $this->createQueryBuilder('p')
-            ->distinct()
-            ->join(MarketCategoryProduct::class, 'cp', Expr\Join::WITH, 'p.id = cp.product')
-            ->join(MarketCategory::class, 'c', Expr\Join::WITH, 'cp.category = c.id')
-            ->leftJoin(MarketCategory::class, 'cc', Expr\Join::WITH, 'c.parent = cc.id')
-            ->leftJoin(MarketProductAttach::class, 'pa', Expr\Join::WITH, 'pa.product = p.id')
-            ->leftJoin(MarketWishlist::class, 'w', Expr\Join::WITH, 'w.product = p.id')
-            ->join(Market::class, 'm', Expr\Join::WITH, 'p.market = m.id')
-            ->andWhere('p.deleted_at IS NULL')
-            ->setMaxResults($limit)
-            ->setCacheable(true)
-            ->setCacheMode('p.id');
+        $products = [];
 
-        return $qb->getQuery()->getResult();
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare('select get_products(?, ?)');
+        $stmt->bindValue(1, $offset);
+        $stmt->bindValue(2, $limit);
+
+        $query = $stmt->executeQuery();
+        $result = $query->fetchAllAssociative();
+
+        return json_decode($result[0]['get_products'], true) ?: $products;
     }
 
     /**
