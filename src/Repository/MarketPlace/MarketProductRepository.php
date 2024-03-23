@@ -40,7 +40,8 @@ class MarketProductRepository extends ServiceEntityRepository
      */
     private function bindPagination(
         Statement $statement,
-        int       $offset, int $limit
+        int       $offset,
+        int       $limit,
     ): Statement
     {
         $statement->bindValue('offset', $offset, \PDO::PARAM_INT);

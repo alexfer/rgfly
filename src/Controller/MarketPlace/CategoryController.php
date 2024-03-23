@@ -17,13 +17,31 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[Route('/market-place/category')]
 class CategoryController extends AbstractController
 {
-    private Request $request;
+    /**
+     * @var Request|null
+     */
+    private ?Request $request;
 
+    /**
+     * @var int
+     */
     private int $offset = 0;
 
+    /**
+     * @var int
+     */
     private int $limit = 8;
 
-    public function __construct(RequestStack $stack)
+    /**
+     * @param RequestStack $stack
+     * @param MarketProductRepository $repository
+     * @param EntityManagerInterface $em
+     */
+    public function __construct(
+        RequestStack                             $stack,
+        private readonly MarketProductRepository $repository,
+        private readonly EntityManagerInterface  $em,
+    )
     {
         $this->request = $stack->getCurrentRequest();
         $this->offset = $this->request->get('offset') ?: $this->offset;
@@ -31,102 +49,81 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param MarketProductRepository $marketProductRepository
      * @param UserInterface|null $user
-     * @param EntityManagerInterface $em
+     * @return MarketCustomer|null
+     */
+    protected function customer(?UserInterface $user): ?MarketCustomer
+    {
+        return $this->em->getRepository(MarketCustomer::class)->findOneBy(['member' => $user]);
+    }
+
+    /**
+     * @param string $slug
+     * @return MarketCategory|null
+     */
+    protected function category(string $slug): ?MarketCategory
+    {
+        return $this->em->getRepository(MarketCategory::class)->findOneBy(['slug' => $slug]);
+    }
+
+    /**
+     * @param UserInterface|null $user
      * @return Response
      * @throws Exception
      */
     #[Route('', name: 'app_market_place_category')]
-    public function index(
-        Request                 $request,
-        MarketProductRepository $marketProductRepository,
-        ?UserInterface          $user,
-        EntityManagerInterface  $em,
-    ): Response
+    public function index(?UserInterface $user): Response
     {
-        $products = $marketProductRepository->fetchProducts($this->offset, $this->limit);
-        $category = $em->getRepository(MarketCategory::class)->findOneBy(['parent' => null], ['id' => 'asc']);
-
-        $customer = $em->getRepository(MarketCustomer::class)->findOneBy([
-            'member' => $user,
-        ]);
+        $products = $this->repository->fetchProducts($this->offset, $this->limit);
+        $category = $this->em->getRepository(MarketCategory::class)->findOneBy(['parent' => null], ['id' => 'asc']);
 
         return $this->render('market_place/category/index.html.twig', [
             'products' => $products['data'],
             'rows_count' => $products['rows_count'],
             'category' => $category,
-            'customer' => $customer,
+            'customer' => $this->customer($user),
         ]);
     }
 
     /**
-     * @param Request $request
-     * @param EntityManagerInterface $em
      * @param UserInterface|null $user
-     * @param MarketProductRepository $marketProductRepository
      * @return Response
      * @throws Exception
      */
     #[Route('/{parent}', name: 'app_market_place_parent_category')]
-    public function parent(
-        Request                 $request,
-        EntityManagerInterface  $em,
-        ?UserInterface          $user,
-        MarketProductRepository $marketProductRepository,
-    ): Response
+    public function parent(?UserInterface $user): Response
     {
-        $slug = $request->get('parent');
-        $category = $em->getRepository(MarketCategory::class)
-            ->findOneBy([
-                'slug' => $slug,
-            ]);
-
+        $slug = $this->request->get('parent');
+        $category = $this->category($slug);
         $children = $category->getChildren()->toArray();
-        $products = $marketProductRepository->findProductsByParentCategory($slug, $this->offset, $this->limit);
-        $customer = $em->getRepository(MarketCustomer::class)->findOneBy([
-            'member' => $user,
-        ]);
+        $products = $this->repository->findProductsByParentCategory($slug, $this->offset, $this->limit);
 
         return $this->render('market_place/category/index.html.twig', [
             'category' => $category,
             'children' => $children,
             'products' => $products['data'],
             'rows_count' => $products['rows_count'],
-            'customer' => $customer,
+            'customer' => $this->customer($user),
         ]);
     }
 
     /**
-     * @param Request $request
-     * @param EntityManagerInterface $em
      * @param UserInterface|null $user
-     * @param MarketProductRepository $marketProductRepository
      * @return Response
+     * @throws Exception
      */
     #[Route('/{parent}/{child}', name: 'app_market_place_child_category')]
-    public function children(
-        Request                 $request,
-        EntityManagerInterface  $em,
-        ?UserInterface          $user,
-        MarketProductRepository $marketProductRepository,
-    ): Response
+    public function children(?UserInterface $user): Response
     {
-        $child = $request->get('child');
-        $category = $em->getRepository(MarketCategory::class)->findOneBy(['slug' => $child]);
-
-        $products = $marketProductRepository->findProductsByChildCategory($category->getId(), $this->offset, $this->limit);
-
-        $customer = $em->getRepository(MarketCustomer::class)->findOneBy([
-            'member' => $user,
-        ]);
+        $child = $this->request->get('child');
+        $category = $this->category($child);
+        $products = $this->repository->findProductsByChildCategory($category->getId(), $this->offset, $this->limit);
 
         return $this->render('market_place/category/index.html.twig', [
             'category' => $category,
             'products' => $products['data'],
             'rows_count' => $products['rows_count'],
-            'customer' => $customer,
+            'customer' => $this->customer($user),
         ]);
     }
 }
