@@ -5,9 +5,11 @@ namespace App\Controller\MarketPlace;
 use App\Entity\MarketPlace\MarketCategory;
 use App\Entity\MarketPlace\MarketCustomer;
 use App\Repository\MarketPlace\MarketProductRepository;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -15,29 +17,46 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[Route('/market-place/category')]
 class CategoryController extends AbstractController
 {
+    private Request $request;
+
+    private int $offset = 0;
+
+    private int $limit = 8;
+
+    public function __construct(RequestStack $stack)
+    {
+        $this->request = $stack->getCurrentRequest();
+        $this->offset = $this->request->get('offset') ?: $this->offset;
+        $this->limit = $this->request->get('limit') ?: $this->limit;
+    }
+
     /**
+     * @param Request $request
      * @param MarketProductRepository $marketProductRepository
      * @param UserInterface|null $user
      * @param EntityManagerInterface $em
      * @return Response
+     * @throws Exception
      */
     #[Route('', name: 'app_market_place_category')]
     public function index(
+        Request                 $request,
         MarketProductRepository $marketProductRepository,
         ?UserInterface          $user,
         EntityManagerInterface  $em,
     ): Response
     {
-        // TODO: Replace with psql function - get_products
-        $products = $marketProductRepository->getProducts(8);
-        shuffle($products);
+        $products = $marketProductRepository->fetchProducts($this->offset, $this->limit);
+        $category = $em->getRepository(MarketCategory::class)->findOneBy(['parent' => null], ['id' => 'asc']);
 
         $customer = $em->getRepository(MarketCustomer::class)->findOneBy([
             'member' => $user,
         ]);
 
         return $this->render('market_place/category/index.html.twig', [
-            'products' => $products,
+            'products' => $products['data'],
+            'rows_count' => $products['rows_count'],
+            'category' => $category,
             'customer' => $customer,
         ]);
     }
@@ -48,6 +67,7 @@ class CategoryController extends AbstractController
      * @param UserInterface|null $user
      * @param MarketProductRepository $marketProductRepository
      * @return Response
+     * @throws Exception
      */
     #[Route('/{parent}', name: 'app_market_place_parent_category')]
     public function parent(
@@ -57,19 +77,14 @@ class CategoryController extends AbstractController
         MarketProductRepository $marketProductRepository,
     ): Response
     {
+        $slug = $request->get('parent');
         $category = $em->getRepository(MarketCategory::class)
             ->findOneBy([
-                'slug' => $request->get('parent'),
+                'slug' => $slug,
             ]);
 
-        $categories = [];
         $children = $category->getChildren()->toArray();
-
-        foreach ($children as $child) {
-            $categories[$child->getId()] = $child->getName();
-        }
-        $products = $marketProductRepository->findProductsByParentCategory(array_keys($categories));
-
+        $products = $marketProductRepository->findProductsByParentCategory($slug, $this->offset, $this->limit);
         $customer = $em->getRepository(MarketCustomer::class)->findOneBy([
             'member' => $user,
         ]);
@@ -77,7 +92,8 @@ class CategoryController extends AbstractController
         return $this->render('market_place/category/index.html.twig', [
             'category' => $category,
             'children' => $children,
-            'products' => $products,
+            'products' => $products['data'],
+            'rows_count' => $products['rows_count'],
             'customer' => $customer,
         ]);
     }
@@ -97,13 +113,10 @@ class CategoryController extends AbstractController
         MarketProductRepository $marketProductRepository,
     ): Response
     {
-        $category = $em->getRepository(MarketCategory::class)
-            ->findOneBy([
-                'slug' => $request->get('child'),
-            ]);
+        $child = $request->get('child');
+        $category = $em->getRepository(MarketCategory::class)->findOneBy(['slug' => $child]);
 
-        // TODO: Replace with psql function - get_product
-        $products = $marketProductRepository->findProductsByChildrenCategory($category->getId());
+        $products = $marketProductRepository->findProductsByChildCategory($category->getId(), $this->offset, $this->limit);
 
         $customer = $em->getRepository(MarketCustomer::class)->findOneBy([
             'member' => $user,
@@ -111,7 +124,8 @@ class CategoryController extends AbstractController
 
         return $this->render('market_place/category/index.html.twig', [
             'category' => $category,
-            'products' => $products,
+            'products' => $products['data'],
+            'rows_count' => $products['rows_count'],
             'customer' => $customer,
         ]);
     }

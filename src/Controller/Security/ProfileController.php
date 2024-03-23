@@ -225,8 +225,9 @@ class ProfileController extends AbstractController
                 $details->getUser()->setAttach($attach);
                 $details->addAttach($attach);
             }
-            $details->setFirstName($form->get('first_name')->getData());
-            $details->setLastName($form->get('last_name')->getData());
+
+            $details->setFirstName($form->get('first_name')->getData())
+                ->setLastName($form->get('last_name')->getData());
 
             $details->getUserSocial()
                 ->setFacebookProfile($form->get('facebook_profile')->getData())

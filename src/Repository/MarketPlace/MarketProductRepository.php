@@ -2,14 +2,11 @@
 
 namespace App\Repository\MarketPlace;
 
-use App\Entity\MarketPlace\Market;
-use App\Entity\MarketPlace\MarketCategory;
-use App\Entity\MarketPlace\MarketCategoryProduct;
 use App\Entity\MarketPlace\MarketProduct;
-use App\Entity\MarketPlace\MarketProductAttach;
-use App\Entity\MarketPlace\MarketWishlist;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\Expr;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Statement;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -22,6 +19,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class MarketProductRepository extends ServiceEntityRepository
 {
+    private Connection $connection;
+
     /**
      *
      * @param ManagerRegistry $registry
@@ -29,94 +28,89 @@ class MarketProductRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, MarketProduct::class);
+        $this->connection = $this->getEntityManager()->getConnection();
     }
 
     /**
-     * @return string[]
-     */
-    private function columns(): array
-    {
-        return [
-            'p.id',
-            'p.slug',
-            'p.cost',
-            'p.name',
-            'p.short_name',
-            'c.name as category_name',
-            'c.slug as category_slug',
-            'm.name as market',
-            'm.phone',
-            'm.id as market_id',
-            'm.currency',
-            'm.slug as market_slug',
-        ];
-    }
-
-    /**
+     * @param Statement $statement
+     * @param int $offset
      * @param int $limit
-     * @return array|null
+     * @return Statement
+     * @throws Exception
      */
-    public function getProducts(int $limit = 10): ?array
+    private function bindPagination(
+        Statement $statement,
+        int       $offset, int $limit
+    ): Statement
     {
-        $qb = $this->createQueryBuilder('p')
-            ->distinct()
-            ->join(MarketCategoryProduct::class, 'cp', Expr\Join::WITH, 'p.id = cp.product')
-            ->join(MarketCategory::class, 'c', Expr\Join::WITH, 'cp.category = c.id')
-            ->leftJoin(MarketCategory::class, 'cc', Expr\Join::WITH, 'c.parent = cc.id')
-            ->leftJoin(MarketProductAttach::class, 'pa', Expr\Join::WITH, 'pa.product = p.id')
-            ->leftJoin(MarketWishlist::class, 'w', Expr\Join::WITH, 'w.product = p.id')
-            ->join(Market::class, 'm', Expr\Join::WITH, 'p.market = m.id')
-            ->andWhere('p.deleted_at IS NULL')
-            ->setMaxResults($limit)
-            ->setCacheable(true)
-            ->setCacheMode('p.id');
+        $statement->bindValue('offset', $offset, \PDO::PARAM_INT);
+        $statement->bindValue('limit', $limit, \PDO::PARAM_INT);
+        return $statement;
+    }
 
-        return $qb->getQuery()->getResult();
+    /**
+     * @param int $offset
+     * @param int $limit
+     * @return array
+     * @throws Exception
+     */
+    public function fetchProducts(int $offset = 0, int $limit = 10): array
+    {
+        $products = [];
+
+        $statement = $this->connection->prepare('select get_products(:offset, :limit)');
+        $statement = $this->bindPagination($statement, $offset, $limit);
+        $result = $statement->executeQuery()->fetchAllAssociative();
+
+        return json_decode($result[0]['get_products'], true) ?: $products;
     }
 
     /**
      * @param int $id
+     * @param int $offset
      * @param int $limit
-     * @return array|null
+     * @return array
+     * @throws Exception
      */
-    public function findProductsByChildrenCategory(int $id, int $limit = 10): ?array
+    public function findProductsByChildCategory(
+        int $id,
+        int $offset = 0,
+        int $limit = 10,
+    ): array
     {
-        $qb = $this->createQueryBuilder('p')
-            ->distinct()
-            ->join(MarketCategoryProduct::class, 'cp', Expr\Join::WITH, 'p.id = cp.product')
-            ->join(MarketCategory::class, 'c', Expr\Join::WITH, 'cp.category = c.id')
-            ->leftJoin(MarketCategory::class, 'cc', Expr\Join::WITH, 'c.parent = cc.id')
-            ->join(Market::class, 'm', Expr\Join::WITH, 'p.market = m.id')
-            ->where('cp.category = :id')
-            ->setParameter('id', $id)
-            ->andWhere('p.deleted_at IS NULL')
-            ->setMaxResults($limit)
-            ->setCacheable(true)
-            ->setCacheMode('p.id');
+        $products = [];
 
-        return $qb->getQuery()->getResult();
+        $statement = $this->connection->prepare('select get_products_by_child_category(:child_id, :offset, :limit)');
+        $statement->bindValue('child_id', $id, \PDO::PARAM_INT);
+        $statement = $this->bindPagination($statement, $offset, $limit);
+        $result = $statement->executeQuery()->fetchAllAssociative();
+
+        return json_decode($result[0]['get_products_by_child_category'], true) ?: $products;
     }
+
 
     /**
-     * @param array $ids
+     * @param string $slug
+     * @param int $offset
      * @param int $limit
-     * @return array|null
+     * @return array
+     * @throws Exception
      */
-    public function findProductsByParentCategory(array $ids, int $limit = 10): ?array
+    public function findProductsByParentCategory(
+        string $slug,
+        int    $offset = 0,
+        int    $limit = 10,
+    ): array
     {
-        $qb = $this->createQueryBuilder('p')
-            ->distinct()
-            ->join(MarketCategoryProduct::class, 'cp', Expr\Join::WITH, 'p.id = cp.product')
-            ->join(MarketCategory::class, 'c', Expr\Join::WITH, 'cp.category = c.id')
-            ->join(Market::class, 'm', Expr\Join::WITH, 'p.market = m.id')
-            ->where('cp.category IN (:ids)')
-            ->setParameter('ids', $ids)
-            ->andWhere('p.deleted_at IS NULL')
-            ->setMaxResults($limit)
-            ->setCacheable(true)
-            ->setCacheMode('p.id');
+        $products = [];
 
-        return $qb->getQuery()->getResult();
+        $statement = $this->connection->prepare('select get_products_by_parent_category(:slug, :offset, :limit)');
+        $statement->bindValue('slug', $slug, \PDO::PARAM_STR);
+        $statement = $this->bindPagination($statement, $offset, $limit);
+        $result = $statement->executeQuery()->fetchAllAssociative();
+
+        return json_decode($result[0]['get_products_by_parent_category'], true) ?: $products;
 
     }
+
 }

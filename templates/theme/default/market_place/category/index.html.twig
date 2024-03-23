@@ -20,14 +20,14 @@
                 <div class="row g-4">
                     {% for product in products %}
                         <div class="col-sm-6 col-lg-4 col-xl-3">
-                            <div class="card product-card h-auto">
+                            <div class="card shadow-sm h-100">
                                 <div class="position-relative">
-                                    {% if product.marketProductAttaches.count %}
-                                        {% set _picture = 'storage/product/picture/' ~ product.id ~ '/' ~ product.marketProductAttaches.first.attach.name %}
+                                    {% if product.attach_name %}
+                                        {% set _picture = 'storage/product/picture/' ~ product.id ~ '/' ~ product.attach_name %}
                                         <img src="{{ asset(_picture)|imagine_filter('product_preview') }}"
                                              class="card-img-top h-auto" alt="{{ product.name }}">
                                     {% else %}
-                                        <img src="{{ asset('http://placehold.it/300x200') }}"
+                                        <img src="{{ asset('https://placehold.it/300x200') }}"
                                              class="card-img-top h-auto"
                                              alt="{{ product.name }}">
                                     {% endif %}
@@ -44,12 +44,12 @@
                                         </div>
                                         <div class="w-100 mt-auto">
                                             <span class="badge bg-secondary text-dark p-1">
-                                                {% if product.marketCategoryProducts.first.category.parent is null %}
-                                                    <a href="{{ path('app_market_place_child_category', {parent:  product.marketCategoryProducts.first.category.parent.slug, child: product.marketCategoryProducts.first.category.slug}) }}"
-                                                       class="text-white fs-6 fw-light px-2">{{ product.marketCategoryProducts.first.category.name }}</a>
+                                                {% if product.parent_category_name is null %}
+                                                    <a href="{{ path('app_market_place_child_category', {parent:  product.parent_category_slug, child: product.category.slug}) }}"
+                                                       class="text-white fs-6 fw-light px-2">{{ product.category_name }}</a>
                                                 {% else %}
-                                                    <a href="{{ path('app_market_place_parent_category', {parent:   product.marketCategoryProducts.first.category.parent.slug }) }}"
-                                                       class="text-white fs-6 fw-light px-2">{{ product.marketCategoryProducts.first.category.parent.name }}</a>
+                                                    <a href="{{ path('app_market_place_parent_category', {parent:   product.parent_category_slug }) }}"
+                                                       class="text-white fs-6 fw-light px-2">{{ product.parent_category_name }}</a>
                                                 {% endif %}
                                             </span>
                                         </div>
@@ -61,7 +61,7 @@
                                             <form class="shopping-cart" method="post"
                                                   action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
                                                 <button class="btn btn-dark rounded-1"
-                                                        data-id="{{ product.market.id }}-{{ product.id }}"
+                                                        data-id="{{ product.market_id }}-{{ product.id }}"
                                                         type="submit" {% if product.quantity == 0 %}disabled{% endif %}>
                                                     <i class="fa fa-shopping-cart mt-1 me-2"></i>{{ 'market.product.add'|trans }}
                                                 </button>
@@ -73,19 +73,19 @@
                                                 {% set cost = product.cost %}
                                                 {% set discount_cost = (cost - ((cost * percent) - percent)/100) %}
                                                 <h5 class="mb-0">{{ (discount_cost + product.fee)|amount_format }}
-                                                    <small>{{ product.market.currency|currency }}</small></h5>
+                                                    <small>{{ product.currency|currency }}</small></h5>
                                             </div>
                                         </li>
                                     </ul>
                                     <h5 class="card-title h-auto mb-1 mt-3 mx-3 fw-normal">
                                         <a title="{{ product.name }}"
-                                           href="{{ path('app_market_place_product', {slug: product.slug}) }}">{{ product.shortName }}</a>
+                                           href="{{ path('app_market_place_product', {slug: product.slug}) }}">{{ product.short_name }}</a>
                                     </h5>
                                     <a href="{{ path('app_market_place_child_category', {
-                                        parent:  product.marketCategoryProducts.first.category.parent.slug,
-                                        child: product.marketCategoryProducts.first.category.slug
+                                        parent:  product.parent_category_slug,
+                                        child: product.category_slug
                                     }) }}" class="btn btn-link text-decoration-none text-secondary d-flex text-start">
-                                        <i class="bi bi-ui-radios-grid pe-2 badge-child text-opacity-50 text-success"></i> {{ product.marketCategoryProducts.first.category.name }}
+                                        <i class="bi bi-ui-radios-grid pe-2 badge-child text-opacity-50 text-success"></i> {{ product.category_name }}
                                     </a>
                                     <ul class="list-group list-group-borderless border-top-0 mt-2">
                                         <li class="list-group-item pb-0 d-flex border-0">
@@ -96,13 +96,13 @@
                                         <li class="list-group-item pb-0 d-flex border-0">
                                             <i class="bi bi-shop me-2 text-opacity-50 text-info"></i>
                                             <a class="text-decoration-none"
-                                               href="{{ path('app_market_place_market', {slug:  product.market.slug}) }}">{{ product.market.name }}</a>
+                                               href="{{ path('app_market_place_market', {slug:  product.market_slug}) }}">{{ product.market }}</a>
                                         </li>
-                                        {% if product.market.phone %}
+                                        {% if product.market_phone %}
                                             <li class="list-group-item small pb-0 d-flex border-0">
                                                 <i class="bi bi-phone text-secondary me-2"></i>
-                                                <a href="tel:{{ product.market.phone }}"
-                                                   class="text-secondary">{{ product.market.phone }}</a>
+                                                <a href="tel:{{ product.market_phone }}"
+                                                   class="text-secondary">{{ product.market_phone }}</a>
                                             </li>
                                         {% endif %}
                                     </ul>
@@ -115,7 +115,7 @@
                                         </a>
                                         <form class="add-wishlist" name="wishlist"
                                               action="{{ path('app_market_place_add_wishlist', {slug: product.slug}) }}">
-                                            <input name="market" type="hidden" value="{{ product.market.id }}">
+                                            <input name="market" type="hidden" value="{{ product.market_id }}">
                                             {% include 'market_place/wishlist.html.twig' with {'extra': null} %}
                                         </form>
                                     </div>
@@ -128,7 +128,8 @@
                              width="340" alt="{{ 'table.footer.not_found'|trans }}">
                         <p class="text-center">
                             {{ 'table.footer.not_found'|trans }}
-                            <a class="d-block fs-5" href="{{ path('app_market_place_index') }}">{{ 'form.action.back'|trans }}</a>
+                            <a class="d-block fs-5"
+                               href="{{ path('app_market_place_index') }}">{{ 'form.action.back'|trans }}</a>
                         </p>
                     {% endfor %}
                 </div>
