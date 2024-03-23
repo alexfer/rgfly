@@ -47,10 +47,6 @@ class CheckoutController extends AbstractController
         $session = $request->getSession();
         $sessionId = $session->getId();
 
-        if ($request->get('session') !== null) {
-            $sessionId = $request->get('session');
-        }
-
         $customer = $userManager->getUserCustomer($user);
         $form = $this->createForm(CustomerType::class, $customer);
         $order = $checkoutProcessor->findOrder($sessionId);
