@@ -1,5 +1,5 @@
-DROP FUNCTION IF EXISTS public.get_products(start integer, row_count integer);
-CREATE OR REPLACE FUNCTION public.get_products(start integer DEFAULT 0, row_count integer DEFAULT 10)
+DROP FUNCTION IF EXISTS public.get_products_by_child_category(child_id integer, start integer, row_count integer);
+CREATE OR REPLACE FUNCTION public.get_products_by_child_category(child_id integer, start integer DEFAULT 0, row_count integer DEFAULT 10)
     RETURNS json
     LANGUAGE plpgsql
 AS $function$DECLARE
@@ -41,16 +41,13 @@ BEGIN
     ) a ON a.product_id = p.id
              LEFT JOIN market_wishlist w ON w.product_id = p.id
              JOIN market m ON  m.id = p.market_id
-    WHERE p.deleted_at IS NULL
-    ORDER BY RANDOM()
+    WHERE p.deleted_at IS NULL AND cp.category_id = child_id
     OFFSET start LIMIT row_count;
-
     SELECT COUNT(*) INTO rows_count
     FROM market_product p
              JOIN market_category_product cp ON p.id = cp.product_id
              JOIN market_category c ON c.id = cp.category_id
-    WHERE p.deleted_at IS NULL;
-
+    WHERE p.deleted_at IS NULL AND cp.category_id = child_id;
     RETURN json_build_object(
             'data', get_products,
             'rows_count', rows_count

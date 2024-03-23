@@ -15,8 +15,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[Route('/market-place')]
 class IndexController extends AbstractController
 {
-
-
     /**
      * @param Request $request
      * @param UserInterface|null $user
@@ -36,16 +34,15 @@ class IndexController extends AbstractController
         $offset = $request->get('offset') ?: 0;
         $limit = $request->get('limit') ?: 8;
 
-        $products = $repository->getProductsFromSql($offset, $limit);
-
-        shuffle($products);
+        $products = $repository->fetchProducts($offset, $limit);
 
         $customer = $em->getRepository(MarketCustomer::class)->findOneBy([
             'member' => $user,
         ]);
 
         return $this->render('market_place/index.html.twig', [
-            'products' => $products,
+            'products' => $products['data'],
+            'rows_count' => $products['rows_count'],
             'customer' => $customer,
         ]);
     }

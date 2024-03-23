@@ -13,7 +13,7 @@
                     <div class="row mt-lg-2 mb-4 g-4">
                         {% for product in products %}
                             <div class="col-sm-6 col-lg-4 col-xl-3">
-                                <div class="card product-card h-auto">
+                                <div class="card shadow-sm h-100">
                                     <div class="position-relative">
                                         {% if product.attach_name %}
                                             {% set _picture = 'storage/product/picture/' ~ product.id ~ '/' ~ product.attach_name %}
@@ -52,7 +52,8 @@
                                                 <form class="shopping-cart" method="post"
                                                       action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
                                                     <button class="btn btn-dark d-flex rounded-1"
-                                                            data-slug="{{ product.slug }}" type="submit" {% if product.quantity == 0 %}disabled{% endif %}>
+                                                            data-slug="{{ product.slug }}" type="submit"
+                                                            {% if product.quantity == 0 %}disabled{% endif %}>
                                                         <i class="fa fa-shopping-cart mt-1 me-2"></i>{{ 'market.product.add'|trans }}
                                                     </button>
                                                 </form>
