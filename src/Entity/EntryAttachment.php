@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 class EntryAttachment
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ORM\Column(type: "integer")]
     private ?int $id = null;
     #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'entryAttachments')]
     private ?Attach $attach = null;

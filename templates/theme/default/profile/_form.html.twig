@@ -86,22 +86,22 @@
 <div class="row align-items-center">
     <div class="col-4">
         {{ form_label(form.facebook_profile, 'Facebook Profile', {label_attr: {class: 'form-label visually-hidden'}}) }}
-        <div class="input-group mb-2">
-            <span class="input-group-text" id="twitter-addon"><i class="bi bi-facebook fs-4"></i></span>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="twitter-addon"><i class="bi bi-facebook text-primary fs-4"></i></span>
             {{ form_widget(form.facebook_profile, {attr: {class: 'form-control  w-50', placeholder: 'https://facebook-url'}}) }}
         </div>
     </div>
     <div class="col-4">
         {{ form_label(form.twittetr_profile, 'Twitter Profile', {label_attr: {class: 'form-label visually-hidden'}}) }}
         <div class="input-group mb-3">
-            <span class="input-group-text" id="twitter-addon"><i class="bi bi-twitter fs-4"></i></span>
+            <span class="input-group-text" id="twitter-addon"><i class="bi bi-twitter-x text-dark fs-4"></i></span>
             {{ form_widget(form.twittetr_profile, {attr: {class: 'form-control  w-50', placeholder: 'https://twitter-url'}}) }}
         </div>
     </div>
     <div class="col-4">
         {{ form_label(form.instagram_profile, 'Instagram Profile', {label_attr: {class: 'form-label visually-hidden'}}) }}
         <div class="input-group mb-3">
-            <span class="input-group-text" id="twitter-addon"><i class="bi bi-instagram fs-4"></i></span>
+            <span class="input-group-text" id="twitter-addon"><i class="bi bi-instagram text-dark-emphasis fs-4"></i></span>
             {{ form_widget(form.instagram_profile, {attr: {class: 'form-control  w-50', placeholder: 'https://instagram-url'}}) }}
         </div>
     </div>
