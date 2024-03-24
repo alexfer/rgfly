@@ -224,8 +224,12 @@ class ProductController extends AbstractController
                 $product->setDeletedAt($date);
             }
 
+            $em->persist($market);
+            $em->flush();
+
             $em = $this->handleRelations($em, $form, $product);
             $product->setSlug(MarketPlaceHelper::slug($product->getId()));
+
             $sku = $form->get('sku')->getData();
             if (!$sku) {
                 $sku = 'M' . $request->get('market') . '-C' . $requestCategory . '-P' . $product->getId() . '-N-' . mb_substr($form->get('name')->getData(), 0, 4, 'utf8') . '-C' . (int)$form->get('cost')->getData();
