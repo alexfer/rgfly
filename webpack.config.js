@@ -1,5 +1,5 @@
 const Encore = require('@symfony/webpack-encore');
-
+const theme = 'bootstrap';
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
 if (!Encore.isRuntimeEnvironmentConfigured()) {
@@ -7,82 +7,87 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 }
 
 Encore
-        // directory where compiled assets will be stored
-        .setOutputPath('public/build/')
-        // public path used by the web server to access the output path
-        .setPublicPath('/build')
-        // only needed for CDN's or sub-directory deploy
-        //.setManifestKeyPrefix('build/')
+    // directory where compiled assets will be stored
+    .setOutputPath('public/build/')
+    // public path used by the web server to access the output path
+    .setPublicPath('/build')
+    // only needed for CDN's or sub-directory deploy
+    //.setManifestKeyPrefix('build/')
 
-        /*
-         * ENTRY CONFIG
-         *
-         * Each entry will result in one JavaScript file (e.g. app.js)
-         * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
-         */
-        .addEntry('app', './assets/app.js')
-        .addEntry('layout', './assets/js/layout.js')
-        .addEntry('image', './assets/js/image.js')
-        .addEntry('responsive', './assets/js/responsive.js')
-        .addEntry('market-js', './assets/js/market.js')
-        .addStyleEntry('sidebar', './assets/styles/sidebar.css')
-        .addStyleEntry('market', './assets/styles/market.css')
-        //.addStyleEntry('global', './assets/styles/global.scss')
+    /*
+     * ENTRY CONFIG
+     *
+     * Each entry will result in one JavaScript file (e.g. app.js)
+     * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
+     */
+    /*
+     * Bootstrap 5
+     *
+     */
+    .addEntry('app', `./assets/${theme}/app.js`)
+    .addEntry('layout', `./assets/${theme}/js/layout.js`)
+    .addEntry('image', `./assets/${theme}/js/image.js`)
+    .addEntry('responsive', `./assets/${theme}/js/responsive.js`)
+    .addEntry('market-js', `./assets/${theme}/js/market.js`)
+    .addStyleEntry('sidebar', `./assets/${theme}/styles/sidebar.css`)
+    .addStyleEntry('market', `./assets/${theme}/styles/market.css`)
+    .enableStimulusBridge(`./assets/${theme}/controllers.json`)
+    //.addStyleEntry('global', './assets/${theme}/styles/global.scss')
 
-        // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
-        .enableStimulusBridge('./assets/controllers.json')
+    // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
 
-        // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
-        .splitEntryChunks()
 
-        // will require an extra script tag for runtime.js
-        // but, you probably want this, unless you're building a single-page app
-        .enableSingleRuntimeChunk()
+    // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
+    .splitEntryChunks()
 
-        /*
-         * FEATURE CONFIG
-         *
-         * Enable & configure other features below. For a full
-         * list of features, see:
-         * https://symfony.com/doc/current/frontend.html#adding-more-features
-         */
-        .cleanupOutputBeforeBuild()
-        .enableBuildNotifications()
-        .enableSourceMaps(!Encore.isProduction())
-        // enables hashed filenames (e.g. app.abc123.css)
-        .enableVersioning(Encore.isProduction())
+    // will require an extra script tag for runtime.js
+    // but, you probably want this, unless you're building a single-page app
+    .enableSingleRuntimeChunk()
 
-        .configureBabel((config) => {
-            config.plugins.push('@babel/plugin-proposal-class-properties');
-        })
+    /*
+     * FEATURE CONFIG
+     *
+     * Enable & configure other features below. For a full
+     * list of features, see:
+     * https://symfony.com/doc/current/frontend.html#adding-more-features
+     */
+    .cleanupOutputBeforeBuild()
+    .enableBuildNotifications()
+    .enableSourceMaps(!Encore.isProduction())
+    // enables hashed filenames (e.g. app.abc123.css)
+    .enableVersioning(Encore.isProduction())
 
-        // enables @babel/preset-env polyfills
-        .configureBabelPresetEnv((config) => {
-            config.useBuiltIns = 'usage';
-            config.corejs = 3;
-        })
+    .configureBabel((config) => {
+        config.plugins.push('@babel/plugin-proposal-class-properties');
+    })
 
-        // enables Sass/SCSS support
-        .enableSassLoader(function (sassOptions) {
-            sassOptions.includePaths = [
-                "assets/styles/"
-            ];
-        }, {
-            resolveUrlLoader: true
-        })
+    // enables @babel/preset-env polyfills
+    .configureBabelPresetEnv((config) => {
+        config.useBuiltIns = 'usage';
+        config.corejs = 3;
+    })
 
-        // uncomment if you use TypeScript
-        //.enableTypeScriptLoader()
+    // enables Sass/SCSS support
+    .enableSassLoader(function (sassOptions) {
+        sassOptions.includePaths = [
+            `assets/${theme}/styles/`
+        ];
+    }, {
+        resolveUrlLoader: true
+    })
 
-        // uncomment if you use React
-        //.enableReactPreset()
+// uncomment if you use TypeScript
+//.enableTypeScriptLoader()
 
-        // uncomment to get integrity="..." attributes on your script & link tags
-        // requires WebpackEncoreBundle 1.4 or higher
-        //.enableIntegrityHashes(Encore.isProduction())
+// uncomment if you use React
+//.enableReactPreset()
 
-        // uncomment if you're having problems with a jQuery plugin
-        //.autoProvidejQuery()
-        ;
+// uncomment to get integrity="..." attributes on your script & link tags
+// requires WebpackEncoreBundle 1.4 or higher
+//.enableIntegrityHashes(Encore.isProduction())
+
+// uncomment if you're having problems with a jQuery plugin
+//.autoProvidejQuery()
+;
 
 module.exports = Encore.getWebpackConfig();
