@@ -1179,7 +1179,7 @@
             </trans-unit>
             <trans-unit id="form.phone.help">
                 <source>form.phone.help</source>
-                <target>For instance should be like +3106398200 or 3106398200.</target>
+                <target>For instance should be like to +3106398200 or 3106398200.</target>
             </trans-unit>
             <trans-unit id="label.form.subject">
                 <source>label.form.subject</source>

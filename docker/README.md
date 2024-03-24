@@ -19,7 +19,7 @@ $ cd docker
 #### Fill out .env file:
 ````shell
 $ cp .env.dist .env
-$ docker-compose up -d --buig
+$ docker-compose up -d --build
 ````
 ### Create database & grant privileges to database
 Login to postgres container:

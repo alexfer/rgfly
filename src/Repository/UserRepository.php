@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -65,5 +66,21 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $entityManager->createQuery('SELECT u FROM App\Entity\User u WHERE u.email = :query AND u.deleted_at IS NULL')
             ->setParameter('query', $email)
             ->getOneOrNullResult();
+    }
+
+    /**
+     * @param array $values
+     * @return int
+     * @throws Exception
+     */
+    public function create(array $values): int
+    {
+        $jsonValues = json_encode($values);
+        $statement = $this->getEntityManager()
+            ->getConnection()
+            ->prepare('select create_user(:values)');
+        $statement->bindValue('values', $jsonValues, \PDO::PARAM_STR);
+
+        return $statement->executeQuery()->fetchOne();
     }
 }

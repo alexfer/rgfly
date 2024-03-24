@@ -205,7 +205,7 @@ class ProfileController extends AbstractController
         TranslatorInterface    $translator,
     ): Response
     {
-        $details = $repository->find($user->getId());
+        $details = $repository->findOneBy(['user' => $user]);
 
         $form = $this->createForm(ProfileType::class, $details);
         $form->handleRequest($request);
