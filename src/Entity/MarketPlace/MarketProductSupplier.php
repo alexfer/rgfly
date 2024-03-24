@@ -9,8 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 class MarketProductSupplier
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ORM\Column(type: "integer")]
     private ?int $id = null;
 
     #[ORM\OneToOne(inversedBy: 'marketProductSupplier', cascade: ['persist', 'remove'])]
