@@ -104,6 +104,8 @@ class MarketController extends AbstractController
                 }
 
                 $market->setOwner($user)->setSlug($slugger->slug($form->get('name')->getData())->lower());
+                $em->persist($market);
+                $em->flush();
 
                 $file = $form->get('logo')->getData();
 

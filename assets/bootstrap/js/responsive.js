@@ -9,7 +9,7 @@ let responsive = $('#responsive').find('.visually-hidden');
 $(window).on('load', () => {
     let mode = $('#mode');
     if ($.cookie('container')) {
-        $('#container').removeClass('container').addClass('p-0 ' + $.cookie('container'));
+        $('#container').removeClass('container').addClass($.cookie('container'));
         mode.attr('checked', 'checked');
         label.html(label.data('responsive-on'));
         responsive.toggleClass('show');
