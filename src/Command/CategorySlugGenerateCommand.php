@@ -15,18 +15,16 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class CategorySlugGenerateCommand extends Command
 {
     final const string PERFORM = 'perform';
-    private CategoryRepository $repository;
-
-    private SluggerInterface $slugger;
 
     /**
      * @param SluggerInterface $slugger
      * @param CategoryRepository $repository
      */
-    public function __construct(SluggerInterface $slugger, CategoryRepository $repository)
+    public function __construct(
+        private readonly SluggerInterface   $slugger,
+        private readonly CategoryRepository $repository,
+    )
     {
-        $this->repository = $repository;
-        $this->slugger = $slugger;
         parent::__construct();
     }
 
