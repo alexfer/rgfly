@@ -1,2 +1,4 @@
-import * as flowbite from 'flowbite/dist/flowbite.turbo.min';
-//flowbite.init()
+import { Modal } from 'flowbite';
+
+const modal = new Modal(document.getElementById('modal'), {});
+modal.hide();
