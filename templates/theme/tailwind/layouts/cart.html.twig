@@ -2,11 +2,12 @@
      class="invisible fixed bottom-0 right-0 top-0 z-[1045] flex w-96 max-w-full translate-x-full flex-col bg-white bg-clip-padding text-neutral-700 shadow transition duration-500 ease-in-out data-[twe-offcanvas-show]:transform-none"
      tabindex="-1"
      data-twe-offcanvas-init
+     aria-modal="true"
+     role="dialog"
      aria-labelledby="shopping-cart-label"
-     data-twe-backdrop="true"
      data-url="{{ path('app_market_place_product_order_cart') }}">
     <div class="flex items-center justify-between p-4">
-        <h5 class="mb-0 font-semibold leading-normal" id="shopping-cart-label">{{ 'market.product.cart'|trans }}
+        <h5 id="shopping-cart-label" class="mb-0 font-semibold leading-normal" id="shopping-cart-label">{{ 'market.product.cart'|trans }}
             ({{ app.session.get('quantity')|default(0) }})</h5>
         <button type="button"
                 class="box-content rounded-none border-none text-neutral-500 hover:text-neutral-800 hover:no-underline focus:text-neutral-800 focus:opacity-100 focus:shadow-none focus:outline-none dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300"

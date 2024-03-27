@@ -20,7 +20,7 @@
     {% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 </head>
-<body>
+<body class="overflow-x-hidden transition-colors duration-500">
 {% set _route = app.request.get('_route') %}
 <div class="flex flex-col min-h-screen justify-between">
     {% include 'layouts/header.html.twig' %}
@@ -38,7 +38,7 @@
     </footer>
     <div id="modal"></div>
 </div>
-{{ include ('layouts/cart.html.twig') }}
+{% include 'layouts/cart.html.twig' %}
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
 {% endblock %}

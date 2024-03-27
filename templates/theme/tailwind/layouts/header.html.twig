@@ -5,7 +5,8 @@
                 <img src="{{ asset('img/rgbfly.png') }}" class="h-8 mr-3 sm:h-12" alt="{{ 'site.title'|trans }}"/>
             </a>
             <div class="flex items-center lg:order-2">
-                <a
+                <button
+                        type="button"
                         data-twe-offcanvas-toggle
                         href="#shopping-cart"
                         aria-controls="shopping-cart"
@@ -13,11 +14,49 @@
                         data-twe-ripple-color="light"
                         class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-1 focus:ring-gray-100 font-medium rounded-sm text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
                     <i class="fa fa-shopping-cart mr-1"></i> {{ 'market.product.cart'|trans }}
-                </a>
-                <a href="#"
-                   class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-1 focus:ring-gray-100 font-medium rounded-sm text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-red-800">
-                    <i class="fa fa-user mr-1"></i> {{ 'title.account'|trans }}
-                </a>
+                </button>
+                <div
+                        class="relative"
+                        data-twe-dropdown-ref
+                        data-twe-dropdown-alignment="end">
+                    <a href="#"
+                       id="account"
+                       role="button"
+                       data-twe-dropdown-toggle-ref
+                       aria-expanded="false"
+                       class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-1 focus:ring-gray-100 font-medium rounded-sm text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-red-800">
+                        <i class="fa fa-user mr-1"></i> {{ 'title.account'|trans }}
+                    </a>
+                    <ul
+                            class="absolute z-[1000] m-0 hidden min-w-max list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg data-[twe-dropdown-show]:block dark:bg-surface-dark"
+                            aria-labelledby="account"
+                            data-twe-dropdown-menu-ref>
+                        <li>
+                            <a
+                                    class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25"
+                                    href="#"
+                                    data-twe-dropdown-item-ref
+                            >Action</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                    class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25"
+                                    href="#"
+                                    data-twe-dropdown-item-ref
+                            >Another action</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                    class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25"
+                                    href="#"
+                                    data-twe-dropdown-item-ref
+                            >Something else here</a
+                            >
+                        </li>
+                    </ul>
+                </div>
                 <button data-collapse-toggle="mobile-menu" type="button"
                         class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                         aria-controls="mobile-menu" aria-expanded="false">
