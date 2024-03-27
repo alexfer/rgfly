@@ -55,6 +55,7 @@
         "sweetalert": "^2.1.2",
         "sweetalert2": "^11.6.13",
         "ts-loader": "^9.5.1",
+        "tw-elements": "^2.0.0",
         "watch": "^0.13.0"
     }
 }

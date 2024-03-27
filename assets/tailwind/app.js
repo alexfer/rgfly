@@ -11,3 +11,4 @@ import './styles/default.css';
 import 'font-awesome/css/font-awesome.min.css'
 import 'css.gg/icons/icons.css';
 import './bootstrap';
+import './js/market';

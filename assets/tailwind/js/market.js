@@ -117,7 +117,7 @@ if (typeof drops !== 'undefined') {
 }
 
 if (typeof cart !== undefined) {
-    cart.addEventListener('show.bs.offcanvas', (event) => {
+    cart.addEventListener('show.twe.offcanvas', () => {
         let url = cart.getAttribute('data-url');
         let body = cart.querySelectorAll('#order-body');
         body.item(0).innerHTML = '';
