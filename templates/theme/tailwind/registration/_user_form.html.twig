@@ -1,0 +1,59 @@
+{{ form_start(form, {attr: {id:'registration', class: 'mx-auto size-10/12', 'autocomplete': 'off', novalidate: ''}}) }}
+<h3 class="text-3xl pb-4 font-extrabold text-primary-700 dark:text-white">{{ 'text.register'|trans }}</h3>
+{% if errors.count %}
+    <div class="flex items-center p-4 mb-4 text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-400"  role="alert">
+        <div class="ms-3 text-sm font-medium">{{ errors.current.message }}</div>
+    </div>
+{% endif %}
+<div class="grid grid-cols-2 gap-5">
+    <div>
+        <div class="relative mb-5">
+            {{ form_label(form.email, 'label.form.email', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+            {{ form_widget(form.email, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.email'}}) }}
+            <span class="absolute top-full left-0 m-1 w-auto text-sm text-danger animate-[fade-in_0.3s_both]"
+                  data-twe-validation-feedback="{{ 'form.email.invalid'|trans }}"></span>
+        </div>
+    </div>
+    <div>
+        <div class="relative mb-5">
+            {{ form_label(form.plainPassword, 'label.form.password', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+            {{ form_widget(form.plainPassword, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.password'}}) }}
+            <span class="absolute top-full left-0 m-1 w-auto text-sm text-danger animate-[fade-in_0.3s_both]"
+                  data-twe-validation-feedback="{{ 'form.password.invalid'|trans }}"></span>
+        </div>
+    </div>
+</div>
+<div class="grid grid-cols-2 gap-5">
+    <div class="relative mb-5">
+        {{ form_label(form.first_name, 'label.form.first_name', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+        {{ form_widget(form.first_name, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.first_name'}}) }}
+        <span class="absolute top-full left-0 m-1 w-auto text-sm text-danger animate-[fade-in_0.3s_both]"
+              data-twe-validation-feedback="{{ 'form.first_name.invalid'|trans }}"></span>
+    </div>
+    <div class="relative mb-5">
+        {{ form_label(form.last_name, 'label.form.last_name', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+        {{ form_widget(form.last_name, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.last_name'}}) }}
+        <span class="absolute top-full left-0 m-1 w-auto text-sm text-danger animate-[fade-in_0.3s_both]"
+              data-twe-validation-feedback="{{ 'form.last_name.invalid'|trans }}"></span>
+    </div>
+</div>
+<div>
+    <div class="col-md-12">
+        <div class="form-check mb-3">
+            {{ form_widget(form.agreeTerms, {attr: {class: 'w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800'}}) }}
+            {{ form_label(form.agreeTerms, 'label.agree_terms'|trans, {label_attr: {class: 'ms-2 text-sm font-medium text-gray-900 dark:text-gray-300'}}) }}
+            <div class="mt-2 text-sm text-gray-500 dark:text-gray-400">{{ 'form.agree_terms.help'|trans({
+                    '%policy%': url('policy'),
+                    '%terms%': url('terms')
+                })|raw }}</div>
+        </div>
+    </div>
+    <div class="mx-auto text-center pt-5">
+        {{ form_widget(form.send, { label: 'form.action.register', attr: {
+            'data-twe-ripple-color': 'light',
+            'data-twe-submit-btn-ref': null,
+            'data-twe-ripple-init': null,
+            class: 'inline-block rounded bg-danger px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-danger-3 transition duration-150 ease-in-out hover:bg-danger-accent-300 hover:shadow-danger-2 focus:bg-danger-accent-300 focus:shadow-danger-2 focus:outline-none focus:ring-0 active:bg-danger-600 active:shadow-danger-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong'} }) }}
+    </div>
+</div>
+{{ form_end(form) }}

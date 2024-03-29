@@ -9,6 +9,7 @@
 import './styles/tailwind.css';
 import './styles/default.css';
 import 'font-awesome/css/font-awesome.min.css'
-import 'css.gg/icons/icons.css';
+import 'flowbite/dist/flowbite.min.css';
+// import js files into app.js
 import './bootstrap';
 import './js/market';

@@ -20,23 +20,22 @@
     {% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 </head>
-<body class="overflow-x-hidden transition-colors duration-500">
+<body>
 {% set _route = app.request.get('_route') %}
-<div class="flex flex-col min-h-screen justify-between">
+<div class="flex flex-col h-screen justify-between">
     {% include 'layouts/header.html.twig' %}
     <main class="mb-auto">
     {% block body %}{% endblock %}
     </main>
     <footer class="bg-gray-950 h-[55px] sticky top-[100vh]">
-        <div class="container mx-auto text-white">
-            <div class="text-center my-3">
+        <div class="container mx-auto text-white pt-1">
+            <div class="text-center pt-3">
                 {% set year =  'now' | date('Y') %}
                 {% set build_year = '2023' %}
                 <span>&copy; {{ year == build_year ? build_year : build_year ~ '-' ~ year }} {{ 'site.title'|trans }} - {{ 'text.all_right_reserved'|trans }}</span>
             </div>
         </div>
     </footer>
-    <div id="modal"></div>
 </div>
 {% include 'layouts/cart.html.twig' %}
 {% block javascripts %}

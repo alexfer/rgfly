@@ -56,11 +56,7 @@ class RegistrationType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('send', SubmitType::class, [
-                'attr' => [
-                    'class' => 'btn btn-primary rounded-1 shadow-sm',
-                ],
-            ]);
+            ->add('send', SubmitType::class, []);
     }
 
     /**
