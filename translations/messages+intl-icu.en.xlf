@@ -1373,8 +1373,8 @@
                 <source>email.not_found</source>
                 <target>Provided email not found</target>
             </trans-unit>
-            <trans-unit id="text.reset_password.infio">
-                <source>text.reset_password.infio</source>
+            <trans-unit id="text.reset_password.info">
+                <source>text.reset_password.info</source>
                 <target>If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password. This link will expire in</target>
             </trans-unit>
             <trans-unit id="text.reset_password.resend">
@@ -1399,7 +1399,11 @@
             </trans-unit>
             <trans-unit id="form.password.invalid">
                 <source>form.password.invalid</source>
-                <target>The password can't by blank</target>
+                <target>The password is not valid</target>
+            </trans-unit>
+            <trans-unit id="form.password.not_blank">
+                <source>form.password.not_blank</source>
+                <target>The password can't be blank</target>
             </trans-unit>
             <trans-unit id="label.form.currency">
                 <source>label.form.currency</source>

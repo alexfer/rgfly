@@ -1,0 +1,10 @@
+a {
+    color: rgba(36, 82, 204, 0.85);
+    text-decoration: none;
+    background-color: transparent
+}
+
+a:hover {
+    color: #dc3545;
+    text-decoration: none
+}

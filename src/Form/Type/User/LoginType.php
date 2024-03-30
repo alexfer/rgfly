@@ -19,16 +19,15 @@ class LoginType extends AbstractType
         $builder->add('email', EmailType::class, [])
             ->add('password', PasswordType::class, [
                 'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
+                'attr' => [
+                    'autocomplete' => 'new-password',
+                    'pattern' => ".{8,180}",
+                ],
             ])
             ->add('_remember_me', CheckboxType::class, [
                 'mapped' => false,
             ])
-            ->add('login', SubmitType::class, [
-                'attr' => [
-                    'class' => 'btn btn-primary w-50 rounded-1 shadow-sm',
-                ],
-            ]);
+            ->add('login', SubmitType::class, []);
     }
 
     /**

@@ -43,15 +43,20 @@ class RegistrationType extends AbstractType
             ])
             ->add('plainPassword', PasswordType::class, [
                 'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
+                'attr' => [
+                    'autocomplete' => 'new-password',
+                    'min' => 8,
+                    'max' => 180,
+                    'pattern' => ".{8,180}",
+                ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'form.password.not_blank',
                     ]),
                     new Length([
-                        'min' => 6,
+                        'min' => 8,
                         'minMessage' => 'form.password.min',
-                        'max' => 4096,
+                        'max' => 180,
                         'maxMessage' => 'form.password.max',
                     ]),
                 ],

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'text.profile'|trans }}{% endblock %}
+
+{% block body %}
+    <section class="container mt-lg-2">
+        <div class="row">
+            <div class="col-12 card card-body shadow">
+                <h4 class="ps-2 border-start border-3 border-danger mb-3">{{ 'text.profile'|trans }}</h4>
+                {{ include('profile/_form.html.twig') }}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block toast %}
+    {{ include ('layouts/toast.html.twig') }}
+{% endblock %}
+{#{% block javascripts %}#}
+{#    {{ parent() }}#}
+{#    {{ encore_entry_script_tags('image') }}#}
+{#{% endblock %}#}

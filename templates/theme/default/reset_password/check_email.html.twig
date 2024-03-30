@@ -12,7 +12,7 @@
                     <div class="alert alert-danger mx-3 mb-0" role="alert">{{ flash_error }}</div>
                 {% endfor %}
                 <p class="mb-2">
-                    {{ 'text.reset_password.infio'|trans }} {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}
+                    {{ 'text.reset_password.info'|trans }} {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}
                 </p>
                 <hr>
                 <p class="mb-5">{{ 'text.reset_password.resend'|trans({'link':  path('app_forgot_password_request') })|raw }}</p>

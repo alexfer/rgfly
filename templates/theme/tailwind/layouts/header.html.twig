@@ -30,7 +30,7 @@
                        class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-1 focus:ring-gray-100 font-medium rounded-sm text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-red-800">
                         <i class="fa fa-user mr-1"></i> {{ 'title.account'|trans }}
                     </a>
-                    <ul class="absolute z-[1000] w-40 m-0 hidden min-w-max list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg data-[twe-dropdown-show]:block dark:bg-surface-dark"
+                    <ul class="absolute z-[1000] w-48 hidden min-w-max list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg data-[twe-dropdown-show]:block dark:bg-surface-dark"
                         aria-labelledby="account"
                         data-twe-dropdown-menu-ref>
                         {% if not app.user %}
@@ -65,7 +65,7 @@
                                     </a>
                                 </li>
                             {% endif %}
-                            {% if 'ROLE_CUSTOMER' in app.user.roles and app.user.roles not in ['ROLE_USER', 'ROLE_ADMIN'] %}
+                            {% if 'ROLE_CUSTOMER' in app.user.roles and 'ROLE_ADMIN' not in app.user.roles and 'ROLE_USER' not in app.user.roles %}
                                 <li>
                                     <a class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25"
                                        href="{{ path('app_cabinet') }}"

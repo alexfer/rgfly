@@ -25,6 +25,7 @@ class DetailsType extends AbstractType
                 'attr' => [
                     'min' => 3,
                     'max' => 200,
+                    'pattern' => ".{3,200}",
                 ],
                 'constraints' => [
                     new NotBlank([
@@ -43,6 +44,7 @@ class DetailsType extends AbstractType
                 'attr' => [
                     'min' => 2,
                     'max' => 200,
+                    'pattern' => ".{2,200}",
                 ],
                 'constraints' => [
                     new NotBlank([
