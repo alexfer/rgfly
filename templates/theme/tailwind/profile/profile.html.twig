@@ -3,10 +3,9 @@
 {% block title %}{{ 'text.profile'|trans }}{% endblock %}
 
 {% block body %}
-    <section class="container mt-lg-2">
-        <div class="row">
-            <div class="col-12 card card-body shadow">
-                <h4 class="ps-2 border-start border-3 border-danger mb-3">{{ 'text.profile'|trans }}</h4>
+    <section class="bg-white dark:bg-gray-900">
+        <div class="max-w-screen-2xl flex mx-auto px-4 py-8 lg:py-16 lg:px-2">
+            <div class="mx-auto w-4/6 rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
                 {{ include('profile/_form.html.twig') }}
             </div>
         </div>

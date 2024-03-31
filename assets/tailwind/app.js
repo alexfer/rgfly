@@ -13,3 +13,4 @@ import 'flowbite/dist/flowbite.min.css';
 // import js files into app.js
 import './bootstrap';
 import './js/market';
+import './js/flowbite';
