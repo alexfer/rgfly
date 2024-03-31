@@ -8,9 +8,8 @@ if(toast !== undefined) {
         transition: 'transition-opacity',
         duration: 4000,
         timing: 'ease-out',
-
         onHide: (toast, toastClose) => {
-            console.log(toastClose, toast)
+            console.log(toastClose, toast);
         }
     };
 
@@ -19,5 +18,4 @@ if(toast !== undefined) {
         override: true
     };
     const dismiss = new Dismiss(toast, toastClose, options, instanceOptions);
-
 }

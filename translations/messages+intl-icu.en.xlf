@@ -798,6 +798,10 @@
                 <source>title.dashboard.latest_blogs</source>
                 <target>Latest Blogs</target>
             </trans-unit>
+            <trans-unit id="text.loading">
+                <source>text.loading</source>
+                <target>Loading...</target>
+            </trans-unit>
             <trans-unit id="text.all_right_reserved">
                 <source>text.all_right_reserved</source>
                 <target>All Rights Reserved</target>

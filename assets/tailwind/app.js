@@ -14,3 +14,4 @@ import 'flowbite/dist/flowbite.min.css';
 import './bootstrap';
 import './js/market';
 import './js/flowbite';
+import './js/main';

@@ -8,7 +8,7 @@
                 <img src="{{ asset('img/rgbfly.png') }}" class="h-8 mr-3 sm:h-12" alt="{{ 'site.title'|trans }}"/>
             </a>
             <div class="flex items-center lg:order-2">
-                <button
+                <a
                         type="button"
                         data-twe-offcanvas-toggle
                         href="#shopping-cart"
@@ -17,7 +17,7 @@
                         data-twe-ripple-color="light"
                         class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-1 focus:ring-gray-100 font-medium rounded-sm text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
                     <i class="fa fa-shopping-cart mr-1"></i> {{ 'market.product.cart'|trans }}
-                </button>
+                </a>
                 <div
                         class="relative"
                         data-twe-dropdown-ref
@@ -30,7 +30,7 @@
                        class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-1 focus:ring-gray-100 font-medium rounded-sm text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-red-800">
                         <i class="fa fa-user mr-1"></i> {{ 'title.account'|trans }}
                     </a>
-                    <ul class="absolute z-[1000] w-48 hidden min-w-max list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg data-[twe-dropdown-show]:block dark:bg-surface-dark"
+                    <ul class="absolute z-[1000] w-48 hidden min-w-max list-none overflow-hidden rounded-sm border-none bg-white bg-clip-padding text-left text-base shadow-md data-[twe-dropdown-show]:block dark:bg-surface-dark"
                         aria-labelledby="account"
                         data-twe-dropdown-menu-ref>
                         {% if not app.user %}
