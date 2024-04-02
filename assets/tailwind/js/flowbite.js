@@ -12,7 +12,6 @@ if(toast !== undefined) {
             console.log(toastClose, toast);
         }
     };
-
     const instanceOptions = {
         id: 'targetElement',
         override: true

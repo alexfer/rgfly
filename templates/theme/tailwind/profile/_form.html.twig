@@ -74,30 +74,30 @@
         {{ form_widget(form.about, {attr: {class: 'block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'}}) }}
     </div>
 </div>
-<div role="status" class="display-0 space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center">
-    <div class="flex hidden items-center justify-center w-full h-24 bg-gray-300 rounded sm:w-24 mb-5 dark:bg-gray-700">
-        <svg class="w-5 h-5 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
-            <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z"></path>
-        </svg>
-    </div>
-    <span class="sr-only">{{ 'text.loading'|trans }}</span>
-</div>
-<div class="grid grid-flow-col auto-cols-max attachment">
-    {% for key, picture in app.user.userDetails.attach|reverse|slice(0, 16) %}
-        <div class="d-inline-block mr-3 mb-3">
+<div id="attachments" class="grid grid-flow-col auto-cols-max">
+    {% for key, picture in app.user.userDetails.attach|slice(0, 16) %}
+        <div class="inline-flex relative mr-3 mb-3">
             {% set _picture = 'storage/user/picture/' ~ app.user.id ~ '/' ~ picture.name %}
-            <img class="attach h-auto max-w-xs shadow-xl dark:shadow-gray-800"
+            <img class="h-auto max-w-xs shadow-xl dark:shadow-gray-800 rounded"
                  src="{{ asset(_picture) | imagine_filter('user_thumb') }}" alt="...">
-            <div class="bg-gray-300" data-id="{{ picture.id }}">
+            <div class="absolute bottom-0 right-0 z-10 bg-gray-300 block w-full justify-end" data-id="{{ picture.id }}">
                 {% if app.user.attach.id != picture.id %}
                     <a href="{{ path('app_profile_attach_remove') }}" data-action="remove"
-                       class="ml-2 fa fa-trash confirm-delete"></a>
+                       class="mr-1 my-1 fa fa-trash confirm-delete float-end"></a>
                 {% endif %}
                 <a href="{{ path('app_profile_attach_default') }}" data-action="default"
-                   class="ml-1 fa fa-user-plus"></a>
+                   class="mr-1 my-1 fa fa-user-plus confirm-change float-end"></a>
             </div>
         </div>
     {% endfor %}
+    <div role="status" class="display-0 space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center">
+        <div class="invisible sm:flex items-center mr-3 justify-center w-full h-24 bg-gray-300 rounded sm:w-24 mb-5 dark:bg-gray-700" aria-hidden="true">
+            <svg class="w-5 h-5 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z"></path>
+            </svg>
+        </div>
+        <span class="sr-only">{{ 'text.loading'|trans }}</span>
+    </div>
 </div>
 <div class="grid grid-cols-1">
     <div class="relative mb-5">
