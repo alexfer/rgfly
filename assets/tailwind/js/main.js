@@ -6,6 +6,10 @@ const confirmDelete = document.getElementsByClassName('confirm-delete');
 const confirmChange = document.getElementsByClassName('confirm-change');
 const toastSuccess = document.getElementById('toast-success');
 const toastDanger = document.getElementById('toast-danger');
+const eventOptions = {
+    capture: true,
+    once: true
+};
 
 if (uploadInput) {
     uploadInput.addEventListener('change', (event) => {
@@ -13,6 +17,7 @@ if (uploadInput) {
         let url = uploadInput.getAttribute('data-url');
         let max = +uploadInput.getAttribute('max');
         let status = document.querySelector('[role="status"]');
+        const attachments = document.getElementById('attachments');
 
         if (file.size > max) {
             uploadInput.value = null;
@@ -22,28 +27,36 @@ if (uploadInput) {
         }
 
         formData.append('file', file);
-        status.firstElementChild.classList.remove('invisible');
+        attachments.parentElement.classList.add('invisible');
+        status.classList.remove('hidden');
 
         fetch(url, {method: 'POST', body: formData}).then(async response => {
             const isJson = response.headers.get('content-type')?.includes('application/json') || undefined;
-            const attachments = document.getElementById('attachments');
             const data = isJson && await response.json();
             showToast(toastSuccess, data.message);
 
-            const wrap = document.createElement('div');
+            const wrap = document.createElement('li');
             const img = document.createElement('img');
-            wrap.className = 'd-inline-block mr-3 mb-3';
-            img.className = 'h-auto max-w-xs shadow-xl dark:shadow-gray-800 rounded';
+            const inner = document.createElement('div');
+
+            wrap.className = attachments.firstChild.nextElementSibling.getAttribute('class');
+            img.className = attachments.querySelector('img').getAttribute('class');
+            inner.className = attachments.querySelector('div').getAttribute('class');
+
             img.src = data.picture;
+
             wrap.appendChild(img);
+            wrap.appendChild(inner);
             attachments.prepend(wrap);
 
-            status.firstElementChild.classList.add('invisible');
+            attachments.parentElement.classList.remove('invisible');
+            status.classList.add('hidden');
             uploadInput.value = null;
             file = null;
         });
     });
 }
+
 if (confirmChange.length > 0) {
     Array.from(confirmChange).forEach((el) => {
         el.addEventListener('click', (event) => {
@@ -54,7 +67,15 @@ if (confirmChange.length > 0) {
                 event.preventDefault();
                 let id = el.parentElement.getAttribute('data-id');
                 let url = el.getAttribute('href');
-            });
+                const response = await fetch(url, {
+                    method: 'post',
+                    body: JSON.stringify({id: id})
+                });
+                const data = await response.json();
+                showToast(toastSuccess, data.message);
+                confirmModal.style.display = 'none';
+                document.getElementsByTagName('body')[0].classList.remove('overflow-y-hidden');
+            }, eventOptions);
         });
     });
 }
@@ -77,7 +98,7 @@ if (confirmDelete.length > 0) {
                 confirmModal.style.display = 'none';
                 el.parentElement.parentElement.remove();
                 document.getElementsByTagName('body')[0].classList.remove('overflow-y-hidden');
-            }, {capture: true, once: true});
+            }, eventOptions);
         });
     });
 }

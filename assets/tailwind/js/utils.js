@@ -1,9 +1,9 @@
-window.showToast = (toast, message) => {
+window.showToast = (toast, message, timeout) => {
     toast.querySelector('.toast-body').innerText = message;
     toast.classList.remove('hidden');
     setTimeout(() => {
         toast.classList.add('hidden');
-    }, 4000);
+    }, timeout ? timeout : 4000);
 };
 
 window.closeModal = (id) => {
