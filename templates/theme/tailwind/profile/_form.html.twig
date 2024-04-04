@@ -94,11 +94,9 @@
                 <div class="absolute bottom-0 right-0 bg-opacity-60 bg-white block w-full justify-end"
                      data-id="{{ picture.id }}">
                     {% if app.user.attach.id != picture.id %}
-                        <a href="{{ path('app_profile_attach_remove') }}" data-action="remove"
-                           class="mr-1 my-1 fa fa-trash confirm-delete float-end"></a>
+                        <a href="{{ path('app_profile_attach_remove') }}" class="mr-1 my-1 fa fa-trash text-indigo-700 hover:text-black/40 confirm-delete float-end"></a>
                     {% endif %}
-                    <a href="{{ path('app_profile_attach_default') }}" data-action="default"
-                       class="mr-1 my-1 fa fa-user-plus confirm-change float-end"></a>
+                    <a href="{{ path('app_profile_attach_default') }}" class="mr-1 my-1 fa fa-user-plus text-indigo-700 hover:text-black/40 confirm-change float-end"></a>
                 </div>
             </li>
         {% endfor %}

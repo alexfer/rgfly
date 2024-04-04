@@ -42,7 +42,6 @@ if (uploadInput) {
             wrap.className = attachments.firstChild.nextElementSibling.getAttribute('class');
             img.className = attachments.querySelector('img').getAttribute('class');
             inner.className = attachments.querySelector('div').getAttribute('class');
-
             img.src = data.picture;
 
             wrap.appendChild(img);
@@ -65,20 +64,13 @@ if (confirmChange.length > 0) {
             confirmModal.style.display = 'block';
             confirmModal.querySelector('a[role="button"]').addEventListener('click', async (event) => {
                 event.preventDefault();
-                let id = el.parentElement.getAttribute('data-id');
-                let url = el.getAttribute('href');
-                const response = await fetch(url, {
-                    method: 'post',
-                    body: JSON.stringify({id: id})
-                });
-                const data = await response.json();
-                showToast(toastSuccess, data.message);
-                confirmModal.style.display = 'none';
+                await handleClick(el, confirmModal);
                 document.getElementsByTagName('body')[0].classList.remove('overflow-y-hidden');
             }, eventOptions);
         });
     });
 }
+
 if (confirmDelete.length > 0) {
     Array.from(confirmDelete).forEach((el) => {
         el.addEventListener('click', (event) => {
@@ -87,18 +79,22 @@ if (confirmDelete.length > 0) {
             confirmModal.style.display = 'block';
             confirmModal.querySelector('a[role="button"]').addEventListener('click', async (event) => {
                 event.preventDefault();
-                let id = el.parentElement.getAttribute('data-id');
-                let url = el.getAttribute('href');
-                const response = await fetch(url, {
-                    method: 'post',
-                    body: JSON.stringify({id: id})
-                });
-                const data = await response.json();
-                showToast(toastSuccess, data.message);
-                confirmModal.style.display = 'none';
+                await handleClick(el, confirmModal);
                 el.parentElement.parentElement.remove();
                 document.getElementsByTagName('body')[0].classList.remove('overflow-y-hidden');
             }, eventOptions);
         });
     });
 }
+
+window.handleClick = async (el, confirmModal) => {
+    let id = el.parentElement.getAttribute('data-id');
+    let url = el.getAttribute('href');
+    const response = await fetch(url, {
+        method: 'post',
+        body: JSON.stringify({id: id})
+    });
+    const data = await response.json();
+    showToast(toastSuccess, data.message);
+    confirmModal.style.display = 'none';
+};

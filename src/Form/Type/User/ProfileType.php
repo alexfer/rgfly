@@ -145,7 +145,11 @@ class ProfileType extends AbstractType
                 'mapped' => false,
                 'data' => $options['data']?->getUser()?->getAttach()?->getId(),
             ])
-            ->add('update', SubmitType::class, []);
+            ->add('update', SubmitType::class, [
+                'attr' => [
+                    'class' => 'btn btn-primary rounded-1 shadow-sm',
+                ],
+            ]);
     }
 
     /**
