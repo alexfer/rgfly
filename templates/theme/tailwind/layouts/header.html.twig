@@ -2,12 +2,12 @@
                                         <path fill-rule="evenodd" d="M2 8c0 .414.336.75.75.75h8.69l-1.22 1.22a.75.75 0 1 0 1.06 1.06l2.5-2.5a.75.75 0 0 0 0-1.06l-2.5-2.5a.75.75 0 1 0-1.06 1.06l1.22 1.22H2.75A.75.75 0 0 0 2 8Z" clip-rule="evenodd"></path>
                                     </svg>' %}
 <header>
-    <nav class="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
+    <nav class="border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
         <div class="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto">
             <a href="{{ path('app_index') }}" class="flex items-center">
                 <img src="{{ asset('img/rgbfly.png') }}" class="h-8 mr-3 sm:h-12" alt="{{ 'site.title'|trans }}"/>
             </a>
-            <div class="flex items-center lg:order-2">
+            <div class="flex items-center align-bottom lg:order-2">
                 <a
                         type="button"
                         data-twe-offcanvas-toggle
@@ -15,8 +15,8 @@
                         aria-controls="shopping-cart"
                         data-twe-ripple-init
                         data-twe-ripple-color="light"
-                        class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-1 focus:ring-gray-100 font-medium rounded-sm text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
-                    <i class="fa fa-shopping-cart mr-1"></i> {{ 'market.product.cart'|trans }}
+                        class="text-white dark:text-white block hover:bg-gray-50 border-inherit focus:ring-gray-100 font-medium rounded-md text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+                    <i class="fa fa-shopping-cart mr-1"></i>{{ 'market.product.cart'|trans }}
                 </a>
                 <div
                         class="relative"
@@ -27,8 +27,8 @@
                        role="button"
                        data-twe-dropdown-toggle-ref
                        aria-expanded="false"
-                       class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-1 focus:ring-gray-100 font-medium rounded-sm text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-red-800">
-                        <i class="fa fa-user mr-1"></i> {{ 'title.account'|trans }}
+                       class="text-white dark:text-white block hover:bg-gray-50 focus:ring-1 focus:ring-gray-100 font-medium rounded-md text-sm px-4 lg:px-5 py-3 lg:py-3.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-red-800">
+                        <i class="fa fa-user mr-1"></i>{{ 'title.account'|trans }}
                     </a>
                     <ul class="absolute z-[1000] w-48 hidden min-w-max list-none overflow-hidden rounded-sm border-none bg-white bg-clip-padding text-left text-base shadow-md data-[twe-dropdown-show]:block dark:bg-surface-dark"
                         aria-labelledby="account"
@@ -103,28 +103,27 @@
                 <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                     <li>
                         <a href="{{ path('about') }}"
-                           class="{{ _route == 'about'? 'md:text-red-600': '' }} block py-2 pl-3 pr-4 text-gray-700 hover:bg-red-600 lg:hover:bg-transparent lg:border-0 lg:hover:text-red-700 lg:p-0"
-                           aria-current="page">{{ 'title.about_us'|trans }}</a>
+                           class="{{ _route == 'about'? 'text-white md:text-white': '' }} block py-2 pl-3 pr-4 text-gray-300 hover:text-white lg:hover:bg-transparent lg:border-0 lg:p-0">{{ 'title.about_us'|trans }}</a>
                     </li>
                     <li>
                         <a href="{{ path('faq') }}"
-                           class="{{ _route == 'faq'? 'md:text-red-600': '' }} block py-2 pl-3 pr-4 text-gray-700 hover:bg-red-600 lg:hover:bg-transparent lg:border-0 lg:hover:text-red-700 lg:p-0">{{ 'title.questions'|trans }}</a>
+                           class="{{ _route == 'faq'? 'text-white md:text-white': '' }} block py-2 pl-3 pr-4 text-gray-300 hover:text-white lg:hover:bg-transparent lg:border-0 lg:p-0">{{ 'title.questions'|trans }}</a>
                     </li>
                     <li>
                         <a href="{{ path('service') }}"
-                           class="{{ _route == 'service'? 'md:text-red-600': '' }} block py-2 pl-3 pr-4 text-gray-700 hover:bg-red-600 lg:hover:bg-transparent lg:border-0 lg:hover:text-red-700 lg:p-0">{{ 'title.service'|trans }}</a>
+                           class="{{ _route == 'service'? 'text-white md:text-white': '' }} block py-2 pl-3 pr-4 text-gray-300 hover:text-white lg:hover:bg-transparent lg:border-0 lg:p-0">{{ 'title.service'|trans }}</a>
                     </li>
                     <li>
                         <a href="{{ path('contact') }}"
-                           class="{{ _route == 'contact'? 'md:text-red-600': '' }} block py-2 pl-3 pr-4 text-gray-700 hover:bg-red-600 lg:hover:bg-transparent lg:border-0 lg:hover:text-red-700 lg:p-0">{{ 'title.contact_us'|trans }}</a>
+                           class="{{ _route == 'contact'? 'text-white md:text-white': '' }} block py-2 pl-3 pr-4 text-gray-300 hover:text-white lg:hover:bg-transparent lg:border-0 lg:p-0">{{ 'title.contact_us'|trans }}</a>
                     </li>
                     <li>
                         <a href="{{ path('app_blog') }}"
-                           class="{{ _route == 'app_blog'? 'md:text-red-600': '' }} block py-2 pl-3 pr-4 text-gray-700 hover:bg-red-600 lg:hover:bg-transparent lg:border-0 lg:hover:text-red-700 lg:p-0">{{ 'title.blogs'|trans }}</a>
+                           class="{{ _route == 'app_blog'? 'text-white md:text-white': '' }} block py-2 pl-3 pr-4 text-gray-300 hover:text-white lg:hover:bg-transparent lg:border-0 lg:p-0">{{ 'title.blogs'|trans }}</a>
                     </li>
                     <li>
                         <a href="{{ path('app_market_place_index') }}"
-                           class="{{ _route == 'app_market_place_index'? 'md:text-red-600': '' }} block py-2 pl-3 pr-4 text-gray-700 hover:bg-red-600 lg:hover:bg-transparent lg:border-0 lg:hover:text-red-700 lg:p-0">{{ 'title.market_places'|trans }}</a>
+                           class="{{ _route == 'app_market_place_index'? 'text-white md:text-white': '' }} block py-2 pl-3 pr-4 text-gray-300 hover:text-white lg:hover:bg-transparent lg:border-0 lg:p-0 lg:p-0">{{ 'title.market_places'|trans }}</a>
                     </li>
                 </ul>
             </div>

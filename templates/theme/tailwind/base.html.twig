@@ -22,7 +22,8 @@
 </head>
 <body>
 {% set _route = app.request.get('_route') %}
-<div class="flex flex-col h-screen justify-between">
+<div class="flex flex-col h-screen justify-between bg-transparent">
+    <div class="w-full bg-red-600 absolute h-96" style="z-index: -1"></div>
     {% include 'layouts/header.html.twig' %}
     <main class="mb-auto">
         {% block body %}{% endblock %}
