@@ -7,12 +7,14 @@
         <div class="max-w-screen-3xl flex mx-auto px-4 py-8 lg:py-16 lg:px-2">
             <div class="mx-auto w-4/6 rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
                 <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white">{{ category.name }}</h2>
-                <ul class="flex w-full flex-wrap justify-center mb-4">
+                <ul class="mb-5 flex list-none ps-0 md:flex-row">
                     {% for child in category.children %}
-                        <li class="list-inline-item mb-2">
+                        <li>
                             <a href="{{ path('app_market_place_child_category', {parent: category.slug, child: child.slug}) }}"
-                               class="btn btn-outline-secondary rounded-0 border-0 bg-opacity-25 category-link">
-                                {{ child.name }} <i class="bi bi-arrow-right-short"></i>
+                               class="bg-pink-50 hover:bg-pink-100 text-pink-800 text-sm shadow-sm font-medium me-2 px-3 py-3 rounded-md dark:bg-pink-900 dark:text-pink-300 inline-flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 inline-block mr-1">
+                                    <path fill-rule="evenodd" d="M2 8c0 .414.336.75.75.75h8.69l-1.22 1.22a.75.75 0 1 0 1.06 1.06l2.5-2.5a.75.75 0 0 0 0-1.06l-2.5-2.5a.75.75 0 1 0-1.06 1.06l1.22 1.22H2.75A.75.75 0 0 0 2 8Z" clip-rule="evenodd"></path>
+                                </svg>{{ child.name }}
                             </a>
                         </li>
                     {% endfor %}
@@ -28,24 +30,24 @@
                                              class="transition duration-300 ease-linear hover:scale-110 rounded-t-lg"
                                              alt="{{ product.name }}">
                                     {% else %}
-                                        <div class="flex justify-center items-center">
+                                        <div class="flex justify-center items-center bg-gray-50">
                                             <svg xmlns="http://www.w3.org/2000/svg"
-                                                 class="fill-gray-400 dark:fill-white transition duration-300 ease-linear hover:scale-110"
-                                                 viewBox="0 0 512 512" height="190">
-                                                <path d="M448 80c8.8 0 16 7.2 16 16V415.8l-5-6.5-136-176c-4.5-5.9-11.6-9.3-19-9.3s-14.4 3.4-19 9.3L202 340.7l-30.5-42.7C167 291.7 159.8 288 152 288s-15 3.7-19.5 10.1l-80 112L48 416.3l0-.3V96c0-8.8 7.2-16 16-16H448zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm80 192a48 48 0 1 0 0-96 48 48 0 1 0 0 96z"/>
+                                                 class="fill-gray-400 dark:fill-white ng transition duration-300 ease-linear hover:scale-110"
+                                                 viewBox="0 0 512 512" height="191">
+                                                <path d="M448 80c8.8 0 16 7.2 16 16V415.8l-5-6.5-136-176c-4.5-5.9-11.6-9.3-19-9.3s-14.4 3.4-19 9.3L202 340.7l-30.5-42.7C167 291.7 159.8 288 152 288s-15 3.7-19.5 10.1l-80 112L48 416.3l0-.3V96c0-8.8 7.2-16 16-16H448zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm80 192a48 48 0 1 0 0-96 48 48 0 1 0 0 96z"></path>
                                             </svg>
                                         </div>
                                     {% endif %}
                                     <div class="absolute top-5 w-full">
                                         <div class="flex justify-between">
-                                            <span class="ml-2 bg-gray-600 bg-opacity-90 text-gray-500 text-md font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-900 dark:text-gray-300">
+                                            <span class="ml-2 bg-gray-600 bg-opacity-90 text-gray-500 text-md shadow-xl font-medium me-2 px-2.5 py-0.5 rounded-md dark:bg-gray-900 dark:text-gray-300">
                                                     <a title="{{ product.name }}"
                                                        href="{{ path('app_market_place_product', {slug: product.slug}) }}"
-                                                       class="text-white hover:text-neutral-100 hover:shadow-xl">{{ 'market.product.details'|trans }}
+                                                       class="text-white hover:text-neutral-100 hover:animate-pulse">{{ 'market.product.details'|trans }}
                                                     </a>
                                                 </span>
                                             {% if product.discount %}
-                                                <span class="bg-red-700 bg-opacity-50 text-white text-md font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">{{ product.discount }}% {{ 'market.product.off'|trans }}</span>
+                                                <span class="bg-red-700 bg-opacity-75 text-white text-md font-medium me-2 px-2.5 py-0.5 rounded-xl dark:bg-red-900 dark:text-white">{{ product.discount }}% {{ 'market.product.off'|trans }}</span>
                                             {% endif %}
                                         </div>
                                     </div>
