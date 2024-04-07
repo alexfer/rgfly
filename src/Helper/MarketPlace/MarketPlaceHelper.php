@@ -21,4 +21,14 @@ class MarketPlaceHelper
 
         return join('-', $parts);
     }
+
+    /**
+     * @param int $length
+     * @return string
+     */
+    public static function orderNumber(int $length): string {
+        $today = date("Ymd");
+        $rand = substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $length);
+        return $today . strtoupper($rand);
+    }
 }

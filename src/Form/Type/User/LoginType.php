@@ -21,7 +21,8 @@ class LoginType extends AbstractType
                 'mapped' => false,
                 'attr' => [
                     'autocomplete' => 'new-password',
-                    'pattern' => ".{8,180}",
+                    // change min length to 8
+                    'pattern' => ".{6,180}",
                 ],
             ])
             ->add('_remember_me', CheckboxType::class, [

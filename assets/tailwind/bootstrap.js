@@ -1,3 +1,3 @@
-import {Dropdown, initTWE, Offcanvas, Ripple, Input, Collapse} from "tw-elements";
+import {Collapse, Dropdown, initTWE, Input, Offcanvas, Popover, Ripple, Tooltip} from "tw-elements";
 
-initTWE({Offcanvas, Ripple, Dropdown, Input, Collapse});
+initTWE({Offcanvas, Ripple, Dropdown, Input, Collapse, Popover, Tooltip});
