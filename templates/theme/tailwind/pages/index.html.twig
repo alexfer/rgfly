@@ -4,8 +4,11 @@
 
 {% block body %}
     <section class="bg-white dark:bg-gray-900">
-        <div class="max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16 lg:px-12">
-            Home page
+        <div class="max-w-screen-3xl flex mx-auto px-4 py-8 lg:py-16 lg:px-2">
+            <div class="mx-auto w-4/6 rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
+                <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white">{{ 'title.home'|trans }}</h2>
+                {{ 'site.description'|trans }}
+            </div>
         </div>
     </section>
 {% endblock %}

@@ -1,0 +1,122 @@
+{% set _message = app.flashes('success') %}
+{{ form_start(form, {attr: {id: 'profile', novalidate: ''}}) }}
+<h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white">{{ 'text.profile'|trans }}</h2>
+{% if errors.count %}
+    <div class="flex items-center p-4 mb-4 text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-400"
+         role="alert">
+        <div class="ms-3 text-sm font-medium">{{ errors.current.message }}</div>
+    </div>
+{% endif %}
+<div class="grid grid-cols-2 gap-5">
+    <div class="relative mb-5">
+        {{ form_label(form.first_name, 'label.form.first_name', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+        {{ form_widget(form.first_name, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.first_name'}}) }}
+        <span class="mt-2 text-sm text-red-500">{{ form_errors(form.first_name) }}</span>
+    </div>
+    <div class="relative mb-5">
+        {{ form_label(form.last_name, 'label.form.last_name', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+        {{ form_widget(form.last_name, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.last_name'}}) }}
+        <span class="mt-2 text-sm text-red-500">{{ form_errors(form.last_name) }}</span>
+    </div>
+</div>
+<div class="grid grid-cols-2 gap-5">
+    <div class="relative mb-5">
+        {{ form_label(form.date_birth, 'label.form.date_birth', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+        {{ form_widget(form.date_birth, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: '2006-05-15'}}) }}
+    </div>
+    <div class="relative mb-5">
+        {{ form_label(form.phone, 'label.form.phone', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+        <div class="absolute mt-7 inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none">
+            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                 fill="currentColor" viewBox="0 0 19 18">
+                <path d="M18 13.446a3.02 3.02 0 0 0-.946-1.985l-1.4-1.4a3.054 3.054 0 0 0-4.218 0l-.7.7a.983.983 0 0 1-1.39 0l-2.1-2.1a.983.983 0 0 1 0-1.389l.7-.7a2.98 2.98 0 0 0 0-4.217l-1.4-1.4a2.824 2.824 0 0 0-4.218 0c-3.619 3.619-3 8.229 1.752 12.979C6.785 16.639 9.45 18 11.912 18a7.175 7.175 0 0 0 5.139-2.325A2.9 2.9 0 0 0 18 13.446Z"></path>
+            </svg>
+        </div>
+        {{ form_widget(form.phone, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: '+3106398200'}}) }}
+    </div>
+</div>
+<div class="grid grid-cols-2 gap-5">
+    <div class="relative mb-5">
+        {{ form_label(form.country, 'label.form.country', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+        {{ form_widget(form.country, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'}}) }}
+    </div>
+    <div class="relative mb-5">
+        {{ form_label(form.city, 'label.form.city', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+        {{ form_widget(form.city, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.city'}}) }}
+    </div>
+</div>
+<div class="grid grid-cols-3 gap-3">
+    <div class="relative mb-5">
+        {{ form_label(form.facebook_profile, 'Facebook Profile', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+            <i class="fa fa-facebook mt-7"></i>
+        </div>
+        {{ form_widget(form.facebook_profile, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'https://facebook-url'}}) }}
+    </div>
+    <div class="relative mb-5">
+        {{ form_label(form.twittetr_profile, 'Twitter Profile', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+            <i class="fa fa-twitter mt-7"></i>
+        </div>
+        {{ form_widget(form.twittetr_profile, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'https://twitter-url'}}) }}
+    </div>
+    <div class="relative mb-5">
+        {{ form_label(form.instagram_profile, 'Instagram Profile', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+            <i class="fa fa-instagram mt-7"></i>
+        </div>
+        {{ form_widget(form.instagram_profile, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'https://instagram-url'}}) }}
+    </div>
+</div>
+<div class="grid grid-cols-1">
+    <div class="relative mb-5">
+        {{ form_label(form.about, 'label.form.about', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+        {{ form_widget(form.about, {attr: {class: 'block p-2.5 w-full resize-none text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'}}) }}
+    </div>
+</div>
+<div class="text-center">
+    <div role="status" class="hidden">
+        <svg aria-hidden="true" class="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"></path>
+            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"></path>
+        </svg>
+        <span class="sr-only">{{ 'text.loading'|trans }}</span>
+    </div>
+</div>
+<div class="grid grid-cols-1 mb-3">
+    <ul id="attachments" class="flex flex-wrap items-left justify-start">
+        {% for key, picture in app.user.userDetails.attach|slice(0, 16) %}
+            <li class="relative my-1 mx-0.5 overflow-hidden bg-cover bg-no-repeat">
+                {% set _picture = 'storage/user/picture/' ~ app.user.id ~ '/' ~ picture.name %}
+                <img class="h-auto max-w-xs shadow-xl dark:shadow-gray-800 rounded"
+                     src="{{ asset(_picture) | imagine_filter('user_thumb') }}" alt="...">
+                    <div id="overlay" class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-red-700 bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-40"></div>
+                <div class="absolute bottom-0 right-0 bg-opacity-60 bg-white block w-full justify-end"
+                     data-id="{{ picture.id }}">
+                    {% if app.user.attach.id != picture.id %}
+                        <a href="{{ path('app_profile_attach_remove') }}" class="mr-1 my-1 fa fa-trash text-indigo-700 hover:text-black/40 confirm-delete float-end"></a>
+                    {% endif %}
+                    <a href="{{ path('app_profile_attach_default') }}" class="mr-1 my-1 fa fa-user-plus text-indigo-700 hover:text-black/40 confirm-change float-end"></a>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+<div class="grid grid-cols-1">
+    <div class="relative mb-5">
+        {{ form_label(form.picture, 'label.form.picture', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white', 'data-label': 'label.form.picture'|trans}}) }}
+        {{ form_widget(form.picture, {attr: {class: 'block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400', 'data-url': path('app_profile_attach'), 'aria-describedby': 'picture' }}) }}
+        <small class="mt-1 text-sm font-thin text-gray-400 dark:text-gray-200"
+               id="file_input_help">{{ form.picture.vars.attr.accept|upper }}
+            (MAX. {{ form.picture.vars.attr.max|format_bytes }}).</small>
+    </div>
+</div>
+<input type="hidden" name="flash" value="{{ _message[0]|default([]|json_encode) }}">
+<div class="grid grid-cols-1">
+    <div class="relative text-center my-3">
+        {{ form_widget(form.update, { label: 'form.action.update', attr: {
+            class: 'inline-block rounded bg-danger px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-danger-3 transition duration-150 ease-in-out hover:bg-danger-accent-300 hover:shadow-danger-2 focus:bg-danger-accent-300 focus:shadow-danger-2 focus:outline-none focus:ring-0 active:bg-danger-600 active:shadow-danger-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong group-invalid:pointer-events-none group-invalid:opacity-30'
+        } }) }}
+    </div>
+</div>
+{{ form_end(form) }}

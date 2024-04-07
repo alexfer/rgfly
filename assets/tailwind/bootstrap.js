@@ -1,4 +1,3 @@
-import { Modal } from 'flowbite';
+import {Collapse, Dropdown, initTWE, Input, Offcanvas, Popover, Ripple, Tooltip} from "tw-elements";
 
-const modal = new Modal(document.getElementById('modal'), {});
-modal.hide();
+initTWE({Offcanvas, Ripple, Dropdown, Input, Collapse, Popover, Tooltip});

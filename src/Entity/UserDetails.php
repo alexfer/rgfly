@@ -21,6 +21,7 @@ class UserDetails
     private ?User $user = null;
 
     #[ORM\OneToMany(mappedBy: 'userDetails', targetEntity: Attach::class)]
+    #[ORM\ORM\OrderBy(['id' => 'desc'])]
     private Collection $attach;
 
     #[ORM\Column(length: 255, nullable: true)]

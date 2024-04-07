@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Password Reset Email Sent{% endblock %}
+
+{% block body %}
+    <section class="bg-white dark:bg-gray-900">
+        <div class="max-w-screen-md mx-auto px-4 py-8 lg:py-16 lg:px-2">
+            <div class="rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
+                <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white">{{ 'text.reset_password'|trans }}</h2>
+                {% for flash_error in app.flashes('reset_password_error') %}
+                    <div class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                         role="alert">
+                        <div class="ms-3 text-sm font-medium">{{ flash_error }}</div>
+                    </div>
+                {% endfor %}
+                <p class="lead text-gray-600">
+                    {{ 'text.reset_password.info'|trans }} {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}
+                </p>
+                <p class="mt-3 text-gray-600">{{ 'text.reset_password.resend'|trans({'link':  path('app_forgot_password_request') })|raw }}</p>
+            </div>
+        </div>
+    </section>
+{% endblock %}

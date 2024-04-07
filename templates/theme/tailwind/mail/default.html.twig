@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="{{ app.request.locale }}" data-bs-theme="white">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="content-language" content="{{ app.request.locale }}"/>
+</head>
+<body>
+
+<div style="width: auto; background-color: #f34770; color: #FFFFFF; font-size: 13px; font-family: 'Microsoft Sans Serif', Tahoma, Arial, Verdana, Sans-Serif; font-weight: normal;">
+    <div style="padding: 20px 0 20px 15px; font-size: 24px; text-align: center;">
+        <a target="_blank" href="{{ url('app_index') }}" style="color: #F5F5F5; text-decoration: none">{{ 'site.title'|trans }}</a>
+    </div>
+
+    <div style="background-color: #ffffff; color: #3D3D3D; height: 25px; padding: 15px;">Massage from {{ args.name }}!</div>
+
+    <div style="background-color: #000000; color: #f5f5f5; padding: 4px 0 8px 15px;">
+        <h1 style="font-size: 18px;">{{ args.subject ? args.subject : subject }}</h1>
+    </div>
+
+    <div style="font-size: 14px; color: #343434; min-height: 250px; padding: 15px; background-color: #fff;">
+        {{ args.message|raw }}
+    </div>
+
+    <div style="font-size: 14px; color: #ffffff; padding-bottom: 10px; margin: 10px 0 10px 15px; font-weight: bold; text-align: center;">
+        &copy; {{ "now"|date('Y') }} {{ 'site.title'|trans }}
+    </div>
+</div>
+</body>
+</html>

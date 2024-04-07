@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Contact;
 use App\Form\Type\ContactType;
+use App\Service\Contact\ContactTrait;
+use App\Service\Contact\Interface\HandleInterface;
 use App\Service\Interface\EmailNotificationInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,58 +17,26 @@ use Symfony\Component\Routing\Attribute\Route;
 class ContactController extends AbstractController
 {
 
+    use ContactTrait;
+
     /**
-     * @param Request $request
-     * @param EntityManagerInterface $em
-     * @param EmailNotificationInterface $emailNotification
+     * @param HandleInterface $handle
      * @return Response
      */
     #[Route('/contact', name: 'contact', methods: ['GET', 'POST'])]
-    public function index(
-        Request                    $request,
-        EntityManagerInterface     $em,
-        EmailNotificationInterface $emailNotification,
-        ParameterBagInterface      $params,
-    ): Response
+    public function index(HandleInterface $handle): Response
     {
         $contact = new Contact();
-
         $form = $this->createForm(ContactType::class, $contact);
-        $form->handleRequest($request);
+        $handler = $handle->serve($form, $contact);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $contact->setSubject(
-                $form->get('subject')->getData() ?:
-                    $params->get('app.notifications.subject')
-            );
-
-            $em->persist($contact);
-            $em->flush();
-
-            $args = $request->request->all();
-            $template = $this->renderView('mail/default.html.twig', [
-                'args' => $args['contact'],
-                'subject' => $params->get('app.notifications.subject'),
-                'index' => $this->generateUrl('app_index')
-            ]);
-
-            $emailNotification->send($args['contact'], $template);
-
+        if ($handler) {
+            $handle->notify();
             return $this->redirectToRoute('contact_success');
         }
 
         return $this->render('contact/index.html.twig', [
             'form' => $form,
         ]);
-    }
-
-    /**
-     *
-     * @return Response
-     */
-    #[Route('/contact/success', name: 'contact_success')]
-    public function success(): Response
-    {
-        return $this->render('contact/success.html.twig', []);
     }
 }

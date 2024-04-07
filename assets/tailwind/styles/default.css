@@ -1,2 +1,10 @@
-@import "https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap";
+a {
+    color: rgba(36, 82, 204, 0.85);
+    text-decoration: none;
+    background-color: transparent
+}
 
+a:hover {
+    color: #dc3545;
+    text-decoration: none
+}

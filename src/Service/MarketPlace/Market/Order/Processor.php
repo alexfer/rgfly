@@ -47,6 +47,7 @@ class Processor implements ProcessorInterface
 
     /**
      * @param string|null $sessionId
+     * @param int|null $id
      * @return MarketOrders|null
      */
     public function findOrder(?string $sessionId, int $id = null): ?MarketOrders
@@ -144,6 +145,7 @@ class Processor implements ProcessorInterface
      * @param MarketOrders $order
      * @param bool $withNumber
      * @return void
+     * @throws \Random\RandomException
      */
     private function setProduct(MarketOrders $order, bool $withNumber = true): void
     {
@@ -157,7 +159,7 @@ class Processor implements ProcessorInterface
 
         if ($withNumber) {
             $product->getOrders()
-                ->setNumber(MarketPlaceHelper::slug($order->getId(), 10, 'o'));
+                ->setNumber(MarketPlaceHelper::orderNumber(6));
         }
 
         $this->em->persist($product);
