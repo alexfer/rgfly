@@ -100,6 +100,7 @@ class CategoryController extends AbstractController
 
         return $this->render('market_place/category/index.html.twig', [
             'category' => $category,
+            'parent' => null,
             'children' => $children,
             'products' => $products['data'],
             'rows_count' => $products['rows_count'],
@@ -116,11 +117,16 @@ class CategoryController extends AbstractController
     public function children(?UserInterface $user): Response
     {
         $child = $this->request->get('child');
+        $parent = $this->request->get('parent');
+
         $category = $this->category($child);
+        $parent = $this->category($parent);
+
         $products = $this->repository->findProductsByChildCategory($category->getId(), $this->offset, $this->limit);
 
         return $this->render('market_place/category/index.html.twig', [
             'category' => $category,
+            'parent' => $parent,
             'products' => $products['data'],
             'rows_count' => $products['rows_count'],
             'customer' => $this->customer($user),
