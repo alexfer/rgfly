@@ -8,21 +8,25 @@
             <div class="mx-auto w-4/6 rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
                 <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white">{{ category.name }}</h2>
                 <ul class="mb-5 flex list-none ps-0 md:flex-row">
-                    {% for child in category.children %}
+                    {% set _collection = parent is not null ? parent.children : category.children %}
+                    {% for child in _collection %}
                         <li>
-                            <a href="{{ path('app_market_place_child_category', {parent: category.slug, child: child.slug}) }}"
+                            <a href="{{ path('app_market_place_child_category', {parent: app.request.get('parent'), child: child.slug}) }}"
                                class="bg-pink-50 hover:bg-pink-100 text-pink-800 text-sm shadow-sm font-medium me-2 px-3 py-3 rounded-md dark:bg-pink-900 dark:text-pink-300 inline-flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 inline-block mr-1">
-                                    <path fill-rule="evenodd" d="M2 8c0 .414.336.75.75.75h8.69l-1.22 1.22a.75.75 0 1 0 1.06 1.06l2.5-2.5a.75.75 0 0 0 0-1.06l-2.5-2.5a.75.75 0 1 0-1.06 1.06l1.22 1.22H2.75A.75.75 0 0 0 2 8Z" clip-rule="evenodd"></path>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+                                     class="w-4 h-4 inline-block mr-1">
+                                    <path fill-rule="evenodd"
+                                          d="M2 8c0 .414.336.75.75.75h8.69l-1.22 1.22a.75.75 0 1 0 1.06 1.06l2.5-2.5a.75.75 0 0 0 0-1.06l-2.5-2.5a.75.75 0 1 0-1.06 1.06l1.22 1.22H2.75A.75.75 0 0 0 2 8Z"
+                                          clip-rule="evenodd"></path>
                                 </svg>{{ child.name }}
                             </a>
                         </li>
                     {% endfor %}
                 </ul>
-                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2">
                     {% for product in products %}
-                        <div class=min-h-full">
-                            <div class="max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 min-h-full">
+                        <div class="min-h-full">
+                            <div class="max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                                 <div class="lg:max-w-xl relative overflow-hidden bg-cover bg-no-repeat">
                                     {% if product.attach_name %}
                                         {% set _picture = 'storage/product/picture/' ~ product.id ~ '/' ~ product.attach_name %}
@@ -32,8 +36,8 @@
                                     {% else %}
                                         <div class="flex justify-center items-center bg-gray-50">
                                             <svg xmlns="http://www.w3.org/2000/svg"
-                                                 class="fill-gray-400 dark:fill-white ng transition duration-300 ease-linear hover:scale-110"
-                                                 viewBox="0 0 512 512" height="191">
+                                                 class="fill-gray-400 dark:fill-white transition duration-300 ease-linear hover:scale-110 rounded-t-lg"
+                                                 viewBox="0 0 512 512" height="194">
                                                 <path d="M448 80c8.8 0 16 7.2 16 16V415.8l-5-6.5-136-176c-4.5-5.9-11.6-9.3-19-9.3s-14.4 3.4-19 9.3L202 340.7l-30.5-42.7C167 291.7 159.8 288 152 288s-15 3.7-19.5 10.1l-80 112L48 416.3l0-.3V96c0-8.8 7.2-16 16-16H448zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm80 192a48 48 0 1 0 0-96 48 48 0 1 0 0 96z"></path>
                                             </svg>
                                         </div>
@@ -56,7 +60,7 @@
                                     <div class="ml-3">
                                         <form class="shopping-cart" method="post"
                                               action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
-                                            <button class="text-white bg-gray-950 hover:bg-surface-dark focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-md text-sm px-4 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                            <button class="text-white bg-gray-800 shadow-md hover:bg-surface-dark focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-md text-sm px-4 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                                     data-slug="{{ product.slug }}" type="submit"
                                                     {% if product.quantity == 0 %}disabled{% endif %}>
                                                 <i class="fa fa-shopping-cart mt-1 me-2"></i>{{ 'market.product.add'|trans }}
@@ -73,7 +77,7 @@
                                 {% if product.parent_category_name is not null %}
                                     <a title="{{ product.name }}" class="mt-3"
                                        href="{{ path('app_market_place_product', {slug: product.slug}) }}">
-                                        <h5 class="mx-3 mb-2 text-2xl font-bold hover:text-gray-500 tracking-tight truncate text-gray-800 dark:text-white">
+                                        <h5 class="mx-3 mb-2 text-lg font-bold hover:text-gray-700 tracking-tight truncate text-gray-500 dark:text-white">
                                             {{ product.short_name }}
                                         </h5>
                                     </a>
@@ -134,17 +138,20 @@
                                 </div>
                             </div>
                         </div>
-                    {% else %}
-                        <img class="d-block mx-auto mb-5 border-0 w-25 shadow-none"
-                             src="{{ asset('img/404.png') }}"
-                             width="340" alt="{{ 'table.footer.not_found'|trans }}">
-                        <p class="text-center">
-                            {{ 'table.footer.not_found'|trans }}
-                            <a class="d-block fs-5"
-                               href="{{ path('app_market_place_index') }}">{{ 'form.action.back'|trans }}</a>
-                        </p>
                     {% endfor %}
                 </div>
+                {% if products|length == 0 %}
+                    <div class="w-full">
+                        <img class="mx-auto"
+                             src="{{ asset('img/404.png') }}"
+                             width="340" alt="{{ 'table.footer.not_found'|trans }}">
+                    </div>
+                    <div class="w-full mt-5 text-gray-600 dark:text-white text-center">
+                        {{ 'table.footer.not_found'|trans }}
+                        <a class="block w-full hover:text-blue-800 hover:underline dark:text-white"
+                           href="{{ path('app_market_place_index') }}">{{ 'form.action.back'|trans }}</a>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </section>
