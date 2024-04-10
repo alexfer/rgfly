@@ -54,3 +54,5 @@ If you'd like to contribute code but aren't sure what, the [issues list](https:/
 If you're a first-time code contributor, you may find Github's guide to [forking projects](https://guides.github.com/activities/forking/) helpful.
 
 All contributors (whether contributing code, involved in issue discussions, or involved in any other way) must abide by our [code of conduct](https://github.com/whiteoctober/open-source-code-of-conduct/blob/master/code_of_conduct.md).
+
+[![Alexander Sh profile views](https://u8views.com/api/v1/github/profiles/714554/views/day-week-month-total-count.svg)](https://u8views.com/github/rgfly) 
