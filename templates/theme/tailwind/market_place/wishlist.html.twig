@@ -15,7 +15,7 @@
           tabindex="0" data-twe-toggle="popover" data-twe-trigger="hover focus" data-twe-ripple-init
           data-twe-title="{{ 'title.service.message'|trans }}" data-twe-content="{{ 'market.unauthorized'|trans }}" data-twe-ripple-color="light"
       {% endif %}>
-    <button class="{% if _disabled is null %}hover:animate-ping {% endif%}text-gray-800 dark:text-white hover:text-rose-500 hover:shadow-4-strong hover:bg-gray-50 focus:ring-1 focus:ring-gray-100 font-medium rounded-md text-sm px-1 lg:px-3 pt-1 py-1 lg:py-1.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800 {{ extra }}"
+    <button class="text-gray-800 dark:text-white hover:text-rose-500 hover:bg-gray-200 focus:ring-1 focus:ring-gray-100 font-medium rounded-full text-sm px-3 pt-2.5 pb-1 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800 {{ extra }}"
             {% if customer is not null %}
                 data-twe-toggle="tooltip"
                 title="{{ 'market.product.wishlist'|trans }}"

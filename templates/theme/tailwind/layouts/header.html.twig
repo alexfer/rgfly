@@ -15,8 +15,12 @@
                         aria-controls="shopping-cart"
                         data-twe-ripple-init
                         data-twe-ripple-color="light"
-                        class="text-white dark:text-white block uppercase hover:bg-gray-50 border-inherit focus:ring-gray-100 font-medium rounded-md text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+                        class="relative text-white dark:text-white block uppercase hover:bg-gray-50 border-inherit focus:ring-gray-100 font-medium rounded-md text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
                     <i class="fa fa-shopping-cart mr-1"></i>{{ 'market.product.cart'|trans }}
+                    <div id="qty" class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-gray-600 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
+                        {{ app.session.get('quantity')|default(0) }}
+                        <span class="sr-only">{{ app.session.get('quantity')|default(0) }}</span>
+                    </div>
                 </a>
                 <div
                         class="relative"

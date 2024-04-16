@@ -12,12 +12,12 @@ body {
 }
 
 a {
-    color: rgba(36, 82, 204, 0.85);
+    color: rgba(60, 60, 62, 0.75);
     text-decoration: none;
     background-color: transparent
 }
 
 a:hover {
-    color: rgba(220, 53, 69, 0.80);
+    color: rgba(60, 60, 62, 0.85);
     text-decoration: none
 }
