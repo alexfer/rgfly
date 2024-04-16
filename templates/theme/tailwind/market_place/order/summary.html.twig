@@ -8,17 +8,17 @@
         <div class="max-w-screen-3xl flex mx-auto px-4 py-8 lg:py-16 lg:px-2">
             <div class="mx-auto w-4/6 rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
                 <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white text-ellipsis overflow-hidden">{{ 'order.cart'|trans }}</h2>
-                <div class="grid grid-cols-[70%_30%] sm:grid-cols-au gap-4">
+                <div class="grid grid-cols-[70%_30%] gap-4">
                     <div class="">
                         <form name="order[]" action="{{ path('app_market_place_order_update') }}" method="post">
                             <div class="mt-2 pr-3">
                                 {% for order in orders %}
                                     <div class="block text-lg font-semibold pr-3 pb-3 text-gray-500 truncate max-w-auto">{{ order.market.name }}</div>
-                                    <div class="root grid grid-cols-[25%_40%_15%_20%] md:grid-cols[100%] gap-4 mr-8 mb-5"
+                                    <div class="root grid grid-cols-[25%_40%_15%_20%] md:grid-cols[100%] gap-1 mr-8 mb-5 shadow-md bg-gray-50 p-4 rounded-md hover:bg-white"
                                          data-order-id="{{ order.session }}">
                                         <input type="hidden" name="order[]" value="{{ order.market.id }}">
                                         {% for product in order.marketOrdersProducts %}
-                                            <div class="parent relative aspect-w-16 aspect-h-9"
+                                            <div class="parent relative aspect-w-16 aspect-h-9 mb-2"
                                                  data-product-id="{{ product.id }}">
                                                 {% if product.product.marketProductAttaches.count %}
                                                     {% set _picture = 'storage/product/picture/' ~ product.product.id ~ '/' ~ product.product.marketProductAttaches.first.attach.name %}
@@ -73,7 +73,7 @@
                                                 </label>
                                                 <input type="hidden" name="order[product][]" value="{{ product.id }}">
                                             </div>
-                                            <div class="relative text-end me-5">
+                                            <div class="relative text-end mr-5">
                                                 {% if product.discount %}
                                                     {% set percent = product.discount %}
                                                     {% set cost = product.cost %}

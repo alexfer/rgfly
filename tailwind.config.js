@@ -4,10 +4,15 @@ module.exports = {
         "./assets/**/*.js",
         "./templates/**/*.html.twig",
         "./node_modules/flowbite/**/*.js",
-        "./node_modules/tw-elements/js/**/*.js" // set up the path to the flowbite package
+        "./node_modules/tw-elements/js/**/*.js"
     ],
     theme: {
-        extend: {},
+        extend: {
+            gridTemplateColumns: {
+                'auto-fill-200': 'repeat(auto-fill, minmax(200px, 1fr))',
+                'auto-fit-200': 'repeat(auto-fit, minmax(200px, 1fr))',
+            },
+        },
     },
     plugins: [
         require("tw-elements/plugin.cjs"),

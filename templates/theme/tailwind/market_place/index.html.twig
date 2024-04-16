@@ -6,7 +6,7 @@
             <div class="max-w-screen-3xl flex mx-auto px-4 py-8 lg:py-16 lg:px-2">
                 <div class="mx-auto w-4/6 rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
                     <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white">{{ 'title.general.market.name'|trans }}</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                    <div class="grid grid-cols-auto-fill-200 gap-2">
                         {% for product in products %}
                             <div class="min-h-full">
                                 <div class="max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -17,13 +17,9 @@
                                                  class="transition duration-300 ease-linear hover:scale-110 rounded-t-lg"
                                                  alt="{{ product.name }}">
                                         {% else %}
-                                            <div class="flex justify-center items-center bg-gray-50">
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                     class="fill-gray-400 dark:fill-white transition duration-300 ease-linear hover:scale-110 rounded-t-lg"
-                                                     viewBox="0 0 512 512" height="194">
-                                                    <path d="M448 80c8.8 0 16 7.2 16 16V415.8l-5-6.5-136-176c-4.5-5.9-11.6-9.3-19-9.3s-14.4 3.4-19 9.3L202 340.7l-30.5-42.7C167 291.7 159.8 288 152 288s-15 3.7-19.5 10.1l-80 112L48 416.3l0-.3V96c0-8.8 7.2-16 16-16H448zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm80 192a48 48 0 1 0 0-96 48 48 0 1 0 0 96z"></path>
-                                                </svg>
-                                            </div>
+                                            <img src="{{ asset('img/300x200.png') }}"
+                                                 class="transition duration-300 ease-linear hover:scale-110 rounded-t-lg"
+                                                 alt="{{ product.name }}">
                                         {% endif %}
                                         <div class="absolute top-5 w-full">
                                             <div class="flex justify-between">
@@ -64,13 +60,13 @@
                                         </h5>
                                     </a>
                                     <a href="{{ path('app_market_place_parent_category', {parent:  product.parent_category_slug}) }}"
-                                       class="hover:underline ml-2 text-gray-500 w-full block">
+                                       class="hover:underline truncate ml-2 text-gray-500 w-full block">
                                         <i class="fa fa-check px-2 text-green-400"></i>{{ product.parent_category_name }}
                                     </a>
                                     <a href="{{ path('app_market_place_child_category', {
                                         parent: product.parent_category_slug,
                                         child:  product.category_slug
-                                    }) }}" class="hover:underline ml-2 text-gray-500">
+                                    }) }}" title="{{ product.category_name }}" class="hover:underline hover:w-full truncate block w-auto ml-2 mr-3 text-gray-500">
                                         <i class="fa fa-check px-2 text-green-400"></i>{{ product.category_name }}
                                     </a>
                                     <ul class="list-none ml-2 mt-6">
@@ -80,8 +76,8 @@
                                                 <i class="fa fa-comment mx-2 text-indigo-700"></i>{{ 'label.form.message'|trans }}
                                             </a>
                                         </li>
-                                        <li class="pb-0 flex">
-                                            <a class="truncate inline-block w-64 hover:fill-sky-600 hover:animate-pulse"
+                                        <li class="flex">
+                                            <a class="truncate inline-block w-auto mr-3 hover:w-full hover:fill-sky-600 hover:animate-pulse"
                                                href="{{ path('app_market_place_market', {slug:  product.market_slug}) }}">
                                                 <svg class="w-4 h-4 mx-2 fill-red-700 inline-block"
                                                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
