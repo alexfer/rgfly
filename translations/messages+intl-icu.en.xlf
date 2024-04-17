@@ -1117,6 +1117,18 @@
                 <source>label.form.postal</source>
                 <target>Your Zip/Postal code</target>
             </trans-unit>
+            <trans-unit id="required.text">
+                <source>required.text</source>
+                <target>Required fields are marked with an asterisk</target>
+            </trans-unit>
+            <trans-unit id="required.field">
+                <source>required.field</source>
+                <target>Required field</target>
+            </trans-unit>
+            <trans-unit id="required.value">
+                <source>required.value</source>
+                <target>required</target>
+            </trans-unit>
             <trans-unit id="form.agree_terms.help">
                 <source>form.agree_terms.help</source>
                 <target>
@@ -1385,11 +1397,14 @@
             </trans-unit>
             <trans-unit id="text.reset_password.info">
                 <source>text.reset_password.info</source>
-                <target>If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password. This link will expire in</target>
+                <target>If an account matching your email exists, then an email was just sent that contains a link that
+                    you can use to reset your password. This link will expire in
+                </target>
             </trans-unit>
             <trans-unit id="text.reset_password.resend">
                 <source>text.reset_password.resend</source>
-                <target><![CDATA[f you don't receive an email please check your spam folder or  <a href="{ link }">try again</a>.]]></target>
+                <target>
+                    <![CDATA[f you don't receive an email please check your spam folder or  <a href="{ link }">try again</a>.]]></target>
             </trans-unit>
             <trans-unit id="form.email.info">
                 <source>form.email.info</source>

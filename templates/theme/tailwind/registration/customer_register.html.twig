@@ -3,14 +3,11 @@
 {% block title %}{{ 'text.register'|trans }}{% endblock %}
 
 {% block body %}
-    <section class="container mt-lg-2">
-        <div class="row">
-            <div class="col-2"></div>
-            <div class="col-md-8 card card-body bg-light shadow px-xxl-3">
-                <h4 class="ps-2 border-start border-3 border-danger mb-3">{{ 'text.register'|trans }}</h4>
+    <section class="bg-white dark:bg-gray-900">
+        <div class="max-w-screen-lg px-4 py-8 mx-auto lg:py-16 lg:px-2">
+            <div class="flex rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
                 {{ include('registration/_customer_form.html.twig') }}
             </div>
-            <div class="col-2"></div>
         </div>
     </section>
 {% endblock %}
