@@ -59,11 +59,11 @@
                                         <span class="text-end text-primary-emphasis">{{ itemSubtotal|amount_format }}<small>{{ order.market.currency|currency }}</small></span>
                                     </div>
                                     {#
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="flex justify-between items-center mb-2">
                                         <span class="fw-normal me-2">{{ 'order.subtotal'|trans }}:</span>
                                         <span class="text-end text-primary-emphasis">{{ subtotal|amount_format }}<small>{{ order.market.currency|currency }}</small></span>
                                     </div>
-                                    <div class="d-flex justify-content-between align-items-center">
+                                    <div class="flex justify-between items-center">
                                         <span class="fw-normal me-2">{{ 'order.service.fee'|trans }}:</span>
                                         <span class="text-end text-primary-emphasis">{{ fee|amount_format }}<small>{{ order.market.currency|currency }}</small></span>
                                     </div>

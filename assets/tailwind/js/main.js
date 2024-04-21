@@ -7,24 +7,17 @@ const confirmDelete = document.getElementsByClassName('confirm-delete');
 const confirmChange = document.getElementsByClassName('confirm-change');
 const toastSuccess = document.getElementById('toast-success');
 const toastDanger = document.getElementById('toast-danger');
-const toast = document.getElementById('toast-success');
 const eventOptions = {
     capture: true,
     once: true
 };
 
-if (toast) {
+if (toastSuccess) {
     let flash = document.querySelector('input[name="flash"]').value;
     if (typeof flash !== 'undefined') {
         let messages = $.parseJSON(flash);
-        let body = toast.querySelector('#toast-body');
-        console.log(typeof messages.message)
         if (typeof messages.message !== 'undefined') {
-            body.textContent = messages.message;
-            toast.classList.remove('hidden');
-            setTimeout(() => {
-                toast.classList.add('hidden');
-            }, 7000);
+            showToast(toastSuccess, messages.message);
         }
     }
 }
