@@ -133,7 +133,7 @@
                     <li>
                         {% set split = app.request.get('_route')|split('_') %}
                         <a href="{{ path('app_market_place_index') }}"
-                           class="{{ split[1] == 'market'? 'text-white bg-red-700': '' }} block uppercase py-2 px-4 rounded-md text-sm text-gray-200 hover:text-white focus:text-gray-50 hover:bg-red-700 focus:bg-red-700 focus:outline-none focus:shadow-outline">{{ 'title.market_places'|trans }}</a>
+                           class="{{ split|length > 1 and split[1] == 'market'? 'text-white bg-red-700': '' }} block uppercase py-2 px-4 rounded-md text-sm text-gray-200 hover:text-white focus:text-gray-50 hover:bg-red-700 focus:bg-red-700 focus:outline-none focus:shadow-outline">{{ 'title.market_places'|trans }}</a>
                     </li>
                 </ul>
             </div>
