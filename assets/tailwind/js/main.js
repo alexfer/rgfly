@@ -1,4 +1,5 @@
 import './utils';
+import $ from "jquery";
 
 const uploadInput = document.querySelector('input[type="file"]');
 const formData = new FormData();
@@ -10,6 +11,16 @@ const eventOptions = {
     capture: true,
     once: true
 };
+
+if (toastSuccess) {
+    let flash = document.querySelector('input[name="flash"]').value;
+    if (typeof flash !== 'undefined') {
+        let messages = $.parseJSON(flash);
+        if (typeof messages.message !== 'undefined') {
+            showToast(toastSuccess, messages.message);
+        }
+    }
+}
 
 if (uploadInput) {
     uploadInput.addEventListener('change', (event) => {

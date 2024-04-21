@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <section class="bg-white dark:bg-gray-900">
+        <div class="max-w-screen-3xl flex mx-auto px-4 py-8 lg:py-16 lg:px-2">
+            <div class="mx-auto w-4/6 rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
+                <h2 class="text-2xl pb-4 relative font-extrabold text-primary-700 dark:text-white">{{ 'customer.cabinet'|trans }}
+                    <span class="absolute right-0 mr-2 text-lg pe-4 font-normal">{{ customer.firstName }} {{ customer.lastName }}</span>
+                </h2>
+                <div class="grid grid-cols-8 gap-4">
+                    <aside class="col-span-2 h-screen transition-transform -translate-x-full sm:translate-x-0">
+                        <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 rounded-lg">
+                            {% include 'market_place/cabinet/aside.html.twig' %}
+                        </div>
+                    </aside>
+                    <section class="col-span-6">
+                        <div class="pt-2 px-4 relative">
+                            <h4 class="pb-2 block w-full mb-4 text-xl font-semibold text-red-500 text-center text-sm-start">{{ 'customer.cabinet.wishlist'|trans }}
+                                {% if wishlist|length %}
+                                    <button id="bulk-remove"
+                                            data-url="{{ path('app_cabinet_wishlist_bulk_delete') }}"
+                                            type="button"
+                                            class="flex text-red-400 p-3 shadow-md rounded-md hover:shadow-lg hover:bg-gray-50 focus:shadow-lg absolute me-4 top-2 right-1">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                {% endif %}
+                            </h4>
+                            {% if wishlist|length %}
+                                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                                    <table class="w-full mt-3 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                        <tbody id="bulk-item">
+                                        {% for item in wishlist %}
+                                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                <th scope="row" class="p-3">
+                                                    <label for="id">
+                                                        <input type="checkbox" id="id" name="item[{{ item.id }}]"
+                                                               value="{{ item.id }}"
+                                                               class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600">
+                                                    </label>
+                                                </th>
+                                                <td class="p-3 text-gray-500 w-2/5">
+                                                    <a class="text-ellipsis overflow-hidden"
+                                                       href="{{ path('app_market_place_product', {slug: item.product.slug}) }}">{{ item.product.shortName }}</a>
+                                                </td>
+                                                <td class="p-3 text-gray-500 w-2/5">
+                                                    <a class="text-ellipsis overflow-hidden"
+                                                       href="{{ path('app_market_place_market', {slug: item.market.slug}) }}">{{ item.market.name }}</a>
+                                                </td>
+                                                <td class="p-3 text-gray-500 w-2/5 text-center">
+                                                    <span class="pr-1 font-semibold">{{ item.product.cost|amount_format }}{{ item.market.currency|currency }}</span>
+                                                </td>
+                                                <td class="p-3 text-gray-500">
+                                                    <form class="shopping-cart" method="post"
+                                                          action="{{ path('app_market_place_product_order', {product: item.product.slug}) }}">
+                                                        <button class="flex-grow bg-gray-200 px-3 py-2 hover:bg-gray-100 hover:text-gray-950 drop-shadow-2xl border rounded-lg shadow-mdm"
+                                                                data-id="{{ item.market.id }}-{{ item.product.id }}"
+                                                                type="submit">
+                                                            <i class="fa fa-shopping-cart"></i>
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% else %}
+                                <div id="not-found" class="text-center visually-hidden">
+                                    <img class="block mx-auto"
+                                         src="{{ asset('img/404.png') }}"
+                                         width="340" alt="{{ 'market.product.wishlist.empty'|trans }}">
+                                    <p class="text-center">
+                                        {{ 'market.product.wishlist.empty'|trans }}
+                                        <a class="block font-light"
+                                           href="{{ path('app_market_place_index') }}">{{ 'form.action.back'|trans }}</a>
+                                    </p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

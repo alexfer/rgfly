@@ -38,6 +38,7 @@ class AddressType extends AbstractType
                 'attr' => [
                     'min' => 5,
                     'max' => 250,
+                    'pattern' => ".{5,250}",
                 ],
                 'data' => $options?->getLine1(),
                 'constraints' => [
@@ -59,6 +60,7 @@ class AddressType extends AbstractType
                 'attr' => [
                     'min' => 6,
                     'max' => 250,
+                    'pattern' => ".{6,250}",
                 ],
                 'constraints' => [
                     new Length([
@@ -85,6 +87,7 @@ class AddressType extends AbstractType
                 'attr' => [
                     'min' => 3,
                     'max' => 250,
+                    'pattern' => ".{3,250}",
                 ],
                 'constraints' => [
                     new NotBlank([
@@ -105,6 +108,7 @@ class AddressType extends AbstractType
                 'attr' => [
                     'min' => 3,
                     'max' => 250,
+                    'pattern' => ".{3,250}",
                 ],
                 'constraints' => [
                     new Length([
@@ -122,6 +126,7 @@ class AddressType extends AbstractType
                 'attr' => [
                     'min' => 3,
                     'max' => 50,
+                    'pattern' => ".{3,250}",
                 ],
                 'constraints' => [
                     new Length([

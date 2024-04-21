@@ -7,10 +7,7 @@ if(toast !== undefined) {
     const options = {
         transition: 'transition-opacity',
         duration: 4000,
-        timing: 'ease-out',
-        onHide: (toast, toastClose) => {
-            console.log(toastClose, toast);
-        }
+        timing: 'ease-out'
     };
     const instanceOptions = {
         id: 'targetElement',

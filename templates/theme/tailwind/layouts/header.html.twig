@@ -15,7 +15,7 @@
                         aria-controls="shopping-cart"
                         data-twe-ripple-init
                         data-twe-ripple-color="light"
-                        class="relative text-white dark:text-white block uppercase hover:bg-gray-50 border-inherit focus:ring-gray-100 font-medium rounded-md text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+                        class="relative text-white dark:text-white block uppercase hover:bg-gray-50 border-inherit focus:ring-gray-100 font-medium rounded-md text-xs px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
                     <i class="fa fa-shopping-cart mr-1"></i>{{ 'market.product.cart'|trans }}
                     <div id="qty" class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-gray-600 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
                         {{ app.session.get('quantity')|default(0) }}
@@ -31,44 +31,44 @@
                        role="button"
                        data-twe-dropdown-toggle-ref
                        aria-expanded="false"
-                       class="text-white dark:text-white block uppercase hover:bg-gray-50 focus:ring-1 focus:ring-gray-100 font-medium rounded-md text-sm px-4 lg:px-5 py-3 lg:py-3.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-red-800">
+                       class="text-white dark:text-white block uppercase hover:bg-gray-50 focus:ring-1 focus:ring-gray-100 font-medium rounded-md text-xs px-4 lg:px-5 py-2 lg:py-2.5 ml-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-red-800">
                         <i class="fa fa-user mr-1"></i>{{ 'title.account'|trans }}
                     </a>
-                    <ul class="absolute z-[1000] w-48 hidden min-w-max list-none overflow-hidden rounded-sm border-none bg-white bg-clip-padding text-left text-base shadow-xl data-[twe-dropdown-show]:block dark:bg-surface-dark"
+                    <ul class="absolute z-[1000] w-48 hidden min-w-max list-none overflow-hidden p-2 rounded-md border-none bg-white bg-clip-padding text-left text-base shadow-xl data-[twe-dropdown-show]:block dark:bg-surface-dark"
                         aria-labelledby="account"
                         data-twe-dropdown-menu-ref>
                         {% if not app.user %}
                             <li>
-                                <a class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25"
+                                <a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-md dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 hover:text-gray-50 focus:text-gray-50 hover:bg-red-600 focus:bg-gray-600 focus:outline-none focus:shadow-outline"
                                    href="{{ path('app_login') }}"
                                    data-twe-dropdown-item-ref>{{ _arrow_right|raw }}{{ 'title.user.login'|trans }}</a>
                             </li>
                             <li>
-                                <a class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25"
+                                <a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-md dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 hover:text-gray-50 focus:text-gray-50 hover:bg-red-600 focus:bg-gray-600 focus:outline-none focus:shadow-outline"
                                    href="{{ path('app_register') }}"
                                    data-twe-dropdown-item-ref>{{ _arrow_right|raw }}{{ 'title.user.register'|trans }}
                                 </a>
                             </li>
                             <li>
-                                <a class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25"
+                                <a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-md dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 hover:text-gray-50 focus:text-gray-50 hover:bg-red-600 focus:bg-gray-600 focus:outline-none focus:shadow-outline"
                                    href="{{ path('app_forgot_password_request') }}"
                                    data-twe-dropdown-item-ref>{{ _arrow_right|raw }}{{ 'text.forgot_password'|trans }}</a>
                             </li>
                         {% else %}
                             {% if 'ROLE_USER' in app.user.roles or 'ROLE_ADMIN' in app.user.roles %}
                                 <li>
-                                    <a class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25"
+                                    <a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-md dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 hover:text-gray-50 focus:text-gray-50 hover:bg-red-600 focus:bg-gray-600 focus:outline-none focus:shadow-outline"
                                        href="{{ path('app_dashboard') }}"
                                        data-twe-dropdown-item-ref>{{ _arrow_right|raw }}{{ 'text.dashboard'|trans }}
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25"
+                                    <a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-md dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 hover:text-gray-50 focus:text-gray-50 hover:bg-red-600 focus:bg-gray-600 focus:outline-none focus:shadow-outline"
                                        href="{{ path('app_profile') }}"
                                        data-twe-dropdown-item-ref>{{ _arrow_right|raw }}{{ 'text.profile'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25"
+                                    <a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-md dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 hover:text-gray-50 focus:text-gray-50 hover:bg-red-600 focus:bg-gray-600 focus:outline-none focus:shadow-outline"
                                        href="{{ path('app_logout') }}"
                                        data-twe-dropdown-item-ref>{{ _arrow_right|raw }}{{ 'title.user.logoff'|trans }}
                                     </a>
@@ -76,13 +76,13 @@
                             {% endif %}
                             {% if 'ROLE_CUSTOMER' in app.user.roles and 'ROLE_ADMIN' not in app.user.roles and 'ROLE_USER' not in app.user.roles %}
                                 <li>
-                                    <a class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25"
+                                    <a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-md dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 hover:text-gray-50 focus:text-gray-50 hover:bg-red-600 focus:bg-gray-600 focus:outline-none focus:shadow-outline"
                                        href="{{ path('app_cabinet') }}"
                                        data-twe-dropdown-item-ref>{{ _arrow_right|raw }}{{ 'title.customer.cabinet'|trans }}
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25"
+                                    <a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-md dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 hover:text-gray-50 focus:text-gray-50 hover:bg-red-600 focus:bg-gray-600 focus:outline-none focus:shadow-outline"
                                        href="{{ path('app_logout') }}"
                                        data-twe-dropdown-item-ref>{{ _arrow_right|raw }}{{ 'title.user.logoff'|trans }}
                                     </a>
@@ -109,30 +109,31 @@
                 </button>
             </div>
             <div class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu">
-                <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
+                <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-4 lg:mt-0">
                     <li>
                         <a href="{{ path('about') }}"
-                           class="{{ _route == 'about'? 'text-white md:text-white': '' }} block uppercase py-2 pl-3 pr-4 text-gray-300 hover:text-white lg:hover:bg-transparent lg:border-0 lg:p-0">{{ 'title.about_us'|trans }}</a>
+                           class="{{ _route == 'about'? 'text-white bg-red-700': '' }} block uppercase py-2 px-4 rounded-md text-sm text-gray-200 hover:text-white focus:text-gray-50 hover:bg-red-700 focus:bg-red-700 focus:outline-none focus:shadow-outline">{{ 'title.about_us'|trans }}</a>
                     </li>
                     <li>
                         <a href="{{ path('faq') }}"
-                           class="{{ _route == 'faq'? 'text-white md:text-white': '' }} block uppercase py-2 pl-3 pr-4 text-gray-300 hover:text-white lg:hover:bg-transparent lg:border-0 lg:p-0">{{ 'title.questions'|trans }}</a>
+                           class="{{ _route == 'faq'? 'text-white bg-red-700': '' }} block uppercase py-2 px-4 rounded-md text-sm text-gray-200 hover:text-white focus:text-gray-50 hover:bg-red-700 focus:bg-red-700 focus:outline-none focus:shadow-outline">{{ 'title.questions'|trans }}</a>
                     </li>
                     <li>
                         <a href="{{ path('service') }}"
-                           class="{{ _route == 'service'? 'text-white md:text-white': '' }} block uppercase py-2 pl-3 pr-4 text-gray-300 hover:text-white lg:hover:bg-transparent lg:border-0 lg:p-0">{{ 'title.service'|trans }}</a>
+                           class="{{ _route == 'service'? 'text-white bg-red-700': '' }} block uppercase py-2 px-4 rounded-md text-sm text-gray-200 hover:text-white focus:text-gray-50 hover:bg-red-700 focus:bg-red-700 focus:outline-none focus:shadow-outline">{{ 'title.service'|trans }}</a>
                     </li>
                     <li>
                         <a href="{{ path('contact') }}"
-                           class="{{ _route == 'contact'? 'text-white md:text-white': '' }} block uppercase py-2 pl-3 pr-4 text-gray-300 hover:text-white lg:hover:bg-transparent lg:border-0 lg:p-0">{{ 'title.contact_us'|trans }}</a>
+                           class="{{ _route == 'contact'? 'text-white bg-red-700': '' }} block uppercase py-2 px-4 rounded-md text-sm text-gray-200 hover:text-white focus:text-gray-50 hover:bg-red-700 focus:bg-red-700 focus:outline-none focus:shadow-outline">{{ 'title.contact_us'|trans }}</a>
                     </li>
                     <li>
                         <a href="{{ path('app_blog') }}"
-                           class="{{ _route == 'app_blog'? 'text-white md:text-white': '' }} block uppercase py-2 pl-3 pr-4 text-gray-300 hover:text-white lg:hover:bg-transparent lg:border-0 lg:p-0">{{ 'title.blogs'|trans }}</a>
+                           class="{{ _route == 'app_blog'? 'text-white bg-red-700': '' }} block uppercase py-2 px-4 rounded-md text-sm text-gray-200 hover:text-white focus:text-gray-50 hover:bg-red-700 focus:bg-red-700 focus:outline-none focus:shadow-outline">{{ 'title.blogs'|trans }}</a>
                     </li>
                     <li>
+                        {% set split = app.request.get('_route')|split('_') %}
                         <a href="{{ path('app_market_place_index') }}"
-                           class="{{ _route == 'app_market_place_index'? 'text-white md:text-white': '' }} block uppercase py-2 pl-3 pr-4 text-gray-300 hover:text-white lg:hover:bg-transparent lg:border-0 lg:p-0 lg:p-0">{{ 'title.market_places'|trans }}</a>
+                           class="{{ split[1] == 'market'? 'text-white bg-red-700': '' }} block uppercase py-2 px-4 rounded-md text-sm text-gray-200 hover:text-white focus:text-gray-50 hover:bg-red-700 focus:bg-red-700 focus:outline-none focus:shadow-outline">{{ 'title.market_places'|trans }}</a>
                     </li>
                 </ul>
             </div>

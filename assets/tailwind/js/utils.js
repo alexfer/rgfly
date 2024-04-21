@@ -3,7 +3,7 @@ window.showToast = (toast, message, timeout) => {
     toast.classList.remove('hidden');
     setTimeout(() => {
         toast.classList.add('hidden');
-    }, timeout ? timeout : 4000);
+    }, timeout ? timeout : 5000);
 };
 
 window.closeModal = (id) => {
