@@ -31,11 +31,11 @@
                                     {% if product.attach_name %}
                                         {% set _picture = 'storage/product/picture/' ~ product.id ~ '/' ~ product.attach_name %}
                                         <img src="{{ asset(_picture)|imagine_filter('product_preview') }}"
-                                             class="transition duration-300 ease-linear hover:scale-110 rounded-t-lg"
+                                             class="transition duration-300 ease-linear hover:scale-125 rounded-t-lg"
                                              alt="{{ product.name }}">
                                     {% else %}
                                         <img src="{{ asset('img/300x200.png') }}"
-                                             class="transition duration-300 ease-linear hover:scale-110 rounded-t-lg"
+                                             class="transition duration-300 ease-linear hover:scale-125 rounded-t-lg"
                                              alt="{{ product.name }}">
                                     {% endif %}
                                     <div class="absolute top-5 w-full">

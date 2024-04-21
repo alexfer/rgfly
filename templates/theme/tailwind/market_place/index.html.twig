@@ -14,11 +14,11 @@
                                         {% if product.attach_name %}
                                             {% set _picture = 'storage/product/picture/' ~ product.id ~ '/' ~ product.attach_name %}
                                             <img src="{{ asset(_picture)|imagine_filter('product_preview') }}"
-                                                 class="transition duration-300 ease-linear hover:scale-110 rounded-t-lg"
+                                                 class="transition duration-300 ease-linear hover:scale-125 rounded-t-lg"
                                                  alt="{{ product.name }}">
                                         {% else %}
                                             <img src="{{ asset('img/300x200.png') }}"
-                                                 class="transition duration-300 ease-linear hover:scale-110 rounded-t-lg"
+                                                 class="transition duration-300 ease-linear hover:scale-125 rounded-t-lg"
                                                  alt="{{ product.name }}">
                                         {% endif %}
                                         <div class="absolute top-5 w-full">
@@ -30,7 +30,7 @@
                                                     </a>
                                                 </span>
                                                 {% if product.discount %}
-                                                    <span class="bg-red-700 bg-opacity-75 text-white text-md font-medium me-2 px-2.5 py-0.5 rounded-xl dark:bg-red-900 dark:text-white">{{ product.discount }}% {{ 'market.product.off'|trans }}</span>
+                                                    <span class="bg-red-700 bg-opacity-75 text-white text-sm font-normal me-2 px-2.5 py-1 rounded-xl dark:bg-red-900 dark:text-white">{{ product.discount }}% {{ 'market.product.off'|trans }}</span>
                                                 {% endif %}
                                             </div>
                                         </div>

@@ -21,22 +21,22 @@
                             {% for key, category in categories %}
                                 {% if key < 7 %}
                                     <a href="{{ path('app_blog_category', {slug: category.slug}) }}"
-                                       class="bg-pink-50 hover:bg-pink-100 text-pink-800 text-sm shadow-sm font-medium me-2 px-3 py-3 rounded-md dark:bg-pink-900 dark:text-pink-300 inline-flex items-center justify-center"
+                                       class="text-gray-500 hover:text-gray-500 border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:hover:bg-gray-500 dark:focus:ring-gray-800 inline-flex items-center justify-center"
                                        title="{{ category.description }}">{{ category.name }}</a>
                                 {% else %}
                                     <a href="{{ path('app_blog_category', {slug: category.slug}) }}"
-                                       class="sr-only bg-pink-50 hover:bg-pink-100 text-pink-800 text-sm shadow-sm font-medium me-2 px-3 py-3 rounded-md dark:bg-pink-900 dark:text-pink-300 inline-flex items-center justify-center"
+                                       class="sr-only text-gray-500 hover:text-gray-500 border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:hover:bg-gray-500 dark:focus:ring-gray-800 inline-flex items-center justify-center"
                                        title="{{ category.description }}">{{ category.name }}</a>
                                 {% endif %}
                             {% endfor %}
                             {% if categories|length > 7 %}
-                                <a href="#" id="load-categories" class="bg-pink-50 hover:bg-pink-100 text-pink-800 text-sm shadow-sm font-medium me-2 px-3 py-3 rounded-md dark:bg-pink-900 dark:text-pink-300 inline-flex items-center justify-center" title="...">...</a>
+                                <a href="#" id="load-categories" class="text-gray-500 hover:text-gray-500 border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:hover:bg-gray-500 dark:focus:ring-gray-800 inline-flex items-center justify-center" title="...">...</a>
                             {% endif %}
                         </li>
                     {% endif %}
                 </ul>
                 {% if category %}
-                    <li class="mx-2 w-full mb-3 flex">
+                    <li class="w-full mb-3 flex p-4 rounded-xl bg-gray-50 text-gray-500">
                         {{ category.description }}
                     </li>
                 {% endif %}

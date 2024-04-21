@@ -42,7 +42,7 @@ class Fixtures extends Fixture
      */
     private function loadPaymentMethods(ObjectManager $manager): void
     {
-        foreach ($this->getPaymentGatewayData() as $key => [$name, $summary, $active, $icon, $handler_text]) {
+        foreach ($this->getPaymentGatewayData() as [$name, $summary, $active, $icon, $handler_text]) {
             $gateway = new MarketPaymentGateway();
             $gateway->setName($name);
             $gateway->setSlug($this->slugger->slug($name)->lower());
@@ -61,10 +61,10 @@ class Fixtures extends Fixture
     private function getPaymentGatewayData(): array
     {
         return [
-            ['Stripe', 'Stripe is powerful payment platform designed for internet businesses', false, 'bi bi-stripe', 'Checkout with Stripe'],
-            ['PayPal', 'PatPal - the safer, easier way to pay', false, 'bi bi-paypal', 'Pay with Paypal'],
-            ['ApplePay', 'Apple Pay is a safe, secure, and private way to pay', false, 'bi bi-apple', 'Checkout'],
-            ['Cash', 'Pay with cash when your order is delivered', true, 'bi bi-wallet2', 'Checkout'],
+            ['Stripe', 'Stripe is powerful payment platform designed for internet businesses', false, 'fa fa-stripe', 'Checkout with Stripe'],
+            ['PayPal', 'PatPal - the safer, easier way to pay', false, 'fa fa-paypal', 'Pay with Paypal'],
+            ['ApplePay', 'Apple Pay is a safe, secure, and private way to pay', false, 'fa fa-apple', 'Checkout'],
+            ['Cash', 'Pay with cash when your order is delivered', true, 'fa fa-money', 'Checkout'],
         ];
     }
 }
