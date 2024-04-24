@@ -18,7 +18,7 @@
                                     {% set _picture = 'storage/product/picture/' ~ product.id ~ '/' ~ product.marketProductAttaches.first.attach.name %}
                                     <div class="hidden duration-200 ease-linear" data-carousel-item="active">
                                         <img src="{{ asset(_picture)|imagine_filter('product_view') }}"
-                                             class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                                             class="absolute block transition duration-300 ease-linear hover:scale-125 w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
                                              alt="{{ product.name }}">
                                         <div class="absolute inset-x-[15%] left-1/2 transform -translate-x-1/2 w-full bottom-5 py-5 text-center text-white md:block">
                                             <h5 class="text-xl text-ellipsis overflow-hidden">{{ product.shortName }}</h5>
@@ -40,7 +40,7 @@
                                     <div class="hidden duration-200 ease-linear" data-carousel-item>
                                         {% set _image = 'storage/product/picture/' ~ product.id ~ '/' ~ image.attach.name %}
                                         <img src="{{ asset(_image)|imagine_filter('product_view') }}"
-                                             class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                                             class="absolute block transition duration-300 ease-linear hover:scale-125 w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
                                              alt="{{ product.shortName }}">
                                         <div class="absolute inset-x-[15%] left-1/2 transform -translate-x-1/2 w-full bottom-5 py-5 text-center text-white md:block">
                                             <h5 class="text-xl text-ellipsis overflow-hidden">{{ product.shortName }}</h5>
@@ -94,15 +94,15 @@
                             </h5>
                         </a>
                         <div class="grid grid-cols-2">
-                            <div class="relative mb-10 block flex-nowrap">
-                                <div class="text-xl absolute">
+                            <div class="relative mb-10 block w-72 flex-nowrap">
+                                <div class="absolute">
                                     {% if product.discount %}
                                         {% set discount = product.discount %}
                                         {% set cost = product.cost %}
                                         <span class="font-medium text-2xl text-success pr-2">
                                                 {{ (cost + product.fee - ((cost * discount) - discount)/100)|amount_format }}<small>{{ product.market.currency|currency }}</small>
                                             </span>
-                                        <span class="line-through text-xl font-medium text-gray-400">{{ (product.cost + product.fee)|amount_format }}<small>{{ product.market.currency|currency }}</small></span>
+                                        <span class="line-through text-lg font-medium text-gray-400">{{ (product.cost + product.fee)|amount_format }}<small>{{ product.market.currency|currency }}</small></span>
                                     {% else %}
                                         <span class="font-medium text-2xl text-surface-dark">{{ (product.cost + product.fee)|amount_format }}<small>{{ product.market.currency|currency }}</small></span>
                                     {% endif %}

@@ -35,16 +35,16 @@
             <div class="ms-3 text-sm font-medium">{{ errors.current.message }}</div>
         </div>
     {% endif %}
-    {{ form_start(form, {attr: {class: 'needs-validation', novalidate: '', action: path('app_market_place_order_checkout', {order: order.number, session: app.request.get('session')})}}) }}
+    {{ form_start(form, {attr: {novalidate: '', action: path('app_market_place_order_checkout', {order: order.number, session: app.request.get('session')})}}) }}
     <div class="tab-content" id="customerTabContent">
-        <div class="hidden opacity-100 p-4 shadow-sm dark:bg-gray-800 transition-opacity duration-150 ease-linear data-[twe-tab-active]:block"
+        <div class="hidden opacity-100 p-4 shadow-md rounded-md dark:bg-gray-800 transition-opacity duration-150 ease-linear data-[twe-tab-active]:block"
              id="customer-info"
              role="tabpanel"
              aria-labelledby="customer-info-tab"
              data-twe-tab-active>
             {% include 'market_place/checkout/parts/customer.html.twig' %}
         </div>
-        <div class="hidden opacity-0 p-4 shadow-sm dark:bg-gray-800 transition-opacity duration-150 ease-linear data-[twe-tab-active]:block"
+        <div class="hidden opacity-0 p-4 shadow-md rounded-md dark:bg-gray-800 transition-opacity duration-150 ease-linear data-[twe-tab-active]:block"
              id="address-info"
              role="tabpanel"
              aria-labelledby="address-info-tab">
@@ -55,12 +55,12 @@
         <div class="rounded-t-lg border border-neutral-200 bg-white dark:border-neutral-600 dark:bg-body-dark">
             {% for key, gateway in order.market.marketPaymentGatewayMarkets.toArray %}
                 <h2 class="mb-0" id="headingOne">
-                    <button class="group relative font-semibold flex w-full items-center rounded-t-lg border-0 bg-white px-5 py-4 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-body-dark dark:text-white [&:not([data-twe-collapse-collapsed])]:bg-white [&:not([data-twe-collapse-collapsed])]:text-primary [&:not([data-twe-collapse-collapsed])]:shadow-border-b dark:[&:not([data-twe-collapse-collapsed])]:bg-surface-dark dark:[&:not([data-twe-collapse-collapsed])]:text-primary dark:[&:not([data-twe-collapse-collapsed])]:shadow-white/10 "
+                    <button class="group relative font-semibold flex w-full items-center rounded-t-lg border-0 bg-white px-5 py-4 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-body-dark dark:text-white [&:not([data-twe-collapse-collapsed])]:bg-white [&:not([data-twe-collapse-collapsed])]:text-primary [&:not([data-twe-collapse-collapsed])]:shadow-border-b dark:[&:not([data-twe-collapse-collapsed])]:bg-surface-dark dark:[&:not([data-twe-collapse-collapsed])]:text-primary dark:[&:not([data-twe-collapse-collapsed])]:shadow-white/10"
                             type="button"
                             data-twe-collapse-init
                             data-twe-target="#collapse-{{ key }}"
                             aria-expanded="true"
-                            aria-controls="collapse-{{ key }}">{{ gateway.gateway.name }}
+                            aria-controls="collapse-{{ key }}"><i class="{{ gateway.gateway.icon }} text-lg text-yellow-300 mb-1 mr-2"></i>{{ gateway.gateway.name }}
                         <span class="-me-1 ms-auto h-5 w-5 shrink-0 rotate-[-180deg] transition-transform duration-200 ease-in-out group-data-[twe-collapse-collapsed]:me-0 group-data-[twe-collapse-collapsed]:rotate-0 motion-reduce:transition-none [&>svg]:h-6 [&>svg]:w-6">
                               <svg xmlns="http://www.w3.org/2000/svg"
                                    fill="none"

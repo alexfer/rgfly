@@ -1,5 +1,4 @@
 import './utils';
-import $ from "jquery";
 
 const uploadInput = document.querySelector('input[type="file"]');
 const formData = new FormData();
@@ -7,15 +6,26 @@ const confirmDelete = document.getElementsByClassName('confirm-delete');
 const confirmChange = document.getElementsByClassName('confirm-change');
 const toastSuccess = document.getElementById('toast-success');
 const toastDanger = document.getElementById('toast-danger');
+const loadCategories = document.getElementById('load-categories');
 const eventOptions = {
     capture: true,
     once: true
 };
 
+if (loadCategories) {
+    loadCategories.addEventListener('click', () => {
+        let children = loadCategories.parentElement.children;
+        for (let el of Array.from(children)) {
+            el.classList.remove('sr-only');
+        }
+        loadCategories.remove();
+    });
+}
+
 if (toastSuccess) {
     let flash = document.querySelector('input[name="flash"]').value;
     if (typeof flash !== 'undefined') {
-        let messages = $.parseJSON(flash);
+        let messages = JSON.parse(flash);
         if (typeof messages.message !== 'undefined') {
             showToast(toastSuccess, messages.message);
         }

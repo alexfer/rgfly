@@ -1014,7 +1014,7 @@
             <trans-unit id="text.about_us.long_desc">
                 <source>text.about_us.long_desc</source>
                 <target>
-                    <![CDATA[We started as an internet agency and have increasingly grown to develop applications, mobile apps, platforms and products. For customers and with customers. During the growth we noticed that more and more companies were having trouble attracting personnel, and so we received the first requests whether we wanted to help our customers with this. Because we already had our own nearshore location at that time, the idea arose to provide our customers with developers for the longer term, whom they could manage themselves. We then shifted our focus.]]>
+                    <![CDATA[<p class="mb-2">We started as an internet agency and have increasingly grown to develop applications, mobile apps, platforms and products.</p><p class="mb-2">For customers and with customers. During the growth we noticed that more and more companies were having trouble attracting personnel, and so we received the first requests whether we wanted to help our customers with this.</p><p class="mb-2">Because we already had our own nearshore location at that time, the idea arose to provide our customers with developers for the longer term, whom they could manage themselves. We then shifted our focus.</p>]]>
                 </target>
             </trans-unit>
             <trans-unit id="text.contact_us.success">
