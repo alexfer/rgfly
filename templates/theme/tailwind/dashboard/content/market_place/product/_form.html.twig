@@ -1,0 +1,154 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% if form.vars.data.id %}
+    {% set _title_extend = 'title.dashboard.change_product'|trans %}
+{% else %}
+    {% set _title_extend = 'title.dashboard.create_product'|trans %}
+{% endif %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}{{ _title_extend }}{% endblock %}
+
+{% block content %}
+    {% set _message = app.flashes('success') %}
+    {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+    {% set _tab = app.request.get('tab') %}
+    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center justify-stretch border-b-1 items-stretch"
+        id="market-tab"
+        data-tabs-toggle="#product-tab-content"
+        data-tabs-active-classes="text-gray-950 hover:text-red-600 dark:text-purple-500 dark:hover:text-purple-500 border-red-600 dark:border-red-500"
+        data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
+        role="tablist">
+        <li class="me-2" role="presentation">
+            <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                    id="description-tab"
+                    data-tabs-target="#details"
+                    type="button"
+                    role="tab"
+                    aria-controls="details"
+                    aria-selected="{{ _tab == 'details' ? 'true' : 'false' }}">{{ 'product.details'|trans }}
+            </button>
+        </li>
+        <li class="me-2" role="presentation">
+            <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                    id="billing-tab"
+                    data-tabs-target="#billing"
+                    type="button" role="tab"
+                    aria-controls="billing"
+                    aria-selected="{{ _tab == 'billing' ? 'true' : 'false' }}">{{ 'product.billing'|trans }}
+            </button>
+        </li>
+        <li class="me-2" role="presentation">
+            <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                    id="categories-tab"
+                    data-tabs-target="#categories"
+                    type="button"
+                    role="tab"
+                    aria-controls="categories"
+                    aria-selected="{{ _tab == 'categories' ? 'true' : 'false' }}">{{ 'entry.form.categories'|trans }}
+            </button>
+        </li>
+        <li class="me-2" role="presentation">
+            <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                    id="attributes-tab"
+                    data-tabs-target="#attributes"
+                    type="button"
+                    role="tab"
+                    aria-controls="attributes"
+                    aria-selected="{{ _tab == 'attributes' ? 'true' : 'false' }}">{{ 'market.attributes'|trans }}
+            </button>
+        </li>
+        <li class="me-2" role="presentation">
+            <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                    id="attachments-tab"
+                    data-tabs-target="#attachments"
+                    type="button"
+                    role="tab"
+                    aria-controls="attachments"
+                    aria-selected="{{ _tab == 'attachments' ? 'true' : 'false' }}">{{ 'entry.form.attachments'|trans }}
+            </button>
+        </li>
+    </ul>
+    <div id="product-tab-content" class="pb-5 shadow-md rounded-md dark:bg-gray-800">
+        {% if errors.count %}
+            <div class="flex items-center p-4 my-4 mx-5 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                 role="alert">
+                <div class="ms-3 text-sm font-medium">{{ errors.current.message }}</div>
+            </div>
+        {% endif %}
+        <div id="details"
+             role="tabpanel"
+             aria-labelledby="details-tab">
+            {% include 'dashboard/content/market_place/product/parts/description.html.twig' %}
+        </div>
+        <div id="attributes"
+             role="tabpanel"
+             aria-labelledby="attributes-tab"
+             tabindex="0">
+            {% include 'dashboard/content/market_place/product/parts/attributes.html.twig' %}
+        </div>
+        <div id="billing"
+             role="tabpanel"
+             aria-labelledby="billing-tab">
+            {% include 'dashboard/content/market_place/product/parts/billing.html.twig' %}
+        </div>
+        <div id="categories"
+             role="tabpanel"
+             aria-labelledby="categories-tab">
+            {% include 'dashboard/content/market_place/product/parts/categories.html.twig' %}
+        </div>
+        <div id="attachments"
+             role="tabpanel"
+             aria-labelledby="attachments-tab">
+{#            <div class="mt-4 p-2">#}
+{#                {% if app.request.get('id') %}#}
+{#                    {% set _args = {market: product.market.id, id: product.id} %}#}
+{#                    {% include 'dashboard/content/form/attachment.html.twig' with {#}
+{#                        'attachments': product.marketProductAttaches,#}
+{#                        'storage': 'product',#}
+{#                        'id': product.id,#}
+{#                        'set_use': null,#}
+{#                        'remove': path('app_dashboard_product_attach_remove', _args),#}
+{#                        'data_url': path('app_dashboard_product_attach', _args),#}
+{#                        'filter': 'product_preview'#}
+{#                    } %}#}
+{#                {% else %}#}
+{#                    <div class="alert alert-info py-5">#}
+{#                        <div class="text-center">{{ 'product.attachments.available'|trans }}</div>#}
+{#                    </div>#}
+{#                {% endif %}#}
+{#            </div>#}
+        </div>
+        <input type="hidden" name="flash" value="{{ _message[0]|default([]|json_encode) }}">
+        <div class="w-full text-center pb-1">
+            {{ form_widget(form.save, { label: form.vars.data.id ? 'form.action.update' : 'form.action.save', attr: {class: 'inline-block rounded bg-danger px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-danger-3 transition duration-150 ease-in-out hover:bg-danger-accent-300 hover:shadow-danger-2 focus:bg-danger-accent-300 focus:shadow-danger-2 focus:outline-none focus:ring-0 active:bg-danger-600 active:shadow-danger-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong group-invalid:pointer-events-none group-invalid:opacity-30'}}) }}
+            <a type="button" href="{{ url('app_dashboard_market_place_market_product', {market: app.request.get('market')}) }}"
+               class="inline-block rounded bg-secondary hover:text-gray-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-secondary-3 transition duration-150 ease-in-out hover:bg-secondary-accent-300 hover:shadow-secondary-2 focus:bg-secondary-accent-300 focus:shadow-secondary-2 focus:outline-none focus:ring-0 active:bg-secondary-600 active:shadow-secondary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong group-invalid:pointer-events-none group-invalid:opacity-30">{{ 'form.action.back'|trans }}</a>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script type="text/javascript">
+        let short_name = document.getElementById('product_short_name');
+        let chars = document.getElementById('chars');
+
+        const discount = document.querySelector("#product_discount");
+        const output = document.querySelector(".discount-output");
+        output.textContent = discount.value + '%';
+
+        discount.addEventListener("input", () => {
+            output.textContent = discount.value + '%';
+        });
+
+        short_name.onkeyup = function () {
+            chars.innerHTML = short_name.value.length;
+        }
+        CKEDITOR.replace('product_description', {
+            extraPlugins: 'editorplaceholder',
+            editorplaceholder: '{{ 'label.form.product_description'|trans }}',
+            removePlugins: 'simage,image,youtube,html5video,iframe,uicolor,videodetector,preview',
+        });
+    </script>
+{% endblock %}

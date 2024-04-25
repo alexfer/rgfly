@@ -1,0 +1,78 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% set _title_extend = 'title.dashboard.overview_market'|trans %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}{{ _title_extend }}{% endblock %}
+
+{% block content %}
+    <nav class="bg-white dark:bg-gray-900 w-full rounded-lg mb-3 border border-gray-200 dark:border-gray-600">
+        <div class="p-4 md:p-0 bg-gray-50 w-full md:flex md:w-auto md:order-1">
+            <ul class="flex flex-col p-2 font-medium md:space-x-2 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                {% for market in markets %}
+                <li>
+                    <a href="{{ path('app_dashboard_market_place_market_product', {market: market.id}) }}"
+                       class="block p-3 bg-white shadow hover:bg-gray-50 hover:text-gray-900 rounded-lg text-gray-500 md:dark:text-gray-500"
+                       aria-current="page">{{ market.name|length > 25 ? market.name|slice(0, 25) ~ ' ... ' : market.name }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </nav>
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-500 uppercase bg-info-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">{{ 'table.header.title'|trans }}</th>
+                <th scope="col" class="px-6 py-3 text-center">{{ 'table.header.products'|trans }}</th>
+                <th class="text-center px-6 py-3" scope="col">{{ 'table.header.created_at'|trans }}</th>
+                <th class="text-center px-6 py-3" scope="col">{{ 'table.header.handle'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for market in markets %}
+                <tr class="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <th scope="row" class="px-6 py-3 w-2/5 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <a data-twe-toggle="tooltip"
+                           data-twe-placement="left"
+                           class="block text-wrap font-semibold hover:underline hover:text-gray-400 {% if market.deletedAt is not null %}line-through{% endif %}"
+                           title="{{ market.name }}"
+                           href="{{ path('app_dashboard_market_place_edit_market', {id: market.id, tab: 'details'}) }}">
+                            {{ market.name|length > 25 ? market.name|slice(0, 50) ~ ' ... ' : market.name }}
+                        </a>
+                    </th>
+                    <td class="text-center px-6 py-3 w-1/5">{{ market.products.count }}</td>
+                    <td class="text-center px-6 py-3 w-1/5">{{ market.createdAt|date(date_format) }}</td>
+                    <td class="text-center px-6 py-3 w-1/5">
+                        <a href="{{ path('app_dashboard_market_place_market_product', {market: market.id}) }}"
+                           class="border rounded pl-2 pr-1 py-1.5 mr-1 hover:shadow-md hover:bg-gray-100">
+                            <i class="fa fa-cart-plus text-green-500"></i>
+                        </a>
+                        {% if market.deletedAt is not null %}
+                            <a class="border rounded px-2 py-1.5 hover:shadow-md hover:bg-gray-100"
+                               href="{{ path('app_dashboard_restore_market', {id: market.id}) }}">
+                                <i class="fa fa-arrow-up"></i>
+                            </a>
+                        {% else %}
+                            <a href="{{ path('app_dashboard_market_place_edit_market', {id: market.id, tab: 'details'}) }}"
+                               class="border rounded pl-2 pr-1 py-1.5 mr-1 hover:shadow-md hover:bg-gray-100">
+                                <i class="fa fa-pencil text-indigo-600"></i>
+                            </a>
+                            <button
+                                    class="border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100"
+                                    data-token="{{ csrf_token('delete') }}"
+                                    data-url="{{ url('app_dashboard_delete_market', {id: market.id}) }}">
+                                <i class="fa fa-trash text-red-600"></i>
+                            </button>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" class="text-center text-danger bg-grey">{{ 'table.footer.not_found'|trans }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <input type="hidden" name="flash" value="{{ _message[0]|default([]|json_encode) }}">
+{% endblock %}

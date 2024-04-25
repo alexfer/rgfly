@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="{{ app.request.locale }}" data-bs-theme="white">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>{% block title %}{{ 'site.title'|trans }}{% endblock %} - {{ 'text.home.header'|trans }}</title>
+    <meta name="description" content="{% block description %}{{ 'site.description'|trans }}{% endblock %}">
+    <meta name="robots" content="index,follow">
+    <meta charset="utf-8">
+    <link rel="canonical" href="{{ app.request.uri }}"/>
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+</head>
+<body>
+<div class="h-screen">
+    {{ include('dashboard/sidebar.html.twig') }}
+    <div class="p-4 sm:ml-64">
+        <div class="p-4 border-1 border-gray-50 rounded-lg dark:border-gray-700">
+            {% block body %}{% endblock %}
+        </div>
+    </div>
+    <footer class="bg-gray-950 h-[64px] sticky z-[1000] top-[100vh]">
+        <div class="container mx-auto text-white pt-1">
+            <div class="text-center py-3">
+                {% set year =  'now' | date('Y') %}
+                {% set build_year = '2023' %}
+                <span>&copy; {{ year == build_year ? build_year : build_year ~ '-' ~ year }} {{ 'site.title'|trans }} - {{ 'text.all_right_reserved'|trans }}</span>
+            </div>
+        </div>
+    </footer>
+</div>
+{% block toast %}{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
+</body>
+</html>

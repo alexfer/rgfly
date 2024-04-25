@@ -1,4 +1,6 @@
-import { Dismiss } from "flowbite";
+import { initFlowbite, Dismiss } from "flowbite";
+
+initFlowbite();
 
 const toast= document.getElementById('toast-success');
 const toastClose= document.querySelector('[data-dismiss-target="#toast-success"]');

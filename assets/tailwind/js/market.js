@@ -1,5 +1,3 @@
-'use strict';
-
 import Swal from "sweetalert2";
 import i18next from "i18next";
 import messages from "./i18n";
@@ -116,7 +114,7 @@ if (typeof drops !== 'undefined') {
     });
 }
 
-if (typeof cart !== undefined) {
+if (typeof cart !== 'undefined') {
     cart.addEventListener('show.twe.offcanvas', () => {
         let url = cart.getAttribute('data-url');
         let body = cart.querySelectorAll('#order-body');

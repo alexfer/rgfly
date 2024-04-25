@@ -1,16 +1,60 @@
+import Swal from "sweetalert2";
+import i18next from "i18next"
 import './utils';
 
-const uploadInput = document.querySelector('input[type="file"]');
 const formData = new FormData();
+const uploadInput = document.querySelector('input[type="file"]');
 const confirmDelete = document.getElementsByClassName('confirm-delete');
 const confirmChange = document.getElementsByClassName('confirm-change');
 const toastSuccess = document.getElementById('toast-success');
 const toastDanger = document.getElementById('toast-danger');
 const loadCategories = document.getElementById('load-categories');
+const deleteEntry = document.querySelectorAll('.delete-entry');
+const tabList = document.querySelector('ul[role="tablist"]');
+const headers = {'Content-type': 'application/json; charset=utf-8'};
 const eventOptions = {
     capture: true,
     once: true
 };
+
+if (tabList) {
+    Array.from(tabList.children).forEach((el) => {
+        Array.from(el.children).forEach((handler) => {
+            handler.addEventListener('click', (e) => {
+                let location = handler.getAttribute('aria-controls');
+                window.history.replaceState({}, '', location);
+            });
+        });
+    });
+}
+
+if (typeof deleteEntry !== 'undefined') {
+    Array.from(deleteEntry).forEach((entry) => {
+        entry.addEventListener('click', () => {
+            let url = entry.getAttribute('data-url');
+            let token = entry.getAttribute('data-token');
+            Swal.fire({
+                text: i18next.t('question'),
+                showCancelButton: true,
+                confirmButtonText: i18next.t('proceed'),
+                denyButtonText: i18next.t('cancel'),
+                icon: "question",
+                showLoaderOnConfirm: true
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const response = await fetch(url, {
+                            method: 'POST',
+                            body: JSON.stringify({'_token': token}),
+                            headers: headers
+                        }
+                    );
+                    const data = await response.json();
+                    document.location.href = data.redirect;
+                }
+            });
+        });
+    });
+}
 
 if (loadCategories) {
     loadCategories.addEventListener('click', () => {
@@ -23,9 +67,9 @@ if (loadCategories) {
 }
 
 if (toastSuccess) {
-    let flash = document.querySelector('input[name="flash"]').value;
-    if (typeof flash !== 'undefined') {
-        let messages = JSON.parse(flash);
+    let flash = document.querySelector('input[name="flash"]');
+    if (flash) {
+        let messages = JSON.parse(flash.value);
         if (typeof messages.message !== 'undefined') {
             showToast(toastSuccess, messages.message);
         }
