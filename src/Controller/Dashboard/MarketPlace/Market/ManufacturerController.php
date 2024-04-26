@@ -147,9 +147,19 @@ class ManufacturerController extends AbstractController
     {
         $market = $this->market($request, $user, $em);
 
-        if ($this->isCsrfTokenValid('delete', $request->get('_token')) && !$manufacturer->getMarketProductManufacturers()->count()) {
+        if ($request->headers->get('Content-Type', 'application/json')) {
+            $content = $request->getContent();
+            $content = json_decode($content, true);
+            $token = $content['_token'];
+        }
+
+        if ($this->isCsrfTokenValid('delete', $token) && !$manufacturer->getMarketProductManufacturers()->count()) {
             $em->remove($manufacturer);
             $em->flush();
+        }
+
+        if ($request->headers->get('Content-Type', 'application/json')) {
+            return $this->json(['redirect' => $this->generateUrl('app_dashboard_market_place_market_manufacturer', ['market' => $market->getId()])]);
         }
 
         return $this->redirectToRoute('app_dashboard_market_place_market_manufacturer', ['market' => $market->getId()]);

@@ -5,7 +5,7 @@
 {% block title_content %}{{ _title_extend }}{% endblock %}
 
 {% block content %}
-    {#    {% include 'dashboard/content/market_place/navbar/nav.html.twig' %} #}
+    {% include 'dashboard/content/market_place/navbar/nav.html.twig' %}
     {% if market.deletedAt %}
         <div class="alert alert-warning mb-2" id="liveAlertPlaceholder" role="alert">
             {{ 'product.unavailable'|trans }}
@@ -70,7 +70,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="7"
+                    <td colspan="6"
                         class="px-6 py-3 text-center text-gray-700 bg-gray-100">{{ 'table.footer.not_found'|trans }}</td>
                 </tr>
             {% endfor %}

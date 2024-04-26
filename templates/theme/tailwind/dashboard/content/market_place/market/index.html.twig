@@ -9,11 +9,12 @@
         <div class="p-4 md:p-0 bg-gray-50 w-full md:flex md:w-auto md:order-1">
             <ul class="flex flex-col p-2 font-medium md:space-x-2 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                 {% for market in markets %}
-                <li>
-                    <a href="{{ path('app_dashboard_market_place_market_product', {market: market.id}) }}"
-                       class="block p-3 bg-white shadow hover:bg-gray-50 hover:text-gray-900 rounded-lg text-gray-500 md:dark:text-gray-500"
-                       aria-current="page">{{ market.name|length > 25 ? market.name|slice(0, 25) ~ ' ... ' : market.name }}</a>
-                </li>
+                    <li>
+                        <a href="{{ path('app_dashboard_market_place_market_product', {market: market.id}) }}"
+                           class="block p-2 bg-white shadow hover:bg-gray-50 hover:text-gray-900 rounded-lg text-gray-500 md:dark:text-gray-500">
+                            {{ market.name|length > 25 ? market.name|slice(0, 25) ~ ' ... ' : market.name }}
+                        </a>
+                    </li>
                 {% endfor %}
             </ul>
         </div>
@@ -68,7 +69,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="6" class="text-center text-danger bg-grey">{{ 'table.footer.not_found'|trans }}</td>
+                    <td colspan="4" class="px-6 py-3 text-center text-gray-700 bg-gray-100">{{ 'table.footer.not_found'|trans }}</td>
                 </tr>
             {% endfor %}
             </tbody>

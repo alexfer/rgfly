@@ -1,0 +1,57 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% set _title_extend = 'title.dashboard.manufacturers'|trans %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}
+    {{ _title_extend }}
+    <a role="button"
+       class="inline-block rounded-md bg-secondary px-4 pb-1 pt-2 font-normal uppercase leading-normal text-white hover:text-gray-100 shadow-secondary-3 transition duration-150 ease-in-out hover:bg-secondary-accent-300 hover:shadow-secondary-2 focus:bg-secondary-accent-300 focus:shadow-secondary-2 focus:outline-none focus:ring-0 active:bg-secondary-600 active:shadow-secondary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong text-sm float-end"
+       href="{{ path('app_dashboard_market_place_create_manufacturer', {market: market.id}) }}">{{ 'market.manufacturer.create'|trans }}</a>
+{% endblock %}
+
+{% block content %}
+    {% include 'dashboard/content/market_place/navbar/nav.html.twig' %}
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-500 uppercase bg-info-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">{{ 'table.header.name'|trans }}</th>
+                <th scope="col" class="px-6 py-3">{{ 'table.header.description'|trans }}</th>
+                <th scope="col" class="px-6 py-3 text-center">{{ 'table.header.handle'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for manufacturer in manufacturers %}
+                <tr>
+                    <th scope="row" class="px-6 py-3">
+                        <a data-twe-toggle="tooltip"
+                           data-twe-placement="left"
+                           class="block text-wrap font-semibold hover:underline hover:text-gray-400"
+                           title="{{ manufacturer.name }}"
+                           href="{{ path('app_dashboard_market_place_edit_manufacturer', {market: manufacturer.market.id, id: manufacturer.id}) }}">
+                            {{ manufacturer.name|length > 30 ? manufacturer.name|slice(0, 30) ~ '...' : manufacturer.name }}
+                        </a>
+                    </th>
+                    <td class="px-6 py-3">{{ manufacturer.description|length > 80 ? manufacturer.description|slice(0, 80) ~ '...' : manufacturer.description|default('n/a') }}</td>
+                    <td class="px-6 py-3 text-center">
+                        <a href="{{ path('app_dashboard_market_place_edit_manufacturer', {market: manufacturer.market.id, id: manufacturer.id}) }}"
+                           class="border rounded pl-2 pr-1 py-1.5 mr-1 hover:shadow-md hover:bg-gray-100">
+                            <i class="fa fa-pencil text-indigo-600"></i>
+                        </a>
+                        <a class="border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 {{ manufacturer.marketProductManufacturers.count ? 'pointer-events-none' : '' }}"
+                           data-token="{{ csrf_token('delete') }}"
+                           data-url="{{ url('app_dashboard_delete_manufacturer', {market: manufacturer.market.id, id: manufacturer.id}) }}">
+                            <i class="fa fa-{{ manufacturer.marketProductManufacturers.count ? 'ban' : 'trash' }}"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3"
+                        class="px-6 py-3 text-center text-gray-700 bg-gray-100">{{ 'table.footer.not_found'|trans }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
