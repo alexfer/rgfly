@@ -489,6 +489,10 @@
                 <source>form.name.invalid</source>
                 <target>Please enter name</target>
             </trans-unit>
+            <trans-unit id="form.description.invalid">
+                <source>form.description.invalid</source>
+                <target>Please enter valid description</target>
+            </trans-unit>
             <trans-unit id="form.url.invalid">
                 <source>form.url.invalid</source>
                 <target>Please enter valid url</target>
@@ -588,6 +592,10 @@
             <trans-unit id="label.form.product_description">
                 <source>label.form.product_description</source>
                 <target>Description of Product</target>
+            </trans-unit>
+            <trans-unit id="label.form.description">
+                <source>label.form.description</source>
+                <target>Description</target>
             </trans-unit>
             <trans-unit id="label.form.quantity">
                 <source>label.form.quantity</source>
