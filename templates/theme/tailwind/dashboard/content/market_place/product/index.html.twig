@@ -1,0 +1,80 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% set _title_extend = 'title.dashboard.overview_product'|trans %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}{{ _title_extend }}{% endblock %}
+
+{% block content %}
+    {#    {% include 'dashboard/content/market_place/navbar/nav.html.twig' %} #}
+    {% if market.deletedAt %}
+        <div class="alert alert-warning mb-2" id="liveAlertPlaceholder" role="alert">
+            {{ 'product.unavailable'|trans }}
+        </div>
+    {% endif %}
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-500 uppercase bg-info-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th class="px-6 py-3" scope="col">{{ 'table.header.name'|trans }}</th>
+                <th class="px-6 py-3 text-center"
+                    scope="col">{{ 'table.header.cost'|trans }}</th>
+                <th class="px-6 py-3 text-center"
+                    scope="col">{{ 'table.header.quantity'|trans }}</th>
+                <th class="px-6 py-3 text-center"
+                    scope="col">{{ 'table.header.amount'|trans }}</th>
+                <th class="px-6 py-3 text-center"
+                    scope="col">{{ 'table.header.created_at'|trans }}</th>
+                <th class="px-6 py-3 text-center"
+                    scope="col">{{ 'table.header.handle'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for product in products %}
+                <tr class="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 {% if product.deletedAt %}text-gray-400 bg-gray-200{% endif %}">
+                    <th class="px-6 py-3" scope="row">
+                        <a data-twe-toggle="tooltip"
+                           data-twe-placement="left"
+                           class="block text-wrap font-semibold hover:underline hover:text-gray-400 {% if product.deletedAt %}line-through{% endif %}"
+                           title="{{ product.name }}"
+                           href="{{ path('app_dashboard_market_place_edit_product', {market: product.market.id, id: product.id, tab: 'details'}) }}">
+                            {{ product.shortName|length >= 40 ? product.shortName|slice(0, 40) ~ '...' : product.shortName }}
+                        </a>
+                    </th>
+                    <td class="px-6 py-3 text-center">{{ product.cost|number_format(2) }}<small
+                                class="text-muted">{{ currency['symbol_native'] }}</small></td>
+                    <td class="px-6 py-3 text-center">{{ product.quantity }}</td>
+                    <td class="px-6 py-3 text-center">{{ (product.cost * product.quantity)|amount_format }}{{ currency['symbol_native'] }}
+                    </td>
+                    <td class="px-6 py-3 text-center">{{ product.createdAt|date(date_format) }}</td>
+                    <td class="px-6 py-3 text-center">
+                        {% if product.deletedAt %}
+                            <a class="border rounded px-2 py-1.5 hover:shadow-md hover:bg-gray-100 {{ product.market.deletedAt ? 'pointer-events-none' : '' }}"
+                               href="{{ path('app_dashboard_restore_product', {market: product.market.id, id: product.id}) }}">
+                                <i class="fa fa-{{ product.market.deletedAt ? 'ban' : 'arrow-up' }}"></i>
+                            </a>
+                        {% else %}
+                            <a href="{{ path('app_dashboard_market_place_edit_product', {market: product.market.id, id: product.id, tab: 'details'}) }}"
+                               class="border rounded pl-2 pr-1 py-1.5 mr-1 hover:shadow-md hover:bg-gray-100">
+                                <i class="fa fa-pencil text-indigo-600"></i>
+                            </a>
+                            <a
+                                    class="border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 cursor-pointer"
+                                    data-token="{{ csrf_token('delete') }}"
+                                    data-url="{{ url('app_dashboard_delete_product', {market: product.market.id, id: product.id}) }}"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modal-delete">
+                                <i class="fa fa-trash text-red-600"></i>
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7"
+                        class="px-6 py-3 text-center text-gray-700 bg-gray-100">{{ 'table.footer.not_found'|trans }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

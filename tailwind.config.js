@@ -18,7 +18,7 @@ module.exports = {
     },
     plugins: [
         require("tw-elements/plugin.cjs"),
-        require('flowbite/plugin')
+        require('flowbite/plugin'),
     ],
     darkMode: "class"
 }

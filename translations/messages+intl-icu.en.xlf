@@ -60,6 +60,10 @@
                 <source>site.title</source>
                 <target>RgFly</target>
             </trans-unit>
+            <trans-unit id="open.sidebar">
+                <source>open.sidebar</source>
+                <target>Open sidebar</target>
+            </trans-unit>
             <trans-unit id="site.description">
                 <source>site.description</source>
                 <target>A marketplace with free and paid RgFly solutions - RgFly Online</target>
@@ -437,6 +441,14 @@
                 <source>label.form.logo</source>
                 <target>Market logo</target>
             </trans-unit>
+            <trans-unit id="label.size">
+                <source>label.size</source>
+                <target>Size</target>
+            </trans-unit>
+            <trans-unit id="label.color">
+                <source>label.color</source>
+                <target>Color</target>
+            </trans-unit>
             <trans-unit id="label.form.repeat_password">
                 <source>label.form.repeat_password</source>
                 <target>Repeat Password</target>
@@ -472,6 +484,10 @@
             <trans-unit id="form.last_name.invalid">
                 <source>form.last_name.invalid</source>
                 <target>Please enter your last name</target>
+            </trans-unit>
+            <trans-unit id="form.name.invalid">
+                <source>form.name.invalid</source>
+                <target>Please enter name</target>
             </trans-unit>
             <trans-unit id="form.address.invalid">
                 <source>form.address.invalid</source>

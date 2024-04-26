@@ -1,0 +1,118 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% set _title_extend = 'table.header.order_number'|trans ~ ': ' ~ order.number|upper %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}{{ _title_extend }}{% endblock %}
+
+{% block content %}
+    <div class="grid grid-cols-12 gap-4 mt-5">
+        <div class="col-span-6">
+            <div class="font-semibold mb-2">{{ 'table.header.order_number'|trans }}:
+                <span class="font-normal text-gray-500">{{ order.number|upper }}</span>
+            </div>
+            <div class="font-semibold">{{ 'table.header.payment_type'|trans }}:
+                <span class="font-normal text-gray-500">{{ order.marketInvoice.paymentGateway.name }}</span>
+            </div>
+        </div>
+        <div class="col-span-6">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="font-semibold mb-2 text-end">{{ 'table.header.requested_at'|trans }}:</div>
+                <div class="text-gray-500">{{ order.createdAt|date(datetime_format) }}</div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="font-semibold mb-2 text-end">{{ 'table.header.planned_delivery_at'|trans }}:</div>
+                <div class="text-gray-500">-</div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="flex my-2">
+        <div class="font-bold">{{ 'customer.header'|trans }}</div>
+    </div>
+    <div class="my-2">
+        <div class="mb-2 font-bold">{{ 'customer.name'|trans }}:
+            <span class="font-normal text-gray-500">{{ order.marketCustomerOrders.first.customer ?
+                order.marketCustomerOrders.first.customer.firstName ~ '   ' ~ order.marketCustomerOrders.first.customer.lastName :
+                '--' }}</span>
+        </div>
+        <div class="mb-2 font-bold">{{ 'customer.phone'|trans }}:
+            <span class="font-normal text-gray-500">{{ order.marketCustomerOrders.first.customer.phone }}</span>
+        </div>
+        <div class="font-bold">{{ 'customer.address'|trans }}:
+            <span class="font-normal text-gray-500">
+                <span class="pe-1">{{ order.marketCustomerOrders.first.customer.marketAddress.line1 }},</span>
+                <span class="pe-1">{{ order.marketCustomerOrders.first.customer.marketAddress.city }},</span>
+                <span class="pe-1">{{ country[order.marketCustomerOrders.first.customer.marketAddress.country] }}</span>
+                {% if order.marketCustomerOrders.first.customer.marketAddress.region %}
+                    <span class="pe-1">{{ order.marketCustomerOrders.first.customer.marketAddress.region }}</span>
+                {% endif %}
+                {% if order.marketCustomerOrders.first.customer.marketAddress.postal %}
+                    <span class="pe-1">{{ order.marketCustomerOrders.first.customer.marketAddress.postal }}</span>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+    <hr>
+    <div class="my-2">
+        <div class="font-bold">{{ 'market.supplier'|trans }}</div>
+    </div>
+    <div class="my-2">
+        <div class="mb-1 font-bold">{{ 'label.form.market_name'|trans }}:
+            <span class="font-normal text-gray-500">{{ order.market.name }}</span>
+        </div>
+        <div class="mb-1 font-bold">{{ 'title.phone'|trans }}:
+            <span class="font-normal text-gray-500">{{ order.market.phone }}</span>
+        </div>
+        <div class="font-bold">{{ 'title.address'|trans }}:
+            <span class="font-normal text-gray-500">{{ order.market.address }}</span>
+        </div>
+    </div>
+    <hr>
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+        <tr>
+            <th class="px-6 py-3 font-bold border border-slate-100" scope="col">{{ 'table.header.id'|trans }}</th>
+            <th class="px-6 py-3 font-bold border border-slate-100" scope="col">{{ 'table.header.code'|trans }}</th>
+            <th class="px-6 py-3 font-bold border border-slate-100" scope="col">{{ 'label.form.product_name'|trans }}</th>
+            <th class="px-6 py-3 font-bold border border-slate-100 text-end" scope="col">{{ 'table.header.cost'|trans }}</th>
+            <th class="px-6 py-3 font-bold border border-slate-100 text-end" scope="col">{{ 'table.header.quantity'|trans }}</th>
+            <th class="px-6 py-3 font-bold border border-slate-100 text-end" scope="col">{{ 'table.header.amount'|trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for orderProduct in order.marketOrdersProducts %}
+            {% set percent = orderProduct.product.discount %}
+            {% set cost = orderProduct.product.cost %}
+            {% set amount = (cost - ((cost * percent) - percent)/100) %}
+            <tr>
+                <td class="px-6 py-3 border border-slate-100">{{ loop.index }}</td>
+                <td class="px-6 py-3 border border-slate-100">{{ orderProduct.product.id }}</td>
+                <td class="px-6 py-3 border border-slate-100">{{ orderProduct.product.shortName }}</td>
+                {% if amount is not defined %}
+                    {% set amount = orderProduct.product.cost %}
+                {% endif %}
+                <td class="px-6 py-3 border border-slate-100 text-end">{{ amount|amount_format }}{{ order.market.currency|currency }}</td>
+                <td class="px-6 py-3 border border-slate-100 text-end">{{ orderProduct.quantity }}</td>
+                <td class="px-6 py-3 border border-slate-100 text-end">
+                    {{ (amount * orderProduct.quantity)|amount_format }}{{ order.market.currency|currency }}
+                </td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="5"></td>
+            <td class="px-6 py-3 border border-slate-100 text-end">
+                {{ itemSubtotal|amount_format }}{{ order.market.currency|currency }}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6"
+                class="px-6 py-3 border-r border-slate-100 text-end">{{ fee|amount_format }}{{ order.market.currency|currency }}</td>
+        </tr>
+        <tr>
+            <td colspan="5"></td>
+            <td class="px-6 py-3 border border-slate-100 text-end">{{ order.market.currency|currency }} {{ (total + fee)|amount_format }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+{% endblock %}
