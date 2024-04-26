@@ -126,6 +126,9 @@
         </div>
     </div>
     {{ form_end(form) }}
+    {{ include('dashboard/content/market_place/forms/brand.html.twig') }}
+    {{ include('dashboard/content/market_place/forms/supplier.html.twig') }}
+    {{ include('dashboard/content/market_place/forms/manufacturer.html.twig') }}
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}

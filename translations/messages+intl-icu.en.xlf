@@ -485,6 +485,10 @@
                 <source>form.last_name.invalid</source>
                 <target>Please enter your last name</target>
             </trans-unit>
+            <trans-unit id="form.name.invalid">
+                <source>form.name.invalid</source>
+                <target>Please enter name</target>
+            </trans-unit>
             <trans-unit id="form.address.invalid">
                 <source>form.address.invalid</source>
                 <target>Please enter your address</target>

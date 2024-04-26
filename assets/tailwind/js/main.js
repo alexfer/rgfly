@@ -3,24 +3,70 @@ import i18next from "i18next"
 import './utils';
 
 const formData = new FormData();
-const uploadInput = document.querySelector('input[type="file"]');
-const confirmDelete = document.getElementsByClassName('confirm-delete');
-const confirmChange = document.getElementsByClassName('confirm-change');
-const toastSuccess = document.getElementById('toast-success');
-const toastDanger = document.getElementById('toast-danger');
-const loadCategories = document.getElementById('load-categories');
-const deleteEntry = document.querySelectorAll('.delete-entry');
-const tabList = document.querySelector('ul[role="tablist"]');
 const headers = {'Content-type': 'application/json; charset=utf-8'};
 const eventOptions = {
     capture: true,
     once: true
 };
 
-if (tabList) {
-    Array.from(tabList.children).forEach((el) => {
+const elements = {
+    uploadInput: document.querySelector('input[type="file"]'),
+    confirmDelete: document.getElementsByClassName('confirm-delete'),
+    confirmChange: document.getElementsByClassName('confirm-change'),
+    toastSuccess: document.getElementById('toast-success'),
+    toastDanger: document.getElementById('toast-danger'),
+    loadCategories: document.getElementById('load-categories'),
+    deleteEntry: document.querySelectorAll('.delete-entry'),
+    tabList: document.querySelector('ul[role="tablist"]'),
+    addEntry: document.querySelectorAll('.add-entry')
+};
+
+if (elements.addEntry && elements.addEntry.length > 0) {
+    elements.addEntry.forEach((el, i) => {
+        el.addEventListener('click', async (event) => {
+            event.preventDefault();
+            let url = el.getAttribute('data-url');
+            let xhr = el.getAttribute('data-xhr');
+            let owner = el.getAttribute('data-modal-target');
+            let option = document.createElement('option');
+            let form = document.getElementById('form[' + owner + ']');
+            let input = form.querySelector('input[type="text"]');
+            input.value = null
+
+            if (xhr !== null) {
+                fetch(xhr)
+                    .then(data => data.json())
+                    .then(data => {
+                        let countries = data.countries;
+                        Object.keys(countries).forEach((key) => {
+                            form.querySelector('#suppler_country').appendChild(new Option(countries[key], key));
+                        });
+                    });
+            }
+
+            form.querySelector('button[type="submit"]').addEventListener('click', async (ev) => {
+                ev.preventDefault();
+                const response = await fetch(url, {method: 'POST', body: new FormData(form)});
+                const data = await response.json();
+                let json = data.json;
+                option.value = json.option.id;
+                option.text = json.option.name;
+                option.selected = true;
+                document.querySelector(data.json.id).append(option);
+                setTimeout(() => {
+                    form.querySelector('button[data-modal-name="modal"]').click();
+                }, 200);
+            });
+        });
+    });
+
+}
+
+
+if (elements.tabList) {
+    Array.from(elements.tabList.children).forEach((el) => {
         Array.from(el.children).forEach((handler) => {
-            handler.addEventListener('click', (e) => {
+            handler.addEventListener('click', () => {
                 let location = handler.getAttribute('aria-controls');
                 window.history.replaceState({}, '', location);
             });
@@ -28,8 +74,8 @@ if (tabList) {
     });
 }
 
-if (typeof deleteEntry !== 'undefined') {
-    Array.from(deleteEntry).forEach((entry) => {
+if (elements.deleteEntry) {
+    Array.from(elements.deleteEntry).forEach((entry) => {
         entry.addEventListener('click', () => {
             let url = entry.getAttribute('data-url');
             let token = entry.getAttribute('data-token');
@@ -56,38 +102,38 @@ if (typeof deleteEntry !== 'undefined') {
     });
 }
 
-if (loadCategories) {
-    loadCategories.addEventListener('click', () => {
-        let children = loadCategories.parentElement.children;
+if (elements.loadCategories) {
+    elements.loadCategories.addEventListener('click', () => {
+        let children = elements.loadCategories.parentElement.children;
         for (let el of Array.from(children)) {
             el.classList.remove('sr-only');
         }
-        loadCategories.remove();
+        elements.loadCategories.remove();
     });
 }
 
-if (toastSuccess) {
+if (elements.toastSuccess) {
     let flash = document.querySelector('input[name="flash"]');
     if (flash) {
         let messages = JSON.parse(flash.value);
         if (typeof messages.message !== 'undefined') {
-            showToast(toastSuccess, messages.message);
+            showToast(elements.toastSuccess, messages.message);
         }
     }
 }
 
-if (uploadInput) {
-    uploadInput.addEventListener('change', (event) => {
+if (elements.uploadInput) {
+    elements.uploadInput.addEventListener('change', (event) => {
         let file = event.target.files[0];
-        let url = uploadInput.getAttribute('data-url');
-        let max = +uploadInput.getAttribute('max');
+        let url = elements.uploadInput.getAttribute('data-url');
+        let max = +elements.uploadInput.getAttribute('max');
         let status = document.querySelector('[role="status"]');
         const attachments = document.getElementById('attachments');
 
         if (file.size > max) {
-            uploadInput.value = null;
+            elements.uploadInput.value = null;
             file = null;
-            showToast(toastDanger, 'The file size too large');
+            showToast(elements.toastDanger, 'The file size too large');
             return;
         }
 
@@ -98,7 +144,7 @@ if (uploadInput) {
         fetch(url, {method: 'POST', body: formData}).then(async response => {
             const isJson = response.headers.get('content-type')?.includes('application/json') || undefined;
             const data = isJson && await response.json();
-            showToast(toastSuccess, data.message);
+            showToast(elements.toastSuccess, data.message);
 
             const wrap = document.createElement('li');
             const img = document.createElement('img');
@@ -115,14 +161,14 @@ if (uploadInput) {
 
             attachments.parentElement.classList.remove('invisible');
             status.classList.add('hidden');
-            uploadInput.value = null;
+            elements.uploadInput.value = null;
             file = null;
         });
     });
 }
 
-if (confirmChange.length > 0) {
-    Array.from(confirmChange).forEach((el) => {
+if (elements.confirmChange.length > 0) {
+    Array.from(elements.confirmChange).forEach((el) => {
         el.addEventListener('click', (event) => {
             event.preventDefault();
             let confirmModal = document.getElementById('changeConfirm');
@@ -136,8 +182,8 @@ if (confirmChange.length > 0) {
     });
 }
 
-if (confirmDelete.length > 0) {
-    Array.from(confirmDelete).forEach((el) => {
+if (elements.confirmDelete.length > 0) {
+    Array.from(elements.confirmDelete).forEach((el) => {
         el.addEventListener('click', (event) => {
             event.preventDefault();
             let confirmModal = document.getElementById('deleteConfirm');
@@ -160,6 +206,6 @@ window.handleClick = async (el, confirmModal) => {
         body: JSON.stringify({id: id})
     });
     const data = await response.json();
-    showToast(toastSuccess, data.message);
+    showToast(elements.toastSuccess, data.message);
     confirmModal.style.display = 'none';
 };
