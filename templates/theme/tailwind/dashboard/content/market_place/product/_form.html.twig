@@ -59,16 +59,16 @@
         </li>
         <li class="me-2" role="presentation">
             <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-                    id="attachments-tab"
-                    data-tabs-target="#attachments"
+                    id="attachments-block"
+                    data-tabs-target="#attachments-tab"
                     type="button"
                     role="tab"
-                    aria-controls="attachments"
-                    aria-selected="{{ _tab == 'attachments' ? 'true' : 'false' }}">{{ 'entry.form.attachments'|trans }}
+                    aria-controls="attachments-tab"
+                    aria-selected="{{ _tab == 'attachments-tab' ? 'true' : 'false' }}">{{ 'entry.form.attachments'|trans }}
             </button>
         </li>
     </ul>
-    <div id="product-tab-content" class="pb-5 shadow-md rounded-md dark:bg-gray-800">
+    <div id="product-tab-content" class="pb-5 shadow-lg border border-t-gray-200 rounded-md dark:bg-gray-800 p-3">
         {% if errors.count %}
             <div class="flex items-center p-4 my-4 mx-5 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
                  role="alert">
@@ -96,36 +96,38 @@
              aria-labelledby="categories-tab">
             {% include 'dashboard/content/market_place/product/parts/categories.html.twig' %}
         </div>
-        <div id="attachments"
+        <div id="attachments-tab"
              role="tabpanel"
              aria-labelledby="attachments-tab">
-{#            <div class="mt-4 p-2">#}
-{#                {% if app.request.get('id') %}#}
-{#                    {% set _args = {market: product.market.id, id: product.id} %}#}
-{#                    {% include 'dashboard/content/form/attachment.html.twig' with {#}
-{#                        'attachments': product.marketProductAttaches,#}
-{#                        'storage': 'product',#}
-{#                        'id': product.id,#}
-{#                        'set_use': null,#}
-{#                        'remove': path('app_dashboard_product_attach_remove', _args),#}
-{#                        'data_url': path('app_dashboard_product_attach', _args),#}
-{#                        'filter': 'product_preview'#}
-{#                    } %}#}
-{#                {% else %}#}
-{#                    <div class="alert alert-info py-5">#}
-{#                        <div class="text-center">{{ 'product.attachments.available'|trans }}</div>#}
-{#                    </div>#}
-{#                {% endif %}#}
-{#            </div>#}
+            <div class="mt-4 p-2">
+                {% if app.request.get('id') %}
+                    {% set _args = {market: product.market.id, id: product.id} %}
+                    {% include 'dashboard/content/form/attachment.html.twig' with {
+                        'attachments': product.marketProductAttaches,
+                        'storage': 'product',
+                        'id': product.id,
+                        'set_use': null,
+                        'remove': path('app_dashboard_product_attach_remove', _args),
+                        'data_url': path('app_dashboard_product_attach', _args),
+                        'filter': 'product_preview'
+                    } %}
+                {% else %}
+                    <div class="alert alert-info py-5">
+                        <div class="text-center">{{ 'product.attachments.available'|trans }}</div>
+                    </div>
+                {% endif %}
+            </div>
         </div>
         <input type="hidden" name="flash" value="{{ _message[0]|default([]|json_encode) }}">
         <div class="w-full text-center pb-1">
             {{ form_widget(form.save, { label: form.vars.data.id ? 'form.action.update' : 'form.action.save', attr: {class: 'inline-block rounded bg-danger px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-danger-3 transition duration-150 ease-in-out hover:bg-danger-accent-300 hover:shadow-danger-2 focus:bg-danger-accent-300 focus:shadow-danger-2 focus:outline-none focus:ring-0 active:bg-danger-600 active:shadow-danger-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong group-invalid:pointer-events-none group-invalid:opacity-30'}}) }}
-            <a type="button" href="{{ url('app_dashboard_market_place_market_product', {market: app.request.get('market')}) }}"
+            <a type="button"
+               href="{{ url('app_dashboard_market_place_market_product', {market: app.request.get('market')}) }}"
                class="inline-block rounded bg-secondary hover:text-gray-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-secondary-3 transition duration-150 ease-in-out hover:bg-secondary-accent-300 hover:shadow-secondary-2 focus:bg-secondary-accent-300 focus:shadow-secondary-2 focus:outline-none focus:ring-0 active:bg-secondary-600 active:shadow-secondary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong group-invalid:pointer-events-none group-invalid:opacity-30">{{ 'form.action.back'|trans }}</a>
         </div>
     </div>
     {{ form_end(form) }}
+    {% include 'layouts/confirmation/delete.html.twig' %}
     {{ include('dashboard/content/market_place/forms/brand.html.twig') }}
     {{ include('dashboard/content/market_place/forms/supplier.html.twig') }}
     {{ include('dashboard/content/market_place/forms/manufacturer.html.twig') }}

@@ -1,0 +1,60 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% set _title_extend = 'title.dashboard.faq'|trans %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}{{ _title_extend }}{% endblock %}
+
+{% block content %}
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-500 uppercase bg-info-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">{{ 'table.header.title'|trans }}</th>
+                <th scope="col" class="px-6 py-3 text-center">{{ 'table.header.status'|trans }}</th>
+                <th scope="col" class="px-6 py-3 text-center">{{ 'table.header.handle'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entry in entries %}
+                {% set _status = entry.visible ? 'bg-green-400': 'bg-gray-500' %}
+                {% set _trashed = entry.deletedAt ? 'bg-red-400': 'bg-green-400' %}
+                {% set _visible = entry.visible ? 'Published': 'Hidden' %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <th scope="row" class="px-6 py-3 w-2/5 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {% if entry.deletedAt %}
+                            <s class="text-muted">{{ entry.title }}</s>
+                        {% else %}
+                            {{ entry.title }}
+                        {% endif %}
+                    </th>
+                    <td class="px-6 py-3 text-center">
+                        <span class="inline-block rounded text-white text-xs {{ entry.deletedAt ? _trashed : _status }} p-1.5">{{ entry.deletedAt ? 'Trashed' : _visible }}</span>
+                    </td>
+                    <td class="px-6 py-3 text-center">
+                        <a href="{{ path('app_dashboard_edit_faq', {id: entry.id}) }}"
+                           class="inline-block border rounded pl-2 pr-1 py-1 mr-1 hover:shadow-md hover:bg-gray-100">
+                            <i class="fa fa-pencil text-indigo-600"></i>
+                        </a>
+                        {% if entry.deletedAt %}
+                            <a class="inline-block border rounded px-2 py-1 hover:shadow-md hover:bg-gray-100"
+                               href="{{ path('app_dashboard_restore_faq', {id: entry.id}) }}">
+                                <i class="fa fa-arrow-up"></i>
+                            </a>
+                        {% else %}
+                            <a class="inline-block border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100"
+                                    data-token="{{ csrf_token('delete') }}"
+                                    data-url="{{ url('app_dashboard_delete_faq', {id: entry.id}) }}">
+                                <i class="fa fa-trash text-red-700"></i>
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3" class="px-6 py-3 text-center text-gray-700 bg-gray-100">{{ 'table.footer.not_found'|trans }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

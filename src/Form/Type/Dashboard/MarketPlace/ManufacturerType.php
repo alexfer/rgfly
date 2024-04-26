@@ -42,9 +42,8 @@ class ManufacturerType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'attr' => [
-                    'min' => 9,
-                    'max' => 10000,
-                    'pattern' => ".{9,10000}",
+                    'minLength' => 9,
+                    'maxLength' => 10000,
                 ],
                 'constraints' => [
                     new Length([
