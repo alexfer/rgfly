@@ -59,12 +59,12 @@
         </li>
         <li class="me-2" role="presentation">
             <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-                    id="attachments-tab"
-                    data-tabs-target="#attachments"
+                    id="attachments-block"
+                    data-tabs-target="#attachments-tab"
                     type="button"
                     role="tab"
-                    aria-controls="attachments"
-                    aria-selected="{{ _tab == 'attachments' ? 'true' : 'false' }}">{{ 'entry.form.attachments'|trans }}
+                    aria-controls="attachments-tab"
+                    aria-selected="{{ _tab == 'attachments-tab' ? 'true' : 'false' }}">{{ 'entry.form.attachments'|trans }}
             </button>
         </li>
     </ul>
@@ -96,27 +96,27 @@
              aria-labelledby="categories-tab">
             {% include 'dashboard/content/market_place/product/parts/categories.html.twig' %}
         </div>
-        <div id="attachments"
+        <div id="attachments-tab"
              role="tabpanel"
              aria-labelledby="attachments-tab">
-{#            <div class="mt-4 p-2">#}
-{#                {% if app.request.get('id') %}#}
-{#                    {% set _args = {market: product.market.id, id: product.id} %}#}
-{#                    {% include 'dashboard/content/form/attachment.html.twig' with {#}
-{#                        'attachments': product.marketProductAttaches,#}
-{#                        'storage': 'product',#}
-{#                        'id': product.id,#}
-{#                        'set_use': null,#}
-{#                        'remove': path('app_dashboard_product_attach_remove', _args),#}
-{#                        'data_url': path('app_dashboard_product_attach', _args),#}
-{#                        'filter': 'product_preview'#}
-{#                    } %}#}
-{#                {% else %}#}
-{#                    <div class="alert alert-info py-5">#}
-{#                        <div class="text-center">{{ 'product.attachments.available'|trans }}</div>#}
-{#                    </div>#}
-{#                {% endif %}#}
-{#            </div>#}
+            <div class="mt-4 p-2">
+                {% if app.request.get('id') %}
+                    {% set _args = {market: product.market.id, id: product.id} %}
+                    {% include 'dashboard/content/form/attachment.html.twig' with {
+                        'attachments': product.marketProductAttaches,
+                        'storage': 'product',
+                        'id': product.id,
+                        'set_use': null,
+                        'remove': path('app_dashboard_product_attach_remove', _args),
+                        'data_url': path('app_dashboard_product_attach', _args),
+                        'filter': 'product_preview'
+                    } %}
+                {% else %}
+                    <div class="alert alert-info py-5">
+                        <div class="text-center">{{ 'product.attachments.available'|trans }}</div>
+                    </div>
+                {% endif %}
+            </div>
         </div>
         <input type="hidden" name="flash" value="{{ _message[0]|default([]|json_encode) }}">
         <div class="w-full text-center pb-1">
@@ -126,6 +126,7 @@
         </div>
     </div>
     {{ form_end(form) }}
+    {% include 'layouts/confirmation/delete.html.twig' %}
     {{ include('dashboard/content/market_place/forms/brand.html.twig') }}
     {{ include('dashboard/content/market_place/forms/supplier.html.twig') }}
     {{ include('dashboard/content/market_place/forms/manufacturer.html.twig') }}
