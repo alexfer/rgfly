@@ -30,7 +30,7 @@
             </thead>
             <tbody>
             {% for product in products %}
-                <tr class="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 {% if product.deletedAt %}text-gray-400 bg-gray-200{% endif %}">
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 {% if product.deletedAt %}text-gray-400 bg-gray-200{% endif %}">
                     <th class="px-6 py-3" scope="row">
                         <a data-twe-toggle="tooltip"
                            data-twe-placement="left"

@@ -4,7 +4,6 @@ namespace App\Controller\Dashboard;
 
 use App\Entity\Faq;
 use App\Form\Type\FaqType;
-use App\Repository\FaqRepository;
 use App\Service\Dashboard;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,19 +23,18 @@ class FaqController extends AbstractController
     use Dashboard;
 
     /**
-     *
-     * @param FaqRepository $reposiroty
+     * @param EntityManagerInterface $em
      * @param UserInterface $user
      * @return Response
      */
     #[Route('', name: 'app_dashboard_faq')]
     public function index(
-        FaqRepository $reposiroty,
+        EntityManagerInterface $em,
         UserInterface $user,
     ): Response
     {
         return $this->render('dashboard/content/faq/index.html.twig', $this->navbar() + [
-                'entries' => $reposiroty->findBy([], ['id' => 'desc']),
+                'entries' => $em->getRepository(Faq::class)->findBy([], ['id' => 'desc']),
             ]);
     }
 
@@ -54,11 +52,21 @@ class FaqController extends AbstractController
         EntityManagerInterface $em,
     ): Response
     {
-        if ($this->isCsrfTokenValid('delete', $request->get('_token'))) {
+        if ($request->headers->get('Content-Type', 'application/json')) {
+            $content = $request->getContent();
+            $content = json_decode($content, true);
+            $token = $content['_token'];
+        }
+
+        if ($this->isCsrfTokenValid('delete', $token)) {
             $date = new DateTime('@' . strtotime('now'));
             $entry->setDeletedAt($date)->setVisible(false);
             $em->persist($entry);
             $em->flush();
+        }
+
+        if ($request->headers->get('Content-Type', 'application/json')) {
+            return $this->json(['redirect' => $this->generateUrl('app_dashboard_faq')]);
         }
 
         return $this->redirectToRoute('app_dashboard_faq');

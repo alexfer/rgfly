@@ -237,7 +237,7 @@
                          aria-labelledby="about-tab"
                          data-twe-tab-active>
                         <h5 class="block text-lg font-medium text-gray-600 py-3">{{ product.shortName }}</h5>
-                        <div class="text-sm font-light text-gray-500 dark:text-gray-400">{{ product.description|raw }}</div>
+                        <div class="text-sm font-light text-gray-500 dark:text-gray-400">{{ product.description|striptags|raw|nl2br }}</div>
                     </div>
                     <div class="hidden opacity-0 p-4 transition-opacity duration-150 ease-linear data-[twe-tab-active]:block"
                          id="product-info"

@@ -68,7 +68,7 @@
                 </button>
             </li>
         </ul>
-        <div id="market-tab-content" class="pb-5 shadow-md rounded-md dark:bg-gray-800">
+        <div id="market-tab-content" class="pb-5 shadow-lg border border-t-gray-200 rounded-md dark:bg-gray-800 p-3">
             <div class="hidden p-4"
                  id="market-details"
                  role="tabpanel"
@@ -77,38 +77,38 @@
                     <div class="relative mb-3">
                         {{ form_label(form.name, 'label.form.market_name', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
                         {{ form_widget(form.name, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.market_name'}}) }}
-                        <span class="mt-2 text-sm text-red-500">{{ form_errors(form.name) }}</span>
+                        <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.name) }}</span>
                     </div>
                     <div class="relative mb-3">
                         {{ form_label(form.address, 'label.form.address', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
                         {{ form_widget(form.address, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.address'}}) }}
-                        <span class="mt-2 text-sm text-red-500">{{ form_errors(form.address) }}</span>
+                        <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.address) }}</span>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div class="relative mb-3">
                         {{ form_label(form.phone, 'label.form.phone', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
                         {{ form_widget(form.phone, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.phone'}}) }}
-                        <span class="mt-2 text-sm text-red-500">{{ form_errors(form.phone) }}</span>
+                        <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.phone) }}</span>
                     </div>
                     <div class="relative mb-3">
                         {{ form_label(form.website, 'label.form.website', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
                         {{ form_widget(form.website, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'}}) }}
-                        <span class="mt-2 text-sm text-red-500">{{ form_errors(form.website) }}</span>
+                        <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.website) }}</span>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 gap-3">
                     <div class="relative mb-3">
                         {{ form_label(form.email, 'label.form.email', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
                         {{ form_widget(form.email, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.email'}}) }}
-                        <span class="mt-2 text-sm text-red-500">{{ form_errors(form.email) }}</span>
+                        <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.email) }}</span>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 gap-3">
                     <div class="relative mb-3">
                         {{ form_label(form.description, 'label.form.market_description', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
                         {{ form_widget(form.description, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', rows: 6, placeholder: 'label.form.market_description'}}) }}
-                        <span class="mt-2 text-sm text-red-500">{{ form_errors(form.description) }}</span>
+                        <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.description) }}</span>
                     </div>
                 </div>
             </div>
@@ -120,7 +120,7 @@
                     <div class="relative mb-3">
                         {{ form_label(form.currency, 'label.form.currency', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
                         {{ form_widget(form.currency, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.currency'}}) }}
-                        <span class="mt-2 text-sm text-red-500">{{ form_errors(form.currency) }}</span>
+                        <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.currency) }}</span>
                     </div>
                     <div class="flex flex-col flex-wrap mb-3">
                         <div class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">{{ 'table.header.payment_type'|trans }}</div>
@@ -155,7 +155,7 @@
                     <div class="max-w-xl mx-auto">
                         {{ form_label(form.logo, 'label.form.market_logo', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
                         {{ form_widget(form.logo, {attr: {class: 'block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400'}}) }}
-                        <span class="mt-2 text-sm text-red-500">{{ form_errors(form.logo) }}</span>
+                        <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.logo) }}</span>
                     </div>
                 </div>
             </div>
