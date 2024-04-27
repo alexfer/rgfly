@@ -40,26 +40,45 @@ class Answer
         $this->created_at = new DateTime();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(User $user): void
+    /**
+     * @param User $user
+     * @return $this
+     */
+    public function setUser(User $user): static
     {
         $this->user = $user;
+
+        return $this;
     }
 
+    /**
+     * @return int|null
+     */
     public function getUserId(): ?int
     {
         return $this->user_id;
     }
 
+    /**
+     * @param int $user_id
+     * @return $this
+     */
     public function setUserId(int $user_id): static
     {
         $this->$user_id = $user_id;
@@ -67,16 +86,28 @@ class Answer
         return $this;
     }
 
+    /**
+     * @return Contact|null
+     */
     public function getContact(): ?Contact
     {
         return $this->contact;
     }
 
-    public function setContact(Contact $contact): void
+    /**
+     * @param Contact $contact
+     * @return $this
+     */
+    public function setContact(Contact $contact): static
     {
         $this->contact = $contact;
+
+        return $this;
     }
 
+    /**
+     * @return int|null
+     */
     public function getContactId(): ?int
     {
         return $this->contact_id;
@@ -89,11 +120,18 @@ class Answer
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getMessage(): ?string
     {
         return $this->message;
     }
 
+    /**
+     * @param string $message
+     * @return $this
+     */
     public function setMessage(string $message): static
     {
         $this->message = $message;
@@ -101,11 +139,18 @@ class Answer
         return $this;
     }
 
+    /**
+     * @return DateTime|null
+     */
     public function getCreatedAt(): ?DateTime
     {
         return $this->created_at;
     }
 
+    /**
+     * @param DateTime $created_at
+     * @return $this
+     */
     public function setCreatedAt(DateTime $created_at): static
     {
         $this->created_at = $created_at;

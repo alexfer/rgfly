@@ -18,4 +18,13 @@ interface HandleInterface
      * @return void
      */
     public function notify(): void;
+
+    /**
+     * @param string $email
+     * @param string $name
+     * @param string $subject
+     * @param string $body
+     * @return void
+     */
+    public function answer(string $email, string $name, string $subject, string $body): void;
 }

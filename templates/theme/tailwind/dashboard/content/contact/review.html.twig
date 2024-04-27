@@ -1,0 +1,135 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% set _title_extend = contact.subject %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}{{ _title_extend }}{% endblock %}
+
+{% block content %}
+    <div class="pb-5 shadow-lg border border-t-gray-200 rounded-md dark:bg-gray-800 p-3">
+        <div class="grid grid-cols-4 gap-8">
+            <div class="block p-5">
+                <div class="relative z-0 w-full mb-10 group">
+                    <input type="text" name="name" id="name"
+                           class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                           placeholder="{{ 'customer.name'|trans }}" value="{{ contact.name }}" readonly/>
+                    <label for="name"
+                           class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                        {{ 'customer.name'|trans }}
+                    </label>
+                </div>
+                <div class="relative z-0 w-full mb-10 group">
+                    <input type="email" name="email" id="email"
+                           class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                           placeholder="{{ 'title.email'|trans }}" value="{{ contact.email }}" readonly/>
+                    <button data-copy-to-clipboard-target="email"
+                            data-tooltip-target="tooltip-copy-email"
+                            class="absolute end-2 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg p-2 inline-flex items-center justify-center">
+                        <span id="default-icon-email">
+                            <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                 fill="currentColor"
+                                 viewBox="0 0 18 20">
+                                <path d="M16 1h-3.278A1.992 1.992 0 0 0 11 0H7a1.993 1.993 0 0 0-1.722 1H2a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2Zm-3 14H5a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2Zm0-4H5a1 1 0 0 1 0-2h8a1 1 0 1 1 0 2Zm0-5H5a1 1 0 0 1 0-2h2V2h4v2h2a1 1 0 1 1 0 2Z"></path>
+                            </svg>
+                        </span>
+                        <span id="success-icon-email" class="hidden inline-flex items-center">
+                            <svg class="w-3.5 h-3.5 text-blue-700 dark:text-blue-500" aria-hidden="true"
+                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M1 5.917 5.724 10.5 15 1.5"></path>
+                            </svg>
+                        </span>
+                    </button>
+                    <div id="tooltip-copy-email" role="tooltip"
+                         class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                        <span id="default-tooltip-message-email">{{ 'text.copy'|trans }}</span>
+                        <span id="success-tooltip-message-email" class="hidden">{{ 'text.copied'|trans }}</span>
+                        <div class="tooltip-arrow" data-popper-arrow></div>
+                    </div>
+                    <label for="email"
+                           class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                        {{ 'title.email'|trans }}
+                    </label>
+                </div>
+                <div class="relative z-0 w-full mb-10 group">
+                    <input type="tel" name="phone" id="phone"
+                           class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                           placeholder="{{ 'customer.phone'|trans }}" value="{{ contact.phone }}" readonly/>
+                    <button data-copy-to-clipboard-target="phone"
+                            data-tooltip-target="tooltip-copy-phone"
+                            class="absolute end-2 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg p-2 inline-flex items-center justify-center">
+                        <span id="default-icon-phone">
+                            <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                 fill="currentColor"
+                                 viewBox="0 0 18 20">
+                                <path d="M16 1h-3.278A1.992 1.992 0 0 0 11 0H7a1.993 1.993 0 0 0-1.722 1H2a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2Zm-3 14H5a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2Zm0-4H5a1 1 0 0 1 0-2h8a1 1 0 1 1 0 2Zm0-5H5a1 1 0 0 1 0-2h2V2h4v2h2a1 1 0 1 1 0 2Z"></path>
+                            </svg>
+                        </span>
+                        <span id="success-icon-phone" class="hidden inline-flex items-center">
+                            <svg class="w-3.5 h-3.5 text-blue-700 dark:text-blue-500" aria-hidden="true"
+                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M1 5.917 5.724 10.5 15 1.5"></path>
+                            </svg>
+                        </span>
+                    </button>
+                    <div id="tooltip-copy-phone" role="tooltip"
+                         class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                        <span id="default-tooltip-message-phone">{{ 'text.copy'|trans }}</span>
+                        <span id="success-tooltip-message-phone" class="hidden">{{ 'text.copied'|trans }}</span>
+                        <div class="tooltip-arrow" data-popper-arrow></div>
+                    </div>
+                    <label for="phone"
+                           class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                        {{ 'customer.phone'|trans }}
+                    </label>
+                </div>
+            </div>
+            <div class="col-span-3 block p-5">
+                <div class="relative z-0 w-full mb-10 group">
+                    <input type="text" name="subject" id="subject"
+                           class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                           placeholder="{{ 'label.form.subject'|trans }}" value="{{ contact.subject }}" readonly/>
+                    <label for="subject"
+                           class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                        {{ 'label.form.subject'|trans }}
+                    </label>
+                </div>
+                <div class="relative z-0 w-full mb-10 group">
+                    <textarea name="message" id="message" rows="5"
+                              class="resize-none block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                              placeholder="{{ 'label.form.message'|trans }}" readonly>{{ contact.message }}</textarea>
+                    <label for="message"
+                           class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                        {{ 'label.form.message'|trans }}
+                    </label>
+                </div>
+            </div>
+        </div>
+        <form method="post">
+            <div class="border p-4 mx-4">
+                <div class="relative z-0 w-full mb-10 group">
+                    <textarea name="answer" id="answer" rows="8"
+                              class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                              placeholder="{{ 'label.form.message'|trans }}">==========================
+{{ contact.message|striptags|raw }}
+==========================
+Hello {{ contact.name }}!
+
+your message here
+==========================</textarea>
+                    <label for="answer"
+                           class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                        {{ 'label.form.message'|trans }}
+                    </label>
+                </div>
+                <div class="w-full text-center pb-1">
+                    <button id="answer"
+                            class="inline-block rounded bg-danger px-6 py-2 text-xs font-medium uppercase leading-normal text-white shadow-danger-3 transition duration-150 ease-in-out hover:bg-danger-accent-300 hover:shadow-danger-2 focus:bg-danger-accent-300 focus:shadow-danger-2 focus:outline-none focus:ring-0 active:bg-danger-600 active:shadow-danger-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+                            type="submit">{{ 'text.answer'|trans }}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

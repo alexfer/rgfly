@@ -72,6 +72,18 @@
                 <source>text.home.header</source>
                 <target>Software development company</target>
             </trans-unit>
+            <trans-unit id="text.copy">
+                <source>text.copy</source>
+                <target>Copy to clipboard</target>
+            </trans-unit>
+            <trans-unit id="text.copied">
+                <source>text.copied</source>
+                <target>Copied!</target>
+            </trans-unit>
+            <trans-unit id="text.answer">
+                <source>text.answer</source>
+                <target>Answer</target>
+            </trans-unit>
             <trans-unit id="title.blogs">
                 <source>title.blogs</source>
                 <target>Blogs</target>

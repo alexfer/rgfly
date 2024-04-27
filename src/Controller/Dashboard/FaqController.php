@@ -52,6 +52,8 @@ class FaqController extends AbstractController
         EntityManagerInterface $em,
     ): Response
     {
+        $token = $request->get('_token');
+
         if ($request->headers->get('Content-Type', 'application/json')) {
             $content = $request->getContent();
             $content = json_decode($content, true);

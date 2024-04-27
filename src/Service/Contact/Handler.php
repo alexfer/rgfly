@@ -95,4 +95,25 @@ class Handler implements HandleInterface
 
         $this->emailNotification->send($args['contact'], $template);
     }
+
+    /**
+     * @param string $email
+     * @param string $name
+     * @param string $subject
+     * @param string $body
+     * @return void
+     */
+    public function answer(string $email, string $name, string $subject, string $body): void
+    {
+        $args = [
+            'email' => $this->params->get('app.notifications.email_sender'),
+            'name' => $this->params->get('app.notifications.email_sender_name'),
+            'to' => $email,
+            'subject' => $subject,
+            'message' => $body,
+            'toName' => $name,
+        ];
+
+        $this->emailNotification->send($args);
+    }
 }
