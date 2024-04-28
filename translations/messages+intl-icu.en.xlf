@@ -72,6 +72,18 @@
                 <source>text.home.header</source>
                 <target>Software development company</target>
             </trans-unit>
+            <trans-unit id="text.copy">
+                <source>text.copy</source>
+                <target>Copy to clipboard</target>
+            </trans-unit>
+            <trans-unit id="text.copied">
+                <source>text.copied</source>
+                <target>Copied!</target>
+            </trans-unit>
+            <trans-unit id="text.answer">
+                <source>text.answer</source>
+                <target>Answer</target>
+            </trans-unit>
             <trans-unit id="title.blogs">
                 <source>title.blogs</source>
                 <target>Blogs</target>
@@ -364,6 +376,10 @@
             <trans-unit id="table.header.products">
                 <source>table.header.products</source>
                 <target>Products</target>
+            </trans-unit>
+            <trans-unit id="table.header.answers">
+                <source>table.header.answers</source>
+                <target>Answers</target>
             </trans-unit>
             <trans-unit id="table.header.status">
                 <source>table.header.status</source>
@@ -915,6 +931,14 @@
             <trans-unit id="user.entry.updated">
                 <source>user.entry.updated</source>
                 <target><![CDATA[Entry has been updated successfully.]]></target>
+            </trans-unit>
+            <trans-unit id="message.danger.text">
+                <source>message.danger.text</source>
+                <target><![CDATA[Please type your message.]]></target>
+            </trans-unit>
+            <trans-unit id="message.success.text">
+                <source>message.success.text</source>
+                <target><![CDATA[Message has been sent successfully.]]></target>
             </trans-unit>
             <trans-unit id="user.profile.updated">
                 <source>user.profile.updated</source>

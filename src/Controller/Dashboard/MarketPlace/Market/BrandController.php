@@ -146,6 +146,7 @@ class BrandController extends AbstractController
     ): Response
     {
         $market = $this->market($request, $user, $em);
+        $token = $request->get('_token');
 
         if ($request->headers->get('Content-Type', 'application/json')) {
             $content = $request->getContent();
