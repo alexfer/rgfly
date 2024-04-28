@@ -29,7 +29,7 @@ class ChangePasswordProfileType extends AbstractType
             'first_options' => [
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'form.password.invalid',
+                        'message' => 'form.password.invalid_message',
                     ]),
                     new Length([
                         'min' => 6,
@@ -41,7 +41,7 @@ class ChangePasswordProfileType extends AbstractType
             'second_options' => [
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'form.password.invalid',
+                        'message' => 'form.password.invalid_message',
                     ]),
                 ],
             ],

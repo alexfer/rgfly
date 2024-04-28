@@ -22,7 +22,7 @@
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <th scope="row" class="px-6 py-3 w-2/5 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         {% if entry.deletedAt %}
-                            <s class="text-muted">{{ entry.title }}</s>
+                            <s class="text-gray-400">{{ entry.title }}</s>
                         {% else %}
                             {{ entry.title }}
                         {% endif %}
