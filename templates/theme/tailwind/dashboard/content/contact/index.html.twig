@@ -11,6 +11,7 @@
             <tr>
                 <th scope="col" class="px-6 py-3">{{ 'table.header.name'|trans }}</th>
                 <th scope="col" class="px-6 py-3">{{ 'table.header.subject'|trans }}</th>
+                <th scope="col" class="px-6 py-3 text-center">{{ 'table.header.answers'|trans }}</th>
                 <th scope="col" class="px-6 py-3 text-center">{{ 'table.header.status'|trans }}</th>
                 <th scope="col" class="px-6 py-3 text-center">{{ 'table.header.handle'|trans }}</th>
             </tr>
@@ -30,8 +31,9 @@
                                class="text-blue-700 hover:!text-red-700 hover:underline">{{ entry.subject }}</a>
                         {% endif %}
                     </td>
+                    <td class="px-6 py-3 text-center text-gray-500">{{ entry.answers }}</td>
                     <td class="px-6 py-3 text-center">
-                        <a href="{{ path('app_dashboard_review_contact', {id: entry.id}) }}">{{ entry.status }}</a>
+                        <a class="text-green-500 underline hover:text-green-700 hover:no-underline" href="{{ path('app_dashboard_review_contact', {id: entry.id}) }}">{{ entry.status }}</a>
                     </td>
                     <td class="px-6 py-3 text-center">
                         <a class="inline-block border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 cursor-pointer"

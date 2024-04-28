@@ -4,6 +4,7 @@ namespace App\Service\Contact\Interface;
 
 use App\Entity\Contact;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 interface HandleInterface
 {
@@ -19,12 +20,6 @@ interface HandleInterface
      */
     public function notify(): void;
 
-    /**
-     * @param string $email
-     * @param string $name
-     * @param string $subject
-     * @param string $body
-     * @return void
-     */
-    public function answer(string $email, string $name, string $subject, string $body): void;
+
+    public function answer(Contact $contact, UserInterface $user, string $message): void;
 }

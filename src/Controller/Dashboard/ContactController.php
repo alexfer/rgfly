@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/dashboard/contact')]
 class ContactController extends AbstractController
@@ -74,7 +75,9 @@ class ContactController extends AbstractController
     /**
      * @param Request $request
      * @param Contact $contact
+     * @param HandleInterface $handle
      * @param EntityManagerInterface $em
+     * @param TranslatorInterface $translator
      * @param UserInterface $user
      * @return Response
      */
@@ -84,31 +87,26 @@ class ContactController extends AbstractController
         Contact                $contact,
         HandleInterface        $handle,
         EntityManagerInterface $em,
+        TranslatorInterface    $translator,
         UserInterface          $user,
     ): Response
     {
-
         if ($request->getMethod() == 'POST') {
             $message = $request->request->get('answer');
-            $answer = new Answer();
-            $answer->setContact($contact)
-                ->setUser($user)
-                ->setMessage($message);
-            $em->persist($answer);
-            $em->flush();
 
-            $handle->answer(
-                $contact->getEmail(),
-                $contact->getName(),
-                sprintf("RE: %s", $contact->getSubject()),
-                $message
-            );
+            if (!$message && strlen($message) < 3) {
+                $this->addFlash('danger', json_encode(['message' => $translator->trans('message.danger.text')]));
+            } else {
+                $this->addFlash('success', json_encode(['message' => $translator->trans('message.success.text')]));
+                $handle->answer($contact, $user, $message);
+            }
 
             return $this->redirectToRoute('app_dashboard_review_contact', ['id' => $contact->getId()]);
         }
 
         return $this->render('dashboard/content/contact/review.html.twig', $this->navbar() + [
                 'contact' => $contact,
+                'answers' => $em->getRepository(Answer::class)->findBy(['contact' => $contact->getId()], ['id' => 'desc']),
             ]);
     }
 }

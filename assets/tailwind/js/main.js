@@ -113,11 +113,21 @@ if (elements.loadCategories) {
 }
 
 if (elements.toastSuccess) {
-    let flash = document.querySelector('input[name="flash"]');
+    let flash = document.querySelector('input[name="flash-success"]');
     if (flash) {
         let messages = JSON.parse(flash.value);
         if (typeof messages.message !== 'undefined') {
             showToast(elements.toastSuccess, messages.message);
+        }
+    }
+}
+
+if (elements.toastDanger) {
+    let flash = document.querySelector('input[name="flash-danger"]');
+    if (flash) {
+        let messages = JSON.parse(flash.value);
+        if (typeof messages.message !== 'undefined') {
+            showToast(elements.toastDanger, messages.message);
         }
     }
 }

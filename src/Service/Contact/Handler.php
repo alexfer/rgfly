@@ -2,6 +2,7 @@
 
 namespace App\Service\Contact;
 
+use App\Entity\Answer;
 use App\Entity\Contact;
 use App\Service\Contact\Interface\HandleInterface;
 use App\Service\Interface\EmailNotificationInterface;
@@ -11,6 +12,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Twig\Environment as Twig;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -96,6 +98,19 @@ class Handler implements HandleInterface
         $this->emailNotification->send($args['contact'], $template);
     }
 
+    public function answer(Contact $contact, UserInterface $user, string $message): void
+    {
+        $answers = $contact->getAnswers();
+        $answer = new Answer();
+        $answer->setContact($contact)
+            ->setUser($user)
+            ->setMessage($message);
+        $answer->getContact()->setAnswers($answers + 1);
+        $this->em->persist($answer);
+        $this->em->flush();
+        $this->send($contact->getEmail(), $contact->getName(), sprintf("RE: %s", $contact->getSubject()), $message);
+    }
+
     /**
      * @param string $email
      * @param string $name
@@ -103,7 +118,12 @@ class Handler implements HandleInterface
      * @param string $body
      * @return void
      */
-    public function answer(string $email, string $name, string $subject, string $body): void
+    protected function send(
+        string $email,
+        string $name,
+        string $subject,
+        string $body,
+    ): void
     {
         $args = [
             'email' => $this->params->get('app.notifications.email_sender'),

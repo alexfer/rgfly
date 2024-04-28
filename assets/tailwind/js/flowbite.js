@@ -36,19 +36,23 @@ const successTooltipMessageEmail = document.getElementById('success-tooltip-mess
 const defaultTooltipMessagePhone = document.getElementById('default-tooltip-message-phone');
 const successTooltipMessagePhone = document.getElementById('success-tooltip-message-phone');
 
-clipboardPhone.updateOnCopyCallback((clipboard) => {
-    showSuccess(tooltipPhone, defaultIconPhone, successIconPhone, defaultTooltipMessagePhone, successTooltipMessagePhone);
-    setTimeout(() => {
-        resetToDefault(tooltipPhone, defaultIconPhone, successIconPhone, defaultTooltipMessagePhone, successTooltipMessagePhone);
-    }, 5000);
-});
+if(clipboardPhone !== undefined) {
+    clipboardPhone.updateOnCopyCallback((clipboard) => {
+        showSuccess(tooltipPhone, defaultIconPhone, successIconPhone, defaultTooltipMessagePhone, successTooltipMessagePhone);
+        setTimeout(() => {
+            resetToDefault(tooltipPhone, defaultIconPhone, successIconPhone, defaultTooltipMessagePhone, successTooltipMessagePhone);
+        }, 5000);
+    });
+}
 
-clipboardEmail.updateOnCopyCallback((clipboard) => {
-    showSuccess(tooltipEmail, defaultIconEmail, successIconEmail, defaultTooltipMessageEmail, successTooltipMessageEmail);
-    setTimeout(() => {
-        resetToDefault(tooltipEmail, defaultIconEmail, successIconEmail, defaultTooltipMessageEmail, successTooltipMessageEmail);
-    }, 5000);
-});
+if(clipboardEmail !== undefined) {
+    clipboardEmail.updateOnCopyCallback((clipboard) => {
+        showSuccess(tooltipEmail, defaultIconEmail, successIconEmail, defaultTooltipMessageEmail, successTooltipMessageEmail);
+        setTimeout(() => {
+            resetToDefault(tooltipEmail, defaultIconEmail, successIconEmail, defaultTooltipMessageEmail, successTooltipMessageEmail);
+        }, 5000);
+    });
+}
 
 const showSuccess = (tooltip, defaultIcon, successIcon, defaultMessage, successMessage) => {
     defaultIcon.classList.add('hidden');
