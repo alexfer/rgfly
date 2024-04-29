@@ -62,7 +62,6 @@ if (elements.addEntry && elements.addEntry.length > 0) {
 
 }
 
-
 if (elements.tabList) {
     Array.from(elements.tabList.children).forEach((el) => {
         Array.from(el.children).forEach((handler) => {
