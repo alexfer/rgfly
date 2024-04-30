@@ -18,8 +18,47 @@ const elements = {
     loadCategories: document.getElementById('load-categories'),
     deleteEntry: document.querySelectorAll('.delete-entry'),
     tabList: document.querySelector('ul[role="tablist"]'),
-    addEntry: document.querySelectorAll('.add-entry')
+    addEntry: document.querySelectorAll('.add-entry'),
+    marketsButton: document.getElementById('market-search')
 };
+
+if (elements.marketsButton) {
+    elements.marketsButton.addEventListener('click', (e) => {
+        let search = document.getElementById('input-market-search');
+        let url = elements.marketsButton.getAttribute('data-url');
+        let list = document.getElementById('search-list');
+        let ms = 0;
+        search.value = null;
+
+        search.addEventListener('input', (e) => {
+            clearTimeout(ms);
+            ms = setTimeout(() => {
+                fetch(url + '/' + search.value)
+                    .then(data => data.json())
+                    .then(data => {
+
+                        let markets = Object.entries(data.result);
+                        console.log(markets.length)
+                        if(markets.length > 0) {
+                            let classList = list.children[0].children.item(0).getAttribute('class');
+                            let li = [];
+
+                            list.innerHTML = null;
+                            for (const [key, item] of markets) {
+                                li[key] = document.createElement('li');
+                                let link = document.createElement('a');
+                                link.setAttribute('class', classList);
+                                link.text = item.name;
+                                link.href = item.url;
+                                li[key].appendChild(link);
+                                list.appendChild(li[key]);
+                            }
+                        }
+                    });
+            }, 500);
+        });
+    });
+}
 
 if (elements.addEntry && elements.addEntry.length > 0) {
     elements.addEntry.forEach((el, i) => {
@@ -134,13 +173,14 @@ if (elements.toastDanger) {
 if (elements.uploadInput) {
     elements.uploadInput.addEventListener('change', (event) => {
         let file = event.target.files[0];
-        let url = elements.uploadInput.getAttribute('data-url');
-        let max = +elements.uploadInput.getAttribute('max');
+        let input = elements.uploadInput;
+        let url = input.getAttribute('data-url');
+        let max = +input.getAttribute('max');
         let status = document.querySelector('[role="status"]');
         const attachments = document.getElementById('attachments');
 
         if (file.size > max) {
-            elements.uploadInput.value = null;
+            input.value = null;
             file = null;
             showToast(elements.toastDanger, 'The file size too large');
             return;
@@ -170,7 +210,7 @@ if (elements.uploadInput) {
 
             attachments.parentElement.classList.remove('invisible');
             status.classList.add('hidden');
-            elements.uploadInput.value = null;
+            input.value = null;
             file = null;
         });
     });
