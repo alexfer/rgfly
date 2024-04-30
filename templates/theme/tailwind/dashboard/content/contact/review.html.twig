@@ -123,7 +123,6 @@
         </div>
         {% set _message_seccess = app.flashes('success') %}
         {% set _message_danger = app.flashes('danger') %}
-        {{ dump(_message_danger) }}
         <form method="post">
             <div class="border-1 border-spacing-1 p-4 mx-4">
                 <div class="relative z-0 w-full mb-10 group">
@@ -151,6 +150,4 @@ your message here
             <input type="hidden" name="flash-danger" value="{{ _message_danger[0]|default([]|json_encode) }}">
         </form>
     </div>
-    {% include 'layouts/toast/success.html.twig' %}
-    {% include 'layouts/toast/danger.html.twig' %}
 {% endblock %}

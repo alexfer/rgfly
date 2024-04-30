@@ -19,6 +19,9 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class MarketProductRepository extends ServiceEntityRepository
 {
+    /**
+     * @var Connection
+     */
     private Connection $connection;
 
     /**
