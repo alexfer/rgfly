@@ -58,7 +58,7 @@ class CabinetController extends AbstractController
                 $products[$order->getId()][] = $item->getCost() - ((($item->getCost() * $item->getQuantity()) * $item->getDiscount()) - $item->getDiscount()) / 100;
                 $fee[$order->getId()][] = $item->getProduct()->getFee();
             }
-            $summary[$order->getId()] = [
+            $summary[$order->getOrders()->getId()] = [
                 'total' => array_sum($products[$order->getId()]) + array_sum($fee[$order->getId()]),
             ];
         }

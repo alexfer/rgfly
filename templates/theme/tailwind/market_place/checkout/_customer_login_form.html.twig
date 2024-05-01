@@ -1,0 +1,34 @@
+{{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+<div class="flex flex-col border w-full px-16 mb-5 pt-3 rounded-md shadow-sm">
+    <h2 class="text-xl text-center mt-5 pb-4 font-extrabold text-gray-600 dark:text-white"><i class="fa fa-lock mr-3"></i>{{ 'text.login'|trans }}</h2>
+    {% if error %}
+        <div class="flex items-center p-4 mb-4 text-red-600 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+             role="alert">
+            <div class="ms-3 text-sm font-medium">{{ error.message }}</div>
+        </div>
+    {% endif %}
+    <div class="relative w-full mb-3">
+        {{ form_label(form.email, 'label.form.email', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+        {{ form_widget(form.email, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.email'}}) }}
+    </div>
+    <div class="relative mb-3">
+        {{ form_label(form.password, 'label.form.password', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+        {{ form_widget(form.password, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.password'}}) }}
+    </div>
+    <div class="relative mb-5">
+        {{ form_widget(form._remember_me, {attr: {checked: 'checked', class: 'w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800'}}) }}
+        {{ form_label(form._remember_me, 'label.form.keep_me_logged_in', {label_attr: {class: 'ms-2 text-sm font-medium text-gray-900 dark:text-gray-300'}}) }}
+    </div>
+    <div class="mb-5">
+        <input type="hidden" name="_target_path" value="{{ path('app_cabinet') }}"/>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        <div class="flex flex-row justify-between items-center">
+            <a href="{{ path('app_forgot_password_request') }}"><i
+                        class="fa fa-question-circle text-gray-500 mr-1"></i>{{ 'text.forgot_password'|trans }}</a>
+            {{ form_widget(form.login, { label: 'form.action.login', attr: {
+                class: 'inline-block rounded bg-danger px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-danger-3 transition duration-150 ease-in-out hover:bg-danger-accent-300 hover:shadow-danger-2 focus:bg-danger-accent-300 focus:shadow-danger-2 focus:outline-none focus:ring-0 active:bg-danger-600 active:shadow-danger-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong'
+            } }) }}
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}

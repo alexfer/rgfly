@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="{{ app.request.locale }}" data-bs-theme="white">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>{% block title %}{{ 'site.title'|trans }}{% endblock %} - {{ 'text.home.header'|trans }}</title>
+    <meta name="description" content="{% block description %}{{ 'site.description'|trans }}{% endblock %}">
+    <meta name="robots" content="index,follow">
+    <meta charset="utf-8">
+    <meta property="og:title" content="{{ 'site.title'|trans }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url('app_index') }}">
+    <meta property="og:site_name" content="{{ 'site.title'|trans }} - {{ 'text.home.header'|trans }}">
+    <meta property="og:locale" content="en_US">
+    <meta name="application-name" content="{{ 'site.title'|trans }} - {{ 'text.home.header'|trans }}">
+    <meta name="apple-mobile-web-app-title" content="{{ 'site.title'|trans }} - {{ 'text.home.header'|trans }}">
+    <link rel="canonical" href="{{ app.request.uri }}"/>
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+</head>
+<body>
+{% set _route = app.request.get('_route') %}
+<div class="flex flex-col h-screen justify-between bg-transparent">
+    <div class="w-full bg-red-600 absolute h-72 -z-10"></div>
+    {% include 'layouts/header.html.twig' %}
+    <main class="mb-auto bg-red-600 shadow-inner">
+        {% block body %}{% endblock %}
+    </main>
+    <footer class="bg-gray-950 h-[64px] sticky top-[100vh]">
+        <div class="container mx-auto text-white pt-1">
+            <div class="text-center py-3">
+                {% set year =  'now' | date('Y') %}
+                {% set build_year = '2023' %}
+                <span>&copy; {{ year == build_year ? build_year : build_year ~ '-' ~ year }} {{ 'site.title'|trans }} - {{ 'text.all_right_reserved'|trans }}</span>
+            </div>
+        </div>
+    </footer>
+</div>
+{% include 'layouts/cart.html.twig' %}
+{% block toast %}{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,18 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}
+    {% block title_extend %}{% endblock %}{{ 'text.dashboard'|trans }}
+{% endblock %}
+
+{% block body %}
+    <div class="bg-white dark:bg-gray-900">
+        <h2 class="text-xl md:text-2xl text-red-400 font-semibold mb-2">{% block title_content %}{{ 'text.dashboard'|trans }}{% endblock %}</h2>
+        {% block content %}
+            {% include 'dashboard/content/index.html.twig' %}
+        {% endblock %}
+    </div>
+{% endblock %}
+{% block toast %}
+    {{ include ('layouts/toast/success.html.twig') }}
+    {{ include ('layouts/toast/danger.html.twig') }}
+{% endblock %}

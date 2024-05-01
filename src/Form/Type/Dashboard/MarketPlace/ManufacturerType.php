@@ -26,6 +26,7 @@ class ManufacturerType extends AbstractType
                 'attr' => [
                     'min' => 3,
                     'max' => 250,
+                    'pattern' => ".{3,250}",
                 ],
                 'constraints' => [
                     new NotBlank([
@@ -41,12 +42,12 @@ class ManufacturerType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'attr' => [
-                    'min' => 10,
-                    'max' => 10000,
+                    'minLength' => 9,
+                    'maxLength' => 10000,
                 ],
                 'constraints' => [
                     new Length([
-                        'min' => 10,
+                        'min' => 9,
                         'minMessage' => 'form.description.min',
                         'max' => 10000,
                         'maxMessage' => 'form.description.max',

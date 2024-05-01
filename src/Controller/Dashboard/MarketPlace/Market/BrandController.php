@@ -38,7 +38,7 @@ class BrandController extends AbstractController
     ): Response
     {
         $market = $this->market($request, $user, $em);
-        $brands = $em->getRepository(MarketBrand::class)->findBy(['market' => $market], ['id' => 'desc']);
+        $brands = $em->getRepository(MarketBrand::class)->brands($market, $request->query->get('search'));
 
         return $this->render('dashboard/content/market_place/brand/index.html.twig', $this->navbar() + [
                 'market' => $market,
@@ -146,10 +146,21 @@ class BrandController extends AbstractController
     ): Response
     {
         $market = $this->market($request, $user, $em);
+        $token = $request->get('_token');
 
-        if ($this->isCsrfTokenValid('delete', $request->get('_token')) && !$brand->getMarketProductBrands()->count()) {
+        if ($request->headers->get('Content-Type', 'application/json')) {
+            $content = $request->getContent();
+            $content = json_decode($content, true);
+            $token = $content['_token'];
+        }
+
+        if ($this->isCsrfTokenValid('delete', $token) && !$brand->getMarketProductBrands()->count()) {
             $em->remove($brand);
             $em->flush();
+        }
+
+        if ($request->headers->get('Content-Type', 'application/json')) {
+            return $this->json(['redirect' => $this->generateUrl('app_dashboard_market_place_market_brand', ['market' => $market->getId()])]);
         }
 
         return $this->redirectToRoute('app_dashboard_market_place_market_brand', ['market' => $market->getId()]);

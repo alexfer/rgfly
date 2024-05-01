@@ -1,0 +1,351 @@
+{% extends 'market_place/index.html.twig' %}
+
+{% block title %}{{ product.shortName }}{% endblock %}
+{% block description %}{{ product.name }}{% endblock %}
+
+{% block content_body %}
+    {% set parent = product.marketCategoryProducts.first.category.parent %}
+    {% set child = product.marketCategoryProducts.first.category %}
+    <section class="bg-white dark:bg-gray-900">
+        <div class="max-w-screen-3xl flex mx-auto px-4 py-8 lg:py-16 lg:px-2">
+            <div class="mx-auto w-4/6 rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
+                <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white text-ellipsis overflow-hidden">{{ product.shortName }}</h2>
+                <div class="grid grid-cols-12 gap-4">
+                    <div class="col-span-12 md:col-span-8">
+                        <div id="indicators-carousel" class="relative w-full" data-carousel="static">
+                            <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+                                {% if product.marketProductAttaches.count %}
+                                    {% set _picture = 'storage/product/picture/' ~ product.id ~ '/' ~ product.marketProductAttaches.first.attach.name %}
+                                    <div class="hidden duration-200 ease-linear" data-carousel-item="active">
+                                        <img src="{{ asset(_picture)|imagine_filter('product_view') }}"
+                                             class="absolute block transition duration-300 ease-linear hover:scale-125 w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                                             alt="{{ product.name }}">
+                                        <div class="absolute inset-x-[15%] left-1/2 transform -translate-x-1/2 w-full bottom-5 py-5 text-center text-white md:block">
+                                            <h5 class="text-xl text-ellipsis overflow-hidden">{{ product.shortName }}</h5>
+                                            <p class="text-ellipsis overflow-hidden">{{ product.market.name|e|slice(0, 220) }}</p>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
+                                        <img src="{{ asset('img/carousel.svg') }}"
+                                             class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                                             alt="{{ product.name }}">
+                                        <div class="absolute inset-x-[15%] left-1/2 transform -translate-x-1/2 w-full bottom-5 py-5 text-center text-white md:block">
+                                            <h5 class="text-xl text-ellipsis overflow-hidden">{{ product.shortName }}</h5>
+                                            <p class="text-ellipsis overflow-hidden">{{ product.market.name }}</p>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% for image in product.marketProductAttaches|slice(1, product.marketProductAttaches.count) %}
+                                    <div class="hidden duration-200 ease-linear" data-carousel-item>
+                                        {% set _image = 'storage/product/picture/' ~ product.id ~ '/' ~ image.attach.name %}
+                                        <img src="{{ asset(_image)|imagine_filter('product_view') }}"
+                                             class="absolute block transition duration-300 ease-linear hover:scale-125 w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                                             alt="{{ product.shortName }}">
+                                        <div class="absolute inset-x-[15%] left-1/2 transform -translate-x-1/2 w-full bottom-5 py-5 text-center text-white md:block">
+                                            <h5 class="text-xl text-ellipsis overflow-hidden">{{ product.shortName }}</h5>
+                                            <p class="text-ellipsis overflow-hidden">{{ product.market.name }}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            {% if product.marketProductAttaches.count > 1 %}
+                                <div class="absolute z-30 flex -translate-x-1/2 space-x-3 rtl:space-x-reverse bottom-5 left-1/2">
+                                    {% for key, image in product.marketProductAttaches %}
+                                        <button type="button" class="w-3 h-3 rounded-full"
+                                                aria-current="{% if key == 0 %}true{% else %}false{% endif %}"
+                                                aria-label="..." data-carousel-slide-to="{{ key }}"></button>
+                                    {% endfor %}
+                                </div>
+                                <button type="button"
+                                        class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                                        data-carousel-prev>
+                                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                                        <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
+                                             aria-hidden="true"
+                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                  stroke-width="2" d="M5 1 1 5l4 4"></path>
+                                        </svg>
+                                        <span class="sr-only">{{ 'element.previous'|trans }}</span>
+                                    </span>
+                                </button>
+                                <button type="button"
+                                        class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                                        data-carousel-next>
+                                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                                        <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
+                                             aria-hidden="true"
+                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                  stroke-width="2" d="m1 9 4-4-4-4"></path>
+                                        </svg>
+                                        <span class="sr-only">{{ 'element.next'|trans }}</span>
+                                    </span>
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-span-12 md:col-span-4">
+                        <a href="{{ path('app_market_place_market', {slug:  product.market.slug}) }}"
+                           class="mb-1 w-75 block truncate">
+                            <h5 class="text-lg font-medium hover:text-gray-700 tracking-tight truncate text-gray-500 dark:text-white">
+                                <i class="fa fa-bookmark text-yellow-300 mr-2"></i>{{ product.market.name }}
+                            </h5>
+                        </a>
+                        <div class="grid grid-cols-2">
+                            <div class="relative mb-10 block w-72 flex-nowrap">
+                                <div class="absolute">
+                                    {% if product.discount %}
+                                        {% set discount = product.discount %}
+                                        {% set cost = product.cost %}
+                                        <span class="font-medium text-2xl text-success pr-2">
+                                                {{ (cost + product.fee - ((cost * discount) - discount)/100)|amount_format }}<small>{{ product.market.currency|currency }}</small>
+                                            </span>
+                                        <span class="line-through text-lg font-medium text-gray-400">{{ (product.cost + product.fee)|amount_format }}<small>{{ product.market.currency|currency }}</small></span>
+                                    {% else %}
+                                        <span class="font-medium text-2xl text-surface-dark">{{ (product.cost + product.fee)|amount_format }}<small>{{ product.market.currency|currency }}</small></span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% if product.discount %}
+                                <div class="relative mb-10">
+                                    <div class="pt-1 absolute right-0 bg-red-500 text-white text-sm font-light me-2 px-2.5 py-0.5 rounded-md dark:bg-red-900 dark:text-white">
+                                        {{ product.discount|number_format(2, '.', '') }}
+                                        % {{ 'market.product.off'|trans }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if product.marketProductAttributes.count %}
+                                <div id="attributes" class="block mt-xl-5 min-w-full">
+                                    {% for attribute in product.marketProductAttributes.toArray %}
+                                        <input type="hidden" name="color" value="">
+                                        <input type="hidden" name="size" value="">
+                                        {% if attribute.inFront %}
+                                            <span class="block mt-3 text-gray-600 dark:text-white md:text-sm tracking-widest">{{ attribute.name|capitalize }}</span>
+                                            <div class="flex mt-1" id="{{ attribute.name }}">
+                                                {% for attr in attribute.marketProductAttributeValues %}
+                                                    <div class="inline-block mr-1 p-1 border-2 {% if attribute.name == 'color' %} rounded-full{% endif %}">
+                                                        <input type="radio" name="attr[{{ attribute.name }}]"
+                                                               class="hidden peer"
+                                                               data-name="{{ attr.value }}"
+                                                               data-root-name="{{ attribute.name }}"
+                                                               id="attr-check-{{ attr.id }}" value="{{ attr.id }}"
+                                                               autocomplete="off">
+                                                        <label class="flex cursor-pointer peer-checked:shadow-4-strong{% if attribute.name == 'color' %} rounded-full{% endif %}"
+                                                               for="attr-check-{{ attr.id }}" {% if attribute.name == 'color' %} style="background-color: {{ attr.extra|join }};"{% endif %}>
+                                                            {% if attribute.name == 'size' %}
+                                                                <span class="p-1">{{ attr.value|capitalize }}</span>
+                                                            {% else %}
+                                                                <span class="p-2"></span>
+                                                            {% endif %}
+                                                        </label>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="flex mt-5 justify-start items-start">
+                            <form class="shopping-cart inline" method="post"
+                                  action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
+                                <button type="submit" id="order"
+                                        class="inline-block contrast-200 rounded bg-primary md:bg-primary-600 px-3 pb-2 pt-2.5 mr-5 text-xs font-medium uppercase text-gray-200 hover:text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"{% if product.quantity == 0 %} disabled{% endif %}>
+                                    <i class="fa fa-shopping-basket mr-2"></i>{{ 'market.product.add_cart'|trans }}
+                                </button>
+                            </form>
+                            <button class="bg-gray-100 text-gray-600 border-spacing-1.5 px-4 pt-2 pb-1 mr-2 rounded-md hover:bg-gray-300 hover:text-gray-500"
+                                    data-twe-toggle="tooltip" title="{{ 'market.product.compare'|trans }}">
+                                <i class="fa fa-code-fork"></i>
+                            </button>
+                            <form class="add-wishlist inline" name="wishlist"
+                                  action="{{ path('app_market_place_add_wishlist', {slug: product.slug}) }}">
+                                <input name="market" type="hidden" value="{{ product.market.id }}">
+                                {% include 'market_place/wishlist.html.twig' with {'extra': null} %}
+                            </form>
+                        </div>
+                        {% set code = product.slug|split('-')|last|upper %}
+                        <table class="w-full mt-5 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <tbody>
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <td class="py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ 'market.product.code'|trans }}
+                                    :
+                                </td>
+                                <td class="py-3">{{ 'market.product.code_prefix'|trans }}{{ product.id }}
+                                    -{{ code }}</td>
+                            </tr>
+                            <tr class="bg-white dark:bg-gray-800 dark:border-gray-700">
+                                <td class="py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ 'market.product.availability'|trans }}
+                                    :
+                                </td>
+                                <td class="py-3">{% if product.quantity == 0 %}{{ 'market.product.out_stock'|trans }}{% else %}{{ 'market.product.in_stock'|trans }}{% endif %}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <ul class="mt-5 flex list-none flex-row flex-wrap border-b-0 ps-0" role="tablist" data-twe-nav-ref>
+                    <li role="presentation">
+                        <a
+                                href="#about"
+                                class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[twe-nav-active]:border-primary data-[twe-nav-active]:text-primary dark:text-white/50 dark:hover:bg-neutral-700/60 dark:data-[twe-nav-active]:text-primary"
+                                data-twe-toggle="pill"
+                                data-twe-target="#about"
+                                data-twe-nav-active
+                                role="tab"
+                                aria-controls="about"
+                                aria-selected="true">{{ 'product.details'|trans }}</a>
+                    </li>
+                    <li role="presentation">
+                        <a
+                                href="#product-info"
+                                class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[twe-nav-active]:border-primary data-[twe-nav-active]:text-primary dark:text-white/50 dark:hover:bg-neutral-700/60 dark:data-[twe-nav-active]:text-primary"
+                                data-twe-toggle="pill"
+                                data-twe-target="#product-info"
+                                role="tab"
+                                aria-controls="product-info"
+                                aria-selected="false">{{ 'product.information'|trans }}</a>
+                    </li>
+                    <li role="presentation">
+                        <a
+                                href="#seller-info"
+                                class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[twe-nav-active]:border-primary data-[twe-nav-active]:text-primary dark:text-white/50 dark:hover:bg-neutral-700/60 dark:data-[twe-nav-active]:text-primary"
+                                data-twe-toggle="pill"
+                                data-twe-target="#seller-info"
+                                role="tab"
+                                aria-controls="seller-info"
+                                aria-selected="false">{{ 'product.seller.info'|trans }}</a>
+                    </li>
+                    <li role="presentation">
+                        <a
+                                href="#seller-contact"
+                                class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[twe-nav-active]:border-primary data-[twe-nav-active]:text-primary dark:text-white/50 dark:hover:bg-neutral-700/60 dark:data-[twe-nav-active]:text-primary"
+                                data-twe-toggle="pill"
+                                data-twe-target="#seller-contact"
+                                role="tab"
+                                aria-controls="tabs-contact"
+                                aria-selected="false">{{ 'product.seller.contact'|trans }}</a
+                        >
+                    </li>
+                </ul>
+                <div class="mb-6">
+                    <div class="hidden opacity-100 p-4 rounded-lg bg-gray-50 dark:bg-gray-800 transition-opacity duration-150 ease-linear data-[twe-tab-active]:block"
+                         id="about"
+                         role="tabpanel"
+                         aria-labelledby="about-tab"
+                         data-twe-tab-active>
+                        <h5 class="block text-lg font-medium text-gray-600 py-3">{{ product.shortName }}</h5>
+                        <div class="text-sm font-light text-gray-500 dark:text-gray-400">{{ product.description|striptags|raw|nl2br }}</div>
+                    </div>
+                    <div class="hidden opacity-0 p-4 transition-opacity duration-150 ease-linear data-[twe-tab-active]:block"
+                         id="product-info"
+                         role="tabpanel"
+                         aria-labelledby="product-info-tab">
+                        <div class="relative overflow-x-auto">
+                            <h5 class="block text-lg font-medium text-gray-600 pt-3">{{ 'product.information'|trans }}</h5>
+                            <table class="w-full mt-3 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                <tbody>
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <th class="py-3 px-5 min-w-10 max-w-10">{{ 'label.form.sku'|trans }}</th>
+                                    <td class="p-3 text-gray-500">{{ product.sku }}</td>
+                                </tr>
+                                {% if product.pckgQuantity %}
+                                    <tr class="bg-gray-50 border-b dark:bg-gray-800 dark:border-gray-700">
+                                        <th class="py-3 px-5">{{ 'label.form.pckg_quantity'|trans }}</th>
+                                        <td class="p-3 text-gray-500">{{ product.pckgQuantity }}</td>
+                                    </tr>
+                                {% endif %}
+                                <tr class="bg-gray-50 border-b dark:bg-gray-800 dark:border-gray-700">
+                                    <th class="py-3 px-5">{{ 'label.form.quantity'|trans }}</th>
+                                    <td class="p-3 text-gray-500">
+                                        {% if product.quantity == 0 %}
+                                            {{ 'market.product.out_stock'|trans }}
+                                        {% else %}
+                                            {{ product.quantity }}{{ 'label.form.quantity_pcs'|trans }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <th class="py-3 px-5">{{ 'market.brand'|trans }}</th>
+                                    <td class="p-3 text-gray-500">{{ product.marketProductBrand.brand.name|default('N/a') }}</td>
+                                </tr>
+                                <tr class="bg-gray-50 border-b dark:bg-gray-800 dark:border-gray-700">
+                                    <th class="py-3 px-5">{{ 'market.supplier'|trans }}</th>
+                                    <td class="p-3 text-gray-500">{{ product.marketProductSupplier.supplier.name|default('N/a') }}</td>
+                                </tr>
+                                <tr class="bg-white dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <th class="py-3 px-5">{{ 'market.manufacturer'|trans }}</th>
+                                    <td class="p-3 text-gray-500">{{ product.marketProductManufacturer.manufacturer.name|default('N/a') }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="hidden opacity-0 p-4 rounded-lg bg-gray-50 dark:bg-gray-800 transition-opacity duration-150 ease-linear data-[twe-tab-active]:block"
+                         id="seller-info"
+                         role="tabpanel"
+                         aria-labelledby="seller-info-tab">
+                        <h5 class="block text-lg font-medium text-gray-600 py-3">{{ product.market.name }}</h5>
+                        <div class="text-sm font-light text-gray-500 dark:text-gray-400">{{ product.market.description|default('info.no_content'|trans)|raw }}</div>
+                    </div>
+                    <div class="hidden opacity-0 p-4 rounded-lg bg-gray-50 dark:bg-gray-800 transition-opacity duration-150 ease-linear data-[twe-tab-active]:block"
+                         id="seller-contact"
+                         role="tabpanel"
+                         aria-labelledby="seller-contact-tab">
+                        <h5 class="block text-lg font-medium text-gray-600 py-3">{{ 'product.seller.contact'|trans }}</h5>
+                        <div class="grid grid-cols-12 gap-5">
+                            {% if product.market.phone is not null or product.market.email is not null or product.market.website is not null %}
+                                <div class="col-span-4">
+                                    <form class="group" method="post" autocomplete="off" novalidate="">
+                                        <div class="relative">
+                                            <label for="message" class="sr-only"></label>
+                                            <textarea id="message" class="invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500 peer block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-gray-400 focus:border-gray-400 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" rows="6"
+                                                      minlength="20"
+                                                      maxlength="250"
+                                                      placeholder="{{ 'form.header.message'|trans }}"
+                                                      required></textarea>
+                                            <span class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">{{ 'form.message.invalid'|trans }}</span>
+                                        </div>
+                                        <button class="inline-block mt-3 w-full rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong group-invalid:pointer-events-none group-invalid:opacity-30"
+                                                type="submit">{{ 'form.action.send'|trans }}</button>
+                                    </form>
+                                </div>
+                                <div class="col-span-8">
+                                    <ul class="list-none ms-2">
+                                        {% if product.market.phone %}
+                                            <li class="mb-1">
+                                                <a class="text-gray-700 hover:text-gray-900 hover:animate-pulse"
+                                                   href="tel:{{ product.market.phone }}">
+                                                    <i class="fa fa-phone-square text-sm mr-3"></i>{{ product.market.phone }}
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% if product.market.email %}
+                                            <li class="mb-1">
+                                                <a class="text-gray-700 hover:text-gray-900 hover:animate-pulse"
+                                                   href="mailto:{{ product.market.email }}">
+                                                    <i class="fa fa-envelope text-sm mr-3"></i>{{ product.market.email }}
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% if product.market.website %}
+                                            <li class="mb-1">
+                                                <a target="_blank" rel="noreferrer"
+                                                   class="text-gray-700 hover:text-gray-900 hover:animate-pulse"
+                                                   href="{{ path('app_dashboard_market_place_market_redirect', {website: product.market.website}) }}">
+                                                    <i class="fa fa-globe text-sm mr-3"></i>{{ product.market.website }}
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -25,6 +25,7 @@ class Kernel extends BaseKernel
         $container->addCompilerPass(new class() implements CompilerPassInterface {
             public function process(ContainerBuilder $container): void
             {
+                date_default_timezone_set($container->getParameter('default_timezone'));
                 $container->getDefinition('doctrine.orm.default_configuration')
                     ->addMethodCall(
                         'setIdentityGenerationPreferences', [

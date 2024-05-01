@@ -166,7 +166,7 @@ class MarketOrdersProduct
      */
     public function getCost(): ?float
     {
-        return number_format($this->cost, 2);
+        return $this->cost;
     }
 
     /**
@@ -175,7 +175,7 @@ class MarketOrdersProduct
      */
     public function setCost(?float $cost): static
     {
-        $this->cost = number_format($cost, 2);
+        $this->cost = $cost;
 
         return $this;
     }

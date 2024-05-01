@@ -38,7 +38,7 @@ class ManufacturerController extends AbstractController
     ): Response
     {
         $market = $this->market($request, $user, $em);
-        $manufacturers = $em->getRepository(MarketManufacturer::class)->findBy(['market' => $market], ['id' => 'desc']);
+        $manufacturers = $em->getRepository(MarketManufacturer::class)->manufacturers($market, $request->query->get('search'));
 
         return $this->render('dashboard/content/market_place/manufacturer/index.html.twig', $this->navbar() + [
                 'market' => $market,
@@ -146,10 +146,21 @@ class ManufacturerController extends AbstractController
     ): Response
     {
         $market = $this->market($request, $user, $em);
+        $token = $request->get('_token');
 
-        if ($this->isCsrfTokenValid('delete', $request->get('_token')) && !$manufacturer->getMarketProductManufacturers()->count()) {
+        if ($request->headers->get('Content-Type', 'application/json')) {
+            $content = $request->getContent();
+            $content = json_decode($content, true);
+            $token = $content['_token'];
+        }
+
+        if ($this->isCsrfTokenValid('delete', $token) && !$manufacturer->getMarketProductManufacturers()->count()) {
             $em->remove($manufacturer);
             $em->flush();
+        }
+
+        if ($request->headers->get('Content-Type', 'application/json')) {
+            return $this->json(['redirect' => $this->generateUrl('app_dashboard_market_place_market_manufacturer', ['market' => $market->getId()])]);
         }
 
         return $this->redirectToRoute('app_dashboard_market_place_market_manufacturer', ['market' => $market->getId()]);

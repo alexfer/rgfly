@@ -32,6 +32,7 @@ class CustomerRegistrationType extends AbstractType
                 'attr' => [
                     'min' => 3,
                     'max' => 200,
+                    'pattern' => ".{3,200}",
                 ],
                 'constraints' => [
                     new NotBlank([
@@ -49,6 +50,7 @@ class CustomerRegistrationType extends AbstractType
                 'attr' => [
                     'min' => 2,
                     'max' => 200,
+                    'pattern' => ".{2,200}",
                 ],
                 'constraints' => [
                     new NotBlank([
@@ -66,12 +68,9 @@ class CustomerRegistrationType extends AbstractType
                 'attr' => [
                     'min' => 5,
                     'max' => 180,
+                    'pattern' => ".{5,180}",
                 ],
                 'constraints' => [
-//                    new UniqueEntity([
-//                        'fields' => ['email'],
-//                        'message' => 'email.unique',
-//                    ]),
                     new NotBlank([
                         'message' => 'form.email.not_blank',
                     ]),
@@ -85,6 +84,7 @@ class CustomerRegistrationType extends AbstractType
                 'attr' => [
                     'min' => 3,
                     'max' => 250,
+                    'pattern' => ".{3,250}",
                 ],
                 'constraints' => [
                     new NotBlank([
@@ -124,6 +124,7 @@ class CustomerRegistrationType extends AbstractType
                 'attr' => [
                     'min' => 10,
                     'max' => 250,
+                    'pattern' => ".{10,250}",
                 ],
                 'constraints' => [
                     new NotBlank([
@@ -150,7 +151,10 @@ class CustomerRegistrationType extends AbstractType
         ]);
     }
 
-    public function getParent()
+    /**
+     * @return string
+     */
+    public function getParent(): string
     {
         return RegistrationType::class;
     }

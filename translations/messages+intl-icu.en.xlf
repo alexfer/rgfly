@@ -60,6 +60,10 @@
                 <source>site.title</source>
                 <target>RgFly</target>
             </trans-unit>
+            <trans-unit id="open.sidebar">
+                <source>open.sidebar</source>
+                <target>Open sidebar</target>
+            </trans-unit>
             <trans-unit id="site.description">
                 <source>site.description</source>
                 <target>A marketplace with free and paid RgFly solutions - RgFly Online</target>
@@ -67,6 +71,18 @@
             <trans-unit id="text.home.header">
                 <source>text.home.header</source>
                 <target>Software development company</target>
+            </trans-unit>
+            <trans-unit id="text.copy">
+                <source>text.copy</source>
+                <target>Copy to clipboard</target>
+            </trans-unit>
+            <trans-unit id="text.copied">
+                <source>text.copied</source>
+                <target>Copied!</target>
+            </trans-unit>
+            <trans-unit id="text.answer">
+                <source>text.answer</source>
+                <target>Answer</target>
             </trans-unit>
             <trans-unit id="title.blogs">
                 <source>title.blogs</source>
@@ -361,6 +377,10 @@
                 <source>table.header.products</source>
                 <target>Products</target>
             </trans-unit>
+            <trans-unit id="table.header.answers">
+                <source>table.header.answers</source>
+                <target>Answers</target>
+            </trans-unit>
             <trans-unit id="table.header.status">
                 <source>table.header.status</source>
                 <target>Status</target>
@@ -437,6 +457,14 @@
                 <source>label.form.logo</source>
                 <target>Market logo</target>
             </trans-unit>
+            <trans-unit id="label.size">
+                <source>label.size</source>
+                <target>Size</target>
+            </trans-unit>
+            <trans-unit id="label.color">
+                <source>label.color</source>
+                <target>Color</target>
+            </trans-unit>
             <trans-unit id="label.form.repeat_password">
                 <source>label.form.repeat_password</source>
                 <target>Repeat Password</target>
@@ -472,6 +500,18 @@
             <trans-unit id="form.last_name.invalid">
                 <source>form.last_name.invalid</source>
                 <target>Please enter your last name</target>
+            </trans-unit>
+            <trans-unit id="form.name.invalid">
+                <source>form.name.invalid</source>
+                <target>Please enter name</target>
+            </trans-unit>
+            <trans-unit id="form.description.invalid">
+                <source>form.description.invalid</source>
+                <target>Please enter valid description</target>
+            </trans-unit>
+            <trans-unit id="form.url.invalid">
+                <source>form.url.invalid</source>
+                <target>Please enter valid url</target>
             </trans-unit>
             <trans-unit id="form.address.invalid">
                 <source>form.address.invalid</source>
@@ -568,6 +608,10 @@
             <trans-unit id="label.form.product_description">
                 <source>label.form.product_description</source>
                 <target>Description of Product</target>
+            </trans-unit>
+            <trans-unit id="label.form.description">
+                <source>label.form.description</source>
+                <target>Description</target>
             </trans-unit>
             <trans-unit id="label.form.quantity">
                 <source>label.form.quantity</source>
@@ -798,6 +842,10 @@
                 <source>title.dashboard.latest_blogs</source>
                 <target>Latest Blogs</target>
             </trans-unit>
+            <trans-unit id="text.loading">
+                <source>text.loading</source>
+                <target>Loading...</target>
+            </trans-unit>
             <trans-unit id="text.all_right_reserved">
                 <source>text.all_right_reserved</source>
                 <target>All Rights Reserved</target>
@@ -884,6 +932,14 @@
                 <source>user.entry.updated</source>
                 <target><![CDATA[Entry has been updated successfully.]]></target>
             </trans-unit>
+            <trans-unit id="message.danger.text">
+                <source>message.danger.text</source>
+                <target><![CDATA[Please type your message.]]></target>
+            </trans-unit>
+            <trans-unit id="message.success.text">
+                <source>message.success.text</source>
+                <target><![CDATA[Message has been sent successfully.]]></target>
+            </trans-unit>
             <trans-unit id="user.profile.updated">
                 <source>user.profile.updated</source>
                 <target><![CDATA[Your profile has been updated successfully.]]></target>
@@ -934,6 +990,12 @@
                 <source>alert.confirm.delete</source>
                 <target>
                     <![CDATA[Are you sure you want to delete this item?]]>
+                </target>
+            </trans-unit>
+            <trans-unit id="alert.confirm.change">
+                <source>alert.confirm.change</source>
+                <target>
+                    <![CDATA[Are you sure you want to change this item?]]>
                 </target>
             </trans-unit>
             <trans-unit id="text.faq.desc">
@@ -1004,7 +1066,7 @@
             <trans-unit id="text.about_us.long_desc">
                 <source>text.about_us.long_desc</source>
                 <target>
-                    <![CDATA[We started as an internet agency and have increasingly grown to develop applications, mobile apps, platforms and products. For customers and with customers. During the growth we noticed that more and more companies were having trouble attracting personnel, and so we received the first requests whether we wanted to help our customers with this. Because we already had our own nearshore location at that time, the idea arose to provide our customers with developers for the longer term, whom they could manage themselves. We then shifted our focus.]]>
+                    <![CDATA[<p class="mb-2">We started as an internet agency and have increasingly grown to develop applications, mobile apps, platforms and products.</p><p class="mb-2">For customers and with customers. During the growth we noticed that more and more companies were having trouble attracting personnel, and so we received the first requests whether we wanted to help our customers with this.</p><p class="mb-2">Because we already had our own nearshore location at that time, the idea arose to provide our customers with developers for the longer term, whom they could manage themselves. We then shifted our focus.</p>]]>
                 </target>
             </trans-unit>
             <trans-unit id="text.contact_us.success">
@@ -1106,6 +1168,18 @@
             <trans-unit id="label.form.postal">
                 <source>label.form.postal</source>
                 <target>Your Zip/Postal code</target>
+            </trans-unit>
+            <trans-unit id="required.text">
+                <source>required.text</source>
+                <target>Required fields are marked with an asterisk</target>
+            </trans-unit>
+            <trans-unit id="required.field">
+                <source>required.field</source>
+                <target>Required field</target>
+            </trans-unit>
+            <trans-unit id="required.value">
+                <source>required.value</source>
+                <target>required</target>
             </trans-unit>
             <trans-unit id="form.agree_terms.help">
                 <source>form.agree_terms.help</source>
@@ -1373,13 +1447,16 @@
                 <source>email.not_found</source>
                 <target>Provided email not found</target>
             </trans-unit>
-            <trans-unit id="text.reset_password.infio">
-                <source>text.reset_password.infio</source>
-                <target>If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password. This link will expire in</target>
+            <trans-unit id="text.reset_password.info">
+                <source>text.reset_password.info</source>
+                <target>If an account matching your email exists, then an email was just sent that contains a link that
+                    you can use to reset your password. This link will expire in
+                </target>
             </trans-unit>
             <trans-unit id="text.reset_password.resend">
                 <source>text.reset_password.resend</source>
-                <target><![CDATA[f you don't receive an email please check your spam folder or  <a href="{ link }">try again</a>.]]></target>
+                <target>
+                    <![CDATA[f you don't receive an email please check your spam folder or  <a href="{ link }">try again</a>.]]></target>
             </trans-unit>
             <trans-unit id="form.email.info">
                 <source>form.email.info</source>
@@ -1399,7 +1476,11 @@
             </trans-unit>
             <trans-unit id="form.password.invalid">
                 <source>form.password.invalid</source>
-                <target>The password can't by blank</target>
+                <target>The password is not valid</target>
+            </trans-unit>
+            <trans-unit id="form.password.not_blank">
+                <source>form.password.not_blank</source>
+                <target>The password can't be blank</target>
             </trans-unit>
             <trans-unit id="label.form.currency">
                 <source>label.form.currency</source>

@@ -6,7 +6,6 @@ use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketPaymentGateway;
 use App\Entity\MarketPlace\MarketPaymentGatewayMarket;
 use App\Form\Type\Dashboard\MarketPlace\MarketType;
-use App\Repository\MarketPlace\MarketRepository;
 use App\Service\Dashboard;
 use App\Service\FileUploader;
 use DateTime;
@@ -19,6 +18,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -34,23 +34,59 @@ class MarketController extends AbstractController
 
     /**
      * @param UserInterface $user
-     * @param MarketRepository $marketRepository
+     * @param EntityManagerInterface $em
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     #[Route('/market', name: 'app_dashboard_market_place_market')]
     public function index(
-        UserInterface    $user,
-        MarketRepository $marketRepository,
+        UserInterface          $user,
+        EntityManagerInterface $em,
     ): Response
     {
         $criteria = $this->criteria($user, null, 'owner');
-        $markets = $marketRepository->findBy($criteria, ['created_at' => 'desc']);
+        $markets = $em->getRepository(Market::class)->findBy($criteria, ['created_at' => 'desc'], 20, 0);
 
         return $this->render('dashboard/content/market_place/market/index.html.twig', $this->navbar() + [
                 'markets' => $markets,
             ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param UserInterface $user
+     * @return JsonResponse
+     * @throws \Doctrine\DBAL\Exception
+     */
+    #[Route('/market/search/{query?}', name: 'app_dashboard_market_place_search_market')]
+    public function search(
+        Request                $request,
+        EntityManagerInterface $em,
+        UserInterface          $user,
+    ): JsonResponse
+    {
+        $repository = $em->getRepository(Market::class);
+
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $markets = $repository->search($request->get('query'));
+        } else {
+            $markets = $repository->searchByOwner($request->get('query'), $user);
+        }
+        $result = [];
+        foreach ($markets['data'] ?? [] as $market) {
+            $result[] = [
+                'id' => $market['id'],
+                'name' => $market['name'],
+                'url' => $this->generateUrl('app_dashboard_market_place_market_product', ['market' => $market['id']]),
+            ];
+        }
+
+
+        return $this->json([
+            'result' => $result,
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -278,7 +314,15 @@ class MarketController extends AbstractController
         EntityManagerInterface $em,
     ): Response
     {
-        if ($this->isCsrfTokenValid('delete', $request->get('_token'))) {
+        $token = $request->get('_token');
+
+        if ($request->headers->get('Content-Type', 'application/json')) {
+            $content = $request->getContent();
+            $content = json_decode($content, true);
+            $token = $content['_token'];
+        }
+
+        if ($this->isCsrfTokenValid('delete', $token)) {
             $products = $market->getProducts();
             $date = new DateTime('@' . strtotime('now'));
             foreach ($products as $product) {
@@ -288,6 +332,10 @@ class MarketController extends AbstractController
             $market->setDeletedAt($date);
             $em->persist($market);
             $em->flush();
+        }
+
+        if ($request->headers->get('Content-Type', 'application/json')) {
+            return $this->json(['redirect' => $this->generateUrl('app_dashboard_market_place_market')]);
         }
 
         return $this->redirectToRoute('app_dashboard_market_place_market');

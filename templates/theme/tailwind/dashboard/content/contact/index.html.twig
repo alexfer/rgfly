@@ -1,0 +1,55 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% set _title_extend = 'title.dashboard.contact'|trans %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}{{ _title_extend }}{% endblock %}
+
+{% block content %}
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-500 uppercase bg-info-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">{{ 'table.header.name'|trans }}</th>
+                <th scope="col" class="px-6 py-3">{{ 'table.header.subject'|trans }}</th>
+                <th scope="col" class="px-6 py-3 text-center">{{ 'table.header.answers'|trans }}</th>
+                <th scope="col" class="px-6 py-3 text-center">{{ 'table.header.status'|trans }}</th>
+                <th scope="col" class="px-6 py-3 text-center">{{ 'table.header.handle'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entry in entries %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <th scope="row"
+                        class="px-6 py-3 w-2/5 font-medium text-md-start text-gray-900 whitespace-nowrap dark:text-white">
+                        {{ entry.name }}
+                    </th>
+                    <td class="px-6 py-3">
+                        {% if entry.status == constant('App\\Entity\\Contact::STATUS')['trashed'] %}
+                            <del class="text-gray-500">{{ entry.subject }}</del>
+                        {% else %}
+                            <a href="{{ path('app_dashboard_review_contact', {id: entry.id}) }}"
+                               class="text-blue-700 hover:!text-red-700 hover:underline">{{ entry.subject }}</a>
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-3 text-center text-gray-500">{{ entry.answers }}</td>
+                    <td class="px-6 py-3 text-center">
+                        <a class="text-green-500 underline hover:text-green-700 hover:no-underline" href="{{ path('app_dashboard_review_contact', {id: entry.id}) }}">{{ entry.status }}</a>
+                    </td>
+                    <td class="px-6 py-3 text-center">
+                        <a class="inline-block border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 cursor-pointer"
+                           data-token="{{ csrf_token('delete') }}"
+                           data-url="{{ url('app_dashboard_delete_contact', {id: entry.id}) }}">
+                            <i class="fa fa-trash text-red-700"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4"
+                        class="px-6 py-3 text-center text-gray-700 bg-gray-100">{{ 'table.footer.not_found'|trans }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

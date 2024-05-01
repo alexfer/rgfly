@@ -1,0 +1,23 @@
+body {
+    font-size: 0.95rem;
+    font-weight: 200;
+    line-height: 1.5;
+}
+
+::placeholder {
+    /*color: rgba(157, 167, 204, 0.8) !important;*/
+    color: rgba(91, 91, 140, 0.40) !important;
+    opacity: 1;
+    font-size: 0.85rem;
+}
+
+a {
+    color: rgba(60, 60, 62, 0.75);
+    text-decoration: none;
+    background-color: transparent
+}
+
+a:hover {
+    color: rgba(60, 60, 62, 0.85);
+    text-decoration: none
+}

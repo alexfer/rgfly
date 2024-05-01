@@ -31,14 +31,29 @@ readonly class EmailNotification implements EmailNotificationInterface
      */
     public function send(array $args, $template = null): void
     {
-        $email = (new Email())
-            ->from(new Address($args['email'], $args['name']))
-            ->to(new Address($this->params->get('app.notifications.email_sender'), $this->params->get('app.notifications.email_sender_name')))
-            ->subject($args['subject'] ?: $this->params->get('app.notifications.subject'))
-            ->html($template ?: $args['message']);
+        $email = new Email();
+
+        $mailer = $email
+            ->from(new Address(
+                $args['email'],
+                $args['name']
+            ))
+            ->to(new Address(
+                    isset($args['to']) ? (string)$args['to'] : $this->params->get('app.notifications.email_sender'),
+                    isset($args['toName']) ?: $this->params->get('app.notifications.email_sender_name'))
+            )
+            ->subject(
+                $args['subject'] ?: $this->params->get('app.notifications.subject')
+            );
+        if ($template) {
+            $mailer->html($template);
+        } else {
+            $mailer->text($args['message']);
+        }
+
 
         try {
-            $this->mailer->send($email);
+            $this->mailer->send($mailer);
         } catch (TransportExceptionInterface $e) {
             throw $e->getDebug();
         }

@@ -34,6 +34,7 @@ class ProfileType extends AbstractType
             'attr' => [
                 'min' => 3,
                 'max' => 200,
+                'pattern' => ".{3,200}",
             ],
             'constraints' => [
                 new NotBlank([
@@ -53,6 +54,7 @@ class ProfileType extends AbstractType
                 'attr' => [
                     'min' => 2,
                     'max' => 200,
+                    'pattern' => ".{3,200}",
                 ],
                 'constraints' => [
                     new NotBlank([
@@ -69,7 +71,8 @@ class ProfileType extends AbstractType
             ->add('picture', FileType::class, [
                 'mapped' => false,
                 'attr' => [
-                    'accept' => 'image/png, image/jpeg',
+                    'accept' => 'image/png, image/jpeg, image/webp',
+                    'max' => 52428800
                 ],
                 'constraints' => [
                     new Image([
@@ -82,8 +85,16 @@ class ProfileType extends AbstractType
             ->add('phone', TelType::class, [
                 'attr' => [
                     'pattern' => "[+0-9]+$",
+                    'min' => 10,
+                    'max' => 14,
                 ],
                 'constraints' => [
+                    new Length([
+                        'min' => 10,
+                        'minMessage' => 'form.phone.min',
+                        'max' => 14,
+                        'maxMessage' => 'form.phone.max',
+                    ]),
                     new Regex([
                         'pattern' => "/[+0-9]+$/i",
                         'message' => 'form.phone.not_valid',

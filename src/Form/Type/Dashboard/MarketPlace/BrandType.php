@@ -27,6 +27,7 @@ class BrandType extends AbstractType
                 'attr' => [
                     'min' => 3,
                     'max' => 250,
+                    'pattern' => ".{3,250}",
                 ],
                 'constraints' => [
                     new NotBlank([

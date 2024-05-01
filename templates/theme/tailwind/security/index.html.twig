@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'text.login'|trans }}{% endblock %}
+
+{% block body %}
+    <section class="bg-white dark:bg-gray-900">
+        <div class="max-w-lg mx-auto px-4 py-8 lg:py-16 lg:px-2">
+            <div class="flex rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
+                {{ include('security/_form.html.twig') }}
+            </div>
+        </div>
+    </section>
+{% endblock %}

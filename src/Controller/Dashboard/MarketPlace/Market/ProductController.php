@@ -57,7 +57,7 @@ class ProductController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/{market}', name: 'app_dashboard_market_place_market_product')]
+    #[Route('/{market}/{search}', name: 'app_dashboard_market_place_market_product', defaults: ['search' => null])]
     public function index(
         Request                $request,
         UserInterface          $user,
@@ -65,8 +65,9 @@ class ProductController extends AbstractController
     ): Response
     {
         $market = $this->market($request, $user, $em);
+        //dd($request->query->get('search'));
         $currency = Currency::currency($market->getCurrency());
-        $products = $em->getRepository(MarketProduct::class)->findBy(['market' => $market], ['id' => 'desc']);
+        $products = $em->getRepository(MarketProduct::class)->products($market, $request->query->get('search'));
 
         return $this->render('dashboard/content/market_place/product/index.html.twig', $this->navbar() + [
                 'market' => $market,
@@ -373,12 +374,23 @@ class ProductController extends AbstractController
     ): Response
     {
         $market = $this->market($request, $user, $em);
+        $token = $request->get('_token');
 
-        if ($this->isCsrfTokenValid('delete', $request->get('_token'))) {
+        if ($request->headers->get('Content-Type', 'application/json')) {
+            $content = $request->getContent();
+            $content = json_decode($content, true);
+            $token = $content['_token'];
+        }
+
+        if ($this->isCsrfTokenValid('delete', $token)) {
             $date = new DateTime('@' . strtotime('now'));
             $product->setDeletedAt($date);
             $em->persist($product);
             $em->flush();
+        }
+
+        if ($request->headers->get('Content-Type', 'application/json')) {
+            return $this->json(['redirect' => $this->generateUrl('app_dashboard_market_place_market_product', ['market' => $market->getId()])]);
         }
 
         return $this->redirectToRoute('app_dashboard_market_place_market_product', ['market' => $market->getId()]);

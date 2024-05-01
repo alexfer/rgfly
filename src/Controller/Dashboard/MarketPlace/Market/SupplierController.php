@@ -40,7 +40,7 @@ class SupplierController extends AbstractController
     ): Response
     {
         $market = $this->market($request, $user, $em);
-        $suppliers = $em->getRepository(MarketSupplier::class)->findBy(['market' => $market], ['id' => 'desc']);
+        $suppliers = $em->getRepository(MarketSupplier::class)->suppliers($market, $request->query->get('search'));
 
         return $this->render('dashboard/content/market_place/supplier/index.html.twig', $this->navbar() + [
                 'market' => $market,
@@ -148,10 +148,21 @@ class SupplierController extends AbstractController
     ): Response
     {
         $market = $this->market($request, $user, $em);
+        $token = $request->get('_token');
 
-        if ($this->isCsrfTokenValid('delete', $request->get('_token')) && !$supplier->getMarketProductSuppliers()->count()) {
+        if ($request->headers->get('Content-Type', 'application/json')) {
+            $content = $request->getContent();
+            $content = json_decode($content, true);
+            $token = $content['_token'];
+        }
+
+        if ($this->isCsrfTokenValid('delete', $token) && !$supplier->getMarketProductSuppliers()->count()) {
             $em->remove($supplier);
             $em->flush();
+        }
+
+        if ($request->headers->get('Content-Type', 'application/json')) {
+            return $this->json(['redirect' => $this->generateUrl('app_dashboard_market_place_market_supplier', ['market' => $market->getId()])]);
         }
 
         return $this->redirectToRoute('app_dashboard_market_place_market_supplier', ['market' => $market->getId()]);
@@ -166,7 +177,7 @@ class SupplierController extends AbstractController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/xhr-create/{market}', name: 'app_dashboard_market_place_xhr_create_supplier', methods: ['POST'])]
-    public function xshCreate(
+    public function xhrCreate(
         Request                $request,
         UserInterface          $user,
         EntityManagerInterface $em,

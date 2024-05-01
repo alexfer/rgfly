@@ -1,0 +1,186 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% block title_content %}{{ entry.userDetails.firstName }} {{ entry.userDetails.lastName }}{% endblock %}
+
+{% block content %}
+    <div class="grid grid-cols-6 gap-4">
+        <div class="flex justify-center items-center">
+            {% for picture in entry.userDetails.attach|slice(0, 1) %}
+                {% set _picture = 'storage/user/picture/' ~ entry.id ~ '/' ~ picture.name %}
+                <img id="image-profile" class="rounded-full shadow-md border-2 border-spacing-4 w-32 hover:scale-125"
+                     src="{{ asset(_picture) | imagine_filter('user_preview') }}" alt="..."/>
+            {% else %}
+                <img src="{{ asset('img/64x64.png') }}" id="image-profile" class="rounded-full shadow-md border-2 border-spacing-4 w-32"/>
+            {% endfor %}
+        </div>
+        <div class="col-span-5 mx-3">
+            <h5 class="block">
+                <a href="javascript:void(0);">{{ entry.userDetails.firstName }} {{ entry.userDetails.lastName }}</a>
+            </h5>
+            <h6 class="block"><a class="link" href="mailto:{{ entry.email }}"><i
+                            class="fa fa-envelope pr-2"></i> {{ entry.email }}</a></h6>
+        </div>
+    </div>
+    <div class="flex flex-col mt-5">
+        {% set _tab = app.request.get('tab') %}
+        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center justify-stretch border-b-1 items-stretch"
+            data-tabs-toggle="#user-tab-content"
+            data-tabs-active-classes="text-gray-950 hover:text-red-600 dark:text-purple-500 dark:hover:text-purple-500 border-red-600 dark:border-red-500"
+            data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
+            role="tablist">
+            <li class="me-2" role="presentation">
+                <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                        id="summary-tab"
+                        data-tabs-target="#summary"
+                        type="button"
+                        role="tab"
+                        aria-controls="summary"
+                        aria-selected="{{ _tab == 'summary' ? 'true' : 'false' }}">{{ 'user.tab.summary'|trans }}</button>
+            </li>
+            <li class="me-2" role="presentation">
+                <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                        id="location-tab"
+                        data-tabs-target="#location"
+                        type="button"
+                        role="tab"
+                        aria-controls="location"
+                        aria-selected="{{ _tab == 'location' ? 'true' : 'false' }}">{{ 'user.tab.location'|trans }}</button>
+            </li>
+            <li class="me-2" role="presentation">
+                <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                        id="security-tab"
+                        data-tabs-target="#security"
+                        type="button"
+                        role="tab"
+                        aria-controls="security"
+                        aria-selected="{{ _tab == 'security' ? 'true' : 'false' }}">{{ 'user.tab.security'|trans }}</button>
+            </li>
+            <li class="me-2" role="presentation">
+                <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                        id="social-tab"
+                        data-tabs-target="#social"
+                        type="button"
+                        role="tab"
+                        aria-controls="social"
+                        aria-selected="{{ _tab == 'social' ? 'true' : 'false' }}">{{ 'user.tab.social'|trans }}</button>
+            </li>
+            <li class="me-2" role="presentation">
+                <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                        id="about-tab"
+                        data-tabs-target="#about"
+                        type="button"
+                        role="tab"
+                        aria-controls="about"
+                        aria-selected="{{ _tab == 'about' ? 'true' : 'false' }}">{{ 'user.tab.about'|trans }}</button>
+            </li>
+        </ul>
+        <div class="pb-5 shadow-lg border border-t-gray-200 rounded-md dark:bg-gray-800 p-5" id="user-tab-content">
+            <div id="summary" role="tabpanel" aria-labelledby="summary-tab">
+                <div class="flex flex-row pt-2 py-1">
+                    <div class="w-48 font-semibold text-gray-400">
+                        {{ 'user.info.first_name'|trans }}
+                    </div>
+                    <div class="w-auto text-gray-500 text-gray-500">
+                        {{ entry.userDetails.firstName }}
+                    </div>
+                </div>
+                <div class="flex flex-row py-1">
+                    <div class="w-48 font-semibold text-gray-400">
+                        {{ 'user.info.last_name'|trans }}
+                    </div>
+                    <div class="w-auto text-gray-500">
+                        {{ entry.userDetails.lastName }}
+                    </div>
+                </div>
+                <div class="flex flex-row py-1">
+                    <div class="w-48 font-semibold text-gray-400">
+                        <label>{{ 'user.info.phone_number'|trans }}</label>
+                    </div>
+                    <div class="w-auto text-gray-500">
+                        {{ entry.userDetails.phone|default('n/a') }}
+                    </div>
+                </div>
+                <div class="flex flex-row py-1">
+                    <div class="w-48 font-semibold text-gray-400">
+                        <label>{{ 'user.info.birth_date'|trans }}</label>
+                    </div>
+                    <div class="w-auto text-gray-500">
+                        {{ entry.userDetails.dateBirth|date(date_format)|default('n/a') }}
+                    </div>
+                </div>
+                <div class="flex flex-row py-1">
+                    <div class="w-48 font-semibold text-gray-400">
+                        <label>{{ 'user.info.registered'|trans }}</label>
+                    </div>
+                    <div class="w-auto text-gray-500">
+                        {{ entry.createdAt|date(datetime_format) }}
+                    </div>
+                </div>
+                <div class="flex flex-row py-1">
+                    <div class="w-48 font-semibold text-gray-400">
+                        <label>{{ 'user.info.last_login'|trans }}</label>
+                    </div>
+                    <div class="w-auto text-gray-500">
+                        {{ entry.userDetails.updatedAt|date(datetime_format) }}
+                    </div>
+                </div>
+                <div class="flex flex-row py-1">
+                    <div class="w-48 font-semibold text-gray-400">
+                        <label>{{ 'user.info.ip_address'|trans }}</label>
+                    </div>
+                    <div class="w-auto text-gray-500">
+                        {{ entry.ip|default('0.0.0.0') }}
+                    </div>
+                </div>
+            </div>
+            <div id="location" role="tabpanel" aria-labelledby="location-tab">
+                <div class="flex flex-row py-1">
+                    <div class="w-48 font-semibold text-gray-400">
+                        <label>{{ 'user.info.country'|trans }}</label>
+                    </div>
+                    <div class="w-auto text-gray-500">
+                        {{ country|default('n/a') }}
+                    </div>
+                </div>
+                <div class="flex flex-row py-1">
+                    <div class="w-48 font-semibold text-gray-400">
+                        <label>{{ 'user.info.city'|trans }}</label>
+                    </div>
+                    <div class="w-auto text-gray-500">
+                        {{ entry.userDetails.city|default('n/a') }}
+                    </div>
+                </div>
+            </div>
+            <div id="security" role="tabpanel" aria-labelledby="security-tab">
+                {% include 'dashboard/content/user/_form.html.twig' %}
+            </div>
+            <div id="social" role="tabpanel" aria-labelledby="social-tab">
+                <ul class="mx-auto w-1/2 flex justify-between items-center">
+                    <li class="w-full inline-block text-center px-5">
+                        <a href="{{ entry.userDetails.userSocial.facebookProfile|default('#') }}">
+                            <h1 class="text-5xl fa fa-facebook text-indigo-700"></h1>
+                        </a>
+                    </li>
+                    <li class="w-full inline-block text-center px-5">
+                        <a href="{{ entry.userDetails.userSocial.twitterProfile|default('#') }}">
+                            <h1 class="text-5xl fa fa-twitter text-info-600"></h1>
+                        </a>
+                    </li>
+                    <li class="w-full inline-block text-center px-5">
+                        <a href="{{ entry.userDetails.userSocial.instagramProfile|default('#') }}">
+                            <h1 class="text-5xl fa fa-instagram text-info"></h1>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div id="about" role="tabpanel" aria-labelledby="about-tab">
+                {% if  entry.userDetails.about is not empty %}
+                    {{ entry.userDetails.about|nl2br|raw }}
+                {% else %}
+                    {{ ''|default('n/a') }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
