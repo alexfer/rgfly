@@ -2,6 +2,7 @@
 
 namespace App\Repository\MarketPlace;
 
+use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
@@ -114,7 +115,29 @@ class MarketProductRepository extends ServiceEntityRepository
         $result = $statement->executeQuery()->fetchAllAssociative();
 
         return json_decode($result[0]['get_products_by_parent_category'], true) ?: $products;
+    }
 
+    /**
+     * @param Market $market
+     * @param string|null $search
+     * @param int $offset
+     * @param int $limit
+     * @return array
+     */
+    public function products(
+        Market  $market,
+        ?string $search = null,
+        int     $offset = 0,
+        int     $limit = 10,
+    ): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->where('p.market = :market')
+            ->setParameter('market', $market)
+            ->andWhere('LOWER(p.name) LIKE :search')
+            ->setParameter('search', '%' . strtolower($search) . '%')
+            ->setFirstResult($offset)->setMaxResults($limit);
+        return $qb->getQuery()->getResult();
     }
 
 }

@@ -57,7 +57,7 @@ class ProductController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/{market}', name: 'app_dashboard_market_place_market_product')]
+    #[Route('/{market}/{search}', name: 'app_dashboard_market_place_market_product', defaults: ['search' => null])]
     public function index(
         Request                $request,
         UserInterface          $user,
@@ -65,8 +65,9 @@ class ProductController extends AbstractController
     ): Response
     {
         $market = $this->market($request, $user, $em);
+        //dd($request->query->get('search'));
         $currency = Currency::currency($market->getCurrency());
-        $products = $em->getRepository(MarketProduct::class)->findBy(['market' => $market], ['id' => 'desc']);
+        $products = $em->getRepository(MarketProduct::class)->products($market, $request->query->get('search'));
 
         return $this->render('dashboard/content/market_place/product/index.html.twig', $this->navbar() + [
                 'market' => $market,
