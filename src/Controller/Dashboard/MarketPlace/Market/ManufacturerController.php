@@ -38,7 +38,7 @@ class ManufacturerController extends AbstractController
     ): Response
     {
         $market = $this->market($request, $user, $em);
-        $manufacturers = $em->getRepository(MarketManufacturer::class)->findBy(['market' => $market], ['id' => 'desc']);
+        $manufacturers = $em->getRepository(MarketManufacturer::class)->manufacturers($market, $request->query->get('search'));
 
         return $this->render('dashboard/content/market_place/manufacturer/index.html.twig', $this->navbar() + [
                 'market' => $market,

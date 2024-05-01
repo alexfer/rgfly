@@ -38,7 +38,7 @@ class BrandController extends AbstractController
     ): Response
     {
         $market = $this->market($request, $user, $em);
-        $brands = $em->getRepository(MarketBrand::class)->findBy(['market' => $market], ['id' => 'desc']);
+        $brands = $em->getRepository(MarketBrand::class)->brands($market, $request->query->get('search'));
 
         return $this->render('dashboard/content/market_place/brand/index.html.twig', $this->navbar() + [
                 'market' => $market,

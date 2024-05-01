@@ -40,7 +40,7 @@ class SupplierController extends AbstractController
     ): Response
     {
         $market = $this->market($request, $user, $em);
-        $suppliers = $em->getRepository(MarketSupplier::class)->findBy(['market' => $market], ['id' => 'desc']);
+        $suppliers = $em->getRepository(MarketSupplier::class)->suppliers($market, $request->query->get('search'));
 
         return $this->render('dashboard/content/market_place/supplier/index.html.twig', $this->navbar() + [
                 'market' => $market,
