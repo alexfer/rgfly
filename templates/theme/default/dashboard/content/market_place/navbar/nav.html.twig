@@ -27,6 +27,19 @@
                    href="{{ path('app_dashboard_market_place_market_manufacturer', {market: market.id}) }}">{{ 'market.manufacturers'|trans }}</a>
             </li>
         </ul>
+        <div class="d-flex flex-column ms-auto me-2">
+            <form method="get" name="search">
+                <div class="input-group">
+                    <label for="search" class="position-relative">
+                        <input class="form-control border-end-0 border rounded ps-4" type="text" onkeydown="this.submit" id="search" name="search">
+                        <div class="input-group-append position-absolute top-0 mt-2 ms-2">
+                        <span class="bg-transparent border-start-0 ms-n3">
+                            <i class="fa fa-search text-muted"></i>
+                        </span>
+                        </div>
+                    </label>
+                </div>
+            </form>
+        </div>
     </div>
-    <span class="navbar-text me-3 fw-medium">{{ market.name|length > 30 ? market.name|slice(0, 30) ~ ' ... ' : market.name }}</span>
 </nav>

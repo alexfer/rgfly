@@ -44,7 +44,7 @@
                                     </div>
                                 {% else %}
                                     <div class="carousel-item active">
-                                        <img src="{{ asset('http://placehold.it/630x390') }}" class="card-img-top h-100"
+                                        <img src="{{ asset('img/300x200.png') }}" class="card-img-top h-100"
                                              alt="{{ product.name }}">
                                     </div>
                                 {% endif %}
@@ -166,7 +166,7 @@
                     </div>
                 </div>
             </div>
-            <ul class="nav nav-tabs border-bottom product-info mt-lg-5" id="info" role="tablist">
+            <ul class="nav nav-tabs border-bottom bg-white product-info mt-lg-5" id="info" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link text-secondary border-0 fs-6 active" id="about-tab" data-bs-toggle="tab"
                             data-bs-target="#about"
@@ -193,7 +193,7 @@
                             aria-selected="false">{{ 'product.seller.contact'|trans }}</button>
                 </li>
             </ul>
-            <div class="tab-content border-top rounded-top-0 mb-5 p-2">
+            <div class="tab-content bg-white border-top rounded-top-0 mb-5 p-2">
                 <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="about-tab">
                     <h5 class="d-block my-1 py-2">{{ product.shortName }}</h5>
                     {{ product.description|raw }}
