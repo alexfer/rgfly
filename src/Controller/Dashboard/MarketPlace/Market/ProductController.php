@@ -65,7 +65,6 @@ class ProductController extends AbstractController
     ): Response
     {
         $market = $this->market($request, $user, $em);
-        //dd($request->query->get('search'));
         $currency = Currency::currency($market->getCurrency());
         $products = $em->getRepository(MarketProduct::class)->products($market, $request->query->get('search'));
 
@@ -376,7 +375,7 @@ class ProductController extends AbstractController
         $market = $this->market($request, $user, $em);
         $token = $request->get('_token');
 
-        if ($request->headers->get('Content-Type', 'application/json')) {
+        if ($request->headers->get('Content-Type', 'application/json') && !$token) {
             $content = $request->getContent();
             $content = json_decode($content, true);
             $token = $content['_token'];
@@ -389,7 +388,7 @@ class ProductController extends AbstractController
             $em->flush();
         }
 
-        if ($request->headers->get('Content-Type', 'application/json')) {
+        if ($request->headers->get('Content-Type', 'application/json') && !$token) {
             return $this->json(['redirect' => $this->generateUrl('app_dashboard_market_place_market_product', ['market' => $market->getId()])]);
         }
 

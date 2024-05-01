@@ -150,7 +150,7 @@ class SupplierController extends AbstractController
         $market = $this->market($request, $user, $em);
         $token = $request->get('_token');
 
-        if ($request->headers->get('Content-Type', 'application/json')) {
+        if ($request->headers->get('Content-Type', 'application/json') && !$token) {
             $content = $request->getContent();
             $content = json_decode($content, true);
             $token = $content['_token'];
@@ -161,7 +161,7 @@ class SupplierController extends AbstractController
             $em->flush();
         }
 
-        if ($request->headers->get('Content-Type', 'application/json')) {
+        if ($request->headers->get('Content-Type', 'application/json') && !$token) {
             return $this->json(['redirect' => $this->generateUrl('app_dashboard_market_place_market_supplier', ['market' => $market->getId()])]);
         }
 
