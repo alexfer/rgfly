@@ -129,19 +129,17 @@
                 </div>
             </div>
         </div>
-        <div class="table entry-attachments" data-params="{{ _params|json_encode }}">
+        <div class="table entry-attachments position-relative" data-params="{{ _params|json_encode }}">
             {% for key, picture in app.user.userDetails.attach|reverse|slice(0, 16) %}
                 <div class="d-inline-block mr-3 mb-3">
                     {% set _picture = 'storage/user/picture/' ~ app.user.id ~ '/' ~ picture.name %}
                     <img class="attach"
                          src="{{ asset(_picture) | imagine_filter('user_thumb') }}" alt="...">
-                    <div class="handlers" data-id="{{ picture.id }}">
+                    <div class="handler bg-white w-100 position-absolute top-0 opacity-75 pt-1 pb-1 justify-content-end align-items-end" data-id="{{ picture.id }}">
                         {%  if app.user.attach.id != picture.id %}
-                        <a href="{{ path('app_profile_attach_remove') }}" data-action="remove"
-                           class="bi bi-trash-fill"></a>
+                        <a href="{{ path('app_profile_attach_remove') }}" class="d-inline bg-transparent" data-action="remove"><i class="bi bi-trash-fill"></i></a>
                         {% endif %}
-                        <a href="{{ path('app_profile_attach_default') }}" data-action="default"
-                           class="bi bi-person-bounding-box"></a>
+                        <a href="{{ path('app_profile_attach_default') }}" class="d-inline bg-transparent" data-action="default"><i class="bi bi-person-bounding-box"></i></a>
                     </div>
                 </div>
             {% endfor %}

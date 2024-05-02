@@ -24,7 +24,7 @@
                 </div>
             </div>
         </div>
-        <div class="table entry-attachments" data-params="{{ _params|json_encode }}">
+        <div class="table mb-0 entry-attachments" data-params="{{ _params|json_encode }}">
             {% if app.request.get('id') %}
                 {% for key, picture in attachments|reverse|slice(0, 6) %}
                     {% set _picture = 'storage/'~ storage ~'/picture/' ~ id ~ '/' ~ picture.attach.name %}
@@ -56,6 +56,6 @@
                     data-url="{{ data_url }}"
                     id="attach"><i class="bi bi-image-fill pe-2"></i>{{ 'label.form.attach'|trans }}</button>
         </div>
-        <small class="picture-info text-muted ms-4"></small>
+        <small class="picture-info d-inline float-start text-gray opacity-50 ms-1"></small>
     </div>
 </div>

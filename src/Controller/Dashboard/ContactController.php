@@ -95,7 +95,9 @@ class ContactController extends AbstractController
             $message = $request->request->get('answer');
 
             if (!$message && strlen($message) < 3) {
-                $this->addFlash('danger', json_encode(['message' => $translator->trans('message.danger.text')]));
+                $error = $translator->trans('message.danger.text');
+                $this->addFlash('danger', json_encode(['message' => $error]));
+                $this->addFlash('error', $error);
             } else {
                 $this->addFlash('success', json_encode(['message' => $translator->trans('message.success.text')]));
                 $handle->answer($contact, $user, $message);
