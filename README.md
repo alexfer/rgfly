@@ -1,5 +1,6 @@
-RgFly ecommerce solution
+RgFly ecommerce solution.
 ============
+(Bootstrap theme)
 
 ### Requirements:
 - [Nginx HTTP Server `1.24.0`](http://nginx.org/en/CHANGES-1.24)
