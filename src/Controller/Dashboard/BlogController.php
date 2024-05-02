@@ -2,10 +2,8 @@
 
 namespace App\Controller\Dashboard;
 
-use App\Entity\{Attach, Entry, EntryAttachment, EntryCategory, EntryDetails};
+use App\Entity\{Attach, Category, Entry, EntryAttachment, EntryCategory, EntryDetails};
 use App\Form\Type\Dashboard\EntryDetailsType;
-use App\Repository\{CategoryRepository, EntryAttachmentRepository, EntryCategoryRepository, EntryRepository,};
-use App\Repository\AttachRepository;
 use App\Service\Dashboard;
 use App\Service\FileUploader;
 use App\Service\Interface\ImageValidatorInterface;
@@ -19,7 +17,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\{Request, Response};
+use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -32,7 +30,7 @@ class BlogController extends AbstractController
 
     use Dashboard;
 
-    const array CHILDREN = [
+    const CHILDREN = [
         'blog' => [
             'menu.dashboard.overview.blog' => 'app_dashboard_blog',
             'menu.dashboard.create.blog' => 'app_dashboard_create_blog',
@@ -51,7 +49,7 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @param EntryRepository $repository
+     * @param EntityManagerInterface $em
      * @param UserInterface $user
      * @return Response
      * @throws ContainerExceptionInterface
@@ -59,11 +57,11 @@ class BlogController extends AbstractController
      */
     #[Route('', name: self::CHILDREN['blog']['menu.dashboard.overview.blog'])]
     public function index(
-        EntryRepository $repository,
-        UserInterface   $user,
+        EntityManagerInterface $em,
+        UserInterface          $user,
     ): Response
     {
-        $entries = $repository->findBy($this->criteria($user, ['type' => 'blog']), ['id' => 'desc']);
+        $entries = $em->getRepository(Entry::class)->findBy($this->criteria($user, ['type' => 'blog']), ['id' => 'desc']);
 
         return $this->render('dashboard/content/blog/index.html.twig', $this->navbar() + [
                 'entries' => $entries,
@@ -74,8 +72,6 @@ class BlogController extends AbstractController
      * @param Request $request
      * @param UserInterface $user
      * @param EntityManagerInterface $em
-     * @param CategoryRepository $category
-     * @param CategoryRepository $categoryRepository
      * @param SluggerInterface $slugger
      * @param TranslatorInterface $translator
      * @return Response
@@ -85,8 +81,6 @@ class BlogController extends AbstractController
         Request                $request,
         UserInterface          $user,
         EntityManagerInterface $em,
-        CategoryRepository     $category,
-        CategoryRepository     $categoryRepository,
         SluggerInterface       $slugger,
         TranslatorInterface    $translator,
     ): Response
@@ -121,7 +115,7 @@ class BlogController extends AbstractController
                 foreach ($requestCategory as $key => $value) {
                     $entryCategory = new EntryCategory();
                     $entryCategory->setEntry($entry)
-                        ->setCategory($category->findOneBy(['id' => $key]));
+                        ->setCategory($em->getRepository(Category::class)->findOneBy(['id' => $key]));
                     $em->persist($entryCategory);
                 }
             }
@@ -145,7 +139,7 @@ class BlogController extends AbstractController
                 'form' => $form,
                 'error' => $error,
                 'entry' => $entry,
-                'categories' => $category->findBy([], ['position' => 'asc']),
+                'categories' => $em->getRepository(Category::class)->findBy([], ['position' => 'asc']),
             ]);
     }
 
@@ -153,9 +147,6 @@ class BlogController extends AbstractController
      * @param Request $request
      * @param Entry $entry
      * @param EntityManagerInterface $em
-     * @param UserInterface $user
-     * @param EntryCategoryRepository $entryCategoryRepository
-     * @param CategoryRepository $categoryRepository
      * @param TranslatorInterface $translator
      * @param SluggerInterface $slugger
      * @return Response
@@ -163,14 +154,11 @@ class BlogController extends AbstractController
     #[Route('/edit/{id}', name: 'app_dashboard_edit_blog', methods: ['GET', 'POST'])]
     #[IsGranted('edit', 'entry')]
     public function edit(
-        Request                 $request,
-        Entry                   $entry,
-        EntityManagerInterface  $em,
-        UserInterface           $user,
-        EntryCategoryRepository $entryCategoryRepository,
-        CategoryRepository      $categoryRepository,
-        TranslatorInterface     $translator,
-        SluggerInterface        $slugger,
+        Request                $request,
+        Entry                  $entry,
+        EntityManagerInterface $em,
+        TranslatorInterface    $translator,
+        SluggerInterface       $slugger,
     ): Response
     {
         $form = $this->createForm(EntryDetailsType::class, $entry);
@@ -197,10 +185,10 @@ class BlogController extends AbstractController
             $requestCategory = $request->get('category');
 
             if ($requestCategory) {
-                $entryCategoryRepository->removeEntryCategory($entry->getId());
+                $em->getRepository(EntryCategory::class)->removeEntryCategory($entry->getId());
                 foreach ($requestCategory as $key => $value) {
                     $entryCategory = new EntryCategory();
-                    $entryCategory->setEntry($entry)->setCategory($categoryRepository->findOneBy(['id' => $key]));
+                    $entryCategory->setEntry($entry)->setCategory($em->getRepository(Category::class)->findOneBy(['id' => $key]));
                     $em->persist($entryCategory);
                 }
             }
@@ -230,44 +218,39 @@ class BlogController extends AbstractController
                 'form' => $form,
                 'entry' => $entry,
                 'error' => $error,
-                'categories' => $categoryRepository->findBy([], ['position' => 'asc']),
+                'categories' => $em->getRepository(Category::class)->findBy([], ['position' => 'asc']),
             ]);
     }
 
     /**
      * @param Request $request
      * @param TranslatorInterface $translator
-     * @param EntryRepository $repository
+     * @param Entry $entry
      * @param EntityManagerInterface $em
      * @param SluggerInterface $slugger
      * @param CacheManager $cacheManager
      * @param ParameterBagInterface $params
-     * @param EntryAttachmentRepository $entryAttachmentRepository
      * @param ImageValidatorInterface $imageValidator
-     * @return Response
+     * @return JsonResponse
      * @throws Exception
      */
     #[Route('/attach/{id}', name: 'app_dashboard_blog_attach', methods: ['POST'])]
     public function attach(
-        Request                   $request,
-        TranslatorInterface       $translator,
-        EntryRepository           $repository,
-        EntityManagerInterface    $em,
-        SluggerInterface          $slugger,
-        CacheManager              $cacheManager,
-        ParameterBagInterface     $params,
-        EntryAttachmentRepository $entryAttachmentRepository,
-        ImageValidatorInterface   $imageValidator,
-    ): Response
+        Request                 $request,
+        TranslatorInterface     $translator,
+        Entry                   $entry,
+        EntityManagerInterface  $em,
+        SluggerInterface        $slugger,
+        CacheManager            $cacheManager,
+        ParameterBagInterface   $params,
+        ImageValidatorInterface $imageValidator,
+    ): JsonResponse
     {
         $file = $request->files->get('file');
 
-        $id = $request->get('id');
-        $entry = $repository->findOneBy(['id' => $id]);
         $detailsId = $entry->getEntryDetails()->getId();
 
         if ($file) {
-
             $validate = $imageValidator->validate($file, $translator);
 
             if ($validate->has(0)) {
@@ -289,13 +272,14 @@ class BlogController extends AbstractController
                 ]);
             }
 
-            $attachments = $entryAttachmentRepository->findAll();
+            $attachments = $entry->getEntryAttachments();
             foreach ($attachments as $attachment) {
                 $attachment->setInUse(0);
+                $em->persist($attachment);
             }
             unset($attachment);
 
-            $entryAttachmentRepository->resetStatus($entry->getEntryDetails());
+            $em->getRepository(EntryAttachment::class)->resetStatus($entry->getEntryDetails());
 
             $entryAttachment = new EntryAttachment();
             $entryAttachment->setDetails($entry)
@@ -321,25 +305,19 @@ class BlogController extends AbstractController
     /**
      * @param Request $request
      * @param TranslatorInterface $translator
-     * @param EntryRepository $entryRepository
      * @param EntityManagerInterface $em
-     * @param EntryAttachmentRepository $entryAttachmentRepository
      * @param CacheManager $cacheManager
-     * @param AttachRepository $attachRepository
      * @param ParameterBagInterface $params
-     * @return Response
+     * @return JsonResponse
      */
     #[Route('/attach-remove/{entry}', name: 'app_dashboard_blog_attach_remove', methods: ['POST'])]
     public function remove(
-        Request                   $request,
-        TranslatorInterface       $translator,
-        EntryRepository           $entryRepository,
-        EntityManagerInterface    $em,
-        EntryAttachmentRepository $entryAttachmentRepository,
-        CacheManager              $cacheManager,
-        AttachRepository          $attachRepository,
-        ParameterBagInterface     $params
-    ): Response
+        Request                $request,
+        TranslatorInterface    $translator,
+        EntityManagerInterface $em,
+        CacheManager           $cacheManager,
+        ParameterBagInterface  $params
+    ): JsonResponse
     {
 
         $parameters = json_decode($request->getContent(), true);
@@ -347,7 +325,7 @@ class BlogController extends AbstractController
         $details = $em->getRepository(EntryDetails::class)->find($request->get('entry'));
         $attach = $em->getRepository(Attach::class)->find($parameters['id']);
 
-        $attachment = $entryAttachmentRepository->findOneBy([
+        $attachment = $em->getRepository(EntryAttachment::class)->findOneBy([
             'attach' => $attach,
             'details' => $details,
         ]);
@@ -382,34 +360,30 @@ class BlogController extends AbstractController
     /**
      * @param Request $request
      * @param TranslatorInterface $translator
-     * @param EntryRepository $entryRepository
+     * @param Entry $entry
      * @param EntityManagerInterface $em
-     * @param EntryAttachmentRepository $entryAttachmentRepository
-     * @param AttachRepository $attachRepository
-     * @return Response
+     * @return JsonResponse
      */
     #[Route('/attach-set-use/{entry}', name: 'app_dashboard_blog_attach_set_use', methods: ['POST'])]
     public function setInUse(
-        Request                   $request,
-        TranslatorInterface       $translator,
-        EntryRepository           $entryRepository,
-        EntityManagerInterface    $em,
-        EntryAttachmentRepository $entryAttachmentRepository,
-        AttachRepository          $attachRepository,
-    ): Response
+        Request                $request,
+        TranslatorInterface    $translator,
+        Entry                  $entry,
+        EntityManagerInterface $em,
+    ): JsonResponse
     {
-        $entry = $entryRepository->find($request->get('entry'));
-        $details = $entry->getEntryDetails();
+        $details = $em->getRepository(EntryDetails::class)->findOneBy(['entry' => $entry]);
 
-        $attachments = $entryAttachmentRepository->findAll();
+        $attachments = $details->getEntry()->getEntryAttachments();
         foreach ($attachments as $attachment) {
             $attachment->setInUse(0);
+            $em->persist($attachment);
         }
 
         $parameters = json_decode($request->getContent(), true);
-        $attach = $attachRepository->find($parameters['id']);
+        $attach = $em->getRepository(Attach::class)->find($parameters['id']);
 
-        $entryAttachment = $entryAttachmentRepository->findOneBy(['details' => $details->getEntry(), 'attach' => $attach]);
+        $entryAttachment = $em->getRepository(EntryAttachment::class)->findOneBy(['details' => $details->getEntry(), 'attach' => $attach]);
 
         $entryAttachment->setInUse(1);
         $em->persist($entryAttachment);
