@@ -45,21 +45,21 @@
                         <div class="blog-block col-sm-8 col-lg-6 col-xl-4">
                             <div class="card">
                                 <div class="blog-img-block">
-                                    {% set _picture = 'storage/entry/picture/' ~ entry.id ~ '/' ~ entry.entryAttachments.first.attach.name %}
+                                    {% set _picture = 'storage/entry/picture/' ~ entry.id ~ '/' ~ entry.attach %}
                                     <a href="{{ path('app_blog_view', {slug: entry.slug}) }}">
                                         {% if  _picture %}
                                             <img src="{{ asset(_picture)|imagine_filter('entry_preview') }}"
-                                                 class="blog-img" width="415" alt="{{ entry.entryDetails.title }}"/>
+                                                 class="blog-img" width="415" alt="{{ entry.title }}"/>
                                         {% else %}
-                                            <img src="{{ asset('http://placehold.it/415x215') }}" class="blog-img"
-                                                 alt="Missing image for entry: {{ entry.entryDetails.title }}"/>
+                                            <img src="{{ asset('img/300x200.png') }}" class="blog-img"
+                                                 alt="Missing image for entry: {{ entry.title }}"/>
                                         {% endif %}
                                     </a>
                                 </div>
                                 <div class="card-body">
                                     <a class="text-wrap fs-5 fw-normal"
                                        href="{{ path('app_blog_view', {slug: entry.slug}) }}">
-                                        {{ entry.entryDetails.title }}
+                                        {{ entry.title }}
                                     </a>
                                 </div>
                                 <div class="card-footer bg-body">
@@ -67,13 +67,13 @@
                                         <li class="list-inline-item me-5">
                                             <a target="_blank"
                                                href="">
-                                                @{{ entry.user.userDetails.firstName }}
+                                                @{{ entry.first_name }}
                                             </a>
                                             <i class="bi bi-person-fill"></i>
                                         </li>
                                         <li class="list-inline-item">
                                             <i class="text-muted bi bi-calendar-date"></i>
-                                            <small>{{ entry.createdAt|date(date_format) }}</small>
+                                            <small>{{ entry.created_at|date(date_format) }}</small>
                                         </li>
                                         <li class="list-inline-item ps-5 ms-5">
                                             <small class="text-muted">Follows</small>
