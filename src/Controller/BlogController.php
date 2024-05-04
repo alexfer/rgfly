@@ -45,8 +45,9 @@ class BlogController extends AbstractController
     ): Response
     {
         $slug = $request->get('slug');
+        $date = $request->get('date');
         $categoryRepository = $em->getRepository(Category::class);
-        $entries = $em->getRepository(Entry::class)->findEntriesByCondition($slug, 'blog', 12);
+        $entries = $em->getRepository(Entry::class)->findEntriesByCondition($slug, $date, 'blog', 12);
         $category = $categoryRepository->findOneBy(['slug' => $slug]);
         $categories = $categoryRepository->findBy([], ['slug' => 'asc']);
 

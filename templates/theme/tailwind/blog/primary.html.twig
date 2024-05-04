@@ -16,7 +16,7 @@
                         </div>
                         <div class="mt-2 text-sm text-indigo-600 flex items-center align-text-bottom dark:text-indigo-400">
                             <i class="fa fa-calendar pb-1 me-2"></i>
-                            <a href="" class="text-xs text-slate-400">{{ primary.created_at|date(date_format) }}</a>
+                            <a href="{{ path('app_blog_date', {date: primary.created_at|date('y-m-d')}) }}" class="text-xs text-slate-400">{{ primary.created_at|date(date_format) }}</a>
                             <ul class="list-none ps-6 inline-flex justify-items-end items-end">
                                 {% if primary.facebook_profile %}
                                     <li>

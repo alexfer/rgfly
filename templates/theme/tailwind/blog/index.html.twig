@@ -38,9 +38,9 @@
                     {% endif %}
                 </ul>
                 {% if category %}
-                    <li class="w-full mb-3 flex p-4 rounded-xl bg-gray-50 text-gray-500">
+                    <div class="w-full mb-3 flex p-4 rounded-xl bg-gray-50 text-gray-500">
                         {{ category.description }}
-                    </li>
+                    </div>
                 {% endif %}
                 <div class="grid grid-cols-4 gap-3">
                     {% for entry in entries %}
@@ -100,14 +100,15 @@
                                 </div>
                             </div>
                         </div>
-                    {% else %}
-                        <div class="my-8 justify-between items-center text-center">
-                            <img class="h-100 w-48 mx-auto" src="{{ asset('img/404-page-not-found.png') }}"
-                                 alt="{{ 'table.footer.not_found'|trans }}">
-                            <p class="mt-5 text-danger">{{ 'table.footer.not_found'|trans }}</p>
-                        </div>
                     {% endfor %}
                 </div>
+                {% if entries|length == 0 %}
+                    <div class="my-8 w-full justify-center items-center text-center">
+                        <img class="h-100 w-48 mx-auto" src="{{ asset('img/404-page-not-found.png') }}"
+                             alt="{{ 'table.footer.not_found'|trans }}">
+                        <p class="mt-5 text-danger">{{ 'table.footer.not_found'|trans }}</p>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </section>

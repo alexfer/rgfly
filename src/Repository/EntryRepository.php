@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\{Attach, Category, Entry, EntryAttachment, EntryCategory, EntryDetails, User, UserDetails, UserSocial};
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\Persistence\ManagerRegistry;
@@ -31,7 +32,7 @@ class EntryRepository extends ServiceEntityRepository
     /**
      * @param string $type
      * @param bool $rand
-     * @return float|int|mixed|string|null
+     * @return array|null
      * @throws NonUniqueResultException
      */
     public function primary(string $type, bool $rand = false): ?array
@@ -73,12 +74,20 @@ class EntryRepository extends ServiceEntityRepository
 
     /**
      * @param string|null $slug
+     * @param string|null $date
      * @param string|null $type
      * @param int $limit
      * @param int $offset
      * @return array|null
+     * @throws \Exception
      */
-    public function findEntriesByCondition(string $slug = null, string $type = null, int $limit = 12, int $offset = 0): ?array
+    public function findEntriesByCondition(
+        string $slug = null,
+        string $date = null,
+        string $type = null,
+        int $limit = 12,
+        int $offset = 0
+    ): ?array
     {
         $qb = $this->createQueryBuilder('e')
             ->select([
@@ -103,6 +112,10 @@ class EntryRepository extends ServiceEntityRepository
 
         if ($slug) {
             $qb->where('c.slug = :slug')->setParameter('slug', $slug);
+        }
+
+        if($date) {
+            $qb->where('e.created_at = :date')->setParameter('date', new \DateTimeImmutable($date), Types::DATETIME_IMMUTABLE);
         }
 
         $qb->andWhere('e.type = :type')
