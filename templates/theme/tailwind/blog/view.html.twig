@@ -43,19 +43,19 @@
                         {{ entry.entryDetails.content|replace({'<p': '<p class="text-gray-500 leading-relaxed mb-2 font-medium"'})|raw }}
                     </div>
                     <div class="inline-flex px-5 justify-content-between text-center">
-                        <div class="space-y-4">
-                            <div class="text-sm lg:w-[440px] sm:w-[500px] leading-6">
+                        <div class="space-y-8">
+                            <div class="text-sm lg:w-[440px] sm:w-[600px]">
                                 <ul class="list-none mr-5">
                                     {% if entry.user.userDetails.user.attach %}
                                         <li>
                                             {% set _picture = 'storage/user/picture/' ~ entry.user.id ~ '/' ~ entry.user.userDetails.user.attach.name %}
-                                            <img class="rounded-full mx-auto"
-                                                 src="{{ asset(_picture) | imagine_filter('user_thumb') }}"
+                                            <img class="rounded-full mx-auto w-36 h-36"
+                                                 src="{{ asset(_picture) | imagine_filter('user_preview') }}"
                                                  alt="{{ entry.user.userDetails.firstName }} {{ entry.user.userDetails.lastName }}">
                                         </li>
                                     {% else %}
                                         <li>
-                                            <img class="rounded-full mx-auto" src="{{ asset('img/user-picture.jpg') }}"
+                                            <img class="rounded-full mx-auto w-36 h-36" src="{{ asset('img/user-picture.jpg') }}"
                                                  alt="{{ entry.user.userDetails.firstName }} {{ entry.user.userDetails.lastName }}">
                                         </li>
                                     {% endif %}

@@ -99,12 +99,37 @@ class Processor implements ProcessorInterface
         }
         if ($order) {
             $product = $this->existsProduct();
-
             if (!$product) {
                 $order = $this->updateOrder($order);
+            } else {
+                $order = $this->addProduct($order);
             }
         }
+        return $order;
+    }
 
+    /**
+     * @param MarketOrders|null $order
+     * @return MarketOrders
+     */
+    private function addProduct(?MarketOrders $order): MarketOrders
+    {
+        if($this->existsOrderProduct($order)) {
+            return $order;
+        }
+        $product = $this->getProduct();
+        $orderProduct = new MarketOrdersProduct();
+        $orderProduct->setOrders($order)
+            ->setProduct($product)
+            ->setQuantity(1)
+            ->setColor($this->data['color'])
+            ->setSize($this->data['size'])
+            ->setDiscount($product->getDiscount())
+            ->setCost($product->getCost());
+        $this->em->persist($orderProduct);
+        $order->setTotal($order->getTotal() + $product->getCost());
+        $this->em->persist($order);
+        $this->em->flush();
         return $order;
     }
 
@@ -135,7 +160,6 @@ class Processor implements ProcessorInterface
         $order->setTotal($order->getTotal() + $this->getProduct()->getCost())
             ->setSession($this->sessionId);
         $this->em->persist($order);
-
         $this->setProduct($order, false);
         $this->em->flush();
         return $order;
@@ -145,7 +169,6 @@ class Processor implements ProcessorInterface
      * @param MarketOrders $order
      * @param bool $withNumber
      * @return void
-     * @throws \Random\RandomException
      */
     private function setProduct(MarketOrders $order, bool $withNumber = true): void
     {
@@ -196,6 +219,21 @@ class Processor implements ProcessorInterface
         return $this->em->getRepository(MarketOrdersProduct::class)
             ->findOneBy([
                 'product' => $this->getProduct(),
+                'size' => $this->data['size'] ?: null,
+                'color' => $this->data['color'] ?: null,
+            ]);
+    }
+
+    /**
+     * @param MarketOrders $order
+     * @return MarketOrdersProduct|null
+     */
+    protected function existsOrderProduct(MarketOrders $order): ?MarketOrdersProduct
+    {
+        return $this->em->getRepository(MarketOrdersProduct::class)
+            ->findOneBy([
+                'product' => $this->getProduct(),
+                'orders' => $order,
                 'size' => $this->data['size'] ?: null,
                 'color' => $this->data['color'] ?: null,
             ]);

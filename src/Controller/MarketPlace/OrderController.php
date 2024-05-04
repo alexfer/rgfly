@@ -157,8 +157,6 @@ class OrderController extends AbstractController
         $order = $orderProcessor->findOrder($session->getId());
         $orderProcessor->processOrder($order, $customer);
         $orders = $orderCollection->getOrders($session->getId());
-
-
         $session->set('quantity', count($orders));
 
         return $this->json([
