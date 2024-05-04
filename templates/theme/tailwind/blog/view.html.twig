@@ -13,8 +13,8 @@
                            href="{{ path('app_blog_category', {slug: categories.category.slug}) }}">{{ categories.category.name }}</a>
                     {% endfor %}
                 </div>
-                <div class="flex flex-col md:flex-row">
-                    <div class="lg:w-2/3 sm:w-3/4">
+                <div class="grid lg:grid-cols-8 md:grid-cols-5 sm:grid-cols-1 gap-x-5">
+                    <div class="lg:col-span-5 md:col-span-3">
                         <div class="py-5">
                             <ul class="list-unstyled relative w-full justify-content-between">
                                 <li class="float-start">
@@ -34,7 +34,7 @@
                                         <h3 class="text-xl text-black font-semibold opacity-100 z-20">{{ entry.entryDetails.title }}</h3>
                                     </div>
                                     <img src="{{ asset(_picture) | imagine_filter('entry_view') }}"
-                                         class="rounded-lg my-2 shadow-lg"
+                                         class="rounded-lg w-full my-2"
                                          alt="{{ entry.entryDetails.title }}"/>
                                     <i class="block text-left text-gray-500 mt-1 ps-1">{{ entry.entryDetails.shortContent }}</i>
                                 </div>
@@ -42,56 +42,60 @@
                         {% endfor %}
                         {{ entry.entryDetails.content|replace({'<p': '<p class="text-gray-500 leading-relaxed mb-2 font-medium"'})|raw }}
                     </div>
-                    <div class="lg:w-1/3 px-5 mx-5 lg:-mt-10 sm:mt-5 sm:w-full justify-content-between text-center">
-                        <ul class="list-none">
-                            {% if entry.user.userDetails.user.attach %}
-                                <li>
-                                    {% set _picture = 'storage/user/picture/' ~ entry.user.id ~ '/' ~ entry.user.userDetails.user.attach.name %}
-                                    <img class="rounded-full mx-auto"
-                                         src="{{ asset(_picture) | imagine_filter('user_thumb') }}"
-                                         alt="{{ entry.user.userDetails.firstName }} {{ entry.user.userDetails.lastName }}">
-                                </li>
-                            {% else %}
-                                <li>
-                                    <img class="rounded-full mx-auto" src="{{ asset('img/user-picture.jpg') }}"
-                                         alt="{{ entry.user.userDetails.firstName }} {{ entry.user.userDetails.lastName }}">
-                                </li>
-                            {% endif %}
-                            <li class="pt-3">
-                                <a href="#">
-                                    <h5 class="font-semibold text-lg">{{ entry.user.userDetails.firstName }} {{ entry.user.userDetails.lastName }}</h5>
-                                </a>
-                                {% if entry.user.userDetails.userSocial %}
-                                    {% set _social = entry.user.userDetails.userSocial %}
-                                    <ul class="list-inline list-none">
-                                        {% if _social.facebookProfile %}
-                                            <li class="inline-flex pt-3">
-                                                <a target="_blank" href="{{ _social.facebookProfile }}">
-                                                    <i class="fa fa-facebook text-blue-700 text-xl mx-1"></i>
-                                                </a>
-                                            </li>
+                    <div class="inline-flex px-5 justify-content-between text-center">
+                        <div class="space-y-4">
+                            <div class="text-sm lg:w-[440px] sm:w-[500px] leading-6">
+                                <ul class="list-none mr-5">
+                                    {% if entry.user.userDetails.user.attach %}
+                                        <li>
+                                            {% set _picture = 'storage/user/picture/' ~ entry.user.id ~ '/' ~ entry.user.userDetails.user.attach.name %}
+                                            <img class="rounded-full mx-auto"
+                                                 src="{{ asset(_picture) | imagine_filter('user_thumb') }}"
+                                                 alt="{{ entry.user.userDetails.firstName }} {{ entry.user.userDetails.lastName }}">
+                                        </li>
+                                    {% else %}
+                                        <li>
+                                            <img class="rounded-full mx-auto" src="{{ asset('img/user-picture.jpg') }}"
+                                                 alt="{{ entry.user.userDetails.firstName }} {{ entry.user.userDetails.lastName }}">
+                                        </li>
+                                    {% endif %}
+                                    <li class="pt-3">
+                                        <a href="#">
+                                            <h5 class="font-semibold text-lg">{{ entry.user.userDetails.firstName }} {{ entry.user.userDetails.lastName }}</h5>
+                                        </a>
+                                        {% if entry.user.userDetails.userSocial %}
+                                            {% set _social = entry.user.userDetails.userSocial %}
+                                            <ul class="list-inline list-none">
+                                                {% if _social.facebookProfile %}
+                                                    <li class="inline-flex pt-3">
+                                                        <a target="_blank" href="{{ _social.facebookProfile }}">
+                                                            <i class="fa fa-facebook text-blue-700 text-xl mx-1"></i>
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
+                                                {% if _social.twitterProfile %}
+                                                    <li class="inline-flex pt-3">
+                                                        <a target="_blank" href="{{ _social.twitterProfile }}">
+                                                            <i class="fa fa-twitter text-blue-500 text-xl mx-1"></i>
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
+                                                {% if _social.instagramProfile %}
+                                                    <li class="inline-flex pt-3">
+                                                        <a target="_blank" href="{{ _social.instagramProfile }}">
+                                                            <i class="fa fa-instagram text-purple-500 text-xl mx-1"></i>
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
+                                            </ul>
                                         {% endif %}
-                                        {% if _social.twitterProfile %}
-                                            <li class="inline-flex pt-3">
-                                                <a target="_blank" href="{{ _social.twitterProfile }}">
-                                                    <i class="fa fa-twitter text-blue-500 text-xl mx-1"></i>
-                                                </a>
-                                            </li>
-                                        {% endif %}
-                                        {% if _social.instagramProfile %}
-                                            <li class="inline-flex pt-3">
-                                                <a target="_blank" href="{{ _social.instagramProfile }}">
-                                                    <i class="fa fa-instagram text-purple-500 text-xl mx-1"></i>
-                                                </a>
-                                            </li>
-                                        {% endif %}
-                                    </ul>
-                                {% endif %}
-                            </li>
-                            <li class="mt-10 p-4 block bg-gray-50 rounded-lg text-sm text-gray-500 shadow-lg">
-                                {{ entry.user.userDetails.about }}
-                            </li>
-                        </ul>
+                                    </li>
+                                    <li class="mt-10 p-4 block bg-gray-50 rounded-lg text-sm text-gray-500">
+                                        {{ entry.user.userDetails.about }}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

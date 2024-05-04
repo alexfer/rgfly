@@ -1,0 +1,66 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% set _title_extend = 'title.dashboard.overview_blog'|trans %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}{{ _title_extend }}{% endblock %}
+
+{% block content %}
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-500 uppercase bg-info-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">{{ 'table.header.title'|trans }}</th>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <th scope="col" class="px-6 py-3">{{ 'table.header.author'|trans }}</th>
+                {% else %}
+                    <th scope="col" class="px-6 py-3">{{ 'table.header.status'|trans }}</th>
+                {% endif %}
+                <th scope="col" class="px-6 py-3 text-center">{{ 'table.header.created_at'|trans }}</th>
+                <th scope="col" class="px-6 py-3 text-center">{{ 'table.header.handle'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entry in entries %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 {% if entry.deletedAt %}text-gray-400 bg-gray-200{% endif %}">
+                    <th scope="row" class="px-6 py-3">
+                        <a data-twe-toggle="tooltip"
+                           data-twe-placement="left"
+                           class="link"
+                           title="{{ entry.entryDetails.title }}"
+                           href="{{ path('app_dashboard_edit_blog', {id: entry.id}) }}">
+                            {{ entry.entryDetails.title|length > 30 ? entry.entryDetails.title|slice(0, 30) ~ '...' : entry.entryDetails.title }}
+                        </a>
+                    </th>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <td class="px-6 py-3">
+                            <a class="text-blue-700 hover:text-black hover:underline"
+                               href="{{ path('app_dashboard_details_user', {id: entry.user.id, tab: 'summary'}) }}">{{ entry.user.userDetails.firstName }}</a>
+                        </td>
+                    {% else %}
+                        <td class="px-6 py-3 color-{{ entry.status }}">{{ entry.status|capitalize }}</td>
+                    {% endif %}
+                    <td class="px-6 py-3 text-center">
+                            <span
+                                    class="text-muted cursor-default"
+                                    data-twe-toggle="tooltip"
+                                    data-twe-placement="top"
+                                    title="{{ entry.createdAt|date(datetime_format) }}">
+                                {{ entry.createdAt|date(date_format) }}
+                            </span>
+                    </td>
+                    <td class="px-6 py-3 text-center">
+                        <a href="{{ path('app_dashboard_edit_blog', {id: entry.id}) }}"
+                           class="border rounded p-1 pb-0.5 mr-1 hover:shadow-md hover:bg-gray-100">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="text-center text-bg-light">{{ 'table.footer.not_found'|trans }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
