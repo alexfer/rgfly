@@ -97,14 +97,16 @@ class Processor implements ProcessorInterface
         if (!$order) {
             $order = $this->setOrder($customer);
         }
-        if ($order) {
-            $product = $this->existsProduct();
 
-            if (!$product) {
+        if ($order) {
+            if (!$this->existsProduct()) {
                 $order = $this->updateOrder($order);
             }
-        }
 
+            if (!$this->existsOrderProduct($order)) {
+                $this->setProduct($order, false);
+            }
+        }
         return $order;
     }
 
@@ -135,7 +137,6 @@ class Processor implements ProcessorInterface
         $order->setTotal($order->getTotal() + $this->getProduct()->getCost())
             ->setSession($this->sessionId);
         $this->em->persist($order);
-
         $this->setProduct($order, false);
         $this->em->flush();
         return $order;
@@ -145,7 +146,6 @@ class Processor implements ProcessorInterface
      * @param MarketOrders $order
      * @param bool $withNumber
      * @return void
-     * @throws \Random\RandomException
      */
     private function setProduct(MarketOrders $order, bool $withNumber = true): void
     {
@@ -161,7 +161,6 @@ class Processor implements ProcessorInterface
             $product->getOrders()
                 ->setNumber(MarketPlaceHelper::orderNumber(6));
         }
-
         $this->em->persist($product);
     }
 
@@ -196,6 +195,21 @@ class Processor implements ProcessorInterface
         return $this->em->getRepository(MarketOrdersProduct::class)
             ->findOneBy([
                 'product' => $this->getProduct(),
+                'size' => $this->data['size'] ?: null,
+                'color' => $this->data['color'] ?: null,
+            ]);
+    }
+
+    /**
+     * @param MarketOrders $order
+     * @return MarketOrdersProduct|null
+     */
+    protected function existsOrderProduct(MarketOrders $order): ?MarketOrdersProduct
+    {
+        return $this->em->getRepository(MarketOrdersProduct::class)
+            ->findOneBy([
+                'product' => $this->getProduct(),
+                'orders' => $order,
                 'size' => $this->data['size'] ?: null,
                 'color' => $this->data['color'] ?: null,
             ]);

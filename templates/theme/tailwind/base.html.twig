@@ -23,9 +23,9 @@
 <body>
 {% set _route = app.request.get('_route') %}
 <div class="flex flex-col h-screen justify-between bg-transparent">
-    <div class="w-full bg-red-600 absolute h-72 -z-10"></div>
+    <div class="w-full bg-red-600 absolute top-0 h-96 -z-10"></div>
     {% include 'layouts/header.html.twig' %}
-    <main class="mb-auto bg-red-600 shadow-inner">
+    <main class="mb-auto shadow-inner">
         {% block body %}{% endblock %}
     </main>
     <footer class="bg-gray-950 h-[64px] sticky top-[100vh]">

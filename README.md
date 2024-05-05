@@ -1,5 +1,7 @@
 RgFly ecommerce solution.
 ============
+
+(Tailwind theme)
 (Bootstrap theme)
 
 ### Requirements:
