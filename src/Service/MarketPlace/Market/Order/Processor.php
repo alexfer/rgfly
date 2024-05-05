@@ -97,39 +97,16 @@ class Processor implements ProcessorInterface
         if (!$order) {
             $order = $this->setOrder($customer);
         }
+
         if ($order) {
-            $product = $this->existsProduct();
-            if (!$product) {
+            if (!$this->existsProduct()) {
                 $order = $this->updateOrder($order);
-            } else {
-                $order = $this->addProduct($order);
+            }
+
+            if (!$this->existsOrderProduct($order)) {
+                $this->setProduct($order, false);
             }
         }
-        return $order;
-    }
-
-    /**
-     * @param MarketOrders|null $order
-     * @return MarketOrders
-     */
-    private function addProduct(?MarketOrders $order): MarketOrders
-    {
-        if($this->existsOrderProduct($order)) {
-            return $order;
-        }
-        $product = $this->getProduct();
-        $orderProduct = new MarketOrdersProduct();
-        $orderProduct->setOrders($order)
-            ->setProduct($product)
-            ->setQuantity(1)
-            ->setColor($this->data['color'])
-            ->setSize($this->data['size'])
-            ->setDiscount($product->getDiscount())
-            ->setCost($product->getCost());
-        $this->em->persist($orderProduct);
-        $order->setTotal($order->getTotal() + $product->getCost());
-        $this->em->persist($order);
-        $this->em->flush();
         return $order;
     }
 
@@ -184,7 +161,6 @@ class Processor implements ProcessorInterface
             $product->getOrders()
                 ->setNumber(MarketPlaceHelper::orderNumber(6));
         }
-
         $this->em->persist($product);
     }
 
