@@ -141,7 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (elements.loadCategories) {
-        elements.loadCategories.addEventListener('click', () => {
+        elements.loadCategories.addEventListener('click', (e) => {
+            e.preventDefault();
             let children = elements.loadCategories.parentElement.children;
             for (let el of Array.from(children)) {
                 el.classList.remove('sr-only');

@@ -7,7 +7,7 @@
         <div class="max-w-screen-3xl flex mx-auto px-4 py-8 lg:py-16 lg:px-2">
             <div class="mx-auto w-4/6 rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
                 <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white">{{ category.name }}</h2>
-                <ul class="mb-5 flex list-none ps-0 md:flex-row">
+                <ul class="mb-5 flex flex-col list-none ps-0 lg:flex-row">
                     {% set _collection = parent is not null ? parent.children : category.children %}
                     {% for child in _collection %}
                         <li>

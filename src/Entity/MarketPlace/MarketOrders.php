@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: MarketOrdersRepository::class)]
 class MarketOrders
 {
-    const array STATUS = [
+    const STATUS = [
         'delivered' => 'delivered',
         'unreached' => 'unreached',
         'paid' => 'paid',

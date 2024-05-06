@@ -57,6 +57,7 @@ if (typeof bulkRemoveWishlist !== 'undefined') {
 if (typeof drops !== 'undefined') {
     Array.from(drops).forEach((drop) => {
         drop.onclick = (event) => {
+            event.preventDefault();
             let url = drop.getAttribute('data-url');
             let product = drop.getAttribute('data-id');
             let order = drop.getAttribute('data-order');

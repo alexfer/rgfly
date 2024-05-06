@@ -3,91 +3,99 @@
 {% block title %}{{ entry.entryDetails.title }}{% endblock %}
 {% block description %}{{ entry.entryDetails.shortContent }}{% endblock %}
 {% block body %}
-    <section class="container mt-lg-2">
-        <div class="row">
-            <div class="col-12 card card-body bg-light shadow">
-                <h4 class="ps-2 border-start border-3 border-danger mb-3">{{ entry.entryDetails.title }}</h4>
-                <div class="entry-tags">
+    <section class="bg-white dark:bg-gray-900">
+        <div class="max-w-screen-3xl flex mx-auto pt-4 py-8 lg:py-16 lg:px-2">
+            <div class="mx-auto lg:w-4/6 sm:max-w-screen-5xl rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
+                <h2 class="lg:text-2xl sm:text-xl pb-4 font-extrabold text-primary-700 dark:text-white">{{ entry.entryDetails.title }}</h2>
+                <div class="flex flex-row">
                     {% for categories in entry.entryCategories %}
-                        <a href="{{ path('app_blog_category', {slug: categories.category.slug}) }}">{{ categories.category.name }}</a>
+                        <a class="text-gray-500 hover:text-gray-500 border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:hover:bg-gray-500 dark:focus:ring-gray-800 inline-flex items-center justify-center"
+                           href="{{ path('app_blog_category', {slug: categories.category.slug}) }}">{{ categories.category.name }}</a>
                     {% endfor %}
                 </div>
-                <div class="row">
-                    <div class="col-md-9">
-                        <div class="mb-2">
-                            <ul class="list-unstyled d-flex justify-content-between">
-                                <li>
-                                    <span class="bi bi-calendar-week text-success pe-1"></span> <a
-                                            href="{{ path('app_blog_date', {date: entry.createdAt|date('Y-m-d') }) }}">{{ entry.createdAt|date(date_format) }}</a>
+                <div class="grid lg:grid-cols-8 md:grid-cols-5 sm:grid-cols-1 gap-x-5">
+                    <div class="lg:col-span-5 md:col-span-3">
+                        <div class="py-5">
+                            <ul class="list-unstyled relative w-full justify-content-between">
+                                <li class="float-start">
+                                    <span class="fa fa-calendar text-success pe-1"></span>
+                                    <a href="{{ path('app_blog_date', {date: entry.createdAt|date('Y-m-d') }) }}">{{ entry.createdAt|date(date_format) }}</a>
                                 </li>
-                                <li class="ms-1">
-                                    <button class="btn btn-warning rounded-1 shadow-sm">{{ 'button.leave.cpmment'|trans }}</button>
+                                <li class="ms-1 float-end">
+                                    <button class="text-blue-700 hover:underline">{{ 'button.leave.cpmment'|trans }}</button>
                                 </li>
                             </ul>
                         </div>
                         {% for key, picture in entry.entryAttachments %}
                             {% if picture.inUse %}
                                 {% set _picture = 'storage/entry/picture/' ~ entry.entryDetails.id ~ '/' ~ picture.attach.name %}
-                                <div class="content-image mb-4">
-                                    <img src="{{ asset(_picture) | imagine_filter('entry_view') }}" class="img-fluid"
+                                <div class="relative mb-4">
+                                    <div class="block w-full absolute px-4 py-5 bg-white opacity-50 z-10 rounded-t-lg">
+                                        <h3 class="text-xl text-black font-semibold opacity-100 z-20">{{ entry.entryDetails.title }}</h3>
+                                    </div>
+                                    <img src="{{ asset(_picture) | imagine_filter('entry_view') }}"
+                                         class="rounded-lg w-full my-2"
                                          alt="{{ entry.entryDetails.title }}"/>
-                                    <i class="d-block text-left text-muted mt-1 ps-1">{{ entry.entryDetails.shortContent }}</i>
+                                    <i class="block text-left text-gray-500 mt-1 ps-1">{{ entry.entryDetails.shortContent }}</i>
                                 </div>
                             {% endif %}
                         {% endfor %}
-                        {{ entry.entryDetails.content|raw }}
+                        {{ entry.entryDetails.content|replace({'<p': '<p class="text-gray-500 leading-relaxed mb-2 font-medium"'})|raw }}
                     </div>
-                    <div class="col-md-3 d-flex justify-content-between text-center">
-                        <ul class="list-unstyled">
-                            {% if entry.user.userDetails.user.attach %}
-                                <li>
-                                    {% set _picture = 'storage/user/picture/' ~ entry.user.id ~ '/' ~ entry.user.userDetails.user.attach.name %}
-                                    <img class="rounded-circle"
-                                         src="{{ asset(_picture) | imagine_filter('user_thumb') }}"
-                                         alt="{{ entry.user.userDetails.firstName }} {{ entry.user.userDetails.lastName }}">
-                                </li>
-                            {% else %}
-                                <li>
-                                    <img class="rounded-circle" src="{{ asset('img/user-picture.jpg') }}"
-                                         alt="{{ entry.user.userDetails.firstName }} {{ entry.user.userDetails.lastName }}">
-                                </li>
-                            {% endif %}
-                            <li class="pt-3">
-                                <a href="#">
-                                    <h5>{{ entry.user.userDetails.firstName }} {{ entry.user.userDetails.lastName }}</h5>
-                                </a>
-                                {% if entry.user.userDetails.userSocial %}
-                                    {% set _social = entry.user.userDetails.userSocial %}
-                                    <ul class="list-inline">
-                                        {% if _social.facebookProfile %}
-                                            <li class="list-inline-item">
-                                                <a target="_blank" href="{{ _social.facebookProfile }}">
-                                                    <i class="bi bi-facebook text-dark-emphasis fs-4"></i>
-                                                </a>
-                                            </li>
+                    <div class="inline-flex px-5 justify-content-between text-center">
+                        <div class="space-y-8">
+                            <div class="text-sm lg:w-[440px] sm:w-[600px]">
+                                <ul class="list-none mr-5">
+                                    {% if entry.user.userDetails.user.attach %}
+                                        <li>
+                                            {% set _picture = 'storage/user/picture/' ~ entry.user.id ~ '/' ~ entry.user.userDetails.user.attach.name %}
+                                            <img class="rounded-full mx-auto w-36 h-36"
+                                                 src="{{ asset(_picture) | imagine_filter('user_preview') }}"
+                                                 alt="{{ entry.user.userDetails.firstName }} {{ entry.user.userDetails.lastName }}">
+                                        </li>
+                                    {% else %}
+                                        <li>
+                                            <img class="rounded-full mx-auto w-36 h-36" src="{{ asset('img/user-picture.jpg') }}"
+                                                 alt="{{ entry.user.userDetails.firstName }} {{ entry.user.userDetails.lastName }}">
+                                        </li>
+                                    {% endif %}
+                                    <li class="pt-3">
+                                        <a href="#">
+                                            <h5 class="font-semibold text-lg">{{ entry.user.userDetails.firstName }} {{ entry.user.userDetails.lastName }}</h5>
+                                        </a>
+                                        {% if entry.user.userDetails.userSocial %}
+                                            {% set _social = entry.user.userDetails.userSocial %}
+                                            <ul class="list-inline list-none">
+                                                {% if _social.facebookProfile %}
+                                                    <li class="inline-flex pt-3">
+                                                        <a target="_blank" href="{{ _social.facebookProfile }}">
+                                                            <i class="fa fa-facebook text-blue-700 text-xl mx-1"></i>
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
+                                                {% if _social.twitterProfile %}
+                                                    <li class="inline-flex pt-3">
+                                                        <a target="_blank" href="{{ _social.twitterProfile }}">
+                                                            <i class="fa fa-twitter text-blue-500 text-xl mx-1"></i>
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
+                                                {% if _social.instagramProfile %}
+                                                    <li class="inline-flex pt-3">
+                                                        <a target="_blank" href="{{ _social.instagramProfile }}">
+                                                            <i class="fa fa-instagram text-purple-500 text-xl mx-1"></i>
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
+                                            </ul>
                                         {% endif %}
-                                        {% if _social.twitterProfile %}
-                                            <li class="list-inline-item">
-                                                <a target="_blank" href="{{ _social.twitterProfile }}">
-                                                    <i class="bi bi-twitter text-dark-emphasis fs-4"></i>
-                                                </a>
-                                            </li>
-                                        {% endif %}
-                                        {% if _social.instagramProfile %}
-                                            <li class="list-inline-item">
-                                                <a target="_blank" href="{{ _social.instagramProfile }}">
-                                                    <i class="bi bi-instagram text-dark-emphasis fs-4"></i>
-                                                </a>
-                                            </li>
-                                        {% endif %}
-                                    </ul>
-                                {% endif %}
-                            </li>
-                            <li class="px-2">
-                                <hr/>
-                                {{ entry.user.userDetails.about }}
-                            </li>
-                        </ul>
+                                    </li>
+                                    <li class="mt-10 p-4 block bg-gray-50 rounded-lg text-sm text-gray-500">
+                                        {{ entry.user.userDetails.about }}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

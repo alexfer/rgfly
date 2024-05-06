@@ -49,8 +49,8 @@ class OrderController extends AbstractController
             $products = $order->getMarketOrdersProducts();
             $countProducts = count($products);
         }
-
-        $session->set('quantity', count($orders));
+        $orderProducts = $orderCollection->getOrderProducts($session->getId());
+        $session->set('quantity', $orderProducts);
 
         return $this->json([
             'products' => $countProducts,
@@ -156,10 +156,8 @@ class OrderController extends AbstractController
         $customer = $userManager->getUserCustomer($user);
         $order = $orderProcessor->findOrder($session->getId());
         $orderProcessor->processOrder($order, $customer);
-        $orders = $orderCollection->getOrders($session->getId());
-
-
-        $session->set('quantity', count($orders));
+        $products = $orderCollection->getOrderProducts($session->getId());
+        $session->set('quantity', $products);
 
         return $this->json([
             'quantity' => $session->get('quantity') ?: 1,

@@ -7,7 +7,7 @@
         <div class="mb-4 flex flex-col w-full">
             {% for product in products %}
                 {% if product.order_id == order.id %}
-                    <div class="flex justify-start items-center h-44 mb-1.5">
+                    <div class="flex justify-start items-center h-auto mb-1.5">
                         <div class="mx-1 w-1/3">
                             <a class="mb-2" href="{{ path('app_market_place_product', {slug: product.slug}) }}">
                                 {% if product.attach %}

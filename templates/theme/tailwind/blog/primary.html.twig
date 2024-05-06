@@ -1,0 +1,136 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'title.blogs'|trans }}{% endblock %}
+{% block description %}{{ 'text.blog.desc'|trans }}{% endblock %}
+
+{% block body %}
+    <section class="bg-white dark:bg-gray-900">
+        <div class="max-w-screen-3xl flex mx-auto pt-4 py-8 lg:py-16 lg:px-2">
+            <div class="mx-auto lg:w-4/6 sm:max-w-screen-5xl rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <div class="relative p-3 col-start-1 row-start-1 flex flex-col rounded-lg sm:row-start-2 sm:p-0 lg:row-start-1">
+                        <div class="flex-nowrap">
+                            <a href="{{ path('app_blog_category', {slug: primary.category_slug}) }}"
+                               class="text-sm leading-4 font-medium sm:hover:text-gray-500 lg:text-slate-400 sm:text-gray-600 dark:sm:text-slate-400">{{ primary.category }}</a>
+                            <h1 class="mt-1 text-lg font-semibold text-gray-500 sm:text-slate-600 md:text-2xl dark:sm:text-white">{{ primary.title }}</h1>
+                        </div>
+                        <div class="mt-2 text-sm text-indigo-600 flex items-center align-text-bottom dark:text-indigo-400">
+                            <i class="fa fa-calendar pb-1 me-2"></i>
+                            <a href="{{ path('app_blog_date', {date: primary.created_at|date('y-m-d')}) }}" class="text-xs text-slate-400">{{ primary.created_at|date(date_format) }}</a>
+                            <ul class="list-none ps-6 inline-flex justify-items-end items-end">
+                                {% if primary.facebook_profile %}
+                                    <li>
+                                        <a href="{{ primary.facebook_profile }}" target="_blank" class="mx-1 text-sm">
+                                            <i class="fa fa-facebook text-blue-700"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                {% if primary.twitter_profile %}
+                                    <li>
+                                        <a href="{{ primary.twitter_profile }}" target="_blank" class="mx-1 text-sm">
+                                            <i class="fa fa-twitter text-blue-500"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                {% if primary.facebook_profile %}
+                                    <li>
+                                        <a href="{{ primary.instagram_profile }}" target="_blank" class="mx-1 text-sm">
+                                            <i class="fa fa-instagram text-indigo-700"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                        <div class="my-2 py-2 col-start-1 row-start-3 self-start sm:mt-0 sm:col-start-2 sm:row-start-2 sm:row-span-2 lg:mt-6 lg:col-start-1 lg:row-start-3 lg:row-end-4">
+                            <a role="button" href="{{ path('app_blog_view', {slug: primary.slug}) }}"
+                               class="lg:bg-yellow-300 sm:bg-none sm:text-slate-500 lg:text-white text-nowrap lg:hover:text-gray-100 sm:hover:text-gray-500 text-sm leading-6 font-medium py-3.5 lg:px-4 sm:px-0 rounded-lg">{{ 'text.read'|trans }}</a>
+                        </div>
+                        <div class="mt-1 text-sm leading-6 text-slate-500 col-start-1 sm:col-span-2 lg:mt-6 lg:row-start-4 lg:col-span-1 dark:text-slate-400">
+                            {{ primary.short_content }}
+                        </div>
+                    </div>
+                    <div class="lg:max-w-full flex">
+                        {% set _picture = 'storage/entry/picture/' ~ primary.id ~ '/' ~ primary.attachment %}
+                        <img src="{{ asset(_picture) | imagine_filter('entry_view') }}"
+                             class="w-full h-100 object-cover rounded-lg sm:h-72 sm:col-span-2 lg:col-span-full"
+                             alt="{{ primary.title }}" loading="lazy"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="bg-white mb-20 lg:-mt-10 sm:mt-5">
+        <div class="mx-auto lg:w-4/6 p-3 sm:max-w-screen-5xl">
+            <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white">{{ 'text.blog.desc'|trans|raw }}</h2>
+            <div class="grid lg:grid-cols-8 md:grid-cols-5 sm:grid-cols-1 gap-x-5">
+                <div class="lg:col-span-5 md:col-span-3">
+                    <ol class="relative border-s border-gray-200 dark:border-gray-700">
+                        {% for line in timeline %}
+                        <li class="mb-10 ms-4">
+                            <div class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -start-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
+                            <time class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">{{ line.created_at|date('M Y') }}</time>
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ line.title }}</h3>
+                            <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">{{ line.short_content }}</p>
+                            <a href="{{ path('app_blog_view', {slug: line.slug}) }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 hover:text-red-600 focus:z-10 focus:ring-4 focus:outline-none focus:ring-gray-100 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-700">{{ 'text.read'|trans }}
+                                <svg class="w-3 h-3 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"></path>
+                                </svg>
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ol>
+                </div>
+                <div class="inline-flex">
+                    <div class="space-y-4">
+                        {% for author in authors %}
+                            <div class="text-sm lg:w-[440px] sm:w-[500px] leading-6 transition ease-in-out hover:scale-x-105">
+                                <figure class="relative flex flex-col-reverse bg-slate-50 rounded-lg p-6 dark:bg-slate-800 dark:highlight-white/5">
+                                    <blockquote class="mt-4 text-slate-700 dark:text-slate-300">
+                                        <p>{{ author.short_content }}</p>
+                                    </blockquote>
+                                    <figcaption class="flex items-center space-x-4">
+                                        {% set _picture = 'storage/user/picture/' ~ author.user_id ~ '/' ~ author.attachment %}
+                                        <img src="{{ asset(_picture) | imagine_filter('user_thumb') }}" alt=""
+                                             class="flex-none w-14 h-14 rounded-full object-cover" loading="lazy"
+                                             decoding="async">
+                                        <div class="flex-auto">
+                                            <div class="text-base text-slate-900 font-semibold dark:text-slate-300">
+                                                <a href="{{ path('app_blog_view', {slug: author.slug}) }}"
+                                                   tabindex="0">
+                                                    <span class="absolute inset-0"></span>{{ author.first_name }} {{ author.last_name }}
+                                                    <div class="inline-flex float-end">
+                                                        <ul class="list-none ps-6 inline-flex justify-items-end items-end">
+                                                            {% if author.facebook_profile %}
+                                                                <li>
+                                                                    <i class="fa fa-facebook text-blue-700 me-2"></i>
+                                                                </li>
+                                                            {% endif %}
+                                                            {% if author.twitter_profile %}
+                                                                <li>
+                                                                    <i class="fa fa-twitter text-blue-500 me-2"></i>
+                                                                </li>
+                                                            {% endif %}
+                                                            {% if author.instagram_profile %}
+                                                                <li>
+                                                                    <i class="fa fa-instagram text-indigo-700"></i>
+                                                                </li>
+                                                            {% endif %}
+                                                        </ul>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div class="my-0.5 font-medium">{{ author.title }}</div>
+                                            <div class="inline-flex float-end text-xs"><i
+                                                        class="fa fa-calendar text-red-400 me-1.5"></i>{{ author.created_at|date(date_format) }}
+                                            </div>
+                                        </div>
+                                    </figcaption>
+                                </figure>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

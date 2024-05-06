@@ -136,6 +136,10 @@
                 <source>title.service_details</source>
                 <target>Service Details</target>
             </trans-unit>
+            <trans-unit id="text.read">
+                <source>text.read</source>
+                <target>Read more..</target>
+            </trans-unit>
             <trans-unit id="title.search_for">
                 <source>title.search_for</source>
                 <target>Search for</target>
