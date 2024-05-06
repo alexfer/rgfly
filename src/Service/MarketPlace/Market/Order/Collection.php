@@ -29,6 +29,18 @@ readonly class Collection implements CollectionInterface
             ->findBy(['session' => $sessId]);
     }
 
+    public function getOrderProducts(?string $sessId = null): ?int
+    {
+        $orders = $this->getOrders($sessId);
+        $result = [];
+        foreach ($orders as $order) {
+            foreach ($order->getMarketOrdersProducts() as $product) {
+                $result[] = $product->getId();
+            }
+        }
+        return count($result);
+    }
+
     /**
      * @param string|null $sessionId
      * @return array|null
