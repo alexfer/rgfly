@@ -42,7 +42,7 @@
                                         <div class="flex justify-between">
                                             <span class="ml-2 bg-gray-600 bg-opacity-90 text-gray-500 text-md shadow-xl font-medium me-2 px-2.5 py-0.5 rounded-md dark:bg-gray-900 dark:text-gray-300">
                                                     <a title="{{ product.name }}"
-                                                       href="{{ path('app_market_place_product', {slug: product.slug}) }}"
+                                                       href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}"
                                                        class="text-white hover:text-neutral-100 hover:animate-pulse">{{ 'market.product.details'|trans }}
                                                     </a>
                                                 </span>
@@ -72,7 +72,7 @@
                                 </div>
                                 {% if product.parent_category_name is not null %}
                                     <a title="{{ product.name }}" class="mt-3"
-                                       href="{{ path('app_market_place_product', {slug: product.slug}) }}">
+                                       href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}">
                                         <h5 class="mx-3 mb-2 text-lg font-bold hover:text-gray-700 tracking-tight truncate text-gray-500 dark:text-white">
                                             {{ product.short_name }}
                                         </h5>
@@ -116,7 +116,7 @@
                                 </ul>
                                 <div class="flex items-center border-t mt-3 pt-3 bg-gray-50 bg-opacity-75 pb-3 px-3 justify-between">
                                     <div>
-                                        <a href="{{ path('app_market_place_product', {slug: product.slug}) }}"
+                                        <a href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}"
                                            class="hover:text-violet-500 text-md  hover:text-decoration-underline hover:animate-pulse">{{ 'market.product.details'|trans }}
                                             <svg class="w-[16px] h-[16px] inline ml-3 fill-primary-500 hover:fill-violet-600 hover:scale-110"
                                                  viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
