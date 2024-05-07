@@ -4,8 +4,8 @@
 
 {% block content_body %}
     <section class="bg-white dark:bg-gray-900">
-        <div class="max-w-screen-3xl flex mx-auto px-4 py-8 lg:py-16 lg:px-2">
-            <div class="mx-auto w-4/6 rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
+        <div class="max-w-screen-3xl flex mx-auto pt-4 py-8 lg:py-16 lg:px-2">
+            <div class="mx-auto lg:w-4/6 sm:max-w-screen-5xl rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
                 <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white">{{ category.name }}</h2>
                 <ul class="mb-5 flex flex-col list-none ps-0 lg:flex-row">
                     {% set _collection = parent is not null ? parent.children : category.children %}
@@ -31,11 +31,11 @@
                                     {% if product.attach_name %}
                                         {% set _picture = 'storage/product/picture/' ~ product.id ~ '/' ~ product.attach_name %}
                                         <img src="{{ asset(_picture)|imagine_filter('product_preview') }}"
-                                             class="transition duration-300 ease-linear hover:scale-125 rounded-t-lg"
+                                             class="object-cover w-full transition duration-300 ease-linear hover:scale-125 rounded-t-lg"
                                              alt="{{ product.name }}">
                                     {% else %}
                                         <img src="{{ asset('img/300x200.png') }}"
-                                             class="transition duration-300 ease-linear hover:scale-125 rounded-t-lg"
+                                             class="object-cover w-full transition duration-300 ease-linear hover:scale-125 rounded-t-lg"
                                              alt="{{ product.name }}">
                                     {% endif %}
                                     <div class="absolute top-5 w-full">
@@ -58,7 +58,7 @@
                                               action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
                                             <button class="text-white bg-gray-800 shadow-md hover:bg-surface-dark focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-md text-sm px-4 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                                     data-slug="{{ product.slug }}" type="submit"
-                                                    {% if product.quantity == 0 %}disabled{% endif %}>
+                                                    {% if product.quantity == 0 or ('ROLE_USER' in app.user.roles or 'ROLE_ADMIN' in app.user.roles) %}disabled{% endif %}>
                                                 <i class="fa fa-shopping-cart mt-1 me-2"></i>{{ 'market.product.add'|trans }}
                                             </button>
                                         </form>

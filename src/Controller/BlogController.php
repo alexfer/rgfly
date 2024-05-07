@@ -37,6 +37,7 @@ class BlogController extends AbstractController
      * @param EntityManagerInterface $em
      * @return Response
      */
+    #[Route('/category', name: 'app_blog_category_index')]
     #[Route('/category/{slug}', name: 'app_blog_category')]
     #[Route('/date/{date}', name: 'app_blog_date')]
     public function mixed(
