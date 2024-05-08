@@ -5,8 +5,8 @@
 
 {% block body %}
     <section class="bg-white dark:bg-gray-900">
-        <div class="max-w-screen-3xl flex mx-auto px-4 py-8 lg:py-16 lg:px-2">
-            <div class="mx-auto w-4/6 rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
+        <div class="max-w-screen-3xl flex mx-auto pt-4 py-8 lg:py-16 lg:px-2">
+            <div class="mx-auto lg:w-4/6 sm:max-w-screen-5xl rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
                 <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white">
                     {% if category %}
                         {{ category.name }}
@@ -42,20 +42,20 @@
                         {{ category.description }}
                     </div>
                 {% endif %}
-                <div class="grid grid-cols-4 gap-3">
+                <div class="grid w-full gap-6 md:grid-cols-3">
                     {% for entry in entries %}
-                        <div class="min-h-full">
-                            <div class="min-h-full max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                                <div class="lg:max-w-xl relative overflow-hidden bg-cover bg-no-repeat">
+                        <div class="min-h-full flex-col justify-between">
+                            <div class="min-h-full max-w-md bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                                <div class="lg:max-w-xl relative overflow-hidden bg-cover bg-no-repeat rounded-t-lg">
                                     {% set _picture = 'storage/entry/picture/' ~ entry.id ~ '/' ~ entry.attach %}
                                     <a href="{{ path('app_blog_view', {slug: entry.slug}) }}">
                                         {% if entry.attach %}
                                             <img src="{{ asset(_picture)|imagine_filter('entry_preview') }}"
-                                                 class="transition duration-300 ease-linear hover:scale-125 rounded-t-lg"
+                                                 class="object-cover w-full transition duration-300 ease-linear hover:scale-125 rounded-t-lg"
                                                  width="415" alt="{{ entry.title }}"/>
                                         {% else %}
                                             <img src="{{ asset('img/380x200.png') }}"
-                                                 class="transition duration-300 ease-linear hover:scale-125 rounded-t-lg opacity-50"
+                                                 class="object-cover w-full transition duration-300 ease-linear hover:scale-125 rounded-t-lg opacity-50"
                                                  width="415" alt="{{ entry.title }}"/>
                                         {% endif %}
                                     </a>

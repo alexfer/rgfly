@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[Route('/market-place/product')]
 class ProductController extends AbstractController
 {
-    #[Route('/{slug}', name: 'app_market_place_product')]
+    #[Route('/{slug}/{tab}', name: 'app_market_place_product')]
     public function index(
         Request                $request,
         MarketProduct          $product,

@@ -26,7 +26,7 @@
                     <th scope="row" class="px-6 py-3">
                         <a data-twe-toggle="tooltip"
                            data-twe-placement="left"
-                           class="block text-wrap font-semibold hover:underline hover:text-gray-400"
+                           class="block text-wrap font-semibold hover:underline hover:text-gray-400 dark:text-gray-400"
                            title="{{ manufacturer.name }}"
                            href="{{ path('app_dashboard_market_place_edit_manufacturer', {market: manufacturer.market.id, id: manufacturer.id}) }}">
                             {{ manufacturer.name|length > 30 ? manufacturer.name|slice(0, 30) ~ '...' : manufacturer.name }}
@@ -35,20 +35,20 @@
                     <td class="px-6 py-3">{{ manufacturer.description|length > 80 ? manufacturer.description|slice(0, 80) ~ '...' : manufacturer.description|default('n/a') }}</td>
                     <td class="px-6 py-3 text-center">
                         <a href="{{ path('app_dashboard_market_place_edit_manufacturer', {market: manufacturer.market.id, id: manufacturer.id}) }}"
-                           class="border rounded pl-2 pr-1 py-1.5 mr-1 hover:shadow-md hover:bg-gray-100">
-                            <i class="fa fa-pencil text-indigo-600"></i>
+                           class="border rounded ps-1.5 pe-0.5 py-1 mr-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
+                            <i class="fa fa-pencil text-indigo-600 dark:text-white"></i>
                         </a>
-                        <a class="border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 {{ manufacturer.marketProductManufacturers.count ? 'pointer-events-none' : '' }}"
+                        <a class="border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer {{ manufacturer.marketProductManufacturers.count ? 'pointer-events-none' : '' }}"
                            data-token="{{ csrf_token('delete') }}"
                            data-url="{{ url('app_dashboard_delete_manufacturer', {market: manufacturer.market.id, id: manufacturer.id}) }}">
-                            <i class="fa fa-{{ manufacturer.marketProductManufacturers.count ? 'ban' : 'trash' }}"></i>
+                            <i class="fa fa-{{ manufacturer.marketProductManufacturers.count ? 'ban' : 'trash' }} dark:text-white"></i>
                         </a>
                     </td>
                 </tr>
             {% else %}
                 <tr>
                     <td colspan="3"
-                        class="px-6 py-3 text-center text-gray-700 bg-gray-100">{{ 'table.footer.not_found'|trans }}</td>
+                        class="px-6 py-3 text-center text-gray-700 bg-gray-100 dark:bg-gray-500 dark:text-white">{{ 'table.footer.not_found'|trans }}</td>
                 </tr>
             {% endfor %}
             </tbody>

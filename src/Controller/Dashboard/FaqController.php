@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/dashboard/faq')]
 class FaqController extends AbstractController
@@ -30,7 +31,7 @@ class FaqController extends AbstractController
     #[Route('', name: 'app_dashboard_faq')]
     public function index(
         EntityManagerInterface $em,
-        UserInterface $user,
+        UserInterface          $user,
     ): Response
     {
         return $this->render('dashboard/content/faq/index.html.twig', $this->navbar() + [
@@ -54,9 +55,8 @@ class FaqController extends AbstractController
     {
         $token = $request->get('_token');
 
-        if ($request->headers->get('Content-Type', 'application/json')) {
-            $content = $request->getContent();
-            $content = json_decode($content, true);
+        if (!$token) {
+            $content = $request->getPayload()->all();
             $token = $content['_token'];
         }
 
@@ -65,10 +65,6 @@ class FaqController extends AbstractController
             $entry->setDeletedAt($date)->setVisible(false);
             $em->persist($entry);
             $em->flush();
-        }
-
-        if ($request->headers->get('Content-Type', 'application/json')) {
-            return $this->json(['redirect' => $this->generateUrl('app_dashboard_faq')]);
         }
 
         return $this->redirectToRoute('app_dashboard_faq');
@@ -96,16 +92,14 @@ class FaqController extends AbstractController
     /**
      * @param Request $request
      * @param EntityManagerInterface $em
-     * @param UserInterface $user
+     * @param TranslatorInterface $translator
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/create', name: 'app_dashboard_create_faq', methods: ['GET', 'POST'])]
     public function create(
         Request                $request,
         EntityManagerInterface $em,
-        UserInterface          $user,
+        TranslatorInterface    $translator,
     ): Response
     {
         $entry = new Faq();
@@ -117,6 +111,7 @@ class FaqController extends AbstractController
             $em->persist($entry);
             $em->flush();
 
+            $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
             return $this->redirectToRoute('app_dashboard_edit_faq', ['id' => $entry->getId()]);
         }
 
@@ -129,17 +124,15 @@ class FaqController extends AbstractController
      * @param Request $request
      * @param Faq $entry
      * @param EntityManagerInterface $em
-     * @param UserInterface $user
+     * @param TranslatorInterface $translator
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/edit/{id}', name: 'app_dashboard_edit_faq', methods: ['GET', 'POST'])]
     public function edit(
         Request                $request,
         Faq                    $entry,
         EntityManagerInterface $em,
-        UserInterface          $user,
+        TranslatorInterface    $translator,
     ): Response
     {
         $form = $this->createForm(FaqType::class, $entry);
@@ -149,6 +142,7 @@ class FaqController extends AbstractController
             $em->persist($entry);
             $em->flush();
 
+            $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.updated')]));
             return $this->redirectToRoute('app_dashboard_edit_faq', ['id' => $entry->getId()]);
         }
 

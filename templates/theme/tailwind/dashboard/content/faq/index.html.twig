@@ -32,19 +32,19 @@
                     </td>
                     <td class="px-6 py-3 text-center">
                         <a href="{{ path('app_dashboard_edit_faq', {id: entry.id}) }}"
-                           class="inline-block border rounded pl-2 pr-1 py-1 mr-1 hover:shadow-md hover:bg-gray-100">
-                            <i class="fa fa-pencil text-indigo-600"></i>
+                           class="border rounded ps-1.5 pe-0.5 py-1 mr-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
+                            <i class="fa fa-pencil text-indigo-600 dark:text-white"></i>
                         </a>
                         {% if entry.deletedAt %}
-                            <a class="inline-block border rounded px-2 py-1 hover:shadow-md hover:bg-gray-100"
+                            <a class="border rounded px-1.5 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-black"
                                href="{{ path('app_dashboard_restore_faq', {id: entry.id}) }}">
-                                <i class="fa fa-arrow-up"></i>
+                                <i class="fa fa-arrow-up dark:text-white"></i>
                             </a>
                         {% else %}
-                            <a class="inline-block border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100"
+                            <a class="border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
                                     data-token="{{ csrf_token('delete') }}"
                                     data-url="{{ url('app_dashboard_delete_faq', {id: entry.id}) }}">
-                                <i class="fa fa-trash text-red-700"></i>
+                                <i class="fa fa-trash text-red-700 dark:text-white"></i>
                             </a>
                         {% endif %}
                     </td>

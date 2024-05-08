@@ -62,7 +62,7 @@
                                                   action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
                                                 <button class="btn btn-dark rounded-1"
                                                         data-id="{{ product.market_id }}-{{ product.id }}"
-                                                        type="submit" {% if product.quantity == 0 %}disabled{% endif %}>
+                                                        type="submit" {% if product.quantity == 0 or ('ROLE_USER' in app.user.roles or 'ROLE_ADMIN' in app.user.roles) %}disabled{% endif %}>
                                                     <i class="fa fa-shopping-cart mt-1 me-2"></i>{{ 'market.product.add'|trans }}
                                                 </button>
                                             </form>

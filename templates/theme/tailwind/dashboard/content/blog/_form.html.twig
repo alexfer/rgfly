@@ -7,7 +7,7 @@
     {{ _title_extend }}
     {% if app.request.get('id') %}
         <a role="button" target="_blank"
-           class="text-sm font-normal border shadow-md hover:border-gray-400 hover:bg-gray-100 hover:shadow-lg rounded-md px-3 py-2 float-end mb-1"
+           class="text-sm font-normal border shadow-md hover:border-gray-400 hover:bg-gray-100 hover:shadow-lg rounded-md px-3 py-2 float-end mb-1 dark:text-white dark:hover:bg-black"
            href="{{ path('app_blog_view', {slug: form.vars.data.slug}) }}">{{ 'user.entry.preview'|trans }}</a>
     {% endif %}
 {% endblock %}
@@ -23,7 +23,7 @@
             {{ error }}
         </div>
     {% endif %}
-    <div class="pb-5 shadow-lg border border-t-gray-200 rounded-md dark:bg-gray-800 p-3">
+    <div class="pb-5 shadow-lg border border-t-gray-200 rounded-md dark:bg-gray-800 dark:border-gray-900 p-3">
         <div class="block mb-3">
             {{ form_label(form.title, 'label.form.title', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
             {{ form_widget(form.title, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.title'}}) }}

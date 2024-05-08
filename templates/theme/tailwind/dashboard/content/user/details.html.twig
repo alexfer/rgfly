@@ -15,9 +15,9 @@
         </div>
         <div class="col-span-5 mx-3">
             <h5 class="block">
-                <a href="javascript:void(0);">{{ entry.userDetails.firstName }} {{ entry.userDetails.lastName }}</a>
+                <a class="dark:text-white" href="javascript:void(0);">{{ entry.userDetails.firstName }} {{ entry.userDetails.lastName }}</a>
             </h5>
-            <h6 class="block"><a class="link" href="mailto:{{ entry.email }}"><i
+            <h6 class="block"><a class="dark:text-white" href="mailto:{{ entry.email }}"><i
                             class="fa fa-envelope pr-2"></i> {{ entry.email }}</a></h6>
         </div>
     </div>
@@ -74,7 +74,7 @@
                         aria-selected="{{ _tab == 'about' ? 'true' : 'false' }}">{{ 'user.tab.about'|trans }}</button>
             </li>
         </ul>
-        <div class="pb-5 shadow-lg border border-t-gray-200 rounded-md dark:bg-gray-800 p-5" id="user-tab-content">
+        <div class="pb-5 shadow-lg border border-t-gray-200 rounded-md dark:bg-gray-800 dark:border-gray-900 p-3" id="user-tab-content">
             <div id="summary" role="tabpanel" aria-labelledby="summary-tab">
                 <div class="flex flex-row pt-2 py-1">
                     <div class="w-48 font-semibold text-gray-400">
@@ -173,7 +173,7 @@
                     </li>
                 </ul>
             </div>
-            <div id="about" role="tabpanel" aria-labelledby="about-tab">
+            <div id="about" role="tabpanel" class="text-gray-600 dark:text-gray-100" aria-labelledby="about-tab">
                 {% if  entry.userDetails.about is not empty %}
                     {{ entry.userDetails.about|nl2br|raw }}
                 {% else %}

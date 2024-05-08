@@ -32,7 +32,7 @@
         {% set _message = app.flashes('success') %}
         {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
         {% set _tab = app.request.get('tab') %}
-        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center justify-stretch border-b-1 items-stretch"
+        <ul class="flex flex-wrap text-sm font-medium text-center justify-stretch border-b-1 items-stretch"
             id="market-tab"
             data-tabs-toggle="#market-tab-content"
             data-tabs-active-classes="text-gray-950 hover:text-red-600 dark:text-purple-500 dark:hover:text-purple-500 border-red-600 dark:border-red-500"
@@ -68,7 +68,7 @@
                 </button>
             </li>
         </ul>
-        <div id="market-tab-content" class="pb-5 shadow-lg border border-t-gray-200 rounded-md dark:bg-gray-800 p-3">
+        <div id="market-tab-content" class="pb-5 shadow-lg border border-t-gray-200 rounded-md dark:bg-gray-800 dark:border-gray-900 p-3">
             <div class="hidden p-4"
                  id="market-details"
                  role="tabpanel"
@@ -175,6 +175,9 @@
     <script type="text/javascript">
         CKEDITOR.replace('market_description', {
             extraPlugins: 'editorplaceholder',
+            contentsCss: 'body{font-family:Arial;font-size:14px;}',
+            //skin: 'moono-dark',
+            //contentsCss: "body{background-color:#000000;font-family: Arial;color:#ffffff;}",
             editorplaceholder: '{{ 'label.form.market_description'|trans }}',
             removePlugins: 'simage,image,youtube,html5video,iframe,uicolor,videodetector,preview',
         });

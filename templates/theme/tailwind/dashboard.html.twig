@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ app.request.locale }}" data-bs-theme="white">
+<html lang="{{ app.request.locale }}" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -13,7 +13,7 @@
     {% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 </head>
-<body>
+<body class="dark:bg-gray-600">
 <div class="h-screen">
     {{ include('dashboard/sidebar.html.twig') }}
     <div class="p-4 sm:ml-64">

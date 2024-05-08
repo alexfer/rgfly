@@ -1,9 +1,10 @@
 import Swal from "sweetalert2";
 import i18next from "i18next"
 import './utils';
+
 document.addEventListener('DOMContentLoaded', () => {
     const formData = new FormData();
-    const headers = {'Content-type': 'application/json; charset=utf-8'};
+    const headers = {'Content-type': 'application/json'};
     const eventOptions = {
         capture: true,
         once: true
@@ -132,8 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 headers: headers
                             }
                         );
-                        const data = await response.json();
-                        document.location.href = data.redirect;
+                        window.location.reload();
                     }
                 });
             });

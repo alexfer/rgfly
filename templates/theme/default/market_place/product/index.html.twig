@@ -130,7 +130,7 @@
                                     <form class="shopping-cart form-inline" method="post"
                                           action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
                                         <button type="submit" id="order"
-                                                class="btn btn-warning rounded-1 shadow-sm opacity-75"{% if product.quantity == 0 %} disabled{% endif %}>
+                                                class="btn btn-warning rounded-1 shadow-sm opacity-75"{% if product.quantity == 0 or ('ROLE_USER' in app.user.roles or 'ROLE_ADMIN' in app.user.roles) %} disabled{% endif %}>
                                             <i class="bi bi-basket me-2"></i>{{ 'market.product.add_cart'|trans }}
                                         </button>
                                     </form>

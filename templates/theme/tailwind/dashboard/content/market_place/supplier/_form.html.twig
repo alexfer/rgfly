@@ -9,7 +9,7 @@
 {% block title_content %}{{ _title_extend }}{% endblock %}
 {% block content %}
     {% set _message = app.flashes('success') %}
-    <div class="pb-5 shadow-lg border border-t-gray-200 rounded-md dark:bg-gray-800 p-3">
+    <div class="pb-5 shadow-lg border border-t-gray-200 rounded-md dark:bg-gray-800 dark:border-gray-900 p-3">
         {{ form_start(form, {attr: {class: 'group', novalidate: 'novalidate'}}) }}
         <div class="block mb-3">
             {{ form_label(form.name, 'label.form.supplier_name', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}

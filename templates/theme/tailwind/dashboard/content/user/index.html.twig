@@ -21,7 +21,7 @@
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <th scope="row"
                             class="px-6 py-3 w-2/5 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <a class="link"
+                            <a class="dark:text-gray-400"
                                href="{{ path('app_dashboard_details_user', {id: user.id, tab: 'summary'}) }}">
                                 {{ user.userDetails.firstName }} {{ user.userDetails.lastName }}
                             </a>
@@ -38,9 +38,9 @@
                             <a
                                     data-twe-toggle="tooltip"
                                     title="{{ 'tooltip.show.more'|trans }} {{ user.userDetails.firstName }}"
-                                    class="border rounded p-1.5 hover:shadow-md hover:bg-gray-100"
+                                    class="border rounded ps-1.5 pt-1.5 pe-1 pb-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-black"
                                     href="{{ path('app_dashboard_details_user', {id: user.id, tab: 'summary'}) }}">
-                                <i class="fa fa-user-circle"></i>
+                                <i class="fa fa-user-circle dark:text-white"></i>
                             </a>
                         </td>
                     </tr>

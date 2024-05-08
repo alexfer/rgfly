@@ -148,19 +148,14 @@ class BrandController extends AbstractController
         $market = $this->market($request, $user, $em);
         $token = $request->get('_token');
 
-        if ($request->headers->get('Content-Type', 'application/json') && !$token) {
-            $content = $request->getContent();
-            $content = json_decode($content, true);
+        if (!$token) {
+            $content = $request->getPayload()->all();
             $token = $content['_token'];
         }
 
         if ($this->isCsrfTokenValid('delete', $token) && !$brand->getMarketProductBrands()->count()) {
             $em->remove($brand);
             $em->flush();
-        }
-
-        if ($request->headers->get('Content-Type', 'application/json') && !$token) {
-            return $this->json(['redirect' => $this->generateUrl('app_dashboard_market_place_market_brand', ['market' => $market->getId()])]);
         }
 
         return $this->redirectToRoute('app_dashboard_market_place_market_brand', ['market' => $market->getId()]);
