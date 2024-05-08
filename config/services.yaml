@@ -10,7 +10,7 @@ parameters:
     app.date_format: 'M d, Y'
     locale: 'en'
     default_timezone: 'Europe/Kyiv'
-    theme: 'tailwind' # theme dir
+    app.theme: '%env(APP_THEME)%' # theme dir
     user_storage_dir: '%kernel.project_dir%/public/storage/user'
     entry_storage_dir: '%kernel.project_dir%/public/storage/entry'
     product_storage_dir: '%kernel.project_dir%/public/storage/product'
