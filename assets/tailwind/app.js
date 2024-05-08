@@ -15,3 +15,4 @@ import './bootstrap';
 import './js/market';
 import './js/flowbite';
 import './js/main';
+import './js/theme';

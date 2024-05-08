@@ -5,7 +5,7 @@
 {% block title_content %}{{ _title_extend }}{% endblock %}
 
 {% block content %}
-    {% include 'dashboard/content/market_place/navbar/nav.html.twig' with {'search': 'product'} %}
+    {% include 'dashboard/content/market_place/navbar/nav.html.twig' %}
     {% if market.deletedAt %}
         <div class="text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 py-2.5 ps-4 mb-3 ms-2  dar" id="liveAlertPlaceholder" role="alert">
             {{ 'product.unavailable'|trans }}

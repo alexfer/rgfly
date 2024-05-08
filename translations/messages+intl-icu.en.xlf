@@ -60,6 +60,10 @@
                 <source>site.title</source>
                 <target>RgFly</target>
             </trans-unit>
+            <trans-unit id="text.theme">
+                <source>text.theme</source>
+                <target>Theme</target>
+            </trans-unit>
             <trans-unit id="open.sidebar">
                 <source>open.sidebar</source>
                 <target>Open sidebar</target>

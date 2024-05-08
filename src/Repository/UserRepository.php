@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Entity\UserDetails;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\NonUniqueResultException;
@@ -82,5 +83,28 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $statement->bindValue('values', $jsonValues, \PDO::PARAM_STR);
 
         return $statement->executeQuery()->fetchOne();
+    }
+
+
+    public function fetch(string $query = null, int $limit = 25, int $offset = 0): array
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->select([
+                'u.id',
+                'u.created_at',
+                'details.updated_at',
+                'u.roles',
+                'details.first_name',
+                'details.last_name',
+            ])
+            ->join(UserDetails::class, 'details', 'WITH', 'u.id = details.user')
+            ->where('details.first_name LIKE :query')
+            ->orWhere('details.last_name LIKE :query')
+            ->orWhere('u.email LIKE :query')
+            ->setParameter('query', '%' . $query . '%')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
     }
 }
