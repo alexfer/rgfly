@@ -7,7 +7,7 @@
 {% block content %}
     {% include 'dashboard/content/market_place/navbar/nav.html.twig' with {'search': 'product'} %}
     {% if market.deletedAt %}
-        <div class="alert alert-warning mb-2" id="liveAlertPlaceholder" role="alert">
+        <div class="text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 py-2.5 ps-4 mb-3 ms-2  dar" id="liveAlertPlaceholder" role="alert">
             {{ 'product.unavailable'|trans }}
         </div>
     {% endif %}
@@ -34,7 +34,7 @@
                     <th class="px-6 py-3" scope="row">
                         <a data-twe-toggle="tooltip"
                            data-twe-placement="left"
-                           class="block text-wrap font-semibold hover:underline hover:text-gray-400 {% if product.deletedAt %}line-through{% endif %}"
+                           class="block text-wrap font-semibold hover:underline hover:text-gray-400 dark:text-gray-400 {% if product.deletedAt %}line-through{% endif %}"
                            title="{{ product.name }}"
                            href="{{ path('app_dashboard_market_place_edit_product', {market: product.market.id, id: product.id, tab: 'details'}) }}">
                             {{ product.shortName|length >= 40 ? product.shortName|slice(0, 40) ~ '...' : product.shortName }}
@@ -48,22 +48,22 @@
                     <td class="px-6 py-3 text-center">{{ product.createdAt|date(date_format) }}</td>
                     <td class="px-6 py-3 text-center">
                         {% if product.deletedAt %}
-                            <a class="border rounded px-2 py-1.5 hover:shadow-md hover:bg-gray-100 {{ product.market.deletedAt ? 'pointer-events-none' : '' }}"
+                            <a class="border rounded px-1.5 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800 {{ product.market.deletedAt ? 'pointer-events-none' : '' }}"
                                href="{{ path('app_dashboard_restore_product', {market: product.market.id, id: product.id}) }}">
-                                <i class="fa fa-{{ product.market.deletedAt ? 'ban' : 'arrow-up' }}"></i>
+                                <i class="fa fa-{{ product.market.deletedAt ? 'ban' : 'arrow-up' }} dark:text-white"></i>
                             </a>
                         {% else %}
                             <a href="{{ path('app_dashboard_market_place_edit_product', {market: product.market.id, id: product.id, tab: 'details'}) }}"
-                               class="border rounded pl-2 pr-1 py-1.5 mr-1 hover:shadow-md hover:bg-gray-100">
-                                <i class="fa fa-pencil text-indigo-600"></i>
+                               class="border rounded ps-1.5 pr-1 py-1 mr-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
+                                <i class="fa fa-pencil text-indigo-600 dark:text-white"></i>
                             </a>
                             <a
-                                    class="border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 cursor-pointer"
+                                    class="border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
                                     data-token="{{ csrf_token('delete') }}"
                                     data-url="{{ url('app_dashboard_delete_product', {market: product.market.id, id: product.id}) }}"
                                     data-bs-toggle="modal"
                                     data-bs-target="#modal-delete">
-                                <i class="fa fa-trash text-red-600"></i>
+                                <i class="fa fa-trash text-red-600 dark:text-white"></i>
                             </a>
                         {% endif %}
                     </td>
@@ -71,7 +71,7 @@
             {% else %}
                 <tr>
                     <td colspan="6"
-                        class="px-6 py-3 text-center text-gray-700 bg-gray-100">{{ 'table.footer.not_found'|trans }}</td>
+                        class="px-6 py-3 text-center text-gray-700 bg-gray-100 dark:bg-gray-500 dark:text-white">{{ 'table.footer.not_found'|trans }}</td>
                 </tr>
             {% endfor %}
             </tbody>

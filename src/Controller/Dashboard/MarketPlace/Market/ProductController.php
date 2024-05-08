@@ -364,7 +364,7 @@ class ProductController extends AbstractController
      * @throws NotFoundExceptionInterface
      * @throws Exception
      */
-    #[Route('/delete/{market}-{id}', name: 'app_dashboard_delete_product', methods: ['POST'])]
+    #[Route('/delete/{market}/{id}', name: 'app_dashboard_delete_product', methods: ['POST'])]
     public function delete(
         Request                $request,
         UserInterface          $user,
@@ -375,9 +375,8 @@ class ProductController extends AbstractController
         $market = $this->market($request, $user, $em);
         $token = $request->get('_token');
 
-        if ($request->headers->get('Content-Type', 'application/json') && !$token) {
-            $content = $request->getContent();
-            $content = json_decode($content, true);
+        if (!$token) {
+            $content = $request->getPayload()->all();
             $token = $content['_token'];
         }
 
@@ -386,10 +385,6 @@ class ProductController extends AbstractController
             $product->setDeletedAt($date);
             $em->persist($product);
             $em->flush();
-        }
-
-        if ($request->headers->get('Content-Type', 'application/json') && !$token) {
-            return $this->json(['redirect' => $this->generateUrl('app_dashboard_market_place_market_product', ['market' => $market->getId()])]);
         }
 
         return $this->redirectToRoute('app_dashboard_market_place_market_product', ['market' => $market->getId()]);
@@ -404,7 +399,7 @@ class ProductController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/restore/{market}-{id}', name: 'app_dashboard_restore_product')]
+    #[Route('/restore/{market}/{id}', name: 'app_dashboard_restore_product')]
     public function restore(
         Request                $request,
         UserInterface          $user,

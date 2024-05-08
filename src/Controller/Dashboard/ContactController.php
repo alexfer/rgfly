@@ -50,12 +50,10 @@ class ContactController extends AbstractController
         EntityManagerInterface $em,
     ): Response
     {
-
         $token = $request->get('_token');
 
-        if ($request->headers->get('Content-Type', 'application/json')) {
-            $content = $request->getContent();
-            $content = json_decode($content, true);
+        if (!$token) {
+            $content = $request->getPayload()->all();
             $token = $content['_token'];
         }
 
@@ -63,10 +61,6 @@ class ContactController extends AbstractController
             $entry->setStatus($entry::STATUS['trashed']);
             $em->persist($entry);
             $em->flush();
-        }
-
-        if ($request->headers->get('Content-Type', 'application/json')) {
-            return $this->json(['redirect' => $this->generateUrl('app_dashboard_contact')]);
         }
 
         return $this->redirectToRoute('app_dashboard_contact');

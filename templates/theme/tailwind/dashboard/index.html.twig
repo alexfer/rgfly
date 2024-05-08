@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block body %}
-    <div class="bg-white dark:bg-gray-900">
-        <h2 class="text-xl md:text-2xl text-red-400 font-semibold mb-2">{% block title_content %}{{ 'text.dashboard'|trans }}{% endblock %}</h2>
+    <div class="bg-white dark:bg-gray-600">
+        <h2 class="text-xl md:text-2xl pl-2 text-red-400 font-semibold mb-2 dark:bg-gray-600">{% block title_content %}{{ 'text.dashboard'|trans }}{% endblock %}</h2>
         {% block content %}
             {% include 'dashboard/content/index.html.twig' %}
         {% endblock %}

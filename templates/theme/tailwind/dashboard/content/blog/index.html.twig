@@ -25,7 +25,7 @@
                     <th scope="row" class="px-6 py-3">
                         <a data-twe-toggle="tooltip"
                            data-twe-placement="left"
-                           class="link"
+                           class="block text-wrap font-semibold hover:underline hover:text-gray-400 dark:text-gray-400"
                            title="{{ entry.entryDetails.title }}"
                            href="{{ path('app_dashboard_edit_blog', {id: entry.id}) }}">
                             {{ entry.entryDetails.title|length > 30 ? entry.entryDetails.title|slice(0, 30) ~ '...' : entry.entryDetails.title }}
@@ -33,7 +33,7 @@
                     </th>
                     {% if is_granted('ROLE_ADMIN') %}
                         <td class="px-6 py-3">
-                            <a class="text-blue-700 hover:text-black hover:underline"
+                            <a class="text-blue-700 hover:text-black hover:underline dark:text-white"
                                href="{{ path('app_dashboard_details_user', {id: entry.user.id, tab: 'summary'}) }}">{{ entry.user.userDetails.firstName }}</a>
                         </td>
                     {% else %}
@@ -50,14 +50,14 @@
                     </td>
                     <td class="px-6 py-3 text-center">
                         <a href="{{ path('app_dashboard_edit_blog', {id: entry.id}) }}"
-                           class="border rounded p-1 pb-0.5 mr-1 hover:shadow-md hover:bg-gray-100">
-                            <i class="fa fa-edit"></i>
+                           class="border rounded p-1 pb-0.5 mr-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-black">
+                            <i class="fa fa-edit dark:text-white"></i>
                         </a>
                     </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="4" class="text-center text-bg-light">{{ 'table.footer.not_found'|trans }}</td>
+                    <td colspan="4" class="px-6 py-3 text-center text-gray-700 bg-gray-100 dark:bg-gray-500 dark:text-white">{{ 'table.footer.not_found'|trans }}</td>
                 </tr>
             {% endfor %}
             </tbody>
