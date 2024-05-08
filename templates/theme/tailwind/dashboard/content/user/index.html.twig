@@ -5,6 +5,9 @@
 {% block title_content %}{{ _title_extend }}{% endblock %}
 
 {% block content %}
+    <div class="p-4 md:p-0 bg-gray-50 w-full rounded-b-lg rounded-t-lg md:flex md:w-auto md:order-1 mb-2 dark:bg-gray-500">
+        {% include 'dashboard/content/market_place/navbar/search.html.twig' %}
+    </div>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-500 uppercase bg-info-50 dark:bg-gray-700 dark:text-gray-400">
@@ -23,21 +26,21 @@
                             class="px-6 py-3 w-2/5 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <a class="dark:text-gray-400"
                                href="{{ path('app_dashboard_details_user', {id: user.id, tab: 'summary'}) }}">
-                                {{ user.userDetails.firstName }} {{ user.userDetails.lastName }}
+                                {{ user.first_name }} {{ user.last_name }}
                             </a>
                         </th>
                         <td class="px-6 py-3 text-center">
                             <span data-twe-toggle="tooltip"
-                                  title="{{ user.createdAt|date(datetime_format) }}"
-                                  class="text-muted">{{ user.createdAt|date(date_format) }}</span>
+                                  title="{{ user.created_at|date(datetime_format) }}"
+                                  class="text-gray-600 dark:text-gray-100 cursor-default">{{ user.created_at|date(date_format) }}</span>
                         </td>
                         <td class="px-6 py-3 text-center">
-                            <span class="text-muted">{{ user.userDetails.updatedAt|date(datetime_format) }}</span>
+                            <span class="text-gray-600 dark:text-gray-100 cursor-default">{{ user.updated_at|date(datetime_format) }}</span>
                         </td>
                         <td class="px-6 py-3 text-center">
                             <a
                                     data-twe-toggle="tooltip"
-                                    title="{{ 'tooltip.show.more'|trans }} {{ user.userDetails.firstName }}"
+                                    title="{{ 'tooltip.show.more'|trans }} {{ user.first_name }}"
                                     class="border rounded ps-1.5 pt-1.5 pe-1 pb-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-black"
                                     href="{{ path('app_dashboard_details_user', {id: user.id, tab: 'summary'}) }}">
                                 <i class="fa fa-user-circle dark:text-white"></i>

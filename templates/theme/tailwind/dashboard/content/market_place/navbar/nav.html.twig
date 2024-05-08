@@ -1,55 +1,39 @@
-<nav class="bg-white w-full rounded-lg mb-3 border border-gray-200 dark:border-gray-600 dark:bg-gray-600">
-    <div class="p-4 md:p-0 bg-gray-50 w-full md:flex md:w-auto md:order-1 dark:bg-transparent">
+<nav class="w-full relative mb-3 border shadow-md sm:rounded-lg border-gray-200 dark:border-gray-600">
+    <div class="p-4 md:p-0 bg-gray-50 w-full md:flex md:w-auto md:order-1 dark:bg-gray-500">
         {% set _part = app.request.get('_route')|split('_')|last %}
-        <ul class="flex flex-col p-2 font-medium w-full md:space-x-2 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:bg-gray-600 dark:border-gray-700">
+        <ul class="flex flex-col p-2 font-medium w-full md:space-x-2 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:bg-gray-500 dark:border-gray-700">
             <li>
                 <a href="{{ path('app_dashboard_market_place_create_product', {market: market.id, tab: 'details'}) }}"
-                   class="block py-2 px-3 bg-white shadow hover:bg-gray-50 hover:text-gray-900 rounded-lg text-gray-500 dark:hover:bg-gray-500 dark:bg-gray-700 dark:text-gray-200">
+                   class="block py-2 px-3 bg-white shadow hover:bg-gray-100 hover:text-gray-900 rounded-lg text-gray-500 dark:hover:bg-gray-600 dark:bg-gray-700 dark:text-gray-200">
                     {{ 'market.product.create'|trans }}
                 </a>
             </li>
             <li>
                 <a href="{{ path('app_dashboard_market_place_market_product', {market: market.id}) }}"
-                   class="{% if _part == 'product' %}font-semibold dark:bg-black dark:hover:bg-black{% endif %} block py-2 px-3 bg-white shadow hover:bg-gray-50 hover:text-gray-900 rounded-lg text-gray-500 dark:hover:bg-gray-500 dark:bg-gray-700 dark:text-gray-200">
+                   class="{% if _part == 'product' %}font-semibold dark:bg-black dark:hover:bg-black{% endif %} block py-2 px-3 bg-white shadow hover:bg-gray-100 hover:text-gray-900 rounded-lg text-gray-500 dark:hover:bg-gray-600 dark:bg-gray-700 dark:text-gray-200">
                     {{ 'market.products'|trans }}
                 </a>
             </li>
             <li>
                 <a href="{{ path('app_dashboard_market_place_market_brand', {market: market.id}) }}"
-                   class="{% if _part == 'brand' %}font-semibold dark:bg-black dark:hover:bg-black{% endif %} block py-2 px-3 bg-white shadow hover:bg-gray-50 hover:text-gray-900 rounded-lg text-gray-500 dark:hover:bg-gray-500 dark:bg-gray-700 dark:text-gray-200">
+                   class="{% if _part == 'brand' %}font-semibold dark:bg-black dark:hover:bg-black{% endif %} block py-2 px-3 bg-white shadow hover:bg-gray-100 hover:text-gray-900 rounded-lg text-gray-500 dark:hover:bg-gray-600 dark:bg-gray-700 dark:text-gray-200">
                     {{ 'market.brands'|trans }}
                 </a>
             </li>
             <li>
                 <a href="{{ path('app_dashboard_market_place_market_supplier', {market: market.id}) }}"
-                   class="{% if _part == 'supplier' %}font-semibold dark:bg-black dark:hover:bg-black{% endif %} block py-2 px-3 bg-white shadow hover:bg-gray-50 hover:text-gray-900 rounded-lg text-gray-500 dark:hover:bg-gray-500 dark:bg-gray-700 dark:text-gray-200">
+                   class="{% if _part == 'supplier' %}font-semibold dark:bg-black dark:hover:bg-black{% endif %} block py-2 px-3 bg-white shadow hover:bg-gray-100 hover:text-gray-900 rounded-lg text-gray-500 dark:hover:bg-gray-600 dark:bg-gray-700 dark:text-gray-200">
                     {{ 'market.suppliers'|trans }}
                 </a>
             </li>
             <li>
                 <a href="{{ path('app_dashboard_market_place_market_manufacturer', {market: market.id}) }}"
                    {% if _part == 'manufacturer' %}aria-current="true"{% endif %}
-                   class="{% if _part == 'manufacturer' %}font-semibold dark:bg-black dark:hover:bg-black{% endif %} block py-2 px-3 bg-white shadow hover:bg-gray-50 hover:text-gray-900 rounded-lg text-gray-500 dark:hover:bg-gray-500 dark:bg-gray-700 dark:text-gray-200">
+                   class="{% if _part == 'manufacturer' %}font-semibold dark:bg-black dark:hover:bg-black{% endif %} block py-2 px-3 bg-white shadow hover:bg-gray-100 hover:text-gray-900 rounded-lg text-gray-500 dark:hover:bg-gray-600 dark:bg-gray-700 dark:text-gray-200">
                     {{ 'market.manufacturers'|trans }}
                 </a>
             </li>
         </ul>
-        <div class="p-2 float-end">
-            <form method="get" name="{{ search }}">
-                <label for="search" class="sr-only">{{ 'title.search'|trans }}</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                  stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"></path>
-                        </svg>
-                    </div>
-                    <input type="text" onkeydown="this.submit" id="search" name="search"
-                           class="block w-full p-2 ps-10 bg-white text-sm text-gray-900 border border-gray-300 rounded-lg focus:placeholder-white focus:ring-gray-400 focus:border-gray-300 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500"
-                           placeholder="{{ 'title.search'|trans }}">
-                </div>
-            </form>
-        </div>
+        {% include 'dashboard/content/market_place/navbar/search.html.twig' %}
     </div>
 </nav>

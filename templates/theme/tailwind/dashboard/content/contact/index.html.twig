@@ -28,22 +28,22 @@
                             <del class="text-gray-500">{{ entry.subject }}</del>
                         {% else %}
                             <a href="{{ path('app_dashboard_review_contact', {id: entry.id}) }}"
-                               class="text-blue-700 hover:!text-red-700 hover:underline">{{ entry.subject }}</a>
+                               class="text-blue-700 hover:underline dark:text-gray-100">{{ entry.subject }}</a>
                         {% endif %}
                     </td>
-                    <td class="px-6 py-3 text-center text-gray-500">{{ entry.answers }}</td>
+                    <td class="px-6 py-3 text-center text-gray-500 dark:text-white">{{ entry.answers }}</td>
                     <td class="px-6 py-3 text-center">
-                        <a class="text-green-500 underline hover:text-green-700 hover:no-underline"
+                        <a class="text-gray-500 hover:text-green-400"
                            href="{{ path('app_dashboard_review_contact', {id: entry.id}) }}">{{ entry.status }}</a>
                     </td>
                     <td class="px-6 py-3 text-center">
                         {% if entry.status == constant('App\\Entity\\Contact::STATUS')['trashed'] %}
-                            <i class="fa fa-ban text-red-700 inline-block border rounded px-2 py-1 hover:shadow-md hover:bg-gray-100 cursor-pointer"></i>
+                            <i class="fa fa-ban border rounded px-1.5 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800 pointer-events-none dark:text-white"></i>
                         {% else %}
-                            <a class="inline-block border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 cursor-pointer"
+                            <a class="border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
                                data-token="{{ csrf_token('delete') }}"
                                data-url="{{ url('app_dashboard_delete_contact', {id: entry.id}) }}">
-                                <i class="fa fa-trash text-red-700"></i>
+                                <i class="fa fa-trash text-red-700 dark:text-white"></i>
                             </a>
                         {% endif %}
                     </td>
@@ -51,7 +51,7 @@
             {% else %}
                 <tr>
                     <td colspan="4"
-                        class="px-6 py-3 text-center text-gray-700 bg-gray-100">{{ 'table.footer.not_found'|trans }}</td>
+                        class="px-6 py-3 text-center text-gray-700 bg-gray-100 dark:bg-gray-500 dark:text-white">{{ 'table.footer.not_found'|trans }}</td>
                 </tr>
             {% endfor %}
             </tbody>

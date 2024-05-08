@@ -2,6 +2,7 @@
 
 namespace App\Controller\Dashboard;
 
+use App\Entity\User;
 use App\Form\Type\User\ChangePasswordProfileType;
 use App\Repository\{AttachRepository, UserDetailsRepository, UserRepository,};
 use App\Service\Dashboard;
@@ -23,22 +24,22 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/dashboard/user')]
 class UserController extends AbstractController
 {
-
     use Dashboard;
 
     /**
-     *
-     * @param UserRepository $repository
+     * @param EntityManagerInterface $em
      * @param UserInterface $user
      * @return Response
      */
     #[Route('', name: 'app_dashboard_user', methods: ['GET'])]
     public function index(
-        UserRepository $repository,
+        Request $request,
+        EntityManagerInterface $em,
         UserInterface  $user,
     ): Response
     {
-        $users = $repository->findBy([], ['id' => 'desc']);
+        $query = $request->query->get('search');
+        $users = $em->getRepository(User::class)->fetch($query);
         return $this->render('dashboard/content/user/index.html.twig', $this->navbar() + ['users' => $users]);
     }
 
