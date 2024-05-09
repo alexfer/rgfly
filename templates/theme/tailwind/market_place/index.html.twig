@@ -41,7 +41,7 @@
                                                   action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
                                                 <button class="text-white bg-gray-800 shadow-md hover:bg-surface-dark focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-md text-sm px-4 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                                         data-slug="{{ product.slug }}" type="submit"
-                                                        {% if product.quantity == 0 or ('ROLE_USER' in app.user.roles or 'ROLE_ADMIN' in app.user.roles) %}disabled{% endif %}>
+                                                        {% if product.quantity == 0 or (app.user and 'ROLE_USER' in app.user.roles or app.user and  'ROLE_ADMIN' in app.user.roles) %}disabled{% endif %}>
                                                     <i class="fa fa-shopping-cart mt-1 me-2"></i>{{ 'market.product.add'|trans }}
                                                 </button>
                                             </form>

@@ -31,7 +31,7 @@
                                     {% endif %}
                                     <div class="flex items-center pb-2 border-b">
                                         <a class="block shrink-0 mr-2"
-                                           href="{{ path('app_market_place_product', {slug: product.product.slug}) }}">
+                                           href="{{ path('app_market_place_product', {slug: product.product.slug, tab: 'about'}) }}">
                                             {% if product.product.marketProductAttaches.count %}
                                                 {% set _picture = 'storage/product/picture/' ~ product.product.id ~ '/' ~ product.product.marketProductAttaches.first.attach.name %}
                                                 <img src="{{ asset(_picture)|imagine_filter('product_thumb') }}"
@@ -45,7 +45,7 @@
                                         <div class="pl-1 w-40">
                                             <h5 class="font-bold truncate">
                                                 <a class="text-lg" title="{{ product.product.name }}"
-                                                   href="{{ path('app_market_place_product', {slug: product.product.slug}) }}">{{ product.product.shortName }}</a>
+                                                   href="{{ path('app_market_place_product', {slug: product.product.slug, tab: 'about'}) }}">{{ product.product.shortName }}</a>
                                             </h5>
                                             <span class="text-sm text-gray-500">
                                                 {{ (item_cost) }}<small>{{ order.market.currency|currency }}</small>&times;{{ product.quantity }} {{ 'label.form.quantity_pcs'|trans }}

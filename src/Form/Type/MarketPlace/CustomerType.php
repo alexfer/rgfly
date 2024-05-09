@@ -64,12 +64,21 @@ class CustomerType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'choices' => array_flip(Countries::getNames(Locale::getDefault())),
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'form.country.not_blank',
+                    ]),
+                ],
             ])
             ->add('phone', TelType::class, [
+                'required' => true,
                 'attr' => [
                     'pattern' => "[+0-9]+$",
                 ],
                 'constraints' => [
+                    new NotBlank([
+                        'message' => 'form.phone.not_blank',
+                    ]),
                     new Regex([
                         'pattern' => "/[+0-9]+$/i",
                         'message' => 'form.phone.not_valid',

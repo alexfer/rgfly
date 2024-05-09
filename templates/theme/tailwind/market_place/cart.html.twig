@@ -9,7 +9,7 @@
                 {% if product.order_id == order.id %}
                     <div class="flex justify-start items-center h-auto mb-1.5">
                         <div class="mx-1 w-1/3">
-                            <a class="mb-2" href="{{ path('app_market_place_product', {slug: product.slug}) }}">
+                            <a class="mb-2" href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}">
                                 {% if product.attach %}
                                     {% set _picture = 'storage/product/picture/' ~ product.id ~ '/' ~  product.attach %}
                                     <img src="{{ asset(_picture)|imagine_filter('product_thumb') }}" class="rounded-md"
@@ -29,7 +29,7 @@
                             <div class="ml-1 mb-1 inline-block align-top">
                                 <a title="{{ product.name }}"
                                    class="truncate font-bold w-48 inline-block align-top text-gray-900"
-                                   href="{{ path('app_market_place_product', {slug: product.slug}) }}">{{ product.short_name }}</a>
+                                   href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}">{{ product.short_name }}</a>
                                 {% if product.percent %}
                                     {% set percent = product.percent %}
                                     {% set cost = product.cost %}
