@@ -6,20 +6,20 @@
 {% block title_content %}
     {{ _title_extend }}
     {% if app.request.get('id') %}
-        <a role="button" target="_blank"
-           class="text-sm font-normal border shadow-md hover:border-gray-400 hover:bg-gray-100 hover:shadow-lg rounded-md px-3 py-2 float-end mb-1 dark:text-white dark:hover:bg-black"
-           href="{{ path('app_blog_view', {slug: form.vars.data.slug}) }}">{{ 'user.entry.preview'|trans }}</a>
+{#        <a role="button" target="_blank"#}
+{#           class="text-sm font-normal border shadow-md hover:border-gray-400 hover:bg-gray-100 hover:shadow-lg rounded-md px-3 py-2 float-end mb-1 dark:text-white dark:hover:bg-black"#}
+{#           href="{{ path('app_blog_view', {slug: form.vars.data.slug}) }}">{{ 'user.entry.preview'|trans }}</a>#}
     {% endif %}
 {% endblock %}
 {% block content %}
     {{ form_start(form, {attr: {novalidate: ''}}) }}
     {% if form_errors(form) %}
-        <div class="alert alert-danger">
+        <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
             {{ form_errors(form) }}
         </div>
     {% endif %}
     {% if error %}
-        <div class="alert alert-danger">
+        <div class="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
             {{ error }}
         </div>
     {% endif %}
@@ -40,7 +40,7 @@
             {{ form_widget(form.content, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', rows: 6, placeholder: 'label.form.content'}}) }}
             <small class="text-danger">{{ form_errors(form.content) }}</small>
         </div>
-        <div class="blockmb-3">
+        <div class="block mb-3">
             {{ form_label(form.status, 'label.form.status', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
             {{ form_widget(form.status, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', disabled: app.request.get('id') ? false : true}}) }}
             <small class="text-danger">{{ form_errors(form.status) }}</small>

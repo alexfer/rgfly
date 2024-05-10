@@ -2,16 +2,15 @@
 
 namespace App\Service\MarketPlace\Market\Checkout;
 
-use App\Entity\MarketPlace\MarketInvoice;
-use App\Entity\MarketPlace\MarketOrders;
-use App\Entity\MarketPlace\MarketPaymentGateway;
-use App\Entity\MarketPlace\MarketProduct;
+use App\Entity\MarketPlace\{MarketInvoice, MarketOrders, MarketPaymentGateway, MarketProduct};
 use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Service\MarketPlace\Market\Checkout\Interface\ProcessorInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\{Request, RequestStack, Response};
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class Processor implements ProcessorInterface
 {
@@ -29,12 +28,16 @@ class Processor implements ProcessorInterface
     private string $sessionId;
 
     /**
-     * @param RequestStack $requestStack
      * @param EntityManagerInterface $em
+     * @param RequestStack $requestStack
+     * @param TranslatorInterface $translator
+     * @param RouterInterface $router
      */
     public function __construct(
-        private readonly RequestStack           $requestStack,
         private readonly EntityManagerInterface $em,
+        readonly RequestStack                   $requestStack,
+        private readonly TranslatorInterface    $translator,
+        private readonly RouterInterface        $router,
     )
     {
         $this->request = $requestStack->getCurrentRequest();
@@ -52,6 +55,11 @@ class Processor implements ProcessorInterface
             'session' => $this->sessionId,
             'status' => MarketOrders::STATUS['processing'],
         ]);
+
+        if (!$order) {
+            $message = $this->translator->trans('http_error_404.suggestion', ['url' => $this->router->generate('app_market_place_index')]);
+            throw new NotFoundHttpException($message, null, Response::HTTP_NOT_FOUND);
+        }
 
         $this->order = $order;
 

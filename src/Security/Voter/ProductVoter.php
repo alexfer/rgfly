@@ -4,7 +4,6 @@ namespace App\Security\Voter;
 
 use App\Entity\MarketPlace\MarketProduct;
 use App\Entity\User;
-use LogicException;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -12,23 +11,23 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 class ProductVoter extends Voter
 {
 
-    const string DELETE = 'delete';
-    const string VIEW = 'view';
-    const string EDIT = 'edit';
+    const DELETE = 'delete';
+    const VIEW = 'view';
+    const EDIT = 'edit';
 
-    /**
-     * @var Security
-     */
-    private Security $security;
 
     /**
      * @param Security $security
      */
-    public function __construct(Security $security)
+    public function __construct(private readonly Security $security)
     {
-        $this->security = $security;
     }
 
+    /**
+     * @param string $attribute
+     * @param mixed $subject
+     * @return bool
+     */
     #[\Override]
     protected function supports(string $attribute, mixed $subject): bool
     {
@@ -43,6 +42,12 @@ class ProductVoter extends Voter
         return true;
     }
 
+    /**
+     * @param string $attribute
+     * @param mixed $subject
+     * @param TokenInterface $token
+     * @return bool
+     */
     #[\Override]
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
@@ -63,7 +68,7 @@ class ProductVoter extends Voter
             self::DELETE => $this->canDelete($entity, $user),
             self::VIEW => $this->canView($entity, $user),
             self::EDIT => $this->canEdit($entity, $user),
-            default => throw new LogicException('This code should not be reached!')
+            default => throw new \LogicException('This code should not be reached!')
         };
     }
 
