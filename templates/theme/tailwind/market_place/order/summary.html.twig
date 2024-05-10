@@ -93,13 +93,7 @@
                                     </div>
                                 {% endfor %}
                             </div>
-                            {% if orders|length == 0 %}
-                                <div class="flex flex-col text-blue-700 bg-blue-100 py-4 mb-5 sm:text-wrap md:px-3 shadow-md rounded-md text-center dark:text-white dark:bg-gray-600">{{ 'market.product.cart.empty'|trans }}</div>
-                                <div class="flex justify-center my-4">
-                                    <a href="{{ path('app_market_place_index') }}"
-                                       class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-gray-200 hover:text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">{{ 'order.continue.shopping'|trans }}</a>
-                                </div>
-                            {% else %}
+                            {% if orders|length %}
                                 <div class="flex justify-between mt-4">
                                     <a href="{{ path('app_market_place_index') }}"
                                        class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-gray-200 hover:text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">{{ 'order.continue.shopping'|trans }}</a>
@@ -158,6 +152,13 @@
                         </div>
                     {% endif %}
                 </div>
+                {% if orders|length == 0 %}
+                    <div class="flex flex-col mx-auto max-w-xl text-blue-800 bg-blue-50 py-4 mb-5 sm:text-wrap md:px-3 shadow-md rounded-md text-center dark:text-white dark:bg-gray-600">{{ 'market.product.cart.empty'|trans }}</div>
+                    <div class="flex justify-center my-4">
+                        <a href="{{ path('app_market_place_index') }}"
+                           class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-gray-200 hover:text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">{{ 'order.continue.shopping'|trans }}</a>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </section>

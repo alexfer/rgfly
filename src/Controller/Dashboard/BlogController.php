@@ -92,14 +92,11 @@ class BlogController extends AbstractController
 
         $error = null;
         $title = $form->get('title')->getData();
+        $slug = $slugger->slug($title)->lower();
 
         if ($title) {
-            try {
-                $entry->setType('blog')
-                    ->setSlug($slugger->slug($title)->lower())
-                    ->setUser($user);
-                $em->persist($entry);
-            } catch (UniqueConstraintViolationException $e) {
+            $exists = $em->getRepository(Entry::class)->findOneBy(['slug' => $slug]);
+            if ($exists) {
                 $error = $translator->trans('slug.unique', [
                     '%name%' => $translator->trans('label.form.title'),
                     '%value%' => $title,
@@ -108,6 +105,11 @@ class BlogController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid() && !$error) {
+
+            $entry->setType(Entry::TYPE['Blog'])
+                ->setSlug($slug)
+                ->setUser($user);
+            $em->persist($entry);
 
             $requestCategory = $request->get('category');
 
