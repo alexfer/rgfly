@@ -68,7 +68,7 @@
                                                           required></textarea>
                                                 <span class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">{{ 'form.message.invalid'|trans }}</span>
                                             </div>
-                                            <button onclick="javascript:void(0);" class="inline-block mt-3 w-full rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong group-invalid:pointer-events-none group-invalid:opacity-30"
+                                            <button onclick="void(0);" class="inline-block mt-3 w-full rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong group-invalid:pointer-events-none group-invalid:opacity-30"
                                                     type="submit">{{ 'form.action.send'|trans }}</button>
                                         </form>
                                     </div>
@@ -96,7 +96,7 @@
                                                     <div class="flex justify-between">
                                                     <span class="ml-2 bg-gray-600 text-sm bg-opacity-90 text-gray-500 text-md shadow-xl font-medium px-2.5 py-0.5 rounded-md dark:bg-gray-900 dark:text-gray-300">
                                                         <a title="{{ product.name }}"
-                                                           href="{{ path('app_market_place_product', {slug: product.slug}) }}"
+                                                           href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}"
                                                            class="text-white hover:text-neutral-100 hover:animate-pulse">{{ 'market.product.details'|trans }}
                                                         </a>
                                                     </span>
@@ -117,7 +117,7 @@
                                                 </a>
                                             </div>
                                             <a title="{{ product.name }}" class="mt-3"
-                                               href="{{ path('app_market_place_product', {slug: product.slug}) }}">
+                                               href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}">
                                                 <h5 class="mx-2 text-md-start font-bold hover:text-gray-700 tracking-tight truncate text-gray-500 dark:text-white">
                                                     {{ product.shortName }}
                                                 </h5>
@@ -135,7 +135,7 @@
                                             </div>
                                             <div class="flex items-center border-t mt-3 pt-1 bg-gray-50 bg-opacity-75 pb-2 px-3 justify-between">
                                                 <div>
-                                                    <a href="{{ path('app_market_place_product', {slug: product.slug}) }}"
+                                                    <a href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}"
                                                        class="hover:text-info-700 text-md dark:text-white">{{ 'market.product.details'|trans }}
                                                         <svg class="w-[16px] h-[16px] inline ml-3 fill-gray-500"
                                                              viewBox="0 0 512 512"

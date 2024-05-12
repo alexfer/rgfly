@@ -91,6 +91,12 @@ class Market
     #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketWishlist::class)]
     private Collection $marketWishlists;
 
+    /**
+     * @var Collection<int, MarketCoupon>
+     */
+    #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketCoupon::class)]
+    private Collection $marketCoupons;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
@@ -103,6 +109,7 @@ class Market
         $this->messages = ["email"];
         $this->marketPaymentGatewayMarkets = new ArrayCollection();
         $this->marketWishlists = new ArrayCollection();
+        $this->marketCoupons = new ArrayCollection();
     }
 
     /**
@@ -688,6 +695,48 @@ class Market
             // set the owning side to null (unless already changed)
             if ($marketWishlist->getMarket() === $this) {
                 $marketWishlist->setMarket(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getMarketCoupon(): ?MarketCoupon
+    {
+        return $this->marketCoupon;
+    }
+
+    public function setMarketCoupon(?MarketCoupon $marketCoupon): static
+    {
+        $this->marketCoupon = $marketCoupon;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketCoupon>
+     */
+    public function getMarketCoupons(): Collection
+    {
+        return $this->marketCoupons;
+    }
+
+    public function addMarketCoupon(MarketCoupon $marketCoupon): static
+    {
+        if (!$this->marketCoupons->contains($marketCoupon)) {
+            $this->marketCoupons->add($marketCoupon);
+            $marketCoupon->setMarket($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMarketCoupon(MarketCoupon $marketCoupon): static
+    {
+        if ($this->marketCoupons->removeElement($marketCoupon)) {
+            // set the owning side to null (unless already changed)
+            if ($marketCoupon->getMarket() === $this) {
+                $marketCoupon->setMarket(null);
             }
         }
 

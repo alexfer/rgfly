@@ -88,6 +88,12 @@ class MarketProduct
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: MarketWishlist::class)]
     private Collection $marketWishlists;
 
+    /**
+     * @var Collection<int, MarketCoupon>
+     */
+    #[ORM\ManyToMany(targetEntity: MarketCoupon::class, mappedBy: 'product')]
+    private Collection $marketCoupons;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
@@ -98,6 +104,7 @@ class MarketProduct
         $this->pckg_quantity = 0;
         $this->fee = 0;
         $this->marketWishlists = new ArrayCollection();
+        $this->marketCoupons = new ArrayCollection();
     }
 
     /**
@@ -656,6 +663,41 @@ class MarketProduct
             if ($marketWishlist->getProduct() === $this) {
                 $marketWishlist->setProduct(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketCoupon>
+     */
+    public function getMarketCoupons(): Collection
+    {
+        return $this->marketCoupons;
+    }
+
+    /**
+     * @param MarketCoupon $marketCoupon
+     * @return $this
+     */
+    public function addMarketCoupon(MarketCoupon $marketCoupon): static
+    {
+        if (!$this->marketCoupons->contains($marketCoupon)) {
+            $this->marketCoupons->add($marketCoupon);
+            $marketCoupon->addProduct($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MarketCoupon $marketCoupon
+     * @return $this
+     */
+    public function removeMarketCoupon(MarketCoupon $marketCoupon): static
+    {
+        if ($this->marketCoupons->removeElement($marketCoupon)) {
+            $marketCoupon->removeProduct($this);
         }
 
         return $this;

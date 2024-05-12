@@ -96,7 +96,7 @@ class BrandController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/edit/{market}-{id}', name: 'app_dashboard_market_place_edit_brand', methods: ['GET', 'POST'])]
+    #[Route('/edit/{market}/{id}', name: 'app_dashboard_market_place_edit_brand', methods: ['GET', 'POST'])]
     public function edit(
         Request                $request,
         UserInterface          $user,

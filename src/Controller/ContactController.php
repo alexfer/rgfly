@@ -6,11 +6,7 @@ use App\Entity\Contact;
 use App\Form\Type\ContactType;
 use App\Service\Contact\ContactTrait;
 use App\Service\Contact\Interface\HandleInterface;
-use App\Service\Interface\EmailNotificationInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 

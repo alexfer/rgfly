@@ -139,14 +139,6 @@
         let short_name = document.getElementById('product_short_name');
         let chars = document.getElementById('chars');
 
-        const discount = document.querySelector("#product_discount");
-        const output = document.querySelector(".discount-output");
-        output.textContent = discount.value + '%';
-
-        discount.addEventListener("input", () => {
-            output.textContent = discount.value + '%';
-        });
-
         short_name.onkeyup = function () {
             chars.innerHTML = short_name.value.length;
         }

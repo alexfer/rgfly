@@ -20,8 +20,19 @@ document.addEventListener('DOMContentLoaded', () => {
         deleteEntry: document.querySelectorAll('.delete-entry'),
         tabList: document.querySelector('ul[role="tablist"]'),
         addEntry: document.querySelectorAll('.add-entry'),
-        marketsButton: document.getElementById('market-search')
+        marketsButton: document.getElementById('market-search'),
+        discount: document.querySelector('[id$="_discount"]')
     };
+
+    if(elements.discount) {
+        const discount = elements.discount;
+        const output = document.querySelector(".discount-output");
+        output.textContent = discount.value + '%';
+
+        discount.addEventListener("input", () => {
+            output.textContent = discount.value + '%';
+        });
+    }
 
     if (elements.marketsButton) {
         elements.marketsButton.addEventListener('click', (e) => {

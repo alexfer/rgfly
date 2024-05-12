@@ -1,0 +1,58 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% set _title_extend = 'title.dashboard.coupons'|trans %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}{{ _title_extend }}{% endblock %}
+
+{% block content %}
+    {% include 'dashboard/content/market_place/navbar/nav.html.twig' with {
+        inject: true,
+        name: 'market.coupon.create'|trans,
+        path: path('app_dashboard_market_place_create_coupon', {market: market.id})
+    } %}
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full table-auto text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-500 uppercase text-center bg-info-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3 text-start">{{ 'table.header.name'|trans }}</th>
+                <th scope="col" class="px-6 py-3 text-start normal-case">{{ 'table.header.coupon_discount'|trans }}</th>
+                <th scope="col" class="px-6 py-3">{{ 'table.header.startedAt'|trans }}</th>
+                <th scope="col" class="px-6 py-3">{{ 'table.header.expiredAt'|trans }}</th>
+                <th scope="col" class="px-6 py-3">{{ 'table.header.duration'|trans }}</th>
+                <th scope="col" class="px-6 py-3">{{ 'table.header.products'|trans }}</th>
+                <th scope="col" class="px-6 py-3">{{ 'table.header.handle'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for coupon in coupons %}
+                <tr class="bg-white border-b dark:bg-gray-800 text-center dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <th scope="row"
+                        class="px-6 py-3 text-start font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {{ coupon.name }}
+                    </th>
+                    <td class="px-6 py-3">
+                        <span class="inline-block text-green-500 mr-1">{{ coupon.discount }}%</span>/<span
+                                class="inline-block ml-1 text-indigo-700">{{ coupon.price|amount_format }}{{ coupon.currency|currency }}</span>
+                    </td>
+                    <td class="px-6 py-3">{{ coupon.startedAt|date(datetime_format) }}</td>
+                    <td class="px-6 py-3">{{ coupon.expiredAt|date(datetime_format) }}</td>
+                    <td class="px-6 py-3">{{ coupon.interval }}</td>
+                    <td class="px-6 py-3 font-semibold text-green-500">{{ coupon.products }}</td>
+                    <td class="px-6 py-3">
+                        <a role="button"
+                           href="{{ path('app_dashboard_market_place_edit_coupon', {market: coupon.market, id: coupon.id}) }}"
+                           class="border rounded p-1.5 mr-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
+                            <i class="fa fa-pencil text-indigo-600 dark:text-white"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7"
+                        class="px-6 py-3 text-center text-gray-700 bg-gray-100 dark:bg-gray-500 dark:text-white">{{ 'table.footer.not_found'|trans }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -409,6 +409,22 @@
                 <source>table.header.url</source>
                 <target>Url</target>
             </trans-unit>
+            <trans-unit id="table.header.duration">
+                <source>table.header.duration</source>
+                <target>Duration</target>
+            </trans-unit>
+            <trans-unit id="table.header.coupon_discount">
+                <source>table.header.coupon_discount</source>
+                <target>Discount (%/price)</target>
+            </trans-unit>
+            <trans-unit id="table.header.startedAt">
+                <source>table.header.startedAt</source>
+                <target>Start</target>
+            </trans-unit>
+            <trans-unit id="table.header.expiredAt">
+                <source>table.header.expiredAt</source>
+                <target>End</target>
+            </trans-unit>
             <trans-unit id="table.header.price">
                 <source>table.header.price</source>
                 <target>Price</target>
@@ -521,6 +537,14 @@
                 <source>form.url.invalid</source>
                 <target>Please enter valid url</target>
             </trans-unit>
+            <trans-unit id="form.code.invalid">
+                <source>form.code.invalid</source>
+                <target>Please enter valid code</target>
+            </trans-unit>
+            <trans-unit id="form.date.invalid">
+                <source>form.date.invalid</source>
+                <target>Date format is invalid</target>
+            </trans-unit>
             <trans-unit id="form.address.invalid">
                 <source>form.address.invalid</source>
                 <target>Please enter your address</target>
@@ -601,6 +625,18 @@
                 <source>label.form.brand_name</source>
                 <target>Brand Name</target>
             </trans-unit>
+            <trans-unit id="label.form.code">
+                <source>label.form.code</source>
+                <target>Unique code</target>
+            </trans-unit>
+            <trans-unit id="label.form.startedAt">
+                <source>label.form.startedAt</source>
+                <target>Starts On</target>
+            </trans-unit>
+            <trans-unit id="label.form.expiredAt">
+                <source>label.form.expiredAt</source>
+                <target>Ends On</target>
+            </trans-unit>
             <trans-unit id="label.form.brand_url">
                 <source>label.form.brand_url</source>
                 <target>Brand Url</target>
@@ -648,6 +684,14 @@
             <trans-unit id="label.form.fee">
                 <source>label.form.fee</source>
                 <target>Fee</target>
+            </trans-unit>
+            <trans-unit id="label.form.price">
+                <source>label.form.price</source>
+                <target>Discount Price</target>
+            </trans-unit>
+            <trans-unit id="label.form.price.help">
+                <source>label.form.price.help</source>
+                <target>Discount on the price</target>
             </trans-unit>
             <trans-unit id="label.form.fee.help">
                 <source>label.form.fee.help</source>
@@ -849,6 +893,10 @@
             <trans-unit id="title.dashboard.latest_blogs">
                 <source>title.dashboard.latest_blogs</source>
                 <target>Latest Blogs</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.coupons">
+                <source>title.dashboard.coupons</source>
+                <target>Coupons</target>
             </trans-unit>
             <trans-unit id="text.loading">
                 <source>text.loading</source>
@@ -1133,6 +1181,10 @@
                 <source>label.form.name</source>
                 <target>Your Name</target>
             </trans-unit>
+            <trans-unit id="label.form.coupon_name">
+                <source>label.form.coupon_name</source>
+                <target>Coupon Name</target>
+            </trans-unit>
             <trans-unit id="label.form.attach">
                 <source>label.form.attach</source>
                 <target>Attach</target>
@@ -1307,9 +1359,25 @@
                 <source>market.brand</source>
                 <target>Brand</target>
             </trans-unit>
+            <trans-unit id="market.coupons">
+                <source>market.coupons</source>
+                <target>Coupons</target>
+            </trans-unit>
+            <trans-unit id="market.coupon">
+                <source>market.coupon</source>
+                <target>Coupon</target>
+            </trans-unit>
             <trans-unit id="market.products">
                 <source>market.products</source>
                 <target>Products</target>
+            </trans-unit>
+            <trans-unit id="market.coupon.create">
+                <source>market.coupon.create</source>
+                <target>Add Coupon</target>
+            </trans-unit>
+            <trans-unit id="market.coupon.update">
+                <source>market.coupon.update</source>
+                <target>Update Coupon</target>
             </trans-unit>
             <trans-unit id="market.brand.create">
                 <source>market.brand.create</source>
@@ -1577,6 +1645,10 @@
             <trans-unit id="order.checkout.completed">
                 <source>order.checkout.completed</source>
                 <target>Order Completed</target>
+            </trans-unit>
+            <trans-unit id="event.completed">
+                <source>event.completed</source>
+                <target>Event Completed</target>
             </trans-unit>
             <trans-unit id="order.item.subtotal">
                 <source>order.item.subtotal</source>

@@ -86,9 +86,9 @@ class UserAuthenticator extends AbstractAuthenticator
      * @return Response
      */
     public function onAuthenticationSuccess(
-        Request $request,
+        Request        $request,
         TokenInterface $token,
-        string $firewallName
+        string         $firewallName
     ): Response
     {
         $user = $token->getUser();
