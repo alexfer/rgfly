@@ -2,15 +2,14 @@
 
 {% set _title_extend = 'title.dashboard.suppliers'|trans %}
 {% block title_extend %}{{ _title_extend }} - {% endblock %}
-{% block title_content %}
-    {{ _title_extend }}
-    <a role="button"
-       class="inline-block rounded-md bg-secondary px-4 pb-1 pt-2 font-normal uppercase leading-normal text-white hover:text-gray-100 shadow-secondary-3 transition duration-150 ease-in-out hover:bg-secondary-accent-300 hover:shadow-secondary-2 focus:bg-secondary-accent-300 focus:shadow-secondary-2 focus:outline-none focus:ring-0 active:bg-secondary-600 active:shadow-secondary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong text-sm float-end"
-       href="{{ path('app_dashboard_market_place_create_supplier', {market: market.id}) }}">{{ 'market.supplier.create'|trans }}</a>
-{% endblock %}
+{% block title_content %}{{ _title_extend }}{% endblock %}
 
 {% block content %}
-    {% include 'dashboard/content/market_place/navbar/nav.html.twig' %}
+    {% include 'dashboard/content/market_place/navbar/nav.html.twig' with {
+        inject: true,
+        name: 'market.supplier.create'|trans,
+        path: path('app_dashboard_market_place_create_supplier', {market: market.id})
+        } %}
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-500 uppercase bg-info-50 dark:bg-gray-700 dark:text-gray-400">

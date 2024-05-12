@@ -15,6 +15,12 @@
                 </a>
             </li>
             <li>
+                <a href="{{ path('app_dashboard_market_place_product_coupon', {market: market.id}) }}"
+                   class="{% if _part == 'coupon' %}font-semibold dark:bg-black dark:hover:bg-black{% endif %} block py-2 px-3 bg-white shadow hover:bg-gray-100 hover:text-gray-900 rounded-lg text-gray-500 dark:hover:bg-gray-600 dark:bg-gray-700 dark:text-gray-200">
+                    {{ 'market.coupons'|trans }}
+                </a>
+            </li>
+            <li>
                 <a href="{{ path('app_dashboard_market_place_market_brand', {market: market.id}) }}"
                    class="{% if _part == 'brand' %}font-semibold dark:bg-black dark:hover:bg-black{% endif %} block py-2 px-3 bg-white shadow hover:bg-gray-100 hover:text-gray-900 rounded-lg text-gray-500 dark:hover:bg-gray-600 dark:bg-gray-700 dark:text-gray-200">
                     {{ 'market.brands'|trans }}
@@ -34,6 +40,13 @@
                 </a>
             </li>
         </ul>
+        {% if inject is defined %}
+            <div class="float-end p-2 mt-1">
+                <a role="button"
+                   class="relative whitespace-nowrap rounded-md bg-secondary px-4 pb-1 pt-2 font-normal leading-normal text-white hover:text-gray-100 shadow-secondary-3 transition duration-150 ease-in-out hover:bg-secondary-accent-300 hover:shadow-secondary-2 focus:bg-secondary-accent-300 focus:shadow-secondary-2 focus:outline-none focus:ring-0 active:bg-secondary-600 active:shadow-secondary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong text-sm float-end"
+                   href="{{ path }}">{{ name }}</a>
+            </div>
+        {% endif %}
         {% include 'dashboard/content/market_place/navbar/search.html.twig' %}
     </div>
 </nav>

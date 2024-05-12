@@ -83,7 +83,7 @@ class ProductController extends AbstractController
      * @return Response
      * @throws Exception
      */
-    #[Route('/edit/{market}-{id}/{tab}', name: 'app_dashboard_market_place_edit_product', methods: ['GET', 'POST'])]
+    #[Route('/edit/{market}/{id}/{tab}', name: 'app_dashboard_market_place_edit_product', methods: ['GET', 'POST'])]
     #[IsGranted(ProductVoter::EDIT, subject: 'product', statusCode: Response::HTTP_FORBIDDEN)]
     public function edit(
         Request                $request,
@@ -427,7 +427,7 @@ class ProductController extends AbstractController
      * @param ImageValidatorInterface $imageValidator
      * @return Response
      */
-    #[Route('/attach/{market}-{id}', name: 'app_dashboard_product_attach')]
+    #[Route('/attach/{market}/{id}', name: 'app_dashboard_product_attach')]
     public function attach(
         Request                       $request,
         TranslatorInterface           $translator,
@@ -495,7 +495,7 @@ class ProductController extends AbstractController
      * @param ParameterBagInterface $params
      * @return Response
      */
-    #[Route('/attach/remove/{market}-{id}', name: 'app_dashboard_product_attach_remove', methods: ['POST'])]
+    #[Route('/attach/remove/{market}/{id}', name: 'app_dashboard_product_attach_remove', methods: ['POST'])]
     public function remove(
         Request                $request,
         TranslatorInterface    $translator,

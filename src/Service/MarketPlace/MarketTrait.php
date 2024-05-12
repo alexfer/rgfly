@@ -20,7 +20,11 @@ trait MarketTrait
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function market(Request $request, UserInterface $user, EntityManagerInterface $em): ?Market
+    protected function market(
+        Request                $request,
+        UserInterface          $user,
+        EntityManagerInterface $em,
+    ): ?Market
     {
         $market = $em->getRepository(Market::class)
             ->findOneBy($this->criteria($user, [

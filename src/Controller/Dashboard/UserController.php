@@ -33,9 +33,9 @@ class UserController extends AbstractController
      */
     #[Route('', name: 'app_dashboard_user', methods: ['GET'])]
     public function index(
-        Request $request,
+        Request                $request,
         EntityManagerInterface $em,
-        UserInterface  $user,
+        UserInterface          $user,
     ): Response
     {
         $query = $request->query->get('search');

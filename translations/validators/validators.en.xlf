@@ -10,6 +10,10 @@
                 <source>form.address.not_blank</source>
                 <target>The address can't be blank.</target>
             </trans-unit>
+            <trans-unit id="form.date.not_blank">
+                <source>form.date.not_blank</source>
+                <target>The date can't be blank.</target>
+            </trans-unit>
             <trans-unit id="form.currency.not_blank">
                 <source>form.currency.not_blank</source>
                 <target>The currency can't be blank.</target>
@@ -189,6 +193,10 @@
             <trans-unit id="form.email.not_blank">
                 <source>form.email.not_blank</source>
                 <target>The email can't be blank.</target>
+            </trans-unit>
+            <trans-unit id="form.code.not_blank">
+                <source>form.code.not_blank</source>
+                <target>The code can't be blank.</target>
             </trans-unit>
             <trans-unit id="form.first_name.not_blank">
                 <source>form.first_name.not_blank</source>

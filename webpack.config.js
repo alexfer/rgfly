@@ -2,12 +2,14 @@ const Encore = require('@symfony/webpack-encore');
 let dotenv = require('dotenv');
 
 const env = dotenv.config();
+let theme = null;
 
 if (env.error) {
+    theme = 'bootstrap'
     throw env.error;
+} else {
+    theme = env.parsed.APP_THEME;
 }
-
-const theme = env.parsed.APP_THEME;
 
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.

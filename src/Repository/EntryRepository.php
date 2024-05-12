@@ -85,8 +85,8 @@ class EntryRepository extends ServiceEntityRepository
         string $slug = null,
         string $date = null,
         string $type = null,
-        int $limit = 12,
-        int $offset = 0
+        int    $limit = 12,
+        int    $offset = 0
     ): ?array
     {
         $qb = $this->createQueryBuilder('e')
@@ -114,7 +114,7 @@ class EntryRepository extends ServiceEntityRepository
             $qb->where('c.slug = :slug')->setParameter('slug', $slug);
         }
 
-        if($date) {
+        if ($date) {
             $qb->where('e.created_at = :date')->setParameter('date', new \DateTimeImmutable($date), Types::DATETIME_IMMUTABLE);
         }
 
