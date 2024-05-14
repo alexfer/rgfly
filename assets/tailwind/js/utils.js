@@ -10,3 +10,33 @@ window.closeModal = (id) => {
     document.getElementById(id).style.display = 'none';
     document.getElementsByTagName('body')[0].classList.remove('overflow-y-hidden');
 };
+
+const any = document.getElementById('any');
+const discount = document.querySelector('[id$="_discount"]');
+
+if (discount) {
+    const output = document.querySelector(".discount-output");
+    output.textContent = discount.value + '%';
+
+    discount.addEventListener("input", () => {
+        output.textContent = discount.value + '%';
+    });
+}
+
+if (any) {
+    any.addEventListener('click', (e) => {
+        let chx = false,
+            checks = document.querySelectorAll('.checks');
+        if (any.checked) {
+            chx = true;
+        }
+        for (let i in checks) {
+            if (typeof checks[i] !== "function" && typeof checks[i] !== "number") {
+                checks[i].checked = chx;
+                checks[i].addEventListener('click', () => {
+                    any.checked = false;
+                });
+            }
+        }
+    });
+}

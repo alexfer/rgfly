@@ -21,17 +21,55 @@ document.addEventListener('DOMContentLoaded', () => {
         tabList: document.querySelector('ul[role="tablist"]'),
         addEntry: document.querySelectorAll('.add-entry'),
         marketsButton: document.getElementById('market-search'),
-        discount: document.querySelector('[id$="_discount"]')
+        coupons: document.querySelectorAll('.coupons')
     };
 
-    if(elements.discount) {
-        const discount = elements.discount;
-        const output = document.querySelector(".discount-output");
-        output.textContent = discount.value + '%';
+    if (elements.coupons.length > 0) {
+        const coupons = elements.coupons;
+        const parent = coupons.item(0).parentElement.parentElement;
+        const url = parent.getAttribute('data-url');
+        const token = parent.getAttribute('data-token');
 
-        discount.addEventListener("input", () => {
-            output.textContent = discount.value + '%';
-        });
+        const products = [];
+
+        for (let i in coupons) {
+            if (typeof coupons[i] !== "function" && typeof coupons[i] !== "number") {
+                const id = coupons[i].getAttribute('data-id');
+                const handler = coupons[i];
+                handler.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    const form = document.getElementById('products');
+                    const inputs = document.querySelectorAll('input[type="checkbox"]');
+
+                    [...inputs].forEach((input) => {
+                        if (input.checked === true) {
+                            products.push(input.value);
+                            input.disabled = true;
+                            input.classList.remove('checks');
+                        }
+                    });
+
+                    if (products.length === 0) {
+                        showToast(elements.toastDanger, 'Choose at least one item from the list..');
+                        return false;
+                    }
+
+                    const response = await fetch(url, {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                '_token': token,
+                                products: products,
+                                id: id
+                            }),
+                            headers: headers
+                        }
+                    );
+                    const data = await response.json();
+                    form.reset();
+                    showToast(elements.toastSuccess, data.message);
+                });
+            }
+        }
     }
 
     if (elements.marketsButton) {

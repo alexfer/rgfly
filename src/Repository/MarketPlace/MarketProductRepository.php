@@ -3,11 +3,13 @@
 namespace App\Repository\MarketPlace;
 
 use App\Entity\MarketPlace\Market;
+use App\Entity\MarketPlace\MarketCoupon;
 use App\Entity\MarketPlace\MarketProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Statement;
+use Doctrine\ORM\Query\Expr;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -132,6 +134,7 @@ class MarketProductRepository extends ServiceEntityRepository
     ): array
     {
         $qb = $this->createQueryBuilder('p')
+            ->leftJoin(MarketCoupon::class, 'mc', Expr\Join::WITH, 'mc.market = :market')
             ->where('p.market = :market')
             ->setParameter('market', $market)
             ->andWhere('LOWER(p.name) LIKE :search')
