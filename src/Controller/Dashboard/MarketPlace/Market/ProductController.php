@@ -6,6 +6,7 @@ use App\Entity\Attach;
 use App\Entity\MarketPlace\{MarketBrand,
     MarketCategory,
     MarketCategoryProduct,
+    MarketCoupon,
     MarketManufacturer,
     MarketProduct,
     MarketProductAttach,
@@ -67,11 +68,13 @@ class ProductController extends AbstractController
         $market = $this->market($request, $user, $em);
         $currency = Currency::currency($market->getCurrency());
         $products = $em->getRepository(MarketProduct::class)->products($market, $request->query->get('search'));
+        $coupons = $em->getRepository(MarketCoupon::class)->fetchActive($market);
 
         return $this->render('dashboard/content/market_place/product/index.html.twig', $this->navbar() + [
                 'market' => $market,
                 'currency' => $currency,
                 'products' => $products,
+                'coupons' => $coupons,
             ]);
     }
 

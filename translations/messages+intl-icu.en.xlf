@@ -1411,6 +1411,10 @@
                 <source>market.manufacturers</source>
                 <target>Manufacturers</target>
             </trans-unit>
+            <trans-unit id="market.apply.coupon">
+                <source>market.apply.coupon</source>
+                <target>Apply Coupon</target>
+            </trans-unit>
             <trans-unit id="market.manufacturer">
                 <source>market.manufacturer</source>
                 <target>Manufacturer</target>

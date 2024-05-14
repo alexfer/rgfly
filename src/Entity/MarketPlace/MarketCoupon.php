@@ -228,11 +228,18 @@ class MarketCoupon
         return $this;
     }
 
+    /**
+     * @return Market|null
+     */
     public function getMarket(): ?Market
     {
         return $this->market;
     }
 
+    /**
+     * @param Market|null $market
+     * @return $this
+     */
     public function setMarket(?Market $market): static
     {
         $this->market = $market;
@@ -240,11 +247,18 @@ class MarketCoupon
         return $this;
     }
 
+    /**
+     * @return int|null
+     */
     public function getEvent(): ?int
     {
         return $this->event;
     }
 
+    /**
+     * @param int|null $event
+     * @return $this
+     */
     public function setEvent(?int $event): static
     {
         $this->event = $event;

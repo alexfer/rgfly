@@ -64,4 +64,32 @@ class MarketCouponRepository extends ServiceEntityRepository
 
         return json_decode($result[0]['get_coupons'], true) ?: $coupons;
     }
+
+    /**
+     * @param Market $market
+     * @param int $offset
+     * @param int $limit
+     * @return array
+     */
+    public function fetchActive(
+        Market $market,
+        int    $offset = 0,
+        int    $limit = 10
+    ): array
+    {
+        $qb = $this->createQueryBuilder('mc')
+            ->select([
+                'mc.id',
+                'mc.name',
+            ])
+            ->where('mc.expired_at > :date')
+            ->andWhere('mc.market = :market')
+            ->setParameter('market', $market)
+            ->setParameter('date', date('Y-m-d'))
+            ->orderBy('mc.expired_at', 'asc')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
 }

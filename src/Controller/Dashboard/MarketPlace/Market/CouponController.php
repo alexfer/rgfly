@@ -2,14 +2,14 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Market;
 
-use App\Entity\MarketPlace\MarketCoupon;
+use App\Entity\MarketPlace\{Market, MarketCoupon, MarketProduct};
 use App\Form\Type\Dashboard\MarketPlace\CouponType;
 use App\Service\Dashboard;
 use App\Service\MarketPlace\MarketTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\{Request, Response};
+use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -89,6 +89,38 @@ class CouponController extends AbstractController
                 'market' => $market,
                 'coupons' => $result,
             ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param Market $market
+     * @param TranslatorInterface $translator
+     * @param EntityManagerInterface $em
+     * @return JsonResponse
+     */
+    #[Route('/apply/{market}', name: 'app_dashboard_market_place_apply_coupon', methods: ['POST'])]
+    public function apply(
+        Request                $request,
+        Market                 $market,
+        TranslatorInterface    $translator,
+        EntityManagerInterface $em,
+    ): JsonResponse
+    {
+        $payload = $request->getPayload()->all();
+        $coupon = $em->getRepository(MarketCoupon::class)->findOneBy(['market' => $market, 'id' => $payload['id']]);
+
+        foreach ($payload['products'] as $product) {
+            $item = $em->getRepository(MarketProduct::class)->find($product);
+            $coupon->addProduct($item)->setMarket($market);
+            $em->persist($coupon);
+        }
+        $em->flush();
+
+        return $this->json([
+            'success' => true,
+            'market' => $market->getId(),
+            'message' => $translator->trans('user.entry.updated'),
+        ]);
     }
 
     /**
