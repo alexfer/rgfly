@@ -20,8 +20,37 @@
                 <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.name) }}</span>
             </div>
             <div class="block mb-3">
-                {{ form_label(form.code, 'label.form.code', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
-                {{ form_widget(form.code, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.code'}}) }}
+                {{ form_label(form.available, 'label.form.available', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                {{ form_widget(form.available, {attr: {class: 'invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500 peer bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'}}) }}
+                <span class="mt-0.5 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">{{ 'form.available.invalid'|trans }}</span>
+                <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.available) }}</span>
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div class="block mb-3">
+                {{ form_label(form.promotionText, 'label.form.promotion_text', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                {{ form_widget(form.promotionText, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.promotion_text'}}) }}
+                <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.promotionText) }}</span>
+            </div>
+            <div class="block mb-3">
+                    {{ form_label(form.type, 'label.form.type', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                    {{ form_widget(form.type, {attr: {class: 'invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500 peer bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.type'}}) }}
+                    <span class="mt-0.5 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">{{ 'form.order_limit.invalid'|trans }}</span>
+                    <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.type) }}</span>
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div class="block mb-3">
+                {{ form_label(form.maxUsage, 'label.form.max_usage', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                {{ form_widget(form.maxUsage, {attr: {class: 'invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500 peer bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.max_usage'}}) }}
+                <span class="mt-0.5 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">{{ 'form.max_usage.invalid'|trans }}</span>
+                <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.maxUsage) }}</span>
+            </div>
+            <div class="block mb-3">
+                    {{ form_label(form.orderLimit, 'label.form.order_limit', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                    {{ form_widget(form.orderLimit, {attr: {class: 'invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500 peer bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.order_limit'}}) }}
+                    <span class="mt-0.5 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">{{ 'form.order_limit.invalid'|trans }}</span>
+                    <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.orderLimit) }}</span>
             </div>
         </div>
         <div class="grid grid-cols-2 gap-4">

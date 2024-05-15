@@ -413,6 +413,10 @@
                 <source>table.header.duration</source>
                 <target>Duration</target>
             </trans-unit>
+            <trans-unit id="table.header.available">
+                <source>table.header.available</source>
+                <target>Available</target>
+            </trans-unit>
             <trans-unit id="table.header.coupon_discount">
                 <source>table.header.coupon_discount</source>
                 <target>Discount (%/price)</target>
@@ -529,6 +533,10 @@
                 <source>form.name.invalid</source>
                 <target>Please enter name</target>
             </trans-unit>
+            <trans-unit id="form.available.invalid">
+                <source>form.available.invalid</source>
+                <target>Available format is invalid</target>
+            </trans-unit>
             <trans-unit id="form.description.invalid">
                 <source>form.description.invalid</source>
                 <target>Please enter valid description</target>
@@ -544,6 +552,26 @@
             <trans-unit id="form.date.invalid">
                 <source>form.date.invalid</source>
                 <target>Date format is invalid</target>
+            </trans-unit>
+            <trans-unit id="form.max_usage.invalid">
+                <source>form.max_usage.invalid</source>
+                <target>Max usage format is invalid</target>
+            </trans-unit>
+            <trans-unit id="form.order_limit.invalid">
+                <source>form.order_limit.invalid</source>
+                <target>Order limit format is invalid</target>
+            </trans-unit>
+            <trans-unit id="coupon.choices.product">
+                <source>coupon.choices.product</source>
+                <target>Product discount</target>
+            </trans-unit>
+            <trans-unit id="coupon.choices.order">
+                <source>coupon.choices.order</source>
+                <target>Total order</target>
+            </trans-unit>
+            <trans-unit id="coupon.choices.shipping">
+                <source>coupon.choices.shipping</source>
+                <target>Shipping discount</target>
             </trans-unit>
             <trans-unit id="form.address.invalid">
                 <source>form.address.invalid</source>
@@ -636,6 +664,18 @@
             <trans-unit id="label.form.expiredAt">
                 <source>label.form.expiredAt</source>
                 <target>Ends On</target>
+            </trans-unit>
+            <trans-unit id="label.form.event">
+                <source>label.form.event</source>
+                <target>Event</target>
+            </trans-unit>
+            <trans-unit id="label.form.event.start">
+                <source>label.form.event.start</source>
+                <target>Start</target>
+            </trans-unit>
+            <trans-unit id="label.form.event.end">
+                <source>label.form.event.end</source>
+                <target>End</target>
             </trans-unit>
             <trans-unit id="label.form.brand_url">
                 <source>label.form.brand_url</source>
@@ -1310,6 +1350,26 @@
             <trans-unit id="label.form.entry_picture">
                 <source>label.form.entry_picture</source>
                 <target>Choice picture</target>
+            </trans-unit>
+            <trans-unit id="label.form.promotion_text">
+                <source>label.form.promotion_text</source>
+                <target>Promotion Text</target>
+            </trans-unit>
+            <trans-unit id="label.form.type">
+                <source>label.form.type</source>
+                <target>Type of coupon</target>
+            </trans-unit>
+            <trans-unit id="label.form.order_limit">
+                <source>label.form.order_limit</source>
+                <target>Order Limit</target>
+            </trans-unit>
+            <trans-unit id="label.form.max_usage">
+                <source>label.form.max_usage</source>
+                <target>Max Usage</target>
+            </trans-unit>
+            <trans-unit id="label.form.available">
+                <source>label.form.available</source>
+                <target>Total available</target>
             </trans-unit>
             <trans-unit id="form.phone.help">
                 <source>form.phone.help</source>

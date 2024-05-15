@@ -37,12 +37,6 @@ class MarketCustomer
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?User $member = null;
 
-    #[ORM\Column]
-    private ?DateTimeImmutable $created_at = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTimeInterface $updated_at = null;
-
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: MarketCustomerOrders::class)]
     private Collection $marketCustomerOrders;
 
@@ -55,12 +49,25 @@ class MarketCustomer
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: MarketWishlist::class)]
     private Collection $marketWishlists;
 
+    /**
+     * @var Collection<int, MarketCouponUsage>
+     */
+    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: MarketCouponUsage::class)]
+    private Collection $marketCouponUsages;
+
+    #[ORM\Column]
+    private ?DateTimeImmutable $created_at = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $updated_at = null;
+
     public function __construct()
     {
         $this->created_at = new DateTimeImmutable();
         $this->marketCustomerOrders = new ArrayCollection();
         $this->marketCustomerMessages = new ArrayCollection();
         $this->marketWishlists = new ArrayCollection();
+        $this->marketCouponUsages = new ArrayCollection();
     }
 
     /**
@@ -360,6 +367,44 @@ class MarketCustomer
             // set the owning side to null (unless already changed)
             if ($marketWishlist->getCustomer() === $this) {
                 $marketWishlist->setCustomer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketCouponUsage>
+     */
+    public function getMarketCouponUsages(): Collection
+    {
+        return $this->marketCouponUsages;
+    }
+
+    /**
+     * @param MarketCouponUsage $marketCouponUsage
+     * @return $this
+     */
+    public function addMarketCouponUsage(MarketCouponUsage $marketCouponUsage): static
+    {
+        if (!$this->marketCouponUsages->contains($marketCouponUsage)) {
+            $this->marketCouponUsages->add($marketCouponUsage);
+            $marketCouponUsage->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MarketCouponUsage $marketCouponUsage
+     * @return $this
+     */
+    public function removeMarketCouponUsage(MarketCouponUsage $marketCouponUsage): static
+    {
+        if ($this->marketCouponUsages->removeElement($marketCouponUsage)) {
+            // set the owning side to null (unless already changed)
+            if ($marketCouponUsage->getCustomer() === $this) {
+                $marketCouponUsage->setCustomer(null);
             }
         }
 
