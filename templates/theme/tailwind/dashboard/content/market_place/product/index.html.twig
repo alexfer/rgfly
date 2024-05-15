@@ -71,6 +71,7 @@
                             {% set price = product.marketCoupons.first.price|default(0) %}
                             {% set name = product.marketCoupons.first.name|default(null) %}
                             {% if name is not null %}
+                                <div class="font-sans text-indigo-700">{{ product.marketCoupons.first.code }}</div>
                                 <a data-twe-toggle="tooltip"
                                    data-twe-placement="top"
                                    title="{{ discount }}% / {{ price|amount_format }}{{ currency['symbol_native'] }}"
