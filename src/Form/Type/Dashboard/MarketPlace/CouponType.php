@@ -119,9 +119,11 @@ class CouponType extends AbstractType
                     'min' => 1,
                     'max' => 100,
                     'step' => 1,
+                    'readonly' => (bool)$options['data']->getAvailable(),
                     'pattern' => ".{1,100}",
                     'placeholder' => "1-100",
                 ],
+                //'data' => $options['data']->getAvailable(),
             ])
             ->add('startedAt', DateTimeType::class, [
                 'date_label' => 'label.form.startedAt',

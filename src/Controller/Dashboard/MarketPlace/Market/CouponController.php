@@ -2,7 +2,7 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Market;
 
-use App\Entity\MarketPlace\{Market, MarketCoupon, MarketProduct};
+use App\Entity\MarketPlace\{Market, MarketCoupon, MarketCouponCode, MarketProduct};
 use App\Form\Type\Dashboard\MarketPlace\CouponType;
 use App\Service\Dashboard;
 use App\Service\MarketPlace\MarketTrait;
@@ -146,11 +146,20 @@ class CouponController extends AbstractController
         $form = $this->createForm(CouponType::class, $coupon);
         $form->handleRequest($request);
 
-        //strtoupper(substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 6))
-
         if ($form->isSubmitted() && $form->isValid()) {
             $coupon->setMarket($market);
+
             $em->persist($coupon);
+
+            $available = $form->get('available')->getData();
+
+            for ($i = 0; $i < $available; $i++) {
+                $code = new MarketCouponCode();
+                $code->setCoupon($coupon)
+                    ->setCode(strtoupper(substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 6)));
+                $em->persist($code);
+            }
+
             $em->flush();
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
 
@@ -198,7 +207,7 @@ class CouponController extends AbstractController
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.updated')]));
 
             return $this->redirectToRoute('app_dashboard_market_place_edit_coupon', [
-                'market' => $request->get('market'),
+                'market' => $market->getId(),
                 'id' => $coupon->getId(),
             ]);
         }
@@ -207,5 +216,44 @@ class CouponController extends AbstractController
                 'form' => $form,
             ]);
 
+    }
+
+    /**
+     * @param Request $request
+     * @param MarketCoupon $coupon
+     * @param UserInterface|null $user
+     * @param EntityManagerInterface $em
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/delete/{market}/{id}', name: 'app_dashboard_market_place_delete_coupon', methods: ['POST'])]
+    public function delete(
+        Request $request,
+        MarketCoupon $coupon,
+        ?UserInterface $user,
+        EntityManagerInterface $em,
+    ): Response {
+        $market = $this->market($request, $user, $em);
+        $token = $request->get('_token');
+
+        if (!$token) {
+            $content = $request->getPayload()->all();
+            $token = $content['_token'];
+        }
+
+        if ($this->isCsrfTokenValid('delete', $token)) {
+
+            $code = $em->getRepository(MarketCouponCode::class)->find($coupon->getId());
+
+            if($code) {
+                $em->remove($code);
+            }
+
+            $em->remove($coupon);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('app_dashboard_market_place_market_brand', ['market' => $market->getId()]);
     }
 }
