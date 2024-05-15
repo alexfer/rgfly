@@ -41,9 +41,15 @@
                     <td class="px-6 py-3">
                         <a role="button"
                            href="{{ path('app_dashboard_market_place_edit_coupon', {market: coupon.market, id: coupon.id}) }}"
-                           class="border rounded p-1.5 mr-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
+                           class="border rounded py-1.5 pl-2 pr-1 mr-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
                             <i class="fa fa-pencil text-indigo-600 dark:text-white"></i>
                         </a>
+                        <button type="button"
+                           class="border rounded delete-entry py-1 px-2 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800"
+                           data-token="{{ csrf_token('delete') }}"
+                           data-url="{{ path('app_dashboard_market_place_delete_coupon', {market: market.id, id: coupon.id}) }}">
+                            <i class="fa fa-trash dark:text-white"></i>
+                        </button>
                     </td>
                 </tr>
             {% else %}

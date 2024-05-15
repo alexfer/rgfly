@@ -137,7 +137,7 @@ class BrandController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/delete/{market}-{id}', name: 'app_dashboard_delete_brand', methods: ['POST'])]
+    #[Route('/delete/{market}/{id}', name: 'app_dashboard_delete_brand', methods: ['POST'])]
     public function delete(
         Request                $request,
         UserInterface          $user,
