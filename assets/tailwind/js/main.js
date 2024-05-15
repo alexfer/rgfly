@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const handler = coupons[i];
                 handler.addEventListener('click', async (e) => {
                     e.preventDefault();
+
                     const form = document.getElementById('products');
                     const inputs = document.querySelectorAll('input[type="checkbox"]');
 

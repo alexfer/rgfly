@@ -22,9 +22,6 @@ class MarketCoupon
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $code = null;
-
     #[ORM\Column(nullable: true)]
     private ?int $discount = null;
 
@@ -33,6 +30,39 @@ class MarketCoupon
 
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
     private ?int $event = null;
+
+    /**
+     * @var Collection<int, MarketProduct>
+     */
+    #[ORM\ManyToMany(targetEntity: MarketProduct::class, inversedBy: 'marketCoupons')]
+    private Collection $product;
+
+    /**
+     * @var Collection<int, MarketCouponCode>
+     */
+    #[ORM\OneToMany(mappedBy: 'coupon', targetEntity: MarketCouponCode::class)]
+    private Collection $marketCouponCodes;
+
+    /**
+     * @var Collection<int, MarketCouponUsage>
+     */
+    #[ORM\OneToMany(mappedBy: 'coupon', targetEntity: MarketCouponUsage::class)]
+    private Collection $marketCouponUsages;
+
+    #[ORM\Column]
+    private ?int $available = null;
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $max_usage = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $type = null;
+
+    #[ORM\Column]
+    private ?int $order_limit = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $promotion_text = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at;
@@ -43,16 +73,12 @@ class MarketCoupon
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $expired_at = null;
 
-    /**
-     * @var Collection<int, MarketProduct>
-     */
-    #[ORM\ManyToMany(targetEntity: MarketProduct::class, inversedBy: 'marketCoupons')]
-    private Collection $product;
-
     public function __construct()
     {
         $this->created_at = new \DateTimeImmutable();
         $this->product = new ArrayCollection();
+        $this->marketCouponCodes = new ArrayCollection();
+        $this->marketCouponUsages = new ArrayCollection();
     }
 
     /**
@@ -61,25 +87,6 @@ class MarketCoupon
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getCode(): ?string
-    {
-        return $this->code;
-    }
-
-    /**
-     * @param string $code
-     * @return $this
-     */
-    public function setCode(string $code): static
-    {
-        $this->code = $code;
-
-        return $this;
     }
 
     /**
@@ -265,4 +272,176 @@ class MarketCoupon
 
         return $this;
     }
+
+    /**
+     * @return int|null
+     */
+    public function getMaxUsage(): ?int
+    {
+        return $this->max_usage;
+    }
+
+    /**
+     * @param int $max_usage
+     * @return $this
+     */
+    public function setMaxUsage(int $max_usage): static
+    {
+        $this->max_usage = $max_usage;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     * @return $this
+     */
+    public function setType(string $type): static
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getOrderLimit(): ?int
+    {
+        return $this->order_limit;
+    }
+
+    /**
+     * @param int $order_limit
+     * @return $this
+     */
+    public function setOrderLimit(int $order_limit): static
+    {
+        $this->order_limit = $order_limit;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPromotionText(): ?string
+    {
+        return $this->promotion_text;
+    }
+
+    /**
+     * @param string|null $promotion_text
+     * @return $this
+     */
+    public function setPromotionText(?string $promotion_text): static
+    {
+        $this->promotion_text = $promotion_text;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketCouponCode>
+     */
+    public function getMarketCouponCodes(): Collection
+    {
+        return $this->marketCouponCodes;
+    }
+
+    /**
+     * @param MarketCouponCode $marketCouponCode
+     * @return $this
+     */
+    public function addMarketCouponCode(MarketCouponCode $marketCouponCode): static
+    {
+        if (!$this->marketCouponCodes->contains($marketCouponCode)) {
+            $this->marketCouponCodes->add($marketCouponCode);
+            $marketCouponCode->setCoupon($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MarketCouponCode $marketCouponCode
+     * @return $this
+     */
+    public function removeMarketCouponCode(MarketCouponCode $marketCouponCode): static
+    {
+        if ($this->marketCouponCodes->removeElement($marketCouponCode)) {
+            // set the owning side to null (unless already changed)
+            if ($marketCouponCode->getCoupon() === $this) {
+                $marketCouponCode->setCoupon(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getAvailable(): ?int
+    {
+        return $this->available;
+    }
+
+    /**
+     * @param int $available
+     * @return $this
+     */
+    public function setAvailable(int $available): static
+    {
+        $this->available = $available;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketCouponUsage>
+     */
+    public function getMarketCouponUsages(): Collection
+    {
+        return $this->marketCouponUsages;
+    }
+
+    /**
+     * @param MarketCouponUsage $marketCouponUsage
+     * @return $this
+     */
+    public function addMarketCouponUsage(MarketCouponUsage $marketCouponUsage): static
+    {
+        if (!$this->marketCouponUsages->contains($marketCouponUsage)) {
+            $this->marketCouponUsages->add($marketCouponUsage);
+            $marketCouponUsage->setCoupon($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MarketCouponUsage $marketCouponUsage
+     * @return $this
+     */
+    public function removeMarketCouponUsage(MarketCouponUsage $marketCouponUsage): static
+    {
+        if ($this->marketCouponUsages->removeElement($marketCouponUsage)) {
+            // set the owning side to null (unless already changed)
+            if ($marketCouponUsage->getCoupon() === $this) {
+                $marketCouponUsage->setCoupon(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

@@ -7,12 +7,13 @@ use App\Entity\MarketPlace\MarketCoupon;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\RangeType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\{ChoiceType,
+    DateTimeType,
+    NumberType,
+    RangeType,
+    SubmitType,
+    TextareaType,
+    TextType};
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -65,12 +66,62 @@ class CouponType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('code', TextType::class, [
-                'label' => 'label.form.code',
+            ->add('promotionText', TextareaType::class, [
+                'label' => 'label.form.promotion_text',
+                'required' => false,
                 'attr' => [
-                    'readonly' => true,
+                    'maxlength' => 255,
+                    'rows' => 3,
                 ],
-                'data' => $options['data']->getCode() ?: strtoupper(substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 6)),
+                'constraints' => [
+                    new Length([
+                        'max' => 255,
+                        'maxMessage' => 'form.promotion_text.max',
+                    ])
+                ]
+            ])
+            ->add('type', ChoiceType::class, [
+                'label' => 'label.form.type',
+                'choices' => [
+                    'coupon.choices.product' => 'product',
+                    'coupon.choices.order' => 'order',
+                    'coupon.choices.shipping' => 'shipping',
+                ],
+            ])
+            ->add('orderLimit', NumberType::class, [
+                'label' => 'label.form.order_limit',
+                'html5' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'form.limit.not_blank',
+                    ]),
+                    new Positive([
+                        'message' => 'form.limit.positive',
+                    ]),
+                ],
+            ])
+            ->add('maxUsage', NumberType::class, [
+                'label' => 'label.form.max_usage',
+                'html5' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'form.max_usage.not_blank',
+                    ]),
+                    new Positive([
+                        'message' => 'form.max_usage.positive',
+                    ]),
+                ],
+            ])
+            ->add('available', NumberType::class, [
+                'label' => 'label.form.available',
+                'html5' => true,
+                'attr' => [
+                    'min' => 1,
+                    'max' => 100,
+                    'step' => 1,
+                    'pattern' => ".{1,100}",
+                    'placeholder' => "1-100",
+                ],
             ])
             ->add('startedAt', DateTimeType::class, [
                 'date_label' => 'label.form.startedAt',
@@ -119,8 +170,8 @@ class CouponType extends AbstractType
             ->add('event', ChoiceType::class, [
                 'label' => 'label.form.event',
                 'choices' => [
-                    'Start' => 1,
-                    'End' => 0,
+                    'label.form.event.start' => 1,
+                    'label.form.event.end' => 0,
                 ],
                 'expanded' => true,
             ])

@@ -58,6 +58,10 @@
                 <source>form.cost.max</source>
                 <target>Your cost is too long. It should have {{ limit }} characters or less.</target>
             </trans-unit>
+            <trans-unit id="form.promotion_text.max">
+                <source>form.promotion_text.max</source>
+                <target>Your promotion text is too long. It should have {{ limit }} characters or less.</target>
+            </trans-unit>
             <trans-unit id="form.city.min">
                 <source>form.city.min</source>
                 <target>Your city is too short. It should have {{ limit }} characters or more.</target>
@@ -161,6 +165,22 @@
             <trans-unit id="form.phone.not_blank">
                 <source>form.phone.not_blank</source>
                 <target>The phone can't be blank.</target>
+            </trans-unit>
+            <trans-unit id="form.limit.not_blank">
+                <source>form.limit.not_blank</source>
+                <target>The order limit can't be blank.</target>
+            </trans-unit>
+            <trans-unit id="form.max_usage.not_blank">
+                <source>form.max_usage.not_blank</source>
+                <target>The Max usage can't be blank.</target>
+            </trans-unit>
+            <trans-unit id="form.limit.positive">
+                <source>form.limit.positive</source>
+                <target>This value should be positive.</target>
+            </trans-unit>
+            <trans-unit id="form.max_usage.positive">
+                <source>form.max_usage.positive</source>
+                <target>This value should be positive.</target>
             </trans-unit>
             <trans-unit id="form.phone.not_valid">
                 <source>form.phone.not_valid</source>

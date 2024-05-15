@@ -74,7 +74,7 @@ class CouponController extends AbstractController
                 'name' => $val->getName(),
                 'market' => $market->getId(),
                 'currency' => $market->getCurrency(),
-                'code' => $val->getCode(),
+                'available' => $val->getAvailable(),
                 'products' => $val->getProduct()->count(),
                 'discount' => $val->getDiscount() ?: 0,
                 'price' => $val->getPrice() ?: 0,
@@ -145,6 +145,8 @@ class CouponController extends AbstractController
 
         $form = $this->createForm(CouponType::class, $coupon);
         $form->handleRequest($request);
+
+        //strtoupper(substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 6))
 
         if ($form->isSubmitted() && $form->isValid()) {
             $coupon->setMarket($market);
