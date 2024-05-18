@@ -34,14 +34,14 @@ class MarketProduct
     #[ORM\Column]
     private ?int $quantity;
 
-    #[ORM\Column(type: 'float')]
-    private ?float $cost;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '2')]
+    private string $cost;
 
     #[ORM\Column(length: 80)]
     private ?string $short_name = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?float $discount = null;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '2', nullable: true)]
+    private ?string $discount = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $sku = null;
@@ -49,8 +49,8 @@ class MarketProduct
     #[ORM\Column(nullable: true)]
     private ?int $pckg_quantity = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?float $fee;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '2', nullable: true)]
+    private ?string $fee;
 
     #[ORM\Column]
     private ?DateTime $created_at;
@@ -199,20 +199,20 @@ class MarketProduct
 
     /**
      *
-     * @return float|null
+     * @return string
      */
-    public function getCost(): ?float
+    public function getCost(): string
     {
         return $this->cost;
     }
 
     /**
-     * @param float|null $cost
+     * @param string $cost
      * @return $this
      */
-    public function setCost(?float $cost): static
+    public function setCost(string $cost): static
     {
-        $this->cost = round($cost, 2);
+        $this->cost = number_format($cost, 2, '.', '');
 
         return $this;
     }
@@ -521,20 +521,20 @@ class MarketProduct
     }
 
     /**
-     * @return float|null
+     * @return string|null
      */
-    public function getDiscount(): ?float
+    public function getDiscount(): ?string
     {
         return $this->discount;
     }
 
     /**
-     * @param float|null $discount
+     * @param string|null $discount
      * @return $this
      */
-    public function setDiscount(?float $discount): static
+    public function setDiscount(?string $discount): static
     {
-        $this->discount = round($discount, 2);
+        $this->discount = number_format($discount, 2, '.', '');
 
         return $this;
     }
@@ -612,20 +612,20 @@ class MarketProduct
     }
 
     /**
-     * @return float|null
+     * @return string|null
      */
-    public function getFee(): ?float
+    public function getFee(): ?string
     {
         return $this->fee;
     }
 
     /**
-     * @param float|null $fee
+     * @param string|null $fee
      * @return $this
      */
-    public function setFee(?float $fee): static
+    public function setFee(?string $fee): static
     {
-        $this->fee = $fee;
+        $this->fee = number_format($fee, 2, '.', '');;
 
         return $this;
     }

@@ -3,6 +3,8 @@
 namespace App\Entity\MarketPlace;
 
 use App\Repository\MarketPlace\MarketCouponCodeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MarketCouponCodeRepository::class)]
@@ -18,6 +20,21 @@ class MarketCouponCode
 
     #[ORM\Column(length: 50)]
     private ?string $code = null;
+
+    #[ORM\Column]
+    private ?bool $has_used;
+
+    /**
+     * @var Collection<int, MarketCouponUsage>
+     */
+    #[ORM\OneToMany(mappedBy: 'coupon_code', targetEntity: MarketCouponUsage::class)]
+    private Collection $marketCouponUsages;
+
+    public function __construct()
+    {
+        $this->marketCouponUsages = new ArrayCollection();
+        $this->has_used = false;
+    }
 
     /**
      * @return int|null
@@ -61,6 +78,55 @@ class MarketCouponCode
     public function setCode(string $code): static
     {
         $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketCouponUsage>
+     */
+    public function getMarketCouponUsages(): Collection
+    {
+        return $this->marketCouponUsages;
+    }
+
+    public function addMarketCouponUsage(MarketCouponUsage $marketCouponUsage): static
+    {
+        if (!$this->marketCouponUsages->contains($marketCouponUsage)) {
+            $this->marketCouponUsages->add($marketCouponUsage);
+            $marketCouponUsage->setCouponCode($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMarketCouponUsage(MarketCouponUsage $marketCouponUsage): static
+    {
+        if ($this->marketCouponUsages->removeElement($marketCouponUsage)) {
+            // set the owning side to null (unless already changed)
+            if ($marketCouponUsage->getCouponCode() === $this) {
+                $marketCouponUsage->setCouponCode(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function hasUsed(): ?bool
+    {
+        return $this->has_used;
+    }
+
+    /**
+     * @param bool $has_used
+     * @return $this
+     */
+    public function setHasUsed(bool $has_used): static
+    {
+        $this->has_used = $has_used;
 
         return $this;
     }

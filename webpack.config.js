@@ -21,8 +21,11 @@ Encore
     .setOutputPath('public/build/')
     .setPublicPath('/build')
     .addEntry('app', `./assets/${theme}/app.js`)
-    .enableStimulusBridge(`./assets/${theme}/controllers.json`)
-    .addEntry('market-js', `./assets/${theme}/js/market.js`);
+    .enableStimulusBridge(`./assets/${theme}/controllers.json`);
+if (theme === 'tailwind') {
+    Encore.addEntry('coupon-js', `./assets/${theme}/js/coupon.js`);
+}
+Encore.addEntry('market-js', `./assets/${theme}/js/market.js`);
 if (theme === 'bootstrap') {
     Encore
         .addEntry('layout', `./assets/${theme}/js/layout.js`)

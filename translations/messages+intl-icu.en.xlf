@@ -569,9 +569,37 @@
                 <source>coupon.choices.order</source>
                 <target>Total order</target>
             </trans-unit>
-            <trans-unit id="coupon.choices.shipping">
-                <source>coupon.choices.shipping</source>
-                <target>Shipping discount</target>
+            <trans-unit id="coupon.choices.shipment">
+                <source>coupon.choices.shipment</source>
+                <target>Shipment discount</target>
+            </trans-unit>
+            <trans-unit id="text.info">
+                <source>text.info</source>
+                <target>Info!</target>
+            </trans-unit>
+            <trans-unit id="text.info.description">
+                <source>text.info.description</source>
+                <target>Please sign in to see more info.</target>
+            </trans-unit>
+            <trans-unit id="button.text.apply">
+                <source>button.text.apply</source>
+                <target>Apply</target>
+            </trans-unit>
+            <trans-unit id="info.text.apply">
+                <source>info.text.apply</source>
+                <target>Please introduce the 6 symbols from your coupon.</target>
+            </trans-unit>
+            <trans-unit id="info.text.danger">
+                <source>info.text.danger</source>
+                <target>You already have used code for that order.</target>
+            </trans-unit>
+            <trans-unit id="info.text.warning">
+                <source>info.text.warning</source>
+                <target>Provided code not found.</target>
+            </trans-unit>
+            <trans-unit id="info.text.success">
+                <source>info.text.success</source>
+                <target><![CDATA[Code verified successfully. You have <strong>{ discount }</strong> off for that order.]]></target>
             </trans-unit>
             <trans-unit id="form.address.invalid">
                 <source>form.address.invalid</source>

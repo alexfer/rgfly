@@ -2,6 +2,9 @@
 
 namespace App\Service\MarketPlace\Market\Checkout\Interface;
 
+use App\Entity\MarketPlace\Market;
+use App\Entity\MarketPlace\MarketCoupon;
+use App\Entity\MarketPlace\MarketCustomer;
 use App\Entity\MarketPlace\MarketInvoice;
 use App\Entity\MarketPlace\MarketOrders;
 
@@ -24,6 +27,13 @@ interface ProcessorInterface
     public function updateOrder(): void;
 
     /**
+     * @param array $coupon
+     * @param MarketOrders $order
+     * @return void
+     */
+    public function updateOrderAmount(array $coupon, MarketOrders $order): void;
+
+    /**
      * @param MarketInvoice $invoice
      * @return void
      */
@@ -38,4 +48,18 @@ interface ProcessorInterface
      * @return array
      */
     public function sum(): array;
+
+    /**
+     * @param Market $market
+     * @return array|null
+     */
+    public function getCoupon(Market $market): ?array;
+
+    /**
+     * @param int $couponId
+     * @param int $orderId
+     * @param MarketCustomer $customer
+     * @return bool
+     */
+    public function getCouponUsage(int $couponId, int $orderId, MarketCustomer $customer): bool;
 }

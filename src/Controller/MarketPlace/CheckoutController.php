@@ -5,6 +5,7 @@ namespace App\Controller\MarketPlace;
 use App\Entity\MarketPlace\MarketInvoice;
 use App\Form\Type\MarketPlace\CustomerType;
 use App\Form\Type\User\LoginType;
+use App\Service\MarketPlace\Currency;
 use App\Service\MarketPlace\Market\Checkout\Interface\ProcessorInterface as CheckoutProcessorInterface;
 use App\Service\MarketPlace\Market\Customer\Interface\{ProcessorInterface as CustomerProcessorInterface,
     UserManagerInterface,};
@@ -46,10 +47,16 @@ class CheckoutController extends AbstractController
     {
         $session = $request->getSession();
         $sessionId = $session->getId();
+        $hasUsed = false;
 
         $customer = $userManager->getUserCustomer($user);
         $form = $this->createForm(CustomerType::class, $customer);
         $order = $checkoutProcessor->findOrder($sessionId);
+        $coupon = $checkoutProcessor->getCoupon($order->getMarket());
+
+        if($coupon) {
+            $hasUsed = $checkoutProcessor->getCouponUsage($coupon['id'], $order->getId(), $customer);
+        }
 
         $form->handleRequest($request);
 
@@ -57,6 +64,10 @@ class CheckoutController extends AbstractController
 
             if (!$order) {
                 return $this->redirectToRoute('app_market_place_order_summary');
+            }
+
+            if($coupon) {
+                $checkoutProcessor->updateOrderAmount($coupon, $order);
             }
 
             $securityContext = $this->container->get('security.authorization_checker');
@@ -89,6 +100,16 @@ class CheckoutController extends AbstractController
         }
 
         $sum = $checkoutProcessor->sum();
+        $discount = null;
+
+        if($coupon) {
+            $currency = Currency::currency($order->getMarket()->getCurrency());
+            $discount = $coupon['price'] ? number_format($coupon['price'], 2, ',', ' ') . $currency : null;
+
+            if ($coupon['discount']) {
+                $discount = sprintf("%d%%", $coupon['discount']);
+            }
+        }
 
         return $this->render('market_place/checkout/index.html.twig', [
             'order' => $order,
@@ -96,6 +117,9 @@ class CheckoutController extends AbstractController
             'fee' => array_sum($sum['fee']),
             'total' => array_sum($sum['fee']) + array_sum($sum['itemSubtotal']),
             'form' => $form,
+            'hasUsed' => $hasUsed,
+            'discount' => $discount,
+            'coupon' => $coupon,
             'errors' => $form->getErrors(true),
         ]);
     }

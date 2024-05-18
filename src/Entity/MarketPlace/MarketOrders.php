@@ -39,7 +39,7 @@ class MarketOrders
     #[ORM\Column(length: 50)]
     private ?string $number = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0', nullable: true)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '2', nullable: true)]
     private ?string $total = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -135,7 +135,8 @@ class MarketOrders
      */
     public function setTotal(string $total): static
     {
-        $this->total = $total;
+        //dd(number_format($total, 10, '.', ''));
+        $this->total = number_format($total, 2, '.', '');
 
         return $this;
     }
