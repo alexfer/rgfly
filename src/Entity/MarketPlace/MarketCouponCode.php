@@ -21,9 +21,6 @@ class MarketCouponCode
     #[ORM\Column(length: 50)]
     private ?string $code = null;
 
-    #[ORM\Column]
-    private ?bool $has_used;
-
     /**
      * @var Collection<int, MarketCouponUsage>
      */
@@ -33,7 +30,6 @@ class MarketCouponCode
     public function __construct()
     {
         $this->marketCouponUsages = new ArrayCollection();
-        $this->has_used = false;
     }
 
     /**
@@ -108,25 +104,6 @@ class MarketCouponCode
                 $marketCouponUsage->setCouponCode(null);
             }
         }
-
-        return $this;
-    }
-
-    /**
-     * @return bool|null
-     */
-    public function hasUsed(): ?bool
-    {
-        return $this->has_used;
-    }
-
-    /**
-     * @param bool $has_used
-     * @return $this
-     */
-    public function setHasUsed(bool $has_used): static
-    {
-        $this->has_used = $has_used;
 
         return $this;
     }

@@ -2,8 +2,8 @@
 
 namespace App\Controller\MarketPlace;
 
-use App\Service\MarketPlace\Currency;
 use App\Entity\MarketPlace\{Market, MarketCoupon, MarketCouponCode, MarketCouponUsage, MarketCustomer};
+use App\Service\MarketPlace\Currency;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -77,28 +77,34 @@ class MarketController extends AbstractController
         if ($coupon && $payload && isset($payload['ids'])) {
 
             $requestCode = implode($payload['ids']);
-            $coupons = $em->getRepository(MarketCouponUsage::class)->findBy(['customer' => $user, 'relation' => $order]);
+            $couponObj = $em->getRepository(MarketCoupon::class)->find($coupon['id']);
 
-            if (count($coupons)) {
+            $couponUsage = $em->getRepository(MarketCouponUsage::class)->findOneBy([
+                'customer' => $user,
+                'relation' => $order,
+                'coupon' => $couponObj,
+            ]);
+
+            if ($couponObj) {
                 return $this->json([
                     'success' => false,
                     'message' => $translator->trans('info.text.danger'),
-                    ], Response::HTTP_FORBIDDEN);
+                ], Response::HTTP_FORBIDDEN);
             }
 
-            $couponCode = $em->getRepository(MarketCouponCode::class)
-                ->findOneBy(['coupon' => $em->getRepository(MarketCoupon::class)->find($coupon['id']), 'code' => strtoupper($requestCode)]);
+            $couponCode = $em->getRepository(MarketCouponCode::class)->findOneBy([
+                'coupon' => $couponObj,
+                'code' => strtoupper($requestCode),
+            ]);
 
             if (!$couponCode) {
                 return $this->json([
                     'success' => false,
                     'message' => $translator->trans('info.text.warning'),
-                    ], Response::HTTP_BAD_REQUEST);
+                ], Response::HTTP_BAD_REQUEST);
             }
 
-            $couponCode->hasUsed(true);
-            $em->persist($couponCode);
-            $em->flush();
+            unset($couponUsage);
 
             $customer = $em->getRepository(MarketCustomer::class)->findOneBy(['member' => $user]);
 
@@ -107,8 +113,6 @@ class MarketController extends AbstractController
                 ->setCoupon($em->getRepository(MarketCoupon::class)->find($coupon['id']))
                 ->setRelation($order)
                 ->setCouponCode($couponCode);
-
-
 
             $em->persist($couponUsage);
             $em->flush();

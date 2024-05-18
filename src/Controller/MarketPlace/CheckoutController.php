@@ -54,7 +54,7 @@ class CheckoutController extends AbstractController
         $order = $checkoutProcessor->findOrder($sessionId);
         $coupon = $checkoutProcessor->getCoupon($order->getMarket());
 
-        if($coupon) {
+        if ($coupon) {
             $hasUsed = $checkoutProcessor->getCouponUsage($coupon['id'], $order->getId(), $customer);
         }
 
@@ -66,7 +66,7 @@ class CheckoutController extends AbstractController
                 return $this->redirectToRoute('app_market_place_order_summary');
             }
 
-            if($coupon) {
+            if ($coupon) {
                 $checkoutProcessor->updateOrderAmount($coupon, $order);
             }
 
@@ -84,9 +84,7 @@ class CheckoutController extends AbstractController
                 $session->set('_temp_password', $password);
 
                 $customerProcessor->process($customer, $form->getData(), $order);
-
                 $user = $customerProcessor->addUser($password);
-
                 $customerProcessor->bind($form)->addCustomer($user);
             } else {
                 $customerProcessor->bind($form)->updateCustomer($customer, $form->getData());
@@ -102,7 +100,7 @@ class CheckoutController extends AbstractController
         $sum = $checkoutProcessor->sum();
         $discount = null;
 
-        if($coupon) {
+        if ($coupon) {
             $currency = Currency::currency($order->getMarket()->getCurrency());
             $discount = $coupon['price'] ? number_format($coupon['price'], 2, ',', ' ') . $currency : null;
 
