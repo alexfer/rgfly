@@ -448,6 +448,8 @@ class ProductController extends AbstractController
         $market = $request->get('market');
         $product = $repository->findOneBy(['id' => $id]);
 
+        $attach = null;
+
         if ($file) {
             $validate = $imageValidator->validate($file, $translator);
 
@@ -478,10 +480,8 @@ class ProductController extends AbstractController
             $em->flush();
         }
 
-        $storage = $params->get('product_storage_picture');
-
-        $url = "{$storage}/{$product->getId()}/{$attach->getName()}";
-        $picture = $cacheManager->getBrowserPath(parse_url($url, PHP_URL_PATH), 'product_preview');
+        $url = $this->getTargetDir($product->getId(), $params);
+        $picture = $cacheManager->getBrowserPath(parse_url($url . '/' . $attach->getName(), PHP_URL_PATH), 'product_preview', [], null);
 
         return $this->json([
             'success' => true,
@@ -544,7 +544,6 @@ class ProductController extends AbstractController
      */
     private function getTargetDir(?int $id, ParameterBagInterface $params): string
     {
-        $storage = sprintf('%s/picture/', $params->get('product_storage_dir'));
-        return $storage . $id;
+        return sprintf('%s/%d', $params->get('product_storage_dir'), $id);
     }
 }

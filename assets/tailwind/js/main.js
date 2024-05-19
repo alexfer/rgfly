@@ -275,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 confirmModal.style.display = 'block';
                 confirmModal.querySelector('a[role="button"]').addEventListener('click', async (event) => {
                     event.preventDefault();
-                    await handleClick(el, confirmModal);
+                    await handleClick(el, confirmModal, elements);
                     document.getElementsByTagName('body')[0].classList.remove('overflow-y-hidden');
                 }, eventOptions);
             });
@@ -290,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 confirmModal.style.display = 'block';
                 confirmModal.querySelector('a[role="button"]').addEventListener('click', async (event) => {
                     event.preventDefault();
-                    await handleClick(el, confirmModal);
+                    await window.handleClick(el, confirmModal, elements);
                     el.parentElement.parentElement.remove();
                     document.getElementsByTagName('body')[0].classList.remove('overflow-y-hidden');
                 }, eventOptions);
@@ -299,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-window.handleClick = async (el, confirmModal) => {
+window.handleClick = async (el, confirmModal, elements) => {
     let id = el.parentElement.getAttribute('data-id');
     let url = el.getAttribute('href');
     const response = await fetch(url, {
