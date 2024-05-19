@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AppMigrations;
+namespace App\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240324032305 extends AbstractMigration
+final class Version20240518135401 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -58,6 +58,21 @@ final class Version20240324032305 extends AbstractMigration
         $this->addSql('CREATE TABLE market_category_product (id SERIAL NOT NULL, product_id INT DEFAULT NULL, category_id INT DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_89E568864584665A ON market_category_product (product_id)');
         $this->addSql('CREATE INDEX IDX_89E5688612469DE2 ON market_category_product (category_id)');
+        $this->addSql('CREATE TABLE market_coupon (id SERIAL NOT NULL, market_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, discount INT DEFAULT NULL, price NUMERIC(10, 2) DEFAULT NULL, event SMALLINT DEFAULT NULL, available INT NOT NULL, max_usage SMALLINT NOT NULL, type VARCHAR(50) NOT NULL, order_limit INT NOT NULL, promotion_text VARCHAR(255) DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, started_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, expired_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE INDEX IDX_441B940E622F3F37 ON market_coupon (market_id)');
+        $this->addSql('COMMENT ON COLUMN market_coupon.created_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('COMMENT ON COLUMN market_coupon.started_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('COMMENT ON COLUMN market_coupon.expired_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('CREATE TABLE market_coupon_market_product (market_coupon_id INT NOT NULL, market_product_id INT NOT NULL, PRIMARY KEY(market_coupon_id, market_product_id))');
+        $this->addSql('CREATE INDEX IDX_771060B4F3976E8C ON market_coupon_market_product (market_coupon_id)');
+        $this->addSql('CREATE INDEX IDX_771060B42B7A3246 ON market_coupon_market_product (market_product_id)');
+        $this->addSql('CREATE TABLE market_coupon_code (id SERIAL NOT NULL, coupon_id INT DEFAULT NULL, code VARCHAR(50) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE INDEX IDX_23444E8166C5951B ON market_coupon_code (coupon_id)');
+        $this->addSql('CREATE TABLE market_coupon_usage (id SERIAL NOT NULL, coupon_id INT DEFAULT NULL, customer_id INT DEFAULT NULL, coupon_code_id INT DEFAULT NULL, relation INT NOT NULL, used_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE INDEX IDX_B4D4A7CE66C5951B ON market_coupon_usage (coupon_id)');
+        $this->addSql('CREATE INDEX IDX_B4D4A7CE9395C3F3 ON market_coupon_usage (customer_id)');
+        $this->addSql('CREATE INDEX IDX_B4D4A7CEC8B2BD81 ON market_coupon_usage (coupon_code_id)');
+        $this->addSql('COMMENT ON COLUMN market_coupon_usage.used_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE market_customer (id SERIAL NOT NULL, member_id INT DEFAULT NULL, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, phone VARCHAR(100) NOT NULL, country VARCHAR(5) NOT NULL, email VARCHAR(255) DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_6C889BC17597D3FE ON market_customer (member_id)');
         $this->addSql('COMMENT ON COLUMN market_customer.created_at IS \'(DC2Type:datetime_immutable)\'');
@@ -70,23 +85,23 @@ final class Version20240324032305 extends AbstractMigration
         $this->addSql('CREATE TABLE market_customer_orders (id SERIAL NOT NULL, customer_id INT DEFAULT NULL, orders_id INT DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_F1B1DB3A9395C3F3 ON market_customer_orders (customer_id)');
         $this->addSql('CREATE INDEX IDX_F1B1DB3ACFFE9AD6 ON market_customer_orders (orders_id)');
-        $this->addSql('CREATE TABLE market_invoice (id SERIAL NOT NULL, orders_id INT DEFAULT NULL, payment_gateway_id INT DEFAULT NULL, number VARCHAR(50) NOT NULL, tax DOUBLE PRECISION NOT NULL, amount DOUBLE PRECISION NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, paid_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE market_invoice (id SERIAL NOT NULL, orders_id INT DEFAULT NULL, payment_gateway_id INT DEFAULT NULL, number VARCHAR(50) NOT NULL, tax NUMERIC(10, 2) NOT NULL, amount NUMERIC(10, 2) DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, paid_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_99F3FFC4CFFE9AD6 ON market_invoice (orders_id)');
         $this->addSql('CREATE INDEX IDX_99F3FFC462890FD5 ON market_invoice (payment_gateway_id)');
         $this->addSql('COMMENT ON COLUMN market_invoice.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE market_manufacturer (id SERIAL NOT NULL, market_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, description TEXT DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_B77B4092622F3F37 ON market_manufacturer (market_id)');
-        $this->addSql('CREATE TABLE market_orders (id SERIAL NOT NULL, market_id INT DEFAULT NULL, number VARCHAR(50) NOT NULL, total NUMERIC(10, 0) DEFAULT NULL, session VARCHAR(255) DEFAULT NULL, status VARCHAR(100) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, completed_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE market_orders (id SERIAL NOT NULL, market_id INT DEFAULT NULL, number VARCHAR(50) NOT NULL, total NUMERIC(10, 2) DEFAULT NULL, session VARCHAR(255) DEFAULT NULL, status VARCHAR(100) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, completed_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_C58B56E2622F3F37 ON market_orders (market_id)');
         $this->addSql('COMMENT ON COLUMN market_orders.created_at IS \'(DC2Type:datetime_immutable)\'');
-        $this->addSql('CREATE TABLE market_orders_product (id SERIAL NOT NULL, orders_id INT DEFAULT NULL, product_id INT DEFAULT NULL, size VARCHAR(100) DEFAULT NULL, color VARCHAR(100) DEFAULT NULL, quantity INT NOT NULL, discount INT DEFAULT NULL, cost DOUBLE PRECISION DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE market_orders_product (id SERIAL NOT NULL, orders_id INT DEFAULT NULL, product_id INT DEFAULT NULL, size VARCHAR(100) DEFAULT NULL, color VARCHAR(100) DEFAULT NULL, quantity INT NOT NULL, discount INT DEFAULT NULL, cost NUMERIC(10, 2) DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_737098F1CFFE9AD6 ON market_orders_product (orders_id)');
         $this->addSql('CREATE INDEX IDX_737098F14584665A ON market_orders_product (product_id)');
         $this->addSql('CREATE TABLE market_payment_gateway (id SERIAL NOT NULL, name VARCHAR(100) NOT NULL, summary TEXT NOT NULL, active BOOLEAN NOT NULL, icon VARCHAR(50) NOT NULL, slug VARCHAR(255) NOT NULL, handler_text VARCHAR(100) NOT NULL, deleted_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE market_payment_gateway_market (id SERIAL NOT NULL, gateway_id INT DEFAULT NULL, market_id INT DEFAULT NULL, active BOOLEAN DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_B019B14C577F8E00 ON market_payment_gateway_market (gateway_id)');
         $this->addSql('CREATE INDEX IDX_B019B14C622F3F37 ON market_payment_gateway_market (market_id)');
-        $this->addSql('CREATE TABLE market_product (id SERIAL NOT NULL, market_id INT DEFAULT NULL, name VARCHAR(512) NOT NULL, description TEXT NOT NULL, slug VARCHAR(512) DEFAULT NULL, quantity INT NOT NULL, cost DOUBLE PRECISION NOT NULL, short_name VARCHAR(80) NOT NULL, discount DOUBLE PRECISION DEFAULT NULL, sku VARCHAR(255) DEFAULT NULL, pckg_quantity INT DEFAULT NULL, fee DOUBLE PRECISION DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, deleted_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE market_product (id SERIAL NOT NULL, market_id INT DEFAULT NULL, name VARCHAR(512) NOT NULL, description TEXT NOT NULL, slug VARCHAR(512) DEFAULT NULL, quantity INT NOT NULL, cost NUMERIC(10, 2) NOT NULL, short_name VARCHAR(80) NOT NULL, discount NUMERIC(10, 2) DEFAULT NULL, sku VARCHAR(255) DEFAULT NULL, pckg_quantity INT DEFAULT NULL, fee NUMERIC(10, 2) DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, deleted_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_DADCEC2D989D9B62 ON market_product (slug)');
         $this->addSql('CREATE INDEX IDX_DADCEC2D622F3F37 ON market_product (market_id)');
         $this->addSql('CREATE TABLE market_product_attach (id SERIAL NOT NULL, product_id INT DEFAULT NULL, attach_id INT DEFAULT NULL, PRIMARY KEY(id))');
@@ -157,6 +172,13 @@ final class Version20240324032305 extends AbstractMigration
         $this->addSql('ALTER TABLE market_category ADD CONSTRAINT FK_EBFD0C09727ACA70 FOREIGN KEY (parent_id) REFERENCES market_category (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE market_category_product ADD CONSTRAINT FK_89E568864584665A FOREIGN KEY (product_id) REFERENCES market_product (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE market_category_product ADD CONSTRAINT FK_89E5688612469DE2 FOREIGN KEY (category_id) REFERENCES market_category (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE market_coupon ADD CONSTRAINT FK_441B940E622F3F37 FOREIGN KEY (market_id) REFERENCES market (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE market_coupon_market_product ADD CONSTRAINT FK_771060B4F3976E8C FOREIGN KEY (market_coupon_id) REFERENCES market_coupon (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE market_coupon_market_product ADD CONSTRAINT FK_771060B42B7A3246 FOREIGN KEY (market_product_id) REFERENCES market_product (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE market_coupon_code ADD CONSTRAINT FK_23444E8166C5951B FOREIGN KEY (coupon_id) REFERENCES market_coupon (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE market_coupon_usage ADD CONSTRAINT FK_B4D4A7CE66C5951B FOREIGN KEY (coupon_id) REFERENCES market_coupon (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE market_coupon_usage ADD CONSTRAINT FK_B4D4A7CE9395C3F3 FOREIGN KEY (customer_id) REFERENCES market_customer (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE market_coupon_usage ADD CONSTRAINT FK_B4D4A7CEC8B2BD81 FOREIGN KEY (coupon_code_id) REFERENCES market_coupon_code (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE market_customer ADD CONSTRAINT FK_6C889BC17597D3FE FOREIGN KEY (member_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE market_customer_message ADD CONSTRAINT FK_3717B8949395C3F3 FOREIGN KEY (customer_id) REFERENCES market_customer (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE market_customer_message ADD CONSTRAINT FK_3717B894622F3F37 FOREIGN KEY (market_id) REFERENCES market (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
@@ -212,6 +234,13 @@ final class Version20240324032305 extends AbstractMigration
         $this->addSql('ALTER TABLE market_category DROP CONSTRAINT FK_EBFD0C09727ACA70');
         $this->addSql('ALTER TABLE market_category_product DROP CONSTRAINT FK_89E568864584665A');
         $this->addSql('ALTER TABLE market_category_product DROP CONSTRAINT FK_89E5688612469DE2');
+        $this->addSql('ALTER TABLE market_coupon DROP CONSTRAINT FK_441B940E622F3F37');
+        $this->addSql('ALTER TABLE market_coupon_market_product DROP CONSTRAINT FK_771060B4F3976E8C');
+        $this->addSql('ALTER TABLE market_coupon_market_product DROP CONSTRAINT FK_771060B42B7A3246');
+        $this->addSql('ALTER TABLE market_coupon_code DROP CONSTRAINT FK_23444E8166C5951B');
+        $this->addSql('ALTER TABLE market_coupon_usage DROP CONSTRAINT FK_B4D4A7CE66C5951B');
+        $this->addSql('ALTER TABLE market_coupon_usage DROP CONSTRAINT FK_B4D4A7CE9395C3F3');
+        $this->addSql('ALTER TABLE market_coupon_usage DROP CONSTRAINT FK_B4D4A7CEC8B2BD81');
         $this->addSql('ALTER TABLE market_customer DROP CONSTRAINT FK_6C889BC17597D3FE');
         $this->addSql('ALTER TABLE market_customer_message DROP CONSTRAINT FK_3717B8949395C3F3');
         $this->addSql('ALTER TABLE market_customer_message DROP CONSTRAINT FK_3717B894622F3F37');
@@ -259,6 +288,10 @@ final class Version20240324032305 extends AbstractMigration
         $this->addSql('DROP TABLE market_brand');
         $this->addSql('DROP TABLE market_category');
         $this->addSql('DROP TABLE market_category_product');
+        $this->addSql('DROP TABLE market_coupon');
+        $this->addSql('DROP TABLE market_coupon_market_product');
+        $this->addSql('DROP TABLE market_coupon_code');
+        $this->addSql('DROP TABLE market_coupon_usage');
         $this->addSql('DROP TABLE market_customer');
         $this->addSql('DROP TABLE market_customer_message');
         $this->addSql('DROP TABLE market_customer_orders');

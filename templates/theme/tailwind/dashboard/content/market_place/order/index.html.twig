@@ -37,7 +37,7 @@
                     <td class="px-6 py-3">{{ order.createdAt|date(datetime_format) }}</td>
                     <td class="px-6 py-3">{{ order.status }}</td>
                     <td class="px-6 py-3">
-                        {{ order.total|amount_format }}<small>{{ order.market.currency|currency }}</small>
+                        {{ order.total }}<small>{{ order.market.currency|currency }}</small>
                     </td>
                     <td class="px-6 py-3">
                         {{ summary[order.id].total|amount_format }}<small>{{ order.market.currency|currency }}</small>

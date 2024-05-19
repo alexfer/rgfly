@@ -4,15 +4,15 @@ import messages from "./i18n";
 
 i18next.init(messages);
 
-const cart = document.getElementById('shopping-cart') || undefined;
-let attributes = document.querySelectorAll('#attributes');
-let forms = document.querySelectorAll('.shopping-cart') || undefined;
-let wishlists = document.querySelectorAll('.add-wishlist') || undefined;
-let drops = document.querySelectorAll('.drops') || undefined;
-let headers = {'Content-type': 'application/json; charset=utf-8'};
-const bulkRemoveWishlist = document.getElementById('bulk-remove') || undefined;
+const cart = document.getElementById('shopping-cart');
+const attributes = document.querySelectorAll('#attributes');
+const forms = document.querySelectorAll('.shopping-cart');
+const wishlists = document.querySelectorAll('.add-wishlist');
+const drops = document.querySelectorAll('.drops');
+const headers = {'Content-type': 'application/json; charset=utf-8'};
+const bulkRemoveWishlist = document.getElementById('bulk-remove');
 
-if (typeof bulkRemoveWishlist !== 'undefined') {
+if (bulkRemoveWishlist !== null) {
     bulkRemoveWishlist.addEventListener('click', (event) => {
         event.preventDefault();
         let url = bulkRemoveWishlist.getAttribute('data-url');
@@ -48,7 +48,7 @@ if (typeof bulkRemoveWishlist !== 'undefined') {
                     }
                 })
                 .catch(error => {
-                    console.log(error)
+                    console.log(error);
                 });
         }
     });
@@ -115,7 +115,7 @@ if (typeof drops !== 'undefined') {
     });
 }
 
-if (typeof cart !== 'undefined') {
+if (cart !== null) {
     cart.addEventListener('show.twe.offcanvas', () => {
         let url = cart.getAttribute('data-url');
         let body = cart.querySelectorAll('#order-body');

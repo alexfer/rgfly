@@ -65,7 +65,7 @@ class CouponController extends AbstractController
                 $result .= $interval->format("%s seconds ");
             }
 
-            if ($val->getStartedAt() > $val->getExpiredAt()) {
+            if (time() > $val->getExpiredAt()->getTimestamp()) {
                 $result = $translator->trans('event.completed');
             }
 

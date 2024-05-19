@@ -3,6 +3,7 @@
 namespace App\Entity\MarketPlace;
 
 use App\Repository\MarketPlace\MarketOrdersProductRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MarketOrdersProductRepository::class)]
@@ -31,8 +32,8 @@ class MarketOrdersProduct
     #[ORM\Column(nullable: true)]
     private ?int $discount = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?float $cost = null;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '2', nullable: true)]
+    private ?string $cost = null;
 
     public function __construct()
     {
@@ -162,18 +163,18 @@ class MarketOrdersProduct
     }
 
     /**
-     * @return float|null
+     * @return string|null
      */
-    public function getCost(): ?float
+    public function getCost(): ?string
     {
         return $this->cost;
     }
 
     /**
-     * @param float|null $cost
+     * @param string|null $cost
      * @return $this
      */
-    public function setCost(?float $cost): static
+    public function setCost(?string $cost): static
     {
         $this->cost = $cost;
 

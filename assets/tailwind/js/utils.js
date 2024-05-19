@@ -11,6 +11,18 @@ window.closeModal = (id) => {
     document.getElementsByTagName('body')[0].classList.remove('overflow-y-hidden');
 };
 
+window.focusNextInput = (el, prevId, nextId) => {
+    if (el.value.length === 0) {
+        if (prevId) {
+            document.getElementById(prevId).focus();
+        }
+    } else {
+        if (nextId) {
+            document.getElementById(nextId).focus();
+        }
+    }
+}
+
 const any = document.getElementById('any');
 const discount = document.querySelector('[id$="_discount"]');
 

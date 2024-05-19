@@ -19,11 +19,11 @@ class MarketInvoice
     #[ORM\Column(length: 50)]
     private ?string $number = null;
 
-    #[ORM\Column]
-    private ?float $tax = null;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '2')]
+    private ?string $tax = null;
 
-    #[ORM\Column]
-    private ?float $amount = null;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '2', nullable: true)]
+    private ?string $amount = null;
 
     #[ORM\OneToOne(inversedBy: 'marketInvoice', cascade: ['persist', 'remove'])]
     private ?MarketOrders $orders = null;
@@ -89,39 +89,39 @@ class MarketInvoice
     }
 
     /**
-     * @return float|null
+     * @return string|null
      */
-    public function getTax(): ?float
+    public function getTax(): ?string
     {
         return $this->tax;
     }
 
     /**
-     * @param float $tax
+     * @param string $tax
      * @return $this
      */
-    public function setTax(float $tax): static
+    public function setTax(string $tax): static
     {
-        $this->tax = $tax;
+        $this->tax = number_format($tax, 2, '.', '');
 
         return $this;
     }
 
     /**
-     * @return float|null
+     * @return string|null
      */
-    public function getAmount(): ?float
+    public function getAmount(): ?string
     {
         return $this->amount;
     }
 
     /**
-     * @param float $amount
+     * @param string $amount
      * @return $this
      */
-    public function setAmount(float $amount): static
+    public function setAmount(string $amount): static
     {
-        $this->amount = $amount;
+        $this->amount = number_format($amount, 2, '.', '');;
 
         return $this;
     }

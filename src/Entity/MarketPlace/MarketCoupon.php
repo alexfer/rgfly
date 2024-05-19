@@ -25,8 +25,8 @@ class MarketCoupon
     #[ORM\Column(nullable: true)]
     private ?int $discount = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?float $price = null;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '2', nullable: true)]
+    private ?string $price = null;
 
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
     private ?int $event = null;
@@ -73,6 +73,12 @@ class MarketCoupon
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $expired_at = null;
 
+    const string COUPON_ORDER = 'order';
+
+    const string COUPON_PRODUCT = 'product';
+
+    const string COUPON_SHIPMENT = 'shipment';
+
     public function __construct()
     {
         $this->created_at = new \DateTimeImmutable();
@@ -109,20 +115,20 @@ class MarketCoupon
     }
 
     /**
-     * @return float|null
+     * @return string|null
      */
-    public function getPrice(): ?float
+    public function getPrice(): ?string
     {
         return $this->price;
     }
 
     /**
-     * @param float|null $price
+     * @param string|null $price
      * @return $this
      */
-    public function setPrice(?float $price): static
+    public function setPrice(?string $price): static
     {
-        $this->price = $price;
+        $this->price = number_format($price, 2, '.', '');;
 
         return $this;
     }

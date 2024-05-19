@@ -2,7 +2,14 @@
 
 namespace App\Service\MarketPlace\Market\Checkout;
 
-use App\Entity\MarketPlace\{MarketInvoice, MarketOrders, MarketPaymentGateway, MarketProduct};
+use App\Entity\MarketPlace\{Market,
+    MarketCoupon,
+    MarketCouponUsage,
+    MarketCustomer,
+    MarketInvoice,
+    MarketOrders,
+    MarketPaymentGateway,
+    MarketProduct};
 use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Service\MarketPlace\Market\Checkout\Interface\ProcessorInterface;
 use Doctrine\Common\Collections\Collection;
@@ -41,6 +48,29 @@ class Processor implements ProcessorInterface
     )
     {
         $this->request = $requestStack->getCurrentRequest();
+    }
+
+    /**
+     * @param Market $market
+     * @return array|int
+     */
+    public function getCoupon(Market $market): array|int
+    {
+        return $this->em->getRepository(MarketCoupon::class)
+            ->getSingleActive($market, MarketCoupon::COUPON_ORDER);
+    }
+
+    /**
+     * @param int $couponId
+     * @param int $orderId
+     * @param MarketCustomer $customer
+     * @return bool
+     */
+    public function getCouponUsage(int $couponId, int $orderId, MarketCustomer $customer): bool
+    {
+        $coupon = $this->em->getRepository(MarketCoupon::class)->find($couponId);
+        return (bool)$this->em->getRepository(MarketCouponUsage::class)
+            ->findOneBy(['coupon' => $coupon, 'relation' => $orderId, 'customer' => $customer]);
     }
 
     /**
@@ -107,6 +137,28 @@ class Processor implements ProcessorInterface
             ->setTax(0);
 
         $this->em->persist($invoice);
+    }
+
+    /**
+     * @param array $coupon
+     * @param MarketOrders $order
+     * @return void
+     */
+    public function updateOrderAmount(array $coupon, MarketOrders $order): void
+    {
+        $amount = $order->getTotal();
+
+        if ($coupon['discount']) {
+            $total = $amount * $coupon['discount'] / 100;
+            $amount = $amount - $total;
+        }
+        if ($coupon['price']) {
+            $amount = $amount - $coupon['price'];
+        }
+
+        $order->setTotal($amount);
+        $this->em->persist($order);
+        $this->em->flush();
     }
 
     public function updateOrder(): void

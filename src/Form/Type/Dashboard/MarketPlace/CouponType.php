@@ -83,9 +83,9 @@ class CouponType extends AbstractType
             ->add('type', ChoiceType::class, [
                 'label' => 'label.form.type',
                 'choices' => [
-                    'coupon.choices.product' => 'product',
-                    'coupon.choices.order' => 'order',
-                    'coupon.choices.shipping' => 'shipping',
+                    'coupon.choices.product' => MarketCoupon::COUPON_PRODUCT,
+                    'coupon.choices.order' => MarketCoupon::COUPON_ORDER,
+                    'coupon.choices.shipment' => MarketCoupon::COUPON_SHIPMENT,
                 ],
             ])
             ->add('orderLimit', NumberType::class, [

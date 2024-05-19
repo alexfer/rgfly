@@ -13,14 +13,21 @@ class MarketCouponUsage
     #[ORM\Column(type: "integer")]
     private ?int $id = null;
 
+    #[ORM\Column]
+    private ?int $relation = null;
+
     #[ORM\ManyToOne(inversedBy: 'marketCouponUsages')]
     private ?MarketCoupon $coupon = null;
 
     #[ORM\ManyToOne(inversedBy: 'marketCouponUsages')]
     private ?MarketCustomer $customer = null;
 
+    #[ORM\ManyToOne(inversedBy: 'marketCouponUsages')]
+    private ?MarketCouponCode $coupon_code = null;
+
     #[ORM\Column]
     private ?\DateTimeImmutable $used_at = null;
+
 
     public function __construct()
     {
@@ -88,6 +95,44 @@ class MarketCouponUsage
     public function setUsedAt(\DateTimeImmutable $used_at): static
     {
         $this->used_at = $used_at;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getRelation(): ?int
+    {
+        return $this->relation;
+    }
+
+    /**
+     * @param int $relation
+     * @return $this
+     */
+    public function setRelation(int $relation): static
+    {
+        $this->relation = $relation;
+
+        return $this;
+    }
+
+    /**
+     * @return MarketCouponCode|null
+     */
+    public function getCouponCode(): ?MarketCouponCode
+    {
+        return $this->coupon_code;
+    }
+
+    /**
+     * @param MarketCouponCode|null $coupon_code
+     * @return $this
+     */
+    public function setCouponCode(?MarketCouponCode $coupon_code): static
+    {
+        $this->coupon_code = $coupon_code;
 
         return $this;
     }
