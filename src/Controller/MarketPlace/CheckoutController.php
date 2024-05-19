@@ -53,8 +53,8 @@ class CheckoutController extends AbstractController
         $form = $this->createForm(CustomerType::class, $customer);
         $order = $checkoutProcessor->findOrder($sessionId);
         $coupon = $checkoutProcessor->getCoupon($order->getMarket());
-
         if ($coupon) {
+            $coupon = $coupon['coupon'];
             $hasUsed = $checkoutProcessor->getCouponUsage($coupon['id'], $order->getId(), $customer);
         }
 
@@ -102,7 +102,7 @@ class CheckoutController extends AbstractController
 
         if ($coupon) {
             $currency = Currency::currency($order->getMarket()->getCurrency());
-            $discount = $coupon['price'] ? number_format($coupon['price'], 2, ',', ' ') . $currency : null;
+            $discount = $coupon['price'] ? number_format($coupon['price'], 2, ',', ' ') . $currency['symbol'] : null;
 
             if ($coupon['discount']) {
                 $discount = sprintf("%d%%", $coupon['discount']);

@@ -4,7 +4,6 @@ namespace App\Service\MarketPlace\Market\Checkout;
 
 use App\Entity\MarketPlace\{Market,
     MarketCoupon,
-    MarketCouponCode,
     MarketCouponUsage,
     MarketCustomer,
     MarketInvoice,
@@ -53,9 +52,9 @@ class Processor implements ProcessorInterface
 
     /**
      * @param Market $market
-     * @return array|null
+     * @return array|int
      */
-    public function getCoupon(Market $market): ?array
+    public function getCoupon(Market $market): array|int
     {
         return $this->em->getRepository(MarketCoupon::class)
             ->getSingleActive($market, MarketCoupon::COUPON_ORDER);
@@ -149,11 +148,11 @@ class Processor implements ProcessorInterface
     {
         $amount = $order->getTotal();
 
-        if($coupon['discount']) {
+        if ($coupon['discount']) {
             $total = $amount * $coupon['discount'] / 100;
             $amount = $amount - $total;
         }
-        if($coupon['price']) {
+        if ($coupon['price']) {
             $amount = $amount - $coupon['price'];
         }
 

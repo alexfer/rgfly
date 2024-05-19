@@ -92,10 +92,11 @@ class BlogController extends AbstractController
 
         $error = null;
         $title = $form->get('title')->getData();
-        $slug = $slugger->slug($title)->lower();
 
         if ($title) {
+            $slug = $slugger->slug($title)->lower();
             $exists = $em->getRepository(Entry::class)->findOneBy(['slug' => $slug]);
+
             if ($exists) {
                 $error = $translator->trans('slug.unique', [
                     '%name%' => $translator->trans('label.form.title'),

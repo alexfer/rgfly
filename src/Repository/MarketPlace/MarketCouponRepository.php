@@ -74,27 +74,22 @@ class MarketCouponRepository extends ServiceEntityRepository
      * @param string $type
      * @param int $event
      * @return array|null
-     * @throws NonUniqueResultException
+     * @throws Exception
      */
     public function getSingleActive(
         Market $market,
         string $type,
         int    $event = 1,
-    ): ?array
+    )
     {
-        $qb = $this->createQueryBuilder('mc')
-            ->select(['mc.id', 'mc.price', 'mc.discount'])
-            ->where('mc.market = :market')
-            ->andWhere('mc.type = :type')
-            ->andWhere('mc.event = :event')
-            ->andWhere('mc.expired_at > :datetime')
-            ->setParameter('market', $market)
-            ->setParameter('type', $type)
-            ->setParameter('event', $event)
-            ->setParameter('datetime', new \DateTime());
+        $connection = $this->getEntityManager()->getConnection();
+        $statement = $connection->prepare('select get_active_coupon(:market_id, :type, :event)');
+        $statement->bindValue('market_id', $market->getId(), \PDO::PARAM_INT);
+        $statement->bindValue('type', $type, \PDO::PARAM_STR);
+        $statement->bindValue('event', $event, \PDO::PARAM_INT);
+        $result = $statement->executeQuery()->fetchAllAssociative();
 
-        return $qb->getQuery()
-            ->getOneOrNullResult();
+        return json_decode($result[0]['get_active_coupon'], true) ?? $result;
     }
 
     /**

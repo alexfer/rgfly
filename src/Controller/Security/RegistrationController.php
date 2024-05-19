@@ -61,7 +61,7 @@ class RegistrationController extends AbstractController
         $error = null;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $userData = $this->userData($form, $request, $hasher);
+            $userData = $this->userData($form, $request, $hasher, User::ROLE_CUSTOMER);
 
             $user = $userRepository->create($userData);
 
@@ -141,7 +141,7 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $userData = $this->userData($form, $request, $hasher);
+            $userData = $this->userData($form, $request, $hasher, User::ROLE_USER);
             $newUser = $userRepository->create($userData);
 
             if ($newUser == -1) {
@@ -177,17 +177,19 @@ class RegistrationController extends AbstractController
      * @param FormInterface $form
      * @param Request $request
      * @param UserPasswordHasherInterface $hasher
+     * @param string $role
      * @return array
      */
     private function userData(
         FormInterface               $form,
         Request                     $request,
         UserPasswordHasherInterface $hasher,
+        string                      $role
     ): array
     {
         return [
             'email' => $form->get('email')->getData(),
-            'roles' => [User::ROLE_USER],
+            'roles' => [$role],
             'password' => $hasher->hashPassword(new User(), $form->get('plainPassword')->getData()),
             'ip' => $request->getClientIp(),
         ];

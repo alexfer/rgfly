@@ -51,7 +51,7 @@
             {% include 'market_place/checkout/parts/address.html.twig' %}
         </div>
     </div>
-    {% if hasUsed == false and coupon is not null %}
+    {% if hasUsed == false and coupon != 0 %}
         {% if app.user and 'ROLE_CUSTOMER' in app.user.roles %}
             {% include 'market_place/checkout/parts/coupon.html.twig' %}
         {% else %}

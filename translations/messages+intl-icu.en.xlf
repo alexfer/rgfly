@@ -64,6 +64,10 @@
                 <source>text.theme</source>
                 <target>Theme</target>
             </trans-unit>
+            <trans-unit id="text.asap">
+                <source>text.asap</source>
+                <target>Coming soon asap rocky...</target>
+            </trans-unit>
             <trans-unit id="open.sidebar">
                 <source>open.sidebar</source>
                 <target>Open sidebar</target>
@@ -563,11 +567,11 @@
             </trans-unit>
             <trans-unit id="coupon.choices.product">
                 <source>coupon.choices.product</source>
-                <target>Product discount</target>
+                <target>Product discount (off per one product)</target>
             </trans-unit>
             <trans-unit id="coupon.choices.order">
                 <source>coupon.choices.order</source>
-                <target>Total order</target>
+                <target>Order discount (off per one order)</target>
             </trans-unit>
             <trans-unit id="coupon.choices.shipment">
                 <source>coupon.choices.shipment</source>

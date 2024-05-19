@@ -3,7 +3,6 @@
 namespace App\Service\MarketPlace\Market\Checkout\Interface;
 
 use App\Entity\MarketPlace\Market;
-use App\Entity\MarketPlace\MarketCoupon;
 use App\Entity\MarketPlace\MarketCustomer;
 use App\Entity\MarketPlace\MarketInvoice;
 use App\Entity\MarketPlace\MarketOrders;
@@ -51,9 +50,9 @@ interface ProcessorInterface
 
     /**
      * @param Market $market
-     * @return array|null
+     * @return array|int
      */
-    public function getCoupon(Market $market): ?array;
+    public function getCoupon(Market $market): array|int;
 
     /**
      * @param int $couponId
