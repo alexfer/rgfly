@@ -53,6 +53,7 @@ class CheckoutController extends AbstractController
         $form = $this->createForm(CustomerType::class, $customer);
         $order = $checkoutProcessor->findOrder($sessionId);
         $coupon = $checkoutProcessor->getCoupon($order->getMarket());
+
         if ($coupon) {
             $coupon = $coupon['coupon'];
             $hasUsed = $checkoutProcessor->getCouponUsage($coupon['id'], $order->getId(), $customer);

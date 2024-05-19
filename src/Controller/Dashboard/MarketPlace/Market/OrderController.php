@@ -47,7 +47,7 @@ class OrderController extends AbstractController
                 $products[$order->getId()][] = $item->getCost() - ((($item->getCost() * $item->getQuantity()) * $item->getDiscount()) - $item->getDiscount()) / 100;
             }
             $summary[$order->getId()] = [
-                'total' => array_sum($products[$order->getId()]),
+                'total' => array_sum($products[$order->getId()]) != $order->getTotal() ?  $order->getTotal():  array_sum($products[$order->getId()]),
             ];
         }
 

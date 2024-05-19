@@ -2,6 +2,7 @@
 
 namespace App\Controller\MarketPlace;
 
+use Doctrine\DBAL\Exception;
 use App\Entity\MarketPlace\{Market, MarketCoupon, MarketCouponCode, MarketCouponUsage, MarketCustomer};
 use App\Service\MarketPlace\Currency;
 use Doctrine\ORM\EntityManagerInterface;
@@ -56,7 +57,7 @@ class MarketController extends AbstractController
      * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
      * @return JsonResponse
-     * @throws NonUniqueResultException
+     * @throws Exception
      */
     #[Route('/{market}/{order}/coupon/{id}', name: 'app_market_place_market_verify_coupon', methods: ['POST'])]
     public function verifyCoupon(
@@ -75,7 +76,7 @@ class MarketController extends AbstractController
         $requestCode = null;
 
         if ($coupon && $payload && isset($payload['ids'])) {
-
+            $coupon = $coupon['coupon'];
             $requestCode = implode($payload['ids']);
             $couponObj = $em->getRepository(MarketCoupon::class)->find($coupon['id']);
 
@@ -85,7 +86,7 @@ class MarketController extends AbstractController
                 'coupon' => $couponObj,
             ]);
 
-            if ($couponObj) {
+            if ($couponUsage) {
                 return $this->json([
                     'success' => false,
                     'message' => $translator->trans('info.text.danger'),
