@@ -2,11 +2,9 @@
 
 namespace App\Controller\MarketPlace;
 
-use Doctrine\DBAL\Exception;
-use App\Entity\MarketPlace\{Market, MarketCoupon, MarketCouponCode, MarketCouponUsage, MarketCustomer};
-use App\Service\MarketPlace\Currency;
+use App\Entity\MarketPlace\{Market, MarketCustomer};
+use App\Service\MarketPlace\Market\Coupon\Interface\ProcessorInterface as Coupon;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
@@ -54,81 +52,48 @@ class MarketController extends AbstractController
      * @param Request $request
      * @param Market $market
      * @param UserInterface $user
-     * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
+     * @param Coupon $coupon
      * @return JsonResponse
-     * @throws Exception
      */
     #[Route('/{market}/{order}/coupon/{id}', name: 'app_market_place_market_verify_coupon', methods: ['POST'])]
     public function verifyCoupon(
-        Request                $request,
-        Market                 $market,
-        UserInterface          $user,
-        EntityManagerInterface $em,
-        TranslatorInterface    $translator,
+        Request             $request,
+        Market              $market,
+        UserInterface       $user,
+        TranslatorInterface $translator,
+        Coupon              $coupon,
     ): JsonResponse
     {
-        // TODO: rewrite with psql function
-        $coupon = $em->getRepository(MarketCoupon::class)->getSingleActive($market, MarketCoupon::COUPON_ORDER);
+
+        $process = $coupon->process($market);
 
         $payload = $request->getPayload()->all();
         $order = $request->get('order');
-        $requestCode = null;
 
-        if ($coupon && $payload && isset($payload['ids'])) {
-            $coupon = $coupon['coupon'];
-            $requestCode = implode($payload['ids']);
-            $couponObj = $em->getRepository(MarketCoupon::class)->find($coupon['id']);
+        if ($process && $payload && isset($payload['ids'])) {
 
-            $couponUsage = $em->getRepository(MarketCouponUsage::class)->findOneBy([
-                'customer' => $user,
-                'relation' => $order,
-                'coupon' => $couponObj,
-            ]);
-
-            if ($couponUsage) {
+            if ($coupon->getCouponUsage($order, $user)) {
                 return $this->json([
                     'success' => false,
                     'message' => $translator->trans('info.text.danger'),
                 ], Response::HTTP_FORBIDDEN);
             }
 
-            $couponCode = $em->getRepository(MarketCouponCode::class)->findOneBy([
-                'coupon' => $couponObj,
-                'code' => strtoupper($requestCode),
-            ]);
-
-            if (!$couponCode) {
+            if (!$code = $coupon->validate(implode($payload['ids']))) {
                 return $this->json([
                     'success' => false,
                     'message' => $translator->trans('info.text.warning'),
                 ], Response::HTTP_BAD_REQUEST);
             }
 
-            unset($couponUsage);
-
-            $customer = $em->getRepository(MarketCustomer::class)->findOneBy(['member' => $user]);
-
-            $couponUsage = new MarketCouponUsage();
-            $couponUsage->setCustomer($customer)
-                ->setCoupon($em->getRepository(MarketCoupon::class)->find($coupon['id']))
-                ->setRelation($order)
-                ->setCouponCode($couponCode);
-
-            $em->persist($couponUsage);
-            $em->flush();
+            $coupon->setInuse($user, $order, $code);
         }
 
-        $currency = Currency::currency($market->getCurrency());
-        $discount = $coupon['price'] ? number_format($coupon['price'], 2, ',', ' ') . $currency['symbol'] : null;
-
-        if ($coupon['discount']) {
-            $discount = sprintf("%d%%", $coupon['discount']);
-        }
+        $discount = $coupon->discount($market);
 
         return $this->json([
             'success' => true,
-            'payload' => $requestCode,
             'discount' => $discount,
             'message' => $translator->trans('info.text.success', ['discount' => $discount]),
         ], Response::HTTP_OK);

@@ -34,7 +34,7 @@
                                                     <li class="mb-1">
                                                         <a class="text-info-600 hover:text-info-700 hover:underline"
                                                            href="mailto:{{ market.email }}">
-                                                            <i class="fa fa-envelope text-gray-400 hover:text-gray-950 mx-2"></i>{{ market.email }}
+                                                            <i class="fa fa-envelope text-gray-400 hover:text-gray-950 mx-2"></i>{{ 'title.email'|trans }}
                                                         </a>
                                                     </li>
                                                 {% endif %}
@@ -78,12 +78,12 @@
                                 <h4 class="text-center text-2xl py-3 border-b-1 shadow-sm text-gray-600 font-semibold mb-5">{{ 'market.products'|trans }}
                                     <span class="text-gray-500 font-medium ml-2">{{ market.products.count }}</span>
                                 </h4>
-                                <div class="grid grid-cols-auto-fill-200 gap-3">
+                                <div class="grid grid-cols-3 gap-3">
                                     {% for product in market.products %}
                                         <div class="max-w-xs border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                                             <div class="lg:max-w-xl relative overflow-hidden bg-cover bg-no-repeat">
                                                 {% if product.marketProductAttaches.first %}
-                                                    {% set _picture= 'storage/product/picture/' ~ product.id ~ '/' ~ product.marketProductAttaches.last.attach.name %}
+                                                    {% set _picture= 'storage/product/' ~ product.id ~ '/' ~ product.marketProductAttaches.last.attach.name %}
                                                     <img class="transition duration-300 ease-linear hover:scale-110 rounded-t-lg"
                                                          src="{{ asset(_picture)|imagine_filter('product_preview') }}"
                                                          alt="{{ product.name }}">
@@ -100,8 +100,8 @@
                                                            class="text-white hover:text-neutral-100 hover:animate-pulse">{{ 'market.product.details'|trans }}
                                                         </a>
                                                     </span>
-                                                        {% if product.discount %}
-                                                            <span class="bg-red-700 bg-opacity-75 text-white text-xs font-medium me-2 px-2 pt-1 rounded-xl dark:bg-red-900 dark:text-white">{{ product.discount }}% {{ 'market.product.off'|trans }}</span>
+                                                        {% if product.discount|round %}
+                                                            <span class="bg-red-700 bg-opacity-75 text-white text-xs font-medium me-2 px-2 pt-1 rounded-xl dark:bg-red-900 dark:text-white">{{ product.discount|number_format(0) }}% {{ 'market.product.off'|trans }}</span>
                                                         {% endif %}
                                                     </div>
                                                 </div>

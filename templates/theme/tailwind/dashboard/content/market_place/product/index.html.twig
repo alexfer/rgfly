@@ -82,7 +82,7 @@
                                 --
                             {% endif %}
                         </td>
-                        <td class="px-3 py-3 text-center">{{ product.cost|number_format(2) }}<small
+                        <td class="px-3 py-3 text-center">{{ product.cost }}<small
                                     class="text-muted">{{ currency['symbol_native'] }}</small></td>
                         <td class="px-3 py-3 text-center">{{ product.quantity }}</td>
                         <td class="px-3 py-3 text-center">{{ (product.cost * product.quantity)|amount_format }}{{ currency['symbol_native'] }}

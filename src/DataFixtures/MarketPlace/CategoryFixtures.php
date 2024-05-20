@@ -105,6 +105,10 @@ class CategoryFixtures extends Fixture
                         'name' => 'Office equipment',
                         'description' => 'Office equipment',
                     ],
+                    [
+                        'name' => 'Accompanying accessories',
+                        'description' => 'Accompanying accessories',
+                    ],
                 ]],
             [
                 'name' => 'Household Appliances',
@@ -121,6 +125,10 @@ class CategoryFixtures extends Fixture
                     [
                         'name' => 'Refrigeration & Food Safety',
                         'description' => 'Refrigeration & Food Safety',
+                    ],
+                    [
+                        'name' => 'Household accessories',
+                        'description' => 'Household accessories',
                     ],
                     [
                         'name' => 'Microwave ovens',
@@ -162,6 +170,10 @@ class CategoryFixtures extends Fixture
                     [
                         'name' => 'Projection equipments',
                         'description' => 'Projection equipments',
+                    ],
+                    [
+                        'name' => 'Accessories',
+                        'description' => 'Accessories',
                     ],
                 ]],
             [
@@ -405,8 +417,8 @@ class CategoryFixtures extends Fixture
                         'description' => 'Artwork',
                     ],
                     [
-                        'name' => 'Accessories',
-                        'description' => 'Accessories',
+                        'name' => 'Handmade accessories',
+                        'description' => 'Handmade accessories',
                     ],
                     [
                         'name' => 'Wooden Toys',

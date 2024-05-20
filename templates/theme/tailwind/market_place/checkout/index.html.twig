@@ -33,7 +33,7 @@
                                         <a class="block shrink-0 mr-2"
                                            href="{{ path('app_market_place_product', {slug: product.product.slug, tab: 'about'}) }}">
                                             {% if product.product.marketProductAttaches.count %}
-                                                {% set _picture = 'storage/product/picture/' ~ product.product.id ~ '/' ~ product.product.marketProductAttaches.first.attach.name %}
+                                                {% set _picture = 'storage/product/' ~ product.product.id ~ '/' ~ product.product.marketProductAttaches.first.attach.name %}
                                                 <img src="{{ asset(_picture)|imagine_filter('product_thumb') }}"
                                                      class="rounded-md" width="90"
                                                      alt="{{ product.product.name }}">
