@@ -5,15 +5,12 @@ namespace App\Controller\MarketPlace;
 use App\Entity\MarketPlace\MarketInvoice;
 use App\Form\Type\MarketPlace\CustomerType;
 use App\Form\Type\User\LoginType;
-use App\Service\MarketPlace\Currency;
-use App\Service\MarketPlace\Market\Checkout\Interface\ProcessorInterface as CheckoutProcessorInterface;
-use App\Service\MarketPlace\Market\Customer\Interface\{ProcessorInterface as CustomerProcessorInterface,
-    UserManagerInterface,};
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use App\Service\MarketPlace\Market\Checkout\Interface\ProcessorInterface as Checkout;
+use App\Service\MarketPlace\Market\Coupon\Interface\ProcessorInterface as Coupon;
+use App\Service\MarketPlace\Market\Customer\Interface\{ProcessorInterface as Customer, UserManagerInterface};
+use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -29,20 +26,22 @@ class CheckoutController extends AbstractController
      * @param UserInterface|null $user
      * @param TranslatorInterface $translator
      * @param UserManagerInterface $userManager
-     * @param CheckoutProcessorInterface $checkoutProcessor
-     * @param CustomerProcessorInterface $customerProcessor
+     * @param Checkout $checkout
+     * @param Customer $customerManager
+     * @param Coupon $coupon
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     #[Route('/{order}', name: 'app_market_place_order_checkout', methods: ['GET', 'POST'])]
     public function checkout(
-        Request                    $request,
-        ?UserInterface             $user,
-        TranslatorInterface        $translator,
-        UserManagerInterface       $userManager,
-        CheckoutProcessorInterface $checkoutProcessor,
-        CustomerProcessorInterface $customerProcessor,
+        Request              $request,
+        ?UserInterface       $user,
+        TranslatorInterface  $translator,
+        UserManagerInterface $userManager,
+        Checkout             $checkout,
+        Customer             $customerManager,
+        Coupon               $coupon,
     ): Response
     {
         $session = $request->getSession();
@@ -51,24 +50,18 @@ class CheckoutController extends AbstractController
 
         $customer = $userManager->getUserCustomer($user);
         $form = $this->createForm(CustomerType::class, $customer);
-        $order = $checkoutProcessor->findOrder($sessionId);
-        $coupon = $checkoutProcessor->getCoupon($order->getMarket());
+        $order = $checkout->findOrder($sessionId);
+        $process = $coupon->process($order->getMarket());
 
-        if ($coupon) {
-            $coupon = $coupon['coupon'];
-            $hasUsed = $checkoutProcessor->getCouponUsage($coupon['id'], $order->getId(), $customer);
+        if ($process) {
+            $hasUsed = $coupon->getCouponUsage($order->getId(), $user);
         }
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            if (!$order) {
-                return $this->redirectToRoute('app_market_place_order_summary');
-            }
-
-            if ($coupon) {
-                $checkoutProcessor->updateOrderAmount($coupon, $order);
+            if ($process) {
+                $coupon->updateOrderAmount($order);
             }
 
             $securityContext = $this->container->get('security.authorization_checker');
@@ -84,30 +77,25 @@ class CheckoutController extends AbstractController
                 $password = substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 8);
                 $session->set('_temp_password', $password);
 
-                $customerProcessor->process($customer, $form->getData(), $order);
-                $user = $customerProcessor->addUser($password);
-                $customerProcessor->bind($form)->addCustomer($user);
+                $customerManager->process($customer, $form->getData(), $order);
+                $user = $customerManager->addUser($password);
+                $customerManager->bind($form)->addCustomer($user);
             } else {
-                $customerProcessor->bind($form)->updateCustomer($customer, $form->getData());
+                $customerManager->bind($form)->updateCustomer($customer, $form->getData());
             }
 
-            $checkoutProcessor->addInvoice(new MarketInvoice());
-            $checkoutProcessor->updateOrder();
-            $session->set('quantity', $checkoutProcessor->countOrders());
+            $checkout->addInvoice(new MarketInvoice());
+            $checkout->updateOrder();
+            $session->set('quantity', $checkout->countOrders());
 
             return $this->redirectToRoute('app_market_place_order_success');
         }
 
-        $sum = $checkoutProcessor->sum();
+        $sum = $checkout->sum();
         $discount = null;
 
-        if ($coupon) {
-            $currency = Currency::currency($order->getMarket()->getCurrency());
-            $discount = $coupon['price'] ? number_format($coupon['price'], 2, ',', ' ') . $currency['symbol'] : null;
-
-            if ($coupon['discount']) {
-                $discount = sprintf("%d%%", $coupon['discount']);
-            }
+        if ($process) {
+            $discount = $coupon->discount($order->getMarket());
         }
 
         return $this->render('market_place/checkout/index.html.twig', [
@@ -118,7 +106,7 @@ class CheckoutController extends AbstractController
             'form' => $form,
             'hasUsed' => $hasUsed,
             'discount' => $discount,
-            'coupon' => $coupon,
+            'coupon' => $process,
             'errors' => $form->getErrors(true),
         ]);
     }

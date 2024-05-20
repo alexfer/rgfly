@@ -15,7 +15,7 @@
                         <div id="indicators-carousel" class="relative w-full" data-carousel="static">
                             <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
                                 {% if product.marketProductAttaches.count %}
-                                    {% set _picture = 'storage/product/picture/' ~ product.id ~ '/' ~ product.marketProductAttaches.first.attach.name %}
+                                    {% set _picture = 'storage/product/' ~ product.id ~ '/' ~ product.marketProductAttaches.first.attach.name %}
                                     <div class="hidden duration-200 ease-linear" data-carousel-item="active">
                                         <img src="{{ asset(_picture)|imagine_filter('product_view') }}"
                                              class="absolute block transition duration-300 ease-linear hover:scale-125 w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
@@ -38,7 +38,7 @@
                                 {% endif %}
                                 {% for image in product.marketProductAttaches|slice(1, product.marketProductAttaches.count) %}
                                     <div class="hidden duration-200 ease-linear" data-carousel-item>
-                                        {% set _image = 'storage/product/picture/' ~ product.id ~ '/' ~ image.attach.name %}
+                                        {% set _image = 'storage/product/' ~ product.id ~ '/' ~ image.attach.name %}
                                         <img src="{{ asset(_image)|imagine_filter('product_view') }}"
                                              class="absolute block transition duration-300 ease-linear hover:scale-125 w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
                                              alt="{{ product.shortName }}">

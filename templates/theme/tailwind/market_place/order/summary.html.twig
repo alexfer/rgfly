@@ -23,7 +23,7 @@
                                                  class="flex flex-row parent my-3 hover:bg-gray-50 rounded-lg bg-white pt-3 text-surface shadow-lg dark:bg-neutral-700 dark:text-white dark:shadow-black/30">
                                                 <div class="basis-1/4 flex flex-row">
                                                     {% if product.product.marketProductAttaches.count %}
-                                                        {% set _picture = 'storage/product/picture/' ~ product.product.id ~ '/' ~ product.product.marketProductAttaches.first.attach.name %}
+                                                        {% set _picture = 'storage/product/' ~ product.product.id ~ '/' ~ product.product.marketProductAttaches.first.attach.name %}
                                                         <img src="{{ asset(_picture)|imagine_filter('product_preview') }}"
                                                              class="object-cover md:h-auto md:w-48 rounded-l-lg"
                                                              alt="{{ product.product.name }}">
