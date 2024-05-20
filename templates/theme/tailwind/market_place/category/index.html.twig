@@ -5,37 +5,50 @@
 {% block content_body %}
     <section class="bg-white dark:bg-gray-900">
         <div class="max-w-screen-3xl flex mx-auto pt-4 py-8 lg:py-16 lg:px-2">
-            <div class="mx-auto lg:w-4/6 sm:max-w-screen-5xl rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
+            <div class="mx-auto lg:w-4/6 md:max-w-screen-5xl rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
                 <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white">{{ category.name }}</h2>
-                <ul class="mb-5 flex flex-col list-none ps-0 lg:flex-row">
-                    {% set _collection = parent is not null ? parent.children : category.children %}
-                    {% for child in _collection %}
-                        <li>
-                            <a title="{{ child.name }}" href="{{ path('app_market_place_child_category', {parent: app.request.get('parent'), child: child.slug}) }}"
-                               class="text-gray-500 hover:text-gray-500 border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:hover:bg-gray-500 dark:focus:ring-gray-800 inline-flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
-                                     class="w-3.5 h-3.5 inline-block mr-1">
-                                    <path fill-rule="evenodd"
-                                          d="M2 8c0 .414.336.75.75.75h8.69l-1.22 1.22a.75.75 0 1 0 1.06 1.06l2.5-2.5a.75.75 0 0 0 0-1.06l-2.5-2.5a.75.75 0 1 0-1.06 1.06l1.22 1.22H2.75A.75.75 0 0 0 2 8Z"
-                                          clip-rule="evenodd"></path>
-                                </svg>{{ child.name }}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-                <div class="grid grid-cols-auto-fill-200 gap-2">
+                <button id="dropdownDefaultButton"
+                        data-dropdown-toggle="dropdown"
+                        data-dropdown-offset-distance="10"
+                        data-dropdown-offset-skidding="100"
+                        data-dropdown-placement="bottom"
+                        class="text-white mb-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">{{ 'option.category.choice_category'|trans }} <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"></path>
+                    </svg>
+                </button>
+                <div id="dropdown"
+                     class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-lg w-auto dark:bg-gray-700">
+                    <ul class="my-5 ps-1.5 list-none lg:flex-row" aria-labelledby="dropdownDefaultButton">
+                        {% set _collection = parent is not null ? parent.children : category.children %}
+                        {% for child in _collection %}
+                            <li>
+                                <a title="{{ child.name }}"
+                                   href="{{ path('app_market_place_child_category', {parent: app.request.get('parent'), child: child.slug}) }}"
+                                   class="block mx-1 mt-1.5 w-auto text-gray-500 rounded-lg hover:text-gray-500 hover:bg-gray-100 text-sm px-5 py-2.5 me-2 mb-2 dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:hover:bg-gray-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+                                         class="w-3.5 h-3.5 inline-block mr-1">
+                                        <path fill-rule="evenodd"
+                                              d="M2 8c0 .414.336.75.75.75h8.69l-1.22 1.22a.75.75 0 1 0 1.06 1.06l2.5-2.5a.75.75 0 0 0 0-1.06l-2.5-2.5a.75.75 0 1 0-1.06 1.06l1.22 1.22H2.75A.75.75 0 0 0 2 8Z"
+                                              clip-rule="evenodd"></path>
+                                    </svg>{{ child.name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="grid w-full gap-3 lg:grid-cols-4 md:grid-cols-3">
                     {% for product in products %}
                         <div class="min-h-full">
-                            <div class="max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                            <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                                 <div class="lg:max-w-xl relative overflow-hidden bg-cover bg-no-repeat">
                                     {% if product.attach_name %}
                                         {% set _picture = 'storage/product/' ~ product.id ~ '/' ~ product.attach_name %}
                                         <img src="{{ asset(_picture)|imagine_filter('product_preview') }}"
-                                             class="object-cover w-full transition duration-300 ease-linear hover:scale-125 rounded-t-lg"
+                                             class="object-cover w-full transition duration-300 ease-in-out hover:scale-125 hover:inset-1/2 rounded-t-lg"
                                              alt="{{ product.name }}">
                                     {% else %}
                                         <img src="{{ asset('img/300x200.png') }}"
-                                             class="object-cover w-full transition duration-300 ease-linear hover:scale-125 rounded-t-lg"
+                                             class="object-cover w-full transition duration-300 ease-in-out hover:scale-125 hover:inset-1/2 rounded-t-lg"
                                              alt="{{ product.name }}">
                                     {% endif %}
                                     <div class="absolute top-5 w-full">
@@ -67,7 +80,7 @@
                                         {% set percent = product.discount %}
                                         {% set cost = product.cost %}
                                         {% set discount_cost = (cost - ((cost * percent) - percent)/100) %}
-                                        <span class="text-2xl font-medium {% if percent > 0 %}text-rose-500{% else %}text-gray-900{% endif %} dark:text-white">{{ (discount_cost + product.fee)|amount_format }}<small>{{ product.currency|currency }}</small></span>
+                                        <span class="text-2xl font-medium {% if percent > 0 %}text-rose-500{% else %}text-gray-900{% endif %} dark:text-white">{{ (discount_cost + product.fee)|round(2) }}<small>{{ product.currency|currency }}</small></span>
                                     </div>
                                 </div>
                                 {% if product.parent_category_name is not null %}
@@ -86,7 +99,8 @@
                                 <a href="{{ path('app_market_place_child_category', {
                                     parent: product.parent_category_slug,
                                     child:  product.category_slug
-                                }) }}" title="{{ product.category_name }}" class="hover:underline hover:w-full truncate block w-auto ml-2 mr-3 text-gray-500">
+                                }) }}" title="{{ product.category_name }}"
+                                   class="hover:underline hover:w-full truncate block w-auto ml-2 mr-3 text-gray-500">
                                     <i class="fa fa-check px-2 text-green-400"></i>{{ product.category_name }}
                                 </a>
                                 <ul class="list-none ml-2 mt-6">

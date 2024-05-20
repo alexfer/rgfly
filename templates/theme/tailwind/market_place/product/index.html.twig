@@ -93,31 +93,29 @@
                                 <i class="fa fa-bookmark text-yellow-300 mr-2"></i>{{ product.market.name }}
                             </h5>
                         </a>
-                        <div class="grid grid-cols-2">
-                            <div class="relative mb-10 block w-72 flex-nowrap">
-                                <div class="absolute">
-                                    {% if product.discount %}
-                                        {% set discount = product.discount %}
-                                        {% set cost = product.cost %}
-                                        <span class="font-medium text-2xl text-success pr-2">
-                                                {{ (cost + product.fee - ((cost * discount) - discount)/100)|amount_format }}<small>{{ product.market.currency|currency }}</small>
-                                            </span>
-                                        <span class="line-through text-lg font-medium text-gray-400">{{ (product.cost + product.fee)|amount_format }}<small>{{ product.market.currency|currency }}</small></span>
-                                    {% else %}
-                                        <span class="font-medium text-2xl text-surface-dark">{{ (product.cost + product.fee)|amount_format }}<small>{{ product.market.currency|currency }}</small></span>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            {% if product.discount %}
-                                <div class="relative mb-10">
+                        <div class="grow">
+                            {% if product.discount|round %}
+                                <div class="relative">
                                     <div class="pt-1 absolute right-0 bg-red-500 text-white text-sm font-light me-2 px-2.5 py-0.5 rounded-md dark:bg-red-900 dark:text-white">
-                                        {{ product.discount|number_format(2, '.', '') }}
+                                        {{ product.discount|number_format(0, '.', '') }}
                                         % {{ 'market.product.off'|trans }}
                                     </div>
                                 </div>
                             {% endif %}
+                            <div class="flex-nowrap mb-10 block w-72">
+                                {% if product.discount|round %}
+                                    {% set discount = product.discount %}
+                                    {% set cost = product.cost %}
+                                        <span class="font-medium text-2xl text-success pr-2">
+                                            {{ (cost + product.fee - ((cost * discount) - discount)/100)|round(2) }}<small>{{ product.market.currency|currency }}</small>
+                                        </span>
+                                    <span class="line-through text-lg font-medium text-gray-400">{{ (product.cost + product.fee)|amount_format }}<small>{{ product.market.currency|currency }}</small></span>
+                                {% else %}
+                                    <span class="font-medium text-2xl text-surface-dark">{{ (product.cost + product.fee)|round(2) }}<small>{{ product.market.currency|currency }}</small></span>
+                                {% endif %}
+                            </div>
                             {% if product.marketProductAttributes.count %}
-                                <div id="attributes" class="block mt-xl-5 min-w-full">
+                                <div id="attributes" class="block mt-xl-5 w-full">
                                     {% for attribute in product.marketProductAttributes.toArray %}
                                         <input type="hidden" name="color" value="">
                                         <input type="hidden" name="size" value="">
@@ -152,7 +150,8 @@
                             <form class="shopping-cart inline" method="post"
                                   action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
                                 <button type="submit" id="order"
-                                        class="inline-block contrast-200 rounded bg-primary md:bg-primary-600 px-3 pb-2 pt-2.5 mr-5 text-xs font-medium uppercase text-gray-200 hover:text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong" {% if product.quantity == 0 or ('ROLE_USER' in app.user.roles or 'ROLE_ADMIN' in app.user.roles) %}disabled{% endif %}>
+                                        class="inline-block contrast-200 rounded bg-primary md:bg-primary-600 px-3 pb-2 pt-2.5 mr-5 text-xs font-medium uppercase text-gray-200 hover:text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+                                        {% if product.quantity == 0 or ('ROLE_USER' in app.user.roles or 'ROLE_ADMIN' in app.user.roles) %}disabled{% endif %}>
                                     <i class="fa fa-shopping-basket mr-2"></i>{{ 'market.product.add_cart'|trans }}
                                 </button>
                             </form>
@@ -301,7 +300,9 @@
                                     <form class="group" method="post" autocomplete="off" novalidate="">
                                         <div class="relative">
                                             <label for="message" class="sr-only"></label>
-                                            <textarea id="message" class="invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500 peer block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-gray-400 focus:border-gray-400 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" rows="6"
+                                            <textarea id="message"
+                                                      class="invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500 peer block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-gray-400 focus:border-gray-400 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                      rows="6"
                                                       minlength="20"
                                                       maxlength="250"
                                                       placeholder="{{ 'form.header.message'|trans }}"
