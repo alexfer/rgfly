@@ -94,6 +94,12 @@ class MarketProduct
     #[ORM\ManyToMany(targetEntity: MarketCoupon::class, mappedBy: 'product')]
     private Collection $marketCoupons;
 
+    /**
+     * @var Collection<int, MarketMessage>
+     */
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: MarketMessage::class)]
+    private Collection $marketMessages;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
@@ -105,6 +111,7 @@ class MarketProduct
         $this->fee = 0;
         $this->marketWishlists = new ArrayCollection();
         $this->marketCoupons = new ArrayCollection();
+        $this->marketMessages = new ArrayCollection();
     }
 
     /**
@@ -698,6 +705,44 @@ class MarketProduct
     {
         if ($this->marketCoupons->removeElement($marketCoupon)) {
             $marketCoupon->removeProduct($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketMessage>
+     */
+    public function getMarketMessages(): Collection
+    {
+        return $this->marketMessages;
+    }
+
+    /**
+     * @param MarketMessage $marketMessage
+     * @return $this
+     */
+    public function addMarketMessage(MarketMessage $marketMessage): static
+    {
+        if (!$this->marketMessages->contains($marketMessage)) {
+            $this->marketMessages->add($marketMessage);
+            $marketMessage->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MarketMessage $marketMessage
+     * @return $this
+     */
+    public function removeMarketMessage(MarketMessage $marketMessage): static
+    {
+        if ($this->marketMessages->removeElement($marketMessage)) {
+            // set the owning side to null (unless already changed)
+            if ($marketMessage->getProduct() === $this) {
+                $marketMessage->setProduct(null);
+            }
         }
 
         return $this;

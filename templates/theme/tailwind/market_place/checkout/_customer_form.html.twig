@@ -5,6 +5,7 @@
     </div>
 {% endfor %}
 <h2 class="text-2xl font-medium text-gray-600 mx-2">{{ 'product.billing'|trans }}</h2>
+{% set _tab = app.request.get('tab') %}
 <ul class="flex list-none flex-row flex-wrap border-b-0 ps-0" role="tablist" data-twe-nav-ref>
     <li role="presentation">
         <a
@@ -15,7 +16,7 @@
                 data-twe-nav-active
                 role="tab"
                 aria-controls="customer-info"
-                aria-selected="true">{{ 'customer.cabinet.personal_information'|trans }}</a>
+                aria-selected="{{ _tab == 'customer-info' ? 'true' : 'false' }}">{{ 'customer.cabinet.personal_information'|trans }}</a>
     </li>
     <li role="presentation">
         <a
@@ -25,7 +26,7 @@
                 data-twe-target="#address-info"
                 role="tab"
                 aria-controls="address-info"
-                aria-selected="false">{{ 'customer.cabinet.delivery_address'|trans }}</a>
+                aria-selected="{{ _tab == 'address-info' ? 'true' : 'false' }}">{{ 'customer.cabinet.delivery_address'|trans }}</a>
     </li>
 </ul>
 <div class="pt-2 mr-5">
@@ -35,7 +36,7 @@
             <div class="ms-3 text-sm font-medium">{{ errors.current.message }}</div>
         </div>
     {% endif %}
-    {{ form_start(form, {attr: {novalidate: '', action: path('app_market_place_order_checkout', {order: order.number, session: app.request.get('session')})}}) }}
+    {{ form_start(form, {attr: {novalidate: '', action: path('app_market_place_order_checkout', {order: order.number, session: app.request.get('session'), tab: app.request.get('tab')})}}) }}
     <div class="tab-content" id="customerTabContent">
         <div class="hidden opacity-100 p-4 shadow-md rounded-md dark:bg-gray-800 transition-opacity duration-150 ease-linear data-[twe-tab-active]:block"
              id="customer-info"

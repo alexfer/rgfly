@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION public.get_products_by_child_category(child_id integer, start integer DEFAULT 0, row_count integer DEFAULT 10)
+CREATE OR REPLACE FUNCTION public.get_products_by_child_category(child_id integer, start integer DEFAULT 0, row_count integer DEFAULT 10, search text DEFAULT NULL)
     RETURNS json
     LANGUAGE plpgsql
 AS

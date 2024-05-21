@@ -33,7 +33,7 @@ class CheckoutController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/{order}', name: 'app_market_place_order_checkout', methods: ['GET', 'POST'])]
+    #[Route('/{order}/{tab}', name: 'app_market_place_order_checkout', methods: ['GET', 'POST'])]
     public function checkout(
         Request              $request,
         ?UserInterface       $user,
