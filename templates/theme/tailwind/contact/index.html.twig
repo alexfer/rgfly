@@ -3,11 +3,5 @@
 {% block title %}{{ 'text.contact.header'|trans }}{% endblock %}
 
 {% block body %}
-    <section class="bg-white dark:bg-gray-900">
-        <div class="max-w-screen-3xl flex mx-auto pt-4 py-8 lg:py-16 lg:px-2">
-            <div class="mx-auto lg:w-4/6 md:w-2/3 sm:max-w-screen-5xl rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
-                {{ include('contact/_form.html.twig') }}
-            </div>
-        </div>
-    </section>
+    {{ include('contact/_form.html.twig') }}
 {% endblock %}

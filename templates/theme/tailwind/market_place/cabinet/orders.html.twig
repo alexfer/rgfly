@@ -1,96 +1,90 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <section class="bg-white dark:bg-gray-900">
-        <div class="max-w-screen-3xl flex mx-auto pt-4 py-8 lg:py-16 lg:px-2">
-            <div class="mx-auto lg:w-4/6 sm:max-w-screen-5xl rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
-                <h2 class="text-2xl pb-4 relative font-extrabold text-primary-700 dark:text-white">{{ 'customer.cabinet'|trans }}
-                    <span class="absolute right-0 mr-2 text-lg pe-4 font-normal">{{ customer.firstName }} {{ customer.lastName }}</span>
-                </h2>
-                <div class="grid grid-cols-8 gap-4">
-                    <aside class="col-span-2 h-screen transition-transform -translate-x-full sm:translate-x-0">
-                        <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 rounded-lg">
-                            {% include 'market_place/cabinet/aside.html.twig' %}
-                        </div>
-                    </aside>
-                    <section class="col-span-6">
-                        <div class="pt-2 px-4">
-                            <h4 class="pb-2 block w-full mb-4 text-xl font-semibold text-red-500 text-center text-sm-start">{{ 'customer.cabinet.orders'|trans }}</h4>
-                            <div id="accordion-flush" class="rounded-t-lg border border-neutral-200">
-                                {% for key, item in orders %}
-                                    <h2 id="order-flush-heading-{{ key }}">
-                                        <button type="button"
-                                                class="flex items-center pl-5 justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3"
-                                                data-twe-target="#order-body-{{ key }}"
-                                                data-twe-collapse-init
-                                                aria-expanded="{{ key == 0 ? 'true' : 'false' }}"
-                                                aria-controls="order-body-{{ key }}">
-                                            <h5 class="flex text-md-start subpixel-antialiased hover:text-black dark:text-white">
-                                                <svg class="w-4 h-4 text-gray-800 dark:text-white mr-2"
-                                                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                                                     height="24" fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="currentColor" stroke-linecap="round"
-                                                          stroke-linejoin="round" stroke-width="2"
-                                                          d="M10 3v4a1 1 0 0 1-1 1H5m8-2h3m-3 3h3m-4 3v6m4-3H8M19 4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1ZM8 12v6h8v-6H8Z"></path>
-                                                </svg>
-                                                {{ item.orders.createdAt|date(datetime_format) }}
-                                            </h5>
-                                        </button>
-                                    </h2>
-                                    <div id="order-body-{{ key }}"
-                                         class="!visible{% if key > 0 %} hidden{% endif %} border-0"
-                                         data-twe-collapse-item
-                                            {% if key == 0 %} data-twe-collapse-show{% endif %}
-                                         data-twe-parent="#accordion-flush"
-                                         aria-labelledby="faq-flush-heading-{{ key }}">
-                                        <div class="grid grid-cols-12 gap-3 py-5 px-8 bg-gray-100">
-                                            <div class="col-span-3 font-medium select-all text-info-700">{{ item.orders.number|upper }}</div>
-                                            <div class="col-span-2 ms-5">
-                                                {% if item.orders.status == 'processing' %}
-                                                    <a class="text-gray-600 underline hover:text-black hover:no-underline"
-                                                       href="{{ path('app_market_place_order_checkout', {order: item.orders.number, session: item.orders.session}) }}">{{ 'order.checkout'|trans }}</a>
-                                                {% else %}
-                                                    {{ item.orders.status|capitalize }}
-                                                {% endif %}
-                                            </div>
-                                            <div class="col-span-5 ms-5 relative"
-                                                 data-twe-dropdown-ref>
-                                                <a id="dropdown-action"
-                                                   role="button"
-                                                   data-twe-dropdown-toggle-ref
-                                                   aria-expanded="false"
-                                                   class="text-blue-800 font-normal"
-                                                   href="#">{{ 'label.form.status'|trans }}</a>
-                                                <ul class="absolute z-[1000] w-48 hidden min-w-max list-none overflow-hidden p-2 rounded-md border-none bg-white bg-clip-padding text-left text-base data-[twe-dropdown-show]:block"
-                                                    aria-labelledby="dropdown-action"
-                                                    data-twe-dropdown-menu-ref>
-                                                    <li>
-                                                        <a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-md dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 hover:text-gray-500 focus:text-gray-50 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
-                                                           href="#">{{ 'order.action.cancel'|trans }}</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-span-2 text-center text-{{ item.orders.completedAt is null ? 'danger': 'success' }}">
-                                                {{ item.orders.completedAt is null ? 'customer.cabinet.order.notpaid'|trans : item.orders.completedAt|date(datetime_format) }}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                {% else %}
-                                    <img class="d-block mx-auto mb-5 border-0 w-25 shadow-none"
-                                         src="{{ asset('img/404.png') }}"
-                                         width="340" alt="{{ 'market.product.orders.empty'|trans }}">
-                                    <p class="text-center">
-                                        {{ 'market.product.orders.empty'|trans }}
-                                        <a class="d-block fs-6"
-                                           href="{{ path('app_market_place_index') }}">{{ 'form.action.back'|trans }}</a>
-                                    </p>
-                                {% endfor %}
+    <h2 class="text-2xl pb-4 relative font-extrabold text-primary-700 dark:text-white">{{ 'customer.cabinet'|trans }}
+        <span class="absolute right-0 mr-2 text-lg pe-4 font-normal">{{ customer.firstName }} {{ customer.lastName }}</span>
+    </h2>
+    <div class="grid grid-cols-8 gap-4">
+        <aside class="col-span-2 h-screen transition-transform -translate-x-full sm:translate-x-0">
+            <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 rounded-lg">
+                {% include 'market_place/cabinet/aside.html.twig' %}
+            </div>
+        </aside>
+        <section class="col-span-6">
+            <div class="pt-2 px-4">
+                <h4 class="pb-2 block w-full mb-4 text-xl font-semibold text-red-500 text-center text-sm-start">{{ 'customer.cabinet.orders'|trans }}</h4>
+                <div id="accordion-flush" class="rounded-t-lg border border-neutral-200">
+                    {% for key, item in orders %}
+                        <h2 id="order-flush-heading-{{ key }}">
+                            <button type="button"
+                                    class="flex items-center pl-5 justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3"
+                                    data-twe-target="#order-body-{{ key }}"
+                                    data-twe-collapse-init
+                                    aria-expanded="{{ key == 0 ? 'true' : 'false' }}"
+                                    aria-controls="order-body-{{ key }}">
+                                <h5 class="flex text-md-start subpixel-antialiased hover:text-black dark:text-white">
+                                    <svg class="w-4 h-4 text-gray-800 dark:text-white mr-2"
+                                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                         height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round"
+                                              stroke-linejoin="round" stroke-width="2"
+                                              d="M10 3v4a1 1 0 0 1-1 1H5m8-2h3m-3 3h3m-4 3v6m4-3H8M19 4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1ZM8 12v6h8v-6H8Z"></path>
+                                    </svg>
+                                    {{ item.orders.createdAt|date(datetime_format) }}
+                                </h5>
+                            </button>
+                        </h2>
+                        <div id="order-body-{{ key }}"
+                             class="!visible{% if key > 0 %} hidden{% endif %} border-0"
+                             data-twe-collapse-item
+                                {% if key == 0 %} data-twe-collapse-show{% endif %}
+                             data-twe-parent="#accordion-flush"
+                             aria-labelledby="faq-flush-heading-{{ key }}">
+                            <div class="grid grid-cols-12 gap-3 py-5 px-8 bg-gray-100">
+                                <div class="col-span-3 font-medium select-all text-info-700">{{ item.orders.number|upper }}</div>
+                                <div class="col-span-2 ms-5">
+                                    {% if item.orders.status == 'processing' %}
+                                        <a class="text-gray-600 underline hover:text-black hover:no-underline"
+                                           href="{{ path('app_market_place_order_checkout', {order: item.orders.number, session: item.orders.session}) }}">{{ 'order.checkout'|trans }}</a>
+                                    {% else %}
+                                        {{ item.orders.status|capitalize }}
+                                    {% endif %}
+                                </div>
+                                <div class="col-span-5 ms-5 relative"
+                                     data-twe-dropdown-ref>
+                                    <a id="dropdown-action"
+                                       role="button"
+                                       data-twe-dropdown-toggle-ref
+                                       aria-expanded="false"
+                                       class="text-blue-800 font-normal"
+                                       href="#">{{ 'label.form.status'|trans }}</a>
+                                    <ul class="absolute z-[1000] w-48 hidden min-w-max list-none overflow-hidden p-2 rounded-md border-none bg-white bg-clip-padding text-left text-base data-[twe-dropdown-show]:block"
+                                        aria-labelledby="dropdown-action"
+                                        data-twe-dropdown-menu-ref>
+                                        <li>
+                                            <a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-md dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 hover:text-gray-500 focus:text-gray-50 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
+                                               href="#">{{ 'order.action.cancel'|trans }}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-span-2 text-center text-{{ item.orders.completedAt is null ? 'danger': 'success' }}">
+                                    {{ item.orders.completedAt is null ? 'customer.cabinet.order.notpaid'|trans : item.orders.completedAt|date(datetime_format) }}
+                                </div>
                             </div>
                         </div>
-                    </section>
+
+                    {% else %}
+                        <img class="d-block mx-auto mb-5 border-0 w-25 shadow-none"
+                             src="{{ asset('img/404.png') }}"
+                             width="340" alt="{{ 'market.product.orders.empty'|trans }}">
+                        <p class="text-center">
+                            {{ 'market.product.orders.empty'|trans }}
+                            <a class="d-block fs-6"
+                               href="{{ path('app_market_place_index') }}">{{ 'form.action.back'|trans }}</a>
+                        </p>
+                    {% endfor %}
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 {% endblock %}

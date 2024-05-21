@@ -4,112 +4,106 @@
 {% block description %}{% if category %}{{ category.description|trim }}{% else %}{{ 'text.blog.desc'|trans }}{% endif %}{% endblock %}
 
 {% block body %}
-    <section class="bg-white dark:bg-gray-900">
-        <div class="max-w-screen-3xl flex mx-auto pt-4 py-8 lg:py-16 lg:px-2">
-            <div class="mx-auto lg:w-4/6 sm:max-w-screen-5xl rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
-                <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white">
-                    {% if category %}
-                        {{ category.name }}
+    <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white">
+        {% if category %}
+            {{ category.name }}
+        {% else %}
+            {{ 'text.blog.desc'|trans|raw }}
+            {% set _active = 0 %}
+        {% endif %}
+    </h2>
+    <ul class="mb-5 flex list-none ps-0 md:flex-row">
+        {% if categories %}
+            <li class="col-12 entry-tags">
+                {% for key, category in categories %}
+                    {% if key < 7 %}
+                        <a href="{{ path('app_blog_category', {slug: category.slug}) }}"
+                           class="text-gray-500 hover:text-gray-500 border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:hover:bg-gray-500 dark:focus:ring-gray-800 inline-flex items-center justify-center"
+                           title="{{ category.description }}">{{ category.name }}</a>
                     {% else %}
-                        {{ 'text.blog.desc'|trans|raw }}
-                        {% set _active = 0 %}
+                        <a href="{{ path('app_blog_category', {slug: category.slug}) }}"
+                           class="sr-only text-gray-500 hover:text-gray-500 border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:hover:bg-gray-500 dark:focus:ring-gray-800 inline-flex items-center justify-center"
+                           title="{{ category.description }}">{{ category.name }}</a>
                     {% endif %}
-                </h2>
-                <ul class="mb-5 flex list-none ps-0 md:flex-row">
-                    {% if categories %}
-                        <li class="col-12 entry-tags">
-                            {% for key, category in categories %}
-                                {% if key < 7 %}
-                                    <a href="{{ path('app_blog_category', {slug: category.slug}) }}"
-                                       class="text-gray-500 hover:text-gray-500 border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:hover:bg-gray-500 dark:focus:ring-gray-800 inline-flex items-center justify-center"
-                                       title="{{ category.description }}">{{ category.name }}</a>
-                                {% else %}
-                                    <a href="{{ path('app_blog_category', {slug: category.slug}) }}"
-                                       class="sr-only text-gray-500 hover:text-gray-500 border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:hover:bg-gray-500 dark:focus:ring-gray-800 inline-flex items-center justify-center"
-                                       title="{{ category.description }}">{{ category.name }}</a>
-                                {% endif %}
-                            {% endfor %}
-                            {% if categories|length > 7 %}
-                                <a href="#" id="load-categories"
-                                   class="text-gray-500 hover:text-gray-500 border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:hover:bg-gray-500 dark:focus:ring-gray-800 inline-flex items-center justify-center"
-                                   title="...">...</a>
-                            {% endif %}
-                        </li>
-                    {% endif %}
-                </ul>
-                {% if category %}
-                    <div class="w-full mb-3 flex p-4 rounded-xl bg-gray-50 text-gray-500">
-                        {{ category.description }}
-                    </div>
+                {% endfor %}
+                {% if categories|length > 7 %}
+                    <a href="#" id="load-categories"
+                       class="text-gray-500 hover:text-gray-500 border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:hover:bg-gray-500 dark:focus:ring-gray-800 inline-flex items-center justify-center"
+                       title="...">...</a>
                 {% endif %}
-                <div class="grid w-full gap-6 md:grid-cols-3">
-                    {% for entry in entries %}
-                        <div class="min-h-full flex-col justify-between">
-                            <div class="min-h-full max-w-md bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                                <div class="lg:max-w-xl relative overflow-hidden bg-cover bg-no-repeat rounded-t-lg">
-                                    {% set _picture = 'storage/entry/picture/' ~ entry.id ~ '/' ~ entry.attach %}
-                                    <a href="{{ path('app_blog_view', {slug: entry.slug}) }}">
-                                        {% if entry.attach %}
-                                            <img src="{{ asset(_picture)|imagine_filter('entry_preview') }}"
-                                                 class="object-cover w-full transition duration-300 ease-linear hover:scale-125 rounded-t-lg"
-                                                 width="415" alt="{{ entry.title }}"/>
-                                        {% else %}
-                                            <img src="{{ asset('img/380x200.png') }}"
-                                                 class="object-cover w-full transition duration-300 ease-linear hover:scale-125 rounded-t-lg opacity-50"
-                                                 width="415" alt="{{ entry.title }}"/>
-                                        {% endif %}
-                                    </a>
-                                </div>
-                                <div class="m-2">
-                                    <a title="{{ entry.title }}"
-                                       href="{{ path('app_blog_view', {slug: entry.slug}) }}">
-                                        <h5 class="text-lg font-bold hover:text-gray-700 tracking-tight truncate text-gray-500 dark:text-white">
-                                            {{ entry.title }}
-                                        </h5>
-                                    </a>
-                                </div>
-                                <div class="m-2">
-                                    <a target="_blank" href="">@{{ entry.first_name }}</a>
-                                    <i class="fa fa-user"></i>
-                                    <ul class="list-none inline-flex justify-items-end float-right">
-                                        <li>
-                                            <a href="{{ entry.facebook_profile }}" target="_blank" class="mx-1 text-lg">
-                                                <i class="fa fa-facebook text-blue-700"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ entry.twitter_profile }}" target="_blank" class="mx-1 text-lg">
-                                                <i class="fa fa-twitter text-blue-600"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ entry.instagram_profile }}" target="_blank" class="mx-1 text-lg">
-                                                <i class="fa fa-instagram text-indigo-700"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <div class="flex items-center border-t mt-3 pt-3 bg-gray-50 bg-opacity-75 pb-3 px-3 justify-between">
-                                    <ul class="list-none inline-flex justify-between">
-                                        <li class="list-inline-item">
-                                            <i class="fa fa-calendar"></i>
-                                            {{ entry.created_at|date(date_format) }}
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-                {% if entries|length == 0 %}
-                    <div class="my-8 w-full justify-center items-center text-center">
-                        <img class="h-100 w-48 mx-auto" src="{{ asset('img/404-page-not-found.png') }}"
-                             alt="{{ 'table.footer.not_found'|trans }}">
-                        <p class="mt-5 text-danger">{{ 'table.footer.not_found'|trans }}</p>
-                    </div>
-                {% endif %}
-            </div>
+            </li>
+        {% endif %}
+    </ul>
+    {% if category %}
+        <div class="w-full mb-3 flex p-4 rounded-xl bg-gray-50 text-gray-500">
+            {{ category.description }}
         </div>
-    </section>
+    {% endif %}
+    <div class="grid w-full gap-6 md:grid-cols-3">
+        {% for entry in entries %}
+            <div class="min-h-full flex-col justify-between">
+                <div class="min-h-full max-w-md bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                    <div class="lg:max-w-xl relative overflow-hidden bg-cover bg-no-repeat rounded-t-lg">
+                        {% set _picture = 'storage/entry/picture/' ~ entry.id ~ '/' ~ entry.attach %}
+                        <a href="{{ path('app_blog_view', {slug: entry.slug}) }}">
+                            {% if entry.attach %}
+                                <img src="{{ asset(_picture)|imagine_filter('entry_preview') }}"
+                                     class="object-cover w-full transition duration-300 ease-linear hover:scale-125 rounded-t-lg"
+                                     width="415" alt="{{ entry.title }}"/>
+                            {% else %}
+                                <img src="{{ asset('img/380x200.png') }}"
+                                     class="object-cover w-full transition duration-300 ease-linear hover:scale-125 rounded-t-lg opacity-50"
+                                     width="415" alt="{{ entry.title }}"/>
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="m-2">
+                        <a title="{{ entry.title }}"
+                           href="{{ path('app_blog_view', {slug: entry.slug}) }}">
+                            <h5 class="text-lg font-bold hover:text-gray-700 tracking-tight truncate text-gray-500 dark:text-white">
+                                {{ entry.title }}
+                            </h5>
+                        </a>
+                    </div>
+                    <div class="m-2">
+                        <a target="_blank" href="">@{{ entry.first_name }}</a>
+                        <i class="fa fa-user"></i>
+                        <ul class="list-none inline-flex justify-items-end float-right">
+                            <li>
+                                <a href="{{ entry.facebook_profile }}" target="_blank" class="mx-1 text-lg">
+                                    <i class="fa fa-facebook text-blue-700"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ entry.twitter_profile }}" target="_blank" class="mx-1 text-lg">
+                                    <i class="fa fa-twitter text-blue-600"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ entry.instagram_profile }}" target="_blank" class="mx-1 text-lg">
+                                    <i class="fa fa-instagram text-indigo-700"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="flex items-center border-t mt-3 pt-3 bg-gray-50 bg-opacity-75 pb-3 px-3 justify-between">
+                        <ul class="list-none inline-flex justify-between">
+                            <li class="list-inline-item">
+                                <i class="fa fa-calendar"></i>
+                                {{ entry.created_at|date(date_format) }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% if entries|length == 0 %}
+        <div class="my-8 w-full justify-center items-center text-center">
+            <img class="h-100 w-48 mx-auto" src="{{ asset('img/404-page-not-found.png') }}"
+                 alt="{{ 'table.footer.not_found'|trans }}">
+            <p class="mt-5 text-danger">{{ 'table.footer.not_found'|trans }}</p>
+        </div>
+    {% endif %}
 {% endblock %}

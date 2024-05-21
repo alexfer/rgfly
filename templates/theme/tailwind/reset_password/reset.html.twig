@@ -1,9 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ 'form.password.text'|trans }}{% endblock %}
-
+{% block class %}{% endblock %}
 {% block body %}
-    <section class="bg-white dark:bg-gray-900">
         <div class="max-w-lg mx-auto px-4 py-8 lg:py-16 lg:px-2">
             <div class="flex rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
                 {{ form_start(resetForm, {attr: {class: 'w-full group', novalidate: ''}}) }}
@@ -26,5 +25,4 @@
                 {{ form_end(resetForm) }}
             </div>
         </div>
-    </section>
 {% endblock %}
