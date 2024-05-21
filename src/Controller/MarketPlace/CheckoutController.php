@@ -33,7 +33,7 @@ class CheckoutController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/{order}', name: 'app_market_place_order_checkout', methods: ['GET', 'POST'])]
+    #[Route('/confirm/{order}/{tab}', name: 'app_market_place_order_checkout', methods: ['GET', 'POST'])]
     public function checkout(
         Request              $request,
         ?UserInterface       $user,
@@ -69,7 +69,7 @@ class CheckoutController extends AbstractController
 
             if ($userManager->existsCustomer($form->get('email')->getData()) && !$isGranted) {
                 $this->addFlash('danger', $translator->trans('email.unique', [], 'validators'));
-                return $this->redirectToRoute('app_market_place_order_checkout', ['order' => $request->get('order')]);
+                return $this->redirectToRoute('app_market_place_order_checkout', ['order' => $request->get('order'), 'tab' => $request->get('tab')]);
             }
 
             if (!$customer->getId()) {

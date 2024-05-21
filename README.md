@@ -1,18 +1,19 @@
 RgFly ecommerce solution.
 ============
 
-(Tailwind theme)
-(Bootstrap theme)
+- (Tailwind theme (dev))
+- (Bootstrap theme (not full compatibility yet))
 
 ### Requirements:
 - [Nginx HTTP Server `1.24.0`](http://nginx.org/en/CHANGES-1.24)
-- [PHP `>=8.3`](https://www.php.net/releases/8.3/en.php)
+- [PHP `>=8.2`](https://www.php.net/releases/8.3/en.php)
 - [PostgreSQL `15.5`](https://www.postgresql.org/)
 - [Symfony `7.0.*`](https://symfony.com/releases/7.0)
-- [Node.js `21.2.0` (includes npm 10.2.4)](https://nodejs.org/en/download) or higher
+- [Node.js `21.6.2` (includes npm 10.5.1)](https://nodejs.org/en/download) or higher
+- [Yarn `1.22.22`](https://classic.yarnpkg.com/en/docs/install)
 
 ### Docker
-- [Currently used](https://github.com/alexfer/rgfly/tree/v.0.1-dev/docker)
+- [Currently used](https://github.com/alexfer/rgfly/tree/main/docker)
 
 ### 1. Clone repository
 ```shell
@@ -35,11 +36,17 @@ Use [Composer](https://getcomposer.org/) install to download and install the pac
     $ php bin/console doctrine:database:create
     $ php bin/console doctrine:migrations:migrate
     $ php bin/console doctrine:fixtures:load
+    $ php bin/console app:functions:import
 ```
 ### 4. Install JavaScript dependencies & Compile scripts
 ```shell
     $ npm install
-    $ npm run watch
+    $ npm run (watch|dev|buld)
+```
+##### or
+```shell
+    $ yarn install
+    $ yarn (watch|dev|buld)
 ```
 Build production:
 ```shell

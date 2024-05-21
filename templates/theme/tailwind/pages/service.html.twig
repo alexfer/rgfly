@@ -3,92 +3,86 @@
 {% block title %}{{ 'text.info.header'|trans }}{% endblock %}
 
 {% block body %}
-    <section class="bg-white dark:bg-gray-900">
-        <div class="max-w-screen-3xl flex mx-auto pt-4 py-8 lg:py-16 lg:px-2">
-            <div class="mx-auto lg:w-4/6 sm:max-w-screen-5xl rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
-                <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white">{{ 'text.info.header'|trans }}</h2>
-                <img src="{{ asset('img/info-section.jpg') }}" class="rounded shadow-md mt-5" alt="...">
-                <div class="grid md:grid-cols-3 sm:grid-cols-2 gap-8 text-center mt-10">
-                    <div class="cursor-pointer p-3 hover:bg-gray-700 rounded shadow-md hover:text-white transition-all duration-300 ease-in-out text-gray">
-                        <h4 class="text-xl py-5">Business analysis</h4>
-                        <p class="text-gray-500 p-3 hover:text-white">
-                            Our business analysts focus on the needs of your target audience to perform
-                            requirements engineering and outline the scope of the solution. They also bridge the
-                            gap between business stakeholders and an IT team to keep all the involved parties
-                            aligned.
-                        </p>
-                    </div>
-                    <div class="cursor-pointer p-3 hover:bg-gray-700 rounded shadow-md hover:text-white transition-all duration-300 ease-in-out text-gray">
-                        <h4 class="text-xl py-5">UX and UI design</h4>
-                        <p class="text-gray-500 p-3 hover:text-white">
-                            We start designing a web app with the analysis of target audience and planning
-                            convenient, quick and frictionless user journeys. Along the way, our UI designers
-                            join in to wrap the interface into a stylish cover.
-                        </p>
-                    </div>
-                    <div class="cursor-pointer p-3 hover:bg-gray-700 rounded shadow-md hover:text-white transition-all duration-300 ease-in-out text-gray">
-                        <h4 class="text-xl py-5">Architecture</h4>
-                        <p class="text-gray-500 p-3 hover:text-white">
-                            Our solution architects will plan all functional components and select optimal techs
-                            for them to ensure that the business logic to be implemented is feasible and full.
-                            They will also map all API connections within the web solution and with outside
-                            systems.
-                        </p>
-                    </div>
-                </div>
-                <div class="grid md:grid-cols-3 sm:grid-cols-2 gap-8 text-center mt-10">
-                    <div class="cursor-pointer p-3 hover:bg-gray-700 rounded shadow-md hover:text-white transition-all duration-300 ease-in-out text-gray">
-                        <h4 class="text-xl py-5">Front-end development</h4>
-                        <p class="text-gray-500 p-3 hover:text-white">
-                            Our front-end developers can implement any design idea and ensure all interface
-                            elements work properly. We work with all most-used JavaScript frameworks, such as
-                            React, Vue, Next.
-                        </p>
-                    </div>
-                    <div class="cursor-pointer p-3 hover:bg-gray-700 rounded shadow-md hover:text-white transition-all duration-300 ease-in-out text-gray">
-                        <h4 class="text-xl py-5">Back-end development</h4>
-                        <p class="text-gray-500 p-3 hover:text-white">
-                            Our developers accurately implement the business logic of your web app on the back
-                            end. We rely on proven frameworks and ensure fast and quality coding in Python,
-                            Node.js, PHP, Go.
-                        </p>
-                    </div>
-                    <div class="cursor-pointer p-3 hover:bg-gray-700 rounded shadow-md hover:text-white transition-all duration-300 ease-in-out text-gray">
-                        <h4 class="text-xl py-5">Integration</h4>
-                        <p class="text-gray-500 p-3 hover:text-white">
-                            We set up APIs to integrate your web app with corporate or third-party systems and
-                            services. App integration ensures immediate data synchronization across systems.
-                        </p>
-                    </div>
-                </div>
-                <div class="grid md:grid-cols-3 sm:grid-cols-2 gap-8 text-center mt-10">
-                    <div class="cursor-pointer p-3 hover:bg-gray-700 rounded shadow-md hover:text-white transition-all duration-300 ease-in-out text-gray">
-                        <h4 class="text-xl py-5">Testing and QA</h4>
-                        <p class="text-gray-500 p-3 hover:text-white">
-                            We guarantee that your web solution will function flawlessly, work fast, be
-                            user-friendly and secure. We have a team of skilled testing engineers to make
-                            promises like that.
-                        </p>
-                    </div>
-                    <div class="cursor-pointer p-3 hover:bg-gray-700 rounded shadow-md hover:text-white transition-all duration-300 ease-in-out text-gray">
-                        <h4 class="text-xl py-5">Help desk</h4>
-                        <p class="text-gray-500 p-3 hover:text-white">
-                            Providing L1, L2 and L3 support services, we deliver hot-fixes within 24 hours to
-                            prevent or resolve any issues in usage, technology and code that may arise. We help
-                            you provide high availability and trouble-free functionality of your web app.
-                        </p>
-                    </div>
-                    <div class="cursor-pointer p-3 hover:bg-gray-700 rounded shadow-md hover:text-white transition-all duration-300 ease-in-out text-gray">
-                        <h4 class="text-xl py-5">Continuous support and evolution</h4>
-                        <p class="text-gray-500 p-3 hover:text-white">
-                            We advance your web-based software to keep it efficient, competitive on the market,
-                            and compliant with all your evolving business needs. Our well-established DevOps
-                            processes let us roll out urgent updates within 1-2 days and release new, planned
-                            functional modules every 2-6 weeks.
-                        </p>
-                    </div>
-                </div>
-            </div>
+    <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white">{{ 'text.info.header'|trans }}</h2>
+    <img src="{{ asset('img/info-section.jpg') }}" class="rounded shadow-md mt-5" alt="...">
+    <div class="grid md:grid-cols-3 sm:grid-cols-2 gap-8 text-center mt-10">
+        <div class="cursor-pointer p-3 hover:bg-gray-700 rounded shadow-md hover:text-white transition-all duration-300 ease-in-out text-gray">
+            <h4 class="text-xl py-5">Business analysis</h4>
+            <p class="text-gray-500 p-3 hover:text-white">
+                Our business analysts focus on the needs of your target audience to perform
+                requirements engineering and outline the scope of the solution. They also bridge the
+                gap between business stakeholders and an IT team to keep all the involved parties
+                aligned.
+            </p>
         </div>
-    </section>
+        <div class="cursor-pointer p-3 hover:bg-gray-700 rounded shadow-md hover:text-white transition-all duration-300 ease-in-out text-gray">
+            <h4 class="text-xl py-5">UX and UI design</h4>
+            <p class="text-gray-500 p-3 hover:text-white">
+                We start designing a web app with the analysis of target audience and planning
+                convenient, quick and frictionless user journeys. Along the way, our UI designers
+                join in to wrap the interface into a stylish cover.
+            </p>
+        </div>
+        <div class="cursor-pointer p-3 hover:bg-gray-700 rounded shadow-md hover:text-white transition-all duration-300 ease-in-out text-gray">
+            <h4 class="text-xl py-5">Architecture</h4>
+            <p class="text-gray-500 p-3 hover:text-white">
+                Our solution architects will plan all functional components and select optimal techs
+                for them to ensure that the business logic to be implemented is feasible and full.
+                They will also map all API connections within the web solution and with outside
+                systems.
+            </p>
+        </div>
+    </div>
+    <div class="grid md:grid-cols-3 sm:grid-cols-2 gap-8 text-center mt-10">
+        <div class="cursor-pointer p-3 hover:bg-gray-700 rounded shadow-md hover:text-white transition-all duration-300 ease-in-out text-gray">
+            <h4 class="text-xl py-5">Front-end development</h4>
+            <p class="text-gray-500 p-3 hover:text-white">
+                Our front-end developers can implement any design idea and ensure all interface
+                elements work properly. We work with all most-used JavaScript frameworks, such as
+                React, Vue, Next.
+            </p>
+        </div>
+        <div class="cursor-pointer p-3 hover:bg-gray-700 rounded shadow-md hover:text-white transition-all duration-300 ease-in-out text-gray">
+            <h4 class="text-xl py-5">Back-end development</h4>
+            <p class="text-gray-500 p-3 hover:text-white">
+                Our developers accurately implement the business logic of your web app on the back
+                end. We rely on proven frameworks and ensure fast and quality coding in Python,
+                Node.js, PHP, Go.
+            </p>
+        </div>
+        <div class="cursor-pointer p-3 hover:bg-gray-700 rounded shadow-md hover:text-white transition-all duration-300 ease-in-out text-gray">
+            <h4 class="text-xl py-5">Integration</h4>
+            <p class="text-gray-500 p-3 hover:text-white">
+                We set up APIs to integrate your web app with corporate or third-party systems and
+                services. App integration ensures immediate data synchronization across systems.
+            </p>
+        </div>
+    </div>
+    <div class="grid md:grid-cols-3 sm:grid-cols-2 gap-8 text-center mt-10">
+        <div class="cursor-pointer p-3 hover:bg-gray-700 rounded shadow-md hover:text-white transition-all duration-300 ease-in-out text-gray">
+            <h4 class="text-xl py-5">Testing and QA</h4>
+            <p class="text-gray-500 p-3 hover:text-white">
+                We guarantee that your web solution will function flawlessly, work fast, be
+                user-friendly and secure. We have a team of skilled testing engineers to make
+                promises like that.
+            </p>
+        </div>
+        <div class="cursor-pointer p-3 hover:bg-gray-700 rounded shadow-md hover:text-white transition-all duration-300 ease-in-out text-gray">
+            <h4 class="text-xl py-5">Help desk</h4>
+            <p class="text-gray-500 p-3 hover:text-white">
+                Providing L1, L2 and L3 support services, we deliver hot-fixes within 24 hours to
+                prevent or resolve any issues in usage, technology and code that may arise. We help
+                you provide high availability and trouble-free functionality of your web app.
+            </p>
+        </div>
+        <div class="cursor-pointer p-3 hover:bg-gray-700 rounded shadow-md hover:text-white transition-all duration-300 ease-in-out text-gray">
+            <h4 class="text-xl py-5">Continuous support and evolution</h4>
+            <p class="text-gray-500 p-3 hover:text-white">
+                We advance your web-based software to keep it efficient, competitive on the market,
+                and compliant with all your evolving business needs. Our well-established DevOps
+                processes let us roll out urgent updates within 1-2 days and release new, planned
+                functional modules every 2-6 weeks.
+            </p>
+        </div>
+    </div>
 {% endblock %}

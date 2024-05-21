@@ -7,8 +7,8 @@
     {% set parent = product.marketCategoryProducts.first.category.parent %}
     {% set child = product.marketCategoryProducts.first.category %}
     <section class="bg-white dark:bg-gray-900">
-        <div class="max-w-screen-3xl flex mx-auto pt-4 py-8 lg:py-16 lg:px-2">
-            <div class="mx-auto lg:w-4/6 sm:max-w-screen-5xl rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
+        <div class="max-w-screen-xl flex mx-auto pt-4 py-8 lg:py-16 lg:px-2">
+            <div class="rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
                 <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white text-ellipsis overflow-hidden">{{ product.shortName }}</h2>
                 <div class="grid grid-cols-12 gap-4">
                     <div class="col-span-12 md:col-span-8">
@@ -151,7 +151,7 @@
                                   action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
                                 <button type="submit" id="order"
                                         class="inline-block contrast-200 rounded bg-primary md:bg-primary-600 px-3 pb-2 pt-2.5 mr-5 text-xs font-medium uppercase text-gray-200 hover:text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
-                                        {% if product.quantity == 0 or ('ROLE_USER' in app.user.roles or 'ROLE_ADMIN' in app.user.roles) %}disabled{% endif %}>
+                                        {% if product.quantity == 0 or (app.user and ('ROLE_USER' in app.user.roles or 'ROLE_ADMIN' in app.user.roles)) %}disabled{% endif %}>
                                     <i class="fa fa-shopping-basket mr-2"></i>{{ 'market.product.add_cart'|trans }}
                                 </button>
                             </form>
@@ -310,7 +310,16 @@
                                             <span class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">{{ 'form.message.invalid'|trans }}</span>
                                         </div>
                                         <button class="inline-block mt-3 w-full rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong group-invalid:pointer-events-none group-invalid:opacity-30"
-                                                type="submit">{{ 'form.action.send'|trans }}</button>
+                                                type="submit"{% if not app.user %} disabled{% endif %}>{{ 'form.action.send'|trans }}
+                                        </button>
+                                        {% if not app.user %}
+                                            <p id="helper-text-explanation"
+                                               class="mt-2 text-sm text-gray-500 dark:text-gray-400">{{ 'login.warning'|trans({
+                                                    url: path('app_login'),
+                                                    class: 'font-medium text-blue-600 hover:underline dark:text-blue-500'
+                                                })|raw }}
+                                            </p>
+                                        {% endif %}
                                     </form>
                                 </div>
                                 <div class="col-span-8">

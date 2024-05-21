@@ -168,6 +168,12 @@
                 <source>title.terms</source>
                 <target><![CDATA[Terms &amp; Conditions]]></target>
             </trans-unit>
+            <trans-unit id="login.warning">
+                <source>login.warning</source>
+                <target>
+                    <![CDATA[Please <a class="{ class }" href="{ url }">sign in</a> to leave message.]]>
+                </target>
+            </trans-unit>
             <trans-unit id="title.service.message">
                 <source>title.service.message</source>
                 <target>Service Message</target>

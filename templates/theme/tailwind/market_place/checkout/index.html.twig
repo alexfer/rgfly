@@ -4,86 +4,82 @@
 {% block description %}{{ 'order.checkout'|trans }}{% endblock %}
 
 {% block content_body %}
-    <section class="bg-white dark:bg-gray-900">
-        <div class="max-w-screen-3xl flex mx-auto pt-4 py-8 lg:py-16 lg:px-2">
-            <div class="mx-auto lg:w-4/6 sm:max-w-screen-5xl rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
-                <h2 class="block truncate text-2xl pb-4 font-extrabold text-primary-700 dark:text-white text-ellipsis overflow-hidden">{{ 'order.checkout'|trans }} - {{ order.market.name }}</h2>
-                <div class="grid grid-cols-4 gap-0">
-                    <div class="col-span-3 pb-4 mb-3">
-                        {% include 'market_place/checkout/_customer_form.html.twig' with {
-                            'order': order,
-                            'form': form
-                        } %}
-                    </div>
-                    <div class="relative border rounded-md bg-gray-50">
-                        <div class="px-3 pb-3 h-full">
-                            <div class="px-2 pb-2 mb-3">
-                                <h4 class="font-medium text-gray-600 text-xl mt-5 mb-4 text-center">{{ 'order.summary'|trans }}</h4>
-                                {% set product_count = order.marketOrdersProducts.count() %}
-                                {% for product in order.marketOrdersProducts %}
-                                    {% if product.product.discount %}
-                                        {% set percent = product.discount %}
-                                        {% set cost = product.cost %}
-                                        {% set discount_cost = (cost - ((cost * product.quantity * percent) - percent)/100) %}
-                                        {% set item_cost = (discount_cost + product.product.fee)|amount_format %}
-                                    {% else %}
-                                        {% set item_cost = (product.cost * product.quantity + product.product.fee)|amount_format %}
-                                    {% endif %}
-                                    <div class="flex items-center pb-2 border-b">
-                                        <a class="block shrink-0 mr-2"
-                                           href="{{ path('app_market_place_product', {slug: product.product.slug, tab: 'about'}) }}">
-                                            {% if product.product.marketProductAttaches.count %}
-                                                {% set _picture = 'storage/product/' ~ product.product.id ~ '/' ~ product.product.marketProductAttaches.first.attach.name %}
-                                                <img src="{{ asset(_picture)|imagine_filter('product_thumb') }}"
-                                                     class="rounded-md" width="90"
-                                                     alt="{{ product.product.name }}">
-                                            {% else %}
-                                                <img class="rounded-md" src="{{ asset('img/64x64.png') }}"
-                                                     width="64" alt="{{ product.product.shortName }}">
-                                            {% endif %}
-                                        </a>
-                                        <div class="pl-1 w-36">
-                                            <h5 class="font-bold truncate">
-                                                <a class="text-lg" title="{{ product.product.name }}"
-                                                   href="{{ path('app_market_place_product', {slug: product.product.slug, tab: 'about'}) }}">{{ product.product.shortName }}</a>
-                                            </h5>
-                                            <span class="text-sm text-gray-500">
+    <h2 class="block truncate text-2xl pb-4 font-extrabold text-primary-700 dark:text-white text-ellipsis overflow-hidden">{{ 'order.checkout'|trans }}
+        - {{ order.market.name }}</h2>
+    <div class="grid grid-cols-4 gap-0">
+        <div class="col-span-3 pb-4 mb-3">
+            {% include 'market_place/checkout/_customer_form.html.twig' with {
+                'order': order,
+                'form': form
+            } %}
+        </div>
+        <div class="relative border rounded-md bg-gray-50">
+            <div class="px-3 pb-3 h-full">
+                <div class="px-2 pb-2 mb-3">
+                    <h4 class="font-medium text-gray-600 text-xl mt-5 mb-4 text-center">{{ 'order.summary'|trans }}</h4>
+                    {% set product_count = order.marketOrdersProducts.count() %}
+                    {% for product in order.marketOrdersProducts %}
+                        {% if product.product.discount %}
+                            {% set percent = product.discount %}
+                            {% set cost = product.cost %}
+                            {% set discount_cost = (cost - ((cost * product.quantity * percent) - percent)/100) %}
+                            {% set item_cost = (discount_cost + product.product.fee)|amount_format %}
+                        {% else %}
+                            {% set item_cost = (product.cost * product.quantity + product.product.fee)|amount_format %}
+                        {% endif %}
+                        <div class="flex items-center pb-2 border-b">
+                            <a class="block shrink-0 mr-2"
+                               href="{{ path('app_market_place_product', {slug: product.product.slug, tab: 'about'}) }}">
+                                {% if product.product.marketProductAttaches.count %}
+                                    {% set _picture = 'storage/product/' ~ product.product.id ~ '/' ~ product.product.marketProductAttaches.first.attach.name %}
+                                    <img src="{{ asset(_picture)|imagine_filter('product_thumb') }}"
+                                         class="rounded-md" width="90"
+                                         alt="{{ product.product.name }}">
+                                {% else %}
+                                    <img class="rounded-md" src="{{ asset('img/64x64.png') }}"
+                                         width="64" alt="{{ product.product.shortName }}">
+                                {% endif %}
+                            </a>
+                            <div class="pl-1 w-36">
+                                <h5 class="font-bold truncate">
+                                    <a class="text-lg" title="{{ product.product.name }}"
+                                       href="{{ path('app_market_place_product', {slug: product.product.slug, tab: 'about'}) }}">{{ product.product.shortName }}</a>
+                                </h5>
+                                <span class="text-sm text-gray-500">
                                                 {{ (item_cost) }}<small>{{ order.market.currency|currency }}</small>&times;{{ product.quantity }} {{ 'label.form.quantity_pcs'|trans }}
                                             </span>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                                <p id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">Please introduce the 6 digit code we sent via email.</p>
-                                <div class="pt-3 pb-2 border-b mt-2">
-                                    <div class="flex justify-between items-center mb-2">
-                                        <span class="font-semibold me-2">{{ 'order.item.subtotal'|trans }}:</span>
-                                        <span class="text-end text-primary-emphasis">{{ itemSubtotal|amount_format }}<small>{{ order.market.currency|currency }}</small></span>
-                                    </div>
-                                    {#
-                                    <div class="flex justify-between items-center mb-2">
-                                        <span class="fw-normal me-2">{{ 'order.subtotal'|trans }}:</span>
-                                        <span class="text-end text-primary-emphasis">{{ subtotal|amount_format }}<small>{{ order.market.currency|currency }}</small></span>
-                                    </div>
-                                    <div class="flex justify-between items-center">
-                                        <span class="fw-normal me-2">{{ 'order.service.fee'|trans }}:</span>
-                                        <span class="text-end text-primary-emphasis">{{ fee|amount_format }}<small>{{ order.market.currency|currency }}</small></span>
-                                    </div>
-                                    #}
-                                </div>
-                                <span class="{{ hasUsed == false or coupon == 0 ? 'hidden' : null }} absolute -rotate-45 inline-table top-100 bg-red-700 mt-5 start-4 opacity-70 px-2.5 text-white rounded-md pt-1 end-0 text-sm"><span class="pe-1" id="discount">{{ discount }}</span>{{ 'market.product.off'|trans }}</span>
-                                <h3 class="font-light relative text-2xl text-red-700 text-center mt-4 mb-2">
-                                    {{ total|amount_format }}<small>{{ order.market.currency|currency }}</small>
-                                </h3>
                             </div>
-                            {% if app.request.get('session') == null %}
-                                <a href="{{ path('app_market_place_order_summary') }}" class="text-center lg:block rounded bg-black px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-gray-200 hover:text-white shadow-black-3 transition duration-150 ease-in-out hover:bg-black-accent-300 hover:shadow-black-2 focus:bg-black-accent-300 focus:shadow-black-2 focus:outline-none focus:ring-0 active:bg-black-600 active:shadow-black-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">{{ 'form.action.back_order'|trans }}</a>
-                            {% endif %}
                         </div>
+                    {% endfor %}
+                    <div class="pt-3 pb-2 border-b mt-2">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-semibold me-2">{{ 'order.item.subtotal'|trans }}:</span>
+                            <span class="text-end text-primary-emphasis">{{ itemSubtotal|amount_format }}<small>{{ order.market.currency|currency }}</small></span>
+                        </div>
+                        {#
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="fw-normal me-2">{{ 'order.subtotal'|trans }}:</span>
+                            <span class="text-end text-primary-emphasis">{{ subtotal|amount_format }}<small>{{ order.market.currency|currency }}</small></span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="fw-normal me-2">{{ 'order.service.fee'|trans }}:</span>
+                            <span class="text-end text-primary-emphasis">{{ fee|amount_format }}<small>{{ order.market.currency|currency }}</small></span>
+                        </div>
+                        #}
                     </div>
+                    <span class="{{ hasUsed == false or coupon == 0 ? 'hidden' : null }} absolute -rotate-45 inline-table top-100 bg-red-700 mt-5 start-4 opacity-70 px-2.5 text-white rounded-md pt-1 end-0 text-sm"><span
+                                class="pe-1" id="discount">{{ discount }}</span>{{ 'market.product.off'|trans }}</span>
+                    <h3 class="font-light relative text-2xl text-red-700 text-center mt-4 mb-2">
+                        {{ total|amount_format }}<small>{{ order.market.currency|currency }}</small>
+                    </h3>
                 </div>
+                {% if app.request.get('session') == null %}
+                    <a href="{{ path('app_market_place_order_summary') }}"
+                       class="text-center lg:block rounded bg-black px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-gray-200 hover:text-white shadow-black-3 transition duration-150 ease-in-out hover:bg-black-accent-300 hover:shadow-black-2 focus:bg-black-accent-300 focus:shadow-black-2 focus:outline-none focus:ring-0 active:bg-black-600 active:shadow-black-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">{{ 'form.action.back_order'|trans }}</a>
+                {% endif %}
             </div>
         </div>
-    </section>
+    </div>
 {% endblock %}
  {% block javascripts %}
      {{ parent() }}
