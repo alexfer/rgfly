@@ -63,16 +63,12 @@ class MarketOrders
     #[ORM\OneToMany(mappedBy: 'orders', targetEntity: MarketCustomerOrders::class)]
     private Collection $marketCustomerOrders;
 
-    #[ORM\OneToMany(mappedBy: 'orders', targetEntity: MarketCustomerMessage::class)]
-    private Collection $marketCustomerMessages;
-
     public function __construct()
     {
         $this->created_at = new DateTimeImmutable();
         $this->marketOrdersProducts = new ArrayCollection();
         $this->status = self::STATUS['processing'];
         $this->marketCustomerOrders = new ArrayCollection();
-        $this->marketCustomerMessages = new ArrayCollection();
     }
 
     /**
@@ -316,44 +312,6 @@ class MarketOrders
             // set the owning side to null (unless already changed)
             if ($marketCustomerOrder->getOrders() === $this) {
                 $marketCustomerOrder->setOrders(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, MarketCustomerMessage>
-     */
-    public function getMarketCustomerMessages(): Collection
-    {
-        return $this->marketCustomerMessages;
-    }
-
-    /**
-     * @param MarketCustomerMessage $marketCustomerMessage
-     * @return $this
-     */
-    public function addMarketCustomerMessage(MarketCustomerMessage $marketCustomerMessage): static
-    {
-        if (!$this->marketCustomerMessages->contains($marketCustomerMessage)) {
-            $this->marketCustomerMessages->add($marketCustomerMessage);
-            $marketCustomerMessage->setOrders($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param MarketCustomerMessage $marketCustomerMessage
-     * @return $this
-     */
-    public function removeMarketCustomerMessage(MarketCustomerMessage $marketCustomerMessage): static
-    {
-        if ($this->marketCustomerMessages->removeElement($marketCustomerMessage)) {
-            // set the owning side to null (unless already changed)
-            if ($marketCustomerMessage->getOrders() === $this) {
-                $marketCustomerMessage->setOrders(null);
             }
         }
 
