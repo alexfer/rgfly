@@ -29,7 +29,8 @@ class MessageController extends AbstractController
         }
 
         $payload = $request->getPayload()->all();
-        $errors = $message->process($payload, 'product');
+        $exclude = !empty($payload['product']) ? null : 'product';
+        $errors = $message->process($payload, $exclude);
 
         if (count($errors)) {
             return $this->json($errors, $errors['code']);

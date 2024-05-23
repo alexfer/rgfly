@@ -227,6 +227,10 @@
                 <source>menu.dashboard.overview</source>
                 <target>Overview</target>
             </trans-unit>
+            <trans-unit id="menu.dashboard.messages">
+                <source>menu.dashboard.messages</source>
+                <target>Messages</target>
+            </trans-unit>
             <trans-unit id="menu.dashboard.orders">
                 <source>menu.dashboard.orders</source>
                 <target>Orders</target>
@@ -274,6 +278,10 @@
             <trans-unit id="title.dashboard.overview_market">
                 <source>title.dashboard.overview_market</source>
                 <target>Markets Overview</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.overview_messages">
+                <source>title.dashboard.overview_messages</source>
+                <target>Messages Overview</target>
             </trans-unit>
             <trans-unit id="title.dashboard.overview_other">
                 <source>title.dashboard.overview_other</source>
@@ -359,6 +367,10 @@
                 <source>table.header.code</source>
                 <target>Code</target>
             </trans-unit>
+            <trans-unit id="table.header.priority">
+                <source>table.header.priority</source>
+                <target>Priority</target>
+            </trans-unit>
             <trans-unit id="table.header.order_number">
                 <source>table.header.order_number</source>
                 <target>Order number</target>
@@ -390,6 +402,14 @@
             <trans-unit id="table.header.title">
                 <source>table.header.title</source>
                 <target>Title</target>
+            </trans-unit>
+            <trans-unit id="table.header.related">
+                <source>table.header.related</source>
+                <target>Related to</target>
+            </trans-unit>
+            <trans-unit id="table.header.customer">
+                <source>table.header.customer</source>
+                <target>Customer</target>
             </trans-unit>
             <trans-unit id="table.header.products">
                 <source>table.header.products</source>
@@ -923,6 +943,10 @@
             <trans-unit id="market.message.unauthorized">
                 <source>market.message.unauthorized</source>
                 <target>Please sign in to leave message.</target>
+            </trans-unit>
+            <trans-unit id="market.message.question">
+                <source>market.message.question</source>
+                <target>Question</target>
             </trans-unit>
             <trans-unit id="market.message.success">
                 <source>market.message.success</source>

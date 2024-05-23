@@ -63,12 +63,19 @@ class MarketOrders
     #[ORM\OneToMany(mappedBy: 'orders', targetEntity: MarketCustomerOrders::class)]
     private Collection $marketCustomerOrders;
 
+    /**
+     * @var Collection<int, MarketMessage>
+     */
+    #[ORM\OneToMany(mappedBy: 'orders', targetEntity: MarketMessage::class)]
+    private Collection $marketMessages;
+
     public function __construct()
     {
         $this->created_at = new DateTimeImmutable();
         $this->marketOrdersProducts = new ArrayCollection();
         $this->status = self::STATUS['processing'];
         $this->marketCustomerOrders = new ArrayCollection();
+        $this->marketMessages = new ArrayCollection();
     }
 
     /**
@@ -312,6 +319,44 @@ class MarketOrders
             // set the owning side to null (unless already changed)
             if ($marketCustomerOrder->getOrders() === $this) {
                 $marketCustomerOrder->setOrders(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketMessage>
+     */
+    public function getMarketMessages(): Collection
+    {
+        return $this->marketMessages;
+    }
+
+    /**
+     * @param MarketMessage $marketMessage
+     * @return $this
+     */
+    public function addMarketMessage(MarketMessage $marketMessage): static
+    {
+        if (!$this->marketMessages->contains($marketMessage)) {
+            $this->marketMessages->add($marketMessage);
+            $marketMessage->setOrders($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MarketMessage $marketMessage
+     * @return $this
+     */
+    public function removeMarketMessage(MarketMessage $marketMessage): static
+    {
+        if ($this->marketMessages->removeElement($marketMessage)) {
+            // set the owning side to null (unless already changed)
+            if ($marketMessage->getOrders() === $this) {
+                $marketMessage->setOrders(null);
             }
         }
 

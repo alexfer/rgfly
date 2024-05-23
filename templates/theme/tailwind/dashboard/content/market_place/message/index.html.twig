@@ -1,0 +1,57 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% set _title_extend = 'title.dashboard.overview_messages'|trans %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}{{ _title_extend }}{% endblock %}
+
+{% block content %}
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-500 uppercase bg-info-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">{{ 'table.header.related'|trans }}</th>
+                <th scope="col" class="px-6 py-3 text-center">{{ 'table.header.customer'|trans }}</th>
+                <th class="text-center px-6 py-3" scope="col">{{ 'table.header.created_at'|trans }}</th>
+                <th scope="col" class="px-6 py-3 text-center">{{ 'table.header.priority'|trans }}</th>
+                <th class="text-center px-6 py-3" scope="col">{{ 'table.header.handle'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for message in messages %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <th scope="row"
+                        class="px-6 py-3 w-2/5 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {% if message.product is not null %}
+                            <a class="font-semibold text-gray-500 hover:text-gray-700 dark:hover:text-white"
+                               target="_blank"
+                               href="{{ path('app_market_place_product', {slug: message.product.slug, tab: 'about'}) }}">
+                                {{ message.product.short_name }}
+                                <svg class="w-4 h-4 mb-1 inline-block text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 14v4.833A1.166 1.166 0 0 1 16.833 20H5.167A1.167 1.167 0 0 1 4 18.833V7.167A1.166 1.166 0 0 1 5.167 6h4.618m4.447-2H20v5.768m-7.889 2.121 7.778-7.778"></path>
+                                </svg>
+                            </a>
+                        {% elseif message.order is not null %}
+                            {{ message.order.number }}
+                        {% else %}
+                            {{ 'market.message.question'|trans }}
+                        {% endif %}
+                    </th>
+                    <td class="text-center px-6 py-3 w-1/5">
+                        {{ message.customer.full_name }}
+                    </td>
+                    <td class="text-center px-6 py-3 w-1/5">
+                        {{ message.created|date(datetime_format) }}
+                    </td>
+                    <td class="text-center px-6 py-3 w-1/5">{{ message.priority }}</td>
+                    <td class="text-center px-6 py-3 w-1/5"></td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4"
+                        class="px-6 py-3 text-center text-gray-700 bg-gray-100 dark:bg-gray-500 dark:text-white">{{ 'table.footer.not_found'|trans }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
