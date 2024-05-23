@@ -64,7 +64,7 @@
                             </a>
                         </div>
                         <h6 class="text-md-start font-semibold text-cyan-700 underline underline-offset-8 mb-4">{{ 'form.header.message'|trans }}</h6>
-                        <form class="group" method="post" autocomplete="off" novalidate="">
+                        <form class="group" id="form-message" action="{{ path('market_place_obtain_message') }}" method="post" autocomplete="off" novalidate="">
                             <div class="relative">
                                 <label for="message" class="sr-only"></label>
                                 <textarea id="message"
@@ -76,7 +76,10 @@
                                           required></textarea>
                                 <span class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">{{ 'form.message.invalid'|trans }}</span>
                             </div>
-                            <button onclick="void(0);"
+                            <input type="hidden" name="product" value="">
+                            <input type="hidden" name="market" value="{{ market.id }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('obtain') }}">
+                            <button
                                     class="inline-block mt-3 w-full rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong group-invalid:pointer-events-none group-invalid:opacity-30"
                                     type="submit"{% if not app.user %} disabled{% endif %}>{{ 'form.action.send'|trans }}</button>
                             {% if not app.user %}
@@ -94,7 +97,7 @@
                     <h4 class="text-center hidden lg:block text-2xl py-3 border-b-1 shadow-sm text-gray-600 font-semibold mb-5">{{ 'market.products'|trans }}
                         <span class="text-gray-500 font-medium ml-2">{{ market.products.count }}</span>
                     </h4>
-                    <div class="grid lg:grid-cols-2 sm:grid-cols-1 gap-3">
+                    <div class="grid md:grid-cols-3 sm:grid-cols-1 gap-3">
                         {% for product in market.products %}
                             <div class="lg:max-w-xs md:max-w-sm sm:w-auto border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                                 <div class="relative overflow-hidden bg-cover bg-no-repeat">
@@ -177,4 +180,10 @@
             </div>
         </div>
     </div>
+    {% include 'layouts/toast/success.html.twig' %}
+    {% include 'layouts/toast/danger.html.twig' %}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('message-js') }}
 {% endblock %}

@@ -23,7 +23,8 @@ Encore
     .addEntry('app', `./assets/${theme}/app.js`)
     .enableStimulusBridge(`./assets/${theme}/controllers.json`);
 if (theme === 'tailwind') {
-    Encore.addEntry('coupon-js', `./assets/${theme}/js/coupon.js`);
+    Encore.addEntry('coupon-js', `./assets/${theme}/js/coupon.js`)
+        .addEntry('message-js', `./assets/${theme}/js/message.js`);
 }
 Encore.addEntry('market-js', `./assets/${theme}/js/market.js`);
 if (theme === 'bootstrap') {

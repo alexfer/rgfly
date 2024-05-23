@@ -58,6 +58,10 @@
                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">{{ 'menu.dashboard.create.market'|trans }}</a>
                         </li>
                     {% endif %}
+                    <li>
+                        <a href="{{ path('app_dashboard_market_place_market_message', {market: app.user.markets.first.id}) }}"
+                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">{{ 'menu.dashboard.messages'|trans }}</a>
+                    </li>
                 </ul>
             </li>
             {% if is_granted('ROLE_ADMIN') %}

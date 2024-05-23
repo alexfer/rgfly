@@ -74,7 +74,9 @@ class MarketController extends AbstractController
         } else {
             $markets = $repository->searchByOwner($request->get('query'), $user);
         }
+
         $result = [];
+
         foreach ($markets['data'] ?? [] as $market) {
             $result[] = [
                 'id' => $market['id'],

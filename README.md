@@ -41,12 +41,12 @@ Use [Composer](https://getcomposer.org/) install to download and install the pac
 ### 4. Install JavaScript dependencies & Compile scripts
 ```shell
     $ npm install
-    $ npm run (watch|dev|buld)
+    $ npm run (watch|dev|build)
 ```
 ##### or
 ```shell
     $ yarn install
-    $ yarn (watch|dev|buld)
+    $ yarn (watch|dev|build)
 ```
 Build production:
 ```shell

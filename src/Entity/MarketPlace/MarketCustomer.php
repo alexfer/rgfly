@@ -40,9 +40,6 @@ class MarketCustomer
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: MarketCustomerOrders::class)]
     private Collection $marketCustomerOrders;
 
-    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: MarketCustomerMessage::class)]
-    private Collection $marketCustomerMessages;
-
     #[ORM\OneToOne(mappedBy: 'customer', cascade: ['persist', 'remove'])]
     private ?MarketAddress $marketAddress = null;
 
@@ -71,7 +68,6 @@ class MarketCustomer
     {
         $this->created_at = new DateTimeImmutable();
         $this->marketCustomerOrders = new ArrayCollection();
-        $this->marketCustomerMessages = new ArrayCollection();
         $this->marketWishlists = new ArrayCollection();
         $this->marketCouponUsages = new ArrayCollection();
         $this->marketMessages = new ArrayCollection();
@@ -231,44 +227,6 @@ class MarketCustomer
             // set the owning side to null (unless already changed)
             if ($marketCustomerOrder->getCustomer() === $this) {
                 $marketCustomerOrder->setCustomer(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, MarketCustomerMessage>
-     */
-    public function getMarketCustomerMessages(): Collection
-    {
-        return $this->marketCustomerMessages;
-    }
-
-    /**
-     * @param MarketCustomerMessage $marketCustomerMessage
-     * @return $this
-     */
-    public function addMarketCustomerMessage(MarketCustomerMessage $marketCustomerMessage): static
-    {
-        if (!$this->marketCustomerMessages->contains($marketCustomerMessage)) {
-            $this->marketCustomerMessages->add($marketCustomerMessage);
-            $marketCustomerMessage->setCustomer($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param MarketCustomerMessage $marketCustomerMessage
-     * @return $this
-     */
-    public function removeMarketCustomerMessage(MarketCustomerMessage $marketCustomerMessage): static
-    {
-        if ($this->marketCustomerMessages->removeElement($marketCustomerMessage)) {
-            // set the owning side to null (unless already changed)
-            if ($marketCustomerMessage->getCustomer() === $this) {
-                $marketCustomerMessage->setCustomer(null);
             }
         }
 

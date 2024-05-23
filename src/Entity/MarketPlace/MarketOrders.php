@@ -63,8 +63,11 @@ class MarketOrders
     #[ORM\OneToMany(mappedBy: 'orders', targetEntity: MarketCustomerOrders::class)]
     private Collection $marketCustomerOrders;
 
-    #[ORM\OneToMany(mappedBy: 'orders', targetEntity: MarketCustomerMessage::class)]
-    private Collection $marketCustomerMessages;
+    /**
+     * @var Collection<int, MarketMessage>
+     */
+    #[ORM\OneToMany(mappedBy: 'orders', targetEntity: MarketMessage::class)]
+    private Collection $marketMessages;
 
     public function __construct()
     {
@@ -72,7 +75,7 @@ class MarketOrders
         $this->marketOrdersProducts = new ArrayCollection();
         $this->status = self::STATUS['processing'];
         $this->marketCustomerOrders = new ArrayCollection();
-        $this->marketCustomerMessages = new ArrayCollection();
+        $this->marketMessages = new ArrayCollection();
     }
 
     /**
@@ -323,37 +326,37 @@ class MarketOrders
     }
 
     /**
-     * @return Collection<int, MarketCustomerMessage>
+     * @return Collection<int, MarketMessage>
      */
-    public function getMarketCustomerMessages(): Collection
+    public function getMarketMessages(): Collection
     {
-        return $this->marketCustomerMessages;
+        return $this->marketMessages;
     }
 
     /**
-     * @param MarketCustomerMessage $marketCustomerMessage
+     * @param MarketMessage $marketMessage
      * @return $this
      */
-    public function addMarketCustomerMessage(MarketCustomerMessage $marketCustomerMessage): static
+    public function addMarketMessage(MarketMessage $marketMessage): static
     {
-        if (!$this->marketCustomerMessages->contains($marketCustomerMessage)) {
-            $this->marketCustomerMessages->add($marketCustomerMessage);
-            $marketCustomerMessage->setOrders($this);
+        if (!$this->marketMessages->contains($marketMessage)) {
+            $this->marketMessages->add($marketMessage);
+            $marketMessage->setOrders($this);
         }
 
         return $this;
     }
 
     /**
-     * @param MarketCustomerMessage $marketCustomerMessage
+     * @param MarketMessage $marketMessage
      * @return $this
      */
-    public function removeMarketCustomerMessage(MarketCustomerMessage $marketCustomerMessage): static
+    public function removeMarketMessage(MarketMessage $marketMessage): static
     {
-        if ($this->marketCustomerMessages->removeElement($marketCustomerMessage)) {
+        if ($this->marketMessages->removeElement($marketMessage)) {
             // set the owning side to null (unless already changed)
-            if ($marketCustomerMessage->getOrders() === $this) {
-                $marketCustomerMessage->setOrders(null);
+            if ($marketMessage->getOrders() === $this) {
+                $marketMessage->setOrders(null);
             }
         }
 

@@ -76,9 +76,6 @@ class Market
     #[ORM\Column(type: Types::SIMPLE_ARRAY)]
     private array $messages = [];
 
-    #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketCustomerMessage::class)]
-    private Collection $marketCustomerMessages;
-
     #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketPaymentGatewayMarket::class)]
     private Collection $marketPaymentGatewayMarkets;
 
@@ -111,7 +108,6 @@ class Market
         $this->marketSuppliers = new ArrayCollection();
         $this->marketManufacturers = new ArrayCollection();
         $this->marketOrders = new ArrayCollection();
-        $this->marketCustomerMessages = new ArrayCollection();
         $this->messages = ["email"];
         $this->marketPaymentGatewayMarkets = new ArrayCollection();
         $this->marketWishlists = new ArrayCollection();
@@ -552,44 +548,6 @@ class Market
     public function setMessages(array $messages): static
     {
         $this->messages = $messages;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, MarketCustomerMessage>
-     */
-    public function getMarketCustomerMessages(): Collection
-    {
-        return $this->marketCustomerMessages;
-    }
-
-    /**
-     * @param MarketCustomerMessage $marketCustomerMessage
-     * @return $this
-     */
-    public function addMarketCustomerMessage(MarketCustomerMessage $marketCustomerMessage): static
-    {
-        if (!$this->marketCustomerMessages->contains($marketCustomerMessage)) {
-            $this->marketCustomerMessages->add($marketCustomerMessage);
-            $marketCustomerMessage->setMarket($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param MarketCustomerMessage $marketCustomerMessage
-     * @return $this
-     */
-    public function removeMarketCustomerMessage(MarketCustomerMessage $marketCustomerMessage): static
-    {
-        if ($this->marketCustomerMessages->removeElement($marketCustomerMessage)) {
-            // set the owning side to null (unless already changed)
-            if ($marketCustomerMessage->getMarket() === $this) {
-                $marketCustomerMessage->setMarket(null);
-            }
-        }
 
         return $this;
     }
