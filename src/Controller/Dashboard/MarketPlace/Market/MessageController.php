@@ -38,7 +38,8 @@ class MessageController extends AbstractController
     {
         $market = $this->market($request, $user, $em);
         $messages = $em->getRepository(MarketMessage::class)->fetch($market, 'low', 0, 20);
-        $messages['data'] = array_reverse($messages['data']);
+        //$messages['data'] = array_reverse($messages['data']);
+
         return $this->render('dashboard/content/market_place/message/index.html.twig', $this->navbar() + [
                 'messages' => $messages['data'],
             ]);

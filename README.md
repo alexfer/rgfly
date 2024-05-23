@@ -5,11 +5,11 @@ RgFly ecommerce solution.
 - (Bootstrap theme (not full compatibility yet))
 
 ### Requirements:
-- [Nginx HTTP Server `1.24.0`](http://nginx.org/en/CHANGES-1.24)
+- [Nginx HTTP Server `1.26.0`](http://nginx.org/en/CHANGES-1.24)
 - [PHP `>=8.2`](https://www.php.net/releases/8.3/en.php)
-- [PostgreSQL `15.5`](https://www.postgresql.org/)
+- [PostgreSQL `16.3`](https://www.postgresql.org/)
 - [Symfony `7.0.*`](https://symfony.com/releases/7.0)
-- [Node.js `21.6.2` (includes npm 10.5.1)](https://nodejs.org/en/download) or higher
+- [Node.js `22.2.0` (includes npm 10.7.0)](https://nodejs.org/en/download) or higher
 - [Yarn `1.22.22`](https://classic.yarnpkg.com/en/docs/install)
 
 ### Docker
