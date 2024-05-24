@@ -11,8 +11,15 @@
             </div>
         </aside>
         <section class="col-span-6">
-            <div class="pt-2 px-4">
-                <h4 class="pb-2 block w-full mb-4 text-xl font-semibold text-red-500 text-center text-sm-start">{{ 'customer.cabinet.orders'|trans }}</h4>
+            <div class="pt-2 px-4 relative">
+                <h4 class="pb-2 block w-full mb-4 text-xl font-semibold text-red-500 text-center text-sm-start">{{ 'customer.cabinet.orders'|trans }}
+                    {% if orders|length %}
+                        <button id="message"
+                                type="button"
+                                class="flex text-blue-500 hover:text-blue-700 p-3 shadow-md rounded-md hover:shadow-lg focus:shadow-lg absolute me-4 top-2 right-1">
+                            <i class="fa fa-comments"></i>
+                        </button>
+                    {% endif %}</h4>
                 <div id="accordion-flush" class="rounded-t-lg border border-neutral-200">
                     {% for key, item in orders %}
                         <h2 id="order-flush-heading-{{ key }}">

@@ -12,6 +12,7 @@ BEGIN
             'id', mm.id,
             'created', mm.created_at,
             'priority', INITCAP(mm.priority),
+            'answers', (SELECT COUNT(*) FROM market_message mc WHERE mc.parent_id = mm.id),
             'market', json_build_object(
                     'id', m.id,
                     'name', m.name,
@@ -37,6 +38,7 @@ BEGIN
              LEFT JOIN market_orders mo ON mo.id = mm.orders_id
              LEFT JOIN market m ON m.id = mm.market_id
     WHERE mm.customer_id = get_customer_messages.customer_id
+      AND mm.parent_id IS NULL
     ORDER BY MAX(mm.id) DESC
     OFFSET get_customer_messages.offset LIMIT get_customer_messages.limit;
 

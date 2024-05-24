@@ -1850,6 +1850,10 @@
                 <source>customer.cabinet.wishlist</source>
                 <target>Wishlist</target>
             </trans-unit>
+            <trans-unit id="customer.cabinet.messages">
+                <source>customer.cabinet.messages</source>
+                <target>Messages</target>
+            </trans-unit>
             <trans-unit id="customer.cabinet.order.notpaid">
                 <source>customer.cabinet.order.notpaid</source>
                 <target>Not paid yet.</target>

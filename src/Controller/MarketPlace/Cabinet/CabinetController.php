@@ -4,9 +4,11 @@ namespace App\Controller\MarketPlace\Cabinet;
 
 use App\Entity\MarketPlace\MarketCustomer;
 use App\Entity\MarketPlace\MarketCustomerOrders;
+use App\Entity\MarketPlace\MarketMessage;
 use App\Entity\MarketPlace\MarketWishlist;
 use App\Form\Type\MarketPlace\AddressType;
 use App\Form\Type\MarketPlace\CustomerProfileType;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,6 +69,29 @@ class CabinetController extends AbstractController
             'customer' => $customer,
             'orders' => $orders,
             'summary' => $summary,
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param UserInterface $user
+     * @param EntityManagerInterface $em
+     * @return Response
+     * @throws Exception
+     */
+    #[Route('/messages', name: 'app_cabinet_messages', methods: ['GET'])]
+    public function messages(
+        Request                $request,
+        UserInterface          $user,
+        EntityManagerInterface $em,
+    ): Response
+    {
+        $customer = $this->customer($user, $em);
+        $messages = $em->getRepository(MarketMessage::class)->fetchByCustomer($customer);
+
+        return $this->render('market_place/cabinet/message/index.html.twig', [
+            'customer' => $customer,
+            'messages' => $messages['data'],
         ]);
     }
 

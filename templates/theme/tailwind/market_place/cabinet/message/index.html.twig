@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2 class="text-2xl pb-4 relative font-extrabold text-primary-700 dark:text-white">{{ 'customer.cabinet'|trans }}
+        <span class="absolute right-0 mr-2 text-lg pe-4 font-normal">{{ customer.firstName }} {{ customer.lastName }}</span>
+    </h2>
+    <div class="grid grid-cols-8 gap-4">
+        <aside class="col-span-2 h-screen transition-transform -translate-x-full sm:translate-x-0">
+            <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 rounded-lg">
+                {% include 'market_place/cabinet/aside.html.twig' %}
+            </div>
+        </aside>
+        <section class="col-span-6">
+            <div class="pt-2 px-4 relative">
+                <h4 class="pb-2 block w-full mb-4 text-xl font-semibold text-red-500 text-center text-sm-start">
+                    {{ 'customer.cabinet.messages'|trans }}
+                </h4>
+                {% if messages|length %}
+                    <div class="relative overflow-hidden shadow-md sm:rounded-lg">
+                        <table class="w-full table-fixed border-collapse mt-3 text-md text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <caption class="text-slate-500 dark:text-slate-400 pb-4 text-sm caption-top">
+                                Table 3.1: Professional wrestlers and their signature moves.
+                            </caption>
+                            <tbody id="bulk-item">
+                            {% for message in messages %}
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <th scope="row" class="p-3">
+                                        {% if message.product is not null %}
+                                            <a class="font-semibold text-gray-500 hover:text-gray-700 dark:hover:text-white"
+                                               target="_blank"
+                                               href="{{ path('app_market_place_product', {slug: message.product.slug, tab: 'about'}) }}">
+                                                {{ message.product.short_name }}
+                                                <svg class="w-4 h-4 mb-1 inline-block text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 14v4.833A1.166 1.166 0 0 1 16.833 20H5.167A1.167 1.167 0 0 1 4 18.833V7.167A1.166 1.166 0 0 1 5.167 6h4.618m4.447-2H20v5.768m-7.889 2.121 7.778-7.778"></path>
+                                                </svg>
+                                            </a>
+                                        {% elseif message.order is not null %}
+                                            {{ message.order.number }}
+                                        {% else %}
+                                            {{ 'market.message.question'|trans }}
+                                        {% endif %}
+                                    </th>
+                                    <td class="p-3 text-gray-500">
+                                        {{ message.created|date(datetime_format) }}
+                                    </td>
+                                    <td class="p-3 text-gray-500">
+                                        {{ message.priority }}
+                                    </td>
+                                    <td class="p-3 text-gray-500 text-center">
+                                        {{ message.answers }}
+                                    </td>
+                                    <td class="p-3 text-gray-500">
+                                        <a href="{{ path('app_market_place_market', {slug: message.market.slug}) }}">
+                                            {{ message.market.name }}
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div id="not-found" class="text-center visually-hidden">
+                        <img class="block mx-auto"
+                             src="{{ asset('img/404.png') }}"
+                             width="340" alt="{{ 'market.product.wishlist.empty'|trans }}">
+                        <p class="text-center">
+                            {{ 'market.product.wishlist.empty'|trans }}
+                            <a class="block font-light"
+                               href="{{ path('app_market_place_index') }}">{{ 'form.action.back'|trans }}</a>
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+{% endblock %}

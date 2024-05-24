@@ -3,6 +3,7 @@
 namespace App\Repository\MarketPlace;
 
 use App\Entity\MarketPlace\Market;
+use App\Entity\MarketPlace\MarketCustomer;
 use App\Entity\MarketPlace\MarketMessage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
@@ -53,15 +54,13 @@ class MarketMessageRepository extends ServiceEntityRepository
      * @return array
      * @throws Exception
      */
-    public function fetch(
+    public function fetchAll(
         Market  $market,
         ?string $priority = null,
         int     $offset = 0,
         int     $limit = 25,
     ): array
     {
-        $messages = [];
-
         $connection = $this->getEntityManager()->getConnection();
         $statement = $connection->prepare('select get_messages(:market_id, :priority, :offset, :limit)');
         $statement->bindValue('market_id', $market->getId(), \PDO::PARAM_INT);
@@ -69,7 +68,29 @@ class MarketMessageRepository extends ServiceEntityRepository
         $statement = $this->bindPagination($statement, $offset, $limit);
         $result = $statement->executeQuery()->fetchAllAssociative();
 
-        return json_decode($result[0]['get_messages'], true) ?: $messages;
+        return json_decode($result[0]['get_messages'], true) ?: [];
+    }
+
+    /**
+     * @param MarketCustomer $customer
+     * @param int $offset
+     * @param int $limit
+     * @return array
+     * @throws Exception
+     */
+    public function fetchByCustomer(
+        MarketCustomer $customer,
+        int     $offset = 0,
+        int     $limit = 25,
+    ): array
+    {
+        $connection = $this->getEntityManager()->getConnection();
+        $statement = $connection->prepare('select get_customer_messages(:customer_id, :offset, :limit)');
+        $statement->bindValue('customer_id', $customer->getId(), \PDO::PARAM_INT);
+        $statement = $this->bindPagination($statement, $offset, $limit);
+        $result = $statement->executeQuery()->fetchAllAssociative();
+
+        return json_decode($result[0]['get_customer_messages'], true) ?: [];
     }
 
 }
