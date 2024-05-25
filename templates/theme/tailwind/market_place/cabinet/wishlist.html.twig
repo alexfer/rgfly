@@ -25,6 +25,9 @@
                 {% if wishlist|length %}
                     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                         <table class="w-full mt-3 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <caption class="text-slate-500 dark:text-slate-400 pb-4 text-sm caption-top">
+                                {{ 'caption.wishlist'|trans }}
+                            </caption>
                             <tbody id="bulk-item">
                             {% for item in wishlist %}
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -36,7 +39,7 @@
                                         </label>
                                     </th>
                                     <td class="p-3 text-gray-500 w-2/5">
-                                        <a class="text-ellipsis overflow-hidden"
+                                        <a class="text-ellipsis overflow-hidden font-semibold"
                                            href="{{ path('app_market_place_product', {slug: item.product.slug, tab: 'about'}) }}">{{ item.product.shortName }}</a>
                                     </td>
                                     <td class="p-3 text-gray-500 w-2/5">

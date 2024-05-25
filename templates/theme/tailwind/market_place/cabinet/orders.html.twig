@@ -14,7 +14,9 @@
             <div class="pt-2 px-4 relative">
                 <h4 class="pb-2 block w-full mb-4 text-xl font-semibold text-red-500 text-center text-sm-start">{{ 'customer.cabinet.orders'|trans }}
                     {% if orders|length %}
-                        <button id="message"
+                        <button id="open-message"
+                                data-modal-toggle="modal-message"
+                                data-modal-target="modal-message"
                                 type="button"
                                 class="flex text-blue-500 hover:text-blue-700 p-3 shadow-md rounded-md hover:shadow-lg focus:shadow-lg absolute me-4 top-2 right-1">
                             <i class="fa fa-comments"></i>
@@ -79,7 +81,6 @@
                                 </div>
                             </div>
                         </div>
-
                     {% else %}
                         <img class="d-block mx-auto mb-5 border-0 w-25 shadow-none"
                              src="{{ asset('img/404.png') }}"
@@ -94,4 +95,11 @@
             </div>
         </section>
     </div>
+    {% include 'market_place/cabinet/message/form.html.twig' %}
+    {% include 'layouts/toast/success.html.twig' %}
+    {% include 'layouts/toast/danger.html.twig' %}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('message-js') }}
 {% endblock %}

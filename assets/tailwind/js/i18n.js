@@ -7,7 +7,8 @@ const messages = {
                 proceed: 'Proceed?',
                 cancel: 'Cancel',
                 question: 'Do you want to remove this element?',
-                removed: 'Removed'
+                removed: 'Removed',
+                notFound: 'Order not found'
             },
         }
     },

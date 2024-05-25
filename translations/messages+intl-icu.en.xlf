@@ -156,6 +156,10 @@
                 <source>title.search</source>
                 <target>Search</target>
             </trans-unit>
+            <trans-unit id="placeholder.search.orders">
+                <source>placeholder.search.orders</source>
+                <target>Search orders...</target>
+            </trans-unit>
             <trans-unit id="title.contact_us">
                 <source>title.contact_us</source>
                 <target>Contact Us</target>
@@ -629,7 +633,8 @@
             </trans-unit>
             <trans-unit id="info.text.success">
                 <source>info.text.success</source>
-                <target><![CDATA[Code verified successfully. You have <strong>{ discount }</strong> off for that order.]]></target>
+                <target>
+                    <![CDATA[Code verified successfully. You have <strong>{ discount }</strong> off for that order.]]></target>
             </trans-unit>
             <trans-unit id="form.address.invalid">
                 <source>form.address.invalid</source>
@@ -1857,6 +1862,14 @@
             <trans-unit id="customer.cabinet.order.notpaid">
                 <source>customer.cabinet.order.notpaid</source>
                 <target>Not paid yet.</target>
+            </trans-unit>
+            <trans-unit id="caption.messages.history">
+                <source>caption.messages.history</source>
+                <target>Your messages history</target>
+            </trans-unit>
+            <trans-unit id="caption.wishlist">
+                <source>caption.wishlist</source>
+                <target>Your wishlist</target>
             </trans-unit>
         </body>
     </file>
