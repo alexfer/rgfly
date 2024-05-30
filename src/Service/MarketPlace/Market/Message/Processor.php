@@ -6,6 +6,7 @@ namespace App\Service\MarketPlace\Market\Message;
 use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketCustomer;
 use App\Entity\MarketPlace\MarketMessage;
+use App\Entity\MarketPlace\MarketOrders;
 use App\Entity\MarketPlace\MarketProduct;
 use App\Service\MarketPlace\Market\Message\Interface\ProcessorInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,14 +25,12 @@ class Processor implements ProcessorInterface
     private array $payload;
 
     /**
-     * @param UserInterface|null $user
      * @param TranslatorInterface $translator
      * @param ValidatorInterface $validator
      * @param EntityManagerInterface $em
      * @param CsrfTokenManagerInterface $csrfTokenManager
      */
     public function __construct(
-        private readonly ?UserInterface            $user,
         private readonly TranslatorInterface       $translator,
         private readonly ValidatorInterface        $validator,
         private readonly EntityManagerInterface    $em,
@@ -43,10 +42,10 @@ class Processor implements ProcessorInterface
 
     /**
      * @param array $payload
-     * @param string|null $exclude
+     * @param array|null $exclude
      * @return array
      */
-    public function process(array $payload, ?string $exclude = null): array
+    public function process(array $payload, ?array $exclude): array
     {
         $this->payload = $payload;
         return $this->validate($exclude);
@@ -54,6 +53,7 @@ class Processor implements ProcessorInterface
     }
 
     /**
+     * @param UserInterface|null $user
      * @return JsonResponse
      */
     public function obtainAndResponse(?UserInterface $user): JsonResponse
@@ -63,6 +63,7 @@ class Processor implements ProcessorInterface
         $message->setMarket($this->market());
         $message->setCustomer($this->customer($user));
         $message->setProduct($this->product());
+        $message->setOrders($this->order());
 
         $this->em->persist($message);
         $this->em->flush();
@@ -86,10 +87,18 @@ class Processor implements ProcessorInterface
      */
     private function product(): ?MarketProduct
     {
-        if(!isset($this->payload['product'])) {
+        if (!isset($this->payload['product'])) {
             return null;
         }
         return $this->em->getRepository(MarketProduct::class)->find($this->payload['product']);
+    }
+
+    private function order(): ?MarketOrders
+    {
+        if (!isset($this->payload['order'])) {
+            return null;
+        }
+        return $this->em->getRepository(MarketOrders::class)->find($this->payload['order']);
     }
 
     /**
@@ -102,10 +111,10 @@ class Processor implements ProcessorInterface
     }
 
     /**
-     * @param string|null $exclude
+     * @param array|null $exclude
      * @return array
      */
-    private function validate(?string $exclude = null): array
+    private function validate(?array $exclude): array
     {
         $jsonErrors = [];
         $collection = [
@@ -122,11 +131,18 @@ class Processor implements ProcessorInterface
             'product' => [
                 new Assert\Required(),
             ],
+            'order' => [
+                new Assert\Required(),
+            ],
         ];
 
         if ($exclude) {
-            unset($collection[$exclude]);
-            unset($this->payload[$exclude]);
+            foreach ($exclude as $key => $item) {
+                if (!$item) {
+                    unset($collection[$key]);
+                    unset($this->payload[$key]);
+                }
+            }
         }
 
         $errors = $this->validator->validate($this->payload, new Assert\Collection($collection));

@@ -79,12 +79,6 @@ class Market
     #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketPaymentGatewayMarket::class)]
     private Collection $marketPaymentGatewayMarkets;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?DateTime $created_at;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTimeInterface $deleted_at = null;
-
     #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketWishlist::class)]
     private Collection $marketWishlists;
 
@@ -100,6 +94,18 @@ class Market
     #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketMessage::class)]
     private Collection $marketMessages;
 
+    /**
+     * @var Collection<int, MarketSocial>
+     */
+    #[ORM\OneToMany(mappedBy: 'market', targetEntity: MarketSocial::class)]
+    private Collection $marketSocials;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?DateTime $created_at;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $deleted_at = null;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
@@ -113,6 +119,7 @@ class Market
         $this->marketWishlists = new ArrayCollection();
         $this->marketCoupons = new ArrayCollection();
         $this->marketMessages = new ArrayCollection();
+        $this->marketSocials = new ArrayCollection();
     }
 
     /**
@@ -740,6 +747,44 @@ class Market
             // set the owning side to null (unless already changed)
             if ($marketMessage->getMarket() === $this) {
                 $marketMessage->setMarket(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketSocial>
+     */
+    public function getMarketSocials(): Collection
+    {
+        return $this->marketSocials;
+    }
+
+    /**
+     * @param MarketSocial $marketSocial
+     * @return $this
+     */
+    public function addMarketSocial(MarketSocial $marketSocial): static
+    {
+        if (!$this->marketSocials->contains($marketSocial)) {
+            $this->marketSocials->add($marketSocial);
+            $marketSocial->setMarket($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MarketSocial $marketSocial
+     * @return $this
+     */
+    public function removeMarketSocial(MarketSocial $marketSocial): static
+    {
+        if ($this->marketSocials->removeElement($marketSocial)) {
+            // set the owning side to null (unless already changed)
+            if ($marketSocial->getMarket() === $this) {
+                $marketSocial->setMarket(null);
             }
         }
 

@@ -29,7 +29,12 @@ class MessageController extends AbstractController
         }
 
         $payload = $request->getPayload()->all();
-        $exclude = !empty($payload['product']) ? null : 'product';
+
+        $exclude = [
+            'product' => !empty($payload['product']),
+            'order' => !empty($payload['order']),
+        ];
+
         $errors = $message->process($payload, $exclude);
 
         if (count($errors)) {

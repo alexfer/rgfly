@@ -311,6 +311,7 @@
                             </div>
                             <input type="hidden" name="product" value="{{ product.id }}">
                             <input type="hidden" name="market" value="{{ product.market.id }}">
+                            <input type="hidden" name="order" value="">
                             <input type="hidden" name="_token" value="{{ csrf_token('obtain') }}">
                             <button class="inline-block mt-3 w-full rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong group-invalid:pointer-events-none group-invalid:opacity-30"
                                     type="submit"{% if not app.user %} disabled{% endif %}>{{ 'form.action.send'|trans }}

@@ -156,6 +156,10 @@
                 <source>title.search</source>
                 <target>Search</target>
             </trans-unit>
+            <trans-unit id="placeholder.search.orders">
+                <source>placeholder.search.orders</source>
+                <target>Search orders...</target>
+            </trans-unit>
             <trans-unit id="title.contact_us">
                 <source>title.contact_us</source>
                 <target>Contact Us</target>
@@ -519,6 +523,10 @@
                 <source>label.size</source>
                 <target>Size</target>
             </trans-unit>
+            <trans-unit id="label.source">
+                <source>label.source</source>
+                <target>Socials</target>
+            </trans-unit>
             <trans-unit id="label.color">
                 <source>label.color</source>
                 <target>Color</target>
@@ -538,6 +546,10 @@
             <trans-unit id="label.form.market_logo">
                 <source>label.form.market_logo</source>
                 <target>Market Logo</target>
+            </trans-unit>
+            <trans-unit id="label.form.social">
+                <source>label.form.social</source>
+                <target>Market Socials</target>
             </trans-unit>
             <trans-unit id="label.form.market_currency.placeholder">
                 <source>label.form.market_currency.placeholder</source>
@@ -629,7 +641,8 @@
             </trans-unit>
             <trans-unit id="info.text.success">
                 <source>info.text.success</source>
-                <target><![CDATA[Code verified successfully. You have <strong>{ discount }</strong> off for that order.]]></target>
+                <target>
+                    <![CDATA[Code verified successfully. You have <strong>{ discount }</strong> off for that order.]]></target>
             </trans-unit>
             <trans-unit id="form.address.invalid">
                 <source>form.address.invalid</source>
@@ -1850,9 +1863,21 @@
                 <source>customer.cabinet.wishlist</source>
                 <target>Wishlist</target>
             </trans-unit>
+            <trans-unit id="customer.cabinet.messages">
+                <source>customer.cabinet.messages</source>
+                <target>Messages</target>
+            </trans-unit>
             <trans-unit id="customer.cabinet.order.notpaid">
                 <source>customer.cabinet.order.notpaid</source>
                 <target>Not paid yet.</target>
+            </trans-unit>
+            <trans-unit id="caption.messages.history">
+                <source>caption.messages.history</source>
+                <target>Your messages history</target>
+            </trans-unit>
+            <trans-unit id="caption.wishlist">
+                <source>caption.wishlist</source>
+                <target>Your wishlist</target>
             </trans-unit>
         </body>
     </file>

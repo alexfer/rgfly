@@ -68,6 +68,16 @@
                         aria-selected="{{ _tab == 'attachment' ? 'true' : 'false' }}">{{ 'label.form.market_logo'|trans }}
                 </button>
             </li>
+            <li class="me-2" role="presentation">
+                <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                        id="market-social-tab"
+                        data-tabs-target="#market-social"
+                        type="button"
+                        role="tab"
+                        aria-controls="social"
+                        aria-selected="{{ _tab == 'social' ? 'true' : 'false' }}">{{ 'label.form.social'|trans }}
+                </button>
+            </li>
         </ul>
         <div id="market-tab-content" class="pb-5 shadow-lg border border-t-gray-200 rounded-md dark:bg-gray-800 dark:border-gray-900 p-3">
             <div class="hidden p-4"
@@ -160,6 +170,35 @@
                     </div>
                 </div>
             </div>
+            <div class="hidden p-4"
+                 id="market-social"
+                 role="tabpanel"
+                 aria-labelledby="social-tab">
+                <div class="mt-4 p-2">
+                    <div class="flex flex-col mt-4 px-4">
+                        {% for key, field in form.sourceName %}
+                            {% set value = null %}
+                            {% set checked = false %}
+                            {% for social in market.marketSocials %}
+                                {% if social.sourceName == field.vars.value %}
+                                    {% set value = social.source %}
+                                    {% if social.isActive %}
+                                        {% set checked = true %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            <div class="flex flex-col flex-wrap mb-3 w-1/2">
+                                <label for="{{ field.vars.id }}" class="inline-flex items-center -mb-1.5 cursor-pointer">
+                                    {{ form_widget(form.children[field.vars.value], {attr: {class: 'source float-end inline-flex bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', value: value}}) }}
+                                    {{ form_widget(field, {attr: {class: 'sr-only peer', checked: checked}}) }}
+                                    <div class="ms-2 relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                    <span class="ms-3 relative text-sm font-medium text-gray-900 dark:text-gray-300">{{ field.vars.label }}</span>
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
             <input type="hidden" name="flash-success" value="{{ _message[0]|default([]|json_encode) }}">
             <div class="w-full text-center pb-1">
                 {{ form_widget(form.save, { label: form.vars.data.id ? 'form.action.update' : 'form.action.save', attr: {class: 'inline-block rounded bg-danger px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-danger-3 transition duration-150 ease-in-out hover:bg-danger-accent-300 hover:shadow-danger-2 focus:bg-danger-accent-300 focus:shadow-danger-2 focus:outline-none focus:ring-0 active:bg-danger-600 active:shadow-danger-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong group-invalid:pointer-events-none group-invalid:opacity-30'}}) }}
@@ -182,5 +221,18 @@
             editorplaceholder: '{{ 'label.form.market_description'|trans }}',
             removePlugins: 'simage,image,youtube,html5video,iframe,uicolor,videodetector,preview',
         });
+
+        // const list = document.querySelectorAll('.source');
+        // [...list].forEach((el) => {
+        //     el.parentElement.addEventListener('change', () => {
+        //         const next = el.nextElementSibling;
+        //         if (next.checked) {
+        //             el.removeAttribute('disabled');
+        //             el.focus();
+        //         } else {
+        //             el.setAttribute('disabled', 'disabled');
+        //         }
+        //     });
+        // });
     </script>
 {% endblock %}

@@ -2,15 +2,12 @@
 
 namespace App\Controller\MarketPlace\Cabinet;
 
-use App\Entity\MarketPlace\MarketCustomer;
-use App\Entity\MarketPlace\MarketCustomerOrders;
-use App\Entity\MarketPlace\MarketWishlist;
-use App\Form\Type\MarketPlace\AddressType;
-use App\Form\Type\MarketPlace\CustomerProfileType;
+use App\Entity\MarketPlace\{MarketCustomer, MarketCustomerOrders, MarketMessage, MarketOrders, MarketWishlist};
+use App\Form\Type\MarketPlace\{AddressType, CustomerProfileType};
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -68,6 +65,47 @@ class CabinetController extends AbstractController
             'orders' => $orders,
             'summary' => $summary,
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param UserInterface $user
+     * @param EntityManagerInterface $em
+     * @return Response
+     * @throws Exception
+     */
+    #[Route('/messages', name: 'app_cabinet_messages', methods: ['GET'])]
+    public function messages(
+        Request                $request,
+        UserInterface          $user,
+        EntityManagerInterface $em,
+    ): Response
+    {
+        $customer = $this->customer($user, $em);
+        $messages = $em->getRepository(MarketMessage::class)->fetchByCustomer($customer);
+        $messages = array_reverse($messages['data']);
+
+        return $this->render('market_place/cabinet/message/index.html.twig', [
+            'customer' => $customer,
+            'messages' => $messages,
+        ]);
+    }
+
+    #[Route('/search-order', name: 'app_cabinet_search_order', methods: ['POST'])]
+    public function searchOrders(
+        Request                $request,
+        UserInterface          $user,
+        EntityManagerInterface $em,
+    ): JsonResponse
+    {
+        $query = $request->getPayload()->get('query');
+        $customer = $this->customer($user, $em);
+        $order = $em->getRepository(MarketOrders::class)->singleFetch($query, $customer);
+
+        return $this->json([
+            'query' => $query,
+            'order' => $order,
+        ], Response::HTTP_OK);
     }
 
     /**
