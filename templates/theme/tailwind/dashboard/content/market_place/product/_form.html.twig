@@ -12,13 +12,13 @@
     {% set _message = app.flashes('success') %}
     {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
     {% set _tab = app.request.get('tab') %}
-    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center justify-stretch border-b-1 items-stretch"
+    <ul class="flex list-none flex-row flex-wrap text-sm font-medium space-x-4 text-center justify-stretch border-b-1 items-stretch"
         id="market-tab"
         data-tabs-toggle="#product-tab-content"
-        data-tabs-active-classes="text-gray-950 hover:text-red-600 dark:text-purple-500 dark:hover:text-purple-500 border-red-600 dark:border-red-500"
+        data-tabs-active-classes="text-gray-950 hover:text-red-600 dark:text-white dark:hover:text-white border-red-600 dark:border-red-500"
         data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
         role="tablist">
-        <li class="me-2" role="presentation">
+        <li class="me-2 flex-auto text-center" role="presentation">
             <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                     id="description-tab"
                     data-tabs-target="#details"
@@ -28,7 +28,7 @@
                     aria-selected="{{ _tab == 'details' ? 'true' : 'false' }}">{{ 'product.details'|trans }}
             </button>
         </li>
-        <li class="me-2" role="presentation">
+        <li class="me-2 flex-auto text-center" role="presentation">
             <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                     id="billing-tab"
                     data-tabs-target="#billing"
@@ -37,7 +37,7 @@
                     aria-selected="{{ _tab == 'billing' ? 'true' : 'false' }}">{{ 'product.billing'|trans }}
             </button>
         </li>
-        <li class="me-2" role="presentation">
+        <li class="me-2 flex-auto text-center" role="presentation">
             <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                     id="categories-tab"
                     data-tabs-target="#categories"
@@ -47,7 +47,7 @@
                     aria-selected="{{ _tab == 'categories' ? 'true' : 'false' }}">{{ 'entry.form.categories'|trans }}
             </button>
         </li>
-        <li class="me-2" role="presentation">
+        <li class="me-2 flex-auto text-center" role="presentation">
             <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                     id="attributes-tab"
                     data-tabs-target="#attributes"
@@ -57,7 +57,7 @@
                     aria-selected="{{ _tab == 'attributes' ? 'true' : 'false' }}">{{ 'market.attributes'|trans }}
             </button>
         </li>
-        <li class="me-2" role="presentation">
+        <li class="me-2 flex-auto text-center" role="presentation">
             <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                     id="attachments-block"
                     data-tabs-target="#attachments-tab"
@@ -113,7 +113,7 @@
                         'filter': 'product_preview'
                     } %}
                 {% else %}
-                    <div class="bg-red-100 rounded-lg max-w-2xl mx-auto text-red-900 py-5 mb-5">
+                    <div class="bg-yellow-50 border border-yellow-300 shadow-sm shadow-yellow-500 rounded-lg max-w-2xl mx-auto text-yellow-900 py-5 mb-5">
                         <div class="text-center">{{ 'product.attachments.available'|trans }}</div>
                     </div>
                 {% endif %}

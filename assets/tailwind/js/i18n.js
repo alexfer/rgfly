@@ -8,9 +8,15 @@ const messages = {
                 cancel: 'Cancel',
                 question: 'Do you want to remove this element?',
                 removed: 'Removed',
-                notFound: 'Order not found'
+                notFound: 'Order not found',
+                fileTooLarge: 'The file size too large'
             },
-        }
+        },
+        // fr: {
+        //     translation: {
+        //
+        //     }
+        // }
     },
 };
 

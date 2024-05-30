@@ -32,13 +32,13 @@
         {% set _message = app.flashes('success') %}
         {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
         {% set _tab = app.request.get('tab') %}
-        <ul class="flex flex-wrap text-sm font-medium text-center justify-stretch border-b-1 items-stretch"
+        <ul class="flex list-none flex-row flex-wrap text-sm font-medium space-x-4 text-center justify-stretch border-b-1 items-stretch"
             id="market-tab"
             data-tabs-toggle="#market-tab-content"
-            data-tabs-active-classes="text-gray-950 hover:text-red-600 dark:text-purple-500 dark:hover:text-purple-500 border-red-600 dark:border-red-500"
+            data-tabs-active-classes="text-gray-950 hover:text-red-600 dark:text-white dark:hover:text-white border-red-600 dark:border-red-500"
             data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
             role="tablist">
-            <li class="me-2" role="presentation">
+            <li class="me-2 flex-auto text-center" role="presentation">
                 <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                         id="details-tab"
                         data-tabs-target="#market-details"
@@ -48,7 +48,7 @@
                         aria-selected="{{ _tab == 'details' ? 'true' : 'false' }}">{{ 'entry.form.market_details'|trans }}
                 </button>
             </li>
-            <li class="me-2" role="presentation">
+            <li class="me-2 flex-auto text-center" role="presentation">
                 <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                         id="market-billing-tab"
                         data-tabs-target="#market-billing"
@@ -58,7 +58,7 @@
                         aria-selected="{{ _tab == 'billing' ? 'true' : 'false' }}">{{ 'entry.form.billing'|trans }}
                 </button>
             </li>
-            <li class="me-2" role="presentation">
+            <li class="me-2 flex-auto text-center" role="presentation">
                 <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                         id="market-attachment-tab"
                         data-tabs-target="#market-attachment"
@@ -68,7 +68,7 @@
                         aria-selected="{{ _tab == 'attachment' ? 'true' : 'false' }}">{{ 'label.form.market_logo'|trans }}
                 </button>
             </li>
-            <li class="me-2" role="presentation">
+            <li class="me-2 flex-auto text-center" role="presentation">
                 <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                         id="market-social-tab"
                         data-tabs-target="#market-social"
@@ -137,13 +137,18 @@
                         <div class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">{{ 'table.header.payment_type'|trans }}</div>
                         {% for key, field in form.gateway %}
                             {% set _checked = false %}
+                            {% set disabled = null %}
+                            {% if market.id is null %}
+                                {% set _checked = true %}
+                                {% set disabled = 'disabled' %}
+                            {% endif %}
                             {% for gateway in form.vars.data.marketPaymentGatewayMarkets.toArray %}
                                 {% if field.vars.value == gateway.gateway.id and gateway.active %}
                                     {% set _checked = true %}
                                 {% endif %}
                             {% endfor %}
                             <label for="{{ field.vars.id }}" class="inline-flex items-center mb-5 cursor-pointer">
-                                {{ form_widget(field, {attr: {class: 'sr-only peer', checked: _checked}}) }}
+                                {{ form_widget(field, {attr: {class: 'sr-only peer', checked: _checked, disabled: disabled}}) }}
                                 <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                                 <span class="ms-3 relative text-sm font-medium text-gray-900 dark:text-gray-300">{{ field.vars.label }}</span>
                             </label>
@@ -165,7 +170,7 @@
                     {% endif %}
                     <div class="max-w-xl mx-auto">
                         {{ form_label(form.logo, 'label.form.market_logo', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
-                        {{ form_widget(form.logo, {attr: {class: 'block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400'}}) }}
+                        {{ form_widget(form.logo, {attr: {class: 'skip block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400'}}) }}
                         <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.logo) }}</span>
                     </div>
                 </div>
@@ -175,7 +180,7 @@
                  role="tabpanel"
                  aria-labelledby="social-tab">
                 <div class="mt-4 p-2">
-                    <div class="flex flex-col mt-4 px-4">
+                    <div class="flex flex-col mt-4 px-4{% if market.id is null %} sr-only{% endif %}">
                         {% for key, field in form.sourceName %}
                             {% set value = null %}
                             {% set checked = false %}
@@ -197,6 +202,11 @@
                             </div>
                         {% endfor %}
                     </div>
+                    {% if market.id is null %}
+                        <div class="bg-yellow-50 border border-yellow-300 shadow-sm shadow-yellow-500 rounded-lg max-w-2xl mx-auto text-yellow-900 py-5 mb-5">
+                            <div class="text-center">{{ 'market,socials.available'|trans }}</div>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
             <input type="hidden" name="flash-success" value="{{ _message[0]|default([]|json_encode) }}">

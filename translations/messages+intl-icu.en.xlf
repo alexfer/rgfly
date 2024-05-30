@@ -1761,6 +1761,10 @@
                 <source>product.attachments.available</source>
                 <target>The attachments will available after the product has created.</target>
             </trans-unit>
+            <trans-unit id="market,socials.available">
+                <source>market,socials.available</source>
+                <target>The social references will available after the store has been created.</target>
+            </trans-unit>
             <trans-unit id="product.details.short">
                 <source>product.details.short</source>
                 <target>Details</target>

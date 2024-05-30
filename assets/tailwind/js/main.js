@@ -222,6 +222,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (elements.uploadInput) {
+        if(elements.uploadInput.classList.contains('skip')) {
+            return false;
+        }
         elements.uploadInput.addEventListener('change', (event) => {
             let file = event.target.files[0];
             let input = elements.uploadInput;
@@ -233,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (file.size > max) {
                 input.value = null;
                 file = null;
-                showToast(elements.toastDanger, 'The file size too large');
+                showToast(elements.toastDanger, i18next.t('fileTooLarge'));
                 return;
             }
 
