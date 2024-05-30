@@ -198,6 +198,7 @@ class MarketController extends AbstractController
 
         return $this->render('dashboard/content/market_place/market/_form.html.twig', $this->navbar() + [
                 'form' => $form,
+                'market' => $market,
                 'errors' => $form->getErrors(true),
             ]);
     }
