@@ -523,6 +523,10 @@
                 <source>label.size</source>
                 <target>Size</target>
             </trans-unit>
+            <trans-unit id="label.source">
+                <source>label.source</source>
+                <target>Socials</target>
+            </trans-unit>
             <trans-unit id="label.color">
                 <source>label.color</source>
                 <target>Color</target>
@@ -542,6 +546,10 @@
             <trans-unit id="label.form.market_logo">
                 <source>label.form.market_logo</source>
                 <target>Market Logo</target>
+            </trans-unit>
+            <trans-unit id="label.form.social">
+                <source>label.form.social</source>
+                <target>Market Socials</target>
             </trans-unit>
             <trans-unit id="label.form.market_currency.placeholder">
                 <source>label.form.market_currency.placeholder</source>

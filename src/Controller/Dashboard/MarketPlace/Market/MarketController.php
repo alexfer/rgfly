@@ -5,6 +5,7 @@ namespace App\Controller\Dashboard\MarketPlace\Market;
 use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketPaymentGateway;
 use App\Entity\MarketPlace\MarketPaymentGatewayMarket;
+use App\Entity\MarketPlace\MarketSocial;
 use App\Form\Type\Dashboard\MarketPlace\MarketType;
 use App\Service\Dashboard;
 use App\Service\FileUploader;
@@ -141,6 +142,7 @@ class MarketController extends AbstractController
                     return $this->redirectToRoute('app_dashboard_market_place_create_market', ['tab' => $request->get('tab')]);
                 }
 
+
                 $market->setOwner($user)->setSlug($slugger->slug($form->get('name')->getData())->lower());
                 $em->persist($market);
                 $em->flush();
@@ -157,6 +159,13 @@ class MarketController extends AbstractController
                     }
 
                     $market->setAttach($attach);
+                }
+
+                foreach (MarketSocial::NAME as $value) {
+                    $social = new MarketSocial();
+                    $social->setSourceName($value)->setSource("https://{$value}.com");
+                    $market->addMarketSocial($social);
+                    $em->persist($social);
                 }
 
                 $paymentGateways = $em->getRepository(MarketPaymentGateway::class)->findBy(['active' => true]);
@@ -221,6 +230,15 @@ class MarketController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $form->get('logo')->getData();
 
+
+            $socials = $market->getMarketSocials()->toArray();
+            $sources = $form->get('sourceName')->getData();
+
+            foreach ($socials as $key => $social) {
+                $social->setSource($form->get($social->getSourceName())->getData())->setActive(in_array($social->getSourceName(), $sources));
+                $em->persist($social);
+            }
+
             if ($file) {
                 $fileUploader = new FileUploader($this->getTargetDir($params, $market->getId()), $slugger, $em);
 
@@ -284,6 +302,7 @@ class MarketController extends AbstractController
 
         return $this->render('dashboard/content/market_place/market/_form.html.twig', $this->navbar() + [
                 'form' => $form,
+                'market' => $market,
                 'errors' => $form->getErrors(true),
             ]);
     }

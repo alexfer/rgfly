@@ -2,30 +2,24 @@
 
 namespace App\Form\Type\Dashboard\MarketPlace;
 
-use App\Entity\MarketPlace\Market;
-use App\Entity\MarketPlace\MarketPaymentGateway;
+use App\Entity\MarketPlace\{Market, MarketPaymentGateway};
 use App\Service\MarketPlace\Currency;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TelType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\Extension\Core\Type\{ChoiceType,
+    EmailType,
+    FileType,
+    SubmitType,
+    TelType,
+    TextareaType,
+    TextType,
+    UrlType};
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\Image;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\{Email, Image, Length, NotBlank, Regex};
 
 class MarketType extends AbstractType
 {
-
     /**
      * @var array
      */
@@ -194,5 +188,13 @@ class MarketType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Market::class,
         ]);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getParent(): ?string
+    {
+        return SocialType::class;
     }
 }
