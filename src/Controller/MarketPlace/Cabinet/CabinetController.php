@@ -2,7 +2,7 @@
 
 namespace App\Controller\MarketPlace\Cabinet;
 
-use App\Entity\MarketPlace\{MarketCustomer, MarketCustomerOrders, MarketMessage, MarketOrders, MarketWishlist};
+use App\Entity\MarketPlace\{StoreCustomer, StoreCustomerOrders, StoreMessage, StoreOrders, StoreWishlist};
 use App\Form\Type\MarketPlace\{AddressType, CustomerProfileType};
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,14 +19,14 @@ class CabinetController extends AbstractController
     /**
      * @param UserInterface $user
      * @param EntityManagerInterface $em
-     * @return MarketCustomer
+     * @return StoreCustomer
      */
     private function customer(
         UserInterface          $user,
         EntityManagerInterface $em,
-    ): MarketCustomer
+    ): StoreCustomer
     {
-        return $em->getRepository(MarketCustomer::class)->findOneBy([
+        return $em->getRepository(StoreCustomer::class)->findOneBy([
             'member' => $user,
         ]);
     }
@@ -45,13 +45,13 @@ class CabinetController extends AbstractController
     ): Response
     {
         $customer = $this->customer($user, $em);
-        $orders = $em->getRepository(MarketCustomerOrders::class)->findBy([
+        $orders = $em->getRepository(StoreCustomerOrders::class)->findBy([
             'customer' => $customer,
         ], ['id' => 'desc']);
 
         $summary = $fee = $products = [];
         foreach ($orders as $order) {
-            foreach ($order->getOrders()->getMarketOrdersProducts() as $item) {
+            foreach ($order->getOrders()->getStoreOrdersProducts() as $item) {
                 $products[$order->getId()][] = $item->getCost() - ((($item->getCost() * $item->getQuantity()) * $item->getDiscount()) - $item->getDiscount()) / 100;
                 $fee[$order->getId()][] = $item->getProduct()->getFee();
             }
@@ -82,12 +82,11 @@ class CabinetController extends AbstractController
     ): Response
     {
         $customer = $this->customer($user, $em);
-        $messages = $em->getRepository(MarketMessage::class)->fetchByCustomer($customer);
-        $messages = array_reverse($messages['data']);
+        $messages = $em->getRepository(StoreMessage::class)->fetchByCustomer($customer);
 
         return $this->render('market_place/cabinet/message/index.html.twig', [
             'customer' => $customer,
-            'messages' => $messages,
+            'messages' => $messages['data'],
         ]);
     }
 
@@ -100,7 +99,7 @@ class CabinetController extends AbstractController
     {
         $query = $request->getPayload()->get('query');
         $customer = $this->customer($user, $em);
-        $order = $em->getRepository(MarketOrders::class)->singleFetch($query, $customer);
+        $order = $em->getRepository(StoreOrders::class)->singleFetch($query, $customer);
 
         return $this->json([
             'query' => $query,
@@ -165,7 +164,7 @@ class CabinetController extends AbstractController
     {
         $customer = $this->customer($user, $em);
 
-        $wishlist = $em->getRepository(MarketWishlist::class)->findBy([
+        $wishlist = $em->getRepository(StoreWishlist::class)->findBy([
             'customer' => $customer,
         ], ['created_at' => 'desc']);
 
@@ -193,7 +192,7 @@ class CabinetController extends AbstractController
         $items = $parameters['items'];
 
         foreach ($parameters['items'] as $key => $item) {
-            $wishlist = $em->getRepository(MarketWishlist::class)
+            $wishlist = $em->getRepository(StoreWishlist::class)
                 ->findOneBy(['customer' => $customer, 'id' => $item]);
             $em->remove($wishlist);
         }
@@ -221,7 +220,7 @@ class CabinetController extends AbstractController
     ): Response
     {
         $customer = $this->customer($user, $em);
-        $address = $customer->getMarketAddress();
+        $address = $customer->getStoreAddress();
         $form = $this->createForm(AddressType::class, $address);
         $form->handleRequest($request);
 

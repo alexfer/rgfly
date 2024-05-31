@@ -50,8 +50,8 @@
                                         {{ message.answers }}
                                     </td>
                                     <td class="p-3 text-gray-500">
-                                        <a href="{{ path('app_market_place_market', {slug: message.market.slug}) }}">
-                                            {{ message.market.name }}
+                                        <a href="{{ path('app_market_place_market', {slug: message.store.slug}) }}">
+                                            {{ message.store.name }}
                                         </a>
                                     </td>
                                 </tr>
@@ -63,9 +63,9 @@
                     <div id="not-found" class="text-center visually-hidden">
                         <img class="block mx-auto"
                              src="{{ asset('img/404.png') }}"
-                             width="340" alt="{{ 'market.product.wishlist.empty'|trans }}">
+                             width="340" alt="{{ 'market.messages.empty'|trans }}">
                         <p class="text-center">
-                            {{ 'market.product.wishlist.empty'|trans }}
+                            {{ 'market.messages.empty'|trans }}
                             <a class="block font-light"
                                href="{{ path('app_market_place_index') }}">{{ 'form.action.back'|trans }}</a>
                         </p>

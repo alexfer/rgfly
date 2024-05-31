@@ -40,7 +40,7 @@ class UserController extends AbstractController
     {
         $query = $request->query->get('search');
         $users = $em->getRepository(User::class)->fetch($query);
-        return $this->render('dashboard/content/user/index.html.twig', $this->navbar() + ['users' => $users]);
+        return $this->render('dashboard/content/user/index.html.twig',  ['users' => $users]);
     }
 
     /**
@@ -147,7 +147,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('app_dashboard_details_user', ['id' => $entry->getId(), 'tab' => 'security']);
         }
 
-        return $this->render('dashboard/content/user/details.html.twig', $this->navbar() + [
+        return $this->render('dashboard/content/user/details.html.twig',  [
                 'entry' => $entry,
                 'form' => $form,
                 'country' => $country ? Countries::getNames(Locale::getDefault())[$country] : null,

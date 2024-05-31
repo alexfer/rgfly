@@ -2,8 +2,8 @@
 
 namespace App\Controller\MarketPlace;
 
-use App\Service\MarketPlace\Market\Customer\Interface\UserManagerInterface;
-use App\Service\MarketPlace\Market\Order\Interface\{CollectionInterface,
+use App\Service\MarketPlace\Store\Customer\Interface\UserManagerInterface;
+use App\Service\MarketPlace\Store\Order\Interface\{CollectionInterface,
     ProcessorInterface,
     ProductInterface,
     SummaryInterface,};
@@ -46,7 +46,7 @@ class OrderController extends AbstractController
         $order = $orderProduct->getOrder();
 
         if ($order) {
-            $products = $order->getMarketOrdersProducts();
+            $products = $order->getStoreOrdersProducts();
             $countProducts = count($products);
         }
         $orderProducts = $orderCollection->getOrderProducts($session->getId());
@@ -55,7 +55,7 @@ class OrderController extends AbstractController
         return $this->json([
             'products' => $countProducts,
             'summary' => $orderSummary->summary($orders, true),
-            'removed' => $orderProduct->getMarket()->getId(),
+            'removed' => $orderProduct->getStore()->getId(),
             'order' => count($orders) == 0,
             'quantity' => $session->get('quantity'),
             'redirect' => $this->generateUrl('app_market_place_order_summary'),

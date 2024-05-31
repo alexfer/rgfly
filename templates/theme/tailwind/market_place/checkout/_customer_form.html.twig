@@ -63,7 +63,7 @@
     {% endif %}
     <div id="payment-method" class="mt-3">
         <div class="rounded-t-lg border border-neutral-200 bg-white dark:border-neutral-600 dark:bg-body-dark">
-            {% for key, gateway in order.market.marketPaymentGatewayMarkets.toArray %}
+            {% for key, gateway in order.store.storePaymentGatewaystores.toArray %}
                 <h2 class="mb-0" id="headingOne">
                     <button class="group relative font-semibold flex w-full items-center rounded-t-lg border-0 bg-white px-5 py-4 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-body-dark dark:text-white [&:not([data-twe-collapse-collapsed])]:bg-white [&:not([data-twe-collapse-collapsed])]:text-primary [&:not([data-twe-collapse-collapsed])]:shadow-border-b dark:[&:not([data-twe-collapse-collapsed])]:bg-surface-dark dark:[&:not([data-twe-collapse-collapsed])]:text-primary dark:[&:not([data-twe-collapse-collapsed])]:shadow-white/10"
                             type="button"

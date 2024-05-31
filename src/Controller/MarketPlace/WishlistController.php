@@ -2,10 +2,10 @@
 
 namespace App\Controller\MarketPlace;
 
-use App\Entity\MarketPlace\Market;
-use App\Entity\MarketPlace\MarketCustomer;
-use App\Entity\MarketPlace\MarketProduct;
-use App\Entity\MarketPlace\MarketWishlist;
+use App\Entity\MarketPlace\Store;
+use App\Entity\MarketPlace\StoreCustomer;
+use App\Entity\MarketPlace\StoreProduct;
+use App\Entity\MarketPlace\StoreWishlist;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +18,7 @@ class WishlistController extends AbstractController
 {
     /**
      * @param Request $request
-     * @param MarketProduct $product
+     * @param StoreProduct $product
      * @param EntityManagerInterface $em
      * @param UserInterface|null $user
      * @return Response
@@ -26,14 +26,14 @@ class WishlistController extends AbstractController
     #[Route('/add/{slug}', name: 'app_market_place_add_wishlist', methods: ['POST'])]
     public function add(
         Request                $request,
-        MarketProduct          $product,
+        StoreProduct          $product,
         EntityManagerInterface $em,
         ?UserInterface         $user,
     ): Response
     {
         $parameters = json_decode($request->getContent(), true);
 
-        $customer = $em->getRepository(MarketCustomer::class)->findOneBy([
+        $customer = $em->getRepository(StoreCustomer::class)->findOneBy([
             'member' => $user,
         ]);
 
@@ -44,11 +44,11 @@ class WishlistController extends AbstractController
             $responseStatus = Response::HTTP_UNAUTHORIZED;
         }
 
-        $market = $em->getRepository(Market::class)->find($parameters['market']);
+        $market = $em->getRepository(Store::class)->find($parameters['market']);
 
         if ($market && $customer) {
-            $wishlist = new MarketWishlist();
-            $wishlist->setMarket($market)
+            $wishlist = new StoreWishlist();
+            $wishlist->setStore($market)
                 ->setCustomer($customer)
                 ->setProduct($product);
 

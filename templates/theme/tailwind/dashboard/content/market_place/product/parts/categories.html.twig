@@ -7,7 +7,7 @@
     <div class="relative mb-3">
         <a data-modal-toggle="modal-brand"
            data-modal-target="modal-brand"
-           data-url="{{ path('app_dashboard_market_place_xhr_create_brand', {market: app.request.get('market')}) }}"
+           data-url="{{ path('app_dashboard_market_place_xhr_create_brand', {store: app.request.get('store')}) }}"
            href="#"
            class="text-sm float-end add-entry text-green-600 hover:text-green-400">{{ 'market.brand.create'|trans }}<i class="fa fa-plus-circle text-green-500 ms-2"></i></a>
         {{ form_label(form.brand, 'label.form.brand_name', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
@@ -16,8 +16,8 @@
     <div class="relative mb-3">
         <a data-modal-toggle="modal-supplier"
            data-modal-target="modal-supplier"
-           data-url="{{ path('app_dashboard_market_place_xhr_create_supplier', {market: app.request.get('market')}) }}"
-           data-xhr="{{ path('app_dashboard_market_place_xhr_load_countries', {market: app.request.get('market')}) }}"
+           data-url="{{ path('app_dashboard_market_place_xhr_create_supplier', {store: app.request.get('store')}) }}"
+           data-xhr="{{ path('app_dashboard_market_place_xhr_load_countries', {store: app.request.get('store')}) }}"
            href="#"
            class="text-sm float-end add-entry text-green-600 hover:text-green-400">{{ 'market.supplier.create'|trans }}<i class="fa fa-plus-circle text-green-500 ms-2"></i></a>
         {{ form_label(form.supplier, 'label.form.supplier_name', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
@@ -26,7 +26,7 @@
     <div class="relative mb-3">
         <a data-modal-toggle="modal-manufacturer"
            data-modal-target="modal-manufacturer"
-           data-url="{{ path('app_dashboard_market_place_xhr_create_manufacturer', {market: app.request.get('market')}) }}"
+           data-url="{{ path('app_dashboard_market_place_xhr_create_manufacturer', {store: app.request.get('store')}) }}"
            href="#"
            class="text-sm float-end add-entry text-green-600 hover:text-green-400">{{ 'market.manufacturer.create'|trans }}<i class="fa fa-plus-circle text-green-500 ms-2"></i></a>
         {{ form_label(form.manufacturer, 'label.form.manufacturer_name', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}

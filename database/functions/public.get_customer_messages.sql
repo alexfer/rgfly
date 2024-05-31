@@ -9,43 +9,43 @@ DECLARE
     rows_count            INT;
 BEGIN
     SELECT json_agg(json_build_object(
-            'id', mm.id,
-            'created', mm.created_at,
-            'priority', INITCAP(mm.priority),
-            'answers', (SELECT COUNT(*) FROM market_message mc WHERE mc.parent_id = mm.id),
+            'id', sm.id,
+            'created', sm.created_at,
+            'priority', INITCAP(sm.priority),
+            'answers', (SELECT COUNT(*) FROM store_message sm WHERE sm.parent_id = sm.id),
             'market', json_build_object(
-                    'id', m.id,
-                    'name', m.name,
-                    'slug', m.slug
+                    'id', s.id,
+                    'name', s.name,
+                    'slug', s.slug
                       ),
             'product', (CASE
-                            WHEN mp.id IS NULL THEN NULL
+                            WHEN sp.id IS NULL THEN NULL
                             ELSE json_build_object(
-                                    'id', mp.id,
-                                    'slug', mp.slug,
-                                    'short_name', mp.short_name
+                                    'id', sp.id,
+                                    'slug', sp.slug,
+                                    'short_name', sp.short_name
                                  ) END),
             'order', (CASE
-                          WHEN mo.id IS NULL THEN NULL
+                          WHEN so.id IS NULL THEN NULL
                           ELSE json_build_object(
-                                  'id', mo.id,
-                                  'number', mo.number
+                                  'id', so.id,
+                                  'number', so.number
                                ) END)
                     ))
     INTO get_customer_messages
-    FROM market_message mm
-             LEFT JOIN market_product mp ON mp.id = mm.product_id
-             LEFT JOIN market_orders mo ON mo.id = mm.orders_id
-             LEFT JOIN market m ON m.id = mm.market_id
-    WHERE mm.customer_id = get_customer_messages.customer_id
-      AND mm.parent_id IS NULL
-    ORDER BY MAX(mm.id) DESC
+    FROM store_message sm
+             LEFT JOIN store_product sp ON sp.id = sm.product_id
+             LEFT JOIN store_orders so ON so.id = sm.orders_id
+             LEFT JOIN store s ON s.id = sm.store_id
+    WHERE sm.customer_id = get_customer_messages.customer_id
+      AND sm.parent_id IS NULL
+    ORDER BY MAX(sm.id) DESC
     OFFSET get_customer_messages.offset LIMIT get_customer_messages.limit;
 
     SELECT COUNT(*)
     INTO rows_count
-    FROM market_message mm
-    WHERE mm.customer_id = get_customer_messages.customer_id;
+    FROM store_message sm
+    WHERE sm.customer_id = get_customer_messages.customer_id;
 
     RETURN json_build_object(
             'data', get_customer_messages,

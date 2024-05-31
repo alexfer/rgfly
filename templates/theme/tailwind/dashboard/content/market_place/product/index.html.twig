@@ -6,7 +6,7 @@
 
 {% block content %}
     {% include 'dashboard/content/market_place/navbar/nav.html.twig' %}
-    {% if market.deletedAt %}
+    {% if store.deletedAt %}
         <div class="text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 py-2.5 ps-4 mb-3 ms-2  dar"
              id="liveAlertPlaceholder" role="alert">
             {{ 'product.unavailable'|trans }}
@@ -42,7 +42,7 @@
                 <tbody class="whitespace-nowrap">
                 {% for key, product in products %}
                     {% set disabled = null %}
-                    {% for coupon in product.marketCoupons %}
+                    {% for coupon in product.storeCoupons %}
                         {% for item in coupon.product %}
                             {% if item.id == product.id %}
                                 {% set disabled = 'disabled' %}
@@ -62,7 +62,7 @@
                                data-twe-placement="left"
                                class="block text-wrap font-semibold hover:underline hover:text-gray-400 dark:text-gray-400 {% if product.deletedAt %}line-through{% endif %}"
                                title="{{ product.name }}"
-                               href="{{ path('app_dashboard_market_place_edit_product', {market: product.market.id, id: product.id, tab: 'details'}) }}">
+                               href="{{ path('app_dashboard_market_place_edit_product', {store: product.store.id, id: product.id, tab: 'details'}) }}">
                                 {{ product.shortName|length >= 40 ? product.shortName|slice(0, 40) ~ '...' : product.shortName }}
                             </a>
                         </td>
@@ -76,7 +76,7 @@
                                    data-twe-placement="top"
                                    title="{{ discount }}% / {{ price|amount_format }}{{ currency['symbol_native'] }}"
                                    class="text-black underline hover:no-underline"
-                                   href="{{ path('app_dashboard_market_place_edit_coupon', {market: product.market.id, id: product.marketCoupons.first.id }) }}">{{ name }}
+                                   href="{{ path('app_dashboard_market_place_edit_coupon', {store: product.store.id, id: product.marketCoupons.first.id }) }}">{{ name }}
                                 </a>
                             {% else %}
                                 --
@@ -90,19 +90,19 @@
                         <td class="px-3 py-3 text-center">{{ product.createdAt|date(date_format) }}</td>
                         <td class="px-3 py-3 text-center">
                             {% if product.deletedAt %}
-                                <a class="border rounded px-1.5 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800 {{ product.market.deletedAt ? 'pointer-events-none' : '' }}"
-                                   href="{{ path('app_dashboard_restore_product', {market: product.market.id, id: product.id}) }}">
-                                    <i class="fa fa-{{ product.market.deletedAt ? 'ban' : 'arrow-up' }} dark:text-white"></i>
+                                <a class="border rounded px-1.5 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800 {{ product.store.deletedAt ? 'pointer-events-none' : '' }}"
+                                   href="{{ path('app_dashboard_restore_product', {store: product.store.id, id: product.id}) }}">
+                                    <i class="fa fa-{{ product.store.deletedAt ? 'ban' : 'arrow-up' }} dark:text-white"></i>
                                 </a>
                             {% else %}
-                                <a href="{{ path('app_dashboard_market_place_edit_product', {market: product.market.id, id: product.id, tab: 'details'}) }}"
+                                <a href="{{ path('app_dashboard_market_place_edit_product', {store: product.store.id, id: product.id, tab: 'details'}) }}"
                                    class="border rounded ps-1.5 pr-1 py-1 mr-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
                                     <i class="fa fa-pencil text-indigo-600 dark:text-white"></i>
                                 </a>
                                 <a
                                         class="border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
                                         data-token="{{ csrf_token('delete') }}"
-                                        data-url="{{ url('app_dashboard_delete_product', {market: product.market.id, id: product.id}) }}"
+                                        data-url="{{ url('app_dashboard_delete_product', {store: product.store.id, id: product.id}) }}"
                                         data-bs-toggle="modal"
                                         data-bs-target="#modal-delete">
                                     <i class="fa fa-trash text-red-600 dark:text-white"></i>

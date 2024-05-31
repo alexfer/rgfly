@@ -21,32 +21,32 @@ BEGIN
             'category_slug', c.slug,
             'parent_category_name', cc.name,
             'parent_category_slug', cc.slug,
-            'market', m.name,
-            'market_phone', m.phone,
-            'market_id', m.id,
+            'store', m.name,
+            'store_phone', m.phone,
+            'store_id', m.id,
             'currency', m.currency,
-            'market_slug', m.slug
+            'store_slug', m.slug
                     ))
     INTO get_products
-    FROM market_product p
-             JOIN market_category_product cp ON p.id = cp.product_id
-             JOIN market_category c ON c.id = cp.category_id
-             JOIN market_category cc ON c.parent_id = cc.id
+    FROM store_product p
+             JOIN store_category_product cp ON p.id = cp.product_id
+             JOIN store_category c ON c.id = cp.category_id
+             JOIN store_category cc ON c.parent_id = cc.id
              LEFT JOIN (SELECT DISTINCT ON (pa.product_id) pa.product_id, a.name
-                        FROM market_product_attach pa
+                        FROM store_product_attach pa
                                  LEFT JOIN attach a ON pa.attach_id = a.id
                         ORDER BY pa.product_id) a ON a.product_id = p.id
-             LEFT JOIN market_wishlist w ON w.product_id = p.id
-             JOIN market m ON m.id = p.market_id
+             LEFT JOIN store_wishlist w ON w.product_id = p.id
+             JOIN store m ON m.id = p.store_id
     WHERE p.deleted_at IS NULL
     ORDER BY RANDOM()
     OFFSET start LIMIT row_count;
 
     SELECT COUNT(*)
     INTO rows_count
-    FROM market_product p
-             JOIN market_category_product cp ON p.id = cp.product_id
-             JOIN market_category c ON c.id = cp.category_id
+    FROM store_product p
+             JOIN store_category_product cp ON p.id = cp.product_id
+             JOIN store_category c ON c.id = cp.category_id
     WHERE p.deleted_at IS NULL;
 
     RETURN json_build_object(

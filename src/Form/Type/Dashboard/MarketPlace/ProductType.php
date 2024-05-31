@@ -3,9 +3,9 @@
 namespace App\Form\Type\Dashboard\MarketPlace;
 
 use AllowDynamicProperties;
-use App\Entity\MarketPlace\Market;
-use App\Entity\MarketPlace\MarketCategory;
-use App\Entity\MarketPlace\MarketProduct;
+use App\Entity\MarketPlace\Store;
+use App\Entity\MarketPlace\StoreCategory;
+use App\Entity\MarketPlace\StoreProduct;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -27,9 +27,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 {
 
     /**
-     * @var Market|null
+     * @var Store|null
      */
-    private null|Market $market;
+    private null|Store $store;
 
     /**
      * @var EntityRepository
@@ -49,10 +49,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
     )
     {
         $user = $security->getUser();
-        $market = $requestStack->getCurrentRequest()->get('market');
-        $this->market = $em->getRepository(Market::class)
-            ->findOneBy(['id' => $market]);
-        $this->categories = $em->getRepository(MarketCategory::class);
+        $store = $requestStack->getCurrentRequest()->get('store');
+        $this->store = $em->getRepository(Store::class)->find($store);
+        $this->categories = $em->getRepository(StoreCategory::class);
     }
 
     /**
@@ -65,9 +64,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
         $brands = $suppliers = $manufacturers = $categories = [];
 
-        $marketBrands = $this->market->getMarketBrands()->toArray();
-        $marketSuppliers = $this->market->getMarketSuppliers()->toArray();
-        $marketSManufacturers = $this->market->getMarketManufacturers();
+        $marketBrands = $this->store->getStoreBrands()->toArray();
+        $marketSuppliers = $this->store->getStoreSuppliers()->toArray();
+        $marketSManufacturers = $this->store->getStoreManufacturers();
         $marketCategory = $this->categories->findBy([], ['id' => 'asc']);
 
         if ($marketCategory) {
@@ -196,7 +195,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
                     'step' => '1',
                 ],
                 'html5' => true,
-                'currency' => $this->market->getCurrency() ?: 'USD',
+                'currency' => $this->store->getCurrency() ?: 'USD',
             ])
             ->add('cost', MoneyType::class, [
                 'attr' => [
@@ -204,7 +203,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
                     'step' => '0.01',
                 ],
                 'html5' => true,
-                'currency' => $this->market->getCurrency() ?: 'USD',
+                'currency' => $this->store->getCurrency() ?: 'USD',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'form.cost.not_blank',
@@ -222,7 +221,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
                         'message' => 'form.category.not_blank',
                     ]),
                 ],
-                'data' => $options['data']?->getMarketCategoryProducts()?->first() ? $options['data']?->getMarketCategoryProducts()?->first()?->getCategory()?->getId() : null,
+                'data' => $options['data']?->getStoreCategoryProducts()?->first() ? $options['data']?->getStoreCategoryProducts()?->first()?->getCategory()?->getId() : null,
                 'choices' => $categories,
             ])
             ->add('brand', ChoiceType::class, [
@@ -230,7 +229,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
                 'required' => false,
                 'multiple' => false,
                 'expanded' => false,
-                'data' => $options['data']?->getMarketProductBrand()?->getBrand()?->getid(),
+                'data' => $options['data']?->getStoreProductBrand()?->getBrand()?->getid(),
                 'placeholder' => 'label.form.brand_name',
                 'choices' => array_flip($brands),
             ])
@@ -239,7 +238,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
                 'required' => false,
                 'multiple' => false,
                 'expanded' => false,
-                'data' => $options['data']?->getMarketProductSupplier()?->getSupplier()?->getid(),
+                'data' => $options['data']?->getStoreProductSupplier()?->getSupplier()?->getid(),
                 'placeholder' => 'label.form.supplier_name',
                 'choices' => array_flip($suppliers),
             ])
@@ -248,7 +247,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
                 'required' => false,
                 'multiple' => false,
                 'expanded' => false,
-                'data' => $options['data']?->getMarketProductManufacturer()?->getManufacturer()?->getid(),
+                'data' => $options['data']?->getStoreProductManufacturer()?->getManufacturer()?->getid(),
                 'placeholder' => 'label.form.manufacturer_name',
                 'choices' => array_flip($manufacturers),
             ])
@@ -283,7 +282,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => MarketProduct::class,
+            'data_class' => StoreProduct::class,
         ]);
     }
 

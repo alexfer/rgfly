@@ -7,8 +7,8 @@
 {% block content %}
     {% include 'dashboard/content/market_place/navbar/nav.html.twig' with {
         inject: true,
-        name: 'market.supplier.create'|trans,
-        path: path('app_dashboard_market_place_create_supplier', {market: market.id})
+        name: 'store.supplier.create'|trans,
+        path: path('app_dashboard_market_place_create_supplier', {store: store.id})
         } %}
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -27,20 +27,20 @@
                            data-twe-placement="left"
                            class="block text-wrap font-semibold hover:underline hover:text-gray-400 dark:text-gray-400"
                            title="{{ supplier.name }}"
-                           href="{{ path('app_dashboard_market_place_edit_supplier', {market: supplier.market.id, id: supplier.id}) }}">
+                           href="{{ path('app_dashboard_market_place_edit_supplier', {store: supplier.store.id, id: supplier.id}) }}">
                             {{ supplier.name|length > 30 ? supplier.name|slice(0, 30) ~ '...' : supplier.name }}
                         </a>
                     </th>
                     <td class="px-6 py-3">{{ countries[supplier.country]|default('--') }}</td>
                     <td class="px-6 py-3 text-center">
-                        <a href="{{ path('app_dashboard_market_place_edit_supplier', {market: supplier.market.id, id: supplier.id}) }}"
+                        <a href="{{ path('app_dashboard_market_place_edit_supplier', {store: supplier.store.id, id: supplier.id}) }}"
                            class="border rounded ps-1.5 pe-0.5 py-1 mr-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
                             <i class="fa fa-pencil text-indigo-600 dark:text-white"></i>
                         </a>
-                        <a class="border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer {{ supplier.marketProductSuppliers.count ? 'pointer-events-none' : '' }}"
+                        <a class="border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer {{ supplier.storeProductSuppliers.count ? 'pointer-events-none' : '' }}"
                                 data-token="{{ csrf_token('delete') }}"
-                                data-url="{{ url('app_dashboard_delete_supplier', {market: supplier.market.id, id: supplier.id}) }}">
-                            <i class="fa fa-{{ supplier.marketProductSuppliers.count ? 'ban' : 'trash' }} dark:text-white"></i>
+                                data-url="{{ url('app_dashboard_delete_supplier', {store: supplier.store.id, id: supplier.id}) }}">
+                            <i class="fa fa-{{ supplier.storeProductSuppliers.count ? 'ban' : 'trash' }} dark:text-white"></i>
                         </a>
                     </td>
                 </tr>

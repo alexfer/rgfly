@@ -2,7 +2,7 @@
 
 namespace App\Form\Type\Dashboard\MarketPlace;
 
-use App\Entity\MarketPlace\MarketManufacturer;
+use App\Entity\MarketPlace\StoreManufacturer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -68,7 +68,7 @@ class ManufacturerType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => MarketManufacturer::class,
+            'data_class' => StoreManufacturer::class,
         ]);
     }
 }

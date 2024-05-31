@@ -63,7 +63,7 @@ class BlogController extends AbstractController
     {
         $entries = $em->getRepository(Entry::class)->findBy($this->criteria($user, ['type' => 'blog']), ['id' => 'desc']);
 
-        return $this->render('dashboard/content/blog/index.html.twig', $this->navbar() + [
+        return $this->render('dashboard/content/blog/index.html.twig',  [
                 'entries' => $entries,
             ]);
     }
@@ -138,7 +138,7 @@ class BlogController extends AbstractController
             return $this->redirectToRoute('app_dashboard_edit_blog', ['id' => $entry->getId()]);
         }
 
-        return $this->render('dashboard/content/blog/_form.html.twig', $this->navbar() + [
+        return $this->render('dashboard/content/blog/_form.html.twig',  [
                 'form' => $form,
                 'error' => $error,
                 'entry' => $entry,
@@ -217,7 +217,7 @@ class BlogController extends AbstractController
             return $this->redirectToRoute('app_dashboard_edit_blog', ['id' => $entry->getId()]);
         }
 
-        return $this->render('dashboard/content/blog/_form.html.twig', $this->navbar() + [
+        return $this->render('dashboard/content/blog/_form.html.twig',  [
                 'form' => $form,
                 'entry' => $entry,
                 'error' => $error,

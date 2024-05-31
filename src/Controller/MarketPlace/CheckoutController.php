@@ -2,12 +2,12 @@
 
 namespace App\Controller\MarketPlace;
 
-use App\Entity\MarketPlace\MarketInvoice;
+use App\Entity\MarketPlace\StoreInvoice;
 use App\Form\Type\MarketPlace\CustomerType;
 use App\Form\Type\User\LoginType;
-use App\Service\MarketPlace\Market\Checkout\Interface\ProcessorInterface as Checkout;
-use App\Service\MarketPlace\Market\Coupon\Interface\ProcessorInterface as Coupon;
-use App\Service\MarketPlace\Market\Customer\Interface\{ProcessorInterface as Customer, UserManagerInterface};
+use App\Service\MarketPlace\Store\Checkout\Interface\ProcessorInterface as Checkout;
+use App\Service\MarketPlace\Store\Coupon\Interface\ProcessorInterface as Coupon;
+use App\Service\MarketPlace\Store\Customer\Interface\{ProcessorInterface as Customer, UserManagerInterface};
 use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
@@ -51,7 +51,7 @@ class CheckoutController extends AbstractController
         $customer = $userManager->getUserCustomer($user);
         $form = $this->createForm(CustomerType::class, $customer);
         $order = $checkout->findOrder($sessionId);
-        $process = $coupon->process($order->getMarket());
+        $process = $coupon->process($order->getStore());
 
         if ($process) {
             $hasUsed = $coupon->getCouponUsage($order->getId(), $user);
@@ -84,7 +84,7 @@ class CheckoutController extends AbstractController
                 $customerManager->bind($form)->updateCustomer($customer, $form->getData());
             }
 
-            $checkout->addInvoice(new MarketInvoice());
+            $checkout->addInvoice(new StoreInvoice());
             $checkout->updateOrder();
             $session->set('quantity', $checkout->countOrders());
 

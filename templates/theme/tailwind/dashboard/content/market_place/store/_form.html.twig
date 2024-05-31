@@ -1,0 +1,248 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% if form.vars.data.id %}
+    {% set _title_extend = form.vars.data.name %}
+{% else %}
+    {% set _title_extend = 'title.dashboard.create_market'|trans %}
+{% endif %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}
+    {{ _title_extend }}
+{% endblock %}
+
+{% block content %}
+    {% for message in app.flashes('danger') %}
+        <div class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-400 dark:bg-gray-800 dark:text-red-400"
+             role="alert">
+            <div class="ms-3 text-sm font-medium">{{ message }}</div>
+        </div>
+    {% endfor %}
+    {% if errors.count %}
+        <div class="flex items-center p-4 mb-4 text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-400"
+             role="alert">
+            <div class="ms-3 text-sm font-medium">{{ errors.current.message }}</div>
+        </div>
+    {% endif %}
+    {% if app.user.stores|length and not form.vars.data.id %}
+        <div class="flex items-center p-4 mb-4 text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-400"
+             role="alert">
+            <h6 class="text-center text-xl py-3">{{ 'dashboard.market.restrict'|trans }}</h6>
+        </div>
+    {% else %}
+        {% set _message = app.flashes('success') %}
+        {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+        {% set _tab = app.request.get('tab') %}
+        <ul class="flex list-none flex-row flex-wrap text-sm font-medium space-x-4 text-center justify-stretch border-b-1 items-stretch"
+            id="market-tab"
+            data-tabs-toggle="#market-tab-content"
+            data-tabs-active-classes="text-gray-950 hover:text-red-600 dark:text-white dark:hover:text-white border-red-600 dark:border-red-500"
+            data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
+            role="tablist">
+            <li class="me-2 flex-auto text-center" role="presentation">
+                <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                        id="details-tab"
+                        data-tabs-target="#market-details"
+                        type="button"
+                        role="tab"
+                        aria-controls="details"
+                        aria-selected="{{ _tab == 'details' ? 'true' : 'false' }}">{{ 'entry.form.market_details'|trans }}
+                </button>
+            </li>
+            <li class="me-2 flex-auto text-center" role="presentation">
+                <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                        id="market-billing-tab"
+                        data-tabs-target="#market-billing"
+                        type="button"
+                        role="tab"
+                        aria-controls="billing"
+                        aria-selected="{{ _tab == 'billing' ? 'true' : 'false' }}">{{ 'entry.form.billing'|trans }}
+                </button>
+            </li>
+            <li class="me-2 flex-auto text-center" role="presentation">
+                <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                        id="market-attachment-tab"
+                        data-tabs-target="#market-attachment"
+                        type="button"
+                        role="tab"
+                        aria-controls="attachment"
+                        aria-selected="{{ _tab == 'attachment' ? 'true' : 'false' }}">{{ 'label.form.market_logo'|trans }}
+                </button>
+            </li>
+            <li class="me-2 flex-auto text-center" role="presentation">
+                <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                        id="market-social-tab"
+                        data-tabs-target="#market-social"
+                        type="button"
+                        role="tab"
+                        aria-controls="social"
+                        aria-selected="{{ _tab == 'social' ? 'true' : 'false' }}">{{ 'label.form.social'|trans }}
+                </button>
+            </li>
+        </ul>
+        <div id="market-tab-content" class="pb-5 shadow-lg border border-t-gray-200 rounded-md dark:bg-gray-800 dark:border-gray-900 p-3">
+            <div class="hidden p-4"
+                 id="market-details"
+                 role="tabpanel"
+                 aria-labelledby="details-tab">
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="relative mb-3">
+                        {{ form_label(form.name, 'label.form.market_name', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {{ form_widget(form.name, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.market_name'}}) }}
+                        <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.name) }}</span>
+                    </div>
+                    <div class="relative mb-3">
+                        {{ form_label(form.address, 'label.form.address', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {{ form_widget(form.address, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.address'}}) }}
+                        <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.address) }}</span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="relative mb-3">
+                        {{ form_label(form.phone, 'label.form.phone', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {{ form_widget(form.phone, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.phone'}}) }}
+                        <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.phone) }}</span>
+                    </div>
+                    <div class="relative mb-3">
+                        {{ form_label(form.website, 'label.form.website', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {{ form_widget(form.website, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'}}) }}
+                        <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.website) }}</span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 gap-3">
+                    <div class="relative mb-3">
+                        {{ form_label(form.email, 'label.form.email', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {{ form_widget(form.email, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.email'}}) }}
+                        <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.email) }}</span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 gap-3">
+                    <div class="relative mb-3">
+                        {{ form_label(form.description, 'label.form.market_description', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {{ form_widget(form.description, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', rows: 6, placeholder: 'label.form.market_description'}}) }}
+                        <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.description) }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hidden p-4"
+                 id="market-billing"
+                 role="tabpanel"
+                 aria-labelledby="billing-tab">
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="relative mb-3">
+                        {{ form_label(form.currency, 'label.form.currency', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {{ form_widget(form.currency, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.currency'}}) }}
+                        <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.currency) }}</span>
+                    </div>
+                    <div class="flex flex-col flex-wrap mb-3">
+                        <div class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">{{ 'table.header.payment_type'|trans }}</div>
+                        {% for key, field in form.gateway %}
+                            {% set _checked = false %}
+                            {% set disabled = false %}
+                            {% if store.id is null %}
+                                {% set _checked = true %}
+                                {% set disabled = 'disabled' %}
+                            {% endif %}
+                            {% for gateway in form.vars.data.storePaymentGatewayStores.toArray %}
+                                {% if field.vars.value == gateway.gateway.id and gateway.active %}
+                                    {% set _checked = true %}
+                                {% endif %}
+                            {% endfor %}
+                            <label for="{{ field.vars.id }}" class="inline-flex items-center mb-5 cursor-pointer">
+                                {{ form_widget(field, {attr: {class: 'sr-only peer', checked: _checked, disabled: disabled}}) }}
+                                <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                <span class="ms-3 relative text-sm font-medium text-gray-900 dark:text-gray-300">{{ field.vars.label }}</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="hidden p-4"
+                 id="market-attachment"
+                 role="tabpanel"
+                 aria-labelledby="attachment-tab">
+                <div class="mt-4 p-2">
+                    {% if form.vars.data.attach %}
+                        {% set _picture = 'storage/market/logo/' ~ form.vars.data.id ~ '/' ~ form.vars.data.attach.name %}
+                        <div class="flex w-1/4">
+                            <img class="image-grayscale" src="{{ asset(_picture)|imagine_filter('market_view') }}"
+                                 alt="...">
+                        </div>
+                    {% endif %}
+                    <div class="max-w-xl mx-auto">
+                        {{ form_label(form.logo, 'label.form.market_logo', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {{ form_widget(form.logo, {attr: {class: 'skip block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400'}}) }}
+                        <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.logo) }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hidden p-4"
+                 id="market-social"
+                 role="tabpanel"
+                 aria-labelledby="social-tab">
+                <div class="mt-4 p-2">
+                    <div class="flex flex-col mt-4 px-4{% if store.id is null %} sr-only{% endif %}">
+                        {% for key, field in form.sourceName %}
+                            {% set value = null %}
+                            {% set checked = false %}
+                            {% for social in store.storeSocials %}
+                                {% if social.sourceName == field.vars.value %}
+                                    {% set value = social.source %}
+                                    {% if social.isActive %}
+                                        {% set checked = true %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            <div class="flex flex-col flex-wrap mb-3 w-1/2">
+                                <label for="{{ field.vars.id }}" class="inline-flex items-center -mb-1.5 cursor-pointer">
+                                    {{ form_widget(form.children[field.vars.value], {attr: {class: 'source float-end inline-flex bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', value: value}}) }}
+                                    {{ form_widget(field, {attr: {class: 'sr-only peer', checked: checked}}) }}
+                                    <div class="ms-2 relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                    <span class="ms-3 relative text-sm font-medium text-gray-900 dark:text-gray-300">{{ field.vars.label }}</span>
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% if store.id is null %}
+                        <div class="bg-yellow-50 border border-yellow-300 shadow-sm shadow-yellow-500 rounded-lg max-w-2xl mx-auto text-yellow-900 py-5 mb-5">
+                            <div class="text-center">{{ 'market,socials.available'|trans }}</div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <input type="hidden" name="flash-success" value="{{ _message[0]|default([]|json_encode) }}">
+            <div class="w-full text-center pb-1">
+                {{ form_widget(form.save, { label: form.vars.data.id ? 'form.action.update' : 'form.action.save', attr: {class: 'inline-block rounded bg-danger px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-danger-3 transition duration-150 ease-in-out hover:bg-danger-accent-300 hover:shadow-danger-2 focus:bg-danger-accent-300 focus:shadow-danger-2 focus:outline-none focus:ring-0 active:bg-danger-600 active:shadow-danger-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong group-invalid:pointer-events-none group-invalid:opacity-30'}}) }}
+                <a type="button" href="{{ url('app_dashboard_market_place_market') }}"
+                   class="inline-block rounded bg-gray-500 hover:text-gray-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-secondary-3 transition duration-150 ease-in-out hover:bg-secondary-accent-300 hover:shadow-secondary-2 focus:bg-secondary-accent-300 focus:shadow-secondary-2 focus:outline-none focus:ring-0 active:bg-secondary-600 active:shadow-secondary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong group-invalid:pointer-events-none group-invalid:opacity-30">{{ 'form.action.back'|trans }}</a>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    {% endif %}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script type="text/javascript">
+        CKEDITOR.replace('market_description', {
+            extraPlugins: 'editorplaceholder',
+            contentsCss: 'body{font-family:Arial;font-size:14px;}',
+            //skin: 'moono-dark',
+            //contentsCss: "body{background-color:#000000;font-family: Arial;color:#ffffff;}",
+            editorplaceholder: '{{ 'label.form.market_description'|trans }}',
+            removePlugins: 'simage,image,youtube,html5video,iframe,uicolor,videodetector,preview',
+        });
+
+        // const list = document.querySelectorAll('.source');
+        // [...list].forEach((el) => {
+        //     el.parentElement.addEventListener('change', () => {
+        //         const next = el.nextElementSibling;
+        //         if (next.checked) {
+        //             el.removeAttribute('disabled');
+        //             el.focus();
+        //         } else {
+        //             el.setAttribute('disabled', 'disabled');
+        //         }
+        //     });
+        // });
+    </script>
+{% endblock %}

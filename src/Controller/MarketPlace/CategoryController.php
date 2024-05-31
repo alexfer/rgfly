@@ -2,9 +2,9 @@
 
 namespace App\Controller\MarketPlace;
 
-use App\Entity\MarketPlace\MarketCategory;
-use App\Entity\MarketPlace\MarketCustomer;
-use App\Repository\MarketPlace\MarketProductRepository;
+use App\Entity\MarketPlace\StoreCategory;
+use App\Entity\MarketPlace\StoreCustomer;
+use App\Repository\MarketPlace\StoreProductRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,12 +34,12 @@ class CategoryController extends AbstractController
 
     /**
      * @param RequestStack $stack
-     * @param MarketProductRepository $repository
+     * @param StoreProductRepository $repository
      * @param EntityManagerInterface $em
      */
     public function __construct(
         RequestStack                             $stack,
-        private readonly MarketProductRepository $repository,
+        private readonly StoreProductRepository $repository,
         private readonly EntityManagerInterface  $em,
     )
     {
@@ -50,20 +50,20 @@ class CategoryController extends AbstractController
 
     /**
      * @param UserInterface|null $user
-     * @return MarketCustomer|null
+     * @return StoreCustomer|null
      */
-    protected function customer(?UserInterface $user): ?MarketCustomer
+    protected function customer(?UserInterface $user): ?StoreCustomer
     {
-        return $this->em->getRepository(MarketCustomer::class)->findOneBy(['member' => $user]);
+        return $this->em->getRepository(StoreCustomer::class)->findOneBy(['member' => $user]);
     }
 
     /**
      * @param string $slug
-     * @return MarketCategory|null
+     * @return StoreCategory|null
      */
-    protected function category(string $slug): ?MarketCategory
+    protected function category(string $slug): ?StoreCategory
     {
-        return $this->em->getRepository(MarketCategory::class)->findOneBy(['slug' => $slug]);
+        return $this->em->getRepository(StoreCategory::class)->findOneBy(['slug' => $slug]);
     }
 
     /**
@@ -75,7 +75,7 @@ class CategoryController extends AbstractController
     public function index(?UserInterface $user): Response
     {
         $products = $this->repository->fetchProducts($this->offset, $this->limit);
-        $category = $this->em->getRepository(MarketCategory::class)->findOneBy(['parent' => null], ['id' => 'asc']);
+        $category = $this->em->getRepository(StoreCategory::class)->findOneBy(['parent' => null], ['id' => 'asc']);
 
         return $this->render('market_place/category/index.html.twig', [
             'products' => $products['data'],

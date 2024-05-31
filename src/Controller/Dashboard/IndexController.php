@@ -2,7 +2,7 @@
 
 namespace App\Controller\Dashboard;
 
-use App\Entity\MarketPlace\Market;
+use App\Entity\MarketPlace\Store;
 use App\Service\Dashboard;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
@@ -31,9 +31,9 @@ class IndexController extends AbstractController
         EntityManagerInterface $em,
     ): Response
     {
-        $markets = $em->getRepository(Market::class)->findBy($this->criteria($user, null, 'owner'));
-        return $this->render('dashboard/content/index.html.twig', $this->navbar() + [
-                'markets' => $markets,
+        $stores = $em->getRepository(Store::class)->findBy($this->criteria($user, null, 'owner'));
+        return $this->render('dashboard/content/index.html.twig',  [
+                'stores' => $stores,
             ]);
     }
 }

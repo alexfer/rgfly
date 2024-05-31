@@ -5,7 +5,7 @@
 
 {% block content_body %}
     <h2 class="block truncate text-2xl pb-4 font-extrabold text-primary-700 dark:text-white text-ellipsis overflow-hidden">{{ 'order.checkout'|trans }}
-        - {{ order.market.name }}</h2>
+        - {{ order.store.name }}</h2>
     <div class="grid grid-cols-4 gap-0">
         <div class="col-span-3 pb-4 mb-3">
             {% include 'market_place/checkout/_customer_form.html.twig' with {
@@ -17,8 +17,8 @@
             <div class="px-3 pb-3 h-full">
                 <div class="px-2 pb-2 mb-3">
                     <h4 class="font-medium text-gray-600 text-xl mt-5 mb-4 text-center">{{ 'order.summary'|trans }}</h4>
-                    {% set product_count = order.marketOrdersProducts.count() %}
-                    {% for product in order.marketOrdersProducts %}
+                    {% set product_count = order.storeOrdersProducts.count() %}
+                    {% for product in order.storeOrdersProducts %}
                         {% if product.product.discount %}
                             {% set percent = product.discount %}
                             {% set cost = product.cost %}
@@ -30,8 +30,8 @@
                         <div class="flex items-center pb-2 border-b">
                             <a class="block shrink-0 mr-2"
                                href="{{ path('app_market_place_product', {slug: product.product.slug, tab: 'about'}) }}">
-                                {% if product.product.marketProductAttaches.count %}
-                                    {% set _picture = 'storage/product/' ~ product.product.id ~ '/' ~ product.product.marketProductAttaches.first.attach.name %}
+                                {% if product.product.storeProductAttaches.count %}
+                                    {% set _picture = 'storage/product/' ~ product.product.id ~ '/' ~ product.product.storeProductAttaches.first.attach.name %}
                                     <img src="{{ asset(_picture)|imagine_filter('product_thumb') }}"
                                          class="rounded-md" width="90"
                                          alt="{{ product.product.name }}">
@@ -43,18 +43,19 @@
                             <div class="pl-1 w-36">
                                 <h5 class="font-bold truncate">
                                     <a class="text-lg" title="{{ product.product.name }}"
-                                       href="{{ path('app_market_place_product', {slug: product.product.slug, tab: 'about'}) }}">{{ product.product.shortName }}</a>
+                                       href="{{ path('app_market_place_product', {slug: product.product.slug, tab: 'about'}) }}">{{ product.product.shortName }}
+                                    </a>
                                 </h5>
                                 <span class="text-sm text-gray-500">
-                                                {{ (item_cost) }}<small>{{ order.market.currency|currency }}</small>&times;{{ product.quantity }} {{ 'label.form.quantity_pcs'|trans }}
-                                            </span>
+                                    {{ (item_cost) }}<small>{{ order.store.currency|currency }}</small>&times;{{ product.quantity }} {{ 'label.form.quantity_pcs'|trans }}
+                                </span>
                             </div>
                         </div>
                     {% endfor %}
                     <div class="pt-3 pb-2 border-b mt-2">
                         <div class="flex justify-between items-center mb-2">
                             <span class="font-semibold me-2">{{ 'order.item.subtotal'|trans }}:</span>
-                            <span class="text-end text-primary-emphasis">{{ itemSubtotal|amount_format }}<small>{{ order.market.currency|currency }}</small></span>
+                            <span class="text-end text-primary-emphasis">{{ itemSubtotal|amount_format }}<small>{{ order.store.currency|currency }}</small></span>
                         </div>
                         {#
                         <div class="flex justify-between items-center mb-2">
@@ -70,7 +71,7 @@
                     <span class="{{ hasUsed == false or coupon == 0 ? 'hidden' : null }} absolute -rotate-45 inline-table top-100 bg-red-700 mt-5 start-4 opacity-70 px-2.5 text-white rounded-md pt-1 end-0 text-sm"><span
                                 class="pe-1" id="discount">{{ discount }}</span>{{ 'market.product.off'|trans }}</span>
                     <h3 class="font-light relative text-2xl text-red-700 text-center mt-4 mb-2">
-                        {{ total|amount_format }}<small>{{ order.market.currency|currency }}</small>
+                        {{ total|amount_format }}<small>{{ order.store.currency|currency }}</small>
                     </h3>
                 </div>
                 {% if app.request.get('session') == null %}

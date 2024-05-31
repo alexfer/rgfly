@@ -2,7 +2,7 @@
 {% set _disabled = null %}
 {% set _icon = 'fa-heart' %}
 {% if customer is not null %}
-    {% for wishlist in customer.marketWishlists.toArray %}
+    {% for wishlist in customer.storeWishlists.toArray %}
         {% if wishlist.product.id == product.id %}
             {% set _wishlist_bg = 'text-rose-500' %}
             {% set _disabled = 'disabled' %}

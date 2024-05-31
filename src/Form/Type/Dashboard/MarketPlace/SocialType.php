@@ -2,7 +2,7 @@
 
 namespace App\Form\Type\Dashboard\MarketPlace;
 
-use App\Entity\MarketPlace\MarketSocial;
+use App\Entity\MarketPlace\StoreSocial;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, UrlType};
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,10 +24,10 @@ class SocialType extends AbstractType
             'required' => false,
             'multiple' => true,
             'expanded' => true,
-            'choices' => MarketSocial::NAME,
+            'choices' => StoreSocial::NAME,
         ]);
 
-        foreach (MarketSocial::NAME as $name) {
+        foreach (StoreSocial::NAME as $name) {
             $builder->add($name, UrlType::class, [
                 'mapped' => false,
                 'label' => 'label.social.' . $name,
@@ -53,7 +53,7 @@ class SocialType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => MarketSocial::class,
+            'data_class' => StoreSocial::class,
         ]);
     }
 }
