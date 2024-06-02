@@ -105,7 +105,7 @@
                             <div>
                                 <form class="add-wishlist" name="wishlist"
                                       action="{{ path('app_market_place_add_wishlist', {slug: product.slug}) }}">
-                                    <input name="market" type="hidden" value="{{ product.store_id }}">
+                                    <input name="store" type="hidden" value="{{ product.store_id }}">
                                     {% include 'market_place/wishlist.html.twig' with {'extra': null} %}
                                 </form>
                             </div>

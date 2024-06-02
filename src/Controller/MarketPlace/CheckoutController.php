@@ -95,7 +95,7 @@ class CheckoutController extends AbstractController
         $discount = null;
 
         if ($process) {
-            $discount = $coupon->discount($order->getMarket());
+            $discount = $coupon->discount($order->getStore());
         }
 
         return $this->render('market_place/checkout/index.html.twig', [

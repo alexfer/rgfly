@@ -5,7 +5,7 @@ namespace App\Service\MarketPlace\Store\Order;
 use App\Service\MarketPlace\Currency;
 use App\Service\MarketPlace\Store\Order\Interface\SummaryInterface;
 
-class Summary implements SummaryInterface
+final class Summary implements SummaryInterface
 {
     public function summary(array $orders, bool $formatted = false): array
     {
@@ -26,8 +26,8 @@ class Summary implements SummaryInterface
 
             if ($formatted) {
                 $summary[] = [
-                    'store' => $order->getMarket()->getId(),
-                    'currency' => Currency::currency($order->getMarket()->getCurrency())['symbol'],
+                    'store' => $order->getStore()->getId(),
+                    'currency' => Currency::currency($order->getStore()->getCurrency())['symbol'],
                     'fee' => number_format(array_sum($fee[$order->getId()]), 2, '.', ' '),
                     'total' => number_format(round(array_sum($fee[$order->getId()]) + array_sum($total[$order->getId()])), 2, '.', ' '),
                     'itemSubtotal' => number_format(round(array_sum($itemSubtotal[$order->getId()])), 2, '.', ' '),

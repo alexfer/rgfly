@@ -3,7 +3,6 @@
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
 use App\Entity\MarketPlace\StoreMessage;
-use App\Service\Dashboard;
 use App\Service\MarketPlace\StoreTrait;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,7 +17,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[Route('/dashboard/marker-place/message')]
 class MessageController extends AbstractController
 {
-    use Dashboard, StoreTrait;
+    use StoreTrait;
 
     /**
      * @param Request $request
@@ -41,7 +40,7 @@ class MessageController extends AbstractController
         //$messages['data'] = array_reverse($messages['data']);
 
         return $this->render('dashboard/content/market_place/message/index.html.twig', [
-                'messages' => $messages['data'],
-            ]);
+            'messages' => $messages['data'],
+        ]);
     }
 }

@@ -61,7 +61,7 @@
                     {% if app.user.stores|length == 0 %}
                         <li>
                             <a href="{{ path('app_dashboard_market_place_create_market', {tab: 'details'}) }}"
-                               class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">{{ 'menu.dashboard.create.market'|trans }}</a>
+                               class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">{{ 'menu.dashboard.create.store'|trans }}</a>
                         </li>
                     {% endif %}
                     {% if 'ROLE_ADMIN' not in app.user.roles and app.user.stores|length %}

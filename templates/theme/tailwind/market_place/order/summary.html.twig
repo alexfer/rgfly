@@ -14,8 +14,9 @@
                             <div class="truncate h-9 mx-3 text-xl font-extrabold text-ellipsis text-blue-800 dark:text-white">{{ order.store.name }}</div>
                         </div>
                         <div class="root mb-5" data-order-id="{{ order.session }}">
-                            <input type="hidden" name="order[]" value="{{ order.store.id }}">
-                            {% for product in order.storeOrdersProducts %}
+                            <input type="hidden" name="store[]" value="{{ order.store.id }}">
+                            {% for key, product in order.storeOrdersProducts %}
+                                <input type="hidden" name="order[]" value="{{ order.id }}">
                                 <div data-product-id="{{ product.id }}"
                                      class="flex flex-row parent my-3 hover:bg-gray-50 rounded-lg bg-white pt-3 text-surface shadow-lg dark:bg-neutral-700 dark:text-white dark:shadow-black/30">
                                     <div class="basis-1/4 flex flex-row">
@@ -73,13 +74,37 @@
                                                 <i class="fa fa-trash text-red-500 mr-2 pb-1"></i>
                                                 <span class="text-gray-500">{{ 'store.product.remove'|trans }}</span>
                                             </a>
-                                            <label class="align-top pb-3">
-                                                <input type="number" step="1" min="1"
-                                                       max="{{ product.product.quantity }}"
-                                                       value="{{ product.quantity }}"
-                                                       name="order[quantity][]"
-                                                       class="bg-gray-50 border-none h-7 rounded-md font-medium text-center text-gray-900 text-sm focus:ring-gray-500 focus:border-gray-500 block w-14 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                       readonly>
+                                            <label class="align-top pb-3" for="product-quantity-{{ product.id }}">
+                                                <div class="relative flex items-center">
+                                                    <button type="button" id="decrement-{{ product.id }}"
+                                                            data-input-counter-decrement="product-quantity-{{ product.id }}"
+                                                            class="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                                        <svg class="w-2.5 h-2.5 text-gray-900 dark:text-white"
+                                                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                             fill="none" viewBox="0 0 18 2">
+                                                            <path stroke="currentColor" stroke-linecap="round"
+                                                                  stroke-linejoin="round" stroke-width="2"
+                                                                  d="M1 1h16"></path>
+                                                        </svg>
+                                                    </button>
+                                                    <input type="text" name="order[quantity][{{ product.id }}]"
+                                                           data-max="{{ product.product.quantity }}"
+                                                           id="product-quantity-{{ product.id }}"
+                                                           data-input-counter
+                                                           class="product-quantity flex-shrink-0 text-gray-900 dark:text-white border-0 bg-transparent text-sm font-normal focus:outline-none focus:ring-0 max-w-[2.5rem] text-center"
+                                                           placeholder="" value="{{ product.quantity }}" required/>
+                                                    <button type="button" id="increment-{{ product.id }}"
+                                                            data-input-counter-increment="product-quantity-{{ product.id }}"
+                                                            class="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                                        <svg class="w-2.5 h-2.5 text-gray-900 dark:text-white"
+                                                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                             fill="none" viewBox="0 0 18 18">
+                                                            <path stroke="currentColor" stroke-linecap="round"
+                                                                  stroke-linejoin="round" stroke-width="2"
+                                                                  d="M9 1v16M1 9h16"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
                                             </label>
                                             <input type="hidden" name="order[product][]"
                                                    value="{{ product.id }}">
@@ -93,10 +118,13 @@
                 {% if orders|length %}
                     <div class="flex justify-between mt-4">
                         <a href="{{ path('app_market_place_index') }}"
-                           class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-gray-200 hover:text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">{{ 'order.continue.shopping'|trans }}</a>
+                           class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-gray-200 hover:text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
+                            {{ 'order.continue.shopping'|trans }}
+                        </a>
                         <button type="submit"
-                                class="hidden lg:block rounded bg-black px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-gray-200 hover:text-white shadow-black-3 transition duration-150 ease-in-out hover:bg-black-accent-300 hover:shadow-black-2 focus:bg-black-accent-300 focus:shadow-black-2 focus:outline-none focus:ring-0 active:bg-black-600 active:shadow-black-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
-                                disabled>{{ 'order.update.cart'|trans }}</button>
+                                class="hidden lg:block rounded bg-black px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-gray-200 hover:text-white shadow-black-3 transition duration-150 ease-in-out hover:bg-black-accent-300 hover:shadow-black-2 focus:bg-black-accent-300 focus:shadow-black-2 focus:outline-none focus:ring-0 active:bg-black-600 active:shadow-black-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
+                            {{ 'order.update.cart'|trans }}
+                        </button>
                     </div>
                 {% endif %}
             </form>
@@ -104,12 +132,12 @@
         {% if orders|length %}
             <div class="lg:col-span-3 md:col-span-2">
                 {% for order in summary %}
-                    <div id="market-{{ order.store_id }}" class="h-auto">
+                    <div id="store-{{ order.store_id }}" class="h-auto">
                         <h5 class="truncate mt-5 mb-1 mx-3 text-xl font-extrabold text-ellipsis text-blue-800 dark:text-white">{{ order.store_name }}</h5>
                         <div class="block max-w-xl sm:max-w-2xl mb-3 p-4 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                             <div class="flex flex-col">
                                 <h6 class="text-lg font-semibold text-gray-600 mb-1">{{ 'order.summary'|trans }}</h6>
-                                <div class="markets-summary">
+                                <div class="stores-summary">
                                     <div class="flex justify-between items-start">
                                         <div class="me-auto">{{ 'order.item.subtotal'|trans }}</div>
                                         <span id="item-subtotal-{{ order.store_id }}">{{ (order.total + order.fee)|amount_format }}<small>{{ order.currency }}</small></span>
@@ -150,10 +178,34 @@
         {% endif %}
     </div>
     {% if orders|length == 0 %}
-        <div class="flex flex-col mx-auto max-w-xl text-blue-800 bg-blue-50 py-4 mb-5 sm:text-wrap md:px-3 shadow-md rounded-md text-center dark:text-white dark:bg-gray-600">{{ 'store.product.cart.empty'|trans }}</div>
-        <div class="flex justify-center my-4">
+        <div class="block mx-auto max-w-full text-blue-800 bg-blue-50 py-5 mb-5 sm:text-wrap md:px-3 rounded-md text-center dark:text-white dark:bg-gray-600">{{ 'store.product.cart.empty'|trans }}</div>
+        <div class="flex justify-center py-5 my-4">
             <a href="{{ path('app_market_place_index') }}"
                class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-gray-200 hover:text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">{{ 'order.continue.shopping'|trans }}</a>
         </div>
     {% endif %}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        const form = document.querySelector('form[name="order[]"]');
+        const quantities = form.querySelectorAll('.product-quantity');
+
+        [...quantities].forEach((el) => {
+            const decrement = el.previousElementSibling;
+            const increment = el.nextElementSibling;
+            const max = el.getAttribute('data-max');
+
+            decrement.addEventListener('click', () => {
+                if (el.value <= 1) {
+                    el.value++;
+                }
+            });
+            increment.addEventListener('click', () => {
+                if (el.value === max) {
+                    --el.value;
+                }
+            });
+        });
+    </script>
 {% endblock %}

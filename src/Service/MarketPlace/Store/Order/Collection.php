@@ -6,15 +6,13 @@ use App\Entity\MarketPlace\StoreOrders;
 use App\Service\MarketPlace\Store\Order\Interface\CollectionInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
-readonly class Collection implements CollectionInterface
+final class Collection implements CollectionInterface
 {
 
     /**
      * @param EntityManagerInterface $em
      */
-    public function __construct(
-        private EntityManagerInterface $em,
-    )
+    public function __construct(private readonly EntityManagerInterface $em)
     {
 
     }

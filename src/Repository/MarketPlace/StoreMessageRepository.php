@@ -2,13 +2,9 @@
 
 namespace App\Repository\MarketPlace;
 
-use App\Entity\MarketPlace\Store;
-use App\Entity\MarketPlace\StoreCustomer;
-use App\Entity\MarketPlace\StoreMessage;
+use App\Entity\MarketPlace\{Store, StoreCustomer, StoreMessage};
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\{Connection, Exception, Statement};
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -58,7 +54,7 @@ class StoreMessageRepository extends ServiceEntityRepository
      * @throws Exception
      */
     public function fetchAll(
-        Store  $store,
+        Store   $store,
         ?string $priority = null,
         int     $offset = 0,
         int     $limit = 25,
@@ -82,12 +78,11 @@ class StoreMessageRepository extends ServiceEntityRepository
      */
     public function fetchByCustomer(
         StoreCustomer $customer,
-        int     $offset = 0,
-        int     $limit = 25,
+        int           $offset = 0,
+        int           $limit = 25,
     ): array
     {
-        $connection = $this->getEntityManager()->getConnection();
-        $statement = $connection->prepare('select get_customer_messages(:customer_id, :offset, :limit)');
+        $statement = $this->connection->prepare('select get_customer_messages(:customer_id, :offset, :limit)');
         $statement->bindValue('customer_id', $customer->getId(), \PDO::PARAM_INT);
         $statement = $this->bindPagination($statement, $offset, $limit);
         $result = $statement->executeQuery()->fetchAllAssociative();

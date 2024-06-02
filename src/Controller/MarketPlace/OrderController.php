@@ -4,9 +4,11 @@ namespace App\Controller\MarketPlace;
 
 use App\Service\MarketPlace\Store\Customer\Interface\UserManagerInterface;
 use App\Service\MarketPlace\Store\Order\Interface\{CollectionInterface,
+    ComputeInterface,
     ProcessorInterface,
     ProductInterface,
-    SummaryInterface,};
+    SummaryInterface};
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,20 +64,20 @@ class OrderController extends AbstractController
         ]);
     }
 
+
     /**
      * @param Request $request
-     * @param ProcessorInterface $orderProcessor
+     * @param ComputeInterface $compute
      * @return Response
      */
     #[Route('/summary', name: 'app_market_place_order_update', methods: ['POST'])]
     public function update(
-        Request            $request,
-        ProcessorInterface $orderProcessor,
+        Request          $request,
+        ComputeInterface $compute,
     ): Response
     {
         $input = $request->request->all();
-        $session = $request->getSession();
-        $orderProcessor->updateQuantity($session->getId(), $input);
+        $compute->process($input);
 
         return $this->redirectToRoute('app_market_place_order_summary');
     }

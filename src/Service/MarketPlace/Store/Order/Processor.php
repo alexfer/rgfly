@@ -2,19 +2,13 @@
 
 namespace App\Service\MarketPlace\Store\Order;
 
-use App\Entity\MarketPlace\Store;
-use App\Entity\MarketPlace\StoreCustomer;
-use App\Entity\MarketPlace\StoreCustomerOrders;
-use App\Entity\MarketPlace\StoreOrders;
-use App\Entity\MarketPlace\StoreOrdersProduct;
-use App\Entity\MarketPlace\StoreProduct;
+use App\Entity\MarketPlace\{Store, StoreCustomer, StoreCustomerOrders, StoreOrders, StoreOrdersProduct, StoreProduct};
 use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Service\MarketPlace\Store\Order\Interface\ProcessorInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\{Request, RequestStack};
 
-class Processor implements ProcessorInterface
+final class Processor implements ProcessorInterface
 {
 
     /**
@@ -80,8 +74,8 @@ class Processor implements ProcessorInterface
                 ->findOneBy(['id' => $value, 'orders' => $order]);
             $product->setQuantity($input['order']['quantity'][$key]);
             $this->em->persist($product);
-            $this->em->flush();
         }
+        $this->em->flush();
     }
 
     /**
@@ -95,18 +89,13 @@ class Processor implements ProcessorInterface
     ): StoreOrders
     {
         if (!$order) {
-            $order = $this->setOrder($customer);
+            return $this->init($customer);
         }
 
-        if ($order) {
-            if (!$this->existsProduct()) {
-                $order = $this->updateOrder($order);
-            }
-
-            if (!$this->existsOrderProduct($order)) {
-                $this->setProduct($order, false);
-            }
+        if ($this->existsProduct($order) === null) {
+            $order = $this->process($order);
         }
+
         return $order;
     }
 
@@ -114,69 +103,63 @@ class Processor implements ProcessorInterface
      * @param StoreCustomer|null $customer
      * @return StoreOrders
      */
-    private function setOrder(?StoreCustomer $customer): StoreOrders
+    private function init(?StoreCustomer $customer): StoreOrders
     {
         $order = new StoreOrders();
         $order->setStore($this->store())
+            ->setNumber(MarketPlaceHelper::orderNumber(6))
             ->setSession($this->sessionId)
-            ->setTotal($this->getProduct()->getCost());
+            ->setTotal($this->getProduct()->getCost())
+            ->addStoreOrdersProduct($this->orderProduct())
+            ->addStoreCustomerOrder($this->orderCustomer($customer));
 
-        $this->setCustomer($order, $customer);
         $this->em->persist($order);
-        $this->setProduct($order);
-        $this->flush();
-        return $order;
-    }
-
-    /**
-     * @param StoreOrders $order
-     * @return StoreOrders
-     */
-    private function updateOrder(StoreOrders $order): StoreOrders
-    {
-        $order->setTotal($order->getTotal() + $this->getProduct()->getCost())
-            ->setSession($this->sessionId);
-        $this->em->persist($order);
-        $this->setProduct($order, false);
         $this->em->flush();
         return $order;
     }
 
     /**
-     * @param StoreOrders $order
-     * @param bool $withNumber
-     * @return void
-     */
-    private function setProduct(StoreOrders $order, bool $withNumber = true): void
-    {
-        $product = new StoreOrdersProduct();
-        $product->setOrders($order)
-            ->setColor($this->data['color'])
-            ->setSize($this->data['size'])
-            ->setProduct($this->getProduct())
-            ->setCost($this->getProduct()->getCost())
-            ->setDiscount($this->getProduct()->getDiscount());
-
-        if ($withNumber) {
-            $product->getOrders()
-                ->setNumber(MarketPlaceHelper::orderNumber(6));
-        }
-        $this->em->persist($product);
-    }
-
-    /**
-     * @param StoreOrders $order
      * @param StoreCustomer|null $customer
-     * @return void
+     * @return StoreCustomerOrders
      */
-    private function setCustomer(StoreOrders $order, ?StoreCustomer $customer): void
+    private function orderCustomer(?StoreCustomer $customer): StoreCustomerOrders
     {
         $customerOrder = new StoreCustomerOrders();
-        $customerOrder->setOrders($order);
         if ($customer->getId()) {
             $customerOrder->setCustomer($customer);
         }
         $this->em->persist($customerOrder);
+        return $customerOrder;
+    }
+
+    /**
+     * @return StoreOrdersProduct
+     */
+    private function orderProduct(): StoreOrdersProduct
+    {
+        $product = new StoreOrdersProduct();
+        $product->setColor($this->data['color'] ?: null)
+            ->setSize($this->data['size'] ?: null)
+            ->setProduct($this->getProduct())
+            ->setCost($this->getProduct()->getCost())
+            ->setDiscount($this->getProduct()->getDiscount());
+        $this->em->persist($product);
+        return $product;
+    }
+
+    /**
+     * @param StoreOrders $order
+     * @return StoreOrders
+     */
+    private function process(StoreOrders $order): StoreOrders
+    {
+        $total = round($order->getTotal(), 2) + round($this->getProduct()->getCost(), 2);
+        $order->setTotal($total)
+            ->setSession($this->sessionId);
+        $order->addStoreOrdersProduct($this->orderProduct());
+        $this->em->persist($order);
+        $this->em->flush();
+        return $order;
     }
 
     /**
@@ -188,28 +171,15 @@ class Processor implements ProcessorInterface
     }
 
     /**
-     * @return StoreOrdersProduct|null
-     */
-    protected function existsProduct(): ?StoreOrdersProduct
-    {
-        return $this->em->getRepository(StoreOrdersProduct::class)
-            ->findOneBy([
-                'product' => $this->getProduct(),
-                'size' => $this->data['size'] ?: null,
-                'color' => $this->data['color'] ?: null,
-            ]);
-    }
-
-    /**
      * @param StoreOrders $order
      * @return StoreOrdersProduct|null
      */
-    protected function existsOrderProduct(StoreOrders $order): ?StoreOrdersProduct
+    protected function existsProduct(StoreOrders $order): ?StoreOrdersProduct
     {
         return $this->em->getRepository(StoreOrdersProduct::class)
             ->findOneBy([
-                'product' => $this->getProduct(),
                 'orders' => $order,
+                'product' => $this->getProduct(),
                 'size' => $this->data['size'] ?: null,
                 'color' => $this->data['color'] ?: null,
             ]);
@@ -224,13 +194,5 @@ class Processor implements ProcessorInterface
             ->findOneBy([
                 'slug' => $this->request->get('product'),
             ]);
-    }
-
-    /**
-     * @return void
-     */
-    private function flush(): void
-    {
-        $this->em->flush();
     }
 }

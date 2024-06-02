@@ -4,7 +4,6 @@ namespace App\Controller\Dashboard\MarketPlace\Store;
 
 use App\Entity\MarketPlace\StoreBrand;
 use App\Form\Type\Dashboard\MarketPlace\BrandType;
-use App\Service\Dashboard;
 use App\Service\MarketPlace\StoreTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
@@ -20,7 +19,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/dashboard/market-place/brand')]
 class BrandController extends AbstractController
 {
-    use Dashboard, StoreTrait;
+    use StoreTrait;
 
     /**
      * @param Request $request
@@ -141,7 +140,7 @@ class BrandController extends AbstractController
     public function delete(
         Request                $request,
         UserInterface          $user,
-        StoreBrand            $brand,
+        StoreBrand             $brand,
         EntityManagerInterface $em,
     ): Response
     {

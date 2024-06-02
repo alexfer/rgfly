@@ -5,7 +5,6 @@ namespace App\Controller\Dashboard;
 use App\Entity\Answer;
 use App\Entity\Contact;
 use App\Service\Contact\Interface\HandleInterface;
-use App\Service\Dashboard;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,8 +16,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/dashboard/contact')]
 class ContactController extends AbstractController
 {
-
-    use Dashboard;
 
     /**
      * @param EntityManagerInterface $em

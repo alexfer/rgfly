@@ -91,67 +91,67 @@
                 </h5>
             </a>
             <div class="grow">
-                {% if product.discount|round %}
-                    <div class="relative">
-                        <div class="pt-1 absolute right-0 bg-red-500 text-white text-sm font-light me-2 px-2.5 py-0.5 rounded-md dark:bg-red-900 dark:text-white">
-                            {{ product.discount|number_format(0, '.', '') }}
-                            % {{ 'market.product.off'|trans }}
-                        </div>
-                    </div>
-                {% endif %}
-                <div class="flex-nowrap mb-10 block w-72">
+                <form class="shopping-cart" method="post" action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
                     {% if product.discount|round %}
-                        {% set discount = product.discount %}
-                        {% set cost = product.cost %}
-                        <span class="font-medium text-2xl text-success pr-2">
-                                            {{ (cost + product.fee - ((cost * discount) - discount)/100)|round(2) }}<small>{{ product.store.currency|currency }}</small>
-                                        </span>
-                        <span class="line-through text-lg font-medium text-gray-400">{{ (product.cost + product.fee)|amount_format }}<small>{{ product.store.currency|currency }}</small></span>
-                    {% else %}
-                        <span class="font-medium text-2xl text-surface-dark">{{ (product.cost + product.fee)|round(2) }}<small>{{ product.store.currency|currency }}</small></span>
+                        <div class="relative">
+                            <div class="pt-1 absolute right-0 bg-red-500 text-white text-sm font-light me-2 px-2.5 py-0.5 rounded-md dark:bg-red-900 dark:text-white">
+                                {{ product.discount|number_format(0, '.', '') }}
+                                % {{ 'market.product.off'|trans }}
+                            </div>
+                        </div>
                     {% endif %}
-                </div>
-                {% if product.storeProductAttributes.count %}
-                    <div id="attributes" class="block mt-xl-5 w-full">
-                        {% for attribute in product.storeProductAttributes.toArray %}
-                            <input type="hidden" name="color" value="">
-                            <input type="hidden" name="size" value="">
-                            {% if attribute.inFront %}
-                                <span class="block mt-3 text-gray-600 dark:text-white md:text-sm tracking-widest">{{ attribute.name|capitalize }}</span>
-                                <div class="flex mt-1" id="{{ attribute.name }}">
-                                    {% for attr in attribute.marketProductAttributeValues %}
-                                        <div class="inline-block mr-1 p-1 border-2 {% if attribute.name == 'color' %} rounded-full{% endif %}">
-                                            <input type="radio" name="attr[{{ attribute.name }}]"
-                                                   class="hidden peer"
-                                                   data-name="{{ attr.value }}"
-                                                   data-root-name="{{ attribute.name }}"
-                                                   id="attr-check-{{ attr.id }}" value="{{ attr.id }}"
-                                                   autocomplete="off">
-                                            <label class="flex cursor-pointer peer-checked:shadow-4-strong{% if attribute.name == 'color' %} rounded-full{% endif %}"
-                                                   for="attr-check-{{ attr.id }}" {% if attribute.name == 'color' %} style="background-color: {{ attr.extra|join }};"{% endif %}>
-                                                {% if attribute.name == 'size' %}
-                                                    <span class="p-1">{{ attr.value|capitalize }}</span>
-                                                {% else %}
-                                                    <span class="p-2"></span>
-                                                {% endif %}
-                                            </label>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
+                    <div class="flex-nowrap mb-10 block w-72">
+                        {% if product.discount|round %}
+                            {% set discount = product.discount %}
+                            {% set cost = product.cost %}
+                            <span class="font-medium text-2xl text-success pr-2">
+                                            {{ (cost + product.fee - ((cost * discount) - discount)/100)|number_format(2) }}<small>{{ product.store.currency|currency }}</small>
+                                        </span>
+                            <span class="line-through text-lg font-medium text-gray-400">{{ (product.cost + product.fee)|amount_format }}<small>{{ product.store.currency|currency }}</small></span>
+                        {% else %}
+                            <span class="font-medium text-2xl text-surface-dark">{{ (product.cost + product.fee)|number_format(2) }}<small>{{ product.store.currency|currency }}</small></span>
+                        {% endif %}
                     </div>
-                {% endif %}
-            </div>
-            <div class="flex mt-5 justify-start items-start">
-                <form class="shopping-cart inline" method="post"
-                      action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
-                    <button type="submit" id="order"
-                            class="inline-block contrast-200 rounded bg-primary md:bg-primary-600 px-3 pb-2 pt-2.5 mr-5 text-xs font-medium uppercase text-gray-200 hover:text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+                    {% if product.storeProductAttributes.count %}
+                        <div id="attributes" class="block mt-xl-5 w-full">
+                            {% for attribute in product.storeProductAttributes.toArray %}
+                                <input type="hidden" name="color" value="">
+                                <input type="hidden" name="size" value="">
+                                {% if attribute.inFront %}
+                                    <span class="block mt-3 text-gray-600 dark:text-white md:text-sm tracking-widest">{{ attribute.name|capitalize }}</span>
+                                    <div class="flex mt-1" id="{{ attribute.name }}">
+                                        {% for attr in attribute.storeProductAttributeValues %}
+                                            <div class="inline-block mr-1 p-1 border-2 {% if attribute.name == 'color' %} rounded-full{% endif %}">
+                                                <input type="radio" name="attr[{{ attribute.name }}]"
+                                                       class="hidden peer"
+                                                       data-name="{{ attr.value }}"
+                                                       data-root-name="{{ attribute.name }}"
+                                                       id="attr-check-{{ attr.id }}" value="{{ attr.id }}"
+                                                       autocomplete="off">
+                                                <label class="flex cursor-pointer peer-checked:shadow-4-strong{% if attribute.name == 'color' %} rounded-full{% endif %}"
+                                                       for="attr-check-{{ attr.id }}" {% if attribute.name == 'color' %} style="background-color: {{ attr.extra|join }};"{% endif %}>
+                                                    {% if attribute.name == 'size' %}
+                                                        <span class="p-1">{{ attr.value|capitalize }}</span>
+                                                    {% else %}
+                                                        <span class="p-2"></span>
+                                                    {% endif %}
+                                                </label>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <button type="submit"
+                            id="order"
+                            class="contrast-200 rounded bg-primary md:bg-primary-600 px-3 pb-2 pt-2.5 mt-5 text-xs font-medium uppercase cursor-pointer text-gray-200 hover:text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
                             {% if product.quantity == 0 or (app.user and ('ROLE_USER' in app.user.roles or 'ROLE_ADMIN' in app.user.roles)) %}disabled{% endif %}>
                         <i class="fa fa-shopping-basket mr-2"></i>{{ 'market.product.add_cart'|trans }}
                     </button>
                 </form>
+            </div>
+            <div class="flex mt-5 justify-start items-start">
                 <button class="bg-gray-100 text-gray-600 border-spacing-1.5 px-4 pt-2 pb-1 mr-2 rounded-md hover:bg-gray-300 hover:text-gray-500"
                         data-twe-toggle="tooltip" title="{{ 'market.product.compare'|trans }}">
                     <i class="fa fa-code-fork"></i>

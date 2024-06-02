@@ -4,7 +4,6 @@ namespace App\Controller\Dashboard;
 
 use App\Entity\Faq;
 use App\Form\Type\FaqType;
-use App\Service\Dashboard;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -18,9 +17,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/dashboard/faq')]
 class FaqController extends AbstractController
 {
-
-    use Dashboard;
-
     /**
      * @param EntityManagerInterface $em
      * @param UserInterface $user

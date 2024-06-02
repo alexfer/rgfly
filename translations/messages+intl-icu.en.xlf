@@ -535,25 +535,37 @@
                 <source>label.form.repeat_password</source>
                 <target>Repeat Password</target>
             </trans-unit>
-            <trans-unit id="label.form.market_name">
-                <source>label.form.market_name</source>
-                <target>Market Name</target>
+            <trans-unit id="label.form.store_name">
+                <source>label.form.store_name</source>
+                <target>Store Name</target>
             </trans-unit>
-            <trans-unit id="label.form.market_currency">
-                <source>label.form.market_currency</source>
-                <target>Market Currency</target>
+            <trans-unit id="label.form.store_address">
+                <source>label.form.store_address</source>
+                <target>Store Address</target>
             </trans-unit>
-            <trans-unit id="label.form.market_logo">
-                <source>label.form.market_logo</source>
-                <target>Market Logo</target>
+            <trans-unit id="label.form.store_phone">
+                <source>label.form.store_phone</source>
+                <target>Store Phone number</target>
+            </trans-unit>
+            <trans-unit id="label.form.store_email">
+                <source>label.form.store_email</source>
+                <target>Store Email address</target>
+            </trans-unit>
+            <trans-unit id="label.form.store_currency">
+                <source>label.form.store_currency</source>
+                <target>Store Currency</target>
+            </trans-unit>
+            <trans-unit id="label.form.store_logo">
+                <source>label.form.store_logo</source>
+                <target>Store Logo</target>
             </trans-unit>
             <trans-unit id="label.form.social">
                 <source>label.form.social</source>
-                <target>Market Socials</target>
+                <target>Store Socials</target>
             </trans-unit>
-            <trans-unit id="label.form.market_currency.placeholder">
-                <source>label.form.market_currency.placeholder</source>
-                <target>Market currency</target>
+            <trans-unit id="label.form.store_currency.placeholder">
+                <source>label.form.store_currency.placeholder</source>
+                <target>Store currency</target>
             </trans-unit>
             <trans-unit id="label.form.product_name">
                 <source>label.form.product_name</source>
@@ -756,9 +768,9 @@
                 <source>label.form.supplier_url</source>
                 <target>Supplier Url</target>
             </trans-unit>
-            <trans-unit id="label.form.market_description">
-                <source>label.form.market_description</source>
-                <target>Description of Market</target>
+            <trans-unit id="label.form.store_description">
+                <source>label.form.store_description</source>
+                <target>Store Description</target>
             </trans-unit>
             <trans-unit id="label.form.product_description">
                 <source>label.form.product_description</source>
@@ -897,9 +909,9 @@
                 <source>dashboard.markets</source>
                 <target>Markets</target>
             </trans-unit>
-            <trans-unit id="title.dashboard.create_market">
-                <source>title.dashboard.create_market</source>
-                <target>Create Market</target>
+            <trans-unit id="title.dashboard.create_store">
+                <source>title.dashboard.create_store</source>
+                <target>Create Store</target>
             </trans-unit>
             <trans-unit id="title.dashboard.change_market">
                 <source>title.dashboard.change_market</source>
@@ -949,8 +961,8 @@
                 <source>market.product.orders.empty</source>
                 <target>Your orders is currently empty</target>
             </trans-unit>
-            <trans-unit id="market.product.wishlist">
-                <source>market.product.wishlist</source>
+            <trans-unit id="store.product.wishlist">
+                <source>store.product.wishlist</source>
                 <target>Wishlist</target>
             </trans-unit>
             <trans-unit id="market.unauthorized">
@@ -1107,9 +1119,9 @@
                 <source>entry.form.billing</source>
                 <target>Billing</target>
             </trans-unit>
-            <trans-unit id="entry.form.market_details">
-                <source>entry.form.market_details</source>
-                <target>Market Details</target>
+            <trans-unit id="entry.form.store_details">
+                <source>entry.form.store_details</source>
+                <target>Store Details</target>
             </trans-unit>
             <trans-unit id="user.entry.updated">
                 <source>user.entry.updated</source>

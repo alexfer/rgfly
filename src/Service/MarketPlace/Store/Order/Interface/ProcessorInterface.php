@@ -2,8 +2,7 @@
 
 namespace App\Service\MarketPlace\Store\Order\Interface;
 
-use App\Entity\MarketPlace\StoreCustomer;
-use App\Entity\MarketPlace\StoreOrders;
+use App\Entity\MarketPlace\{StoreCustomer, StoreOrders};
 
 interface ProcessorInterface
 {

@@ -3,7 +3,6 @@
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
 use App\Entity\Attach;
-use App\Security\Voter\ProductVoter;
 use App\Entity\MarketPlace\{StoreBrand,
     StoreCategory,
     StoreCategoryProduct,
@@ -19,7 +18,7 @@ use App\Entity\MarketPlace\{StoreBrand,
     StoreSupplier};
 use App\Form\Type\Dashboard\MarketPlace\ProductType;
 use App\Helper\MarketPlace\{MarketAttributeValues, MarketPlaceHelper};
-use App\Service\Dashboard;
+use App\Security\Voter\ProductVoter;
 use App\Service\FileUploader;
 use App\Service\Interface\ImageValidatorInterface;
 use App\Service\MarketPlace\Currency;
@@ -42,7 +41,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/dashboard/market-place/product')]
 class ProductController extends AbstractController
 {
-    use Dashboard, StoreTrait;
+    use StoreTrait;
 
     /**
      * @param Request $request

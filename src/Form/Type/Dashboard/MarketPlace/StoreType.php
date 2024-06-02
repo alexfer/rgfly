@@ -87,7 +87,7 @@ class StoreType extends AbstractType
                 'choices' => $this->gateways,
             ])
             ->add('currency', ChoiceType::class, [
-                'placeholder' => 'label.form.market_currency.placeholder',
+                'placeholder' => 'label.form.store_currency.placeholder',
                 'label' => 'label.currency',
                 'required' => true,
                 'multiple' => false,

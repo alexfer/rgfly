@@ -3,7 +3,6 @@
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
 use App\Entity\MarketPlace\StoreOrders;
-use App\Service\Dashboard;
 use App\Service\MarketPlace\Currency;
 use App\Service\MarketPlace\StoreTrait;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,7 +18,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[Route('/dashboard/market-place/order')]
 class OrderController extends AbstractController
 {
-    use Dashboard, StoreTrait;
+    use StoreTrait;
 
     /**
      * @param Request $request
@@ -51,12 +50,12 @@ class OrderController extends AbstractController
             ];
         }
 
-        return $this->render('dashboard/content/market_place/order/index.html.twig',  [
-                'store' => $store,
-                'currency' => $currency,
-                'orders' => $orders,
-                'summary' => $summary,
-            ]);
+        return $this->render('dashboard/content/market_place/order/index.html.twig', [
+            'store' => $store,
+            'currency' => $currency,
+            'orders' => $orders,
+            'summary' => $summary,
+        ]);
     }
 
     /**
@@ -87,14 +86,14 @@ class OrderController extends AbstractController
             $fee[] = $item->getProduct()->getFee();
         }
 
-        return $this->render('dashboard/content/market_place/order/order.html.twig',  [
-                'store' => $store,
-                'currency' => $currency,
-                'country' => Countries::getNames(\Locale::getDefault()),
-                'order' => $order,
-                'total' => array_sum($products),
-                'fee' => array_sum($fee),
-                'itemSubtotal' => array_sum($itemSubtotal),
-            ]);
+        return $this->render('dashboard/content/market_place/order/order.html.twig', [
+            'store' => $store,
+            'currency' => $currency,
+            'country' => Countries::getNames(\Locale::getDefault()),
+            'order' => $order,
+            'total' => array_sum($products),
+            'fee' => array_sum($fee),
+            'itemSubtotal' => array_sum($itemSubtotal),
+        ]);
     }
 }

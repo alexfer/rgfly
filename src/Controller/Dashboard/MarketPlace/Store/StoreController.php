@@ -4,7 +4,6 @@ namespace App\Controller\Dashboard\MarketPlace\Store;
 
 use App\Entity\MarketPlace\{Store, StorePaymentGateway, StorePaymentGatewayStore, StoreSocial};
 use App\Form\Type\Dashboard\MarketPlace\StoreType;
-use App\Service\Dashboard;
 use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
@@ -23,8 +22,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/dashboard/marker-place')]
 class StoreController extends AbstractController
 {
-    use Dashboard;
-
     /**
      * @param UserInterface $user
      * @param EntityManagerInterface $em

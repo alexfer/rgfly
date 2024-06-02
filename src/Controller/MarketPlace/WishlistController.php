@@ -2,14 +2,10 @@
 
 namespace App\Controller\MarketPlace;
 
-use App\Entity\MarketPlace\Store;
-use App\Entity\MarketPlace\StoreCustomer;
-use App\Entity\MarketPlace\StoreProduct;
-use App\Entity\MarketPlace\StoreWishlist;
+use App\Entity\MarketPlace\{Store, StoreCustomer, StoreProduct, StoreWishlist};
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -26,7 +22,7 @@ class WishlistController extends AbstractController
     #[Route('/add/{slug}', name: 'app_market_place_add_wishlist', methods: ['POST'])]
     public function add(
         Request                $request,
-        StoreProduct          $product,
+        StoreProduct           $product,
         EntityManagerInterface $em,
         ?UserInterface         $user,
     ): Response
@@ -44,11 +40,11 @@ class WishlistController extends AbstractController
             $responseStatus = Response::HTTP_UNAUTHORIZED;
         }
 
-        $market = $em->getRepository(Store::class)->find($parameters['market']);
+        $store = $em->getRepository(Store::class)->find($parameters['store']);
 
-        if ($market && $customer) {
+        if ($store && $customer) {
             $wishlist = new StoreWishlist();
-            $wishlist->setStore($market)
+            $wishlist->setStore($store)
                 ->setCustomer($customer)
                 ->setProduct($product);
 
@@ -58,7 +54,7 @@ class WishlistController extends AbstractController
 
         return $this->json([
             'product' => $product->getSlug(),
-            'market' => $parameters['market'],
+            'store' => $parameters['store'],
         ], $responseStatus);
     }
 }

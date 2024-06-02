@@ -2,10 +2,7 @@
 
 namespace App\Service\MarketPlace\Store\Customer;
 
-use App\Entity\MarketPlace\StoreAddress;
-use App\Entity\MarketPlace\StoreCustomer;
-use App\Entity\MarketPlace\StoreCustomerOrders;
-use App\Entity\MarketPlace\StoreOrders;
+use App\Entity\MarketPlace\{StoreAddress, StoreCustomer, StoreCustomerOrders, StoreOrders};
 use App\Entity\User;
 use App\Service\MarketPlace\Store\Customer\Interface\ProcessorInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,7 +10,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class Processor implements ProcessorInterface
+readonly class Processor implements ProcessorInterface
 {
 
     /**
@@ -21,6 +18,9 @@ class Processor implements ProcessorInterface
      */
     protected mixed $formData;
 
+    /**
+     * @var array
+     */
     protected array $args;
 
     /**
@@ -39,9 +39,9 @@ class Processor implements ProcessorInterface
      * @param UserPasswordHasherInterface $userPasswordHasher
      */
     public function __construct(
-        protected RequestStack                       $requestStack,
-        private readonly EntityManagerInterface      $em,
-        private readonly UserPasswordHasherInterface $userPasswordHasher,
+        protected RequestStack              $requestStack,
+        private EntityManagerInterface      $em,
+        private UserPasswordHasherInterface $userPasswordHasher,
     )
     {
 

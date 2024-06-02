@@ -13,7 +13,7 @@ BEGIN
             'created', sm.created_at,
             'priority', INITCAP(sm.priority),
             'answers', (SELECT COUNT(*) FROM store_message sm WHERE sm.parent_id = sm.id),
-            'market', json_build_object(
+            'store', json_build_object(
                     'id', s.id,
                     'name', s.name,
                     'slug', s.slug

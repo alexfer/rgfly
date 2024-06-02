@@ -4,7 +4,6 @@ namespace App\Controller\Dashboard\MarketPlace\Store;
 
 use App\Entity\MarketPlace\StoreManufacturer;
 use App\Form\Type\Dashboard\MarketPlace\ManufacturerType;
-use App\Service\Dashboard;
 use App\Service\MarketPlace\StoreTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
@@ -20,7 +19,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/dashboard/market-place/manufacturer')]
 class ManufacturerController extends AbstractController
 {
-    use Dashboard, StoreTrait;
+    use StoreTrait;
 
     /**
      * @param Request $request
@@ -40,10 +39,10 @@ class ManufacturerController extends AbstractController
         $store = $this->store($request, $user, $em);
         $manufacturers = $em->getRepository(StoreManufacturer::class)->manufacturers($store, $request->query->get('search'));
 
-        return $this->render('dashboard/content/market_place/manufacturer/index.html.twig',  [
-                'store' => $store,
-                'manufacturers' => $manufacturers,
-            ]);
+        return $this->render('dashboard/content/market_place/manufacturer/index.html.twig', [
+            'store' => $store,
+            'manufacturers' => $manufacturers,
+        ]);
     }
 
     /**
@@ -81,9 +80,9 @@ class ManufacturerController extends AbstractController
             ]);
         }
 
-        return $this->render('dashboard/content/market_place/manufacturer/_form.html.twig',  [
-                'form' => $form,
-            ]);
+        return $this->render('dashboard/content/market_place/manufacturer/_form.html.twig', [
+            'form' => $form,
+        ]);
     }
 
     /**
@@ -100,7 +99,7 @@ class ManufacturerController extends AbstractController
     public function edit(
         Request                $request,
         UserInterface          $user,
-        StoreManufacturer     $manufacturer,
+        StoreManufacturer      $manufacturer,
         EntityManagerInterface $em,
         TranslatorInterface    $translator,
     ): Response
@@ -123,9 +122,9 @@ class ManufacturerController extends AbstractController
             ]);
         }
 
-        return $this->render('dashboard/content/market_place/manufacturer/_form.html.twig',  [
-                'form' => $form,
-            ]);
+        return $this->render('dashboard/content/market_place/manufacturer/_form.html.twig', [
+            'form' => $form,
+        ]);
     }
 
     /**
@@ -141,7 +140,7 @@ class ManufacturerController extends AbstractController
     public function delete(
         Request                $request,
         UserInterface          $user,
-        StoreManufacturer     $manufacturer,
+        StoreManufacturer      $manufacturer,
         EntityManagerInterface $em,
     ): Response
     {

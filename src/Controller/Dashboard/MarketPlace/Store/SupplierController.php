@@ -4,7 +4,6 @@ namespace App\Controller\Dashboard\MarketPlace\Store;
 
 use App\Entity\MarketPlace\StoreSupplier;
 use App\Form\Type\Dashboard\MarketPlace\SupplerType;
-use App\Service\Dashboard;
 use App\Service\MarketPlace\StoreTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
@@ -20,7 +19,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/dashboard/market-place/supplier')]
 class SupplierController extends AbstractController
 {
-    use Dashboard, StoreTrait;
+    use StoreTrait;
 
     /**
      * @param Request $request
@@ -40,11 +39,11 @@ class SupplierController extends AbstractController
         $store = $this->store($request, $user, $em);
         $suppliers = $em->getRepository(StoreSupplier::class)->suppliers($store, $request->query->get('search'));
 
-        return $this->render('dashboard/content/market_place/supplier/index.html.twig',  [
-                'store' => $store,
-                'suppliers' => $suppliers,
-                'countries' => Countries::getNames(Locale::getDefault()),
-            ]);
+        return $this->render('dashboard/content/market_place/supplier/index.html.twig', [
+            'store' => $store,
+            'suppliers' => $suppliers,
+            'countries' => Countries::getNames(Locale::getDefault()),
+        ]);
     }
 
     /**
@@ -82,9 +81,9 @@ class SupplierController extends AbstractController
             ]);
         }
 
-        return $this->render('dashboard/content/market_place/supplier/_form.html.twig',  [
-                'form' => $form,
-            ]);
+        return $this->render('dashboard/content/market_place/supplier/_form.html.twig', [
+            'form' => $form,
+        ]);
     }
 
     /**
@@ -101,7 +100,7 @@ class SupplierController extends AbstractController
     public function edit(
         Request                $request,
         UserInterface          $user,
-        StoreSupplier         $supplier,
+        StoreSupplier          $supplier,
         EntityManagerInterface $em,
         TranslatorInterface    $translator,
     ): Response
@@ -123,9 +122,9 @@ class SupplierController extends AbstractController
             ]);
         }
 
-        return $this->render('dashboard/content/market_place/supplier/_form.html.twig',  [
-                'form' => $form,
-            ]);
+        return $this->render('dashboard/content/market_place/supplier/_form.html.twig', [
+            'form' => $form,
+        ]);
     }
 
     /**
@@ -141,7 +140,7 @@ class SupplierController extends AbstractController
     public function delete(
         Request                $request,
         UserInterface          $user,
-        StoreSupplier         $supplier,
+        StoreSupplier          $supplier,
         EntityManagerInterface $em,
     ): Response
     {

@@ -2,17 +2,13 @@
 
 namespace App\Service\MarketPlace\Store\Order;
 
-use App\Entity\MarketPlace\Store;
-use App\Entity\MarketPlace\StoreCustomer;
-use App\Entity\MarketPlace\StoreCustomerOrders;
-use App\Entity\MarketPlace\StoreOrders;
-use App\Entity\MarketPlace\StoreOrdersProduct;
+use App\Entity\MarketPlace\{Store, StoreCustomer, StoreCustomerOrders, StoreOrders, StoreOrdersProduct};
 use App\Service\MarketPlace\Store\Order\Interface\ProductInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class ProductProcessor implements ProductInterface
+final class ProductProcessor implements ProductInterface
 {
 
     private readonly array $payload;

@@ -3,7 +3,7 @@
 {% if form.vars.data.id %}
     {% set _title_extend = form.vars.data.name %}
 {% else %}
-    {% set _title_extend = 'title.dashboard.create_market'|trans %}
+    {% set _title_extend = 'title.dashboard.create_store'|trans %}
 {% endif %}
 {% block title_extend %}{{ _title_extend }} - {% endblock %}
 {% block title_content %}
@@ -45,7 +45,7 @@
                         type="button"
                         role="tab"
                         aria-controls="details"
-                        aria-selected="{{ _tab == 'details' ? 'true' : 'false' }}">{{ 'entry.form.market_details'|trans }}
+                        aria-selected="{{ _tab == 'details' ? 'true' : 'false' }}">{{ 'entry.form.store_details'|trans }}
                 </button>
             </li>
             <li class="me-2 flex-auto text-center" role="presentation">
@@ -65,7 +65,7 @@
                         type="button"
                         role="tab"
                         aria-controls="attachment"
-                        aria-selected="{{ _tab == 'attachment' ? 'true' : 'false' }}">{{ 'label.form.market_logo'|trans }}
+                        aria-selected="{{ _tab == 'attachment' ? 'true' : 'false' }}">{{ 'label.form.store_logo'|trans }}
                 </button>
             </li>
             <li class="me-2 flex-auto text-center" role="presentation">
@@ -86,20 +86,20 @@
                  aria-labelledby="details-tab">
                 <div class="grid grid-cols-2 gap-3">
                     <div class="relative mb-3">
-                        {{ form_label(form.name, 'label.form.market_name', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
-                        {{ form_widget(form.name, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.market_name'}}) }}
+                        {{ form_label(form.name, 'label.form.store_name', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {{ form_widget(form.name, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.store_name'}}) }}
                         <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.name) }}</span>
                     </div>
                     <div class="relative mb-3">
-                        {{ form_label(form.address, 'label.form.address', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
-                        {{ form_widget(form.address, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.address'}}) }}
+                        {{ form_label(form.address, 'label.form.store_address', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {{ form_widget(form.address, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.store_address'}}) }}
                         <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.address) }}</span>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div class="relative mb-3">
-                        {{ form_label(form.phone, 'label.form.phone', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
-                        {{ form_widget(form.phone, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.phone'}}) }}
+                        {{ form_label(form.phone, 'label.form.store_phone', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {{ form_widget(form.phone, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.store_phone'}}) }}
                         <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.phone) }}</span>
                     </div>
                     <div class="relative mb-3">
@@ -110,15 +110,15 @@
                 </div>
                 <div class="grid grid-cols-1 gap-3">
                     <div class="relative mb-3">
-                        {{ form_label(form.email, 'label.form.email', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
-                        {{ form_widget(form.email, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.email'}}) }}
+                        {{ form_label(form.email, 'label.form.store_email', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {{ form_widget(form.email, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'label.form.store_email'}}) }}
                         <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.email) }}</span>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 gap-3">
                     <div class="relative mb-3">
-                        {{ form_label(form.description, 'label.form.market_description', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
-                        {{ form_widget(form.description, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', rows: 6, placeholder: 'label.form.market_description'}}) }}
+                        {{ form_label(form.description, 'label.form.store_description', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {{ form_widget(form.description, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', rows: 6, placeholder: 'label.form.store_description'}}) }}
                         <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.description) }}</span>
                     </div>
                 </div>
@@ -163,13 +163,13 @@
                 <div class="mt-4 p-2">
                     {% if form.vars.data.attach %}
                         {% set _picture = 'storage/market/logo/' ~ form.vars.data.id ~ '/' ~ form.vars.data.attach.name %}
-                        <div class="flex w-1/4">
+                        <div class="flex flex-row w-1/4 mb-5">
                             <img class="image-grayscale" src="{{ asset(_picture)|imagine_filter('market_view') }}"
-                                 alt="...">
+                                 alt="{{ 'label.form.store_logo'|trans }}">
                         </div>
                     {% endif %}
-                    <div class="max-w-xl mx-auto">
-                        {{ form_label(form.logo, 'label.form.market_logo', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                    <div class="max-w-full mx-auto">
+                        {{ form_label(form.logo, 'label.form.store_logo', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
                         {{ form_widget(form.logo, {attr: {class: 'skip block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400'}}) }}
                         <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.logo) }}</span>
                     </div>
@@ -223,12 +223,12 @@
     {{ parent() }}
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
     <script type="text/javascript">
-        CKEDITOR.replace('market_description', {
+        CKEDITOR.replace('store_description', {
             extraPlugins: 'editorplaceholder',
             contentsCss: 'body{font-family:Arial;font-size:14px;}',
             //skin: 'moono-dark',
             //contentsCss: "body{background-color:#000000;font-family: Arial;color:#ffffff;}",
-            editorplaceholder: '{{ 'label.form.market_description'|trans }}',
+            editorplaceholder: '{{ 'label.form.store_description'|trans }}',
             removePlugins: 'simage,image,youtube,html5video,iframe,uicolor,videodetector,preview',
         });
 

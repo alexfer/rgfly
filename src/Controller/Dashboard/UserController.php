@@ -4,8 +4,7 @@ namespace App\Controller\Dashboard;
 
 use App\Entity\User;
 use App\Form\Type\User\ChangePasswordProfileType;
-use App\Repository\{AttachRepository, UserDetailsRepository, UserRepository,};
-use App\Service\Dashboard;
+use App\Repository\{AttachRepository, UserDetailsRepository,};
 use App\Service\FileUploader;
 use App\Service\Interface\ImageValidatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,30 +16,27 @@ use Symfony\Component\HttpFoundation\{Request, Response,};
 use Symfony\Component\Intl\{Countries, Locale,};
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/dashboard/user')]
 class UserController extends AbstractController
 {
-    use Dashboard;
 
     /**
+     * @param Request $request
      * @param EntityManagerInterface $em
-     * @param UserInterface $user
      * @return Response
      */
     #[Route('', name: 'app_dashboard_user', methods: ['GET'])]
     public function index(
         Request                $request,
         EntityManagerInterface $em,
-        UserInterface          $user,
     ): Response
     {
         $query = $request->query->get('search');
         $users = $em->getRepository(User::class)->fetch($query);
-        return $this->render('dashboard/content/user/index.html.twig',  ['users' => $users]);
+        return $this->render('dashboard/content/user/index.html.twig', ['users' => $users]);
     }
 
     /**
@@ -109,8 +105,6 @@ class UserController extends AbstractController
     /**
      *
      * @param Request $request
-     * @param UserRepository $repository
-     * @param UserInterface $user
      * @param UserPasswordHasherInterface $passwordHasher
      * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
@@ -119,15 +113,13 @@ class UserController extends AbstractController
     #[Route('/details/{id}/{tab}', name: 'app_dashboard_details_user', methods: ['GET', 'POST'])]
     public function details(
         Request                     $request,
-        UserRepository              $repository,
-        UserInterface               $user,
         UserPasswordHasherInterface $passwordHasher,
         EntityManagerInterface      $em,
         TranslatorInterface         $translator,
     ): Response
     {
-        $entry = $repository->find($request->get('id'));
-        $country = $entry->getUserDetails()->getCountry();
+        $user = $em->getRepository(User::class)->find($request->get('id'));
+        $country = $user->getUserDetails()->getCountry();
 
         $form = $this->createForm(ChangePasswordProfileType::class);
         $form->handleRequest($request);
@@ -135,23 +127,23 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $encodedPassword = $passwordHasher->hashPassword(
-                $entry,
+                $user,
                 $form->get('plainPassword')->getData()
             );
 
-            $entry->setPassword($encodedPassword);
+            $user->setPassword($encodedPassword);
             $em->flush();
 
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.password.changed')]));
 
-            return $this->redirectToRoute('app_dashboard_details_user', ['id' => $entry->getId(), 'tab' => 'security']);
+            return $this->redirectToRoute('app_dashboard_details_user', ['id' => $user->getId(), 'tab' => 'security']);
         }
 
-        return $this->render('dashboard/content/user/details.html.twig',  [
-                'entry' => $entry,
-                'form' => $form,
-                'country' => $country ? Countries::getNames(Locale::getDefault())[$country] : null,
-            ]);
+        return $this->render('dashboard/content/user/details.html.twig', [
+            'user' => $user,
+            'form' => $form,
+            'country' => $country ? Countries::getNames(Locale::getDefault())[$country] : null,
+        ]);
     }
 
     /**

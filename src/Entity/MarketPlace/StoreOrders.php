@@ -138,7 +138,6 @@ class StoreOrders
      */
     public function setTotal(string $total): static
     {
-        //dd(number_format($total, 10, '.', ''));
         $this->total = number_format($total, 2, '.', '');
 
         return $this;

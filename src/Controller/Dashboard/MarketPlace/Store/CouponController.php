@@ -4,7 +4,6 @@ namespace App\Controller\Dashboard\MarketPlace\Store;
 
 use App\Entity\MarketPlace\{Store, StoreCoupon, StoreCouponCode, StoreProduct};
 use App\Form\Type\Dashboard\MarketPlace\CouponType;
-use App\Service\Dashboard;
 use App\Service\MarketPlace\StoreTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
@@ -17,7 +16,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/dashboard/market-place/coupon')]
 class CouponController extends AbstractController
 {
-    use Dashboard, StoreTrait;
+    use StoreTrait;
 
     /**
      * @param Request $request
@@ -86,10 +85,10 @@ class CouponController extends AbstractController
             ];
         }, $coupons);
 
-        return $this->render('dashboard/content/market_place/coupon/index.html.twig',  [
-                'store' => $store,
-                'coupons' => $result,
-            ]);
+        return $this->render('dashboard/content/market_place/coupon/index.html.twig', [
+            'store' => $store,
+            'coupons' => $result,
+        ]);
     }
 
     /**
@@ -170,9 +169,9 @@ class CouponController extends AbstractController
             ]);
         }
 
-        return $this->render('dashboard/content/market_place/coupon/_form.html.twig',  [
-                'form' => $form,
-            ]);
+        return $this->render('dashboard/content/market_place/coupon/_form.html.twig', [
+            'form' => $form,
+        ]);
     }
 
     /**
@@ -213,9 +212,9 @@ class CouponController extends AbstractController
             ]);
         }
 
-        return $this->render('dashboard/content/market_place/coupon/_form.html.twig',  [
-                'form' => $form,
-            ]);
+        return $this->render('dashboard/content/market_place/coupon/_form.html.twig', [
+            'form' => $form,
+        ]);
 
     }
 

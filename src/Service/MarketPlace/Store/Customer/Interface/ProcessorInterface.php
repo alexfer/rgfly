@@ -2,8 +2,7 @@
 
 namespace App\Service\MarketPlace\Store\Customer\Interface;
 
-use App\Entity\MarketPlace\StoreCustomer;
-use App\Entity\MarketPlace\StoreOrders;
+use App\Entity\MarketPlace\{StoreCustomer, StoreOrders};
 use App\Entity\User;
 use Symfony\Component\Form\FormInterface;
 
