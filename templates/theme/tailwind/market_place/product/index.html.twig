@@ -95,8 +95,8 @@
                     {% if product.discount|round %}
                         <div class="relative">
                             <div class="pt-1 absolute right-0 bg-red-500 text-white text-sm font-light me-2 px-2.5 py-0.5 rounded-md dark:bg-red-900 dark:text-white">
-                                {{ product.discount|number_format(0, '.', '') }}
-                                % {{ 'market.product.off'|trans }}
+                                {{ product.discount|amount_format }}
+                                % {{ 'store.product.off'|trans }}
                             </div>
                         </div>
                     {% endif %}
@@ -105,11 +105,11 @@
                             {% set discount = product.discount %}
                             {% set cost = product.cost %}
                             <span class="font-medium text-2xl text-success pr-2">
-                                            {{ (cost + product.fee - ((cost * discount) - discount)/100)|number_format(2) }}<small>{{ product.store.currency|currency }}</small>
-                                        </span>
+                                {{ (cost + product.fee - ((cost * discount) - discount)/100)|amount_format }}<small>{{ product.store.currency|currency }}</small>
+                            </span>
                             <span class="line-through text-lg font-medium text-gray-400">{{ (product.cost + product.fee)|amount_format }}<small>{{ product.store.currency|currency }}</small></span>
                         {% else %}
-                            <span class="font-medium text-2xl text-surface-dark">{{ (product.cost + product.fee)|number_format(2) }}<small>{{ product.store.currency|currency }}</small></span>
+                            <span class="font-medium text-2xl text-surface-dark">{{ (product.cost + product.fee)|amount_format }}<small>{{ product.store.currency|currency }}</small></span>
                         {% endif %}
                     </div>
                     {% if product.storeProductAttributes.count %}

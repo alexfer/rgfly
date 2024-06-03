@@ -8,11 +8,8 @@ use App\Service\MarketPlace\Store\Order\Interface\{CollectionInterface,
     ProcessorInterface,
     ProductInterface,
     SummaryInterface};
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -98,6 +95,7 @@ class OrderController extends AbstractController
         $session = $request->getSession();
         $orders = $orderCollection->getOrders($session->getId());
 
+        //dd($orderSummary->summary($orders));
         return $this->render('market_place/order/summary.html.twig', [
             'orders' => $orders,
             'summary' => $orderSummary->summary($orders),

@@ -93,16 +93,15 @@ class CheckoutController extends AbstractController
 
         $sum = $checkout->sum();
         $discount = null;
-
         if ($process) {
             $discount = $coupon->discount($order->getStore());
         }
 
         return $this->render('market_place/checkout/index.html.twig', [
             'order' => $order,
-            'itemSubtotal' => array_sum($sum['itemSubtotal']) + array_sum($sum['fee']),
+            'itemSubtotal' => array_sum($sum['itemSubtotal']),
             'fee' => array_sum($sum['fee']),
-            'total' => array_sum($sum['fee']) + array_sum($sum['itemSubtotal']),
+            'total' => array_sum($sum['itemSubtotal']),
             'form' => $form,
             'hasUsed' => $hasUsed,
             'discount' => $discount,

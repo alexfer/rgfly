@@ -35,8 +35,7 @@ class StoreController extends AbstractController
         EntityManagerInterface $em,
     ): Response
     {
-        $criteria = $this->criteria($user, null, 'owner');
-        $stores = $em->getRepository(Store::class)->findBy($criteria, ['created_at' => 'desc'], 20, 0);
+        $stores = $em->getRepository(Store::class)->findBy(['owner' => $user], ['created_at' => 'desc'], 20, 0);
 
         return $this->render('dashboard/content/market_place/store/index.html.twig', [
             'stores' => $stores,

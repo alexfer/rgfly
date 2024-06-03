@@ -6,13 +6,13 @@ use App\Entity\MarketPlace\StoreOrders;
 use App\Service\MarketPlace\Store\Order\Interface\CollectionInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
-final class Collection implements CollectionInterface
+final readonly class Collection implements CollectionInterface
 {
 
     /**
      * @param EntityManagerInterface $em
      */
-    public function __construct(private readonly EntityManagerInterface $em)
+    public function __construct(private EntityManagerInterface $em)
     {
 
     }
@@ -27,6 +27,10 @@ final class Collection implements CollectionInterface
             ->findBy(['session' => $sessId]);
     }
 
+    /**
+     * @param string|null $sessId
+     * @return int|null
+     */
     public function getOrderProducts(?string $sessId = null): ?int
     {
         $orders = $this->getOrders($sessId);
@@ -83,7 +87,7 @@ final class Collection implements CollectionInterface
                     'attach' => reset($attach),
                 ];
 
-                $cost = $product->getCost() * $product->getQuantity();
+                $cost = $product->getCost() + $product->getProduct()->getFee();
                 $total[$order->getId()][] = $cost - ($cost * $product->getDiscount() - $product->getDiscount()) / 100;
                 $fee[$order->getId()][] = $product->getProduct()->getFee();
 
@@ -91,7 +95,8 @@ final class Collection implements CollectionInterface
             $collection[$order->getId()] = [
                 'id' => $order->getId(),
                 'number' => $order->getNumber(),
-                'total' => array_sum($total[$order->getId()]) + array_sum($fee[$order->getId()]),
+                'totalFee' => array_sum($fee[$order->getId()]),
+                'total' => array_sum($total[$order->getId()]),
                 'store' => [
                     'slug' => $order->getStore()->getSlug(),
                     'name' => $order->getStore()->getName(),

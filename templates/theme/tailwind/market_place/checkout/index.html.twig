@@ -21,9 +21,9 @@
                     {% for product in order.storeOrdersProducts %}
                         {% if product.product.discount %}
                             {% set percent = product.discount %}
-                            {% set cost = product.cost %}
-                            {% set discount_cost = (cost - ((cost * product.quantity * percent) - percent)/100) %}
-                            {% set item_cost = (discount_cost + product.product.fee)|amount_format %}
+                            {% set cost = product.cost + product.product.fee %}
+                            {% set discount = (cost - ((cost * percent) - percent)/100) %}
+                            {% set item_cost = (discount)|amount_format %}
                         {% else %}
                             {% set item_cost = (product.cost * product.quantity + product.product.fee)|amount_format %}
                         {% endif %}
@@ -47,7 +47,7 @@
                                     </a>
                                 </h5>
                                 <span class="text-sm text-gray-500">
-                                    {{ (item_cost) }}<small>{{ order.store.currency|currency }}</small>&times;{{ product.quantity }} {{ 'label.form.quantity_pcs'|trans }}
+                                    {{ item_cost }}<small>{{ order.store.currency|currency }}</small>&times;{{ product.quantity }} {{ 'label.form.quantity_pcs'|trans }}
                                 </span>
                             </div>
                         </div>

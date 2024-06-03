@@ -25,6 +25,9 @@ class Processor implements ProcessorInterface
      */
     protected ?StoreOrders $order;
 
+    /**
+     * @var string
+     */
     private string $sessionId;
 
     /**
@@ -75,6 +78,9 @@ class Processor implements ProcessorInterface
         return $this->order->getStoreOrdersProducts();
     }
 
+    /**
+     * @return void
+     */
     public function updateProducts(): void
     {
         foreach ($this->getProducts() as $product) {
@@ -133,7 +139,9 @@ class Processor implements ProcessorInterface
     {
         $sum = [];
         foreach ($this->getProducts() as $product) {
-            $sum['itemSubtotal'][] = $product->getCost() - ((($product->getCost() * $product->getQuantity()) * $product->getDiscount()) - $product->getDiscount()) / 100;
+            $cost = $product->getCost() + $product->getProduct()->getFee();
+            $discount = $product->getDiscount();
+            $sum['itemSubtotal'][] = $product->getQuantity() * ($cost - (($cost * $discount) - $discount) / 100);
             $sum['fee'][] = $product->getProduct()->getFee();
         }
 

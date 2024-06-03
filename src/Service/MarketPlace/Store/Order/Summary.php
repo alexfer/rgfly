@@ -17,11 +17,11 @@ final class Summary implements SummaryInterface
             $itemSubtotal = $fee = $total = [];
 
             foreach ($products as $product) {
-                $cost = $product->getCost() * $product->getQuantity();
+                $cost = $product->getCost() + $product->getProduct()->getFee();
                 $discount = $product->getDiscount();
                 $fee[$order->getId()][] = $product->getProduct()->getFee();
-                $itemSubtotal[$order->getId()][] = $product->getCost() * $product->getQuantity();
-                $total[$order->getId()][] = $cost - (($cost * $discount) - $discount) / 100;
+                $itemSubtotal[$order->getId()][] = $cost + $product->getProduct()->getFee();
+                $total[$order->getId()][] = $product->getQuantity() * ($cost - (($cost * $discount) - $discount)/100);
             }
 
             if ($formatted) {

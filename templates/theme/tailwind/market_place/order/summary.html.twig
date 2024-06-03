@@ -43,10 +43,10 @@
                                             {% if product.discount %}
                                                 {% set percent = product.discount %}
                                                 {% set cost = product.cost %}
-                                                {% set discount_cost = (cost - ((product.quantity * cost) * percent)/100) %}
+                                                {% set discount = (cost - (cost * percent)/100) %}
                                                 <div class="font-medium whitespace-nowrap text-xl">
                                                     <span class="inline-block text-xs text-white opacity-85 bg-red-600 px-2 pt-1 pb-0.5 rounded-md">{{ product.discount }}%{{ 'store.product.off'|trans }}</span>
-                                                    {{ (discount_cost + product.product.fee)|amount_format }}
+                                                    {{ (discount + product.product.fee)|amount_format }}
                                                     <small>{{ order.store.currency|currency }}</small>
                                                 </div>
                                             {% else %}
@@ -140,7 +140,7 @@
                                 <div class="stores-summary">
                                     <div class="flex justify-between items-start">
                                         <div class="me-auto">{{ 'order.item.subtotal'|trans }}</div>
-                                        <span id="item-subtotal-{{ order.store_id }}">{{ (order.total + order.fee)|amount_format }}<small>{{ order.currency }}</small></span>
+                                        <span id="item-subtotal-{{ order.store_id }}">{{ (order.total)|amount_format }}<small>{{ order.currency }}</small></span>
                                     </div>
                                     <div class="flex justify-between items-start sr-only">
                                         <div class="me-auto">{{ 'order.service.fee'|trans }}</div>
@@ -148,7 +148,7 @@
                                     </div>
                                     <div class="flex justify-between items-start">
                                         <div class="me-auto">{{ 'order.subtotal'|trans }}</div>
-                                        <span id="total-{{ order.store_id }}">{{ (order.total + order.fee)|amount_format }}<small>{{ order.currency }}</small></span>
+                                        <span id="total-{{ order.store_id }}">{{ (order.total)|amount_format }}<small>{{ order.currency }}</small></span>
                                     </div>
                                 </div>
                                 <div class=" mt-4 text-center">
@@ -157,7 +157,7 @@
                                        type="submit">
                                         {{ 'order.checkout'|trans }}
                                         <span id="checkout-{{ order.store_id }}"
-                                              class="text-sm font-semibold">{{ (order.total + order.fee)|amount_format }}<small>{{ order.currency }}</small>
+                                              class="text-sm font-semibold">{{ (order.total)|amount_format }}<small>{{ order.currency }}</small>
                                         </span>
                                     </a>
                                     <p class="mt-2 font-medium text-md-start">
