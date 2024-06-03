@@ -2,7 +2,7 @@
 
 namespace App\Controller\MarketPlace;
 
-use App\Service\MarketPlace\Market\Message\Interface\ProcessorInterface;
+use App\Service\MarketPlace\Store\Message\Interface\ProcessorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
 use Symfony\Component\Routing\Attribute\Route;

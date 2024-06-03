@@ -33,7 +33,7 @@ el.form.addEventListener('submit', async (e) => {
             message: message.value,
             _token: el.form.querySelector('input[name="_token"]').value,
             product: el.form.querySelector('input[name="product"]').value,
-            market: el.form.querySelector('input[name="market"]').value,
+            store: el.form.querySelector('input[name="store"]').value,
             order: order ? order.value : order
         }),
         headers: {'Content-type': 'application/json; charset=utf-8'}
@@ -76,7 +76,7 @@ if (el.search) {
             const response = json;
             if (response.order) {
                 icon.classList.replace('text-gray-500', 'text-green-500');
-                el.form.querySelector('input[name="market"]').value = response.order.market;
+                el.form.querySelector('input[name="store"]').value = response.order.store;
                 el.form.querySelector('input[name="order"]').value = response.order.id
             }
         }).catch(err => {

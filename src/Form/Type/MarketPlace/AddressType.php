@@ -2,8 +2,8 @@
 
 namespace App\Form\Type\MarketPlace;
 
-use App\Entity\MarketPlace\MarketAddress;
-use App\Entity\MarketPlace\MarketCustomer;
+use App\Entity\MarketPlace\StoreAddress;
+use App\Entity\MarketPlace\StoreCustomer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
@@ -26,8 +26,8 @@ class AddressType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
-        if ($options['data'] instanceof MarketCustomer) {
-            $options = $options['data']->getMarketAddress();
+        if ($options['data'] instanceof StoreCustomer) {
+            $options = $options['data']->getStoreAddress();
         } else {
             $options = $options['data'];
         }
@@ -168,7 +168,7 @@ class AddressType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => MarketAddress::class,
+            'data_class' => StoreAddress::class,
         ]);
     }
 }

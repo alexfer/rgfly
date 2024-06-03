@@ -4,16 +4,12 @@ namespace App\Controller\Dashboard;
 
 use App\Entity\{Attach, Category, Entry, EntryAttachment, EntryCategory, EntryDetails};
 use App\Form\Type\Dashboard\EntryDetailsType;
-use App\Service\Dashboard;
 use App\Service\FileUploader;
 use App\Service\Interface\ImageValidatorInterface;
 use DateTime;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -28,9 +24,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class BlogController extends AbstractController
 {
 
-    use Dashboard;
-
-    const CHILDREN = [
+    const array CHILDREN = [
         'blog' => [
             'menu.dashboard.overview.blog' => 'app_dashboard_blog',
             'menu.dashboard.create.blog' => 'app_dashboard_create_blog',
@@ -52,8 +46,6 @@ class BlogController extends AbstractController
      * @param EntityManagerInterface $em
      * @param UserInterface $user
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('', name: self::CHILDREN['blog']['menu.dashboard.overview.blog'])]
     public function index(
@@ -61,11 +53,12 @@ class BlogController extends AbstractController
         UserInterface          $user,
     ): Response
     {
-        $entries = $em->getRepository(Entry::class)->findBy($this->criteria($user, ['type' => 'blog']), ['id' => 'desc']);
+        $entries = $em->getRepository(Entry::class)
+            ->findBy(['user' => $user, 'type' => Entry::TYPE['Blog']], ['id' => 'desc']);
 
-        return $this->render('dashboard/content/blog/index.html.twig', $this->navbar() + [
-                'entries' => $entries,
-            ]);
+        return $this->render('dashboard/content/blog/index.html.twig', [
+            'entries' => $entries,
+        ]);
     }
 
     /**
@@ -90,7 +83,7 @@ class BlogController extends AbstractController
         $form = $this->createForm(EntryDetailsType::class, $entry);
         $form->handleRequest($request);
 
-        $error = null;
+        $error = $slug = null;
         $title = $form->get('title')->getData();
 
         if ($title) {
@@ -107,9 +100,16 @@ class BlogController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid() && !$error) {
 
+            $details = new EntryDetails();
+            $details->setTitle($title)
+                ->setShortContent($form->get('short_content')->getData())
+                ->setContent($form->get('content')->getData());
+
             $entry->setType(Entry::TYPE['Blog'])
                 ->setSlug($slug)
-                ->setUser($user);
+                ->setUser($user)
+                ->setEntryDetails($details);
+
             $em->persist($entry);
 
             $requestCategory = $request->get('category');
@@ -123,14 +123,6 @@ class BlogController extends AbstractController
                 }
             }
 
-            $details = new EntryDetails();
-
-            $details->setTitle($title)
-                ->setShortContent($form->get('short_content')->getData())
-                ->setContent($form->get('content')->getData())
-                ->setEntry($entry);
-
-            $em->persist($details);
             $em->flush();
 
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
@@ -138,12 +130,12 @@ class BlogController extends AbstractController
             return $this->redirectToRoute('app_dashboard_edit_blog', ['id' => $entry->getId()]);
         }
 
-        return $this->render('dashboard/content/blog/_form.html.twig', $this->navbar() + [
-                'form' => $form,
-                'error' => $error,
-                'entry' => $entry,
-                'categories' => $em->getRepository(Category::class)->findBy([], ['position' => 'asc']),
-            ]);
+        return $this->render('dashboard/content/blog/_form.html.twig', [
+            'form' => $form,
+            'error' => $error,
+            'entry' => $entry,
+            'categories' => $em->getRepository(Category::class)->findBy([], ['position' => 'asc']),
+        ]);
     }
 
     /**
@@ -217,12 +209,12 @@ class BlogController extends AbstractController
             return $this->redirectToRoute('app_dashboard_edit_blog', ['id' => $entry->getId()]);
         }
 
-        return $this->render('dashboard/content/blog/_form.html.twig', $this->navbar() + [
-                'form' => $form,
-                'entry' => $entry,
-                'error' => $error,
-                'categories' => $em->getRepository(Category::class)->findBy([], ['position' => 'asc']),
-            ]);
+        return $this->render('dashboard/content/blog/_form.html.twig', [
+            'form' => $form,
+            'entry' => $entry,
+            'error' => $error,
+            'categories' => $em->getRepository(Category::class)->findBy([], ['position' => 'asc']),
+        ]);
     }
 
     /**
@@ -235,7 +227,7 @@ class BlogController extends AbstractController
      * @param ParameterBagInterface $params
      * @param ImageValidatorInterface $imageValidator
      * @return JsonResponse
-     * @throws Exception
+     * @throws \Exception
      */
     #[Route('/attach/{id}', name: 'app_dashboard_blog_attach', methods: ['POST'])]
     public function attach(
@@ -267,7 +259,7 @@ class BlogController extends AbstractController
 
             try {
                 $attach = $fileUploader->upload($file)->handle();
-            } catch (Exception $ex) {
+            } catch (\Exception $ex) {
                 return $this->json([
                     'success' => false,
                     'message' => $ex->getMessage(),

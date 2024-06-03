@@ -2,7 +2,7 @@
 
 namespace App\Form\Type\MarketPlace;
 
-use App\Entity\MarketPlace\MarketCustomer;
+use App\Entity\MarketPlace\StoreCustomer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -111,7 +111,7 @@ class CustomerType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => MarketCustomer::class,
+            'data_class' => StoreCustomer::class,
         ]);
     }
 

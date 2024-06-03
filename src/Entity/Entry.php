@@ -16,14 +16,14 @@ class Entry
     /**
      * @var array
      */
-    const TYPE = [
+    const array TYPE = [
         'Other' => 'other',
         'Blog' => 'blog',
         'Article' => 'article',
         'News' => 'news',
         'Gallery' => 'gallery',
     ];
-    const STATUS = [
+    const array STATUS = [
         'entry.info.draft' => 'draft',
         'entry.info.published' => 'published',
         'entry.info.trashed' => 'trashed',

@@ -223,9 +223,9 @@
                 <source>menu.dashboard</source>
                 <target>Dashboard</target>
             </trans-unit>
-            <trans-unit id="menu.dashboard.marketplace">
-                <source>menu.dashboard.marketplace</source>
-                <target>Market Place</target>
+            <trans-unit id="menu.dashboard.store">
+                <source>menu.dashboard.store</source>
+                <target>Store</target>
             </trans-unit>
             <trans-unit id="menu.dashboard.overview">
                 <source>menu.dashboard.overview</source>
@@ -279,9 +279,9 @@
                 <source>title.dashboard.overview_gallery</source>
                 <target>Gallery Overview</target>
             </trans-unit>
-            <trans-unit id="title.dashboard.overview_market">
-                <source>title.dashboard.overview_market</source>
-                <target>Markets Overview</target>
+            <trans-unit id="title.dashboard.overview_store">
+                <source>title.dashboard.overview_store</source>
+                <target>Store Overview</target>
             </trans-unit>
             <trans-unit id="title.dashboard.overview_messages">
                 <source>title.dashboard.overview_messages</source>
@@ -319,9 +319,9 @@
                 <source>menu.dashboard.create.blog</source>
                 <target>Create Blog</target>
             </trans-unit>
-            <trans-unit id="menu.dashboard.create.market">
-                <source>menu.dashboard.create.market</source>
-                <target>Add Market</target>
+            <trans-unit id="menu.dashboard.create.store">
+                <source>menu.dashboard.create.store</source>
+                <target>Add Store</target>
             </trans-unit>
             <trans-unit id="menu.dashboard.create_faq">
                 <source>menu.dashboard.create_faq</source>
@@ -535,25 +535,37 @@
                 <source>label.form.repeat_password</source>
                 <target>Repeat Password</target>
             </trans-unit>
-            <trans-unit id="label.form.market_name">
-                <source>label.form.market_name</source>
-                <target>Market Name</target>
+            <trans-unit id="label.form.store_name">
+                <source>label.form.store_name</source>
+                <target>Store Name</target>
             </trans-unit>
-            <trans-unit id="label.form.market_currency">
-                <source>label.form.market_currency</source>
-                <target>Market Currency</target>
+            <trans-unit id="label.form.store_address">
+                <source>label.form.store_address</source>
+                <target>Store Address</target>
             </trans-unit>
-            <trans-unit id="label.form.market_logo">
-                <source>label.form.market_logo</source>
-                <target>Market Logo</target>
+            <trans-unit id="label.form.store_phone">
+                <source>label.form.store_phone</source>
+                <target>Store Phone number</target>
+            </trans-unit>
+            <trans-unit id="label.form.store_email">
+                <source>label.form.store_email</source>
+                <target>Store Email address</target>
+            </trans-unit>
+            <trans-unit id="label.form.store_currency">
+                <source>label.form.store_currency</source>
+                <target>Store Currency</target>
+            </trans-unit>
+            <trans-unit id="label.form.store_logo">
+                <source>label.form.store_logo</source>
+                <target>Store Logo</target>
             </trans-unit>
             <trans-unit id="label.form.social">
                 <source>label.form.social</source>
-                <target>Market Socials</target>
+                <target>Store Socials</target>
             </trans-unit>
-            <trans-unit id="label.form.market_currency.placeholder">
-                <source>label.form.market_currency.placeholder</source>
-                <target>Market currency</target>
+            <trans-unit id="label.form.store_currency.placeholder">
+                <source>label.form.store_currency.placeholder</source>
+                <target>Store currency</target>
             </trans-unit>
             <trans-unit id="label.form.product_name">
                 <source>label.form.product_name</source>
@@ -756,9 +768,9 @@
                 <source>label.form.supplier_url</source>
                 <target>Supplier Url</target>
             </trans-unit>
-            <trans-unit id="label.form.market_description">
-                <source>label.form.market_description</source>
-                <target>Description of Market</target>
+            <trans-unit id="label.form.store_description">
+                <source>label.form.store_description</source>
+                <target>Store Description</target>
             </trans-unit>
             <trans-unit id="label.form.product_description">
                 <source>label.form.product_description</source>
@@ -897,9 +909,9 @@
                 <source>dashboard.markets</source>
                 <target>Markets</target>
             </trans-unit>
-            <trans-unit id="title.dashboard.create_market">
-                <source>title.dashboard.create_market</source>
-                <target>Create Market</target>
+            <trans-unit id="title.dashboard.create_store">
+                <source>title.dashboard.create_store</source>
+                <target>Create Store</target>
             </trans-unit>
             <trans-unit id="title.dashboard.change_market">
                 <source>title.dashboard.change_market</source>
@@ -925,28 +937,32 @@
                 <source>market.product.code_prefix</source>
                 <target>P</target>
             </trans-unit>
-            <trans-unit id="market.product.off">
-                <source>market.product.off</source>
+            <trans-unit id="store.product.off">
+                <source>store.product.off</source>
                 <target>Off</target>
             </trans-unit>
             <trans-unit id="market.product.cart">
                 <source>market.product.cart</source>
                 <target>Shopping Cart</target>
             </trans-unit>
-            <trans-unit id="market.product.cart.empty">
-                <source>market.product.cart.empty</source>
+            <trans-unit id="store.product.cart.empty">
+                <source>store.product.cart.empty</source>
                 <target>Your cart is currently empty</target>
             </trans-unit>
             <trans-unit id="market.product.wishlist.empty">
                 <source>market.product.wishlist.empty</source>
                 <target>Your wishlist is currently empty</target>
             </trans-unit>
+            <trans-unit id="market.messages.empty">
+                <source>market.messages.empty</source>
+                <target>Your messages is currently empty</target>
+            </trans-unit>
             <trans-unit id="market.product.orders.empty">
                 <source>market.product.orders.empty</source>
                 <target>Your orders is currently empty</target>
             </trans-unit>
-            <trans-unit id="market.product.wishlist">
-                <source>market.product.wishlist</source>
+            <trans-unit id="store.product.wishlist">
+                <source>store.product.wishlist</source>
                 <target>Wishlist</target>
             </trans-unit>
             <trans-unit id="market.unauthorized">
@@ -1103,9 +1119,9 @@
                 <source>entry.form.billing</source>
                 <target>Billing</target>
             </trans-unit>
-            <trans-unit id="entry.form.market_details">
-                <source>entry.form.market_details</source>
-                <target>Market Details</target>
+            <trans-unit id="entry.form.store_details">
+                <source>entry.form.store_details</source>
+                <target>Store Details</target>
             </trans-unit>
             <trans-unit id="user.entry.updated">
                 <source>user.entry.updated</source>
@@ -1466,108 +1482,108 @@
                 <source>label.form.message</source>
                 <target>Message</target>
             </trans-unit>
-            <trans-unit id="market.product.create">
-                <source>market.product.create</source>
+            <trans-unit id="store.product.create">
+                <source>store.product.create</source>
                 <target>Add Product</target>
             </trans-unit>
-            <trans-unit id="market.product.remove">
-                <source>market.product.remove</source>
+            <trans-unit id="store.product.remove">
+                <source>store.product.remove</source>
                 <target>Remove</target>
             </trans-unit>
-            <trans-unit id="market.product.name.allowed">
-                <source>market.product.name.allowed</source>
+            <trans-unit id="store.product.name.allowed">
+                <source>store.product.name.allowed</source>
                 <target>Allowed Length {length}</target>
             </trans-unit>
-            <trans-unit id="market.product.details">
-                <source>market.product.details</source>
+            <trans-unit id="store.product.details">
+                <source>store.product.details</source>
                 <target>View details</target>
             </trans-unit>
-            <trans-unit id="market.promotion">
-                <source>market.promotion</source>
+            <trans-unit id="store.promotion">
+                <source>store.promotion</source>
                 <target>Promotion offers</target>
             </trans-unit>
-            <trans-unit id="market.promotion.text">
-                <source>market.promotion.text</source>
+            <trans-unit id="store.promotion.text">
+                <source>store.promotion.text</source>
                 <target>
                     <![CDATA[Hello from your friends at <strong>{ company }</strong>!
                     We’re offering a special { discount }% discount on your next purchase with code <span class="text-dark text-bg-warning p-2">{ code }-{ discount }</span><br>
                     Start shopping with <a class="link" href="{ link }">{ company }</a> now.]]>
                 </target>
             </trans-unit>
-            <trans-unit id="market.brands">
-                <source>market.brands</source>
+            <trans-unit id="store.brands">
+                <source>store.brands</source>
                 <target>Brands</target>
             </trans-unit>
-            <trans-unit id="market.brand">
-                <source>market.brand</source>
+            <trans-unit id="store.brand">
+                <source>store.brand</source>
                 <target>Brand</target>
             </trans-unit>
-            <trans-unit id="market.coupons">
-                <source>market.coupons</source>
+            <trans-unit id="store.coupons">
+                <source>store.coupons</source>
                 <target>Coupons</target>
             </trans-unit>
-            <trans-unit id="market.coupon">
-                <source>market.coupon</source>
+            <trans-unit id="store.coupon">
+                <source>store.coupon</source>
                 <target>Coupon</target>
             </trans-unit>
-            <trans-unit id="market.products">
-                <source>market.products</source>
+            <trans-unit id="store.products">
+                <source>store.products</source>
                 <target>Products</target>
             </trans-unit>
-            <trans-unit id="market.coupon.create">
-                <source>market.coupon.create</source>
+            <trans-unit id="store.coupon.create">
+                <source>store.coupon.create</source>
                 <target>Add Coupon</target>
             </trans-unit>
-            <trans-unit id="market.coupon.update">
-                <source>market.coupon.update</source>
+            <trans-unit id="store.coupon.update">
+                <source>store.coupon.update</source>
                 <target>Update Coupon</target>
             </trans-unit>
-            <trans-unit id="market.brand.create">
-                <source>market.brand.create</source>
+            <trans-unit id="store.brand.create">
+                <source>store.brand.create</source>
                 <target>Add Brand</target>
             </trans-unit>
-            <trans-unit id="market.brand.update">
-                <source>market.brand.update</source>
+            <trans-unit id="store.brand.update">
+                <source>store.brand.update</source>
                 <target>Update Brand</target>
             </trans-unit>
-            <trans-unit id="market.supplier.create">
-                <source>market.supplier.create</source>
+            <trans-unit id="store.supplier.create">
+                <source>store.supplier.create</source>
                 <target>Add Supplier</target>
             </trans-unit>
-            <trans-unit id="market.attribute.create">
-                <source>market.attribute.create</source>
+            <trans-unit id="store.attribute.create">
+                <source>store.attribute.create</source>
                 <target>Add Attribute</target>
             </trans-unit>
-            <trans-unit id="market.manufacturer.create">
-                <source>market.manufacturer.create</source>
+            <trans-unit id="store.manufacturer.create">
+                <source>store.manufacturer.create</source>
                 <target>Add Manufacturer</target>
             </trans-unit>
-            <trans-unit id="market.suppliers">
-                <source>market.suppliers</source>
+            <trans-unit id="store.suppliers">
+                <source>store.suppliers</source>
                 <target>Suppliers</target>
             </trans-unit>
-            <trans-unit id="market.supplier">
-                <source>market.supplier</source>
+            <trans-unit id="store.supplier">
+                <source>store.supplier</source>
                 <target>Supplier</target>
             </trans-unit>
-            <trans-unit id="market.manufacturers">
-                <source>market.manufacturers</source>
+            <trans-unit id="store.manufacturers">
+                <source>store.manufacturers</source>
                 <target>Manufacturers</target>
             </trans-unit>
-            <trans-unit id="market.apply.coupon">
-                <source>market.apply.coupon</source>
+            <trans-unit id="store.apply.coupon">
+                <source>store.apply.coupon</source>
                 <target>Apply Coupon</target>
             </trans-unit>
-            <trans-unit id="market.manufacturer">
-                <source>market.manufacturer</source>
+            <trans-unit id="store.manufacturer">
+                <source>store.manufacturer</source>
                 <target>Manufacturer</target>
             </trans-unit>
-            <trans-unit id="market.attributes">
-                <source>market.attributes</source>
+            <trans-unit id="store.attributes">
+                <source>store.attributes</source>
                 <target>Attributes</target>
             </trans-unit>
-            <trans-unit id="market.products.overview">
-                <source>market.products.overview</source>
+            <trans-unit id="store.products.overview">
+                <source>store.products.overview</source>
                 <target>Products overview</target>
             </trans-unit>
             <trans-unit id="dashboard.entry.delete">
@@ -1809,14 +1825,14 @@
                 <source>order.service.fee</source>
                 <target>Service Fee</target>
             </trans-unit>
-            <trans-unit id="market.policy">
-                <source>market.policy</source>
+            <trans-unit id="store.policy">
+                <source>store.policy</source>
                 <target>
-                    <![CDATA[By placing your order, you agree to be bound by the <strong>{ market_name }</strong> <a href="{ link_to_tou }" class="text-success">Terms of Service</a> and <a href="{ link_to_pp }" class="text-success">Privacy Policy.</a>]]>
+                    <![CDATA[By placing your order, you agree to be bound by the <strong>{ store_name }</strong> <a href="{ link_to_tou }" class="text-success">Terms of Service</a> and <a href="{ link_to_pp }" class="text-success">Privacy Policy.</a>]]>
                 </target>
             </trans-unit>
-            <trans-unit id="market.about">
-                <source>market.about</source>
+            <trans-unit id="store.about">
+                <source>store.about</source>
                 <target>About</target>
             </trans-unit>
             <trans-unit id="customer.temporary.passwod">

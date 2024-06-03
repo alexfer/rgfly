@@ -1,7 +1,7 @@
 {% for order in orders %}
     <h5 class="mb-1 text-xl truncate font-bold">
-        <a href="{{ path('app_market_place_market', {slug: order.market.slug}) }}"
-           class="text-red-800">{{ order.market.name }}</a>
+        <a href="{{ path('app_market_place_market', {slug: order.store.slug}) }}"
+           class="text-red-800">{{ order.store.name }}</a>
     </h5>
     {% for products in order.products %}
         <div class="mb-4 flex flex-col w-full">
@@ -30,20 +30,19 @@
                                 <a title="{{ product.name }}"
                                    class="truncate font-bold w-48 inline-block align-top text-gray-900"
                                    href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}">{{ product.short_name }}</a>
-                                {% if product.percent %}
-                                    {% set percent = product.percent %}
+                                {% if product.percent|round %}
+                                    {% set discount = product.percent %}
                                     {% set cost = product.cost %}
-                                    {% set discount_cost = (cost - ((cost * product.quantity * percent) - percent)/100) %}
                                     <span class="font-light inline-block text-success">
-                                        {{ (discount_cost + product.fee)|amount_format }}<small>{{ order.market.currency|currency }}</small><span class="ml-2 text-red-500">{{ product.percent }}%</span>
+                                        {{ (cost + product.fee - ((cost * discount) - discount)/100)|amount_format }}<small>{{ order.store.currency|currency }}</small><span class="ml-2 text-red-500">{{ product.percent }}%</span>
                                         </span>
                                     <span class="block line-through font-light text-gray-300">
-                                            {{ (product.cost + product.fee)|amount_format }}<small>{{ order.market.currency|currency }}</small>
+                                            {{ (product.cost + product.fee)|amount_format }}<small>{{ order.store.currency|currency }}</small>
                                         </span>
                                 {% else %}
                                     <div class="text-gray-500 text-lg">
                                         {{ (product.cost + product.fee)|amount_format }}
-                                        <small>{{ order.market.currency|currency }}</small>
+                                        <small>{{ order.store.currency|currency }}</small>
                                     </div>
                                 {% endif %}
                             </div>
@@ -56,7 +55,7 @@
     <div class="justify-between mb-3 bg-gray-100 rounded-lg p-2">
         <strong class="text-lg">{{ 'order.subtotal'|trans }}</strong>
         <strong class="text-lg float-end pr-3">{{ order.total|amount_format }}
-            <small>{{ order.market.currency|currency }}</small></strong>
+            <small>{{ order.store.currency|currency }}</small></strong>
     </div>
 {% else %}
     <div class="text-center">

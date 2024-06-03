@@ -2,7 +2,7 @@
 
 namespace App\Security\Voter;
 
-use App\Entity\MarketPlace\MarketProduct;
+use App\Entity\MarketPlace\StoreProduct;
 use App\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -35,7 +35,7 @@ class ProductVoter extends Voter
             return false;
         }
 
-        if (!$subject instanceof MarketProduct) {
+        if (!$subject instanceof StoreProduct) {
             return false;
         }
 
@@ -73,37 +73,37 @@ class ProductVoter extends Voter
     }
 
     /**
-     * @param MarketProduct $product
+     * @param StoreProduct $product
      * @param User $user
      * @return bool
      */
-    private function canView(MarketProduct $product, User $user): bool
+    private function canView(StoreProduct $product, User $user): bool
     {
         // if they can edit, they can view
         if ($this->canEdit($product, $user)) {
             return true;
         }
 
-        return !$product->getMarket()->isPrivate();
+        return !$product->getStore()->isPrivate();
     }
 
     /**
-     * @param MarketProduct $product
+     * @param StoreProduct $product
      * @param User $user
      * @return bool
      */
-    private function canEdit(MarketProduct $product, User $user): bool
+    private function canEdit(StoreProduct $product, User $user): bool
     {
-        return $user === $product->getMarket()->getOwner();
+        return $user === $product->getStore()->getOwner();
     }
 
     /**
-     * @param MarketProduct $product
+     * @param StoreProduct $product
      * @param User $user
      * @return bool
      */
-    private function canDelete(MarketProduct $product, User $user): bool
+    private function canDelete(StoreProduct $product, User $user): bool
     {
-        return $user === $product->getMarket()->getOwner();
+        return $user === $product->getStore()->getOwner();
     }
 }

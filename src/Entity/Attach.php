@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-use App\Entity\MarketPlace\Market;
-use App\Entity\MarketPlace\MarketProductAttach;
+use App\Entity\MarketPlace\Store;
+use App\Entity\MarketPlace\StoreProductAttach;
 use App\Repository\AttachRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -40,18 +40,18 @@ class Attach
     #[ORM\OneToOne(mappedBy: 'attach', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'attach', targetEntity: MarketProductAttach::class)]
-    private Collection $marketProductAttaches;
+    #[ORM\OneToMany(mappedBy: 'attach', targetEntity: StoreProductAttach::class)]
+    private Collection $storeProductAttaches;
 
     #[ORM\OneToOne(mappedBy: 'attach', cascade: ['persist', 'remove'])]
-    private ?Market $market = null;
+    private ?Store $store = null;
 
     public function __construct()
     {
         $this->created_at = new DateTime();
         $this->size = 0;
         $this->entryAttachments = new ArrayCollection();
-        $this->marketProductAttaches = new ArrayCollection();
+        $this->storeProductAttaches = new ArrayCollection();
     }
 
     /**
@@ -206,37 +206,37 @@ class Attach
     }
 
     /**
-     * @return Collection<int, MarketProductAttach>
+     * @return Collection<int, StoreProductAttach>
      */
-    public function getMarketProductAttaches(): Collection
+    public function getStoreProductAttaches(): Collection
     {
-        return $this->marketProductAttaches;
+        return $this->storeProductAttaches;
     }
 
     /**
-     * @param MarketProductAttach $marketProductAttach
+     * @param StoreProductAttach $storeProductAttach
      * @return $this
      */
-    public function addMarketProductAttach(MarketProductAttach $marketProductAttach): static
+    public function addStoreProductAttach(StoreProductAttach $storeProductAttach): static
     {
-        if (!$this->marketProductAttaches->contains($marketProductAttach)) {
-            $this->marketProductAttaches->add($marketProductAttach);
-            $marketProductAttach->setAttach($this);
+        if (!$this->storeProductAttaches->contains($storeProductAttach)) {
+            $this->storeProductAttaches->add($storeProductAttach);
+            $storeProductAttach->setAttach($this);
         }
 
         return $this;
     }
 
     /**
-     * @param MarketProductAttach $marketProductAttach
+     * @param StoreProductAttach $storeProductAttach
      * @return $this
      */
-    public function removeMarketProductAttach(MarketProductAttach $marketProductAttach): static
+    public function removeStoreProductAttach(StoreProductAttach $storeProductAttach): static
     {
-        if ($this->marketProductAttaches->removeElement($marketProductAttach)) {
+        if ($this->storeProductAttaches->removeElement($storeProductAttach)) {
             // set the owning side to null (unless already changed)
-            if ($marketProductAttach->getAttach() === $this) {
-                $marketProductAttach->setAttach(null);
+            if ($storeProductAttach->getAttach() === $this) {
+                $storeProductAttach->setAttach(null);
             }
         }
 
@@ -244,30 +244,30 @@ class Attach
     }
 
     /**
-     * @return Market|null
+     * @return Store|null
      */
-    public function getMarket(): ?Market
+    public function getStore(): ?Store
     {
-        return $this->market;
+        return $this->store;
     }
 
     /**
-     * @param Market|null $market
+     * @param Store|null $store
      * @return $this
      */
-    public function setMarket(?Market $market): static
+    public function setStore(?Store $store): static
     {
         // unset the owning side of the relation if necessary
-        if ($market === null && $this->market !== null) {
-            $this->market->setAttach(null);
+        if ($store === null && $this->store !== null) {
+            $this->store->setAttach(null);
         }
 
         // set the owning side of the relation if necessary
-        if ($market !== null && $market->getAttach() !== $this) {
-            $market->setAttach($this);
+        if ($store !== null && $store->getAttach() !== $this) {
+            $store->setAttach($this);
         }
 
-        $this->market = $market;
+        $this->store = $store;
 
         return $this;
     }

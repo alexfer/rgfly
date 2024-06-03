@@ -54,7 +54,7 @@
                     type="button"
                     role="tab"
                     aria-controls="attributes"
-                    aria-selected="{{ _tab == 'attributes' ? 'true' : 'false' }}">{{ 'market.attributes'|trans }}
+                    aria-selected="{{ _tab == 'attributes' ? 'true' : 'false' }}">{{ 'store.attributes'|trans }}
             </button>
         </li>
         <li class="me-2 flex-auto text-center" role="presentation">
@@ -102,9 +102,9 @@
              aria-labelledby="attachments-tab">
             <div class="mt-4 p-2">
                 {% if app.request.get('id') %}
-                    {% set _args = {market: product.market.id, id: product.id} %}
+                    {% set _args = {store: product.store.id, id: product.id} %}
                     {% include 'dashboard/content/form/attachment.html.twig' with {
-                        'attachments': product.marketProductAttaches,
+                        'attachments': product.storeProductAttaches,
                         'storage': 'product',
                         'id': product.id,
                         'set_use': null,
@@ -123,8 +123,8 @@
         <div class="w-full text-center pb-1">
             {{ form_widget(form.save, { label: form.vars.data.id ? 'form.action.update' : 'form.action.save', attr: {class: 'inline-block rounded bg-danger px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-danger-3 transition duration-150 ease-in-out hover:bg-danger-accent-300 hover:shadow-danger-2 focus:bg-danger-accent-300 focus:shadow-danger-2 focus:outline-none focus:ring-0 active:bg-danger-600 active:shadow-danger-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong group-invalid:pointer-events-none group-invalid:opacity-30'}}) }}
             <a type="button"
-               href="{{ url('app_dashboard_market_place_market_product', {market: app.request.get('market')}) }}"
-               class="inline-block rounded bg-secondary hover:text-gray-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-secondary-3 transition duration-150 ease-in-out hover:bg-secondary-accent-300 hover:shadow-secondary-2 focus:bg-secondary-accent-300 focus:shadow-secondary-2 focus:outline-none focus:ring-0 active:bg-secondary-600 active:shadow-secondary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong group-invalid:pointer-events-none group-invalid:opacity-30">{{ 'form.action.back'|trans }}</a>
+               href="{{ url('app_dashboard_market_place_market_product', {store: app.request.get('store')}) }}"
+               class="inline-block rounded bg-gray-500 hover:text-gray-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-secondary-3 transition duration-150 ease-in-out hover:bg-secondary-accent-300 hover:shadow-secondary-2 focus:bg-secondary-accent-300 focus:shadow-secondary-2 focus:outline-none focus:ring-0 active:bg-secondary-600 active:shadow-secondary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong group-invalid:pointer-events-none group-invalid:opacity-30">{{ 'form.action.back'|trans }}</a>
         </div>
     </div>
     {{ form_end(form) }}

@@ -9,7 +9,7 @@ DECLARE
 BEGIN
     cid := customer_id;
 
-    INSERT INTO "market_address" (customer_id,
+    INSERT INTO "store_address" (customer_id,
                                   line1,
                                   line2,
                                   phone,
