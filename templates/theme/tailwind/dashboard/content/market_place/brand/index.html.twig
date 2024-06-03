@@ -7,8 +7,8 @@
 {% block content %}
     {% include 'dashboard/content/market_place/navbar/nav.html.twig' with {
         inject: true,
-        name: 'market.brand.create'|trans,
-        path: path('app_dashboard_market_place_create_brand', {market: market.id})
+        name: 'store.brand.create'|trans,
+        path: path('app_dashboard_market_place_create_brand', {store: store.id})
     } %}
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -27,7 +27,7 @@
                            data-twe-placement="left"
                            class="block text-wrap font-semibold hover:underline hover:text-gray-400 dark:text-gray-400"
                            title="{{ brand.name }}"
-                           href="{{ path('app_dashboard_market_place_edit_brand', {market: brand.market.id, id: brand.id}) }}">
+                           href="{{ path('app_dashboard_market_place_edit_brand', {store: brand.store.id, id: brand.id}) }}">
                             {{ brand.name|length > 30 ? brand.name|slice(0, 30) ~ '...' : brand.name }}
                         </a>
                     </th>
@@ -36,15 +36,15 @@
                            href="{{ brand.url }}">{{ brand.name }}</a>
                     </td>
                     <td class="px-6 py-3 text-center">
-                        <a href="{{ path('app_dashboard_market_place_edit_brand', {market: brand.market.id, id: brand.id}) }}"
+                        <a href="{{ path('app_dashboard_market_place_edit_brand', {store: brand.store.id, id: brand.id}) }}"
                            class="border rounded ps-1.5 pe-0.5 py-1 mr-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
                             <i class="fa fa-pencil text-indigo-600 dark:text-white"></i>
                         </a>
                         <a
-                                class="border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer {{ brand.marketProductBrands.count ? 'pointer-events-none' : '' }}"
+                                class="border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer {{ brand.storeProductBrands.count ? 'pointer-events-none' : '' }}"
                                 data-token="{{ csrf_token('delete') }}"
-                                data-url="{{ path('app_dashboard_delete_brand', {market: brand.market.id, id: brand.id}) }}">
-                            <i class="fa fa-{{ brand.marketProductBrands.count ? 'ban' : 'trash' }} dark:text-white"></i>
+                                data-url="{{ path('app_dashboard_delete_brand', {store: brand.store.id, id: brand.id}) }}">
+                            <i class="fa fa-{{ brand.storeProductBrands.count ? 'ban' : 'trash' }} dark:text-white"></i>
                         </a>
                     </td>
                 </tr>

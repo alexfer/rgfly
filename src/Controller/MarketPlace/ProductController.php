@@ -2,8 +2,8 @@
 
 namespace App\Controller\MarketPlace;
 
-use App\Entity\MarketPlace\MarketCustomer;
-use App\Entity\MarketPlace\MarketProduct;
+use App\Entity\MarketPlace\StoreCustomer;
+use App\Entity\MarketPlace\StoreProduct;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,12 +17,12 @@ class ProductController extends AbstractController
     #[Route('/{slug}/{tab}', name: 'app_market_place_product')]
     public function index(
         Request                $request,
-        MarketProduct          $product,
+        StoreProduct           $product,
         ?UserInterface         $user,
         EntityManagerInterface $em,
     ): Response
     {
-        $customer = $em->getRepository(MarketCustomer::class)->findOneBy([
+        $customer = $em->getRepository(StoreCustomer::class)->findOneBy([
             'member' => $user,
         ]);
 

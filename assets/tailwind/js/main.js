@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         deleteEntry: document.querySelectorAll('.delete-entry'),
         tabList: document.querySelector('ul[role="tablist"]'),
         addEntry: document.querySelectorAll('.add-entry'),
-        marketsButton: document.getElementById('market-search'),
+        storeButton: document.getElementById('store-search'),
         coupons: document.querySelectorAll('.coupons')
     };
 
@@ -73,10 +73,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    if (elements.marketsButton) {
-        elements.marketsButton.addEventListener('click', (e) => {
-            let search = document.getElementById('input-market-search');
-            let url = elements.marketsButton.getAttribute('data-url');
+    if (elements.storesButton) {
+        elements.storesButton.addEventListener('click', (e) => {
+            let search = document.getElementById('input-store-search');
+            let url = elements.storesButton.getAttribute('data-url');
             let list = document.getElementById('search-list');
             let ms = 0;
             search.value = null;
@@ -88,14 +88,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         .then(data => data.json())
                         .then(data => {
 
-                            let markets = Object.entries(data.result);
-                            console.log(markets.length)
-                            if (markets.length > 0) {
+                            let stores = Object.entries(data.result);
+                            console.log(stores.length)
+                            if (stores.length > 0) {
                                 let classList = list.children[0].children.item(0).getAttribute('class');
                                 let li = [];
 
                                 list.innerHTML = null;
-                                for (const [key, item] of markets) {
+                                for (const [key, item] of stores) {
                                     li[key] = document.createElement('li');
                                     let link = document.createElement('a');
                                     link.setAttribute('class', classList);
@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (elements.uploadInput) {
-        if(elements.uploadInput.classList.contains('skip')) {
+        if (elements.uploadInput.classList.contains('skip')) {
             return false;
         }
         elements.uploadInput.addEventListener('change', (event) => {

@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Entity\MarketPlace\Market;
+use App\Entity\MarketPlace\Store;
 use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -48,8 +48,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Attach $attach = null;
 
-    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Market::class)]
-    private Collection $markets;
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Store::class)]
+    private Collection $stores;
 
     final public const string ROLE_USER = 'ROLE_USER';
 
@@ -59,7 +59,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->created_at = new DateTime();
-        $this->markets = new ArrayCollection();
+        $this->stores = new ArrayCollection();
     }
 
     /**
@@ -285,37 +285,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Market>
+     * @return Collection<int, Store>
      */
-    public function getMarkets(): Collection
+    public function getStores(): Collection
     {
-        return $this->markets;
+        return $this->stores;
     }
 
     /**
-     * @param Market $market
+     * @param Store $store
      * @return $this
      */
-    public function addMarket(Market $market): static
+    public function addStore(Store $store): static
     {
-        if (!$this->markets->contains($market)) {
-            $this->markets->add($market);
-            $market->setOwner($this);
+        if (!$this->stores->contains($store)) {
+            $this->stores->add($store);
+            $store->setOwner($this);
         }
 
         return $this;
     }
 
     /**
-     * @param Market $market
+     * @param Store $store
      * @return $this
      */
-    public function removeMarket(Market $market): static
+    public function removeStore(Store $store): static
     {
-        if ($this->markets->removeElement($market)) {
+        if ($this->stores->removeElement($store)) {
             // set the owning side to null (unless already changed)
-            if ($market->getOwner() === $this) {
-                $market->setOwner(null);
+            if ($store->getOwner() === $this) {
+                $store->setOwner(null);
             }
         }
 

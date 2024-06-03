@@ -44,16 +44,16 @@
                                     </td>
                                     <td class="p-3 text-gray-500 w-2/5">
                                         <a class="text-ellipsis overflow-hidden"
-                                           href="{{ path('app_market_place_market', {slug: item.market.slug}) }}">{{ item.market.name }}</a>
+                                           href="{{ path('app_market_place_market', {slug: item.store.slug}) }}">{{ item.store.name }}</a>
                                     </td>
                                     <td class="p-3 text-gray-500 w-2/5 text-center">
-                                        <span class="pr-1 font-semibold">{{ item.product.cost|amount_format }}{{ item.market.currency|currency }}</span>
+                                        <span class="pr-1 font-semibold">{{ item.product.cost|amount_format }}{{ item.store.currency|currency }}</span>
                                     </td>
                                     <td class="p-3 text-gray-500">
                                         <form class="shopping-cart" method="post"
                                               action="{{ path('app_market_place_product_order', {product: item.product.slug}) }}">
                                             <button class="flex-grow bg-gray-200 px-3 py-2 hover:bg-gray-100 hover:text-gray-950 drop-shadow-2xl border rounded-lg shadow-mdm"
-                                                    data-id="{{ item.market.id }}-{{ item.product.id }}"
+                                                    data-id="{{ item.store.id }}-{{ item.product.id }}"
                                                     type="submit">
                                                 <i class="fa fa-shopping-cart"></i>
                                             </button>

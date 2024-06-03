@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures\MarketPlace;
 
-use App\Entity\MarketPlace\MarketPaymentGateway;
+use App\Entity\MarketPlace\StorePaymentGateway;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -43,7 +43,7 @@ class Fixtures extends Fixture
     private function loadPaymentMethods(ObjectManager $manager): void
     {
         foreach ($this->getPaymentGatewayData() as [$name, $summary, $active, $icon, $handler_text]) {
-            $gateway = new MarketPaymentGateway();
+            $gateway = new StorePaymentGateway();
             $gateway->setName($name);
             $gateway->setSlug($this->slugger->slug($name)->lower());
             $gateway->setIcon($icon);

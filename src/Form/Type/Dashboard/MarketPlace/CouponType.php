@@ -2,8 +2,8 @@
 
 namespace App\Form\Type\Dashboard\MarketPlace;
 
-use App\Entity\MarketPlace\Market;
-use App\Entity\MarketPlace\MarketCoupon;
+use App\Entity\MarketPlace\Store;
+use App\Entity\MarketPlace\StoreCoupon;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
@@ -24,9 +24,9 @@ use Symfony\Component\Validator\Constraints\Positive;
 class CouponType extends AbstractType
 {
     /**
-     * @var Market|null
+     * @var Store|null
      */
-    private null|Market $market;
+    private null|Store $store;
 
     /**
      * @param Security $security
@@ -40,9 +40,9 @@ class CouponType extends AbstractType
     )
     {
         $user = $security->getUser();
-        $market = $requestStack->getCurrentRequest()->get('market');
-        $this->market = $em->getRepository(Market::class)
-            ->findOneBy(['id' => $market]);
+        $store = $requestStack->getCurrentRequest()->get('store');
+        $this->store = $em->getRepository(Store::class)
+            ->findOneBy(['id' => $store]);
     }
 
     /**
@@ -83,9 +83,9 @@ class CouponType extends AbstractType
             ->add('type', ChoiceType::class, [
                 'label' => 'label.form.type',
                 'choices' => [
-                    'coupon.choices.product' => MarketCoupon::COUPON_PRODUCT,
-                    'coupon.choices.order' => MarketCoupon::COUPON_ORDER,
-                    'coupon.choices.shipment' => MarketCoupon::COUPON_SHIPMENT,
+                    'coupon.choices.product' => StoreCoupon::COUPON_PRODUCT,
+                    'coupon.choices.order' => StoreCoupon::COUPON_ORDER,
+                    'coupon.choices.shipment' => StoreCoupon::COUPON_SHIPMENT,
                 ],
             ])
             ->add('orderLimit', NumberType::class, [
@@ -191,7 +191,7 @@ class CouponType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => MarketCoupon::class,
+            'data_class' => StoreCoupon::class,
         ]);
     }
 }

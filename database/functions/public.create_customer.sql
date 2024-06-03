@@ -6,7 +6,7 @@ $function$
 DECLARE
     last_inserted_id INTEGER;
 BEGIN
-    INSERT INTO "market_customer" (member_id,
+    INSERT INTO "store_customer" (member_id,
                                    first_name,
                                    last_name,
                                    phone,

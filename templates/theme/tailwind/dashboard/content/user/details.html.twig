@@ -1,12 +1,12 @@
 {% extends 'dashboard/index.html.twig' %}
 
-{% block title_content %}{{ entry.userDetails.firstName }} {{ entry.userDetails.lastName }}{% endblock %}
+{% block title_content %}{{ user.userDetails.firstName }} {{ user.userDetails.lastName }}{% endblock %}
 
 {% block content %}
     <div class="grid grid-cols-6 gap-4">
         <div class="flex justify-center items-center">
-            {% for picture in entry.userDetails.attach|slice(0, 1) %}
-                {% set _picture = 'storage/user/picture/' ~ entry.id ~ '/' ~ picture.name %}
+            {% for picture in user.userDetails.attach|slice(0, 1) %}
+                {% set _picture = 'storage/user/picture/' ~ user.id ~ '/' ~ picture.name %}
                 <img id="image-profile" class="rounded-full shadow-md border-2 border-spacing-4 w-32 hover:scale-125"
                      src="{{ asset(_picture) | imagine_filter('user_preview') }}" alt="..."/>
             {% else %}
@@ -15,10 +15,10 @@
         </div>
         <div class="col-span-5 mx-3">
             <h5 class="block">
-                <a class="dark:text-white" href="javascript:void(0);">{{ entry.userDetails.firstName }} {{ entry.userDetails.lastName }}</a>
+                <a class="dark:text-white" href="javascript:void(0);">{{ user.userDetails.firstName }} {{ user.userDetails.lastName }}</a>
             </h5>
-            <h6 class="block"><a class="dark:text-white" href="mailto:{{ entry.email }}"><i
-                            class="fa fa-envelope pr-2"></i> {{ entry.email }}</a></h6>
+            <h6 class="block"><a class="dark:text-white" href="mailto:{{ user.email }}"><i
+                            class="fa fa-envelope pr-2"></i> {{ user.email }}</a></h6>
         </div>
     </div>
     <div class="flex flex-col mt-5">
@@ -81,7 +81,7 @@
                         {{ 'user.info.first_name'|trans }}
                     </div>
                     <div class="w-auto text-gray-500 text-gray-500">
-                        {{ entry.userDetails.firstName }}
+                        {{ user.userDetails.firstName }}
                     </div>
                 </div>
                 <div class="flex flex-row py-1">
@@ -89,7 +89,7 @@
                         {{ 'user.info.last_name'|trans }}
                     </div>
                     <div class="w-auto text-gray-500">
-                        {{ entry.userDetails.lastName }}
+                        {{ user.userDetails.lastName }}
                     </div>
                 </div>
                 <div class="flex flex-row py-1">
@@ -97,7 +97,7 @@
                         <label>{{ 'user.info.phone_number'|trans }}</label>
                     </div>
                     <div class="w-auto text-gray-500">
-                        {{ entry.userDetails.phone|default('n/a') }}
+                        {{ user.userDetails.phone|default('n/a') }}
                     </div>
                 </div>
                 <div class="flex flex-row py-1">
@@ -105,7 +105,7 @@
                         <label>{{ 'user.info.birth_date'|trans }}</label>
                     </div>
                     <div class="w-auto text-gray-500">
-                        {{ entry.userDetails.dateBirth|date(date_format)|default('n/a') }}
+                        {{ user.userDetails.dateBirth|date(date_format)|default('n/a') }}
                     </div>
                 </div>
                 <div class="flex flex-row py-1">
@@ -113,7 +113,7 @@
                         <label>{{ 'user.info.registered'|trans }}</label>
                     </div>
                     <div class="w-auto text-gray-500">
-                        {{ entry.createdAt|date(datetime_format) }}
+                        {{ user.createdAt|date(datetime_format) }}
                     </div>
                 </div>
                 <div class="flex flex-row py-1">
@@ -121,7 +121,7 @@
                         <label>{{ 'user.info.last_login'|trans }}</label>
                     </div>
                     <div class="w-auto text-gray-500">
-                        {{ entry.userDetails.updatedAt|date(datetime_format) }}
+                        {{ user.userDetails.updatedAt|date(datetime_format) }}
                     </div>
                 </div>
                 <div class="flex flex-row py-1">
@@ -129,7 +129,7 @@
                         <label>{{ 'user.info.ip_address'|trans }}</label>
                     </div>
                     <div class="w-auto text-gray-500">
-                        {{ entry.ip|default('0.0.0.0') }}
+                        {{ user.ip|default('0.0.0.0') }}
                     </div>
                 </div>
             </div>
@@ -147,7 +147,7 @@
                         <label>{{ 'user.info.city'|trans }}</label>
                     </div>
                     <div class="w-auto text-gray-500">
-                        {{ entry.userDetails.city|default('n/a') }}
+                        {{ user.userDetails.city|default('n/a') }}
                     </div>
                 </div>
             </div>
@@ -157,25 +157,25 @@
             <div id="social" role="tabpanel" aria-labelledby="social-tab">
                 <ul class="mx-auto w-1/2 flex justify-between items-center">
                     <li class="w-full inline-block text-center px-5">
-                        <a href="{{ entry.userDetails.userSocial.facebookProfile|default('#') }}">
+                        <a href="{{ user.userDetails.userSocial.facebookProfile|default('#') }}">
                             <h1 class="text-5xl fa fa-facebook text-indigo-700"></h1>
                         </a>
                     </li>
                     <li class="w-full inline-block text-center px-5">
-                        <a href="{{ entry.userDetails.userSocial.twitterProfile|default('#') }}">
+                        <a href="{{ user.userDetails.userSocial.twitterProfile|default('#') }}">
                             <h1 class="text-5xl fa fa-twitter text-info-600"></h1>
                         </a>
                     </li>
                     <li class="w-full inline-block text-center px-5">
-                        <a href="{{ entry.userDetails.userSocial.instagramProfile|default('#') }}">
+                        <a href="{{ user.userDetails.userSocial.instagramProfile|default('#') }}">
                             <h1 class="text-5xl fa fa-instagram text-info"></h1>
                         </a>
                     </li>
                 </ul>
             </div>
             <div id="about" role="tabpanel" class="text-gray-600 dark:text-gray-100" aria-labelledby="about-tab">
-                {% if  entry.userDetails.about is not empty %}
-                    {{ entry.userDetails.about|nl2br|raw }}
+                {% if  user.userDetails.about is not empty %}
+                    {{ user.userDetails.about|nl2br|raw }}
                 {% else %}
                     {{ ''|default('n/a') }}
                 {% endif %}

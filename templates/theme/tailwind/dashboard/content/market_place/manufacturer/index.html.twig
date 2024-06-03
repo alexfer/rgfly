@@ -7,8 +7,8 @@
 {% block content %}
     {% include 'dashboard/content/market_place/navbar/nav.html.twig' with {
         inject: true,
-        name: 'market.manufacturer.create'|trans,
-        path: path('app_dashboard_market_place_create_manufacturer', {market: market.id})
+        name: 'store.manufacturer.create'|trans,
+        path: path('app_dashboard_market_place_create_manufacturer', {store: store.id})
     } %}
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -27,20 +27,20 @@
                            data-twe-placement="left"
                            class="block text-wrap font-semibold hover:underline hover:text-gray-400 dark:text-gray-400"
                            title="{{ manufacturer.name }}"
-                           href="{{ path('app_dashboard_market_place_edit_manufacturer', {market: manufacturer.market.id, id: manufacturer.id}) }}">
+                           href="{{ path('app_dashboard_market_place_edit_manufacturer', {store: manufacturer.store.id, id: manufacturer.id}) }}">
                             {{ manufacturer.name|length > 30 ? manufacturer.name|slice(0, 30) ~ '...' : manufacturer.name }}
                         </a>
                     </th>
                     <td class="px-6 py-3">{{ manufacturer.description|length > 80 ? manufacturer.description|slice(0, 80) ~ '...' : manufacturer.description|default('n/a') }}</td>
                     <td class="px-6 py-3 text-center">
-                        <a href="{{ path('app_dashboard_market_place_edit_manufacturer', {market: manufacturer.market.id, id: manufacturer.id}) }}"
+                        <a href="{{ path('app_dashboard_market_place_edit_manufacturer', {store: manufacturer.store.id, id: manufacturer.id}) }}"
                            class="border rounded ps-1.5 pe-0.5 py-1 mr-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
                             <i class="fa fa-pencil text-indigo-600 dark:text-white"></i>
                         </a>
-                        <a class="border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer {{ manufacturer.marketProductManufacturers.count ? 'pointer-events-none' : '' }}"
+                        <a class="border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer {{ manufacturer.storeProductManufacturers.count ? 'pointer-events-none' : '' }}"
                            data-token="{{ csrf_token('delete') }}"
-                           data-url="{{ url('app_dashboard_delete_manufacturer', {market: manufacturer.market.id, id: manufacturer.id}) }}">
-                            <i class="fa fa-{{ manufacturer.marketProductManufacturers.count ? 'ban' : 'trash' }} dark:text-white"></i>
+                           data-url="{{ url('app_dashboard_delete_manufacturer', {store: manufacturer.store.id, id: manufacturer.id}) }}">
+                            <i class="fa fa-{{ manufacturer.storeProductManufacturers.count ? 'ban' : 'trash' }} dark:text-white"></i>
                         </a>
                     </td>
                 </tr>

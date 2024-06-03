@@ -61,7 +61,7 @@ if (typeof drops !== 'undefined') {
             let url = drop.getAttribute('data-url');
             let product = drop.getAttribute('data-id');
             let order = drop.getAttribute('data-order');
-            let market = drop.getAttribute('data-market');
+            let store = drop.getAttribute('data-store');
             let quantity = document.getElementById('qty');
             Swal.fire({
                 text: i18next.t('question'),
@@ -77,7 +77,7 @@ if (typeof drops !== 'undefined') {
                             body: JSON.stringify({
                                 product: product,
                                 order: order,
-                                market: market
+                                store: store
                             }),
                             headers: headers
                         }
@@ -85,9 +85,9 @@ if (typeof drops !== 'undefined') {
                     const data = await response.json();
                     const summary = data.summary;
                     summary.map((item, key) => {
-                        let total = document.getElementById('total-' + item.market);
-                        let checkout = document.getElementById('checkout-' + item.market);
-                        let itemSubtotal = document.getElementById('item-subtotal-' + item.market);
+                        let total = document.getElementById('total-' + item.store);
+                        let checkout = document.getElementById('checkout-' + item.store);
+                        let itemSubtotal = document.getElementById('item-subtotal-' + item.store);
                         let currency = '<small>' + item.currency + '</small>';
 
                         checkout.innerHTML = item.total + currency;
@@ -102,7 +102,7 @@ if (typeof drops !== 'undefined') {
                     }
                     if (data.products === 0) {
                         drop.closest('.root').remove();
-                        document.getElementById('market-' + data.removed).remove();
+                        document.getElementById('store-' + data.removed).remove();
                     }
                     if (data.redirect && data.order) {
                         document.location.href = data.redirect;
@@ -164,13 +164,13 @@ if (attributes.length) {
 if (typeof wishlists != 'undefined') {
     Array.from(wishlists).forEach((form) => {
         const url = form.getAttribute('action');
-        let market = form.querySelector('input[name="market"]');
+        let store = form.querySelector('input[name="store"]');
         let button = form.querySelector('button[type="submit"]');
         form.addEventListener('submit', (event) => {
             event.preventDefault();
             fetch(url, {
                 method: 'POST',
-                body: JSON.stringify({market: market.value})
+                body: JSON.stringify({store: store.value})
             })
                 .then((response) => {
                     if (response.status === 401) {

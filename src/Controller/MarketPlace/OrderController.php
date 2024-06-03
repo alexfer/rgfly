@@ -2,15 +2,14 @@
 
 namespace App\Controller\MarketPlace;
 
-use App\Service\MarketPlace\Market\Customer\Interface\UserManagerInterface;
-use App\Service\MarketPlace\Market\Order\Interface\{CollectionInterface,
+use App\Service\MarketPlace\Store\Customer\Interface\UserManagerInterface;
+use App\Service\MarketPlace\Store\Order\Interface\{CollectionInterface,
+    ComputeInterface,
     ProcessorInterface,
     ProductInterface,
-    SummaryInterface,};
+    SummaryInterface};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -46,7 +45,7 @@ class OrderController extends AbstractController
         $order = $orderProduct->getOrder();
 
         if ($order) {
-            $products = $order->getMarketOrdersProducts();
+            $products = $order->getStoreOrdersProducts();
             $countProducts = count($products);
         }
         $orderProducts = $orderCollection->getOrderProducts($session->getId());
@@ -55,27 +54,27 @@ class OrderController extends AbstractController
         return $this->json([
             'products' => $countProducts,
             'summary' => $orderSummary->summary($orders, true),
-            'removed' => $orderProduct->getMarket()->getId(),
+            'removed' => $orderProduct->getStore()->getId(),
             'order' => count($orders) == 0,
             'quantity' => $session->get('quantity'),
             'redirect' => $this->generateUrl('app_market_place_order_summary'),
         ]);
     }
 
+
     /**
      * @param Request $request
-     * @param ProcessorInterface $orderProcessor
+     * @param ComputeInterface $compute
      * @return Response
      */
     #[Route('/summary', name: 'app_market_place_order_update', methods: ['POST'])]
     public function update(
-        Request            $request,
-        ProcessorInterface $orderProcessor,
+        Request          $request,
+        ComputeInterface $compute,
     ): Response
     {
         $input = $request->request->all();
-        $session = $request->getSession();
-        $orderProcessor->updateQuantity($session->getId(), $input);
+        $compute->process($input);
 
         return $this->redirectToRoute('app_market_place_order_summary');
     }
@@ -96,6 +95,7 @@ class OrderController extends AbstractController
         $session = $request->getSession();
         $orders = $orderCollection->getOrders($session->getId());
 
+        //dd($orderSummary->summary($orders));
         return $this->render('market_place/order/summary.html.twig', [
             'orders' => $orders,
             'summary' => $orderSummary->summary($orders),

@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures\MarketPlace;
 
-use App\Entity\MarketPlace\MarketCategory;
+use App\Entity\MarketPlace\StoreCategory;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -42,7 +42,7 @@ class CategoryFixtures extends Fixture
     {
 
         foreach ($this->getProductCategoryData() as $key => $value) {
-            $category = new MarketCategory();
+            $category = new StoreCategory();
             $category->setName($value['name']);
             $category->setSlug($this->slugger->slug($value['name'])->lower());
             $category->setDescription($value['description']);
@@ -55,7 +55,7 @@ class CategoryFixtures extends Fixture
             if (count($value['parent'])) {
 
                 foreach ($value['parent'] as $i => $children) {
-                    $child = new MarketCategory();
+                    $child = new StoreCategory();
                     $child->setParent($category);
                     $child->setName($children['name']);
                     $child->setSlug($this->slugger->slug($children['name'])->lower());

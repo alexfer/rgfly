@@ -5,7 +5,6 @@ namespace App\Controller\Dashboard;
 use App\Entity\Answer;
 use App\Entity\Contact;
 use App\Service\Contact\Interface\HandleInterface;
-use App\Service\Dashboard;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,8 +17,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class ContactController extends AbstractController
 {
 
-    use Dashboard;
-
     /**
      * @param EntityManagerInterface $em
      * @param UserInterface $user
@@ -31,7 +28,7 @@ class ContactController extends AbstractController
         UserInterface          $user,
     ): Response
     {
-        return $this->render('dashboard/content/contact/index.html.twig', $this->navbar() + [
+        return $this->render('dashboard/content/contact/index.html.twig',  [
                 'entries' => $em->getRepository(Contact::class)->findBy([], ['id' => 'desc']),
             ]);
     }
@@ -100,7 +97,7 @@ class ContactController extends AbstractController
             return $this->redirectToRoute('app_dashboard_review_contact', ['id' => $contact->getId()]);
         }
 
-        return $this->render('dashboard/content/contact/review.html.twig', $this->navbar() + [
+        return $this->render('dashboard/content/contact/review.html.twig',  [
                 'contact' => $contact,
                 'answers' => $em->getRepository(Answer::class)->findBy(['contact' => $contact->getId()], ['id' => 'desc']),
             ]);
