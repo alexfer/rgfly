@@ -91,7 +91,8 @@
                 </h5>
             </a>
             <div class="grow">
-                <form class="shopping-cart" method="post" action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
+                <form class="shopping-cart" method="post"
+                      action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
                     {% if product.discount|round %}
                         <div class="relative">
                             <div class="pt-1 absolute right-0 bg-red-500 text-white text-sm font-light me-2 px-2.5 py-0.5 rounded-md dark:bg-red-900 dark:text-white">
@@ -184,17 +185,18 @@
             </div>
         </div>
     </div>
-    <ul class="mt-5 flex list-none flex-row flex-wrap border-b-0 ps-0" role="tablist" data-twe-nav-ref>
+    {% set _tab = app.request.get('tab') %}
+    <ul id="product-ifo-ref" class="mt-5 flex list-none flex-row flex-wrap border-b-0 ps-0" role="tablist" data-twe-nav-ref>
         <li role="presentation">
             <a
                     href="#about"
                     class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[twe-nav-active]:border-primary data-[twe-nav-active]:text-primary dark:text-white/50 dark:hover:bg-neutral-700/60 dark:data-[twe-nav-active]:text-primary"
                     data-twe-toggle="pill"
                     data-twe-target="#about"
-                    data-twe-nav-active
+                    {% if _tab == 'about' %}data-twe-nav-active {% endif %}
                     role="tab"
                     aria-controls="about"
-                    aria-selected="true">{{ 'product.details'|trans }}</a>
+                    aria-selected="{% if _tab == 'about' %}true{% else %}false{% endif %}">{{ 'product.details'|trans }}</a>
         </li>
         <li role="presentation">
             <a
@@ -202,9 +204,10 @@
                     class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[twe-nav-active]:border-primary data-[twe-nav-active]:text-primary dark:text-white/50 dark:hover:bg-neutral-700/60 dark:data-[twe-nav-active]:text-primary"
                     data-twe-toggle="pill"
                     data-twe-target="#product-info"
+                    {% if _tab == 'product-info' %}data-twe-nav-active {% endif %}
                     role="tab"
                     aria-controls="product-info"
-                    aria-selected="false">{{ 'product.information'|trans }}</a>
+                    aria-selected="{% if _tab == 'product-info' %}true{% else %}false{% endif %}">{{ 'product.information'|trans }}</a>
         </li>
         <li role="presentation">
             <a
@@ -212,9 +215,10 @@
                     class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[twe-nav-active]:border-primary data-[twe-nav-active]:text-primary dark:text-white/50 dark:hover:bg-neutral-700/60 dark:data-[twe-nav-active]:text-primary"
                     data-twe-toggle="pill"
                     data-twe-target="#seller-info"
+                    {% if _tab == 'seller-info' %}data-twe-nav-active {% endif %}
                     role="tab"
                     aria-controls="seller-info"
-                    aria-selected="false">{{ 'product.seller.info'|trans }}</a>
+                    aria-selected="{% if _tab == 'seller-info' %}true{% else %}false{% endif %}">{{ 'product.seller.info'|trans }}</a>
         </li>
         <li role="presentation">
             <a
@@ -222,25 +226,26 @@
                     class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[twe-nav-active]:border-primary data-[twe-nav-active]:text-primary dark:text-white/50 dark:hover:bg-neutral-700/60 dark:data-[twe-nav-active]:text-primary"
                     data-twe-toggle="pill"
                     data-twe-target="#seller-contact"
+                    {% if _tab == 'tabs-contact' %}data-twe-nav-active {% endif %}
                     role="tab"
                     aria-controls="tabs-contact"
-                    aria-selected="false">{{ 'product.seller.contact'|trans }}</a
-            >
+                    aria-selected="{% if _tab == 'tabs-contact' %}true{% else %}false{% endif %}">{{ 'product.seller.contact'|trans }}</a>
         </li>
     </ul>
     <div class="mb-6">
-        <div class="hidden opacity-100 p-4 rounded-lg bg-gray-50 dark:bg-gray-800 transition-opacity duration-150 ease-linear data-[twe-tab-active]:block"
+        <div class="hidden opacity-{% if _tab == 'about' %}100{% else %}0{% endif %} transition-opacity duration-150 ease-linear data-[twe-tab-active]:block p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
              id="about"
              role="tabpanel"
              aria-labelledby="about-tab"
-             data-twe-tab-active>
+                {% if _tab == 'about' %} data-twe-tab-active{% endif %}>
             <h5 class="block text-lg font-medium text-gray-600 py-3">{{ product.shortName }}</h5>
             <div class="text-sm font-light text-gray-500 dark:text-gray-400">{{ product.description|striptags|raw|nl2br }}</div>
         </div>
-        <div class="hidden opacity-0 p-4 transition-opacity duration-150 ease-linear data-[twe-tab-active]:block"
+        <div class="hidden opacity-{% if _tab == 'product-info' %}100{% else %}0{% endif %} transition-opacity duration-150 ease-linear data-[twe-tab-active]:block p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
              id="product-info"
              role="tabpanel"
-             aria-labelledby="product-info-tab">
+             aria-labelledby="product-info-tab"
+                {% if _tab == 'product-info' %} data-twe-tab-active{% endif %}>
             <div class="relative overflow-x-auto">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <tbody>
@@ -280,17 +285,19 @@
                 </table>
             </div>
         </div>
-        <div class="hidden opacity-0 p-4 rounded-lg bg-gray-50 dark:bg-gray-800 transition-opacity duration-150 ease-linear data-[twe-tab-active]:block"
+        <div class="hidden opacity-{% if _tab == 'seller-info' %}100{% else %}0{% endif %} transition-opacity duration-150 ease-linear data-[twe-tab-active]:block p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
              id="seller-info"
              role="tabpanel"
-             aria-labelledby="seller-info-tab">
+             aria-labelledby="seller-info-tab"
+                {% if _tab == 'seller-info' %} data-twe-tab-active{% endif %}>
             <h5 class="block text-lg font-medium text-gray-600 py-3">{{ product.store.name }}</h5>
             <div class="text-sm font-light text-gray-500 dark:text-gray-400">{{ product.store.description|default('info.no_content'|trans)|raw }}</div>
         </div>
-        <div class="hidden opacity-0 p-4 rounded-lg bg-gray-50 dark:bg-gray-800 transition-opacity duration-150 ease-linear data-[twe-tab-active]:block"
+        <div class="hidden opacity-{% if _tab == 'tabs-contact' %}100{% else %}0{% endif %} transition-opacity duration-150 ease-linear data-[twe-tab-active]:block p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
              id="seller-contact"
              role="tabpanel"
-             aria-labelledby="seller-contact-tab">
+             aria-labelledby="seller-contact-tab"
+                {% if _tab == 'tabs-contact' %} data-twe-tab-active{% endif %}>
             <h5 class="block text-lg font-medium text-gray-600 py-3">{{ 'product.seller.contact'|trans }}</h5>
             <div class="grid grid-cols-12 gap-5">
                 {% if product.store.phone is not null or product.store.email is not null or product.store.website is not null %}
