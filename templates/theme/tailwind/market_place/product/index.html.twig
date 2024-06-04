@@ -1,24 +1,24 @@
 {% extends 'market_place/index.html.twig' %}
 
-{% block title %}{{ product.shortName }}{% endblock %}
+{% block title %}{{ product.short_name }}{% endblock %}
 {% block description %}{{ product.name }}{% endblock %}
 
 {% block content_body %}
-    {% set parent = product.storeCategoryProducts.first.category.parent %}
-    {% set child = product.storeCategoryProducts.first.category %}
-    <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white text-ellipsis overflow-hidden">{{ product.shortName }}</h2>
+{#    {% set parent = product.storeCategoryProducts.first.category.parent %}#}
+{#    {% set child = product.storeCategoryProducts.first.category %}#}
+    <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white text-ellipsis overflow-hidden">{{ product.short_name }}</h2>
     <div class="grid grid-cols-12 gap-4">
         <div class="col-span-12 md:col-span-8">
             <div id="indicators-carousel" class="relative w-full" data-carousel="static">
                 <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
-                    {% if product.storeProductAttaches.count %}
-                        {% set _picture = 'storage/product/' ~ product.id ~ '/' ~ product.storeProductAttaches.first.attach.name %}
+                    {% if product.attachments|length %}
+                        {% set _picture = 'storage/product/' ~ product.id ~ '/' ~ product.attachments[0].name %}
                         <div class="hidden duration-200 ease-linear" data-carousel-item="active">
                             <img src="{{ asset(_picture)|imagine_filter('product_view') }}"
                                  class="absolute block transition duration-300 ease-linear hover:scale-125 w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
                                  alt="{{ product.name }}">
                             <div class="absolute inset-x-[15%] left-1/2 transform -translate-x-1/2 w-full bottom-5 py-5 text-center text-white md:block">
-                                <h5 class="text-xl text-ellipsis overflow-hidden">{{ product.shortName }}</h5>
+                                <h5 class="text-xl text-ellipsis overflow-hidden">{{ product.short_name }}</h5>
                                 <p class="text-ellipsis overflow-hidden">{{ product.store.name|e|slice(0, 220) }}</p>
                             </div>
                         </div>
@@ -33,22 +33,22 @@
                             </div>
                         </div>
                     {% endif %}
-                    {% for image in product.storeProductAttaches|slice(1, product.storeProductAttaches.count) %}
+                    {% for image in product.attachments|slice(1, product.attachments|length) %}
                         <div class="hidden duration-200 ease-linear" data-carousel-item>
-                            {% set _image = 'storage/product/' ~ product.id ~ '/' ~ image.attach.name %}
+                            {% set _image = 'storage/product/' ~ product.id ~ '/' ~ image.name %}
                             <img src="{{ asset(_image)|imagine_filter('product_view') }}"
                                  class="absolute block transition duration-300 ease-linear hover:scale-125 w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                                 alt="{{ product.shortName }}">
+                                 alt="{{ product.short_name }}">
                             <div class="absolute inset-x-[15%] left-1/2 transform -translate-x-1/2 w-full bottom-5 py-5 text-center text-white md:block">
-                                <h5 class="text-xl text-ellipsis overflow-hidden">{{ product.shortName }}</h5>
+                                <h5 class="text-xl text-ellipsis overflow-hidden">{{ product.short_name }}</h5>
                                 <p class="text-ellipsis overflow-hidden">{{ product.store.name }}</p>
                             </div>
                         </div>
                     {% endfor %}
                 </div>
-                {% if product.storeProductAttaches.count > 1 %}
+                {% if product.attachments|length > 1 %}
                     <div class="absolute z-30 flex -translate-x-1/2 space-x-3 rtl:space-x-reverse bottom-5 left-1/2">
-                        {% for key, image in product.storeProductAttaches %}
+                        {% for key, image in product.attachments %}
                             <button type="button" class="w-3 h-3 rounded-full"
                                     aria-current="{% if key == 0 %}true{% else %}false{% endif %}"
                                     aria-label="..." data-carousel-slide-to="{{ key }}"></button>
@@ -113,15 +113,15 @@
                             <span class="font-medium text-2xl text-surface-dark">{{ (product.cost + product.fee)|amount_format }}<small>{{ product.store.currency|currency }}</small></span>
                         {% endif %}
                     </div>
-                    {% if product.storeProductAttributes.count %}
+                    {% if product.attributes|length %}
                         <div id="attributes" class="block mt-xl-5 w-full">
-                            {% for attribute in product.storeProductAttributes.toArray %}
+                            {% for attribute in product.attributes %}
                                 <input type="hidden" name="color" value="">
                                 <input type="hidden" name="size" value="">
-                                {% if attribute.inFront %}
+                                {% if attribute.in_front %}
                                     <span class="block mt-3 text-gray-600 dark:text-white md:text-sm tracking-widest">{{ attribute.name|capitalize }}</span>
                                     <div class="flex mt-1" id="{{ attribute.name }}">
-                                        {% for attr in attribute.storeProductAttributeValues %}
+                                        {% for attr in product.attribute_values %}
                                             <div class="inline-block mr-1 p-1 border-2 {% if attribute.name == 'color' %} rounded-full{% endif %}">
                                                 <input type="radio" name="attr[{{ attribute.name }}]"
                                                        class="hidden peer"
@@ -163,7 +163,7 @@
                     {% include 'market_place/wishlist.html.twig' with {'extra': null} %}
                 </form>
             </div>
-            {% set code = product.slug|split('-')|last|upper %}
+
             <div class="relative mt-5 overflow-x-auto rounded-t-lg sm:rounded-lg">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <tbody>
@@ -171,8 +171,7 @@
                         <td class="py-3 px-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ 'market.product.code'|trans }}
                             :
                         </td>
-                        <td class="py-3">{{ 'market.product.code_prefix'|trans }}{{ product.id }}
-                            -{{ code }}</td>
+                        <td class="py-3">{{ 'market.product.code_prefix'|trans }}{{ product.code }}</td>
                     </tr>
                     <tr class="bg-white dark:bg-gray-800 dark:border-gray-700">
                         <td class="py-3 ps-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ 'market.product.availability'|trans }}
@@ -238,7 +237,7 @@
              role="tabpanel"
              aria-labelledby="about-tab"
                 {% if _tab == 'about' %} data-twe-tab-active{% endif %}>
-            <h5 class="block text-lg font-medium text-gray-600 py-3">{{ product.shortName }}</h5>
+            <h5 class="block text-lg font-medium text-gray-600 py-3">{{ product.short_name }}</h5>
             <div class="text-sm font-light text-gray-500 dark:text-gray-400">{{ product.description|striptags|raw|nl2br }}</div>
         </div>
         <div class="hidden opacity-{% if _tab == 'product-info' %}100{% else %}0{% endif %} transition-opacity duration-150 ease-linear data-[twe-tab-active]:block p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
@@ -253,10 +252,10 @@
                         <th class="py-3 px-5 min-w-10 max-w-10">{{ 'label.form.sku'|trans }}</th>
                         <td class="p-3 text-gray-500">{{ product.sku }}</td>
                     </tr>
-                    {% if product.pckgQuantity %}
+                    {% if product.pckg %}
                         <tr class="bg-gray-50 border-b dark:bg-gray-800 dark:border-gray-700">
                             <th class="py-3 px-5">{{ 'label.form.pckg_quantity'|trans }}</th>
-                            <td class="p-3 text-gray-500">{{ product.pckgQuantity }}</td>
+                            <td class="p-3 text-gray-500">{{ product.pckg }}</td>
                         </tr>
                     {% endif %}
                     <tr class="bg-gray-50 border-b dark:bg-gray-800 dark:border-gray-700">

@@ -61,7 +61,7 @@ class ProductController extends AbstractController
         $store = $this->store($request, $user, $em);
         $currency = Currency::currency($store->getCurrency());
         $products = $em->getRepository(StoreProduct::class)->products($store, $request->query->get('search'));
-        $coupons = $em->getRepository(StoreCoupon::class)->fetchActive($store);
+        $coupons = $em->getRepository(StoreCoupon::class)->fetchActive($store, StoreCoupon::COUPON_PRODUCT);
 
         return $this->render('dashboard/content/market_place/product/index.html.twig', [
             'store' => $store,
