@@ -19,17 +19,22 @@ BEGIN
                    'sku', p.sku,
                    'quantity', p.quantity,
                    'pckg', p.pckg_quantity,
-                   'attributes', json_agg(json_build_object(
+                   'attributes', (SELECT json_agg(json_build_object(
                     'id', pa.id,
                     'name', pa.name,
                     'in_front', pa.in_front
-                                          )),
-                   'attribute_values', json_agg(json_build_object(
+                                                  ))
+                                  FROM store_product_attribute pa
+                                  WHERE pa.product_id = p.id),
+                   'attribute_values', (SELECT json_agg(json_build_object(
                     'id', pav.id,
                     'value', pav.value,
                     'in_use', pav.in_use,
                     'extra', pav.extra
-                                                )),
+                                                        ))
+                                        FROM store_product_attribute pa
+                                                 JOIN store_product_attribute_value pav ON pav.attribute_id = pa.id
+                                        WHERE pa.product_id = p.id),
                    'attachments', (SELECT json_agg(json_build_object(
                     'id', a.id,
                     'name', a.name
@@ -62,8 +67,6 @@ BEGIN
            )
     INTO get_product
     FROM store_product p
-             LEFT JOIN store_product_attribute pa ON pa.product_id = p.id
-             LEFT JOIN store_product_attribute_value pav ON pav.attribute_id = pa.id
              JOIN store_coupon_store_product scsp ON scsp.store_product_id = p.id
              JOIN store_coupon sc ON sc.id = scsp.store_coupon_id
              JOIN store s ON s.id = p.store_id
