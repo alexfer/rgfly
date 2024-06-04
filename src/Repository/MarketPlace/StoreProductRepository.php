@@ -73,6 +73,19 @@ class StoreProductRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param string $slug
+     * @return array
+     * @throws Exception
+     */
+    public function fetchProduct(string $slug): array {
+        $statement = $this->connection->prepare('select get_product(:slug)');
+        $statement->bindValue('slug', $slug, \PDO::PARAM_STR);
+        $result = $statement->executeQuery()->fetchAllAssociative();
+
+        return json_decode($result[0]['get_product'], true) ?: [];
+    }
+
+    /**
      * @param int $id
      * @param int $offset
      * @param int $limit
@@ -127,19 +140,21 @@ class StoreProductRepository extends ServiceEntityRepository
      * @return array
      */
     public function products(
-        Store  $store,
+        Store   $store,
         ?string $search = null,
         int     $offset = 0,
         int     $limit = 10,
     ): array
     {
         $qb = $this->createQueryBuilder('p')
-            ->leftJoin(StoreCoupon::class, 'mc', Expr\Join::WITH, 'mc.store = :store')
+            ->leftJoin(StoreCoupon::class, 'sc', Expr\Join::WITH, 'sc.store = :store')
+            ->join('p.storeCoupons', 'pc')
             ->where('p.store = :store')
             ->setParameter('store', $store)
             ->andWhere('LOWER(p.name) LIKE :search')
             ->setParameter('search', '%' . strtolower($search) . '%')
             ->setFirstResult($offset)->setMaxResults($limit);
+
         return $qb->getQuery()->getResult();
     }
 
