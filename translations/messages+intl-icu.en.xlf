@@ -754,11 +754,11 @@
             </trans-unit>
             <trans-unit id="label.form.event.start">
                 <source>label.form.event.start</source>
-                <target>Start</target>
+                <target>Start event</target>
             </trans-unit>
             <trans-unit id="label.form.event.end">
                 <source>label.form.event.end</source>
-                <target>End</target>
+                <target>End event</target>
             </trans-unit>
             <trans-unit id="label.form.brand_url">
                 <source>label.form.brand_url</source>
