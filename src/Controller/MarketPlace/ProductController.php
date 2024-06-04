@@ -33,6 +33,10 @@ class ProductController extends AbstractController
 
         $product = $em->getRepository(StoreProduct::class)->fetchProduct($request->get('slug'));
 
+        if ($product['product'] === null) {
+            throw $this->createNotFoundException();
+        }
+
         return $this->render('market_place/product/index.html.twig', [
             'product' => $product['product'],
             'customer' => $customer,
