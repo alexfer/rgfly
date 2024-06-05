@@ -27,16 +27,16 @@ class ProductController extends AbstractController
         EntityManagerInterface $em,
     ): Response
     {
-        $customer = $em->getRepository(StoreCustomer::class)->findOneBy([
-            'member' => $user,
-        ]);
+        $customer = $em->getRepository(StoreCustomer::class)
+            ->findOneBy(['member' => $user]);
 
-        $product = $em->getRepository(StoreProduct::class)->fetchProduct($request->get('slug'));
+        $product = $em->getRepository(StoreProduct::class)
+            ->fetchProduct($request->get('slug'));
 
         if ($product['product'] === null) {
             throw $this->createNotFoundException();
         }
-
+        //dd($product['product']);
         return $this->render('market_place/product/index.html.twig', [
             'product' => $product['product'],
             'customer' => $customer,
