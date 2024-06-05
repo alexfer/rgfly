@@ -6,6 +6,14 @@ $function$
 DECLARE
     get_product JSON;
 BEGIN
+    WITH attachments AS (SELECT DISTINCT jsonb_build_object(
+                                                 'id', a.id,
+                                                 'name', a.name
+                                         ) AS attachment
+                         FROM store_product p
+                                  LEFT JOIN store_product_attach spa ON spa.product_id = p.id
+                                  LEFT JOIN attach a ON a.id = spa.attach_id
+                         WHERE p.slug = get_product.slug)
     SELECT json_build_object(
                    'id', p.id,
                    'slug', p.slug,
@@ -28,6 +36,7 @@ BEGIN
                                   WHERE pa.product_id = p.id),
                    'attribute_values', (SELECT json_agg(json_build_object(
                     'id', pav.id,
+                    'attribute_id', pav.attribute_id,
                     'value', pav.value,
                     'in_use', pav.in_use,
                     'extra', pav.extra
@@ -35,18 +44,13 @@ BEGIN
                                         FROM store_product_attribute pa
                                                  JOIN store_product_attribute_value pav ON pav.attribute_id = pa.id
                                         WHERE pa.product_id = p.id),
-                   'attachments', (SELECT json_agg(json_build_object(
-                    'id', a.id,
-                    'name', a.name
-                                                   ))
-                                   FROM store_product_attach spa
-                                            LEFT JOIN attach a ON a.id = spa.attach_id
-                                   WHERE spa.product_id = p.id),
-                   'coupon', json_build_object(
-                           'id', sc.id,
-                           'price', sc.price,
-                           'expired', sc.expired_at
-                             ),
+                   'coupon', (CASE
+                                  WHEN sc.id IS NULL THEN NULL
+                                  ELSE json_build_object(
+                                          'id', sc.id,
+                                          'price', sc.price,
+                                          'expired', sc.expired_at
+                                       ) END),
                    'store', json_build_object(
                            'id', s.id,
                            'slug', s.slug,
@@ -58,17 +62,31 @@ BEGIN
                            'website', s.website,
                            'description', s.description
                             ),
+                   'attachments', json_agg(attachment),
                    'wishlist', json_build_object(
                            'id', w.id,
                            'product', w.product_id,
                            'store', w.store_id,
                            'customer', w.customer_id
-                               )
+                               ),
+                   'brand', (SELECT sb.name
+                             FROM store_product_brand spb
+                                      LEFT JOIN store_brand sb ON sb.id = spb.brand_id
+                             WHERE spb.product_id = p.id),
+                   'supplier', (SELECT ss.name
+                                FROM store_product_supplier sps
+                                         LEFT JOIN store_supplier ss ON ss.id = sps.supplier_id
+                                WHERE sps.product_id = p.id),
+                   'manufacturer', (SELECT sm.name
+                                    FROM store_product_manufacturer spm
+                                             LEFT JOIN store_manufacturer sm ON sm.id = spm.manufacturer_id
+                                    WHERE spm.product_id = p.id)
            )
     INTO get_product
     FROM store_product p
-             JOIN store_coupon_store_product scsp ON scsp.store_product_id = p.id
-             JOIN store_coupon sc ON sc.id = scsp.store_coupon_id
+             CROSS JOIN attachments
+             LEFT JOIN store_coupon_store_product scsp ON scsp.store_product_id = p.id
+             LEFT JOIN store_coupon sc ON sc.id = scsp.store_coupon_id
              JOIN store s ON s.id = p.store_id
              LEFT JOIN store_wishlist w ON w.product_id = p.id AND w.store_id = s.id
     WHERE p.slug = get_product.slug

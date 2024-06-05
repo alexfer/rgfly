@@ -122,7 +122,8 @@
                                     <span class="block mt-3 text-gray-600 dark:text-white md:text-sm tracking-widest">{{ attribute.name|capitalize }}</span>
                                     <div class="flex mt-1" id="{{ attribute.name }}">
                                         {% for attr in product.attribute_values %}
-                                            <div class="inline-block mr-1 p-1 border-2 {% if attribute.name == 'color' %} rounded-full{% endif %}">
+                                            {% if attribute.id == attr.attribute_id %}
+                                            <div class="inline-block mr-1 p-1 border-2 {% if attribute.name == 'color' %} rounded-full{% else %} text-xs rounded-md px-1.5 py-0.5 hover:bg-gray-100{% endif %}">
                                                 <input type="radio" name="attr[{{ attribute.name }}]"
                                                        class="hidden peer"
                                                        data-name="{{ attr.value }}"
@@ -138,6 +139,7 @@
                                                     {% endif %}
                                                 </label>
                                             </div>
+                                            {% endif %}
                                         {% endfor %}
                                     </div>
                                 {% endif %}
@@ -270,15 +272,15 @@
                     </tr>
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <th class="py-3 px-5">{{ 'store.brand'|trans }}</th>
-                        <td class="p-3 text-gray-500">{{ product.storeProductBrand.brand.name|default('N/a') }}</td>
+                        <td class="p-3 text-gray-500">{{ product.brand|default('N/a') }}</td>
                     </tr>
                     <tr class="bg-gray-50 border-b dark:bg-gray-800 dark:border-gray-700">
                         <th class="py-3 px-5">{{ 'store.supplier'|trans }}</th>
-                        <td class="p-3 text-gray-500">{{ product.storeProductSupplier.supplier.name|default('N/a') }}</td>
+                        <td class="p-3 text-gray-500">{{ product.supplier|default('N/a') }}</td>
                     </tr>
                     <tr class="bg-white dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <th class="py-3 px-5">{{ 'store.manufacturer'|trans }}</th>
-                        <td class="p-3 text-gray-500">{{ product.storeProductManufacturer.manufacturer.name|default('N/a') }}</td>
+                        <td class="p-3 text-gray-500">{{ product.manufacturer|default('N/a') }}</td>
                     </tr>
                     </tbody>
                 </table>
