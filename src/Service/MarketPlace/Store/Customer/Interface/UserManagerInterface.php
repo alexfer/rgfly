@@ -12,11 +12,11 @@ interface UserManagerInterface
      * @param UserInterface|null $user
      * @return StoreCustomer|null
      */
-    public function getUserCustomer(?UserInterface $user): ?StoreCustomer;
+    public function get(?UserInterface $user): ?StoreCustomer;
 
     /**
      * @param string $email
      * @return User|null
      */
-    public function existsCustomer(string $email): ?User;
+    public function exists(string $email): ?User;
 }

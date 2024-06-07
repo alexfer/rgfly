@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         .then(data => {
 
                             let stores = Object.entries(data.result);
-                            console.log(stores.length)
+
                             if (stores.length > 0) {
                                 let classList = list.children[0].children.item(0).getAttribute('class');
                                 let li = [];

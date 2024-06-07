@@ -54,9 +54,18 @@
     </div>
     {% if hasUsed == false and coupon != 0 %}
         {% if app.user and 'ROLE_CUSTOMER' in app.user.roles %}
-            {% include 'market_place/checkout/parts/coupon.html.twig' %}
+            {% include 'market_place/coupon/code.html.twig' with {
+                relPath: path('app_market_place_market_verify_coupon', {
+                    store: order.store.id,
+                    relation: order.id,
+                    id: coupon.id,
+                    ref: constant('App\\Entity\\MarketPlace\\StoreCoupon::COUPON_ORDER')
+                }),
+                coupon: coupon.id
+            } %}
         {% else %}
-            <div class="p-4 my-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
+            <div class="p-4 my-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
+                 role="alert">
                 <span class="font-medium">{{ 'text.info'|trans }}</span> {{ 'text.info.description'|trans }}
             </div>
         {% endif %}
@@ -70,7 +79,8 @@
                             data-twe-collapse-init
                             data-twe-target="#collapse-{{ key }}"
                             aria-expanded="true"
-                            aria-controls="collapse-{{ key }}"><i class="{{ gateway.gateway.icon }} text-lg text-yellow-300 mb-1 mr-2"></i>{{ gateway.gateway.name }}
+                            aria-controls="collapse-{{ key }}"><i
+                                class="{{ gateway.gateway.icon }} text-lg text-yellow-300 mb-1 mr-2"></i>{{ gateway.gateway.name }}
                         <span class="-me-1 ms-auto h-5 w-5 shrink-0 rotate-[-180deg] transition-transform duration-200 ease-in-out group-data-[twe-collapse-collapsed]:me-0 group-data-[twe-collapse-collapsed]:rotate-0 motion-reduce:transition-none [&>svg]:h-6 [&>svg]:w-6">
                               <svg xmlns="http://www.w3.org/2000/svg"
                                    fill="none"

@@ -153,7 +153,7 @@ class ProductController extends AbstractController
 
             $sku = $form->get('sku')->getData();
             if (!$sku) {
-                $sku = 'M' . $request->get('store') . '-C' . $form->get('category')->getData() . '-P' . $product->getId() . '-N-' . mb_substr($form->get('name')->getData(), 0, 4, 'utf8') . '-C' . (int)$form->get('cost')->getData();
+                $sku = 'S' . $request->get('store') . '-C' . $form->get('category')->getData() . '-P' . $product->getId() . '-N-' . mb_substr($form->get('name')->getData(), 0, 4, 'utf8') . '-C' . (int)$form->get('cost')->getData();
             }
             $product->setSku(strtoupper($sku));
 
@@ -228,7 +228,7 @@ class ProductController extends AbstractController
 
             $sku = $form->get('sku')->getData();
             if (!$sku) {
-                $sku = 'M' . $request->get('store') . '-C' . $requestCategory . '-P' . $product->getId() . '-N-' . mb_substr($form->get('name')->getData(), 0, 4, 'utf8') . '-C' . (int)$form->get('cost')->getData();
+                $sku = 'S' . $request->get('store') . '-C' . $requestCategory . '-P' . $product->getId() . '-N-' . mb_substr($form->get('name')->getData(), 0, 4, 'utf8') . '-C' . (int)$form->get('cost')->getData();
             }
             $product->setSku($sku);
             $em->persist($product);
@@ -254,7 +254,7 @@ class ProductController extends AbstractController
 
                 foreach ($attributes['size'] as $size) {
                     $attributeValue = new StoreProductAttributeValue();
-                    $value = $attributeValue->setAttribute($attribute)->setValue($size);
+                    $value = $attributeValue->setAttribute($attribute)->setValue($size)->setExtra([$size]);
                     $em->persist($value);
                 }
                 $em->persist($attribute);

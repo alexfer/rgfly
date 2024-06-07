@@ -54,27 +54,28 @@ readonly class Processor implements ProcessorInterface
 
     /**
      * @param Store $store
+     * @param string $type
      * @return array|int
      */
-    public function process(Store $store): array|int
+    public function process(Store $store, string $type = StoreCoupon::COUPON_ORDER): array|int
     {
         $coupon = $this->em->getRepository(StoreCoupon::class)
-            ->getSingleActive($store, StoreCoupon::COUPON_ORDER);
+            ->getSingleActive($store, $type);
         $this->coupon = !$coupon ? $coupon : $coupon['coupon'];
         return $this->coupon;
     }
 
     /**
-     * @param int $orderId
+     * @param int $relation
      * @param UserInterface|null $user
      * @return bool
      */
-    public function getCouponUsage(int $orderId, ?UserInterface $user): bool
+    public function getCouponUsage(int $relation, ?UserInterface $user): bool
     {
         return (bool)$this->em->getRepository(StoreCouponUsage::class)
             ->findOneBy([
                 'coupon' => $this->Coupon(),
-                'relation' => $orderId,
+                'relation' => $relation,
                 'customer' => $user,
             ]);
     }

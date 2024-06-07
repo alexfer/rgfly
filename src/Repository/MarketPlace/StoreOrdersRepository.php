@@ -7,6 +7,7 @@ use App\Entity\MarketPlace\StoreCustomer;
 use App\Entity\MarketPlace\StoreCustomerOrders;
 use App\Entity\MarketPlace\StoreOrders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -48,6 +49,20 @@ class StoreOrdersRepository extends ServiceEntityRepository
             ->setParameter('customer', $customer);
 
         return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @param string $sessionId
+     * @return array|null
+     * @throws Exception
+     */
+    public function collection(string $sessionId): ?array {
+        $connection = $this->getEntityManager()->getConnection();
+        $statement = $connection->prepare('select get_order_summary(:session)');
+        $statement->bindValue('session', $sessionId, \PDO::PARAM_STR);
+        $result = $statement->executeQuery()->fetchAllAssociative();
+
+        return json_decode($result[0]['get_order_summary'], true) ?: [];
     }
 
 }

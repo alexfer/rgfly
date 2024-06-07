@@ -48,7 +48,7 @@ class CheckoutController extends AbstractController
         $sessionId = $session->getId();
         $hasUsed = false;
 
-        $customer = $userManager->getUserCustomer($user);
+        $customer = $userManager->get($user);
         $form = $this->createForm(CustomerType::class, $customer);
         $order = $checkout->findOrder($sessionId);
         $process = $coupon->process($order->getStore());
@@ -67,7 +67,7 @@ class CheckoutController extends AbstractController
             $securityContext = $this->container->get('security.authorization_checker');
             $isGranted = $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED');
 
-            if ($userManager->existsCustomer($form->get('email')->getData()) && !$isGranted) {
+            if ($userManager->exists($form->get('email')->getData()) && !$isGranted) {
                 $this->addFlash('danger', $translator->trans('email.unique', [], 'validators'));
                 return $this->redirectToRoute('app_market_place_order_checkout', ['order' => $request->get('order'), 'tab' => $request->get('tab')]);
             }
@@ -93,6 +93,7 @@ class CheckoutController extends AbstractController
 
         $sum = $checkout->sum();
         $discount = null;
+
         if ($process) {
             $discount = $coupon->discount($order->getStore());
         }

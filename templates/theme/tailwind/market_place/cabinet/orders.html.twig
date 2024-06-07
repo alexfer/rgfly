@@ -54,7 +54,7 @@
                                 <div class="col-span-2 ms-5">
                                     {% if item.orders.status == 'processing' %}
                                         <a class="text-gray-600 underline hover:text-black hover:no-underline"
-                                           href="{{ path('app_market_place_order_checkout', {order: item.orders.number, session: item.orders.session}) }}">{{ 'order.checkout'|trans }}</a>
+                                           href="{{ path('app_market_place_order_checkout', {order: item.orders.number, tab: 'customer-info'}) }}">{{ 'order.checkout'|trans }}</a>
                                     {% else %}
                                         {{ item.orders.status|capitalize }}
                                     {% endif %}
