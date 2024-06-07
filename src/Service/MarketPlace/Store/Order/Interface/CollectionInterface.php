@@ -2,6 +2,8 @@
 
 namespace App\Service\MarketPlace\Store\Order\Interface;
 
+use App\Entity\MarketPlace\StoreCustomer;
+
 interface CollectionInterface
 {
     /**
@@ -12,9 +14,10 @@ interface CollectionInterface
 
     /**
      * @param string|null $sessId
+     * @param StoreCustomer|null $customer
      * @return array|null
      */
-    public function getOrders(?string $sessId = null): ?array;
+    public function getOrders(?string $sessId = null, ?StoreCustomer $customer = null): ?array;
 
     /**
      * @param string|null $sessId

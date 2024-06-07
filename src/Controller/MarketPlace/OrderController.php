@@ -81,19 +81,24 @@ class OrderController extends AbstractController
 
     /**
      * @param Request $request
+     * @param UserInterface|null $user
+     * @param UserManagerInterface $userManager
      * @param SummaryInterface $order
      * @param CollectionInterface $collection
      * @return Response
      */
     #[Route('/summary', name: 'app_market_place_order_summary', methods: ['GET'])]
     public function summary(
-        Request             $request,
-        SummaryInterface    $order,
-        CollectionInterface $collection,
+        Request              $request,
+        ?UserInterface       $user,
+        UserManagerInterface $userManager,
+        SummaryInterface     $order,
+        CollectionInterface  $collection,
     ): Response
     {
         $session = $request->getSession();
-        $orders = $collection->getOrders($session->getId());
+        $customer = $userManager->get($user);
+        $orders = $collection->getOrders($session->getId(), $customer);
 
         return $this->render('market_place/order/summary.html.twig', [
             'orders' => $orders['summary'] ?: null,

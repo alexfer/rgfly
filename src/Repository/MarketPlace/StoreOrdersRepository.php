@@ -35,7 +35,7 @@ class StoreOrdersRepository extends ServiceEntityRepository
      * @throws NonUniqueResultException
      */
     public function singleFetch(
-        string $query,
+        string        $query,
         StoreCustomer $customer
     ): ?array
     {
@@ -53,13 +53,16 @@ class StoreOrdersRepository extends ServiceEntityRepository
 
     /**
      * @param string $sessionId
+     * @param StoreCustomer|null $customer
      * @return array|null
      * @throws Exception
      */
-    public function collection(string $sessionId): ?array {
+    public function collection(string $sessionId, ?StoreCustomer $customer = null): ?array
+    {
         $connection = $this->getEntityManager()->getConnection();
-        $statement = $connection->prepare('select get_order_summary(:session)');
+        $statement = $connection->prepare('select get_order_summary(:session, :customer_id)');
         $statement->bindValue('session', $sessionId, \PDO::PARAM_STR);
+        $statement->bindValue('customer_id', $customer?->getId(), \PDO::PARAM_INT);
         $result = $statement->executeQuery()->fetchAllAssociative();
 
         return json_decode($result[0]['get_order_summary'], true) ?: [];
