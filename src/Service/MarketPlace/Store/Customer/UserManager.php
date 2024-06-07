@@ -23,7 +23,7 @@ readonly class UserManager implements UserManagerInterface
      * @param UserInterface|null $user
      * @return StoreCustomer|null
      */
-    public function getUserCustomer(?UserInterface $user): ?StoreCustomer
+    public function get(?UserInterface $user): ?StoreCustomer
     {
         $customer = $this->em->getRepository(StoreCustomer::class)
             ->findOneBy(['member' => $user]);
@@ -34,7 +34,11 @@ readonly class UserManager implements UserManagerInterface
         return $customer;
     }
 
-    public function existsCustomer(string $email): ?User
+    /**
+     * @param string $email
+     * @return User|null
+     */
+    public function exists(string $email): ?User
     {
         return $this->em->getRepository(User::class)->findOneBy(['email' => $email]);
     }

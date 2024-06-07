@@ -35,7 +35,7 @@ class OrderController extends AbstractController
         ProductInterface     $orderProduct,
     ): Response
     {
-        $customer = $userManager->getUserCustomer($user);
+        $customer = $userManager->get($user);
         $orderProduct->process($customer);
 
         $session = $request->getSession();
@@ -53,11 +53,11 @@ class OrderController extends AbstractController
 
         return $this->json([
             'products' => $countProducts,
-            'summary' => $orderSummary->summary($orders, true),
+            'summary' => $orders['summary'] !== null ? $orderSummary->summary($orders['summary'], true) : [],
             'removed' => $orderProduct->getStore()->getId(),
-            'order' => count($orders) == 0,
+            'redirect' => !($orders['summary'] !== null),
             'quantity' => $session->get('quantity'),
-            'redirect' => $this->generateUrl('app_market_place_order_summary'),
+            'redirectUrl' => $this->generateUrl('app_market_place_order_summary'),
         ]);
     }
 
@@ -81,40 +81,39 @@ class OrderController extends AbstractController
 
     /**
      * @param Request $request
-     * @param SummaryInterface $orderSummary
-     * @param CollectionInterface $orderCollection
+     * @param SummaryInterface $order
+     * @param CollectionInterface $collection
      * @return Response
      */
     #[Route('/summary', name: 'app_market_place_order_summary', methods: ['GET'])]
     public function summary(
         Request             $request,
-        SummaryInterface    $orderSummary,
-        CollectionInterface $orderCollection,
+        SummaryInterface    $order,
+        CollectionInterface $collection,
     ): Response
     {
         $session = $request->getSession();
-        $orders = $orderCollection->getOrders($session->getId());
+        $orders = $collection->getOrders($session->getId());
 
-        //dd($orderSummary->summary($orders));
         return $this->render('market_place/order/summary.html.twig', [
-            'orders' => $orders,
-            'summary' => $orderSummary->summary($orders),
+            'orders' => $orders['summary'] ?: null,
+            'summary' => $orders['summary'] !== null ? $order->summary($orders['summary']) : null,
         ]);
     }
 
     /**
      * @param Request $request
-     * @param CollectionInterface $orderCollection
+     * @param CollectionInterface $order
      * @return JsonResponse
      */
     #[Route('/cart', name: 'app_market_place_product_order_cart', methods: ['POST', 'GET'])]
     public function cart(
         Request             $request,
-        CollectionInterface $orderCollection,
+        CollectionInterface $order,
     ): JsonResponse
     {
         $session = $request->getSession();
-        $collection = $orderCollection->collection($session->getId());
+        $collection = $order->collection($session->getId());
 
         return $this->json([
             'template' => $this->renderView('market_place/cart.html.twig', ['orders' => $collection]),
@@ -125,18 +124,18 @@ class OrderController extends AbstractController
     /**
      * @param Request $request
      * @param UserInterface|null $user
-     * @param ProcessorInterface $orderProcessor
+     * @param ProcessorInterface $processor
      * @param UserManagerInterface $userManager
-     * @param CollectionInterface $orderCollection
+     * @param CollectionInterface $collection
      * @return JsonResponse
      */
     #[Route('/{product}', name: 'app_market_place_product_order', methods: ['POST'])]
     public function order(
         Request              $request,
         ?UserInterface       $user,
-        ProcessorInterface   $orderProcessor,
+        ProcessorInterface   $processor,
         UserManagerInterface $userManager,
-        CollectionInterface  $orderCollection,
+        CollectionInterface  $collection,
     ): JsonResponse
     {
         $data = $request->toArray();
@@ -153,10 +152,10 @@ class OrderController extends AbstractController
             $session->start();
         }
 
-        $customer = $userManager->getUserCustomer($user);
-        $order = $orderProcessor->findOrder($session->getId());
-        $orderProcessor->processOrder($order, $customer);
-        $products = $orderCollection->getOrderProducts($session->getId());
+        $customer = $userManager->get($user);
+        $order = $processor->findOrder($session->getId());
+        $processor->processOrder($order, $customer);
+        $products = $collection->getOrderProducts($session->getId());
         $session->set('quantity', $products);
 
         return $this->json([

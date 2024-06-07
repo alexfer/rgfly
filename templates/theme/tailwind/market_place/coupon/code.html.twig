@@ -40,8 +40,8 @@
                required/>
     </li>
     <li>
-        <button type="button" data-id="{{ coupon.id }}"
-                data-url="{{ path('app_market_place_market_verify_coupon', {market: order.market.id, order: order.id, id: coupon.id}) }}"
+        <button type="button" data-id="{{ coupon }}"
+                data-url="{{ relPath }}"
                 id="verify"
                 class="p-2 mt-0.5 border border-indigo-300 bg-indigo-500 text-white rounded-lg shadow-lg hover:bg-blue-700 text-xs dark:text-gray-400 group-invalid:pointer-events-none group-invalid:opacity-30">
             {{ 'button.text.apply'|trans }}

@@ -12,38 +12,42 @@ final class Summary implements SummaryInterface
         $summary = [];
 
         foreach ($orders as $order) {
-            $products = $order->getStoreOrdersProducts()->toArray();
+            $products = $order['products'];
+            $id = $order['id'];
 
             $itemSubtotal = $fee = $total = [];
 
             foreach ($products as $product) {
-                $cost = $product->getCost() + $product->getProduct()->getFee();
-                $discount = $product->getDiscount();
-                $fee[$order->getId()][] = $product->getProduct()->getFee();
-                $itemSubtotal[$order->getId()][] = $cost + $product->getProduct()->getFee();
-                $total[$order->getId()][] = $product->getQuantity() * ($cost - (($cost * $discount) - $discount)/100);
+                $cost = $product['product']['cost'] + $product['product']['fee'];
+                $discount = $product['product']['discount'];
+                $fee[$id][] = $product['product']['fee'];
+                $itemSubtotal[$id][] = $cost + $product['product']['fee'];
+                $total[$id][] = $product['quantity'] * ($cost - (($cost * $discount) - $discount) / 100);
             }
+
+            $currency = Currency::currency($order['store']['currency'])['symbol'];
 
             if ($formatted) {
                 $summary[] = [
-                    'store' => $order->getStore()->getId(),
-                    'currency' => Currency::currency($order->getStore()->getCurrency())['symbol'],
-                    'fee' => number_format(array_sum($fee[$order->getId()]), 2, '.', ' '),
-                    'total' => number_format(round(array_sum($fee[$order->getId()]) + array_sum($total[$order->getId()])), 2, '.', ' '),
-                    'itemSubtotal' => number_format(round(array_sum($itemSubtotal[$order->getId()])), 2, '.', ' '),
+                    'store' => $order['store']['id'],
+                    'currency' => $currency,
+                    'fee' => number_format(array_sum($fee[$id]), 2, '.', ' '),
+                    'total' => number_format(round(array_sum($fee[$id]) + array_sum($total[$id])), 2, '.', ' '),
+                    'itemSubtotal' => number_format(round(array_sum($itemSubtotal[$id])), 2, '.', ' '),
                 ];
             } else {
                 $summary[] = [
-                    'number' => $order->getNumber(),
-                    'store_id' => $order->getStore()->getId(),
-                    'store_name' => $order->getStore()->getName(),
-                    'currency' => Currency::currency($order->getStore()->getCurrency())['symbol'],
-                    'fee' => array_sum($fee[$order->getId()]),
-                    'itemSubtotal' => array_sum($itemSubtotal[$order->getId()]),
-                    'total' => array_sum($total[$order->getId()]),
+                    'number' => $order['number'],
+                    'store_id' => $order['store']['id'],
+                    'store_name' => $order['store']['name'],
+                    'currency' => $currency,
+                    'fee' => array_sum($fee[$id]),
+                    'itemSubtotal' => array_sum($itemSubtotal[$id]),
+                    'total' => array_sum($total[$id]),
                 ];
             }
         }
+
         return $summary;
     }
 }
