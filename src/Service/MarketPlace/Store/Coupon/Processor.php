@@ -81,6 +81,17 @@ readonly class Processor implements ProcessorInterface
     }
 
     /**
+     * @param int $relation
+     * @param StoreCustomer|null $customer
+     * @return array|null
+     */
+    public function getCouponUsages(int $relation, ?StoreCustomer $customer): ?array
+    {
+        return $this->em->getRepository(StoreCouponUsage::class)
+            ->getCouponUsages($relation, $customer);
+    }
+
+    /**
      * @param Store $store
      * @return string
      */
@@ -102,8 +113,8 @@ readonly class Processor implements ProcessorInterface
      * @return void
      */
     public function setInuse(
-        UserInterface    $user,
-        int              $orderId,
+        UserInterface   $user,
+        int             $orderId,
         StoreCouponCode $code,
     ): void
     {

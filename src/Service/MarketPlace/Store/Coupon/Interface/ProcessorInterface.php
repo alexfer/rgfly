@@ -2,7 +2,7 @@
 
 namespace App\Service\MarketPlace\Store\Coupon\Interface;
 
-use App\Entity\MarketPlace\{Store, StoreCoupon, StoreCouponCode, StoreOrders};
+use App\Entity\MarketPlace\{Store, StoreCouponCode, StoreCustomer, StoreOrders};
 use Symfony\Component\Security\Core\User\UserInterface;
 
 interface ProcessorInterface
@@ -20,6 +20,13 @@ interface ProcessorInterface
      * @return bool
      */
     public function getCouponUsage(int $relation, ?UserInterface $user): bool;
+
+    /**
+     * @param int $relation
+     * @param StoreCustomer|null $customer
+     * @return array|null
+     */
+    public function getCouponUsages(int $relation, ?StoreCustomer $customer): ?array;
 
     /**
      * @param StoreOrders $order

@@ -664,7 +664,7 @@ $$;
 
 alter function get_product(varchar) owner to rgfly;
 
-create or replace function get_order_summary(session character varying DEFAULT NULL::character varying, number character varying DEFAULT NULL::character varying) returns json
+create or replace function get_order_summary(session character varying DEFAULT NULL::character varying, customer_id integer DEFAULT NULL::integer, number character varying DEFAULT NULL::character varying) returns json
     language plpgsql
 as
 $$
@@ -689,8 +689,10 @@ BEGIN
                            'total', o.total,
                            'products', (SELECT json_agg(json_build_object(
                            'id', sop.id,
-                           'size', sop.size::json->'size',
-                           'color', sop.color::json->'extra',
+                           'size', sop.size::json -> 'size',
+                           'size_title', sop.size::json -> 'size',
+                           'color', sop.color::json -> 'extra',
+                           'color_title', sop.color::json -> 'color',
                            'quantity', sop.quantity,
                            'discount', sop.discount,
                            'cost', sop.cost,
@@ -699,7 +701,12 @@ BEGIN
                                                      'discount', sc.discount,
                                                      'price', sc.price,
                                                      'started', sc.started_at,
-                                                     'expired', sc.expired_at
+                                                     'expired', sc.expired_at,
+                                                     'hasUsed', (SELECT scu.id
+                                                              FROM store_coupon_usage scu
+                                                              WHERE scu.customer_id = get_order_summary.customer_id
+                                                                AND scu.coupon_id = sc.id AND scu.relation = sop.product_id
+                                                              LIMIT 1)
                                              )
                                       FROM store_coupon_store_product scsp
                                                LEFT JOIN store_coupon sc ON sc.id = scsp.store_coupon_id AND sc.type = 'product'
@@ -737,6 +744,6 @@ BEGIN
 END;
 $$;
 
-alter function get_order_summary(varchar, varchar) owner to rgfly;
+alter function get_order_summary(varchar, integer, varchar) owner to rgfly;
 
 
