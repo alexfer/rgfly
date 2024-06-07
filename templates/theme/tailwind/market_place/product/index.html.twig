@@ -127,6 +127,7 @@
                                                 <input type="radio" name="attr[{{ attribute.name }}]"
                                                        class="hidden peer"
                                                        data-name="{{ attr.value }}"
+                                                       data-extra="{{ attr.extra|join }}"
                                                        data-root-name="{{ attribute.name }}"
                                                        id="attr-check-{{ attr.id }}" value="{{ attr.id }}"
                                                        autocomplete="off">

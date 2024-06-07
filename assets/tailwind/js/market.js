@@ -47,8 +47,8 @@ if (bulkRemoveWishlist !== null) {
                         }
                     }
                 })
-                .catch(error => {
-                    console.log(error);
+                .catch(err => {
+                    console.log(err);
                 });
         }
     });
@@ -104,8 +104,8 @@ if (typeof drops !== 'undefined') {
                         drop.closest('.root').remove();
                         document.getElementById('store-' + data.removed).remove();
                     }
-                    if (data.redirect && data.order) {
-                        document.location.href = data.redirect;
+                    if (data.redirect === true) {
+                        document.location.href = data.redirectUrl;
                     } else {
                         await Swal.fire(i18next.t('removed'), "", "success");
                     }
@@ -149,7 +149,14 @@ if (attributes.length) {
                                 if (event.currentTarget.checked) {
                                     let root = input.getAttribute('data-root-name');
                                     let value = input.getAttribute('data-name');
-                                    el.querySelector('input[name="' + root + '"]').value = value;
+                                    let extra = input.getAttribute('data-extra');
+                                    let json = [];
+                                    if(root === 'color') {
+                                        json = {color: value, extra: extra};
+                                    } else {
+                                        json = {size: value, extra: extra};
+                                    }
+                                    el.querySelector('input[name="' + root + '"]').value = JSON.stringify(json);
                                     input.parentElement.parentElement.previousElementSibling.innerHTML = value;
                                 }
                             });

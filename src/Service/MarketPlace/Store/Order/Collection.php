@@ -24,7 +24,7 @@ final readonly class Collection implements CollectionInterface
     public function getOrders(?string $sessId = null): ?array
     {
         return $this->em->getRepository(StoreOrders::class)
-            ->findBy(['session' => $sessId]);
+            ->collection($sessId);
     }
 
     /**
@@ -34,10 +34,13 @@ final readonly class Collection implements CollectionInterface
     public function getOrderProducts(?string $sessId = null): ?int
     {
         $orders = $this->getOrders($sessId);
+        if ($orders['summary'] === null) {
+            return null;
+        }
         $result = [];
-        foreach ($orders as $order) {
-            foreach ($order->getStoreOrdersProducts() as $product) {
-                $result[] = $product->getId();
+        foreach ($orders['summary'] as $order) {
+            foreach ($order['products'] as $product) {
+                $result[] = $product['id'];
             }
         }
         return count($result);
@@ -50,6 +53,9 @@ final readonly class Collection implements CollectionInterface
     public function collection(?string $sessionId): ?array
     {
         $orders = $this->getOrders($sessionId);
+        if ($orders['summary'] === null) {
+            return null;
+        }
         return $this->getCollection($orders);
     }
 
@@ -61,46 +67,41 @@ final readonly class Collection implements CollectionInterface
     {
         $collection = $total = $fee = $products = [];
 
-        foreach ($orders as $order) {
-            $storeProducts = $order->getStoreOrdersProducts()->toArray();
+        foreach ($orders['summary'] as $order) {
+            $id = $order['id'];
 
-            foreach ($storeProducts as $product) {
-                $attach = [];
+            foreach ($order['products'] as $product) {
+                $attach = $product['product']['attachment'];
 
-                foreach ($product->getProduct()->getStoreProductAttaches() as $storeProductAttach) {
-                    $attachment = $storeProductAttach->getAttach();
-                    $attach[$attachment->getId()] = $attachment->getName();
-                }
-
-                $products[$order->getId()][$product->getId()] = [
-                    'id' => $product->getProduct()->getId(),
-                    'short_name' => $product->getProduct()->getShortName(),
-                    'name' => $product->getProduct()->getName(),
-                    'slug' => $product->getProduct()->getSlug(),
-                    'order_id' => $order->getId(),
-                    'cost' => $product->getCost(),
-                    'fee' => $product->getProduct()->getFee(),
-                    'percent' => $product->getDiscount(),
-                    'quantity' => $product->getQuantity(),
-                    'size' => $product->getSize(),
-                    'color' => $product->getColor(),
-                    'attach' => reset($attach),
+                $products[$id][$product['id']] = [
+                    'id' => $product['product']['id'],
+                    'short_name' => $product['product']['short_name'],
+                    'name' => $product['product']['name'],
+                    'slug' => $product['product']['slug'],
+                    'order_id' => $id,
+                    'cost' => $product['cost'],
+                    'fee' => $product['product']['fee'],
+                    'percent' => $product['product']['discount'],
+                    'quantity' => $product['quantity'],
+                    'size' => $product['size'],
+                    'color' => $product['color'],
+                    'attach' => $attach,
                 ];
 
-                $cost = $product->getCost() + $product->getProduct()->getFee();
-                $total[$order->getId()][] = $cost - ($cost * $product->getDiscount() - $product->getDiscount()) / 100;
-                $fee[$order->getId()][] = $product->getProduct()->getFee();
+                $cost = $product['cost'] + $product['product']['fee'];
+                $total[$id][] = $cost - ($cost * $product['discount'] - $product['discount']) / 100;
+                $fee[$id][] = $product['product']['fee'];
 
             }
-            $collection[$order->getId()] = [
-                'id' => $order->getId(),
-                'number' => $order->getNumber(),
-                'totalFee' => array_sum($fee[$order->getId()]),
-                'total' => array_sum($total[$order->getId()]),
+            $collection[$id] = [
+                'id' => $id,
+                'number' => $order['number'],
+                'totalFee' => array_sum($fee[$id]),
+                'total' => array_sum($total[$id]),
                 'store' => [
-                    'slug' => $order->getStore()->getSlug(),
-                    'name' => $order->getStore()->getName(),
-                    'currency' => $order->getStore()->getCurrency(),
+                    'slug' => $order['store']['slug'],
+                    'name' => $order['store']['name'],
+                    'currency' => $order['store']['currency'],
                 ],
                 'products' => $products,
             ];

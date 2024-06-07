@@ -2,7 +2,7 @@
 
 namespace App\Controller\MarketPlace;
 
-use App\Entity\MarketPlace\{Store, StoreCustomer};
+use App\Entity\MarketPlace\{Store, StoreCoupon, StoreCustomer};
 use App\Service\MarketPlace\Store\Coupon\Interface\ProcessorInterface as Coupon;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -56,7 +56,7 @@ class StoreController extends AbstractController
      * @param Coupon $coupon
      * @return JsonResponse
      */
-    #[Route('/{store}/{order}/coupon/{id}', name: 'app_market_place_market_verify_coupon', methods: ['POST'])]
+    #[Route('/{store}/{relation}/coupon/{id}/{ref}', name: 'app_market_place_market_verify_coupon', methods: ['POST'])]
     public function verifyCoupon(
         Request             $request,
         Store               $store,
@@ -66,14 +66,14 @@ class StoreController extends AbstractController
     ): JsonResponse
     {
 
-        $process = $coupon->process($store);
+        $process = $coupon->process($store, $request->get('ref'));
 
         $payload = $request->getPayload()->all();
-        $order = $request->get('order');
+        $relation = $request->get('relation');
 
         if ($process && $payload && isset($payload['ids'])) {
 
-            if ($coupon->getCouponUsage($order, $user)) {
+            if ($coupon->getCouponUsage($relation, $user)) {
                 return $this->json([
                     'success' => false,
                     'message' => $translator->trans('info.text.danger'),
@@ -87,7 +87,7 @@ class StoreController extends AbstractController
                 ], Response::HTTP_BAD_REQUEST);
             }
 
-            $coupon->setInuse($user, $order, $code);
+            $coupon->setInuse($user, $relation, $code);
         }
 
         $discount = $coupon->discount($store);
