@@ -49,15 +49,16 @@ class Processor implements ProcessorInterface
 
     /**
      * @param string $sessionId
+     * @param string|null $status
      * @return StoreOrders|null
      */
-    public function findOrder(string $sessionId): ?StoreOrders
+    public function findOrder(string $sessionId, ?string $status = StoreOrders::STATUS['processing']): ?StoreOrders
     {
         $this->sessionId = $sessionId;
         $order = $this->em->getRepository(StoreOrders::class)->findOneBy([
             'number' => $this->request->get('order'),
             'session' => $this->sessionId,
-            'status' => StoreOrders::STATUS['processing'],
+            'status' => $status,
         ]);
 
         if (!$order) {
@@ -94,7 +95,7 @@ class Processor implements ProcessorInterface
     /**
      * @return StorePaymentGateway
      */
-    protected function getPaymentGateway(): StorePaymentGateway
+    private function getPaymentGateway(): StorePaymentGateway
     {
         return $this->em->getRepository(StorePaymentGateway::class)->findOneBy([
             'slug' => key($this->request->request->all('gateway')),
@@ -116,9 +117,13 @@ class Processor implements ProcessorInterface
         $this->em->persist($invoice);
     }
 
-    public function updateOrder(): void
+    /**
+     * @param string|null $status
+     * @return void
+     */
+    public function updateOrder(?string $status = StoreOrders::STATUS['confirmed']): void
     {
-        $order = $this->order->setSession(null)->setStatus(StoreOrders::STATUS['confirmed']);
+        $order = $this->order->setSession(null)->setStatus($status);
         $this->em->persist($order);
         $this->em->flush();
     }

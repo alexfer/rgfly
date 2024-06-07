@@ -2,16 +2,16 @@
 
 namespace App\Service\MarketPlace\Store\Checkout\Interface;
 
-use App\Entity\MarketPlace\StoreInvoice;
-use App\Entity\MarketPlace\StoreOrders;
+use App\Entity\MarketPlace\{StoreInvoice, StoreOrders};
 
 interface ProcessorInterface
 {
     /**
      * @param string $sessionId
+     * @param string|null $status
      * @return StoreOrders|null
      */
-    public function findOrder(string $sessionId): ?StoreOrders;
+    public function findOrder(string $sessionId, ?string $status): ?StoreOrders;
 
     /**
      * @return void
@@ -19,9 +19,10 @@ interface ProcessorInterface
     public function updateProducts(): void;
 
     /**
+     * @param string|null $status
      * @return void
      */
-    public function updateOrder(): void;
+    public function updateOrder(?string $status): void;
 
     /**
      * @param StoreInvoice $invoice

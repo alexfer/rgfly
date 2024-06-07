@@ -2,6 +2,7 @@
 
 namespace App\Service\MarketPlace\Store\Order;
 
+use App\Entity\MarketPlace\StoreCustomer;
 use App\Entity\MarketPlace\StoreOrders;
 use App\Service\MarketPlace\Store\Order\Interface\CollectionInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,10 +22,10 @@ final readonly class Collection implements CollectionInterface
      * @param string|null $sessId
      * @return array|null
      */
-    public function getOrders(?string $sessId = null): ?array
+    public function getOrders(?string $sessId = null, ?StoreCustomer $customer = null): ?array
     {
         return $this->em->getRepository(StoreOrders::class)
-            ->collection($sessId);
+            ->collection($sessId, $customer);
     }
 
     /**
