@@ -4,14 +4,12 @@
 {% block description %}{{ product.name }}{% endblock %}
 
 {% block content_body %}
-{#    {% set parent = product.storeCategoryProducts.first.category.parent %}#}
-{#    {% set child = product.storeCategoryProducts.first.category %}#}
     <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white text-ellipsis overflow-hidden">{{ product.short_name }}</h2>
     <div class="grid grid-cols-12 gap-4">
         <div class="col-span-12 md:col-span-8">
             <div id="indicators-carousel" class="relative w-full" data-carousel="static">
                 <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
-                    {% if product.attachments|length %}
+                    {% if product.attachments_count %}
                         {% set _picture = 'storage/product/' ~ product.id ~ '/' ~ product.attachments[0].name %}
                         <div class="hidden duration-200 ease-linear" data-carousel-item="active">
                             <img src="{{ asset(_picture)|imagine_filter('product_view') }}"
@@ -25,10 +23,10 @@
                     {% else %}
                         <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
                             <img src="{{ asset('img/carousel.svg') }}"
-                                 class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                                 class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 opacity-20"
                                  alt="{{ product.name }}">
-                            <div class="absolute inset-x-[15%] left-1/2 transform -translate-x-1/2 w-full bottom-5 py-5 text-center text-white md:block">
-                                <h5 class="text-xl text-ellipsis overflow-hidden">{{ product.shortName }}</h5>
+                            <div class="absolute z-10 inset-x-[15%] left-1/2 transform -translate-x-1/2 w-full bottom-5 py-5 text-center text-gray-600 md:block">
+                                <h5 class="text-xl text-ellipsis overflow-hidden">{{ product.short_name }}</h5>
                                 <p class="text-ellipsis overflow-hidden">{{ product.store.name }}</p>
                             </div>
                         </div>
@@ -68,17 +66,17 @@
                                     </span>
                     </button>
                     <button type="button"
-                            class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-                            data-carousel-next>
-                                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                                        <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
-                                             aria-hidden="true"
-                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                                  stroke-width="2" d="m1 9 4-4-4-4"></path>
-                                        </svg>
-                                        <span class="sr-only">{{ 'element.next'|trans }}</span>
-                                    </span>
+                        class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                        data-carousel-next>
+                            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                                <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
+                                     aria-hidden="true"
+                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                          stroke-width="2" d="m1 9 4-4-4-4"></path>
+                                </svg>
+                                <span class="sr-only">{{ 'element.next'|trans }}</span>
+                            </span>
                     </button>
                 {% endif %}
             </div>

@@ -39,8 +39,8 @@
                                                 {{ product.product.short_name }}
                                             </h5>
                                         </a>
-                                        <span class="hidden absolute -rotate-45 inline-table right-5 bg-red-700 mt-5 end-4 opacity-70 px-2.5 text-white rounded-md pt-1 text-sm">
-                                            <span class="pe-1" id="discount">50.00</span>{{ 'store.product.off'|trans }}
+                                        <span class="{% if product.coupon and product.coupon.hasUsed is null %}hidden{% endif %} absolute -rotate-45 inline-table right-5 bg-red-700 mt-5 end-4 opacity-70 px-2.5 text-white rounded-md pt-1 text-sm">
+                                            <span class="pe-1" id="discount">{{ product.coupon.price|amount_format }}<small>{{ order.store.currency|currency }}</small></span>{{ 'store.product.off'|trans }}
                                         </span>
                                         <div class="relative justify-start">
                                             {% if product.product.discount %}
@@ -66,7 +66,7 @@
                                         </div>
                                         <div class="text-xs text-gray-400">{{ 'label.form.sku'|trans }}
                                             : {{ product.product.sku }}</div>
-                                        {% if product.coupon and product.coupon.hasUsed is null and (date('U') > product.coupon.started|date('U') and product.coupon.expired|date('U') < date('U')) %}
+                                        {% if product.coupon and product.coupon.hasUsed is null and product.coupon.valid %}
                                             {% if app.user and 'ROLE_CUSTOMER' in app.user.roles %}
                                                 {% include 'market_place/coupon/code.html.twig' with {
                                                     relPath: path('app_market_place_market_verify_coupon', {

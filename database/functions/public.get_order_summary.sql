@@ -36,6 +36,7 @@ BEGIN
                                                      'price', sc.price,
                                                      'started', sc.started_at,
                                                      'expired', sc.expired_at,
+                                                     'valid', (sc.started_at::timestamp < CURRENT_TIMESTAMP AND sc.expired_at::timestamp > CURRENT_TIMESTAMP),
                                                      'hasUsed', (SELECT scu.id
                                                                  FROM store_coupon_usage scu
                                                                  WHERE scu.customer_id = get_order_summary.customer_id
