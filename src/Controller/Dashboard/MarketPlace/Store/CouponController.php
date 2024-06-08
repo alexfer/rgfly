@@ -5,6 +5,7 @@ namespace App\Controller\Dashboard\MarketPlace\Store;
 use App\Entity\MarketPlace\{Store, StoreCoupon, StoreCouponCode, StoreProduct};
 use App\Form\Type\Dashboard\MarketPlace\CouponType;
 use App\Service\MarketPlace\StoreTrait;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -72,7 +73,7 @@ class CouponController extends AbstractController
             return [
                 'id' => $val->getId(),
                 'name' => $val->getName(),
-                'market' => $store->getId(),
+                'store' => $store->getId(),
                 'currency' => $store->getCurrency(),
                 'available' => $val->getAvailable(),
                 'products' => $val->getProduct()->count(),
@@ -207,7 +208,7 @@ class CouponController extends AbstractController
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.updated')]));
 
             return $this->redirectToRoute('app_dashboard_market_place_edit_coupon', [
-                'market' => $store->getId(),
+                'store' => $store->getId(),
                 'id' => $coupon->getId(),
             ]);
         }
@@ -216,6 +217,31 @@ class CouponController extends AbstractController
             'form' => $form,
         ]);
 
+    }
+
+    /**
+     * @param Request $request
+     * @param UserInterface|null $user
+     * @param EntityManagerInterface $em
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws Exception
+     */
+    #[Route('/codes/{store}/{id}/{type}', name: 'app_dashboard_market_place_coupon_codes', methods: ['GET'])]
+    public function codes(
+        Request                $request,
+        ?UserInterface         $user,
+        EntityManagerInterface $em,
+    ): JsonResponse
+    {
+        $store = $this->store($request, $user, $em);
+        $coupon = $em->getRepository(StoreCoupon::class)
+            ->codes($store, $request->get('id'), $request->get('type'));
+
+        return $this->json([
+            'codes' => $coupon['result'],
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -255,6 +281,6 @@ class CouponController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('app_dashboard_market_place_market_brand', ['market' => $store->getId()]);
+        return $this->redirectToRoute('app_dashboard_market_place_market_brand', ['store' => $store->getId()]);
     }
 }

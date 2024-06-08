@@ -7,7 +7,6 @@ use App\Entity\MarketPlace\StoreCoupon;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Statement;
-use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -51,7 +50,7 @@ class StoreCouponRepository extends ServiceEntityRepository
      * @throws Exception
      */
     public function fetch(
-        Store  $store,
+        Store   $store,
         ?string $type = null,
         int     $offset = 0,
         int     $limit = 25,
@@ -77,10 +76,10 @@ class StoreCouponRepository extends ServiceEntityRepository
      * @throws Exception
      */
     public function getSingleActive(
-        Store $store,
+        Store  $store,
         string $type,
         int    $event = 1,
-    )
+    ): ?array
     {
         $connection = $this->getEntityManager()->getConnection();
         $statement = $connection->prepare('select get_active_coupon(:store_id, :type, :event)');
@@ -100,7 +99,7 @@ class StoreCouponRepository extends ServiceEntityRepository
      * @return array
      */
     public function fetchActive(
-        Store  $store,
+        Store   $store,
         ?string $type = null,
         int     $offset = 0,
         int     $limit = 10
@@ -122,5 +121,28 @@ class StoreCouponRepository extends ServiceEntityRepository
             ->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param Store $store
+     * @param int $couponId
+     * @param string $type
+     * @return array|null
+     * @throws Exception
+     */
+    public function codes(
+        Store  $store,
+        int    $couponId,
+        string $type,
+    ): ?array
+    {
+        $connection = $this->getEntityManager()->getConnection();
+        $statement = $connection->prepare('select get_coupon_codes(:store_id, :coupon_id, :type)');
+        $statement->bindValue('store_id', $store->getId(), \PDO::PARAM_INT);
+        $statement->bindValue('coupon_id', $couponId, \PDO::PARAM_INT);
+        $statement->bindValue('type', $type, \PDO::PARAM_STR);
+        $result = $statement->executeQuery()->fetchAllAssociative();
+
+        return json_decode($result[0]['get_coupon_codes'], true) ?? [];
     }
 }

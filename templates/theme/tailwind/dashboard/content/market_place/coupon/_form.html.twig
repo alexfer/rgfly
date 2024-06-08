@@ -116,6 +116,31 @@
         </div>
         {{ form_end(form) }}
     </div>
+    {% if form.vars.data.id %}
+        <h2 class="text-xl md:text-2xl pl-2 mt-4 text-red-400 font-semibold mb-2 dark:bg-gray-600">{{ 'title.dashboard.coupons'|trans }}</h2>
+        <div id="accordion-collapse"
+             data-url="{{ path('app_dashboard_market_place_coupon_codes', {store: app.request.get('store'), id: form.vars.data.id,  type: form.vars.data.type}) }}"
+             data-accordion="collapse">
+            <h2 id="accordion-collapse-heading">
+                <button type="button"
+                        class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3"
+                        data-accordion-target="#accordion-collapse-body" aria-expanded="false"
+                        aria-controls="accordion-collapse-body">
+                    <span>{{ 'Available coupons'|trans }}</span>
+                    <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
+                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M9 5 5 1 1 5"></path>
+                    </svg>
+                </button>
+            </h2>
+            <div id="accordion-collapse-body" class="hidden" aria-labelledby="accordion-collapse-heading">
+                <div class="p-5 border border-gray-200 dark:border-gray-700">
+                    <ul id="codes" class="w-full space-y-3 text-gray-500 dark:text-gray-400"></ul>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
@@ -125,6 +150,24 @@
         const couponDiscount = document.getElementById('coupon-discount');
         const couponPrice = document.getElementById('coupon-price');
         const output = document.querySelector('.discount-output');
+        const accordion = document.getElementById('accordion-collapse');
+        const ul = document.getElementById('codes');
+
+        accordion.addEventListener('click', (e) => {
+            const url = accordion.getAttribute('data-url');
+            fetch(url, {headers: {'Content-type': 'application/json'}})
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.codes && data.codes.length) {
+                        [...data.codes].forEach((el) => {
+                            let li = document.createElement('li');
+                            li.classList.add('inline-block', 'w-36', 'h-12', 'shadow-md', 'bg-gray-50', 'border', 'border-gray-500', 'p-3', 'text-center', 'rounded-md', 'mx-2');
+                            li.textContent = el.code
+                            ul.append(li);
+                        });
+                    }
+                });
+        }, {capture: true, once: true});
 
         couponDiscount.addEventListener('click', (e) => {
             inputCouponDiscount.removeAttribute('disabled');
