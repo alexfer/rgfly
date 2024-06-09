@@ -695,8 +695,6 @@ BEGIN
                            'color', sop.color::json -> 'extra',
                            'color_title', sop.color::json -> 'color',
                            'quantity', sop.quantity,
-                           'discount', sop.discount,
-                           'cost', sop.cost,
                            'coupon', (SELECT json_build_object(
                                                      'id', sc.id,
                                                      'discount', sc.discount,
@@ -704,10 +702,11 @@ BEGIN
                                                      'started', sc.started_at,
                                                      'expired', sc.expired_at,
                                                      'valid', (sc.started_at::timestamp < CURRENT_TIMESTAMP AND sc.expired_at::timestamp > CURRENT_TIMESTAMP),
-                                                     'hasUsed', (SELECT scu.id
+                                                     'hasUsed', (SELECT COUNT(scu.id)
                                                               FROM store_coupon_usage scu
                                                               WHERE scu.customer_id = get_order_summary.customer_id
-                                                                AND scu.coupon_id = sc.id AND scu.relation = sop.product_id
+                                                                AND scu.coupon_id = sc.id 
+                                                                AND scu.relation = sop.product_id
                                                               LIMIT 1)
                                              )
                                       FROM store_coupon_store_product scsp
@@ -796,7 +795,7 @@ BEGIN
                                                      'slug', s.slug
                                              )
                                       FROM store s
-                                      WHERE s.id = o.store_id),
+                                      WHERE s.id = o.store_id LIMIT 1),
                             'number', o.number,
                             'created', o.created_at,
                             'completed', o.completed_at,
@@ -809,7 +808,7 @@ BEGIN
                                               )
                                        FROM store_coupon_usage scu
                                                 LEFT JOIN public.store_coupon sc on sc.id = scu.coupon_id
-                                       WHERE scu.relation = co.orders_id),
+                                       WHERE scu.relation = co.orders_id LIMIT 1),
                             'invoice', (json_build_object(
                     'id', si.id,
                     'number', si.number,
@@ -823,7 +822,7 @@ BEGIN
                                                        'icon', spg.icon
                                                )
                                         FROM store_payment_gateway spg
-                                        WHERE spg.id = si.payment_gateway_id)
+                                        WHERE spg.id = si.payment_gateway_id LIMIT 1)
                                         )),
                             'status', o.status,
                             'total', o.total,
@@ -855,14 +854,14 @@ BEGIN
                                                                  )
                                                           FROM store_coupon_store_product scsp
                                                                    LEFT JOIN public.store_coupon c on c.id = scsp.store_coupon_id
-                                                          WHERE scsp.store_product_id = p.id)
+                                                          WHERE scsp.store_product_id = p.id LIMIT 1)
                                        )
                                 FROM store_product p
                                 WHERE p.id = sop.product_id
-                                GROUP BY p.id)
+                                GROUP BY p.id LIMIT 1)
                                                          ))
                                          FROM store_orders_product sop
-                                         WHERE sop.orders_id = co.orders_id)
+                                         WHERE sop.orders_id = co.orders_id LIMIT 1)
                     ) ORDER BY co.id DESC)
     INTO orders
     FROM store_customer_orders co

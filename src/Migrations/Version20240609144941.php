@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240530163257 extends AbstractMigration
+final class Version20240609144941 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -100,7 +100,7 @@ final class Version20240530163257 extends AbstractMigration
         $this->addSql('CREATE TABLE store_orders (id SERIAL NOT NULL, store_id INT DEFAULT NULL, number VARCHAR(50) NOT NULL, total NUMERIC(10, 2) DEFAULT NULL, session VARCHAR(255) DEFAULT NULL, status VARCHAR(100) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, completed_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_81386B78B092A811 ON store_orders (store_id)');
         $this->addSql('COMMENT ON COLUMN store_orders.created_at IS \'(DC2Type:datetime_immutable)\'');
-        $this->addSql('CREATE TABLE store_orders_product (id SERIAL NOT NULL, orders_id INT DEFAULT NULL, product_id INT DEFAULT NULL, size VARCHAR(100) DEFAULT NULL, color VARCHAR(100) DEFAULT NULL, quantity INT NOT NULL, discount INT DEFAULT NULL, cost NUMERIC(10, 2) DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE store_orders_product (id SERIAL NOT NULL, orders_id INT DEFAULT NULL, product_id INT DEFAULT NULL, size VARCHAR(100) DEFAULT NULL, color VARCHAR(100) DEFAULT NULL, quantity INT NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_35A96B08CFFE9AD6 ON store_orders_product (orders_id)');
         $this->addSql('CREATE INDEX IDX_35A96B084584665A ON store_orders_product (product_id)');
         $this->addSql('CREATE TABLE store_payment_gateway (id SERIAL NOT NULL, name VARCHAR(100) NOT NULL, summary TEXT NOT NULL, active BOOLEAN NOT NULL, icon VARCHAR(50) NOT NULL, slug VARCHAR(255) NOT NULL, handler_text VARCHAR(100) NOT NULL, deleted_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
