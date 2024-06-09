@@ -28,15 +28,14 @@ BEGIN
                            'color', sop.color::json -> 'extra',
                            'color_title', sop.color::json -> 'color',
                            'quantity', sop.quantity,
-                           'discount', sop.discount,
-                           'cost', sop.cost,
                            'coupon', (SELECT json_build_object(
                                                      'id', sc.id,
                                                      'discount', sc.discount,
                                                      'price', sc.price,
                                                      'started', sc.started_at,
                                                      'expired', sc.expired_at,
-                                                     'hasUsed', (SELECT scu.id
+                                                     'valid', (sc.started_at::timestamp < CURRENT_TIMESTAMP AND sc.expired_at::timestamp > CURRENT_TIMESTAMP),
+                                                     'hasUsed', (SELECT COUNT(scu.id)
                                                                  FROM store_coupon_usage scu
                                                                  WHERE scu.customer_id = get_order_summary.customer_id
                                                                    AND scu.coupon_id = sc.id AND scu.relation = sop.product_id

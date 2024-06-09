@@ -26,8 +26,6 @@
                     </th>
                     <th class="px-3 py-3">{{ 'table.header.name'|trans }}</th>
                     <th class="px-3 py-3 text-center"
-                        scope="col">{{ 'table.header.coupon_discount'|trans }}</th>
-                    <th class="px-3 py-3 text-center"
                         scope="col">{{ 'table.header.cost'|trans }}</th>
                     <th class="px-3 py-3 text-center"
                         scope="col">{{ 'table.header.quantity'|trans }}</th>
@@ -65,22 +63,6 @@
                                href="{{ path('app_dashboard_market_place_edit_product', {store: product.store.id, id: product.id, tab: 'details'}) }}">
                                 {{ product.shortName|length >= 40 ? product.shortName|slice(0, 40) ~ '...' : product.shortName }}
                             </a>
-                        </td>
-                        <td class="px-3 py-3 text-center">
-                            {% set discount = product.marketCoupons.first.discount|default(0) %}
-                            {% set price = product.marketCoupons.first.price|default(0) %}
-                            {% set name = product.marketCoupons.first.name|default(null) %}
-                            {% if name is not null %}
-                                <div class="font-sans text-indigo-700">{{ product.marketCoupons.first.code }}</div>
-                                <a data-twe-toggle="tooltip"
-                                   data-twe-placement="top"
-                                   title="{{ discount }}% / {{ price|amount_format }}{{ currency['symbol_native'] }}"
-                                   class="text-black underline hover:no-underline"
-                                   href="{{ path('app_dashboard_market_place_edit_coupon', {store: product.store.id, id: product.marketCoupons.first.id }) }}">{{ name }}
-                                </a>
-                            {% else %}
-                                --
-                            {% endif %}
                         </td>
                         <td class="px-3 py-3 text-center">{{ product.cost }}<small
                                     class="text-muted">{{ currency['symbol_native'] }}</small></td>

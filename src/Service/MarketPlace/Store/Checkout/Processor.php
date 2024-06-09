@@ -144,8 +144,8 @@ class Processor implements ProcessorInterface
     {
         $sum = [];
         foreach ($this->getProducts() as $product) {
-            $cost = $product->getCost() + $product->getProduct()->getFee();
-            $discount = $product->getDiscount();
+            $cost = $product->getProduct()->getCost() + $product->getProduct()->getFee();
+            $discount = $product->getProduct()->getDiscount();
             $sum['itemSubtotal'][] = $product->getQuantity() * ($cost - (($cost * $discount) - $discount) / 100);
             $sum['fee'][] = $product->getProduct()->getFee();
         }

@@ -80,7 +80,7 @@ final readonly class Collection implements CollectionInterface
                     'name' => $product['product']['name'],
                     'slug' => $product['product']['slug'],
                     'order_id' => $id,
-                    'cost' => $product['cost'],
+                    'cost' => $product['product']['cost'],
                     'fee' => $product['product']['fee'],
                     'percent' => $product['product']['discount'],
                     'quantity' => $product['quantity'],
@@ -89,8 +89,8 @@ final readonly class Collection implements CollectionInterface
                     'attach' => $attach,
                 ];
 
-                $cost = $product['cost'] + $product['product']['fee'];
-                $total[$id][] = $cost - ($cost * $product['discount'] - $product['discount']) / 100;
+                $cost = $product['product']['cost'] + $product['product']['fee'];
+                $total[$id][] = $cost - ($cost * $product['product']['discount'] - $product['product']['discount']) / 100;
                 $fee[$id][] = $product['product']['fee'];
 
             }
