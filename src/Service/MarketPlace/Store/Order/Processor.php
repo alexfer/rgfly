@@ -140,9 +140,7 @@ final class Processor implements ProcessorInterface
         $product = new StoreOrdersProduct();
         $product->setColor($this->data['color'] ?: null)
             ->setSize($this->data['size'] ?: null)
-            ->setProduct($this->getProduct())
-            ->setCost($this->getProduct()->getCost())
-            ->setDiscount($this->getProduct()->getDiscount());
+            ->setProduct($this->getProduct());
         $this->em->persist($product);
         return $product;
     }

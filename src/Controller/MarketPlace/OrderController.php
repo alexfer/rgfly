@@ -159,6 +159,7 @@ class OrderController extends AbstractController
 
         $customer = $userManager->get($user);
         $order = $processor->findOrder($session->getId());
+
         $processor->processOrder($order, $customer);
         $products = $collection->getOrderProducts($session->getId());
         $session->set('quantity', $products);

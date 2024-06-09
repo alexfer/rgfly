@@ -33,9 +33,9 @@ class Compute implements ComputeInterface
             $product = $this->orderProduct($key);
             $product->setQuantity($value);
             $this->em->persist($product);
-            $cost = $product->getCost() + $product->getProduct()->getFee();
+            $cost = $product->getProduct()->getCost() + $product->getProduct()->getFee();
             $this->orders[$product->getOrders()->getId()][$product->getId()] = [
-                'amount' => ($cost - (($cost * $product->getDiscount()) - $product->getDiscount()) / 100) * $value,
+                'amount' => ($cost - (($cost * $product->getProduct()->getDiscount()) - $product->getProduct()->getDiscount()) / 100) * $value,
             ];
         }
         $this->em->flush();
