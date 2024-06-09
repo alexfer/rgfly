@@ -70,6 +70,7 @@ BEGIN
                            'website', s.website,
                            'description', s.description
                             ),
+                   'attachments_count', (SELECT COUNT(spa.id) FROM store_product_attach spa WHERE spa.product_id = p.id),
                    'attachments', (SELECT json_agg(attachment) FROM attachments),
                    'wishlist', json_build_object(
                            'id', w.id,

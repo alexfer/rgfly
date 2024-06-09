@@ -20,12 +20,12 @@
                     {% set product_count = order.storeOrdersProducts.count() %}
                     {% for product in order.storeOrdersProducts %}
                         {% if product.product.discount %}
-                            {% set percent = product.discount %}
-                            {% set cost = product.cost + product.product.fee %}
+                            {% set percent = product.product.discount %}
+                            {% set cost = product.product.cost + product.product.fee %}
                             {% set discount = (cost - ((cost * percent) - percent)/100) %}
                             {% set item_cost = (discount)|amount_format %}
                         {% else %}
-                            {% set item_cost = (product.cost * product.quantity + product.product.fee)|amount_format %}
+                            {% set item_cost = (product.product.cost * product.quantity + product.product.fee)|amount_format %}
                         {% endif %}
                         <div class="flex items-center pb-2 border-b">
                             <a class="block shrink-0 mr-2"
@@ -57,16 +57,6 @@
                             <span class="font-semibold me-2">{{ 'order.item.subtotal'|trans }}:</span>
                             <span class="text-end text-primary-emphasis">{{ itemSubtotal|amount_format }}<small>{{ order.store.currency|currency }}</small></span>
                         </div>
-                        {#
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="fw-normal me-2">{{ 'order.subtotal'|trans }}:</span>
-                            <span class="text-end text-primary-emphasis">{{ subtotal|amount_format }}<small>{{ order.market.currency|currency }}</small></span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="fw-normal me-2">{{ 'order.service.fee'|trans }}:</span>
-                            <span class="text-end text-primary-emphasis">{{ fee|amount_format }}<small>{{ order.market.currency|currency }}</small></span>
-                        </div>
-                        #}
                     </div>
                     <span class="{{ hasUsed == false or coupon == 0 ? 'hidden' : null }} absolute -rotate-45 inline-table top-100 bg-red-700 mt-5 start-4 opacity-70 px-2.5 text-white rounded-md pt-1 end-0 text-sm"><span
                                 class="pe-1" id="discount">{{ discount }}</span>{{ 'store.product.off'|trans }}</span>

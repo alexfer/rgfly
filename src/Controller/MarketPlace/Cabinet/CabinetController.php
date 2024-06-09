@@ -44,26 +44,28 @@ class CabinetController extends AbstractController
         EntityManagerInterface $em,
     ): Response
     {
+        $offset = $request->query->getInt('offset', 0);
+        $limit = $request->query->getInt('limit', 25);
         $customer = $this->customer($user, $em);
-        $orders = $em->getRepository(StoreCustomerOrders::class)->findBy([
-            'customer' => $customer,
-        ], ['id' => 'desc']);
+        $result = $em->getRepository(StoreCustomerOrders::class)->getCustomerOrders($customer->getId(), $offset, $limit);
+        //dd($result['orders']);
 
-        $summary = $fee = $products = [];
-        foreach ($orders as $order) {
-            foreach ($order->getOrders()->getStoreOrdersProducts() as $item) {
-                $products[$order->getId()][] = $item->getCost() - ((($item->getCost() * $item->getQuantity()) * $item->getDiscount()) - $item->getDiscount()) / 100;
-                $fee[$order->getId()][] = $item->getProduct()->getFee();
-            }
-            $summary[$order->getOrders()->getId()] = [
-                'total' => array_sum($products[$order->getId()]) + array_sum($fee[$order->getId()]),
-            ];
-        }
+//        $summary = $fee = $products = [];
+//        foreach ($orders as $order) {
+//            foreach ($order->getOrders()->getStoreOrdersProducts() as $item) {
+//                $products[$order->getId()][] = $item->getCost() - ((($item->getCost() * $item->getQuantity()) * $item->getDiscount()) - $item->getDiscount()) / 100;
+//                $fee[$order->getId()][] = $item->getProduct()->getFee();
+//            }
+//            $summary[$order->getOrders()->getId()] = [
+//                'total' => array_sum($products[$order->getId()]) + array_sum($fee[$order->getId()]),
+//            ];
+//        }
 
         return $this->render('market_place/cabinet/orders.html.twig', [
             'customer' => $customer,
-            'orders' => $orders,
-            'summary' => $summary,
+            'orders' => $result['orders'],
+            'rows' => $result['rows_count'],
+            //'summary' => $summary,
         ]);
     }
 

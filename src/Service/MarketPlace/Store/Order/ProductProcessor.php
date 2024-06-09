@@ -47,7 +47,7 @@ final class ProductProcessor implements ProductInterface
             $this->em->remove($customerOrder);
             $this->em->remove($order);
         } else {
-            $rewind = $order->getTotal() - ($this->getProduct()->getCost() * $this->getProduct()->getQuantity());
+            $rewind = $order->getTotal() - ($this->getProduct()->getProduct()->getCost() * $this->getProduct()->getQuantity());
             $order->setTotal($rewind);
             $this->em->persist($order);
         }

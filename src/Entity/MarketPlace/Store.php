@@ -674,25 +674,6 @@ class Store
     }
 
     /**
-     * @return StoreCoupon|null
-     */
-    public function getStoreCoupon(): ?StoreCoupon
-    {
-        return $this->storeCoupon;
-    }
-
-    /**
-     * @param StoreCoupon|null $storeCoupon
-     * @return $this
-     */
-    public function setStoreCoupon(?StoreCoupon $storeCoupon): static
-    {
-        $this->storeCoupons = $storeCoupon;
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, StoreCoupon>
      */
     public function getStoreCoupons(): Collection

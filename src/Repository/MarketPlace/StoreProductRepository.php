@@ -77,7 +77,8 @@ class StoreProductRepository extends ServiceEntityRepository
      * @return array
      * @throws Exception
      */
-    public function fetchProduct(string $slug): array {
+    public function fetchProduct(string $slug): array
+    {
         $statement = $this->connection->prepare('select get_product(:slug)');
         $statement->bindValue('slug', $slug, \PDO::PARAM_STR);
         $result = $statement->executeQuery()->fetchAllAssociative();
@@ -148,13 +149,16 @@ class StoreProductRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('p')
             ->leftJoin(StoreCoupon::class, 'sc', Expr\Join::WITH, 'sc.store = :store')
-            ->join('p.storeCoupons', 'pc')
+            ->leftJoin('p.storeCoupons', 'pc')
             ->where('p.store = :store')
-            ->setParameter('store', $store)
-            ->andWhere('LOWER(p.name) LIKE :search')
-            ->setParameter('search', '%' . strtolower($search) . '%')
-            ->setFirstResult($offset)->setMaxResults($limit);
+            ->setParameter('store', $store);
 
+        if (!empty($search)) {
+            $qb->andWhere('LOWER(p.name) LIKE :search')
+                ->setParameter('search', '%' . strtolower($search) . '%');
+        }
+
+        $qb->setFirstResult($offset)->setMaxResults($limit);
         return $qb->getQuery()->getResult();
     }
 
