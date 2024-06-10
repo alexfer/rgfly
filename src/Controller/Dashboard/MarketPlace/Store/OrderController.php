@@ -40,21 +40,10 @@ class OrderController extends AbstractController
         $currency = Currency::currency($store->getCurrency());
         $orders = $em->getRepository(StoreOrders::class)->findBy(['store' => $store], ['id' => 'desc']);
 
-        $summary = $products = [];
-        foreach ($orders as $order) {
-            foreach ($order->getStoreOrdersProducts() as $item) {
-                $products[$order->getId()][] = $item->getCost() - ((($item->getCost() * $item->getQuantity()) * $item->getDiscount()) - $item->getDiscount()) / 100;
-            }
-            $summary[$order->getId()] = [
-                'total' => array_sum($products[$order->getId()]) != $order->getTotal() ? $order->getTotal() : array_sum($products[$order->getId()]),
-            ];
-        }
-
         return $this->render('dashboard/content/market_place/order/index.html.twig', [
             'store' => $store,
             'currency' => $currency,
             'orders' => $orders,
-            'summary' => $summary,
         ]);
     }
 
@@ -80,10 +69,9 @@ class OrderController extends AbstractController
 
         $products = $fee = $itemSubtotal = [];
         foreach ($order->getStoreOrdersProducts() as $item) {
-            $amountDiscount = $item->getCost() - ((($item->getCost() * $item->getQuantity()) * $item->getDiscount()) - $item->getDiscount()) / 100;
-            $products[] = $amountDiscount;
-            $itemSubtotal[] = $amountDiscount;
-            $fee[] = $item->getProduct()->getFee();
+            $cost =  round($item->getProduct()->getCost(), 2) + round($item->getProduct()->getFee(), 2);
+            $discount = $item->getProduct()->getDiscount();
+            $itemSubtotal[] = $item->getQuantity() * ($cost - (($cost * $discount) - $discount) / 100);
         }
 
         return $this->render('dashboard/content/market_place/order/order.html.twig', [
@@ -91,8 +79,6 @@ class OrderController extends AbstractController
             'currency' => $currency,
             'country' => Countries::getNames(\Locale::getDefault()),
             'order' => $order,
-            'total' => array_sum($products),
-            'fee' => array_sum($fee),
             'itemSubtotal' => array_sum($itemSubtotal),
         ]);
     }

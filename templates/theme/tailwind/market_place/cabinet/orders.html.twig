@@ -42,7 +42,7 @@
                                 </svg>
                                 {{ order.created|date(datetime_format) }}
                             </h5>
-                            <span class="float-end text-lg mr-5">{{ order.total|amount_format }}<small>{{ order.store.currency|currency }}</small></span>
+                            <span class="float-end text-lg mr-5">{{ (order.total + (order.total * order.tax)/100)|round(2) }}<small>{{ order.store.currency|currency }}</small></span>
                         </button>
                     </h2>
                     <div id="order-body-{{ key }}"
@@ -95,16 +95,11 @@
                                         <th scope="col" class="px-6 py-3">
                                             {{ 'label.form.product_name'|trans }}
                                         </th>
-                                        {#
-                                        <th scope="col" class="px-6 py-3 text-center">
-                                           {{ 'label.size'|trans }}
-                                        </th>
-                                        <th scope="col" class="px-6 py-3 text-center">
-                                            {{ 'label.color'|trans }}
-                                        </th>
-                                        #}
                                         <th scope="col" class="px-6 py-3 text-center">
                                             {{ 'label.form.quantity'|trans }}
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-center">
+                                            {{ 'label.form.discount'|trans }}
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-right">
                                             {{ 'table.header.price'|trans }}
@@ -120,39 +115,35 @@
                                         <th scope="row" class="px-6 py-4 text-gray-900 truncate dark:text-white">
                                             <a data-twe-toggle="tooltip" title="{{ product.product.name }}" target="_blank" class="font-semibold text-gray-600 dark:text-gray-50" href="{{ path('app_market_place_product', {slug: product.product.slug, tab: 'about'}) }}">{{ product.product.short_name }}
                                         </th>
-                                        {#
-                                        <td class="px-6 py-4 text-center">
-                                            {% if product.size is not null %}
-                                                {{ product.size_title }}
-                                            {% endif %}
-                                        </td>
-                                        <td class="px-6 py-4 text-center">
-                                            {% if product.color is not null %}
-                                                {{ product.color_title }}
-                                            {% endif %}
-                                        </td>
-                                        #}
                                         <td class="px-6 py-4 text-center">{{ product.quantity }}{{ 'label.form.quantity_pcs'|trans }}</td>
+                                        <td class="px-6 py-4 text-center">{{ product.product.discount }}<small>%</small></td>
                                         <td class="px-6 py-4 text-right">
                                             {{ (product.product.cost + product.product.fee)|amount_format }}<small class="ms-1">{{ order.store.currency|currency }}</small>
                                         </td>
                                         <td class="px-6 py-4 text-right">
-                                            {{ product.product.amount|amount_format }}<small class="ms-1">{{ order.store.currency|currency }}</small>
+                                            {% set cost = (product.product.cost + product.product.fee) %}
+                                            {% set discount = product.product.discount %}
+                                            {% set amount = (cost - (cost * discount)/100)|round(2) %}
+                                            {{ amount|amount_format }}<small class="ms-1">{{ order.store.currency|currency }}</small>
                                         </td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
                                 <tfoot>
                                     <tr class="font-semibold text-gray-900 dark:text-white">
-                                        <th scope="row" class="px-6 py-3 text-base">Total</th>
-                                        {#
+                                        <th scope="row" class="px-6 py-3 text-base">{{ 'order.service.tax'|trans }}</th>
                                         <td class="px-6 py-3"></td>
                                         <td class="px-6 py-3"></td>
-                                        #}
+                                        <td class="px-6 py-3"></td>
+                                        <td class="px-6 py-3 text-right">{{ order.tax }}<small>%</small></td>
+                                    </tr>
+                                    <tr class="font-semibold text-gray-900 dark:text-white">
+                                        <th scope="row" class="px-6 py-3 text-base">{{ 'table.header.total'|trans }}</th>
                                         <td class="px-6 py-3 text-center">{{ order.total_quantity }}</td>
                                         <td class="px-6 py-3"></td>
+                                        <td class="px-6 py-3"></td>
                                         <td class="px-6 py-3 text-right">
-                                            {{ order.total|amount_format }}<small class="ms-1">{{ order.store.currency|currency }}</small>
+                                            {{ (order.total + (order.total * order.tax)/100)|round(2) }}<small class="ms-1">{{ order.store.currency|currency }}</small>
                                         </td>
                                     </tr>
                                 </tfoot>
