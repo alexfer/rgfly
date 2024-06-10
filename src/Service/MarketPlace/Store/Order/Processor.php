@@ -100,6 +100,21 @@ final class Processor implements ProcessorInterface
     }
 
     /**
+     * @return float|int
+     */
+    private function total(): float|int
+    {
+        $cost = round($this->getProduct()->getCost()) + round($this->getProduct()->getFee());
+        $discount = intval($this->getProduct()->getDiscount());
+        $total = ($cost - (($cost * $discount) - $discount) / 100);
+
+        if (!$discount) {
+            $total = $cost;
+        }
+        return $total;
+    }
+
+    /**
      * @param StoreCustomer|null $customer
      * @return StoreOrders
      */
@@ -109,7 +124,7 @@ final class Processor implements ProcessorInterface
         $order->setStore($this->store())
             ->setNumber(MarketPlaceHelper::orderNumber(6))
             ->setSession($this->sessionId)
-            ->setTotal($this->getProduct()->getCost())
+            ->setTotal($this->total())
             ->addStoreOrdersProduct($this->orderProduct())
             ->addStoreCustomerOrder($this->orderCustomer($customer));
 
@@ -151,7 +166,7 @@ final class Processor implements ProcessorInterface
      */
     private function process(StoreOrders $order): StoreOrders
     {
-        $total = round($order->getTotal(), 2) + round($this->getProduct()->getCost(), 2);
+        $total = $order->getTotal() + $this->total();
         $order->setTotal($total)
             ->setSession($this->sessionId);
         $order->addStoreOrdersProduct($this->orderProduct());

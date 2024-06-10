@@ -19,10 +19,10 @@ final class Summary implements SummaryInterface
 
             foreach ($products as $product) {
                 $cost = $product['product']['cost'] + $product['product']['fee'];
-                $discount = $product['product']['discount'];
+                $discount = intval($product['product']['discount']);
                 $fee[$id][] = $product['product']['fee'];
                 $itemSubtotal[$id][] = $cost + $product['product']['fee'];
-                $total[$id][] = $product['quantity'] * ($cost - (($cost * $discount) - $discount) / 100);
+                $total[$id][] = $product['quantity'] * round($cost - (($cost * $discount) - $discount) / 100);
             }
 
             $currency = Currency::currency($order['store']['currency'])['symbol'];

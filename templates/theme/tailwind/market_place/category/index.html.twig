@@ -73,12 +73,12 @@
                         {% endif %}
                         <div class="absolute top-5 w-full">
                             <div class="flex justify-between">
-                                            <span class="ml-2 bg-gray-600 bg-opacity-90 text-gray-500 text-md shadow-xl font-medium me-2 px-2.5 py-0.5 rounded-md dark:bg-gray-900 dark:text-gray-300">
-                                                    <a title="{{ product.name }}"
-                                                       href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}"
-                                                       class="text-white hover:text-neutral-100 hover:animate-pulse">{{ 'store.product.details'|trans }}
-                                                    </a>
-                                                </span>
+                                <span class="ml-2 bg-gray-600 bg-opacity-90 text-gray-500 text-md shadow-xl font-medium me-2 px-2.5 py-0.5 rounded-md dark:bg-gray-900 dark:text-gray-300">
+                                    <a title="{{ product.name }}"
+                                       href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}"
+                                       class="text-white hover:text-neutral-100 hover:animate-pulse">{{ 'store.product.details'|trans }}
+                                    </a>
+                                </span>
                                 {% if product.discount %}
                                     <span class="bg-red-700 bg-opacity-75 text-white text-md font-medium me-2 px-2.5 py-0.5 rounded-xl dark:bg-red-900 dark:text-white">{{ product.discount }}% {{ 'store.product.off'|trans }}</span>
                                 {% endif %}
@@ -97,10 +97,10 @@
                             </form>
                         </div>
                         <div class="mr-3">
-                            {% set percent = product.discount %}
-                            {% set cost = product.cost %}
-                            {% set discount_cost = (cost - ((cost * percent) - percent)/100) %}
-                            <span class="text-2xl font-medium {% if percent > 0 %}text-rose-500{% else %}text-gray-900{% endif %} dark:text-white">{{ (discount_cost + product.fee)|amount_format }}<small>{{ product.currency|currency }}</small></span>
+                            {% set discount = product.discount %}
+                            {% set cost = product.cost + product.fee %}
+                            {% set discount_cost = (cost - ((cost * discount) - discount)/100) %}
+                            <span class="text-2xl font-medium {% if discount > 0 %}text-rose-500{% else %}text-gray-900{% endif %} dark:text-white">{{ (discount_cost)|amount_format }}<small>{{ product.currency|currency }}</small></span>
                         </div>
                     </div>
                     {% if product.parent_category_name is not null %}

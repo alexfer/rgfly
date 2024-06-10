@@ -107,8 +107,6 @@ class StoreProduct
         $this->storeProductAttaches = new ArrayCollection();
         $this->storeOrdersProducts = new ArrayCollection();
         $this->storeProductAttributes = new ArrayCollection();
-        $this->pckg_quantity = 0;
-        $this->fee = 0;
         $this->storeWishlists = new ArrayCollection();
         $this->storeCoupons = new ArrayCollection();
         $this->storeMessages = new ArrayCollection();

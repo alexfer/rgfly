@@ -26,9 +26,10 @@ interface ProcessorInterface
 
     /**
      * @param StoreInvoice $invoice
+     * @param float $tax
      * @return void
      */
-    public function addInvoice(StoreInvoice $invoice): void;
+    public function addInvoice(StoreInvoice $invoice, float $tax = 0): void;
 
     /**
      * @return int

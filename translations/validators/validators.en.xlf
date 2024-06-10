@@ -96,11 +96,11 @@
             </trans-unit>
             <trans-unit id="form.quantity.min">
                 <source>form.quantity.min</source>
-                <target>Your quantity is too short. It should have {{ limit }} characters or more.</target>
+                <target>The quantity is too short. It should have {{ limit }} characters or more.</target>
             </trans-unit>
             <trans-unit id="form.quantity.max">
                 <source>form.quantity.max</source>
-                <target>Your quantity is too long. It should have {{ limit }} characters or less.</target>
+                <target>The quantity is too long. It should have {{ limit }} characters or less.</target>
             </trans-unit>
             <trans-unit id="form.name.min">
                 <source>form.name.min</source>
@@ -193,6 +193,22 @@
             <trans-unit id="form.phone.max">
                 <source>form.phone.max</source>
                 <target>Your phone number is too long. It should have {{ limit }} characters or less.</target>
+            </trans-unit>
+            <trans-unit id="form.discount.min">
+                <source>form.discount.min</source>
+                <target>Discount is too short. It should have {{ limit }} characters or more.</target>
+            </trans-unit>
+            <trans-unit id="form.discount.max">
+                <source>form.discount.max</source>
+                <target>Discount is too long. It should have {{ limit }} characters or less.</target>
+            </trans-unit>
+            <trans-unit id="form.tax.min">
+                <source>form.tax.min</source>
+                <target>The tax is too short. It should have {{ limit }} characters or more.</target>
+            </trans-unit>
+            <trans-unit id="form.tax.max">
+                <source>form.tax.max</source>
+                <target>The tax is too long. It should have {{ limit }} characters or less.</target>
             </trans-unit>
             <trans-unit id="form.url.not_valid">
                 <source>form.url.not_valid</source>

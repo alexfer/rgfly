@@ -9,6 +9,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{ChoiceType,
     EmailType,
     FileType,
+    MoneyType,
+    NumberType,
     SubmitType,
     TelType,
     TextareaType,
@@ -85,6 +87,20 @@ class StoreType extends AbstractType
                 'multiple' => true,
                 'expanded' => true,
                 'choices' => $this->gateways,
+            ])
+            ->add('tax', NumberType::class, [
+                'attr' => [
+                    'min' => '0.00',
+                    'step' => '0.01',
+                    'max' => '100.00',
+                ],
+                'constraints' => [
+                    new Length([
+                        'max' => 100,
+                        'maxMessage' => 'form.discount.max',
+                    ]),
+                ],
+                'html5' => true,
             ])
             ->add('currency', ChoiceType::class, [
                 'placeholder' => 'label.form.store_currency.placeholder',

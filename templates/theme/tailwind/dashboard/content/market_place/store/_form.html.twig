@@ -155,6 +155,14 @@
                         {% endfor %}
                     </div>
                 </div>
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="relative mb-3">
+                        {{ form_label(form.tax, 'label.form.tax', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {{ form_widget(form.tax, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: '0.00'}}) }}
+                        <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.tax) }}</span>
+                    </div>
+                    <div class="relative mb-3"></div>
+                </div>
             </div>
             <div class="hidden p-4"
                  id="market-attachment"
