@@ -24,6 +24,7 @@ SELECT json_agg(json_build_object(
         'number', o.number,
         'created', o.created_at,
         'completed', o.completed_at,
+        'total_quantity', (SELECT SUM(op.quantity) FROM store_orders_product op WHERE op.orders_id = o.id LIMIT 1),
         'coupon', (SELECT json_build_object(
                                   'id', scu.id,
                                   'price', sc.price,

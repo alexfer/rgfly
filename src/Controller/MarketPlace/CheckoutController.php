@@ -52,6 +52,7 @@ class CheckoutController extends AbstractController
         $form = $this->createForm(CustomerType::class, $customer);
         $order = $checkout->findOrder($sessionId);
         $process = $coupon->process($order->getStore());
+        $tax = $order->getStore()->getTax();
 
         if ($process) {
             $hasUsed = $coupon->getCouponUsage($order->getId(), $user);
@@ -84,7 +85,7 @@ class CheckoutController extends AbstractController
                 $customerManager->bind($form)->updateCustomer($customer, $form->getData());
             }
 
-            $checkout->addInvoice(new StoreInvoice());
+            $checkout->addInvoice(new StoreInvoice(), $tax);
             $checkout->updateOrder();
             $session->set('quantity', $checkout->countOrders());
 
@@ -102,6 +103,7 @@ class CheckoutController extends AbstractController
             'order' => $order,
             'itemSubtotal' => array_sum($sum['itemSubtotal']),
             'fee' => array_sum($sum['fee']),
+            'tax' => $tax,
             'total' => array_sum($sum['itemSubtotal']),
             'form' => $form,
             'hasUsed' => $hasUsed,

@@ -21,6 +21,7 @@ BEGIN
                                      LIMIT 1),
                            'status', o.status,
                            'total', o.total,
+                           'tax', o.tax,
                            'products', (SELECT json_agg(json_build_object(
                            'id', sop.id,
                            'size', sop.size::json -> 'size',
