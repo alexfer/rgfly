@@ -2,21 +2,17 @@
 
 namespace App\Controller\Security;
 
-use App\Entity\{MarketPlace\MarketCustomer, User};
+use App\Entity\{MarketPlace\StoreCustomer, User};
 use App\Form\Type\MarketPlace\CustomerRegistrationType;
 use App\Form\Type\User\DetailsType;
-use App\Repository\MarketPlace\MarketAddressRepository;
-use App\Repository\MarketPlace\MarketCustomerRepository;
-use App\Repository\UserDetailsRepository;
-use App\Repository\UserRepository;
+use App\Repository\{UserDetailsRepository, UserRepository};
+use App\Repository\MarketPlace\{StoreAddressRepository, StoreCustomerRepository};
 use Doctrine\DBAL\Exception;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\{Request, Response,};
+use Symfony\Component\Form\{FormError, FormInterface};
+use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -27,10 +23,10 @@ class RegistrationController extends AbstractController
 
     /**
      * @param Request $request
-     * @param UserPasswordHasherInterface $userPasswordHasher
+     * @param UserPasswordHasherInterface $hasher
      * @param UserRepository $userRepository
-     * @param MarketCustomerRepository $customerRepository
-     * @param MarketAddressRepository $addressRepository
+     * @param StoreCustomerRepository $customerRepository
+     * @param StoreAddressRepository $addressRepository
      * @param ParameterBagInterface $params
      * @param TranslatorInterface $translator
      * @return Response
@@ -43,8 +39,8 @@ class RegistrationController extends AbstractController
         Request                     $request,
         UserPasswordHasherInterface $hasher,
         UserRepository              $userRepository,
-        MarketCustomerRepository    $customerRepository,
-        MarketAddressRepository     $addressRepository,
+        StoreCustomerRepository     $customerRepository,
+        StoreAddressRepository      $addressRepository,
         ParameterBagInterface       $params,
         TranslatorInterface         $translator,
     ): Response
@@ -55,7 +51,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_index');
         }
 
-        $form = $this->createForm(CustomerRegistrationType::class, new MarketCustomer());
+        $form = $this->createForm(CustomerRegistrationType::class, new StoreCustomer());
         $form->handleRequest($request);
 
         $error = null;

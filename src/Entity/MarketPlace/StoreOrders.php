@@ -138,8 +138,7 @@ class StoreOrders
      */
     public function setTotal(string $total): static
     {
-        $this->total = number_format($total, 2, '.', '');
-
+        $this->total = round($total);
         return $this;
     }
 

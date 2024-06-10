@@ -102,11 +102,11 @@
                     <div class="flex-nowrap mb-10 block w-72">
                         {% if product.discount|round %}
                             {% set discount = product.discount %}
-                            {% set cost = product.cost %}
+                            {% set cost = product.cost + product.fee %}
                             <span class="font-medium text-2xl text-success pr-2">
-                                {{ (cost + product.fee - ((cost * discount) - discount)/100)|amount_format }}<small>{{ product.store.currency|currency }}</small>
+                                {{ (cost - ((cost * discount) - discount)/100)|amount_format }}<small>{{ product.store.currency|currency }}</small>
                             </span>
-                            <span class="line-through text-lg font-medium text-gray-400">{{ (product.cost + product.fee)|amount_format }}<small>{{ product.store.currency|currency }}</small></span>
+                            <span class="line-through text-lg font-medium text-gray-400">{{ (product.cost)|amount_format }}<small>{{ product.store.currency|currency }}</small></span>
                         {% else %}
                             <span class="font-medium text-2xl text-surface-dark">{{ (product.cost + product.fee)|amount_format }}<small>{{ product.store.currency|currency }}</small></span>
                         {% endif %}

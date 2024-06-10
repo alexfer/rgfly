@@ -104,15 +104,16 @@ class Processor implements ProcessorInterface
 
     /**
      * @param StoreInvoice $invoice
+     * @param float $tax
      * @return void
      */
-    public function addInvoice(StoreInvoice $invoice): void
+    public function addInvoice(StoreInvoice $invoice, float $tax = 0): void
     {
         $invoice->setOrders($this->order)
             ->setPaymentGateway($this->getPaymentGateway())
             ->setNumber(MarketPlaceHelper::slug($this->order->getId(), 6, 'i'))
             ->setAmount($this->order->getTotal())
-            ->setTax(0);
+            ->setTax($tax);
 
         $this->em->persist($invoice);
     }
@@ -145,8 +146,8 @@ class Processor implements ProcessorInterface
         $sum = [];
         foreach ($this->getProducts() as $product) {
             $cost = $product->getProduct()->getCost() + $product->getProduct()->getFee();
-            $discount = $product->getProduct()->getDiscount();
-            $sum['itemSubtotal'][] = $product->getQuantity() * ($cost - (($cost * $discount) - $discount) / 100);
+            $discount = intval($product->getProduct()->getDiscount());
+            $sum['itemSubtotal'][] = $product->getQuantity() * round($cost - (($cost * $discount) - $discount) / 100);
             $sum['fee'][] = $product->getProduct()->getFee();
         }
 

@@ -172,11 +172,13 @@
             </div>
         </div>
     </div>
+    {% if orders|length %}
     {% include 'market_place/cabinet/message/form.html.twig' %}
     {% include 'layouts/toast/success.html.twig' %}
     {% include 'layouts/toast/danger.html.twig' %}
-    {% endblock %}
-    {% block javascripts %}
+    {% endif %}
+{% endblock %}
+{% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('message-js') }}
 {% endblock %}
