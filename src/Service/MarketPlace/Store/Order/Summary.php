@@ -31,6 +31,7 @@ final class Summary implements SummaryInterface
                 $summary[] = [
                     'store' => $order['store']['id'],
                     'currency' => $currency,
+                    'tax' => $order['store']['tax'],
                     'fee' => number_format(array_sum($fee[$id]), 2, '.', ' '),
                     'total' => number_format(round(array_sum($fee[$id]) + array_sum($total[$id])), 2, '.', ' '),
                     'itemSubtotal' => number_format(round(array_sum($itemSubtotal[$id])), 2, '.', ' '),
@@ -38,6 +39,7 @@ final class Summary implements SummaryInterface
             } else {
                 $summary[] = [
                     'number' => $order['number'],
+                    'tax' => $order['tax'],
                     'store_id' => $order['store']['id'],
                     'store_name' => $order['store']['name'],
                     'currency' => $currency,

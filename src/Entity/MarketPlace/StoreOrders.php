@@ -69,6 +69,9 @@ class StoreOrders
     #[ORM\OneToMany(mappedBy: 'orders', targetEntity: StoreMessage::class)]
     private Collection $storeMessages;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $tax = null;
+
     public function __construct()
     {
         $this->created_at = new DateTimeImmutable();
@@ -357,6 +360,18 @@ class StoreOrders
                 $storeMessage->setOrders(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTax(): ?string
+    {
+        return $this->tax;
+    }
+
+    public function setTax(?string $tax): static
+    {
+        $this->tax = $tax;
 
         return $this;
     }

@@ -1833,6 +1833,10 @@
                 <source>order.service.fee</source>
                 <target>Service Fee</target>
             </trans-unit>
+            <trans-unit id="order.service.tax">
+                <source>order.service.tax</source>
+                <target>Tax</target>
+            </trans-unit>
             <trans-unit id="store.policy">
                 <source>store.policy</source>
                 <target>
