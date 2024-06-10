@@ -125,6 +125,7 @@ final class Processor implements ProcessorInterface
             ->setNumber(MarketPlaceHelper::orderNumber(6))
             ->setSession($this->sessionId)
             ->setTotal($this->total())
+            ->setTax($this->store()->getTax())
             ->addStoreOrdersProduct($this->orderProduct())
             ->addStoreCustomerOrder($this->orderCustomer($customer));
 
