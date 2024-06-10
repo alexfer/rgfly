@@ -99,7 +99,6 @@ class OrderController extends AbstractController
         $session = $request->getSession();
         $customer = $userManager->get($user);
         $orders = $collection->getOrders($session->getId(), $customer);
-
         return $this->render('market_place/order/summary.html.twig', [
             'orders' => $orders['summary'] ?: null,
             'summary' => $orders['summary'] !== null ? $order->summary($orders['summary']) : null,

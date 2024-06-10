@@ -399,6 +399,10 @@
                 <source>table.header.cost</source>
                 <target>Cost</target>
             </trans-unit>
+            <trans-unit id="table.header.fee">
+                <source>table.header.fee</source>
+                <target>Fee</target>
+            </trans-unit>
             <trans-unit id="table.header.owner">
                 <source>table.header.owner</source>
                 <target>Owner</target>
@@ -1724,6 +1728,10 @@
             <trans-unit id="label.form.currency">
                 <source>label.form.currency</source>
                 <target>Currency</target>
+            </trans-unit>
+            <trans-unit id="label.form.tax">
+                <source>label.form.tax</source>
+                <target>Tax (%)</target>
             </trans-unit>
             <trans-unit id="label.form.keep_me_logged_in">
                 <source>label.form.keep_me_logged_in</source>

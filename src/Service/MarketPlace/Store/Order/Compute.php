@@ -33,11 +33,13 @@ class Compute implements ComputeInterface
             $product = $this->orderProduct($key);
             $product->setQuantity($value);
             $this->em->persist($product);
-            $cost = $product->getProduct()->getCost() + $product->getProduct()->getFee();
+            $cost = round($product->getProduct()->getCost()) + round($product->getProduct()->getFee());
+            $discount = intval($product->getProduct()->getDiscount());
             $this->orders[$product->getOrders()->getId()][$product->getId()] = [
-                'amount' => ($cost - (($cost * $product->getProduct()->getDiscount()) - $product->getProduct()->getDiscount()) / 100) * $value,
+                'amount' => round(($cost - (($cost * $discount) - $discount) / 100)) * $value,
             ];
         }
+
         $this->em->flush();
         $this->updateAmount();
     }
@@ -60,19 +62,20 @@ class Compute implements ComputeInterface
         $amount = [];
         foreach ($this->orders as $order => $products) {
             foreach ($products as $product) {
-                $amount[$order][] = $product['amount'];
+                $amount[$order][] = round($product['amount']);
             }
             $amount[$order] = array_sum($amount[$order]);
-            $this->order($order, $amount[$order]);
+            $amount = $amount[$order];
+            $this->order($order, $amount);
         }
     }
 
     /**
      * @param int $id
-     * @param mixed $amount
+     * @param float $amount
      * @return void
      */
-    private function order(int $id, mixed $amount): void
+    private function order(int $id, float $amount): void
     {
         $order = $this->em->getRepository(StoreOrders::class)->find($id);
         $order->setTotal($amount);

@@ -47,11 +47,11 @@
                                         <div class="relative justify-start">
                                             {% if product.product.discount %}
                                                 {% set percent = product.product.discount %}
-                                                {% set cost = product.product.cost %}
+                                                {% set cost = product.product.cost + product.product.fee %}
                                                 {% set discount = (cost - (cost * percent)/100) %}
                                                 <div class="font-medium whitespace-nowrap text-xl">
                                                     <span class="inline-block text-xs text-white opacity-85 bg-red-600 px-2 pt-1 pb-0.5 rounded-md">{{ product.product.discount }}%{{ 'store.product.off'|trans }}</span>
-                                                    {{ (discount + product.product.fee)|amount_format }}
+                                                    {{ discount|amount_format }}
                                                     <small>{{ order.store.currency|currency }}</small>
                                                 </div>
                                             {% else %}

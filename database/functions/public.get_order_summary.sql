@@ -30,7 +30,7 @@ BEGIN
                            'quantity', sop.quantity,
                            'coupon', (SELECT json_build_object(
                                                      'id', sc.id,
-                                                     'discount', sc.discount,
+                                                     'discount', sc.discount::integer,
                                                      'price', sc.price,
                                                      'started', sc.started_at,
                                                      'expired', sc.expired_at,

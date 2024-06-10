@@ -90,7 +90,8 @@ final readonly class Collection implements CollectionInterface
                 ];
 
                 $cost = $product['product']['cost'] + $product['product']['fee'];
-                $total[$id][] = $cost - ($cost * $product['product']['discount'] - $product['product']['discount']) / 100;
+                $discount = intval($product['product']['discount']);
+                $total[$id][] = round($cost - ($cost * $discount - $discount) / 100, 2);
                 $fee[$id][] = $product['product']['fee'];
 
             }

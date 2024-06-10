@@ -52,6 +52,9 @@ class Store
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $tax = null;
+
     #[ORM\OneToMany(mappedBy: 'store', targetEntity: StoreProduct::class)]
     private Collection $products;
 
@@ -775,6 +778,25 @@ class Store
                 $storeSocial->setStore(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTax(): ?string
+    {
+        return $this->tax;
+    }
+
+    /**
+     * @param string|null $tax
+     * @return $this
+     */
+    public function setTax(?string $tax): static
+    {
+        $this->tax = $tax;
 
         return $this;
     }
