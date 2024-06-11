@@ -2,7 +2,7 @@
 
 namespace App\Repository\MarketPlace;
 
-use App\Entity\MarketPlace\Store;
+use App\Entity\MarketPlace\{Store, StoreCustomer};
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
@@ -60,6 +60,26 @@ class StoreRepository extends ServiceEntityRepository
         $statement->bindValue('oid', $user->getId(), \PDO::PARAM_INT);
         $result = $statement->executeQuery()->fetchAllAssociative();
         return json_decode($result[0]['owner_store_search'], true) ?: [];
+    }
+
+    /**
+     * @param string $slug
+     * @param StoreCustomer|null $customer
+     * @param int $offset
+     * @param int $limit
+     * @return array|null
+     * @throws Exception
+     */
+    public function fetch(string $slug, ?StoreCustomer $customer, int $offset = 0, int $limit = 12): ?array
+    {
+        $statement = $this->connection->prepare('select get_store(:slug, :customer_id, :offset, :limit)');
+        $statement->bindValue('slug', $slug, \PDO::PARAM_STR);
+        $statement->bindValue('customer_id', $customer?->getId(), \PDO::PARAM_INT);
+        $statement->bindValue('offset', $offset, \PDO::PARAM_INT);
+        $statement->bindValue('limit', $limit, \PDO::PARAM_INT);
+
+        $result = $statement->executeQuery()->fetchAllAssociative();
+        return json_decode($result[0]['get_store'], true) ?: null;
     }
 
 }
