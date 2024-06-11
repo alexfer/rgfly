@@ -961,8 +961,8 @@
                 <source>market.messages.empty</source>
                 <target>Your messages is currently empty</target>
             </trans-unit>
-            <trans-unit id="market.product.orders.empty">
-                <source>market.product.orders.empty</source>
+            <trans-unit id="store.orders.empty">
+                <source>store.orders.empty</source>
                 <target>Your orders is currently empty</target>
             </trans-unit>
             <trans-unit id="store.product.wishlist">
@@ -1836,6 +1836,10 @@
             <trans-unit id="order.service.tax">
                 <source>order.service.tax</source>
                 <target>Tax</target>
+            </trans-unit>
+            <trans-unit id="order.service.coupon">
+                <source>order.service.coupon</source>
+                <target>Coupon</target>
             </trans-unit>
             <trans-unit id="store.policy">
                 <source>store.policy</source>

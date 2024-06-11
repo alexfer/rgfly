@@ -27,10 +27,12 @@ class AmountFormatExtension extends AbstractExtension
 
     /**
      * @param mixed $value
+     * @param int $precision
      * @return string
      */
-    public function amount_format(mixed $value): string
+    public function amount_format(mixed $value, int $precision = 0): string
     {
-        return number_format(round($value, 0, PHP_ROUND_HALF_UP), 2, '.', ' ');
+        $value = round($value, $precision);
+        return number_format($value, 2, '.', ' ');
     }
 }
