@@ -95,17 +95,17 @@
                                 <div class="relative overflow-hidden bg-cover bg-no-repeat">
                                     {% if product.attachment is not null %}
                                         {% set _picture= 'storage/product/' ~ product.id ~ '/' ~ product.attachment %}
-                                        <a href="">
-                                        <img class="transition duration-300 ease-linear hover:scale-110 rounded-t-lg"
-                                             src="{{ asset(_picture)|imagine_filter('product_preview') }}"
-                                             alt="{{ product.name }}">
+                                        <a href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}">
+                                            <img class="transition duration-300 ease-linear hover:scale-110 rounded-t-lg"
+                                                 src="{{ asset(_picture)|imagine_filter('product_preview') }}"
+                                                 alt="{{ product.name }}">
                                         </a>
                                     {% else %}
-                                        <img class="transition duration-300 ease-linear hover:scale-110 rounded-t-lg"
+                                        <img class="transition opacity-50 duration-300 ease-linear hover:scale-110 rounded-t-lg"
                                              src="{{ asset('img/600x400.png') }}"
                                              alt="{{ product.name }}">
                                     {% endif %}
-                                    <div class="absolute z-10 top-5 w-full">
+                                    <div class="absolute z-10 opacity-100 top-5 w-full">
                                         <div class="flex justify-between">
                                                     <span class="ml-2 bg-gray-600 text-sm bg-opacity-90 text-gray-500 text-md shadow-xl font-medium px-2.5 py-0.5 rounded-md dark:bg-gray-900 dark:text-gray-300">
                                                         <a title="{{ product.name }}"
@@ -141,10 +141,10 @@
                                                 class="fs-6 ms-1">Sales</small>
                                     </div>
                                     <div class="mr-3 mt-5">
-                                        {% set percent = product.discount %}
-                                        {% set cost = product.cost %}
-                                        {% set discount_cost = (cost - ((cost * percent) - percent)/100) %}
-                                        <span class="text-xl font-medium {% if percent > 0 %}text-rose-500{% else %}text-gray-900{% endif %} dark:text-white">{{ (discount_cost + product.fee)|amount_format }}<small>{{ store.currency|currency }}</small></span>
+                                        {% set discount = product.discount %}
+                                        {% set cost = product.cost + product.fee %}
+                                        {% set discount_cost = (cost - ((cost * discount) - discount)/100) %}
+                                        <span class="text-xl font-medium {% if discount > 0 %}text-rose-500{% else %}text-gray-900{% endif %} dark:text-white">{{ (discount_cost)|amount_format }}<small>{{ store.currency|currency }}</small></span>
                                     </div>
                                 </div>
                                 <div class="flex items-center border-t mt-3 pt-1 bg-gray-50 bg-opacity-75 pb-2 px-3 justify-between">
