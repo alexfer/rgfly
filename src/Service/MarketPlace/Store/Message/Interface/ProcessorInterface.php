@@ -9,10 +9,11 @@ interface ProcessorInterface
 {
     /**
      * @param array $payload
+     * @param UserInterface|null $user
      * @param array|null $exclude
      * @return array
      */
-    public function process(array $payload, ?array $exclude): array;
+    public function process(array $payload, ?UserInterface $user, ?array $exclude): array;
 
     /**
      * @param UserInterface|null $user

@@ -42,13 +42,14 @@ class Processor implements ProcessorInterface
 
     /**
      * @param array $payload
+     * @param UserInterface|null $user
      * @param array|null $exclude
      * @return array
      */
-    public function process(array $payload, ?array $exclude): array
+    public function process(array $payload, ?UserInterface $user, ?array $exclude): array
     {
         $this->payload = $payload;
-        return $this->validate($exclude);
+        return $this->validate($exclude, $user);
 
     }
 
@@ -112,10 +113,19 @@ class Processor implements ProcessorInterface
 
     /**
      * @param array|null $exclude
+     * @param $user
      * @return array
      */
-    private function validate(?array $exclude): array
+    private function validate(?array $exclude, $user = null): array
     {
+        if(!$user instanceof StoreCustomer){
+            return [
+                'success' => false,
+                'error' => $this->translator->trans('store.message.unauthorized'),
+                'code' => Response::HTTP_UNAUTHORIZED,
+            ];
+        }
+
         $jsonErrors = [];
         $collection = [
             'message' => [

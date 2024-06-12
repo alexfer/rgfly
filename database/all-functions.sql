@@ -315,7 +315,7 @@ BEGIN
             'store_id', m.id,
             'currency', m.currency,
             'store_slug', m.slug
-                    ))
+                    ) ORDER BY p.id DESC)
     INTO get_products
     FROM store_product p
              JOIN store_category_product cp ON p.id = cp.product_id
@@ -600,7 +600,7 @@ BEGIN
             'store_id', m.id,
             'currency', m.currency,
             'store_slug', m.slug
-                    ))
+                    ) ORDER BY RANDOM())
     INTO get_products
     FROM store_product p
              JOIN store_category_product cp ON p.id = cp.product_id
@@ -612,8 +612,7 @@ BEGIN
                         ORDER BY pa.product_id) a ON a.product_id = p.id
              LEFT JOIN store_wishlist w ON w.product_id = p.id
              JOIN store m ON m.id = p.store_id
-    WHERE p.deleted_at IS NULL
-    ORDER BY RANDOM()
+    WHERE p.deleted_at IS NULL    
     OFFSET start LIMIT row_count;
 
     SELECT COUNT(*)
@@ -659,7 +658,7 @@ BEGIN
             'store_id', m.id,
             'currency', m.currency,
             'store_slug', m.slug
-                    ))
+                    ) ORDER BY p.id DESC)
     INTO get_products
     FROM store_product p
              JOIN store_category_product cp ON p.id = cp.product_id
