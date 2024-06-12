@@ -1095,6 +1095,14 @@
                 <source>entry.form.categories</source>
                 <target>Categories</target>
             </trans-unit>
+            <trans-unit id="search.form.categories">
+                <source>search.form.categories</source>
+                <target>All categories</target>
+            </trans-unit>
+            <trans-unit id="search.form.placeholder">
+                <source>search.form.placeholder</source>
+                <target><![CDATA[Computers & Notebooks, Smartphones, TV, Electronics, Products for home, Sports & Leisure...]]></target>
+            </trans-unit>
             <trans-unit id="option.category.choice_category">
                 <source>option.category.choice_category</source>
                 <target>Choice category ...</target>
