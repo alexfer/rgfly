@@ -11,6 +11,22 @@ const wishlists = document.querySelectorAll('.add-wishlist');
 const drops = document.querySelectorAll('.drops');
 const headers = {'Content-type': 'application/json; charset=utf-8'};
 const bulkRemoveWishlist = document.getElementById('bulk-remove');
+const target = document.getElementById('dropdown');
+const trigger = document.getElementById('dropdown-search');
+
+if(target !== null) {
+    [...target.getElementsByTagName('button')].forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const input = document.getElementById('search');
+            let text = document.createTextNode(btn.textContent.trim());
+            trigger.textContent = null;
+            trigger.prepend(text);
+            input.previousElementSibling.value = btn.getAttribute('data-slug');
+            input.value = null;
+            input.focus();
+        });
+    });
+}
 
 if (bulkRemoveWishlist !== null) {
     bulkRemoveWishlist.addEventListener('click', (event) => {

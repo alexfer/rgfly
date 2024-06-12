@@ -18,7 +18,7 @@
                 {% if messages|length %}
                     <div class="relative overflow-hidden shadow-md sm:rounded-lg">
                         <table class="w-full table-fixed border-collapse mt-3 text-md text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <caption class="text-slate-500 dark:text-slate-400 pb-4 text-sm caption-top">
+                            <caption class="text-slate-500 text-left ms-5 dark:text-slate-400 pb-4 text-sm caption-top">
                                 {{ 'caption.messages.history'|trans }}
                             </caption>
                             <tbody id="bulk-item">
@@ -37,11 +37,11 @@
                                         {% elseif message.order is not null %}
                                             {{ message.order.number }}
                                         {% else %}
-                                            {{ 'market.message.question'|trans }}
+                                            {{ 'store.message.question'|trans }}
                                         {% endif %}
                                     </th>
                                     <td class="p-3 text-gray-500">
-                                        {{ message.created|date(datetime_format) }}
+                                        {{ message.created|date(date_format) }}
                                     </td>
                                     <td class="p-3 text-gray-500">
                                         {{ message.priority }}
