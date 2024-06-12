@@ -27,7 +27,8 @@
     {% include 'layouts/header.html.twig' %}
     <main class="mb-auto shadow-inner">
         <section class="bg-white dark:bg-gray-900">
-            <div class="max-w-screen-xl flex mx-auto pt-4 py-8 lg:py-16 lg:px-2">
+            {% block search %}{% endblock %}
+            <div class="max-w-screen-xl flex mx-auto {% block offest %}pt-4 py-8 lg:py-16 lg:px-2{% endblock %}">
                 <div class="mx-auto w-full bg-white p-6 {% block class %}rounded-lg shadow-4{% endblock %} dark:bg-surface-dark">
                     {% block body %}{% endblock %}
                 </div>
