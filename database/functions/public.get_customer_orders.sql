@@ -24,13 +24,14 @@ SELECT json_agg(json_build_object(
         'number', o.number,
         'created', o.created_at,
         'completed', o.completed_at,
+        'tax', o.tax,
         'total_quantity', (SELECT SUM(op.quantity) FROM store_orders_product op WHERE op.orders_id = o.id LIMIT 1),
         'coupon', (SELECT json_build_object(
                                   'id', scu.id,
                                   'price', sc.price,
                                   'discount', sc.discount::integer,
                                   'total_discount', (o.total - ((o.total * sc.discount::integer) - sc.discount::integer) / 100),
-                                                      'total_price', (o.total - sc.price)
+                                  'total_price', (o.total - sc.price)
                                               )
                    FROM store_coupon_usage scu
                             LEFT JOIN public.store_coupon sc on sc.id = scu.coupon_id

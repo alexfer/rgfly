@@ -315,7 +315,7 @@ BEGIN
             'store_id', m.id,
             'currency', m.currency,
             'store_slug', m.slug
-                    ))
+                    ) ORDER BY p.id DESC)
     INTO get_products
     FROM store_product p
              JOIN store_category_product cp ON p.id = cp.product_id
@@ -360,7 +360,7 @@ BEGIN
     INTO codes
     FROM store_coupon_code cc
              LEFT OUTER JOIN store_coupon sc on sc.store_id = get_coupon_codes.store_id
-             INNER JOIN store_coupon_usage scu on cc.id != scu.coupon_code_id
+             LEFT JOIN store_coupon_usage scu on cc.id != scu.coupon_code_id
     WHERE sc.type = get_coupon_codes.type
       AND cc.coupon_id = get_coupon_codes.coupon_id;
 
@@ -395,6 +395,7 @@ BEGIN
                                      LIMIT 1),
                            'status', o.status,
                            'total', o.total,
+                           'tax', o.tax,
                            'products', (SELECT json_agg(json_build_object(
                            'id', sop.id,
                            'size', sop.size::json -> 'size',
@@ -531,113 +532,6 @@ $$;
 
 alter function get_customer_messages(integer, integer, integer) owner to rgfly;
 
-create or replace function get_customer_orders(customer_id integer, start integer DEFAULT 0, row_count integer DEFAULT 25) returns json
-    language plpgsql
-as
-$$
-DECLARE
-orders     JSON;
-    rows_count INTEGER;
-BEGIN
-SELECT COUNT(*)
-FROM store_customer_orders sco
-WHERE sco.customer_id = get_customer_orders.customer_id
-    INTO rows_count;
-
-SELECT json_agg(json_build_object(
-        'id', o.id,
-        'store', (SELECT json_build_object(
-                                 'id', s.id,
-                                 'name', s.name,
-                                 'currency', s.currency,
-                                 'slug', s.slug
-                         )
-                  FROM store s
-                  WHERE s.id = o.store_id LIMIT 1),
-        'number', o.number,
-        'created', o.created_at,
-        'completed', o.completed_at,
-        'coupon', (SELECT json_build_object(
-                                  'id', scu.id,
-                                  'price', sc.price,
-                                  'discount', sc.discount::integer,
-                                  'total_discount', (o.total - ((o.total * sc.discount::integer) - sc.discount::integer) / 100),
-                                                      'total_price', (o.total - sc.price)
-                                              )
-                   FROM store_coupon_usage scu
-                            LEFT JOIN public.store_coupon sc on sc.id = scu.coupon_id
-                   WHERE scu.relation = co.orders_id LIMIT 1),
-        'invoice', (json_build_object(
-                'id', si.id,
-                'number', si.number,
-                'tax', si.tax,
-                'amount', si.amount,
-                'created', si.created_at,
-                'paid', si.paid_at,
-                'payment_gateway', (SELECT json_build_object(
-                                                   'id', spg.id,
-                                                   'name', spg.name,
-                                                   'icon', spg.icon
-                                           )
-                                    FROM store_payment_gateway spg
-                                    WHERE spg.id = si.payment_gateway_id LIMIT 1)
-                    )),
-        'status', o.status,
-        'total', o.total,
-        'products', (SELECT json_agg(json_build_object(
-                'id', sop.id,
-                'quantity', sop.quantity,
-                'size', sop.size::json -> 'size',
-                'size_title', sop.size::json -> 'size',
-                'color', sop.color::json -> 'extra',
-                'color_title', sop.color::json -> 'color',
-                'product', (SELECT json_build_object(
-                                           'id', p.id,
-                                           'fee', p.fee,
-                                           'cost', p.cost,
-                                           'slug', p.slug,
-                                           'amount', SUM(p.cost + p.fee) * sop.quantity,
-                                           'total_discount', ((p.cost - (((p.cost + p.fee) * p.discount::integer) - p.discount::integer) / 100)
- * sop.quantity),
-                                               'total_price', ((p.cost + p.fee) * sop.quantity),
-                                               'discount', p.discount::integer,
-                                               'short_name', p.short_name,
-                                               'name', p.name,
-                                               'coupon', (SELECT json_build_object(
-                                                                         'id', c.id,
-                                                                         'price', c.price,
-                                                                         'discount', c.discount::integer,
-                                                                         'totatl_discount', (p.cost - (((p.cost + p.fee) * c.discount::integer) - c
-.discount::integer) / 100),
-                                                                         'total_price', (p.cost - c.price)
-                                                                 )
-                                                          FROM store_coupon_store_product scsp
-                                                                   LEFT JOIN public.store_coupon c on c.id = scsp.store_coupon_id
-                                                          WHERE scsp.store_product_id = p.id LIMIT 1)
-                                       )
-                            FROM store_product p
-                            WHERE p.id = sop.product_id
-                            GROUP BY p.id LIMIT 1)
-                                     ))
-                     FROM store_orders_product sop
-                     WHERE sop.orders_id = co.orders_id LIMIT 1)
-                ) ORDER BY co.id DESC)
-INTO orders
-FROM store_customer_orders co
-         JOIN store_orders o ON o.id = co.orders_id
-         LEFT JOIN store_invoice si on co.orders_id = si.orders_id
-WHERE co.customer_id = get_customer_orders.customer_id
-OFFSET get_customer_orders.start LIMIT get_customer_orders.row_count;
-
-RETURN json_build_object(
-        'orders', orders,
-        'rows_count', rows_count
-       );
-END;
-$$;
-
-alter function get_customer_orders(integer, integer, integer) owner to rgfly;
-
 create or replace function create_user_details(user_id integer, "values" json) returns integer
     language plpgsql
 as
@@ -706,7 +600,7 @@ BEGIN
             'store_id', m.id,
             'currency', m.currency,
             'store_slug', m.slug
-                    ))
+                    ) ORDER BY RANDOM())
     INTO get_products
     FROM store_product p
              JOIN store_category_product cp ON p.id = cp.product_id
@@ -718,8 +612,7 @@ BEGIN
                         ORDER BY pa.product_id) a ON a.product_id = p.id
              LEFT JOIN store_wishlist w ON w.product_id = p.id
              JOIN store m ON m.id = p.store_id
-    WHERE p.deleted_at IS NULL
-    ORDER BY RANDOM()
+    WHERE p.deleted_at IS NULL    
     OFFSET start LIMIT row_count;
 
     SELECT COUNT(*)
@@ -765,7 +658,7 @@ BEGIN
             'store_id', m.id,
             'currency', m.currency,
             'store_slug', m.slug
-                    ))
+                    ) ORDER BY p.id DESC)
     INTO get_products
     FROM store_product p
              JOIN store_category_product cp ON p.id = cp.product_id
@@ -879,5 +772,189 @@ END;
 $$;
 
 alter function get_messages(integer, text, integer, integer) owner to rgfly;
+
+create or replace function get_customer_orders(customer_id integer, start integer DEFAULT 0, row_count integer DEFAULT 25) returns json
+    language plpgsql
+as
+$$
+DECLARE
+    orders     JSON;
+    rows_count INTEGER;
+BEGIN
+    SELECT COUNT(*)
+    FROM store_customer_orders sco
+    WHERE sco.customer_id = get_customer_orders.customer_id
+    INTO rows_count;
+
+    SELECT json_agg(json_build_object(
+                            'id', o.id,
+                            'store', (SELECT json_build_object(
+                                                     'id', s.id,
+                                                     'name', s.name,
+                                                     'currency', s.currency,
+                                                     'slug', s.slug
+                                             )
+                                      FROM store s
+                                      WHERE s.id = o.store_id
+                                      LIMIT 1),
+                            'number', o.number,
+                            'created', o.created_at,
+                            'completed', o.completed_at,
+                            'tax', o.tax,
+                            'total_quantity',
+                            (SELECT SUM(op.quantity) FROM store_orders_product op WHERE op.orders_id = o.id LIMIT 1),
+                            'coupon', (SELECT json_build_object(
+                                                      'id', scu.id,
+                                                      'price', sc.price,
+                                                      'discount', sc.discount::integer
+                                              )
+                                       FROM store_coupon_usage scu
+                                                LEFT JOIN public.store_coupon sc on sc.id = scu.coupon_id
+                                       WHERE scu.relation = co.orders_id
+                                       LIMIT 1),
+                            'invoice', (json_build_object(
+                    'id', si.id,
+                    'number', si.number,
+                    'tax', si.tax,
+                    'amount', si.amount,
+                    'created', si.created_at,
+                    'paid', si.paid_at,
+                    'payment_gateway', (SELECT json_build_object(
+                                                       'id', spg.id,
+                                                       'name', spg.name,
+                                                       'icon', spg.icon
+                                               )
+                                        FROM store_payment_gateway spg
+                                        WHERE spg.id = si.payment_gateway_id
+                                        LIMIT 1)
+                                        )),
+                            'status', o.status,
+                            'total', o.total,
+                            'products', (SELECT json_agg(json_build_object(
+                    'id', sop.id,
+                    'quantity', sop.quantity,
+                    'size', sop.size::json -> 'size',
+                    'size_title', sop.size::json -> 'size',
+                    'color', sop.color::json -> 'extra',
+                    'color_title', sop.color::json -> 'color',
+                    'product', (SELECT json_build_object(
+                                               'id', p.id,
+                                               'fee', p.fee,
+                                               'cost', p.cost,
+                                               'slug', p.slug,
+                                               'amount', SUM(p.cost + p.fee) * sop.quantity,
+                                               'discount', p.discount::integer,
+                                               'short_name', p.short_name,
+                                               'name', p.name,
+                                               'coupon', (SELECT json_build_object(
+                                                                         'id', c.id,
+                                                                         'price', c.price,
+                                                                         'discount', c.discount::integer
+                                                                 )
+                                                          FROM store_coupon_store_product scsp
+                                                                   LEFT JOIN public.store_coupon c on c.id = scsp.store_coupon_id
+                                                          WHERE scsp.store_product_id = p.id
+                                                          LIMIT 1)
+                                       )
+                                FROM store_product p
+                                WHERE p.id = sop.product_id
+                                GROUP BY p.id
+                                LIMIT 1)
+                                                         ))
+                                         FROM store_orders_product sop
+                                         WHERE sop.orders_id = co.orders_id
+                                         LIMIT 1)
+                    ) ORDER BY co.id DESC)
+    INTO orders
+    FROM store_customer_orders co
+             JOIN store_orders o ON o.id = co.orders_id
+             LEFT JOIN store_invoice si on co.orders_id = si.orders_id
+    WHERE co.customer_id = get_customer_orders.customer_id
+    OFFSET get_customer_orders.start LIMIT get_customer_orders.row_count;
+
+    RETURN json_build_object(
+            'orders', orders,
+            'rows_count', rows_count
+           );
+END ;
+$$;
+
+alter function get_customer_orders(integer, integer, integer) owner to rgfly;
+
+create or replace function get_store(slug character varying, customer_id integer DEFAULT 0, start integer DEFAULT 0, row_count integer DEFAULT 25) returns jsonb
+    language plpgsql
+as
+$$
+DECLARE
+    results JSON;
+BEGIN
+    WITH products AS (SELECT DISTINCT jsonb_build_object(
+                                              'id', p.id,
+                                              'slug', p.slug,
+                                              'cost', p.cost,
+                                              'discount', p.discount::integer,
+                                              'fee', p.fee,
+                                              'quantity', p.quantity,
+                                              'short_name', p.short_name,
+                                              'name', p.name,
+                                              'category_name', c.name,
+                                              'category_slug', c.slug,
+                                              'parent_category_name', cc.name,
+                                              'parent_category_slug', cc.slug,
+                                              'attachment', (SELECT a.name
+                                                             FROM store_product_attach spa
+                                                                      LEFT JOIN attach a on a.id = spa.attach_id
+                                                             WHERE spa.product_id = p.id
+                                                             ORDER BY spa.id DESC
+                                                             LIMIT 1)
+                                      ) AS product
+                      FROM store s
+                               LEFT JOIN store_product p ON s.id = p.store_id
+                               JOIN store_category_product cp ON p.id = cp.product_id
+                               JOIN store_category c ON c.id = cp.category_id
+                               JOIN store_category cc ON c.parent_id = cc.id
+                      WHERE s.slug = get_store.slug
+                      OFFSET get_store.start LIMIT get_store.row_count),
+         coupon AS (SELECT sc2.started_at AS started, sc2.expired_at AS expired
+                    FROM store s
+                             JOIN store_coupon sc2 ON s.id = sc2.store_id
+                    WHERE s.slug = get_store.slug
+                    GROUP BY sc2.id
+                    LIMIT 1)
+    SELECT json_build_object(
+                   'id', s.id,
+                   'name', s.name,
+                   'slug', s.slug,
+                   'description', s.description,
+                   'currency', s.currency,
+                   'phone', s.phone,
+                   'email', s.email,
+                   'website', s.website,
+                   'address', s.address,
+                   'promo', json_build_object(' expired ', coupon.expired, ' started ', coupon.started),
+                   'products_count', (SELECT COUNT(p.id)
+                                        FROM store_product p
+                                        WHERE p.store_id = s.id),
+                   'socials', (SELECT json_agg(ss.*) as name
+                                 FROM store_social ss
+                                 WHERE ss.store_id = s.id
+                                   AND ss.is_active = true),
+                   'products', json_agg(product ORDER BY products DESC)
+           )
+    INTO results
+    FROM store s
+             CROSS JOIN products,
+         coupon
+    WHERE s.slug = get_store.slug
+    GROUP BY s.id, coupon.started, coupon.expired;
+
+    RETURN json_build_object(
+            'result', results
+           );
+END;
+
+$$;
+
+alter function get_store(varchar, integer, integer, integer) owner to rgfly;
 
 

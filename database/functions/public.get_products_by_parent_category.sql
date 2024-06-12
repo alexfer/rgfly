@@ -27,7 +27,7 @@ BEGIN
             'store_id', m.id,
             'currency', m.currency,
             'store_slug', m.slug
-                    ))
+                    ) ORDER BY p.id DESC)
     INTO get_products
     FROM store_product p
              JOIN store_category_product cp ON p.id = cp.product_id

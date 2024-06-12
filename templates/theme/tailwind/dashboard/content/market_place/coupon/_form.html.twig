@@ -153,21 +153,23 @@
         const accordion = document.getElementById('accordion-collapse');
         const ul = document.getElementById('codes');
 
-        accordion.addEventListener('click', (e) => {
-            const url = accordion.getAttribute('data-url');
-            fetch(url, {headers: {'Content-type': 'application/json'}})
-                .then((response) => response.json())
-                .then((data) => {
-                    if (data.codes && data.codes.length) {
-                        [...data.codes].forEach((el) => {
-                            let li = document.createElement('li');
-                            li.classList.add('inline-block', 'w-36', 'h-12', 'shadow-md', 'bg-gray-50', 'border', 'border-gray-500', 'p-3', 'text-center', 'rounded-md', 'mx-2');
-                            li.textContent = el.code
-                            ul.append(li);
-                        });
-                    }
-                });
-        }, {capture: true, once: true});
+        if(accordion) {
+            accordion.addEventListener('click', (e) => {
+                const url = accordion.getAttribute('data-url');
+                fetch(url, {headers: {'Content-type': 'application/json'}})
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.codes && data.codes.length) {
+                            [...data.codes].forEach((el) => {
+                                let li = document.createElement('li');
+                                li.classList.add('inline-block', 'w-36', 'h-12', 'shadow-md', 'bg-gray-50', 'border', 'border-gray-500', 'p-3', 'text-center', 'rounded-md', 'mx-2');
+                                li.textContent = el.code
+                                ul.append(li);
+                            });
+                        }
+                    });
+            }, {capture: true, once: true});
+        }
 
         couponDiscount.addEventListener('click', (e) => {
             inputCouponDiscount.removeAttribute('disabled');

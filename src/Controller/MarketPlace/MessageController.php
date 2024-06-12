@@ -12,6 +12,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/market-place/message')]
 class MessageController extends AbstractController
 {
+    /**
+     * @param Request $request
+     * @param UserInterface|null $user
+     * @param TranslatorInterface $translator
+     * @param ProcessorInterface $message
+     * @return JsonResponse
+     */
     #[Route('', name: 'market_place_obtain_message')]
     public function obtain(
         Request             $request,
@@ -24,7 +31,7 @@ class MessageController extends AbstractController
         if (!$user) {
             return $this->json([
                 'success' => false,
-                'error' => $translator->trans('market.message.unauthorized'),
+                'error' => $translator->trans('store.message.unauthorized'),
             ], Response::HTTP_UNAUTHORIZED);
         }
 
@@ -35,7 +42,7 @@ class MessageController extends AbstractController
             'order' => !empty($payload['order']),
         ];
 
-        $errors = $message->process($payload, $exclude);
+        $errors = $message->process($payload, $user, $exclude);
 
         if (count($errors)) {
             return $this->json($errors, $errors['code']);

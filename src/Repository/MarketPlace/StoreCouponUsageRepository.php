@@ -2,8 +2,7 @@
 
 namespace App\Repository\MarketPlace;
 
-use App\Entity\MarketPlace\StoreCouponUsage;
-use App\Entity\MarketPlace\StoreCustomer;
+use App\Entity\MarketPlace\{StoreCouponUsage, StoreCustomer};
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -20,6 +19,11 @@ class StoreCouponUsageRepository extends ServiceEntityRepository
         parent::__construct($registry, StoreCouponUsage::class);
     }
 
+    /**
+     * @param int $relation
+     * @param StoreCustomer $customer
+     * @return array
+     */
     public function getCouponUsages(int $relation, StoreCustomer $customer): array
     {
         $qb = $this->createQueryBuilder('scu')

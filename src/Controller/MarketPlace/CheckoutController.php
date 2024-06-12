@@ -61,9 +61,6 @@ class CheckoutController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($process) {
-                $coupon->updateOrderAmount($order);
-            }
 
             $securityContext = $this->container->get('security.authorization_checker');
             $isGranted = $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED');
