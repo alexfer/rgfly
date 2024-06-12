@@ -921,88 +921,88 @@
                 <source>title.dashboard.change_market</source>
                 <target>Update Market</target>
             </trans-unit>
-            <trans-unit id="title.general.market.name">
-                <source>title.general.market.name</source>
+            <trans-unit id="title.general.store.name">
+                <source>title.general.store.name</source>
                 <target>Market Place</target>
             </trans-unit>
-            <trans-unit id="market.product.in_stock">
-                <source>market.product.in_stock</source>
+            <trans-unit id="store.product.in_stock">
+                <source>store.product.in_stock</source>
                 <target>In Stock</target>
             </trans-unit>
-            <trans-unit id="market.product.out_stock">
-                <source>market.product.out_stock</source>
+            <trans-unit id="store.product.out_stock">
+                <source>store.product.out_stock</source>
                 <target>Out Stock</target>
             </trans-unit>
-            <trans-unit id="market.product.code">
-                <source>market.product.code</source>
+            <trans-unit id="store.product.code">
+                <source>store.product.code</source>
                 <target>Product Code</target>
             </trans-unit>
-            <trans-unit id="market.product.code_prefix">
-                <source>market.product.code_prefix</source>
+            <trans-unit id="store.product.code_prefix">
+                <source>store.product.code_prefix</source>
                 <target>P</target>
             </trans-unit>
             <trans-unit id="store.product.off">
                 <source>store.product.off</source>
                 <target>Off</target>
             </trans-unit>
-            <trans-unit id="market.product.cart">
-                <source>market.product.cart</source>
+            <trans-unit id="store.product.cart">
+                <source>store.product.cart</source>
                 <target>Shopping Cart</target>
             </trans-unit>
             <trans-unit id="store.product.cart.empty">
                 <source>store.product.cart.empty</source>
                 <target>Your cart is currently empty</target>
             </trans-unit>
-            <trans-unit id="market.product.wishlist.empty">
-                <source>market.product.wishlist.empty</source>
+            <trans-unit id="store.product.wishlist.empty">
+                <source>store.product.wishlist.empty</source>
                 <target>Your wishlist is currently empty</target>
             </trans-unit>
-            <trans-unit id="market.messages.empty">
-                <source>market.messages.empty</source>
+            <trans-unit id="store.messages.empty">
+                <source>store.messages.empty</source>
                 <target>Your messages is currently empty</target>
             </trans-unit>
-            <trans-unit id="market.product.orders.empty">
-                <source>market.product.orders.empty</source>
+            <trans-unit id="store.orders.empty">
+                <source>store.orders.empty</source>
                 <target>Your orders is currently empty</target>
             </trans-unit>
             <trans-unit id="store.product.wishlist">
                 <source>store.product.wishlist</source>
                 <target>Wishlist</target>
             </trans-unit>
-            <trans-unit id="market.unauthorized">
-                <source>market.unauthorized</source>
+            <trans-unit id="store.unauthorized">
+                <source>store.unauthorized</source>
                 <target>Please login in to store it to your wishlist.</target>
             </trans-unit>
-            <trans-unit id="market.message.unauthorized">
-                <source>market.message.unauthorized</source>
+            <trans-unit id="store.message.unauthorized">
+                <source>store.message.unauthorized</source>
                 <target>Please sign in to leave message.</target>
             </trans-unit>
-            <trans-unit id="market.message.question">
-                <source>market.message.question</source>
+            <trans-unit id="store.message.question">
+                <source>store.message.question</source>
                 <target>Question</target>
             </trans-unit>
-            <trans-unit id="market.message.success">
-                <source>market.message.success</source>
+            <trans-unit id="store.message.success">
+                <source>store.message.success</source>
                 <target>Thank you for contacting us. We will get back to you as soon as possible.</target>
             </trans-unit>
-            <trans-unit id="market.product.compare">
-                <source>market.product.compare</source>
+            <trans-unit id="store.product.compare">
+                <source>store.product.compare</source>
                 <target>Compare</target>
             </trans-unit>
-            <trans-unit id="market.product.add">
-                <source>market.product.add</source>
+            <trans-unit id="store.product.add">
+                <source>store.product.add</source>
                 <target>Add</target>
             </trans-unit>
-            <trans-unit id="market.product.availability">
-                <source>market.product.availability</source>
+            <trans-unit id="store.product.availability">
+                <source>store.product.availability</source>
                 <target>Availability</target>
             </trans-unit>
             <trans-unit id="info.no_content">
                 <source>info.no_content</source>
                 <target>No content available.</target>
             </trans-unit>
-            <trans-unit id="market.product.add_cart">
-                <source>market.product.add_cart</source>
+            <trans-unit id="store.product.add_cart">
+                <source>store.product.add_cart</source>
                 <target>Add to cart</target>
             </trans-unit>
             <trans-unit id="title.dashboard.create_product">
@@ -1836,6 +1836,10 @@
             <trans-unit id="order.service.tax">
                 <source>order.service.tax</source>
                 <target>Tax</target>
+            </trans-unit>
+            <trans-unit id="order.service.coupon">
+                <source>order.service.coupon</source>
+                <target>Coupon</target>
             </trans-unit>
             <trans-unit id="store.policy">
                 <source>store.policy</source>

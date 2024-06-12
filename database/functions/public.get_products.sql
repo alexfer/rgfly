@@ -26,7 +26,7 @@ BEGIN
             'store_id', m.id,
             'currency', m.currency,
             'store_slug', m.slug
-                    ))
+                    ) ORDER BY RANDOM())
     INTO get_products
     FROM store_product p
              JOIN store_category_product cp ON p.id = cp.product_id
@@ -39,7 +39,6 @@ BEGIN
              LEFT JOIN store_wishlist w ON w.product_id = p.id
              JOIN store m ON m.id = p.store_id
     WHERE p.deleted_at IS NULL
-    ORDER BY RANDOM()
     OFFSET start LIMIT row_count;
 
     SELECT COUNT(*)

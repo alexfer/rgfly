@@ -57,6 +57,10 @@
                             <span class="font-semibold me-2">{{ 'order.item.subtotal'|trans }}:</span>
                             <span class="text-end text-primary-emphasis">{{ itemSubtotal|amount_format }}<small>{{ order.store.currency|currency }}</small></span>
                         </div>
+                        <div class="flex hidden justify-between items-center mb-2">
+                            <span class="font-semibold me-2">{{ 'order.service.coupon'|trans }}:</span>
+                            <span class="text-end text-primary-emphasis">{{ 'store.product.off'|trans }}</span>
+                        </div>
                         <div class="flex justify-between items-center mb-2">
                             <span class="font-semibold me-2">{{ 'order.service.tax'|trans }}:</span>
                             <span class="text-end text-primary-emphasis">{{ tax }}<small>%</small></span>

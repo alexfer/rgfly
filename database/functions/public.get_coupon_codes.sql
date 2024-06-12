@@ -13,7 +13,7 @@ BEGIN
     INTO codes
     FROM store_coupon_code cc
              LEFT OUTER JOIN store_coupon sc on sc.store_id = get_coupon_codes.store_id
-             INNER JOIN store_coupon_usage scu on cc.id != scu.coupon_code_id
+             LEFT JOIN store_coupon_usage scu on cc.id != scu.coupon_code_id
     WHERE sc.type = get_coupon_codes.type
       AND cc.coupon_id = get_coupon_codes.coupon_id;
 

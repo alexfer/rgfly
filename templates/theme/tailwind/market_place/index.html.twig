@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
-{% block title %}{{ 'title.general.market.name'|trans }}{% endblock %}
+{% block title %}{{ 'title.general.store.name'|trans }}{% endblock %}
 {% block body %}
     {% block content_body %}
-        <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white">{{ 'title.general.market.name'|trans }}</h2>
+        <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white">{{ 'title.general.store.name'|trans }}</h2>
         <div class="grid w-full gap-3 lg:grid-cols-3 md:grid-cols-2">
             {% for product in products %}
                 <div class="min-h-full">
@@ -39,7 +39,7 @@
                                     <button class="text-white bg-gray-800 shadow-md hover:bg-surface-dark focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-md text-sm px-4 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                             data-slug="{{ product.slug }}" type="submit"
                                             {% if product.quantity == 0 or (app.user and 'ROLE_USER' in app.user.roles or app.user and  'ROLE_ADMIN' in app.user.roles) %}disabled{% endif %}>
-                                        <i class="fa fa-shopping-cart mt-1 me-2"></i>{{ 'market.product.add'|trans }}
+                                        <i class="fa fa-shopping-cart mt-1 me-2"></i>{{ 'store.product.add'|trans }}
                                     </button>
                                 </form>
                             </div>

@@ -2,7 +2,7 @@
 
 namespace App\Service\MarketPlace\Store\Coupon;
 
-use App\Entity\MarketPlace\{Store, StoreCoupon, StoreCouponCode, StoreCouponUsage, StoreCustomer, StoreOrders};
+use App\Entity\MarketPlace\{Store, StoreCoupon, StoreCouponCode, StoreCouponUsage, StoreCustomer};
 use App\Service\MarketPlace\Currency;
 use App\Service\MarketPlace\Store\Coupon\Interface\ProcessorInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,27 +21,6 @@ readonly class Processor implements ProcessorInterface
     public function __construct(private EntityManagerInterface $em)
     {
 
-    }
-
-    /**
-     * @param StoreOrders $order
-     * @return void
-     */
-    public function updateOrderAmount(StoreOrders $order): void
-    {
-        $amount = $order->getTotal();
-
-        if ($this->coupon['discount']) {
-            $total = $amount * $this->coupon['discount'] / 100;
-            $amount = $amount - $total;
-        }
-        if ($this->coupon['price']) {
-            $amount = $amount - $this->coupon['price'];
-        }
-
-        $order->setTotal($amount);
-        $this->em->persist($order);
-        $this->em->flush();
     }
 
     /**
@@ -109,16 +88,17 @@ readonly class Processor implements ProcessorInterface
     /**
      * @param UserInterface $user
      * @param int $orderId
-     * @param StoreCouponCode $code
+     * @param string $code
      * @return void
      */
     public function setInuse(
-        UserInterface   $user,
-        int             $orderId,
-        StoreCouponCode $code,
+        UserInterface $user,
+        int           $orderId,
+        string        $code,
     ): void
     {
         $customer = $this->em->getRepository(StoreCustomer::class)->findOneBy(['member' => $user]);
+        $code = $this->em->getRepository(StoreCouponCode::class)->findOneBy(['code' => strtoupper($code)]);
 
         $couponUsage = new StoreCouponUsage();
         $couponUsage->setCustomer($customer)
@@ -132,13 +112,11 @@ readonly class Processor implements ProcessorInterface
 
     /**
      * @param string $code
-     * @return StoreCouponCode|null
+     * @return bool
      */
-    public function validate(string $code): ?StoreCouponCode
+    public function validate(string $code): bool
     {
-        return $this->em->getRepository(StoreCouponCode::class)->findOneBy([
-            'coupon' => $this->Coupon(),
-            'code' => strtoupper($code),
-        ]);
+        $exists = $this->em->getRepository(StoreCouponCode::class)->verify($this->Coupon(), strtoupper($code));
+        return (bool)$exists;
     }
 }

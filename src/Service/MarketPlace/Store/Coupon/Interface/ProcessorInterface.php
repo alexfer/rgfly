@@ -2,7 +2,7 @@
 
 namespace App\Service\MarketPlace\Store\Coupon\Interface;
 
-use App\Entity\MarketPlace\{Store, StoreCouponCode, StoreCustomer, StoreOrders};
+use App\Entity\MarketPlace\{Store, StoreCouponCode, StoreCustomer};
 use Symfony\Component\Security\Core\User\UserInterface;
 
 interface ProcessorInterface
@@ -29,12 +29,6 @@ interface ProcessorInterface
     public function getCouponUsages(int $relation, ?StoreCustomer $customer): ?array;
 
     /**
-     * @param StoreOrders $order
-     * @return void
-     */
-    public function updateOrderAmount(StoreOrders $order): void;
-
-    /**
      * @param Store $store
      * @return string
      */
@@ -43,14 +37,14 @@ interface ProcessorInterface
     /**
      * @param UserInterface $user
      * @param int $orderId
-     * @param StoreCouponCode $code
+     * @param string $code
      * @return void
      */
-    public function setInuse(UserInterface $user, int $orderId, StoreCouponCode $code): void;
+    public function setInuse(UserInterface $user, int $orderId, string $code): void;
 
     /**
      * @param string $code
-     * @return StoreCouponCode|null
+     * @return bool
      */
-    public function validate(string $code): ?StoreCouponCode;
+    public function validate(string $code): bool;
 }

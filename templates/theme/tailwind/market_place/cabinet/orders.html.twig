@@ -25,6 +25,7 @@
             </h4>
             <div id="accordion-flush" class="rounded-t-lg border border-neutral-200">
                 {% for key, order in orders %}
+                    {% set discount = 0 %}
                     <h2 id="order-flush-heading-{{ key }}">
                         <button type="button"
                                 class="flex items-center pl-5 justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3"
@@ -42,7 +43,14 @@
                                 </svg>
                                 {{ order.created|date(datetime_format) }}
                             </h5>
-                            <span class="float-end text-lg mr-5">{{ order.total|amount_format }}<small>{{ order.store.currency|currency }}</small></span>
+                            {% if order.coupon is not null %}
+                                {% if order.coupon.discount is not null %}
+                                    {% set discount = ((order.total * order.coupon.discount)/100)|round(2) %}
+                                {% elseif order.coupon.price is not null %}
+                                    {% set discount = (order.total - order.coupon.price)|round(2) %}
+                                {% endif %}
+                            {% endif %}
+                            <span class="float-end text-lg mr-5">{{ ((order.total + (order.total * order.tax)/100) - discount)|amount_format(2) }}<small>{{ order.store.currency|currency }}</small></span>
                         </button>
                     </h2>
                     <div id="order-body-{{ key }}"
@@ -95,16 +103,11 @@
                                         <th scope="col" class="px-6 py-3">
                                             {{ 'label.form.product_name'|trans }}
                                         </th>
-                                        {#
-                                        <th scope="col" class="px-6 py-3 text-center">
-                                           {{ 'label.size'|trans }}
-                                        </th>
-                                        <th scope="col" class="px-6 py-3 text-center">
-                                            {{ 'label.color'|trans }}
-                                        </th>
-                                        #}
                                         <th scope="col" class="px-6 py-3 text-center">
                                             {{ 'label.form.quantity'|trans }}
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-center">
+                                            {{ 'label.form.discount'|trans }}
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-right">
                                             {{ 'table.header.price'|trans }}
@@ -115,44 +118,64 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                {% set discount = 0 %}
                                 {% for product in order.products %}
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <th scope="row" class="px-6 py-4 text-gray-900 truncate dark:text-white">
                                             <a data-twe-toggle="tooltip" title="{{ product.product.name }}" target="_blank" class="font-semibold text-gray-600 dark:text-gray-50" href="{{ path('app_market_place_product', {slug: product.product.slug, tab: 'about'}) }}">{{ product.product.short_name }}
                                         </th>
-                                        {#
-                                        <td class="px-6 py-4 text-center">
-                                            {% if product.size is not null %}
-                                                {{ product.size_title }}
-                                            {% endif %}
-                                        </td>
-                                        <td class="px-6 py-4 text-center">
-                                            {% if product.color is not null %}
-                                                {{ product.color_title }}
-                                            {% endif %}
-                                        </td>
-                                        #}
                                         <td class="px-6 py-4 text-center">{{ product.quantity }}{{ 'label.form.quantity_pcs'|trans }}</td>
+                                        <td class="px-6 py-4 text-center">{{ product.product.discount }}<small>%</small></td>
                                         <td class="px-6 py-4 text-right">
                                             {{ (product.product.cost + product.product.fee)|amount_format }}<small class="ms-1">{{ order.store.currency|currency }}</small>
                                         </td>
                                         <td class="px-6 py-4 text-right">
-                                            {{ product.product.amount|amount_format }}<small class="ms-1">{{ order.store.currency|currency }}</small>
+                                            {% set cost = (product.product.cost + product.product.fee) %}
+                                            {% set discount = product.product.discount %}
+                                            {% set amount = (cost - (cost * discount)/100)|round(2) %}
+                                            {{ amount|amount_format }}<small class="ms-1">{{ order.store.currency|currency }}</small>
                                         </td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
                                 <tfoot>
                                     <tr class="font-semibold text-gray-900 dark:text-white">
-                                        <th scope="row" class="px-6 py-3 text-base">Total</th>
-                                        {#
+                                        <th scope="row" class="px-6 py-3 text-base">{{ 'order.service.tax'|trans }}</th>
                                         <td class="px-6 py-3"></td>
                                         <td class="px-6 py-3"></td>
-                                        #}
+                                        <td class="px-6 py-3"></td>
+                                        <td class="px-6 py-3 text-right">{{ order.tax }}<small>%</small></td>
+                                    </tr>
+                                    {% if order.coupon is not null %}
+                                        <tr class="font-semibold text-gray-900 dark:text-white">
+                                            <th scope="row" class="px-6 py-3 text-base">{{ 'order.service.coupon'|trans }} {{ 'store.product.off'|trans }}</th>
+                                            <td class="px-6 py-3"></td>
+                                            <td class="px-6 py-3"></td>
+                                            <td class="px-6 py-3"></td>
+                                            {% if order.coupon.discount is not null %}
+                                                {% set discount = ((order.total * order.coupon.discount)/100)|round(2) %}
+                                                <td class="px-6 py-3 text-right">{{ order.coupon.discount|amount_format(2) }}<small>%</small></td>
+                                            {% elseif order.coupon.price is not null %}
+                                                {% set discount = (order.total - order.coupon.price)|round(2) %}
+                                                <td class="px-6 py-3 text-right">{{ order.coupon.price|amount_format }}<small>%</small></td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endif %}
+                                    <tr class="font-semibold text-gray-900 dark:text-white">
+                                        <th scope="row" class="px-6 py-3 text-base">{{ 'table.header.total'|trans }}</th>
                                         <td class="px-6 py-3 text-center">{{ order.total_quantity }}</td>
-                                        <td class="px-6 py-3"></td>
+                                        <td class="px-6 py-3 text-center font-medium">{{ discount|amount_format(2) }}<small class="ms-1">{{ order.store.currency|currency }}</small></td>
+                                        <td class="px-6 py-3 text-center font-medium">
+                                            {% if order.coupon is not null %}
+                                                {{ (order.total + (order.total * order.tax)/100) |amount_format(2) }}<small class="ms-1">{{ order.store.currency|currency }}</small>
+                                            {% endif %}
+                                        </td>
                                         <td class="px-6 py-3 text-right">
-                                            {{ order.total|amount_format }}<small class="ms-1">{{ order.store.currency|currency }}</small>
+                                            {% if order.coupon is not null %}
+                                                {{ ((order.total + (order.total * order.tax)/100) - discount)|amount_format(2) }}<small class="ms-1">{{ order.store.currency|currency }}</small>
+                                            {% else %}
+                                                {{ (order.total + (order.total * order.tax)/100) |amount_format(2) }}<small class="ms-1">{{ order.store.currency|currency }}</small>
+                                            {% endif %}
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -162,9 +185,9 @@
                 {% else %}
                     <img class="d-block mx-auto mb-5 border-0 w-25 shadow-none"
                          src="{{ asset('img/404.png') }}"
-                         width="340" alt="{{ 'market.product.orders.empty'|trans }}">
+                         width="340" alt="{{ 'store.orders.empty'|trans }}">
                     <p class="text-center">
-                        {{ 'market.product.orders.empty'|trans }}
+                        {{ 'store.orders.empty'|trans }}
                         <a class="d-block fs-6"
                            href="{{ path('app_market_place_index') }}">{{ 'form.action.back'|trans }}</a>
                     </p>
