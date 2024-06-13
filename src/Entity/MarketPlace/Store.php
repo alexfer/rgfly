@@ -109,6 +109,9 @@ class Store
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $deleted_at = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $cc = null;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
@@ -797,6 +800,18 @@ class Store
     public function setTax(?string $tax): static
     {
         $this->tax = $tax;
+
+        return $this;
+    }
+
+    public function getCc(): ?string
+    {
+        return $this->cc;
+    }
+
+    public function setCc(?string $cc): static
+    {
+        $this->cc = $cc;
 
         return $this;
     }

@@ -957,6 +957,10 @@
                 <source>store.best.sellers</source>
                 <target>Best sellers</target>
             </trans-unit>
+            <trans-unit id="store.best.products">
+                <source>store.best.products</source>
+                <target>Best products</target>
+            </trans-unit>
             <trans-unit id="store.product.cart.empty">
                 <source>store.product.cart.empty</source>
                 <target>Your cart is currently empty</target>

@@ -14,16 +14,18 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class StoreController extends AbstractController
 {
     /**
+     * @param EntityManagerInterface $em
      * @return Response
+     * @throws Exception
      */
     #[Route('', name: 'app_market_place_stores')]
     public function index(EntityManagerInterface $em): Response
     {
         $random = $em->getRepository(Store::class)->random();
+
         return $this->render('market_place/store/index.html.twig', [
-            'store' => [
-                'random' => $random['result'],
-            ],
+            'store' => $random['store'],
+            'products' => $random['products'],
         ]);
     }
 
