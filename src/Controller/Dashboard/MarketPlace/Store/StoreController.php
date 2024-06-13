@@ -243,7 +243,7 @@ class StoreController extends AbstractController
                     $fs = new Filesystem();
                     $oldFile = $this->getTargetDir($params, $store->getId()) . '/' . $oldAttach->getName();
 
-                    $cacheManager->remove($oldFile, 'market_thumb');
+                    $cacheManager->remove($oldFile, 'store_bg');
 
                     if ($fs->exists($oldFile)) {
                         $fs->remove($oldFile);
@@ -264,13 +264,21 @@ class StoreController extends AbstractController
             if ($gateways) {
                 $em = $this->resetGateways($store, $em);
                 foreach ($gateways as $gateway) {
-                    $paymentGateways = $em->getRepository(StorePaymentGatewayStore::class)
+                    $paymentGateway = $em->getRepository(StorePaymentGatewayStore::class)
                         ->findOneBy([
                             'gateway' => $gateway,
                             'store' => $store,
                         ]);
-                    $paymentGateways->setActive(true);
-                    $em->persist($paymentGateways);
+                    if(!$paymentGateway) {
+                        $newGateway = new StorePaymentGatewayStore();
+                        $newGateway->setGateway($em->getRepository(StorePaymentGateway::class)->find($gateway));
+                        $newGateway->setStore($store);
+                        $newGateway->setActive(true);
+                        $em->persist($newGateway);
+                    } else {
+                        $paymentGateway->setActive(true);
+                        $em->persist($paymentGateway);
+                    }
                 }
             } else {
                 $em = $this->resetGateways($store, $em);

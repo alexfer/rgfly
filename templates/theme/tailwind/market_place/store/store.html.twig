@@ -14,7 +14,7 @@
                     <div class="p-2">
                         {% if store.description is not null %}
                             <h6 class="text-md-start font-semibold text-cyan-700 underline underline-offset-8 mb-4">{{ 'store.about'|trans }}</h6>
-                            <div class="mb-5">{{ store.description|replace({'<p>': '<p class="text-sm text-gray-400 dark:text-gray-300 mb-5">'})|raw }}</div>
+                            <div class="mb-5">{{ store.description|striptags|replace({'<p>': '<p class="text-sm text-gray-400 dark:text-gray-300 mb-5">'})|raw|nl2br }}</div>
                         {% endif %}
                         {% if store.phone is not null or store.email is not null or store.website is not null %}
                             <h6 class="text-md-start font-semibold text-cyan-700 underline underline-offset-8 py-4">{{ 'menu.dashboard.contacts'|trans }}</h6>
