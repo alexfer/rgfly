@@ -82,4 +82,15 @@ class StoreRepository extends ServiceEntityRepository
         return json_decode($result[0]['get_store'], true) ?: null;
     }
 
+    /**
+     * @return array|null
+     * @throws Exception
+     */
+    public function random(): ?array
+    {
+        $statement = $this->connection->prepare('select get_random_store()');
+        $result = $statement->executeQuery()->fetchAllAssociative();
+        return json_decode($result[0]['get_random_store'], true) ?: null;
+    }
+
 }

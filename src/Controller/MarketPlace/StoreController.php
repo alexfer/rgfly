@@ -17,9 +17,14 @@ class StoreController extends AbstractController
      * @return Response
      */
     #[Route('', name: 'app_market_place_stores')]
-    public function index(): Response
+    public function index(EntityManagerInterface $em): Response
     {
-        return $this->render('market_place/store/index.html.twig', []);
+        $random = $em->getRepository(Store::class)->random();
+        return $this->render('market_place/store/index.html.twig', [
+            'store' => [
+                'random' => $random['result'],
+            ],
+        ]);
     }
 
     /**

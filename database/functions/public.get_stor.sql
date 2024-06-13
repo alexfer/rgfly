@@ -34,7 +34,7 @@ BEGIN
                       OFFSET get_store.start LIMIT get_store.row_count),
          coupon AS (SELECT sc2.started_at AS started, sc2.expired_at AS expired
                     FROM store s
-                             JOIN store_coupon sc2 ON s.id = sc2.store_id
+                             LEFT JOIN store_coupon sc2 ON s.id = sc2.store_id
                     WHERE s.slug = get_store.slug
                     GROUP BY sc2.id
                     LIMIT 1)
