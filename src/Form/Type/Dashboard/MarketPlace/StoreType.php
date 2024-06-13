@@ -164,12 +164,12 @@ class StoreType extends AbstractType
                     'name' => 'label.form.market_logo'
                 ],
                 'attr' => [
-                    'accept' => 'image/png, image/jpeg',
+                    'accept' => 'image/png, image/jpeg, image/webp',
                 ],
                 'constraints' => [
                     new Image([
                         'maxSize' => ini_get('post_max_size'),
-                        'mimeTypes' => ['image/jpeg', 'image/png'],
+                        'mimeTypes' => ['image/jpeg', 'image/png', 'image/webp'],
                         'mimeTypesMessage' => 'form.picture.not_valid_type',
                     ]),
                 ],

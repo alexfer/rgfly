@@ -65,7 +65,7 @@
                         type="button"
                         role="tab"
                         aria-controls="attachment"
-                        aria-selected="{{ _tab == 'attachment' ? 'true' : 'false' }}">{{ 'label.form.store_logo'|trans }}
+                        aria-selected="{{ _tab == 'attachment' ? 'true' : 'false' }}">{{ 'label.form.store_picture'|trans }}
                 </button>
             </li>
             <li class="me-2 flex-auto text-center" role="presentation">
@@ -171,13 +171,10 @@
                 <div class="mt-4 p-2">
                     {% if form.vars.data.attach %}
                         {% set _picture = 'storage/market/logo/' ~ form.vars.data.id ~ '/' ~ form.vars.data.attach.name %}
-                        <div class="flex flex-row w-1/4 mb-5">
-                            <img class="image-grayscale" src="{{ asset(_picture)|imagine_filter('market_view') }}"
-                                 alt="{{ 'label.form.store_logo'|trans }}">
-                        </div>
+                        <div class="relative overflow-hidden rounded-lg bg-cover bg-no-repeat p-12 text-center"style="background-image: url('{{ asset(_picture)|imagine_filter('store_bg') }}'); height: 400px"></div>
                     {% endif %}
-                    <div class="max-w-full mx-auto">
-                        {{ form_label(form.logo, 'label.form.store_logo', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                    <div class="max-w-full mt-3 mx-auto">
+                        {{ form_label(form.logo, 'label.form.store_picture', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
                         {{ form_widget(form.logo, {attr: {class: 'skip block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400'}}) }}
                         <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.logo) }}</span>
                     </div>

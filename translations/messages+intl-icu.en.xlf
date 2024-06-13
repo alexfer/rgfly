@@ -557,15 +557,15 @@
             </trans-unit>
             <trans-unit id="label.form.store_currency">
                 <source>label.form.store_currency</source>
-                <target>Store Currency</target>
+                <target>Store currency</target>
             </trans-unit>
-            <trans-unit id="label.form.store_logo">
-                <source>label.form.store_logo</source>
-                <target>Store Logo</target>
+            <trans-unit id="label.form.store_picture">
+                <source>label.form.store_picture</source>
+                <target>Store picture</target>
             </trans-unit>
             <trans-unit id="label.form.social">
                 <source>label.form.social</source>
-                <target>Store Socials</target>
+                <target>Store socials</target>
             </trans-unit>
             <trans-unit id="label.form.store_currency.placeholder">
                 <source>label.form.store_currency.placeholder</source>
@@ -948,6 +948,14 @@
             <trans-unit id="store.product.cart">
                 <source>store.product.cart</source>
                 <target>Shopping Cart</target>
+            </trans-unit>
+            <trans-unit id="store.latest.shops">
+                <source>store.latest.shops</source>
+                <target>Latest shops</target>
+            </trans-unit>
+            <trans-unit id="store.best.sellers">
+                <source>store.best.sellers</source>
+                <target>Best sellers</target>
             </trans-unit>
             <trans-unit id="store.product.cart.empty">
                 <source>store.product.cart.empty</source>
