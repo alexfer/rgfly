@@ -5,7 +5,7 @@
 {% block extend_title %}{{ 'store.best.sellers'|trans }}{% endblock %}
 
 {% block content_body %}
-    <h2 class="text-2xl mb-4 font-extrabold text-primary-700 dark:text-white text-ellipsis overflow-hidden">{{ 'store.best.sellers'|trans }}</h2>
+    <h2 class="text-2xl font-oswald mb-4 font-extrabold text-primary-700 dark:text-white text-ellipsis overflow-hidden">{{ 'store.best.sellers'|trans }}</h2>
     <div class="mt-3">
         {% set _picture = store.picture is not null ? 'storage/market/logo/' ~ store.id ~ '/' ~ store.picture : 'img/800x600.png' %}
         <div class="relative overflow-hidden rounded-lg bg-cover bg-no-repeat p-12 text-center"
@@ -68,7 +68,7 @@
 {% block extra %}
     <div class="max-w-screen-xl flex mx-auto py-2 lg:px-2 mb-5">
         <div class="mx-auto w-full bg-white p-6 rounded-lg shadow-4 dark:bg-surface-dark">
-            <h2 class="text-2xl mb-4 font-extrabold text-primary-700 dark:text-white text-ellipsis overflow-hidden">{{ 'store.best.products'|trans }}</h2>
+            <h2 class="text-2xl font-oswald mb-4 font-extrabold text-primary-700 dark:text-white text-ellipsis overflow-hidden">{{ 'store.best.products'|trans }}</h2>
             <div class="grid w-full gap-3 lg:grid-cols-3 md:grid-cols-2">
                 {% for product in products %}
                     <div class="min-h-full">
