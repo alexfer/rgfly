@@ -6,6 +6,8 @@ use AllowDynamicProperties;
 use App\Entity\Attach;
 use App\Entity\MarketPlace\Market;
 use App\Entity\MarketPlace\MarketProductAttach;
+use App\Entity\MarketPlace\Store;
+use App\Entity\MarketPlace\StoreProductAttach;
 use App\Entity\UserDetails;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -90,12 +92,12 @@ use Symfony\Component\String\Slugger\SluggerInterface;
             $attach->setUserDetails($object);
         }
 
-        if ($object instanceof Market) {
-            $attach->setMarket($object);
+        if ($object instanceof Store) {
+            $attach->setStore($object);
         }
 
-        if ($object instanceof MarketProductAttach) {
-            $attach->addMarketProductAttach($object);
+        if ($object instanceof StoreProductAttach) {
+            $attach->addStoreProductAttach($object);
         }
 
         $attach->setName($this->fileName)

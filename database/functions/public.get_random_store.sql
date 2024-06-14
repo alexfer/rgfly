@@ -3,12 +3,14 @@ CREATE OR REPLACE FUNCTION public.get_random_store()
     LANGUAGE plpgsql
 AS $function$
 DECLARE
-    results JSON;
+    results  JSON;
+    products JSON;
 BEGIN
     SELECT json_build_object(
                    'id', s.id,
                    'currency', s.currency,
                    'name', s.name,
+                   'cc', s.cc::json,
                    'slug', s.slug,
                    'description', s.description,
                    'picture', a.name,
@@ -42,9 +44,49 @@ BEGIN
     ORDER BY RANDOM()
     LIMIT 1;
 
+    SELECT json_agg(json_build_object(
+            'id', p.id,
+            'slug', p.slug,
+            'name', p.name,
+            'store_id', p.store_id,
+            'quantity', p.quantity,
+            'short_name', p.short_name,
+            'cost', p.cost,
+            'fee', p.fee,
+            'discount', p.discount,
+            'payments', (SELECT json_agg(json_build_object(
+                    'name', g.name,
+                    'icon', g.icon
+                                         ))
+                         FROM store_payment_gateway_store spg
+                                  LEFT JOIN store_payment_gateway g ON g.id = spg.gateway_id
+                         WHERE spg.store_id = p.store_id),
+            'currency', (SELECT s.currency FROM store s WHERE s.id = p.store_id LIMIT 1),
+            'attachment', (SELECT a.name
+                           FROM store_product_attach spa
+                                    LEFT JOIN attach a on a.id = spa.attach_id
+                           WHERE spa.product_id = p.id
+                           LIMIT 1)
+                    ))
+    FROM (SELECT sp.id,
+                 sp.store_id,
+                 sp.slug,
+                 sp.quantity,
+                 sp.name,
+                 sp.short_name,
+                 sp.cost,
+                 sp.fee,
+                 sp.discount
+          FROM store_product sp
+          WHERE sp.deleted_at IS NULL
+          ORDER BY RANDOM()
+          LIMIT 3) AS p
+    INTO products;
+
     RETURN
         json_build_object(
-                'result', results
+                'store', results,
+                'products', products
         );
 END;
 $function$

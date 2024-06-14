@@ -5,10 +5,10 @@ namespace App\Controller\Dashboard\MarketPlace\Store;
 use App\Entity\MarketPlace\{Store, StorePaymentGateway, StorePaymentGatewayStore, StoreSocial};
 use App\Form\Type\Dashboard\MarketPlace\StoreType;
 use App\Service\FileUploader;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use phpDocumentor\Reflection\DocBlock\Tags\Throws;
-use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -26,8 +26,6 @@ class StoreController extends AbstractController
      * @param UserInterface $user
      * @param EntityManagerInterface $em
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/store', name: 'app_dashboard_market_place_market')]
     public function index(
@@ -47,7 +45,7 @@ class StoreController extends AbstractController
      * @param EntityManagerInterface $em
      * @param UserInterface $user
      * @return JsonResponse
-     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
      */
     #[Route('/store/search/{query?}', name: 'app_dashboard_market_place_search_store')]
     public function search(
@@ -73,7 +71,6 @@ class StoreController extends AbstractController
                 'url' => $this->generateUrl('app_dashboard_market_place_market_product', ['store' => $store['id']]),
             ];
         }
-
 
         return $this->json([
             'result' => $result,
@@ -173,6 +170,8 @@ class StoreController extends AbstractController
                     $store->setUrl($url)->setWebsite($parse['host']);
                 }
 
+                $store->setCc(json_encode($form->get('cc')->getData()));
+
                 $em->persist($store);
                 $em->flush();
 
@@ -220,8 +219,9 @@ class StoreController extends AbstractController
             $file = $form->get('logo')->getData();
 
             $socials = $store->getStoreSocials()->toArray();
-            $sources = $form->get('sourceName')->getData();;
-            foreach ($socials as $key => $social) {
+            $sources = $form->get('sourceName')->getData();
+
+            foreach ($socials as $social) {
                 $source = $form->get($social->getSourceName())->getData();
 
                 if ($source) {
@@ -269,7 +269,7 @@ class StoreController extends AbstractController
                             'gateway' => $gateway,
                             'store' => $store,
                         ]);
-                    if(!$paymentGateway) {
+                    if (!$paymentGateway) {
                         $newGateway = new StorePaymentGatewayStore();
                         $newGateway->setGateway($em->getRepository(StorePaymentGateway::class)->find($gateway));
                         $newGateway->setStore($store);
@@ -291,6 +291,8 @@ class StoreController extends AbstractController
                 $parse = parse_url($url);
                 $store->setUrl($url)->setWebsite($parse['host']);
             }
+
+            $store->setCc(json_encode($form->get('cc')->getData()));
 
             $em->persist($store);
             $em->flush();

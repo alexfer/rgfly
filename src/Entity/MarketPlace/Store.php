@@ -103,6 +103,9 @@ class Store
     #[ORM\OneToMany(mappedBy: 'store', targetEntity: StoreSocial::class)]
     private Collection $storeSocials;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $cc = null;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?DateTime $created_at;
 
@@ -797,6 +800,25 @@ class Store
     public function setTax(?string $tax): static
     {
         $this->tax = $tax;
+
+        return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getCc(): ?array
+    {
+        return json_decode($this->cc, true);
+    }
+
+    /**
+     * @param string|null $cc
+     * @return $this
+     */
+    public function setCc(?string $cc): static
+    {
+        $this->cc = $cc;
 
         return $this;
     }

@@ -53,6 +53,7 @@ class CheckoutController extends AbstractController
         $order = $checkout->findOrder($sessionId);
         $process = $coupon->process($order->getStore());
         $tax = $order->getStore()->getTax();
+        $cc = $order->getStore()->getCc();
 
         if ($process) {
             $hasUsed = $coupon->getCouponUsage($order->getId(), $user);
@@ -101,6 +102,7 @@ class CheckoutController extends AbstractController
             'itemSubtotal' => array_sum($sum['itemSubtotal']),
             'fee' => array_sum($sum['fee']),
             'tax' => $tax,
+            'creditCards' => $cc,
             'total' => array_sum($sum['itemSubtotal']),
             'form' => $form,
             'hasUsed' => $hasUsed,

@@ -157,6 +157,22 @@ class StoreType extends AbstractType
                     ),
                 ],
             ])
+            ->add('cc', ChoiceType::class, [
+                'mapped' => false,
+                'label' => 'label.form.cc',
+                'required' => false,
+                'multiple' => true,
+                'expanded' => true,
+                'choices' => [
+                    'mastercard' => 'mastercard',
+                    'visa' => 'visa',
+                    'amex' => 'amex',
+                    'discover' => 'discover',
+                    'jcb' => 'jcb',
+                    'maestro' => 'maestro',
+                    'paypal' => 'paypal',
+                ],
+            ])
             ->add('logo', FileType::class, [
                 'mapped' => false,
                 'required' => false,

@@ -73,6 +73,15 @@
                         {% set total = (total + (total * tax)/100) %}
                         {{ total|round(2) }}<small>{{ order.store.currency|currency }}</small>
                     </h3>
+                    {% if creditCards is not null and creditCards|length %}
+                        <ul class="list-none border-t flex mx-auto space-x-2 justify-between items-center">
+                            {% for cc in creditCards %}
+                                <li class="inline-flex mx-auto ps-0.5 pt-3">
+                                    <img class="object-cover w-7 h-auto" src="{{ asset('img/cc/' ~ cc ~ '.svg') }}">
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
                 </div>
                 {% if app.request.get('session') == null %}
                     <a href="{{ path('app_market_place_order_summary') }}"

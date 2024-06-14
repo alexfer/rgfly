@@ -43,6 +43,7 @@ final class Summary implements SummaryInterface
                     'store_id' => $order['store']['id'],
                     'store_name' => $order['store']['name'],
                     'currency' => $currency,
+                    'cc' => $order['store']['cc'],
                     'fee' => array_sum($fee[$id]),
                     'itemSubtotal' => array_sum($itemSubtotal[$id]),
                     'total' => array_sum($total[$id]),

@@ -14,7 +14,8 @@ BEGIN
                                                     'id', s.id,
                                                     'name', s.name,
                                                     'currency', s.currency,
-                                                    'slug', s.slug
+                                                    'slug', s.slug,
+                                                    'cc', s.cc::json
                                             )
                                      FROM store s
                                      WHERE s.id = o.store_id
