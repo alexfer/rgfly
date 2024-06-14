@@ -48,6 +48,7 @@ class OrderController extends AbstractController
             $products = $order->getStoreOrdersProducts();
             $countProducts = count($products);
         }
+
         $orderProducts = $orderCollection->getOrderProducts($session->getId());
         $session->set('quantity', $orderProducts);
 

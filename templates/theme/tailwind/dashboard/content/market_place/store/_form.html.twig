@@ -79,7 +79,8 @@
                 </button>
             </li>
         </ul>
-        <div id="market-tab-content" class="pb-5 shadow-lg border border-t-gray-200 rounded-md dark:bg-gray-800 dark:border-gray-900 p-3">
+        <div id="market-tab-content"
+             class="pb-5 shadow-lg border border-t-gray-200 rounded-md dark:bg-gray-800 dark:border-gray-900 p-3">
             <div class="hidden p-4"
                  id="market-details"
                  role="tabpanel"
@@ -137,18 +138,13 @@
                         <div class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">{{ 'table.header.payment_type'|trans }}</div>
                         {% for key, field in form.gateway %}
                             {% set _checked = false %}
-                            {% set disabled = false %}
-                            {% if store.id is null %}
-                                {% set _checked = true %}
-                                {% set disabled = 'disabled' %}
-                            {% endif %}
                             {% for gateway in form.vars.data.storePaymentGatewayStores.toArray %}
                                 {% if field.vars.value == gateway.gateway.id and gateway.active %}
                                     {% set _checked = true %}
                                 {% endif %}
                             {% endfor %}
                             <label for="{{ field.vars.id }}" class="inline-flex items-center mb-5 cursor-pointer">
-                                {{ form_widget(field, {attr: {class: 'sr-only peer', checked: _checked, disabled: disabled}}) }}
+                                {{ form_widget(field, {attr: {class: 'sr-only peer', checked: _checked}}) }}
                                 <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                                 <span class="ms-3 relative text-sm font-medium text-gray-900 dark:text-gray-300">{{ field.vars.label }}</span>
                             </label>
@@ -161,7 +157,26 @@
                         {{ form_widget(form.tax, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: '0.00'}}) }}
                         <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.tax) }}</span>
                     </div>
-                    <div class="relative mb-3"></div>
+                    <div class="relative mb-3">
+                        {{ form_label(form.cc, 'label.form.cc', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {% for field in form.cc %}
+                            {% set _checked = false %}
+                            {% for cc in form.vars.data.cc %}
+                                {% if cc == field.vars.value %}
+                                    {% set _checked = true %}
+                                {% endif %}
+                            {% endfor %}
+                            <label for="{{ field.vars.id }}" title="{{ field.vars.label|capitalize }}"
+                                   class="inline-flex items-center mb-5 cursor-pointer">
+                                {{ form_widget(field, {attr: {class: 'sr-only peer', checked: _checked}}) }}
+                                <div class="relative opacity-50 w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                <span class="ms-1.5 relative text-sm font-medium text-gray-900 dark:text-gray-300">
+                                    <img class="object-cover w-8 h-auto" alt="{{ field.vars.label|capitalize }}"
+                                         src="{{ asset('img/cc/' ~ field.vars.label ~ '.svg') }}">
+                                </span>
+                            </label>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
             <div class="hidden p-4"
@@ -171,7 +186,8 @@
                 <div class="mt-4 p-2">
                     {% if form.vars.data.attach %}
                         {% set _picture = 'storage/market/logo/' ~ form.vars.data.id ~ '/' ~ form.vars.data.attach.name %}
-                        <div class="relative overflow-hidden rounded-lg bg-cover bg-no-repeat p-12 text-center"style="background-image: url('{{ asset(_picture)|imagine_filter('store_bg') }}'); height: 400px"></div>
+                        <div class="relative overflow-hidden rounded-lg bg-cover bg-no-repeat p-12 text-center"
+                             style="background-image: url('{{ asset(_picture)|imagine_filter('store_bg') }}'); height: 400px"></div>
                     {% endif %}
                     <div class="max-w-full mt-3 mx-auto">
                         {{ form_label(form.logo, 'label.form.store_picture', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
@@ -198,7 +214,8 @@
                                 {% endif %}
                             {% endfor %}
                             <div class="flex flex-col flex-wrap mb-3 w-1/2">
-                                <label for="{{ field.vars.id }}" class="inline-flex items-center -mb-1.5 cursor-pointer">
+                                <label for="{{ field.vars.id }}"
+                                       class="inline-flex items-center -mb-1.5 cursor-pointer">
                                     {{ form_widget(form.children[field.vars.value], {attr: {class: 'source float-end inline-flex bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', value: value}}) }}
                                     {{ form_widget(field, {attr: {class: 'sr-only peer', checked: checked}}) }}
                                     <div class="ms-2 relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>

@@ -7,20 +7,20 @@
 {% block content_body %}
     <h2 class="text-2xl mb-4 font-extrabold text-primary-700 dark:text-white text-ellipsis overflow-hidden">{{ 'store.best.sellers'|trans }}</h2>
     <div class="mt-3">
-        {% set _picture = store.random.picture is not null ? 'storage/market/logo/' ~ store.random.id ~ '/' ~ store.random.picture : 'img/800x600.png' %}
+        {% set _picture = store.picture is not null ? 'storage/market/logo/' ~ store.id ~ '/' ~ store.picture : 'img/800x600.png' %}
         <div class="relative overflow-hidden rounded-lg bg-cover bg-no-repeat p-12 text-center"
              style="background-image: url('{{ asset(_picture)|imagine_filter('store_bg') }}'); background-position: top center; height: 400px">
             <div class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-fixed"
                  style="background-color: rgba(0, 0, 0, 0.2)">
                 <div class="flex h-full items-center justify-center">
                     <div class="text-white">
-                        <h2 class="mb-4 text-4xl font-semibold">{{ store.random.name }}</h2>
-                        {% if store.random.description is not null %}
-                            <div class="mb-6 text-sm font-normal mx-auto max-w-lg">{{ store.random.description|striptags|raw|slice(0, 280) }}
+                        <h2 class="mb-4 text-4xl font-semibold">{{ store.name }}</h2>
+                        {% if store.description is not null %}
+                            <div class="mb-6 text-sm font-normal mx-auto max-w-lg">{{ store.description|striptags|raw|slice(0, 280) }}
                                 ...
                             </div>
                         {% endif %}
-                        <a href="{{ path('app_market_place_market', {slug: store.random.slug}) }}"
+                        <a href="{{ path('app_market_place_market', {slug: store.slug}) }}"
                            role="button"
                            class="rounded-lg hover:rounded-xl hover:animate-pulse border-2 border-neutral-50 px-7 pb-[8px] pt-[10px] text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
                            data-twe-ripple-init
@@ -30,27 +30,122 @@
             </div>
             <div class="absolute bottom-0 right-0 z-20 m-1 p-0.5">
                 <ul class="list-none h-8">
-                    {% for payment in store.random.payments %}
+                    {% for payment in store.payments %}
                         <li class="inline-flex ps-3 py-2">
                             <i data-twe-toggle="tooltip" title="{{ payment.summary }}" class="{{ payment.icon }} text-2xl text-white"></i>
                         </li>
                     {% endfor %}
                 </ul>
             </div>
-            {% if store.random.coupon is not null %}
+            {% if store.coupon is not null %}
                 <div class="absolute top-2 left-0 z-30 m-1 p-0.5 -rotate-45">
                     <div class="py-3 bg-yellow-100 rounded-xl border-4 border-red-500 border-dashed">
                         <div class="animate-pulse text-yellow-600 text-3xl w-full font-semibold px-8">
-                            {% if store.random.coupon.discount is not null %}
-                                {{ store.random.coupon.discount }}<small>%</small>
-                            {% elseif store.random.coupon.price is not null %}
-                                {{ store.random.coupon.price }}<small>{{ store.random.currency|currency }}</small>
+                            {% if store.coupon.discount is not null %}
+                                {{ store.coupon.discount }}<small>%</small>
+                            {% elseif store.coupon.price is not null %}
+                                {{ store.coupon.price }}<small>{{ store.currency|currency }}</small>
                             {% endif %}
                         </div>
-                        <p class="text-yellow-500 font-medium">{{ store.random.coupon.type|capitalize }} {{ 'store.product.off'|trans }}</p>
+                        <p class="text-yellow-500 font-medium">{{ store.coupon.type|capitalize }} {{ 'store.product.off'|trans }}</p>
                     </div>
                 </div>
             {% endif %}
+            {% if store.cc is not null and store.cc|length %}
+                <div class="absolute top-0 right-0">
+                    <ul class="list-none flex mx-auto space-x-2 justify-between items-center mt-2 me-2">
+                        {% for cc in store.cc %}
+                            <li class="inline-flex mx-auto ps-0.5">
+                                <img class="object-cover w-8 h-auto" src="{{ asset('img/cc/' ~ cc ~ '.svg') }}">
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+{% block extra %}
+    <div class="max-w-screen-xl flex mx-auto py-2 lg:px-2 mb-5">
+        <div class="mx-auto w-full bg-white p-6 rounded-lg shadow-4 dark:bg-surface-dark">
+            <h2 class="text-2xl mb-4 font-extrabold text-primary-700 dark:text-white text-ellipsis overflow-hidden">{{ 'store.best.products'|trans }}</h2>
+            <div class="grid w-full gap-3 lg:grid-cols-3 md:grid-cols-2">
+                {% for product in products %}
+                    <div class="min-h-full">
+                        <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                            <div class="lg:max-w-2xl relative overflow-hidden bg-cover bg-no-repeat">
+                                {% if product.attachment %}
+                                    {% set _picture = 'storage/product/' ~ product.id ~ '/' ~ product.attachment %}
+                                    <a href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}">
+                                        <img src="{{ asset(_picture)|imagine_filter('product_preview') }}"
+                                             class="object-cover w-full transition duration-300 ease-in-out hover:scale-125 hover:inset-1/2 rounded-t-lg"
+                                             alt="{{ product.name }}">
+                                        </a>
+                                {% else %}
+                                    <img src="{{ asset('img/300x200.png') }}"
+                                         class="object-cover w-full transition duration-300 ease-in-out hover:scale-125 hover:inset-1/2 rounded-t-lg"
+                                         alt="{{ product.name }}">
+                                {% endif %}
+                                <div class="absolute top-5 w-full">
+                                    <div class="flex justify-between">
+                                        <span class="ml-2 bg-gray-600 bg-opacity-90 text-gray-500 text-md shadow-xl font-medium px-2.5 py-0.5 rounded-md dark:bg-gray-900 dark:text-gray-300">
+                                            <a title="{{ product.name }}"
+                                               href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}"
+                                               class="text-white hover:text-neutral-100 hover:animate-pulse">{{ 'store.product.details'|trans }}
+                                            </a>
+                                        </span>
+                                        {% if product.discount %}
+                                            <span class="bg-red-700 bg-opacity-75 text-white text-sm font-normal me-2 px-2.5 py-1 rounded-xl dark:bg-red-900 dark:text-white">{{ product.discount }}% {{ 'store.product.off'|trans }}</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center py-4 justify-between">
+                                <div class="ml-3">
+                                    <form class="shopping-cart" method="post"
+                                          action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
+                                        <button class="text-white bg-gray-800 shadow-md hover:bg-surface-dark focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-md text-sm px-4 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                                data-slug="{{ product.slug }}" type="submit"
+                                                {% if product.quantity == 0 or (app.user and 'ROLE_USER' in app.user.roles or app.user and  'ROLE_ADMIN' in app.user.roles) %}disabled{% endif %}>
+                                            <i class="fa fa-shopping-cart mt-1 me-2"></i>{{ 'store.product.add'|trans }}
+                                        </button>
+                                    </form>
+                                </div>
+                                <div class="mr-3">
+                                    {% set discount = product.discount %}
+                                    {% set cost = product.cost + product.fee %}
+                                    {% set discount_cost = (cost - ((cost * discount) - discount)/100) %}
+                                    <span class="text-2xl font-medium {% if discount > 0 %}text-rose-500{% else %}text-gray-900{% endif %} dark:text-white">{{ (discount_cost)|amount_format }}<small>{{ product.currency|currency }}</small></span>
+                                </div>
+                            </div>
+                            <a title="{{ product.name }}" class="mt-3"
+                               href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}">
+                                <h5 class="mx-3 mb-2 text-lg font-bold hover:text-gray-700 tracking-tight truncate text-gray-500 dark:text-white">
+                                    {{ product.short_name }}
+                                </h5>
+                            </a>
+                            <div class="flex items-center border-t mt-3 pt-3 bg-gray-50 bg-opacity-75 pb-3 px-3 justify-between">
+                                <div>
+                                    <a href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}"
+                                       class="hover:text-violet-500 text-md  hover:text-decoration-underline hover:animate-pulse">{{ 'store.product.details'|trans }}
+                                        <svg class="w-[16px] h-[16px] inline ml-3 fill-primary-500 hover:fill-violet-600 hover:scale-110"
+                                             viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l370.7 0-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128z"></path>
+                                        </svg>
+                                    </a>
+                                </div>
+                                <ul class="list-none">
+                                    {% for payment in product.payments %}
+                                        <l class="inline-flex">
+                                            <i  data-twe-toggle="tooltip" title="{{ payment.name }}" class="{{ payment.icon }} cursor-pointer text-lg text-primary ms-1"></i>
+                                        </l>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}
