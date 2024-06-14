@@ -1753,6 +1753,10 @@
                 <source>label.form.tax</source>
                 <target>Tax (%)</target>
             </trans-unit>
+            <trans-unit id="label.form.cc">
+                <source>label.form.cc</source>
+                <target>Credit cards</target>
+            </trans-unit>
             <trans-unit id="label.form.keep_me_logged_in">
                 <source>label.form.keep_me_logged_in</source>
                 <target>Keep me logged in</target>

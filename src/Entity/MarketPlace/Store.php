@@ -103,14 +103,14 @@ class Store
     #[ORM\OneToMany(mappedBy: 'store', targetEntity: StoreSocial::class)]
     private Collection $storeSocials;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $cc = null;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?DateTime $created_at;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $deleted_at = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $cc = null;
 
     public function __construct()
     {
@@ -804,11 +804,18 @@ class Store
         return $this;
     }
 
-    public function getCc(): ?string
+    /**
+     * @return array|null
+     */
+    public function getCc(): ?array
     {
-        return $this->cc;
+        return json_decode($this->cc, true);
     }
 
+    /**
+     * @param string|null $cc
+     * @return $this
+     */
     public function setCc(?string $cc): static
     {
         $this->cc = $cc;

@@ -41,6 +41,7 @@ BEGIN
     SELECT json_build_object(
                    'id', s.id,
                    'name', s.name,
+                   'cc', s.cc::json,
                    'slug', s.slug,
                    'description', s.description,
                    'currency', s.currency,

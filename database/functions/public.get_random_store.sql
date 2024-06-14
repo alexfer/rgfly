@@ -10,6 +10,7 @@ BEGIN
                    'id', s.id,
                    'currency', s.currency,
                    'name', s.name,
+                   'cc', s.cc::json,
                    'slug', s.slug,
                    'description', s.description,
                    'picture', a.name,
