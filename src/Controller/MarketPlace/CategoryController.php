@@ -2,15 +2,11 @@
 
 namespace App\Controller\MarketPlace;
 
-use App\Entity\MarketPlace\StoreCategory;
-use App\Entity\MarketPlace\StoreCustomer;
-use App\Repository\MarketPlace\StoreProductRepository;
+use App\Entity\MarketPlace\{StoreCategory, StoreCustomer, StoreProduct};
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\{Request, RequestStack, Response};
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -34,36 +30,41 @@ class CategoryController extends AbstractController
 
     /**
      * @param RequestStack $stack
-     * @param StoreProductRepository $repository
      * @param EntityManagerInterface $em
      */
     public function __construct(
-        RequestStack                             $stack,
-        private readonly StoreProductRepository $repository,
-        private readonly EntityManagerInterface  $em,
+        RequestStack                            $stack,
+        private readonly EntityManagerInterface $em,
     )
     {
         $this->request = $stack->getCurrentRequest();
-        $this->offset = $this->request->get('offset') ?: $this->offset;
-        $this->limit = $this->request->get('limit') ?: $this->limit;
+        $this->offset = $this->request->query->get('offset', $this->offset);
+        $this->limit = $this->request->query->get('limit', $this->limit);
     }
 
     /**
      * @param UserInterface|null $user
      * @return StoreCustomer|null
      */
-    protected function customer(?UserInterface $user): ?StoreCustomer
+    private function customer(?UserInterface $user): ?StoreCustomer
     {
-        return $this->em->getRepository(StoreCustomer::class)->findOneBy(['member' => $user]);
+        return $this->em->getRepository(StoreCustomer::class)
+            ->findOneBy(['member' => $user]);
     }
 
     /**
      * @param string $slug
-     * @return StoreCategory|null
+     * @return StoreCategory
      */
-    protected function category(string $slug): ?StoreCategory
+    private function category(string $slug): StoreCategory
     {
-        return $this->em->getRepository(StoreCategory::class)->findOneBy(['slug' => $slug]);
+        $category = $this->em->getRepository(StoreCategory::class)
+            ->findOneBy(['slug' => $slug]);
+
+        if (!$category) {
+            throw $this->createNotFoundException();
+        }
+        return $category;
     }
 
     /**
@@ -74,8 +75,12 @@ class CategoryController extends AbstractController
     #[Route('', name: 'app_market_place_category')]
     public function index(?UserInterface $user): Response
     {
-        $products = $this->repository->fetchProducts($this->offset, $this->limit);
-        $categories = $this->em->getRepository(StoreCategory::class)->findBy(['parent' => null], ['id' => 'asc']);
+        $products = $this->em->getRepository(StoreProduct::class)
+            ->fetchProducts($this->offset, $this->limit);
+
+        $categories = $this->em->getRepository(StoreCategory::class)
+            ->findBy(['parent' => null], ['id' => 'asc']);
+
         return $this->render('market_place/category/index.html.twig', [
             'parent' => null,
             'products' => $products['data'],
@@ -94,10 +99,16 @@ class CategoryController extends AbstractController
     public function parent(?UserInterface $user): Response
     {
         $slug = $this->request->get('parent');
-        $category = $this->category($slug);
-        //dd($category);
+
+        try {
+            $category = $this->category($slug);
+        } catch (\Exception $_) {
+            return $this->redirectToRoute('app_market_place_category');
+        }
+
         $children = $category->getChildren()->toArray();
-        $products = $this->repository->findProductsByParentCategory($slug, $this->offset, $this->limit);
+        $products = $this->em->getRepository(StoreProduct::class)
+            ->findProductsByParentCategory($slug, $this->offset, $this->limit);
 
         return $this->render('market_place/category/index.html.twig', [
             'category' => $category,
@@ -121,16 +132,22 @@ class CategoryController extends AbstractController
     {
         $child = $this->request->get('child');
         $parent = $this->request->get('parent');
+        $redirectTo = $this->redirectToRoute('app_market_place_parent_category', ['parent' => $parent]);
 
-        $category = $this->category($child);
-
-        if(!$category) {
-            return $this->redirectToRoute('app_market_place_parent_category', ['parent' => $parent]);
+        try {
+            $category = $this->category($child);
+        } catch (\Exception $_) {
+            return $redirectTo;
         }
 
-        $parent = $this->category($parent);
+        try {
+            $parent = $this->category($parent);
+        } catch (\Exception $_) {
+            return $redirectTo;
+        }
 
-        $products = $this->repository->findProductsByChildCategory($category->getId(), $this->offset, $this->limit);
+        $products = $this->em->getRepository(StoreProduct::class)
+            ->findProductsByChildCategory($category->getId(), $this->offset, $this->limit);
 
         return $this->render('market_place/category/index.html.twig', [
             'category' => $category,
