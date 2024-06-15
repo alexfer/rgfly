@@ -1,61 +1,108 @@
 {% extends 'market_place/index.html.twig' %}
-
-{% block title %}{{ category.name }}{% endblock %}
-
-{% block content_body %}
-    <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white">{{ category.name }}</h2>
-    <div class="w-full py-2.5 px-1.5 border border-gray-100 rounded-lg bg-gray-50 mb-3">
-        <button id="category-filter"
-                data-dropdown-toggle="dropdown"
-                data-dropdown-offset-distance="10"
-                data-dropdown-offset-skidding="100"
-                data-dropdown-placement="bottom"
-                class="relative text-gray-500 mb-1 bg-white border hover:bg-gray-300 w-52 hover:text-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:text-white dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-blue-800"
-                type="button">{{ 'option.category.choice_category'|trans }}
-            <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                 viewBox="0 0 10 6">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="m1 1 4 4 4-4"></path>
+{% block title %}
+    {% if categories is null %}
+        {{ category.name }}
+    {% else %}
+        {{ 'search.form.categories'|trans }}
+    {% endif %}
+{% endblock %}
+{% block offest %}pt-4 py-4 lg:py-2 lg:px-2{% endblock %}
+{% block extra_search %}
+    <div class="max-w-screen-xl flex mx-auto justify-center mt-3">
+        <div class="w-full py-2.5 mx-3 px-4 border border-gray-100 rounded-lg bg-gray-50 mb-3">
+            <svg class="w-3 h-3 me-2.5 inline-flex" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"></path>
             </svg>
-        </button>
-        <div id="dropdown"
-             class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-lg w-auto dark:bg-gray-700">
-            <ul class="my-5 ps-1.5 list-none lg:flex-row" aria-labelledby="category-filter">
-                {% set _collection = parent is not null ? parent.children : category.children %}
-                {% for child in _collection %}
-                    <li>
-                        <a title="{{ child.name }}"
-                           href="{{ path('app_market_place_child_category', {parent: app.request.get('parent'), child: child.slug}) }}"
-                           class="block mx-1 mt-1.5 w-auto text-gray-500 rounded-lg hover:text-gray-500 hover:bg-gray-100 text-sm px-5 py-2.5 me-2 mb-2 dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:hover:bg-gray-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
-                                 class="w-3.5 h-3.5 inline-block mr-1">
-                                <path fill-rule="evenodd"
-                                      d="M2 8c0 .414.336.75.75.75h8.69l-1.22 1.22a.75.75 0 1 0 1.06 1.06l2.5-2.5a.75.75 0 0 0 0-1.06l-2.5-2.5a.75.75 0 1 0-1.06 1.06l1.22 1.22H2.75A.75.75 0 0 0 2 8Z"
-                                      clip-rule="evenodd"></path>
-                            </svg>{{ child.name }}
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div class="inline-block w-52">
-            <form method="get" name="search" class="mt-1">
-                <label for="filter" class="sr-only">{{ 'title.search'|trans }}</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                  stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"></path>
-                        </svg>
-                    </div>
-                    <input type="text" onkeydown="this.submit = true;" id="filter" name="filter"
-                           class="block w-full p-2.5 ps-10 bg-white text-sm text-gray-900 border border-gray-300 rounded-lg focus:placeholder-white focus:ring-gray-400 focus:border-gray-300 dark:bg-gray-700 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500"
-                           placeholder="{{ 'title.search'|trans }}">
+            <div class="inline-flex me-3">
+                <a href="{{ path('app_market_place_index') }}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                    {{ 'title.market_places'|trans }}
+                </a>
+            </div>
+            {% if categories is null %}
+                <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1 inline-flex me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"></path>
+                </svg>
+                <div class="inline-flex me-3">
+                    <a href="{{ path('app_market_place_category') }}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                        {{ 'search.form.categories'|trans }}
+                    </a>
                 </div>
-            </form>
+            {% endif %}
+            {% if app.request.get('parent') is not null %}
+                <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1 inline-flex me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"></path>
+                </svg>
+                <div class="inline-flex me-3">
+                    <a href="{{ path('app_market_place_parent_category', {parent: app.request.get('parent')}) }}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                        {{ parent_name }}
+                    </a>
+                </div>
+            {% endif %}
+            {% if app.request.get('child') is not null %}
+                <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1 inline-flex me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"></path>
+                </svg>
+                <div class="inline-flex me-3">
+                    <a href="{{ path('app_market_place_child_category', {parent: app.request.get('parent'), child: app.request.get('child')}) }}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                        {{ child_name }}
+                    </a>
+                </div>
+            {% endif %}
+            <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1 inline-flex me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"></path>
+            </svg>
+            <button id="category-filter"
+                    data-dropdown-toggle="dropdown-extra"
+                    data-dropdown-offset-distance="10"
+                    data-dropdown-offset-skidding="30"
+                    data-dropdown-placement="bottom"
+                    class="inline-flex relative mb-1 w-52 px-3 py-2 text-sm font-normal text-center text-gray-900 hover:text-blue-600 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-white dark:focus:ring-gray-700"
+                    type="button">{{ 'option.category.choice_category'|trans }}
+                <svg class="w-2.5 h-2.5 absolute end-0 me-3 mt-1 text-gray-700 hover:text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                     viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="m1 1 4 4 4-4"></path>
+                </svg>
+            </button>
+            <div id="dropdown-extra"
+                 class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-lg w-auto dark:bg-gray-700">
+                <ul class="my-5 ps-1.5 list-none lg:flex-row" aria-labelledby="category-filter">
+                    {% if categories is null %}
+                        {% set _collection = parent is not null ? parent.children : category.children %}
+                    {% else %}
+                        {% set _collection = categories %}
+                    {% endif %}
+                    {% for child in _collection %}
+                        <li>
+                            <a title="{{ child.name }}"
+                               {% if categories is null %}
+                                   href="{{ path('app_market_place_child_category', {parent: app.request.get('parent'), child: child.slug}) }}"
+                               {% else %}
+                                   href="{{ path('app_market_place_parent_category', {parent: child.slug}) }}"
+                               {% endif %}
+                               class="block mx-1 mt-1.5 w-auto text-gray-500 rounded-lg hover:text-gray-500 hover:bg-gray-100 text-sm px-5 py-2.5 me-2 mb-2 dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:hover:bg-gray-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+                                     class="w-3.5 h-3.5 inline-block mr-1">
+                                    <path fill-rule="evenodd"
+                                          d="M2 8c0 .414.336.75.75.75h8.69l-1.22 1.22a.75.75 0 1 0 1.06 1.06l2.5-2.5a.75.75 0 0 0 0-1.06l-2.5-2.5a.75.75 0 1 0-1.06 1.06l1.22 1.22H2.75A.75.75 0 0 0 2 8Z"
+                                          clip-rule="evenodd"></path>
+                                </svg>{{ child.name }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
+{% endblock %}
+{% block content_body %}
+    <h2 class="text-2xl pb-4 font-oswald font-extrabold text-primary-700 dark:text-white">
+        {% if categories is null %}
+            {{ category.name }}
+        {% else %}
+            {{ 'search.form.categories'|trans }}
+        {% endif %}
+    </h2>
     <div class="grid w-full gap-3 lg:grid-cols-3 md:grid-cols-2">
         {% for product in products %}
             <div class="min-h-full">
@@ -116,13 +163,27 @@
                             <i class="fa fa-check px-2 text-green-400"></i>{{ product.parent_category_name }}
                         </a>
                     {% endif %}
-                    <a href="{{ path('app_market_place_child_category', {
-                        parent: product.parent_category_slug,
-                        child:  product.category_slug
-                    }) }}" title="{{ product.category_name }}"
-                       class="hover:underline hover:w-full truncate block w-auto ml-2 mr-3 text-gray-500">
-                        <i class="fa fa-check px-2 text-green-400"></i>{{ product.category_name }}
-                    </a>
+                    {% if categories is null %}
+                        <a href="{{ path('app_market_place_child_category', {
+                            parent: product.parent_category_slug,
+                            child:  product.category_slug
+                        }) }}" title="{{ product.category_name }}"
+                           class="hover:underline hover:w-full truncate block w-auto ml-2 mr-3 text-gray-500">
+                            <i class="fa fa-check px-2 text-green-400"></i>{{ product.category_name }}
+                        </a>
+                    {% else %}
+                        <a href="{{ path('app_market_place_parent_category', {parent:  product.parent_category_slug}) }}"
+                           class="hover:underline truncate ml-2 text-gray-500 w-full block">
+                            <i class="fa fa-check px-2 text-green-400"></i>{{ product.parent_category_name }}
+                        </a>
+                        <a href="{{ path('app_market_place_child_category', {
+                            parent: product.parent_category_slug,
+                            child:  product.category_slug
+                        }) }}" title="{{ product.category_name }}"
+                           class="hover:underline hover:w-full truncate block w-auto ml-2 mr-3 text-gray-500">
+                            <i class="fa fa-check px-2 text-green-400"></i>{{ product.category_name }}
+                        </a>
+                    {% endif %}
                     <ul class="list-none ml-2 mt-6">
                         <li class="pb-0 flex">
                             <a class="hover:text-indigo-600 text-blue-600 hover:animate-pulse"

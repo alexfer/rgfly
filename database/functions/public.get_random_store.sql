@@ -37,10 +37,12 @@ BEGIN
     INTO results
     FROM store s
              LEFT JOIN attach a on a.id = s.attach_id
-             LEFT JOIN public.store_payment_gateway_store spgs on s.id = spgs.store_id
-             LEFT JOIN public.store_payment_gateway spg on spg.id = spgs.gateway_id
+             LEFT JOIN store_payment_gateway_store spgs on s.id = spgs.store_id
+             LEFT JOIN store_payment_gateway spg on spg.id = spgs.gateway_id
+             JOIN store_product sp2 on s.id = sp2.store_id
     WHERE s.deleted_at IS NULL
     GROUP BY s.id, a.id
+    HAVING COUNT(sp2.id) > 0
     ORDER BY RANDOM()
     LIMIT 1;
 

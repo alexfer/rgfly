@@ -3,7 +3,7 @@
 {% block title %}{{ 'text.faq.header'|trans }}{% endblock %}
 
 {% block body %}
-    <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white">{{ 'title.questions'|trans }}</h2>
+    <h2 class="text-2xl pb-4 font-oswald font-extrabold text-primary-700 dark:text-white">{{ 'title.questions'|trans }}</h2>
     <div id="accordion-flush">
         {% for key, entry in entries %}
             <h2 id="faq-flush-heading-{{ key }}">
@@ -13,7 +13,7 @@
                         data-twe-collapse-init
                         aria-expanded="{{ key == 0 ? 'true' : 'false' }}"
                         aria-controls="faq-body-{{ key }}">
-                    <h5 class="flex text-xl subpixel-antialiased hover:text-black dark:text-white">
+                    <h5 class="flex text-xl font-oswald subpixel-antialiased hover:text-black dark:text-white">
                         <svg class="w-5 h-5 mt-1 me-2 shrink-0" fill="currentColor" viewBox="0 0 20 20"
                              xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd"
@@ -34,8 +34,8 @@
                     {% if key == 0 %} data-twe-collapse-show{% endif %}
                  data-twe-parent="#accordion-flush"
                  aria-labelledby="faq-flush-heading-{{ key }}">
-                <div class=" py-5 border-b border-gray-200 dark:border-gray-700">
-                    <p class="mb-2 text-gray-500 dark:text-gray-400">{{ entry.content|raw }}</p>
+                <div class="font-sans py-5 border-b border-gray-200 dark:border-gray-700">
+                    <p class="mb-2 text-gray-500 font-sans dark:text-gray-400">{{ entry.content|raw }}</p>
                 </div>
             </div>
         {% endfor %}
