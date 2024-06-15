@@ -3,9 +3,22 @@
 {% block title %}{{ 'store.best.sellers'|trans }}{% endblock %}
 {% block description %}{{ 'store.best.sellers'|trans }}{% endblock %}
 {% block extend_title %}{{ 'store.best.sellers'|trans }}{% endblock %}
-
+{% block offest %}pt-4 py-8 lg:py-16 lg:px-2{% endblock %}
+{% block childen %}{% endblock %}
 {% block content_body %}
-    <h2 class="text-2xl font-oswald mb-4 font-extrabold text-primary-700 dark:text-white text-ellipsis overflow-hidden">{{ 'store.best.sellers'|trans }}</h2>
+    <h2 class="text-2xl font-oswald relative mb-4 font-extrabold text-primary-700 dark:text-white text-ellipsis overflow-hidden">{{ 'store.best.sellers'|trans }}
+        {% if store.cc is not null and store.cc|length %}
+            <div class="absolute top-0 right-0">
+                <ul class="list-none flex mx-auto space-x-2 justify-between items-center mt-2 me-2">
+                    {% for cc in store.cc %}
+                        <li class="inline-flex mx-auto ps-0.5">
+                            <img class="object-cover w-8 h-auto" src="{{ asset('img/cc/' ~ cc ~ '.svg') }}">
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </h2>
     <div class="mt-3">
         {% set _picture = store.picture is not null ? 'storage/market/logo/' ~ store.id ~ '/' ~ store.picture : 'img/800x600.png' %}
         <div class="relative overflow-hidden rounded-lg bg-cover bg-no-repeat p-12 text-center"
@@ -49,17 +62,6 @@
                         </div>
                         <p class="text-yellow-500 font-medium">{{ store.coupon.type|capitalize }} {{ 'store.product.off'|trans }}</p>
                     </div>
-                </div>
-            {% endif %}
-            {% if store.cc is not null and store.cc|length %}
-                <div class="absolute top-0 right-0">
-                    <ul class="list-none flex mx-auto space-x-2 justify-between items-center mt-2 me-2">
-                        {% for cc in store.cc %}
-                            <li class="inline-flex mx-auto ps-0.5">
-                                <img class="object-cover w-8 h-auto" src="{{ asset('img/cc/' ~ cc ~ '.svg') }}">
-                            </li>
-                        {% endfor %}
-                    </ul>
                 </div>
             {% endif %}
         </div>

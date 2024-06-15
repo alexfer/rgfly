@@ -75,12 +75,12 @@ class CategoryController extends AbstractController
     public function index(?UserInterface $user): Response
     {
         $products = $this->repository->fetchProducts($this->offset, $this->limit);
-        $category = $this->em->getRepository(StoreCategory::class)->findOneBy(['parent' => null], ['id' => 'asc']);
-
+        $categories = $this->em->getRepository(StoreCategory::class)->findBy(['parent' => null], ['id' => 'asc']);
         return $this->render('market_place/category/index.html.twig', [
+            'parent' => null,
             'products' => $products['data'],
             'rows_count' => $products['rows_count'],
-            'category' => $category,
+            'categories' => $categories,
             'customer' => $this->customer($user),
         ]);
     }
@@ -95,15 +95,18 @@ class CategoryController extends AbstractController
     {
         $slug = $this->request->get('parent');
         $category = $this->category($slug);
+        //dd($category);
         $children = $category->getChildren()->toArray();
         $products = $this->repository->findProductsByParentCategory($slug, $this->offset, $this->limit);
 
         return $this->render('market_place/category/index.html.twig', [
             'category' => $category,
             'parent' => null,
+            'parent_name' => $category->getName(),
             'children' => $children,
             'products' => $products['data'],
             'rows_count' => $products['rows_count'],
+            'categories' => null,
             'customer' => $this->customer($user),
         ]);
     }
@@ -120,13 +123,21 @@ class CategoryController extends AbstractController
         $parent = $this->request->get('parent');
 
         $category = $this->category($child);
+
+        if(!$category) {
+            return $this->redirectToRoute('app_market_place_parent_category', ['parent' => $parent]);
+        }
+
         $parent = $this->category($parent);
 
         $products = $this->repository->findProductsByChildCategory($category->getId(), $this->offset, $this->limit);
 
         return $this->render('market_place/category/index.html.twig', [
             'category' => $category,
+            'child_name' => $category->getName(),
+            'parent_name' => $parent->getName(),
             'parent' => $parent,
+            'categories' => null,
             'products' => $products['data'],
             'rows_count' => $products['rows_count'],
             'customer' => $this->customer($user),
