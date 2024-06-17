@@ -166,10 +166,6 @@
                                         <div class="me-auto">{{ 'order.item.subtotal'|trans }}</div>
                                         <span id="item-subtotal-{{ order.store_id }}">{{ (order.total)|amount_format }}<small>{{ order.currency }}</small></span>
                                     </div>
-                                    <div class="flex justify-between items-start sr-only">
-                                        <div class="me-auto">{{ 'order.service.fee'|trans }}</div>
-                                        <span id="fee-{{ order.store_id }}">{{ order.fee|amount_format }}<small>{{ order.currency }}</small></span>
-                                    </div>
                                     <div class="flex justify-between items-start">
                                         <div class="me-auto">{{ 'order.service.tax'|trans }}</div>
                                         <span id="tax-{{ order.store_id }}">{{ order.tax }}<small>%</small></span>

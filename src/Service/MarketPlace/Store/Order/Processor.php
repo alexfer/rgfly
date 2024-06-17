@@ -6,7 +6,7 @@ use App\Entity\MarketPlace\{Store, StoreCustomer, StoreCustomerOrders, StoreOrde
 use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Service\MarketPlace\Store\Order\Interface\ProcessorInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\{Request, RequestStack};
+use Symfony\Component\HttpFoundation\{JsonResponse, Request, RequestStack};
 
 final class Processor implements ProcessorInterface
 {
@@ -36,18 +36,16 @@ final class Processor implements ProcessorInterface
     )
     {
         $this->request = $requestStack->getCurrentRequest();
+        $this->sessionId = $this->request->getSession()->getId();
         $this->data = $this->request->toArray();
     }
 
     /**
-     * @param string|null $sessionId
      * @param int|null $id
      * @return StoreOrders|null
      */
-    public function findOrder(?string $sessionId, int $id = null): ?StoreOrders
+    public function findOrder(int $id = null): ?StoreOrders
     {
-        $this->sessionId = $sessionId;
-
         $condition = [
             'store' => $this->store(),
             'session' => $this->sessionId,
@@ -62,14 +60,13 @@ final class Processor implements ProcessorInterface
     }
 
     /**
-     * @param string|null $sessionId
      * @param array $input
      * @return void
      */
-    public function updateQuantity(?string $sessionId, array $input): void
+    public function updateQuantity(array $input): void
     {
         foreach ($input['order']['product'] as $key => $value) {
-            $order = $this->findOrder($sessionId, $input['order'][$key]);
+            $order = $this->findOrder($input['order'][$key]);
             $product = $this->em->getRepository(StoreOrdersProduct::class)
                 ->findOneBy(['id' => $value, 'orders' => $order]);
             $product->setQuantity($input['order']['quantity'][$key]);

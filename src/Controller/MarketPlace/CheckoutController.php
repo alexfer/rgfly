@@ -45,12 +45,11 @@ class CheckoutController extends AbstractController
     ): Response
     {
         $session = $request->getSession();
-        $sessionId = $session->getId();
         $hasUsed = false;
 
         $customer = $userManager->get($user);
         $form = $this->createForm(CustomerType::class, $customer);
-        $order = $checkout->findOrder($sessionId);
+        $order = $checkout->findOrder();
         $process = $coupon->process($order->getStore());
         $tax = $order->getStore()->getTax();
         $cc = $order->getStore()->getCc();

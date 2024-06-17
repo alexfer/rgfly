@@ -44,17 +44,16 @@ class Processor implements ProcessorInterface
     )
     {
         $this->request = $requestStack->getCurrentRequest();
+        $this->sessionId = $this->request->getSession()->getId();
     }
 
 
     /**
-     * @param string $sessionId
      * @param string|null $status
      * @return StoreOrders|null
      */
-    public function findOrder(string $sessionId, ?string $status = StoreOrders::STATUS['processing']): ?StoreOrders
+    public function findOrder(?string $status = StoreOrders::STATUS['processing']): ?StoreOrders
     {
-        $this->sessionId = $sessionId;
         $order = $this->em->getRepository(StoreOrders::class)->findOneBy([
             'number' => $this->request->get('order'),
             'session' => $this->sessionId,

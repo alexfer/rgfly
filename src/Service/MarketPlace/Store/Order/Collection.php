@@ -2,58 +2,80 @@
 
 namespace App\Service\MarketPlace\Store\Order;
 
-use App\Entity\MarketPlace\StoreCustomer;
-use App\Entity\MarketPlace\StoreOrders;
+use App\Entity\MarketPlace\{StoreCustomer, StoreOrders};
 use App\Service\MarketPlace\Store\Order\Interface\CollectionInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\{Request, RequestStack};
 
 final readonly class Collection implements CollectionInterface
 {
 
     /**
+     * @var Request
+     */
+    protected Request $request;
+
+    /**
+     * @var string|null
+     */
+    private ?string $sessionId;
+
+    /**
+     * @param RequestStack $requestStack
      * @param EntityManagerInterface $em
      */
-    public function __construct(private EntityManagerInterface $em)
+    public function __construct(
+        protected RequestStack         $requestStack,
+        private EntityManagerInterface $em
+    )
     {
-
+        $this->request = $requestStack->getCurrentRequest();
+        $this->sessionId = $this->request->getSession()->getId();
     }
 
     /**
-     * @param string|null $sessId
+     * @param StoreCustomer|null $customer
      * @return array|null
      */
-    public function getOrders(?string $sessId = null, ?StoreCustomer $customer = null): ?array
+    public function getOrders(?StoreCustomer $customer = null): ?array
     {
         return $this->em->getRepository(StoreOrders::class)
-            ->collection($sessId, $customer);
+            ->collection($this->sessionId, $customer);
     }
 
     /**
-     * @param string|null $sessId
-     * @return int|null
+     * @return array|null
      */
-    public function getOrderProducts(?string $sessId = null): ?int
+    public function getOrderProducts(): ?array
     {
-        $orders = $this->getOrders($sessId);
+        $orders = $this->getOrders();
         if ($orders['summary'] === null) {
             return null;
         }
-        $result = [];
+        $result = $summary = [];
         foreach ($orders['summary'] as $order) {
             foreach ($order['products'] as $product) {
                 $result[] = $product['id'];
             }
+            $summary[] = [
+                'id' => $order['id'],
+                'number' => $order['number'],
+                'session' => $order['session'],
+            ];
         }
-        return count($result);
+        return [
+            'count' => count($result),
+            'orders' => $summary,
+        ];
     }
 
     /**
-     * @param string|null $sessionId
      * @return array|null
      */
-    public function collection(?string $sessionId): ?array
+    public function collection(array $payload = null): ?array
     {
-        $orders = $this->getOrders($sessionId);
+        $orders = $this->getOrders();
+
         if ($orders['summary'] === null) {
             return null;
         }
