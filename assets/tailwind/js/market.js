@@ -13,8 +13,9 @@ const headers = {'Content-type': 'application/json; charset=utf-8'};
 const bulkRemoveWishlist = document.getElementById('bulk-remove');
 const target = document.getElementById('dropdown');
 const trigger = document.getElementById('dropdown-search');
+const order = 'store';
 
-if(target !== null) {
+if (target !== null) {
     [...target.getElementsByTagName('button')].forEach((btn) => {
         btn.addEventListener('click', () => {
             const input = document.getElementById('search');
@@ -100,7 +101,7 @@ if (typeof drops !== 'undefined') {
                     );
                     const data = await response.json();
                     const summary = data.summary;
-                    summary.map((item, key) => {
+                    summary.map((item) => {
                         let total = document.getElementById('total-' + item.store);
                         let checkout = document.getElementById('checkout-' + item.store);
                         let itemSubtotal = document.getElementById('item-subtotal-' + item.store);
@@ -111,8 +112,8 @@ if (typeof drops !== 'undefined') {
                         total.innerHTML = item.total + currency;
                     });
 
-                    quantity.innerHTML = data.quantity;
-
+                    quantity.innerHTML = data.store.quantity;
+                    localStorage.setItem('order', JSON.stringify(data.store));
                     if (data.products >= 1) {
                         drop.closest('.parent').remove();
                     }
@@ -121,6 +122,7 @@ if (typeof drops !== 'undefined') {
                         document.getElementById('store-' + data.removed).remove();
                     }
                     if (data.redirect === true) {
+                        localStorage.clear();
                         document.location.href = data.redirectUrl;
                     } else {
                         await Swal.fire(i18next.t('removed'), "", "success");
@@ -136,7 +138,10 @@ if (cart !== null) {
         let url = cart.getAttribute('data-url');
         let body = cart.querySelectorAll('#order-body');
         body.item(0).innerHTML = '';
+        const order = localStorage.getItem('order');
         fetch(url, {
+            method: 'POST',
+            body: order,
             headers: headers
         })
             .then((response) => response.json())
@@ -159,15 +164,15 @@ if (attributes.length) {
         if (el.children !== null) {
             Array.from(el.children).forEach((item) => {
                 if (item.hasAttribute('id')) {
-                    Array.from(item.children).forEach((wrapper, index) => {
-                        Array.from(wrapper.children).forEach((input, index) => {
+                    Array.from(item.children).forEach((wrapper) => {
+                        Array.from(wrapper.children).forEach((input) => {
+                            let json = [];
                             input.addEventListener("change", (event) => {
                                 if (event.currentTarget.checked) {
                                     let root = input.getAttribute('data-root-name');
                                     let value = input.getAttribute('data-name');
                                     let extra = input.getAttribute('data-extra');
-                                    let json = [];
-                                    if(root === 'color') {
+                                    if (root === 'color') {
                                         json = {color: value, extra: extra};
                                     } else {
                                         json = {size: value, extra: extra};
@@ -231,8 +236,9 @@ if (typeof forms != 'undefined') {
                 .then((json) => {
                     let qty = document.getElementById('qty');
                     if (qty) {
-                        qty.innerHTML = json.quantity;
+                        qty.innerHTML = json.store.quantity;
                     }
+                    localStorage.setItem('order', JSON.stringify(json));
                 })
                 .catch(err => {
                     console.log(err);

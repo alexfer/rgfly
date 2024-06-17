@@ -7,21 +7,19 @@ use App\Entity\MarketPlace\StoreCustomer;
 interface CollectionInterface
 {
     /**
-     * @param string|null $sessionId
+     * @param array|null $payload
      * @return array|null
      */
-    public function collection(?string $sessionId): ?array;
+    public function collection(array $payload = null): ?array;
 
     /**
-     * @param string|null $sessId
      * @param StoreCustomer|null $customer
      * @return array|null
      */
-    public function getOrders(?string $sessId = null, ?StoreCustomer $customer = null): ?array;
+    public function getOrders(?StoreCustomer $customer = null): ?array;
 
     /**
-     * @param string|null $sessId
-     * @return int|null
+     * @return array|null
      */
-    public function getOrderProducts(?string $sessId = null): ?int;
+    public function getOrderProducts(): ?array;
 }

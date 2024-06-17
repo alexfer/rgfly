@@ -13,6 +13,7 @@ BEGIN
                            'store', (SELECT json_build_object(
                                                     'id', s.id,
                                                     'name', s.name,
+                                                    'tax', s.tax,
                                                     'currency', s.currency,
                                                     'slug', s.slug,
                                                     'cc', s.cc::json
