@@ -5,14 +5,14 @@
 {% block offest %}pt-4 py-8 lg:py-16 lg:px-2{% endblock %}
 {% block childen %}{% endblock %}
 {% block content_body %}
-    <h2 class="text-2xl pb-4 font-extrabold text-primary-700 dark:text-white text-ellipsis overflow-hidden">{{ 'order.cart'|trans }}</h2>
+    <h2 class="text-2xl pb-4 font-oswald font-extrabold text-primary-700 dark:text-white text-ellipsis overflow-hidden">{{ 'order.cart'|trans }}</h2>
     <div class="grid lg:grid-cols-12 md:grid-cols-9 sm:grid-cols-1 gap-x-5">
         <div class="lg:col-span-9 md:col-span-7">
             <form name="order[]" action="{{ path('app_market_place_order_update') }}" method="post">
                 <div class="mt-2">
                     {% for order in orders %}
                         <div class="bg-gray-50 pt-2 rounded-md shadow-sm">
-                            <div class="truncate h-9 mx-3 text-xl font-extrabold text-ellipsis text-blue-800 dark:text-white">{{ order.store.name }}</div>
+                            <div class="truncate h-9 mx-3 text-xl font-oswald font-thin text-ellipsis text-blue-800 dark:text-white">{{ order.store.name }}</div>
                         </div>
                         <div class="root mb-5" data-order-id="{{ order.session }}">
                             <input type="hidden" name="store[]" value="{{ order.store.id }}">
@@ -157,7 +157,7 @@
             <div class="lg:col-span-3 md:col-span-2">
                 {% for order in summary %}
                     <div id="store-{{ order.store_id }}" class="h-auto">
-                        <h5 class="truncate mt-5 mb-1 mx-3 text-xl font-extrabold text-ellipsis text-blue-800 dark:text-white">{{ order.store_name }}</h5>
+                        <h5 class="truncate mt-5 mb-1 mx-3 text-xl font-oswald font-thin text-ellipsis text-blue-800 dark:text-white">{{ order.store_name }}</h5>
                         <div class="block max-w-xl sm:max-w-2xl mb-3 p-4 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                             <div class="flex flex-col">
                                 <h6 class="text-lg font-semibold text-gray-600 mb-1">{{ 'order.summary'|trans }}</h6>
@@ -165,10 +165,6 @@
                                     <div class="flex justify-between items-start">
                                         <div class="me-auto">{{ 'order.item.subtotal'|trans }}</div>
                                         <span id="item-subtotal-{{ order.store_id }}">{{ (order.total)|amount_format }}<small>{{ order.currency }}</small></span>
-                                    </div>
-                                    <div class="flex justify-between items-start sr-only">
-                                        <div class="me-auto">{{ 'order.service.fee'|trans }}</div>
-                                        <span id="fee-{{ order.store_id }}">{{ order.fee|amount_format }}<small>{{ order.currency }}</small></span>
                                     </div>
                                     <div class="flex justify-between items-start">
                                         <div class="me-auto">{{ 'order.service.tax'|trans }}</div>
@@ -217,7 +213,7 @@
         {% endif %}
     </div>
     {% if orders is null and orders|length == 0 %}
-        <div class="block mx-auto max-w-full text-blue-800 bg-blue-50 py-5 mb-5 sm:text-wrap md:px-3 rounded-md text-center dark:text-white dark:bg-gray-600">{{ 'store.product.cart.empty'|trans }}</div>
+        <div class="flex flex-col mx-auto pt-20 h-56 max-w-full font-oswald text-6xl text-gray-300 bg-gray-50 sm:text-wrap rounded-md text-center dark:text-white dark:bg-gray-600">{{ 'store.product.cart.empty'|trans }}</div>
         <div class="flex justify-center py-5 my-4">
             <a href="{{ path('app_market_place_index') }}"
                class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-gray-200 hover:text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">{{ 'order.continue.shopping'|trans }}</a>

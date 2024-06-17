@@ -7,11 +7,10 @@ use App\Entity\MarketPlace\{StoreInvoice, StoreOrders};
 interface ProcessorInterface
 {
     /**
-     * @param string $sessionId
      * @param string|null $status
      * @return StoreOrders|null
      */
-    public function findOrder(string $sessionId, ?string $status): ?StoreOrders;
+    public function findOrder(?string $status): ?StoreOrders;
 
     /**
      * @return void

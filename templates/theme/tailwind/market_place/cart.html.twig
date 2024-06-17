@@ -1,5 +1,5 @@
 {% for order in orders %}
-    <h5 class="mb-1 text-xl truncate font-bold">
+    <h5 class="mb-1 text-xl font-oswald truncate">
         <a href="{{ path('app_market_place_market', {slug: order.store.slug}) }}"
            class="text-red-800">{{ order.store.name }}</a>
     </h5>

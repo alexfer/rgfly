@@ -2,10 +2,8 @@
 
 namespace App\Repository\MarketPlace;
 
-use App\Entity\MarketPlace\Store;
-use App\Entity\MarketPlace\StoreCustomer;
-use App\Entity\MarketPlace\StoreCustomerOrders;
-use App\Entity\MarketPlace\StoreOrders;
+use Doctrine\ORM\AbstractQuery;
+use App\Entity\MarketPlace\{Store, StoreCustomer, StoreCustomerOrders, StoreOrders};
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\NonUniqueResultException;
@@ -30,7 +28,23 @@ class StoreOrdersRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param StoreOrders $order
+     * @return array|null
+     * @throws NonUniqueResultException
+     */
+    public function order(StoreOrders $order): ?array
+    {
+        $qb = $this->createQueryBuilder('o')
+            ->select(['o.id', 'o.number', 'o.session'])
+            ->where('o.id = :id')
+            ->setParameter('id', $order->getId());
+
+        return $qb->getQuery()->getOneOrNullResult(AbstractQuery::HYDRATE_ARRAY);
+    }
+
+    /**
      * @param string $query
+     * @param StoreCustomer $customer
      * @return array|null
      * @throws NonUniqueResultException
      */

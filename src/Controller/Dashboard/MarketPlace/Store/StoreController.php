@@ -121,7 +121,7 @@ class StoreController extends AbstractController
 
                 if ($stores) {
                     $this->addFlash('danger', $translator->trans('slug.unique', [
-                        '%name%' => 'Store name',
+                        '%name%' => 'Storage name',
                         '%value%' => $form->get('name')->getData(),
                     ], 'validators'));
                     return $this->redirectToRoute('app_dashboard_market_place_create_market', ['tab' => $request->get('tab')]);

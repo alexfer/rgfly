@@ -7,6 +7,10 @@ module.exports = {
         "./node_modules/tw-elements/js/**/*.js"
     ],
     theme: {
+        fontFamily: {
+            'oswald': ['Oswald'],
+            'sans': ['Helvetica', 'Arial', 'sans-serif'],
+        },
         extend: {
             gridTemplateColumns: {
                 'auto-fill-200': 'repeat(auto-fill, minmax(200px, 1fr))',

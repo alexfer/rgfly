@@ -39,7 +39,7 @@ class OrderController extends AbstractController
         $orderProduct->process($customer);
 
         $session = $request->getSession();
-        $orders = $orderCollection->getOrders($session->getId());
+        $orders = $orderCollection->getOrders();
 
         $countProducts = 0;
         $order = $orderProduct->getOrder();
@@ -49,15 +49,29 @@ class OrderController extends AbstractController
             $countProducts = count($products);
         }
 
-        $orderProducts = $orderCollection->getOrderProducts($session->getId());
-        $session->set('quantity', $orderProducts);
+        $collection = $orderCollection->getOrderProducts();
+
+        $store['quantity'] = 0;
+        $store['orders'] = [];
+
+        if ($collection) {
+            $store = [
+                'quantity' => $collection['count'] ?: 0,
+                'orders' => $collection['orders'] ?: [],
+            ];
+        }
+
+        $session->set('quantity', $store['quantity']);
 
         return $this->json([
             'products' => $countProducts,
             'summary' => $orders['summary'] !== null ? $orderSummary->summary($orders['summary'], true) : [],
             'removed' => $orderProduct->getStore()->getId(),
             'redirect' => !($orders['summary'] !== null),
-            'quantity' => $session->get('quantity'),
+            'store' => [
+                'quantity' => $session->get('quantity'),
+                'orders' => $store['orders'],
+            ],
             'redirectUrl' => $this->generateUrl('app_market_place_order_summary'),
         ]);
     }
@@ -97,9 +111,8 @@ class OrderController extends AbstractController
         CollectionInterface  $collection,
     ): Response
     {
-        $session = $request->getSession();
         $customer = $userManager->get($user);
-        $orders = $collection->getOrders($session->getId(), $customer);
+        $orders = $collection->getOrders($customer);
 
         return $this->render('market_place/order/summary.html.twig', [
             'orders' => $orders['summary'] ?: null,
@@ -118,12 +131,12 @@ class OrderController extends AbstractController
         CollectionInterface $order,
     ): JsonResponse
     {
-        $session = $request->getSession();
-        $collection = $order->collection($session->getId());
+        $payload = $request->getPayload()->all();
+        $collection = $order->collection();
 
         return $this->json([
             'template' => $this->renderView('market_place/cart.html.twig', ['orders' => $collection]),
-            'quantity' => $session->get('quantity') ?: 0,
+            'quantity' => $request->getSession()->get('quantity') ?: $payload['store']['quantity'],
         ]);
     }
 
@@ -159,14 +172,23 @@ class OrderController extends AbstractController
         }
 
         $customer = $userManager->get($user);
-        $order = $processor->findOrder($session->getId());
+        $order = $processor->findOrder();
 
         $processor->processOrder($order, $customer);
-        $products = $collection->getOrderProducts($session->getId());
-        $session->set('quantity', $products);
+        $collection = $collection->getOrderProducts();
+
+        $store = [
+            'quantity' => $collection['count'],
+            'orders' => $collection['orders'],
+        ];
+
+        $session->set('quantity', $store['quantity']);
 
         return $this->json([
-            'quantity' => $session->get('quantity') ?: 1,
+            'store' => [
+                'quantity' => $session->get('quantity') ?: 1,
+                'orders' => $store['orders'],
+            ],
         ]);
     }
 }
