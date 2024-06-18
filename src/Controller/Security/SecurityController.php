@@ -43,12 +43,14 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         $error = $request->getSession()->get(SecurityRequestAttributes::AUTHENTICATION_ERROR);
-        $request->getSession()->clear();
+        $quantity = $request->getSession()->get('quantity');
+        //$request->getSession()->clear();
 
         return $this->render('security/index.html.twig', [
             'form' => $form->createView(),
             'last_username' => $default['email'],
             'error' => $error,
+            'quantity' => $quantity,
         ]);
     }
 

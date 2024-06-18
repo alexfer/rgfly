@@ -204,13 +204,4 @@
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('message-js') }}
-    <script type="text/javascript">
-        let storage = localStorage;
-
-        if(storage && localStorage.getItem('order') !== null) {
-            let quantity = document.getElementById('qty');
-            storage = JSON.parse(localStorage.getItem('order'));
-            quantity.innerHTML = storage.store.quantity;
-        }
-    </script>
 {% endblock %}

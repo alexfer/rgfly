@@ -13,7 +13,6 @@ const headers = {'Content-type': 'application/json; charset=utf-8'};
 const bulkRemoveWishlist = document.getElementById('bulk-remove');
 const target = document.getElementById('dropdown');
 const trigger = document.getElementById('dropdown-search');
-const order = 'store';
 
 if (target !== null) {
     [...target.getElementsByTagName('button')].forEach((btn) => {
@@ -113,7 +112,7 @@ if (typeof drops !== 'undefined') {
                     });
 
                     quantity.innerHTML = data.store.quantity;
-                    localStorage.setItem('order', JSON.stringify(data.store));
+
                     if (data.products >= 1) {
                         drop.closest('.parent').remove();
                     }
@@ -122,7 +121,6 @@ if (typeof drops !== 'undefined') {
                         document.getElementById('store-' + data.removed).remove();
                     }
                     if (data.redirect === true) {
-                        localStorage.clear();
                         document.location.href = data.redirectUrl;
                     } else {
                         await Swal.fire(i18next.t('removed'), "", "success");
@@ -138,10 +136,7 @@ if (cart !== null) {
         let url = cart.getAttribute('data-url');
         let body = cart.querySelectorAll('#order-body');
         body.item(0).innerHTML = '';
-        const order = localStorage.getItem('order');
         fetch(url, {
-            method: 'POST',
-            body: order,
             headers: headers
         })
             .then((response) => response.json())
@@ -238,7 +233,6 @@ if (typeof forms != 'undefined') {
                     if (qty) {
                         qty.innerHTML = json.store.quantity;
                     }
-                    localStorage.setItem('order', JSON.stringify(json));
                 })
                 .catch(err => {
                     console.log(err);

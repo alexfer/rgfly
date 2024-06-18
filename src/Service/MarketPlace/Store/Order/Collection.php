@@ -49,30 +49,25 @@ final readonly class Collection implements CollectionInterface
     public function getOrderProducts(): ?array
     {
         $orders = $this->getOrders();
+
         if ($orders['summary'] === null) {
             return null;
         }
-        $result = $summary = [];
+        $result = [];
         foreach ($orders['summary'] as $order) {
             foreach ($order['products'] as $product) {
                 $result[] = $product['id'];
             }
-            $summary[] = [
-                'id' => $order['id'],
-                'number' => $order['number'],
-                'session' => $order['session'],
-            ];
         }
         return [
             'count' => count($result),
-            'orders' => $summary,
         ];
     }
 
     /**
      * @return array|null
      */
-    public function collection(array $payload = null): ?array
+    public function collection(): ?array
     {
         $orders = $this->getOrders();
 
