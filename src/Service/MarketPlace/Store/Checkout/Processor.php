@@ -2,7 +2,8 @@
 
 namespace App\Service\MarketPlace\Store\Checkout;
 
-use App\Entity\MarketPlace\{StoreInvoice, StoreOrders, StorePaymentGateway, StoreProduct};
+use Doctrine\Common\Collections\Criteria;
+use App\Entity\MarketPlace\{StoreCustomer, StoreInvoice, StoreOrders, StorePaymentGateway, StoreProduct};
 use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Service\MarketPlace\Store\Checkout\Interface\ProcessorInterface;
 use Doctrine\Common\Collections\Collection;
@@ -50,15 +51,22 @@ class Processor implements ProcessorInterface
 
     /**
      * @param string|null $status
+     * @param StoreCustomer|null $customer
      * @return StoreOrders|null
      */
-    public function findOrder(?string $status = StoreOrders::STATUS['processing']): ?StoreOrders
+    public function findOrder(?string $status = StoreOrders::STATUS['processing'], ?StoreCustomer $customer = null): ?StoreOrders
     {
-        $order = $this->em->getRepository(StoreOrders::class)->findOneBy([
+        $criteria = [
             'number' => $this->request->get('order'),
             'session' => $this->sessionId,
             'status' => $status,
-        ]);
+        ];
+
+        if($customer) {
+            unset($criteria['session']);
+        }
+
+        $order = $this->em->getRepository(StoreOrders::class)->findOneBy($criteria);
 
         if (!$order) {
             $message = $this->translator->trans('http_error_404.suggestion', ['url' => $this->router->generate('app_market_place_index')]);

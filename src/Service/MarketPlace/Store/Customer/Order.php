@@ -2,9 +2,7 @@
 
 namespace App\Service\MarketPlace\Store\Customer;
 
-use App\Entity\MarketPlace\StoreCustomer;
-use App\Entity\MarketPlace\StoreCustomerOrders;
-use App\Entity\MarketPlace\StoreOrders;
+use App\Entity\MarketPlace\{StoreCustomer, StoreCustomerOrders, StoreOrders};
 use App\Service\MarketPlace\Store\Customer\Interface\OrderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
