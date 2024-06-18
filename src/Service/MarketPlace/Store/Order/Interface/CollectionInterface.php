@@ -7,10 +7,9 @@ use App\Entity\MarketPlace\StoreCustomer;
 interface CollectionInterface
 {
     /**
-     * @param array|null $payload
      * @return array|null
      */
-    public function collection(array $payload = null): ?array;
+    public function collection(): ?array;
 
     /**
      * @param StoreCustomer|null $customer
