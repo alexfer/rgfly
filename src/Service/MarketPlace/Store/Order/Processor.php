@@ -36,7 +36,13 @@ final class Processor implements ProcessorInterface
     )
     {
         $this->request = $requestStack->getCurrentRequest();
-        $this->sessionId = $this->request->getSession()->getId();
+        $session = $this->request->getSession();
+
+        if(!$session->isStarted()) {
+            $session->start();
+        }
+
+        $this->sessionId = $session->getId();
         $this->data = $this->request->toArray();
     }
 

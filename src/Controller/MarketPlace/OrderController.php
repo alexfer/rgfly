@@ -127,16 +127,15 @@ class OrderController extends AbstractController
      */
     #[Route('/cart', name: 'app_market_place_product_order_cart', methods: ['POST', 'GET'])]
     public function cart(
-        Request             $request,
-        CollectionInterface $order,
+        Request              $request,
+        CollectionInterface  $order,
     ): JsonResponse
     {
-        $payload = $request->getPayload()->all();
         $collection = $order->collection();
 
         return $this->json([
             'template' => $this->renderView('market_place/cart.html.twig', ['orders' => $collection]),
-            'quantity' => $request->getSession()->get('quantity') ?: $payload['store']['quantity'],
+            'quantity' => $request->getSession()->get('quantity'),
         ]);
     }
 
@@ -167,10 +166,6 @@ class OrderController extends AbstractController
 
         $session = $request->getSession();
 
-        if (!$session->isStarted()) {
-            $session->start();
-        }
-
         $customer = $userManager->get($user);
         $order = $processor->findOrder();
 
@@ -179,15 +174,13 @@ class OrderController extends AbstractController
 
         $store = [
             'quantity' => $collection['count'],
-            'orders' => $collection['orders'],
         ];
 
         $session->set('quantity', $store['quantity']);
 
         return $this->json([
             'store' => [
-                'quantity' => $session->get('quantity') ?: 1,
-                'orders' => $store['orders'],
+                'quantity' => $session->get('quantity'),
             ],
         ]);
     }

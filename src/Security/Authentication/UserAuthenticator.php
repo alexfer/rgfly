@@ -3,6 +3,7 @@
 namespace App\Security\Authentication;
 
 use App\Entity\User;
+use App\Service\MarketPlace\Store\Customer\Interface\OrderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\{RedirectResponse, Request, Response};
 use Symfony\Component\Routing\RouterInterface;
@@ -24,6 +25,7 @@ class UserAuthenticator extends AbstractAuthenticator
     public function __construct(
         private readonly RouterInterface        $router,
         private readonly EntityManagerInterface $em,
+        private readonly OrderInterface         $order
     )
     {
 
@@ -98,6 +100,7 @@ class UserAuthenticator extends AbstractAuthenticator
         } elseif (in_array(User::ROLE_USER, $user->getRoles(), true)) {
             return new RedirectResponse($this->router->generate('app_dashboard'));
         } elseif (in_array(User::ROLE_CUSTOMER, $user->getRoles(), true)) {
+            $this->order->apply($request->getSession(), $user);
             return new RedirectResponse($this->router->generate('app_cabinet'));
         }
 
