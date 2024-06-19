@@ -63,13 +63,11 @@ class StoreProductRepository extends ServiceEntityRepository
      */
     public function fetchProducts(int $offset = 0, int $limit = 10): array
     {
-        $products = [];
-
         $statement = $this->connection->prepare('select get_products(:offset, :limit)');
         $statement = $this->bindPagination($statement, $offset, $limit);
         $result = $statement->executeQuery()->fetchAllAssociative();
 
-        return json_decode($result[0]['get_products'], true) ?: $products;
+        return json_decode($result[0]['get_products'], true) ?: [];
     }
 
     /**
@@ -99,14 +97,12 @@ class StoreProductRepository extends ServiceEntityRepository
         int $limit = 10,
     ): array
     {
-        $products = [];
-
         $statement = $this->connection->prepare('select get_products_by_child_category(:child_id, :offset, :limit)');
         $statement->bindValue('child_id', $id, \PDO::PARAM_INT);
         $statement = $this->bindPagination($statement, $offset, $limit);
         $result = $statement->executeQuery()->fetchAllAssociative();
 
-        return json_decode($result[0]['get_products_by_child_category'], true) ?: $products;
+        return json_decode($result[0]['get_products_by_child_category'], true) ?: [];
     }
 
 
@@ -123,14 +119,12 @@ class StoreProductRepository extends ServiceEntityRepository
         int    $limit = 10,
     ): array
     {
-        $products = [];
-
         $statement = $this->connection->prepare('select get_products_by_parent_category(:slug, :offset, :limit)');
         $statement->bindValue('slug', $slug, \PDO::PARAM_STR);
         $statement = $this->bindPagination($statement, $offset, $limit);
         $result = $statement->executeQuery()->fetchAllAssociative();
 
-        return json_decode($result[0]['get_products_by_parent_category'], true) ?: $products;
+        return json_decode($result[0]['get_products_by_parent_category'], true) ?: [];
     }
 
     /**
@@ -140,7 +134,7 @@ class StoreProductRepository extends ServiceEntityRepository
      * @param int $limit
      * @return array
      */
-    public function products(
+    public function _products(
         Store   $store,
         ?string $search = null,
         int     $offset = 0,
@@ -160,6 +154,30 @@ class StoreProductRepository extends ServiceEntityRepository
 
         $qb->setFirstResult($offset)->setMaxResults($limit);
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param Store $store
+     * @param string|null $search
+     * @param int $offset
+     * @param int $limit
+     * @return array
+     * @throws Exception
+     */
+    public function products(
+        Store   $store,
+        ?string $search = null,
+        int     $offset = 0,
+        int     $limit = 10,
+    ): array
+    {
+        $statement = $this->connection->prepare('select backdrop_products(:store_id, :query, :offset, :limit)');
+        $statement->bindValue('store_id', $store->getId(), \PDO::PARAM_INT);
+        $statement->bindValue('query', $search ?: '', \PDO::PARAM_STR);
+        $statement = $this->bindPagination($statement, $offset, $limit);
+        $result = $statement->executeQuery()->fetchAllAssociative();
+
+        return json_decode($result[0]['backdrop_products'], true) ?: [];
     }
 
 }

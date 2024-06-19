@@ -22,6 +22,8 @@ use App\Security\Voter\ProductVoter;
 use App\Service\FileUploader;
 use App\Service\Interface\ImageValidatorInterface;
 use App\Service\MarketPlace\Currency;
+use App\Service\MarketPlace\Dashboard\Product\Interface\ServeInterface as ProductServiceInterface;
+use App\Service\MarketPlace\Dashboard\Store\Interface\ServeInterface as StoreInterface;
 use App\Service\MarketPlace\StoreTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
@@ -46,28 +48,26 @@ class ProductController extends AbstractController
     /**
      * @param Request $request
      * @param UserInterface $user
-     * @param EntityManagerInterface $em
+     * @param ProductServiceInterface $serve
+     * @param StoreInterface $iStore
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/{store}/{search}', name: 'app_dashboard_market_place_market_product', defaults: ['search' => null])]
     public function index(
-        Request                $request,
-        UserInterface          $user,
-        EntityManagerInterface $em,
+        Request                 $request,
+        UserInterface           $user,
+        ProductServiceInterface $serve,
+        StoreInterface          $iStore,
     ): Response
     {
-        $store = $this->store($request, $user, $em);
-        $currency = Currency::currency($store->getCurrency());
-        $products = $em->getRepository(StoreProduct::class)->products($store, $request->query->get('search'));
-        $coupons = $em->getRepository(StoreCoupon::class)->fetchActive($store, StoreCoupon::COUPON_PRODUCT);
+        $store = $this->store($iStore, $user);
+        $serve->handle($user);
 
         return $this->render('dashboard/content/market_place/product/index.html.twig', [
             'store' => $store,
-            'currency' => $currency,
-            'products' => $products,
-            'coupons' => $coupons,
+            'currency' => Currency::currency($serve->currency($store)),
+            'products' => $serve->index($store, $request->query->get('search')),
+            'coupons' => $serve->coupon($store, StoreCoupon::COUPON_PRODUCT),
         ]);
     }
 
@@ -192,9 +192,10 @@ class ProductController extends AbstractController
         UserInterface          $user,
         EntityManagerInterface $em,
         TranslatorInterface    $translator,
+        StoreInterface         $serveInterface
     ): Response
     {
-        $store = $this->store($request, $user, $em);
+        $store = $this->store($serveInterface, $user);
 
         $product = new StoreProduct();
 
