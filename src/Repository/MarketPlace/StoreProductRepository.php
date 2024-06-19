@@ -2,23 +2,13 @@
 
 namespace App\Repository\MarketPlace;
 
-use App\Entity\MarketPlace\Store;
-use App\Entity\MarketPlace\StoreCoupon;
-use App\Entity\MarketPlace\StoreProduct;
+use App\Entity\MarketPlace\{Store, StoreProduct};
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Statement;
-use Doctrine\ORM\Query\Expr;
+use Doctrine\DBAL\{Connection, Exception, Statement};
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<StoreProduct>
- *
- * @method StoreProduct|null find($id, $lockMode = null, $lockVersion = null)
- * @method StoreProduct|null findOneBy(array $criteria, array $orderBy = null)
- * @method StoreProduct[]    findAll()
- * @method StoreProduct[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class StoreProductRepository extends ServiceEntityRepository
 {
@@ -125,35 +115,6 @@ class StoreProductRepository extends ServiceEntityRepository
         $result = $statement->executeQuery()->fetchAllAssociative();
 
         return json_decode($result[0]['get_products_by_parent_category'], true) ?: [];
-    }
-
-    /**
-     * @param Store $store
-     * @param string|null $search
-     * @param int $offset
-     * @param int $limit
-     * @return array
-     */
-    public function _products(
-        Store   $store,
-        ?string $search = null,
-        int     $offset = 0,
-        int     $limit = 10,
-    ): array
-    {
-        $qb = $this->createQueryBuilder('p')
-            ->leftJoin(StoreCoupon::class, 'sc', Expr\Join::WITH, 'sc.store = :store')
-            ->leftJoin('p.storeCoupons', 'pc')
-            ->where('p.store = :store')
-            ->setParameter('store', $store);
-
-        if (!empty($search)) {
-            $qb->andWhere('LOWER(p.name) LIKE :search')
-                ->setParameter('search', '%' . strtolower($search) . '%');
-        }
-
-        $qb->setFirstResult($offset)->setMaxResults($limit);
-        return $qb->getQuery()->getResult();
     }
 
     /**

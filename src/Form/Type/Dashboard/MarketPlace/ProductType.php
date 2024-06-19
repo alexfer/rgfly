@@ -3,9 +3,9 @@
 namespace App\Form\Type\Dashboard\MarketPlace;
 
 use AllowDynamicProperties;
-use App\Entity\MarketPlace\{Store, StoreCategory, StoreProduct};
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
+use App\Entity\MarketPlace\{Store, StoreProduct};
+use App\Service\MarketPlace\Dashboard\Category\Interface\ServeInterface as StoreCategoryInterface;
+use App\Service\MarketPlace\Dashboard\Store\Interface\ServeInterface as StoreProductInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{ChoiceType,
@@ -16,7 +16,6 @@ use Symfony\Component\Form\Extension\Core\Type\{ChoiceType,
     TextareaType,
     TextType};
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\{Length, NotBlank};
 
@@ -29,26 +28,25 @@ use Symfony\Component\Validator\Constraints\{Length, NotBlank};
     private null|Store $store;
 
     /**
-     * @var EntityRepository
+     * @var array
      */
-    private EntityRepository $categories;
+    private array $categories;
 
 
     /**
      * @param Security $security
-     * @param RequestStack $requestStack
-     * @param EntityManagerInterface $em
+     * @param StoreProductInterface $store
+     * @param StoreCategoryInterface $serve
      */
     public function __construct(
         Security               $security,
-        RequestStack           $requestStack,
-        EntityManagerInterface $em,
+        StoreProductInterface  $store,
+        StoreCategoryInterface $serve,
     )
     {
         $user = $security->getUser();
-        $store = $requestStack->getCurrentRequest()->get('store');
-        $this->store = $em->getRepository(Store::class)->find($store);
-        $this->categories = $em->getRepository(StoreCategory::class);
+        $this->store = $store->handle($user);
+        $this->categories = $serve->handle([], ['id' => 'asc']);
     }
 
     /**
@@ -64,10 +62,9 @@ use Symfony\Component\Validator\Constraints\{Length, NotBlank};
         $marketBrands = $this->store->getStoreBrands()->toArray();
         $marketSuppliers = $this->store->getStoreSuppliers()->toArray();
         $marketSManufacturers = $this->store->getStoreManufacturers();
-        $marketCategory = $this->categories->findBy([], ['id' => 'asc']);
 
-        if ($marketCategory) {
-            foreach ($marketCategory as $category) {
+        if ($this->categories) {
+            foreach ($this->categories as $category) {
                 if ($category->getParent()) {
                     $categories[$category->getParent()->getName()][$category->getName()] = $category->getId();
                 }

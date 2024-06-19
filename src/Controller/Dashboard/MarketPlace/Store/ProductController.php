@@ -17,11 +17,12 @@ use App\Entity\MarketPlace\{StoreBrand,
     StoreProductSupplier,
     StoreSupplier};
 use App\Form\Type\Dashboard\MarketPlace\ProductType;
-use App\Helper\MarketPlace\{MarketAttributeValues, MarketPlaceHelper};
+use App\Helper\MarketPlace\{MarketAttributeValues};
 use App\Security\Voter\ProductVoter;
 use App\Service\FileUploader;
 use App\Service\Interface\ImageValidatorInterface;
 use App\Service\MarketPlace\Currency;
+use App\Service\MarketPlace\Dashboard\Category\Interface\ServeInterface as StoreCategoryInterface;
 use App\Service\MarketPlace\Dashboard\Product\Interface\ServeInterface as ProductServiceInterface;
 use App\Service\MarketPlace\Dashboard\Store\Interface\ServeInterface as StoreInterface;
 use App\Service\MarketPlace\StoreTrait;
@@ -74,91 +75,29 @@ class ProductController extends AbstractController
     /**
      * @param Request $request
      * @param StoreProduct $product
-     * @param EntityManagerInterface $em
+     * @param UserInterface $user
      * @param TranslatorInterface $translator
+     * @param ProductServiceInterface $serve
+     * @param StoreInterface $iStore
      * @return Response
-     * @throws \Exception
      */
     #[Route('/edit/{store}/{id}/{tab}', name: 'app_dashboard_market_place_edit_product', methods: ['GET', 'POST'])]
     #[IsGranted(ProductVoter::EDIT, subject: 'product', statusCode: Response::HTTP_FORBIDDEN)]
     public function edit(
-        Request                $request,
-        StoreProduct           $product,
-        EntityManagerInterface $em,
-        TranslatorInterface    $translator,
+        Request                 $request,
+        StoreProduct            $product,
+        UserInterface           $user,
+        TranslatorInterface     $translator,
+        ProductServiceInterface $serve,
+        StoreInterface          $iStore,
     ): Response
     {
+        $store = $this->store($iStore, $user);
         $form = $this->createForm(ProductType::class, $product);
-        $form->handleRequest($request);
+        $handle = $serve->handle($user, $form);
 
-        $categoryRepository = $em->getRepository(StoreCategory::class);
-        $repository = $em->getRepository(StoreCategoryProduct::class);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            // TODO: rewrite in future
-            $repository->removeCategoryProduct($product);
-            $entryCategory = new StoreCategoryProduct();
-            $entryCategory->setProduct($product)
-                ->setCategory($categoryRepository->find($form->get('category')->getData()));
-            $em->persist($entryCategory);
-
-            $em = $this->handleRelations($em, $form, $product);
-            $attributes['colors'] = $form->get('color')->getData();
-            $attributes['size'] = $form->get('size')->getData();
-
-            foreach ($product->getStoreProductAttributes() as $attribute) {
-                $values = $attribute->getStoreProductAttributeValues();
-                foreach ($values as $value) {
-                    $em->remove($value);
-                    $em->flush();
-                }
-            }
-
-            if ($attributes['colors']) {
-                $attributeColors = array_flip(MarketAttributeValues::ATTRIBUTES['Color']);
-
-                $attribute = $em->getRepository(StoreProductAttribute::class)->findOneBy(['product' => $product, 'name' => 'color']);
-
-                if (!$attribute) {
-                    $attribute = new StoreProductAttribute();
-                    $attribute->setProduct($product)->setName('color')->setInFront(1);
-                    $em->persist($attribute);
-                }
-
-                foreach ($attributes['colors'] as $color) {
-                    $attributeValue = new StoreProductAttributeValue();
-                    $value = $attributeValue->setAttribute($attribute)->setValue($attributeColors[$color])->setExtra([$color]);
-                    $em->persist($value);
-                }
-            }
-
-            if ($attributes['size']) {
-                $attributeSize = array_flip(MarketAttributeValues::ATTRIBUTES['Size']);
-
-                $attribute = $em->getRepository(StoreProductAttribute::class)->findOneBy(['product' => $product, 'name' => 'size']);
-
-                if (!$attribute) {
-                    $attribute = new StoreProductAttribute();
-                    $attribute->setProduct($product)->setName('size')->setInFront(1);
-                    $em->persist($attribute);
-                }
-
-                foreach ($attributes['size'] as $size) {
-                    $attributeValue = new StoreProductAttributeValue();
-                    $value = $attributeValue->setAttribute($attribute)->setValue($attributeSize[$size]);
-                    $em->persist($value);
-                }
-            }
-
-            $sku = $form->get('sku')->getData();
-            if (!$sku) {
-                $sku = 'S' . $request->get('store') . '-C' . $form->get('category')->getData() . '-P' . $product->getId() . '-N-' . mb_substr($form->get('name')->getData(), 0, 4, 'utf8') . '-C' . (int)$form->get('cost')->getData();
-            }
-            $product->setSku(strtoupper($sku));
-
-            $em->persist($product);
-            $em->flush();
+        if ($handle->isSubmitted() && $handle->isValid()) {
+            $product = $serve->update($store, $product);
 
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.updated')]));
 
@@ -179,90 +118,28 @@ class ProductController extends AbstractController
     /**
      * @param Request $request
      * @param UserInterface $user
-     * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
+     * @param ProductServiceInterface $serve
+     * @param StoreInterface $iStore
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     * @throws \Exception
      */
     #[Route('/create/{store}/{tab}', name: 'app_dashboard_market_place_create_product', methods: ['GET', 'POST'])]
     public function create(
-        Request                $request,
-        UserInterface          $user,
-        EntityManagerInterface $em,
-        TranslatorInterface    $translator,
-        StoreInterface         $serveInterface
+        Request                 $request,
+        UserInterface           $user,
+        TranslatorInterface     $translator,
+        ProductServiceInterface $serve,
+        StoreInterface          $iStore,
     ): Response
     {
-        $store = $this->store($serveInterface, $user);
-
+        $store = $this->store($iStore, $user);
         $product = new StoreProduct();
 
         $form = $this->createForm(ProductType::class, $product);
-        $form->handleRequest($request);
+        $handle = $serve->handle($user, $form);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $requestCategory = $form->get('category')->getData();
-
-            if ($requestCategory) {
-                $productCategory = new StoreCategoryProduct();
-                $productCategory->setProduct($product)
-                    ->setCategory($em->getRepository(StoreCategory::class)->find($requestCategory));
-                $em->persist($productCategory);
-            }
-
-            $product->setStore($store);
-            $em->persist($product);
-
-            if ($store->getDeletedAt()) {
-                $date = new \DateTime('@' . strtotime('now'));
-                $product->setDeletedAt($date);
-            }
-
-            $em->persist($store);
-            $em->flush();
-
-            $em = $this->handleRelations($em, $form, $product);
-            $product->setSlug(MarketPlaceHelper::slug($product->getId()));
-
-            $sku = $form->get('sku')->getData();
-            if (!$sku) {
-                $sku = 'S' . $request->get('store') . '-C' . $requestCategory . '-P' . $product->getId() . '-N-' . mb_substr($form->get('name')->getData(), 0, 4, 'utf8') . '-C' . (int)$form->get('cost')->getData();
-            }
-            $product->setSku($sku);
-            $em->persist($product);
-
-            $attributes['colors'] = $form->get('color')->getData();
-            $attributes['size'] = $form->get('size')->getData();
-
-            if ($attributes['colors']) {
-                $attribute = new StoreProductAttribute();
-                $attribute->setProduct($product)->setName('color')->setInFront(1);
-                $attributeColors = array_flip(MarketAttributeValues::ATTRIBUTES['Color']);
-
-                foreach ($attributes['colors'] as $color) {
-                    $attributeValue = new StoreProductAttributeValue();
-                    $value = $attributeValue->setAttribute($attribute)->setValue($attributeColors[$color])->setExtra([$color]);
-                    $em->persist($value);
-                }
-                $em->persist($attribute);
-            }
-            if ($attributes['size']) {
-                $attribute = new StoreProductAttribute();
-                $attribute->setProduct($product)->setName('size')->setInFront(1);
-
-                foreach ($attributes['size'] as $size) {
-                    $attributeValue = new StoreProductAttributeValue();
-                    $value = $attributeValue->setAttribute($attribute)->setValue($size)->setExtra([$size]);
-                    $em->persist($value);
-                }
-                $em->persist($attribute);
-            }
-
-            $em->flush();
-
+        if ($handle->isSubmitted() && $handle->isValid()) {
+            $product = $serve->create($store, $product);
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
             return $this->redirectToRoute('app_dashboard_market_place_edit_product', [
                 'store' => $request->get('store'),
