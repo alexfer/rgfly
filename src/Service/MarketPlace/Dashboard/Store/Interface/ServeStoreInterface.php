@@ -14,6 +14,11 @@ interface ServeStoreInterface
     public function supports(UserInterface $user): ?Store;
 
     /**
+     * @return array|null
+     */
+    public function extra(): ?array;
+
+    /**
      * @return array
      */
     public function currency(): array;

@@ -36,4 +36,12 @@ class ServeStoreStore extends Handle implements ServeStoreInterface
     {
         return Currency::currency($this->store->getCurrency());
     }
+
+    /**
+     * @return array|null
+     */
+    public function extra(): ?array
+    {
+        return $this->em->getRepository(Store::class)->extra($this->store);
+    }
 }
