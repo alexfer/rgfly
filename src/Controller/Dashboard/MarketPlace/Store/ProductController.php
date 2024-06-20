@@ -3,37 +3,19 @@
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
 use App\Entity\Attach;
-use App\Entity\MarketPlace\{StoreBrand,
-    StoreCategory,
-    StoreCategoryProduct,
-    StoreCoupon,
-    StoreManufacturer,
-    StoreProduct,
-    StoreProductAttach,
-    StoreProductAttribute,
-    StoreProductAttributeValue,
-    StoreProductBrand,
-    StoreProductManufacturer,
-    StoreProductSupplier,
-    StoreSupplier};
+use App\Entity\MarketPlace\{StoreCoupon, StoreProduct, StoreProductAttach};
 use App\Form\Type\Dashboard\MarketPlace\ProductType;
-use App\Helper\MarketPlace\{MarketAttributeValues};
 use App\Security\Voter\ProductVoter;
 use App\Service\FileUploader;
 use App\Service\Interface\ImageValidatorInterface;
-use App\Service\MarketPlace\Currency;
-use App\Service\MarketPlace\Dashboard\Category\Interface\ServeInterface as StoreCategoryInterface;
-use App\Service\MarketPlace\Dashboard\Product\Interface\ServeInterface as ProductServiceInterface;
-use App\Service\MarketPlace\Dashboard\Store\Interface\ServeInterface as StoreInterface;
+use App\Service\MarketPlace\Dashboard\Product\Interface\ServeProductInterface;
+use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreInterface;
 use App\Service\MarketPlace\StoreTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -49,26 +31,25 @@ class ProductController extends AbstractController
     /**
      * @param Request $request
      * @param UserInterface $user
-     * @param ProductServiceInterface $serve
-     * @param StoreInterface $iStore
+     * @param ServeProductInterface $serveProduct
+     * @param StoreInterface $serveStore
      * @return Response
      */
     #[Route('/{store}/{search}', name: 'app_dashboard_market_place_market_product', defaults: ['search' => null])]
     public function index(
-        Request                 $request,
-        UserInterface           $user,
-        ProductServiceInterface $serve,
-        StoreInterface          $iStore,
+        Request               $request,
+        UserInterface         $user,
+        ServeProductInterface $serveProduct,
+        StoreInterface        $serveStore,
     ): Response
     {
-        $store = $this->store($iStore, $user);
-        $serve->handle($user);
+        $store = $this->store($serveStore, $user);
 
         return $this->render('dashboard/content/market_place/product/index.html.twig', [
             'store' => $store,
-            'currency' => Currency::currency($serve->currency($store)),
-            'products' => $serve->index($store, $request->query->get('search')),
-            'coupons' => $serve->coupon($store, StoreCoupon::COUPON_PRODUCT),
+            'currency' => $serveStore->currency(),
+            'products' => $serveProduct->index($store, $request->query->get('search')),
+            'coupons' => $serveProduct->coupon($store, StoreCoupon::COUPON_PRODUCT),
         ]);
     }
 
@@ -77,27 +58,27 @@ class ProductController extends AbstractController
      * @param StoreProduct $product
      * @param UserInterface $user
      * @param TranslatorInterface $translator
-     * @param ProductServiceInterface $serve
-     * @param StoreInterface $iStore
+     * @param ServeProductInterface $serveProduct
+     * @param StoreInterface $serveStore
      * @return Response
      */
     #[Route('/edit/{store}/{id}/{tab}', name: 'app_dashboard_market_place_edit_product', methods: ['GET', 'POST'])]
     #[IsGranted(ProductVoter::EDIT, subject: 'product', statusCode: Response::HTTP_FORBIDDEN)]
     public function edit(
-        Request                 $request,
-        StoreProduct            $product,
-        UserInterface           $user,
-        TranslatorInterface     $translator,
-        ProductServiceInterface $serve,
-        StoreInterface          $iStore,
+        Request               $request,
+        StoreProduct          $product,
+        UserInterface         $user,
+        TranslatorInterface   $translator,
+        ServeProductInterface $serveProduct,
+        StoreInterface        $serveStore,
     ): Response
     {
-        $store = $this->store($iStore, $user);
+        $store = $this->store($serveStore, $user);
         $form = $this->createForm(ProductType::class, $product);
-        $handle = $serve->handle($user, $form);
+        $handle = $serveProduct->supports($form);
 
         if ($handle->isSubmitted() && $handle->isValid()) {
-            $product = $serve->update($store, $product);
+            $product = $serveProduct->update($store, $product);
 
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.updated')]));
 
@@ -119,27 +100,27 @@ class ProductController extends AbstractController
      * @param Request $request
      * @param UserInterface $user
      * @param TranslatorInterface $translator
-     * @param ProductServiceInterface $serve
-     * @param StoreInterface $iStore
+     * @param ServeProductInterface $serveProduct
+     * @param StoreInterface $serveStore
      * @return Response
      */
     #[Route('/create/{store}/{tab}', name: 'app_dashboard_market_place_create_product', methods: ['GET', 'POST'])]
     public function create(
-        Request                 $request,
-        UserInterface           $user,
-        TranslatorInterface     $translator,
-        ProductServiceInterface $serve,
-        StoreInterface          $iStore,
+        Request               $request,
+        UserInterface         $user,
+        TranslatorInterface   $translator,
+        ServeProductInterface $serveProduct,
+        StoreInterface        $serveStore,
     ): Response
     {
-        $store = $this->store($iStore, $user);
+        $store = $this->store($serveStore, $user);
         $product = new StoreProduct();
 
         $form = $this->createForm(ProductType::class, $product);
-        $handle = $serve->handle($user, $form);
+        $handle = $serveProduct->supports($form);
 
         if ($handle->isSubmitted() && $handle->isValid()) {
-            $product = $serve->create($store, $product);
+            $product = $serveProduct->create($store, $product);
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
             return $this->redirectToRoute('app_dashboard_market_place_edit_product', [
                 'store' => $request->get('store'),
@@ -155,87 +136,12 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @param EntityManagerInterface $em
-     * @param FormInterface $form
-     * @param StoreProduct $product
-     * @return EntityManagerInterface
-     */
-    private function handleRelations(
-        EntityManagerInterface $em,
-        FormInterface          $form,
-        StoreProduct           $product,
-    ): EntityManagerInterface
-    {
-
-        $supplier = $em->getRepository(StoreSupplier::class)
-            ->findOneBy(['id' => $form->get('supplier')->getData()]);
-        $brand = $em->getRepository(StoreBrand::class)
-            ->findOneBy(['id' => $form->get('brand')->getData()]);
-        $manufacturer = $em->getRepository(StoreManufacturer::class)
-            ->findOneBy(['id' => $form->get('manufacturer')->getData()]);
-
-        if ($supplier) {
-            $ps = $product->getStoreProductSupplier();
-            if (!$ps) {
-                $ps = new StoreProductSupplier();
-            }
-            $ps->setProduct($product)->setSupplier($supplier);
-            $em->persist($ps);
-        } else {
-            $ps = $product->getStoreProductSupplier();
-            if ($ps) {
-                $ps->setProduct(null)->setSupplier(null);
-                $em->persist($ps);
-                $em->flush();
-                $em->getRepository(StoreProductSupplier::class)->drop($ps->getId());
-            }
-        }
-
-        if ($brand) {
-            $pb = $product->getStoreProductBrand();
-            if (!$pb) {
-                $pb = new StoreProductBrand();
-            }
-            $pb->setProduct($product)->setBrand($brand);
-            $em->persist($pb);
-        } else {
-            $pb = $product->getStoreProductBrand();
-            if ($pb) {
-                $pb->setProduct(null)->setBrand(null);
-                $em->persist($pb);
-                $em->flush();
-                $em->getRepository(StoreProductBrand::class)->drop($pb->getId());
-            }
-        }
-
-        if ($manufacturer) {
-            $pm = $product->getStoreProductManufacturer();
-            if (!$pm) {
-                $pm = new StoreProductManufacturer();
-            }
-            $pm->setProduct($product)->setManufacturer($manufacturer);
-            $em->persist($pm);
-        } else {
-            $pm = $product->getStoreProductManufacturer();
-            if ($pm) {
-                $pm->setProduct(null)->setManufacturer(null);
-                $em->persist($pm);
-                $em->flush();
-                $em->getRepository(StoreProductManufacturer::class)->drop($pm->getId());
-            }
-        }
-
-        return $em;
-    }
-
-    /**
      * @param Request $request
      * @param UserInterface $user
      * @param StoreProduct $product
      * @param EntityManagerInterface $em
+     * @param StoreInterface $serveStore
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      * @throws \Exception
      */
     #[Route('/delete/{store}/{id}', name: 'app_dashboard_delete_product', methods: ['POST'])]
@@ -244,9 +150,10 @@ class ProductController extends AbstractController
         UserInterface          $user,
         StoreProduct           $product,
         EntityManagerInterface $em,
+        StoreInterface         $serveStore,
     ): Response
     {
-        $store = $this->store($request, $user, $em);
+        $store = $this->store($serveStore, $user);
         $token = $request->get('_token');
 
         if (!$token) {
@@ -265,23 +172,21 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @param Request $request
      * @param UserInterface $user
      * @param StoreProduct $product
      * @param EntityManagerInterface $em
+     * @param StoreInterface $iStore
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/restore/{store}/{id}', name: 'app_dashboard_restore_product')]
     public function restore(
-        Request                $request,
         UserInterface          $user,
         StoreProduct           $product,
         EntityManagerInterface $em,
+        StoreInterface         $serveStore,
     ): Response
     {
-        $store = $this->store($request, $user, $em);
+        $store = $this->store($serveStore, $user);
         $product->setDeletedAt(null);
         $em->persist($product);
         $em->flush();

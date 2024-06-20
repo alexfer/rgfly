@@ -4,17 +4,11 @@ namespace App\Service\MarketPlace\Dashboard\Product;
 
 use App\Entity\MarketPlace\{Store, StoreCategory, StoreCategoryProduct, StoreCoupon, StoreProduct};
 use App\Helper\MarketPlace\MarketPlaceHelper;
-use App\Service\MarketPlace\Dashboard\Product\Interface\ServeInterface as ProductServeInterface;
+use App\Service\MarketPlace\Dashboard\Product\Interface\ServeProductInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
-class Serve extends Handle implements ProductServeInterface
+class ServeProductProduct extends Handle implements ServeProductInterface
 {
-
-    /**
-     * @var UserInterface
-     */
-    protected UserInterface $user;
 
     /**
      * @var FormInterface
@@ -22,14 +16,11 @@ class Serve extends Handle implements ProductServeInterface
     protected FormInterface $form;
 
     /**
-     * @param UserInterface $user
      * @param FormInterface|null $form
      * @return FormInterface|null
      */
-    public function handle(UserInterface $user, ?FormInterface $form = null): ?FormInterface
+    public function supports(?FormInterface $form = null): ?FormInterface
     {
-        $this->user = $user;
-
         if ($form) {
             $this->form = $form;
             return $this->form->handleRequest($this->request);
@@ -57,35 +48,10 @@ class Serve extends Handle implements ProductServeInterface
      */
     public function update(Store $store, StoreProduct $product): StoreProduct
     {
-        $this->repository->removeCategoryProduct($product);
-
-        $this->category($product);
-
-        if ($store->getDeletedAt()) {
-            $product = $this->setDeleted($product);
-        }
-
-        $this->em->persist($store);
-        $this->em->flush();
-
+        $this->category($product, true);
         $this->handleRelations($product);
-
-        foreach ($product->getStoreProductAttributes() as $attribute) {
-            $values = $attribute->getStoreProductAttributeValues();
-            foreach ($values as $value) {
-                $this->em->remove($value);
-                $this->em->flush();
-            }
-        }
-        $sku = $this->form->get('sku')->getData();
-        if (!$sku) {
-            $sku = $this->sku($product->getId());
-        }
-
-        $product->setSku($sku);
-        $this->em->persist($product);
-        $this->attributes($product);
-
+        $product = $this->sku($product);
+        $this->attributes($product, true);
         $this->em->persist($product);
         $this->em->flush();
 
@@ -100,71 +66,57 @@ class Serve extends Handle implements ProductServeInterface
      */
     public function create(Store $store, StoreProduct $product): StoreProduct
     {
+        // apply category to product
         $this->category($product);
-
+        // bind to store product
         $product->setStore($store);
-        $this->em->persist($product);
-
+        // if store is trashed set product also trashed
         if ($store->getDeletedAt()) {
             $product = $this->setDeleted($product);
         }
-
-        $this->em->persist($store);
-        $this->em->flush();
-
-        $this->handleRelations($product);
-
-        $product->setSlug(MarketPlaceHelper::slug($product->getId()));
-
-        $sku = $this->form->get('sku')->getData();
-        if (!$sku) {
-            $sku = $this->sku($product->getId());
-        }
-
-        $product->setSku($sku);
+        // pre save product to get ID
         $this->em->persist($product);
-
+        $this->em->flush();
+        // bind extra data to product
+        $this->handleRelations($product);
+        $product->setSlug(MarketPlaceHelper::slug($product->getId()));
+        // generate SKU is not provided
+        $product = $this->sku($product);
+        // apply attributes to product if the need
         $this->attributes($product);
-
+        $this->em->persist($product);
         $this->em->flush();
 
         return $product;
     }
 
     /**
-     * @param int $id
-     * @return string
-     */
-    private function sku(int $id): string
-    {
-        $sku = [
-            'S' . $this->request->get('store'),
-            'C' . $this->form->get('category')->getData(),
-            'P' . $id,
-            'N' . mb_substr($this->form->get('name')->getData(), 0, 4, 'utf8'),
-            'C' . (int)$this->form->get('cost')->getData()
-        ];
-
-        return join('-', $sku);
-    }
-
-    /**
      * @param StoreProduct $product
-     * @return mixed
+     * @return void
      */
-    protected function category(StoreProduct $product): mixed
+    protected function category(StoreProduct $product, bool $up = false): void
     {
+        $category = $this->form->get('category')->getData();
 
-        $category = $this->categories->request($this->form);
+        if($up) {
+            $this->em->getRepository(StoreCategoryProduct::class)->removeCategoryProduct($product);
+        }
 
         if ($category) {
             $productCategory = new StoreCategoryProduct();
             $productCategory->setProduct($product)
-                ->setCategory($this->em->getRepository(StoreCategory::class)->find($category));
+                ->setCategory($this->findCategory($category));
             $this->em->persist($productCategory);
         }
+    }
 
-        return $category;
+    /**
+     * @param int $id
+     * @return StoreCategory|null
+     */
+    private function findCategory(int $id): ?StoreCategory
+    {
+        return $this->em->getRepository(StoreCategory::class)->find($id);
     }
 
     /**
@@ -189,14 +141,5 @@ class Serve extends Handle implements ProductServeInterface
     {
         return $this->em->getRepository(StoreCoupon::class)
             ->fetchActive($store, $type);
-    }
-
-    /**
-     * @param Store $store
-     * @return string
-     */
-    public function currency(Store $store): string
-    {
-        return $store->getCurrency();
     }
 }

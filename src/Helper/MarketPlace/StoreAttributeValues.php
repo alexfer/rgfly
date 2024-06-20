@@ -2,9 +2,8 @@
 
 namespace App\Helper\MarketPlace;
 
-class MarketAttributeValues
+class StoreAttributeValues
 {
-
     public const array ATTRIBUTES = [
         'Size' => [
             'XXS' => 'xxs',

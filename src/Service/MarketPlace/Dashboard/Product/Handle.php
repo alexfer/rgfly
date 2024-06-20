@@ -3,7 +3,6 @@
 namespace App\Service\MarketPlace\Dashboard\Product;
 
 use App\Entity\MarketPlace\{StoreBrand,
-    StoreCategoryProduct,
     StoreManufacturer,
     StoreProduct,
     StoreProductAttribute,
@@ -12,10 +11,8 @@ use App\Entity\MarketPlace\{StoreBrand,
     StoreProductManufacturer,
     StoreProductSupplier,
     StoreSupplier};
-use App\Helper\MarketPlace\MarketAttributeValues;
-use App\Service\MarketPlace\Dashboard\Category\Interface\ServeInterface as CategoryServeInterface;
+use App\Helper\MarketPlace\StoreAttributeValues;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\{Request, RequestStack};
 
 abstract class Handle
@@ -27,72 +24,112 @@ abstract class Handle
     protected ?Request $request;
 
     /**
-     * @var StoreCategoryProduct|EntityRepository
-     */
-    protected StoreCategoryProduct|EntityRepository $repository;
-
-    /**
-     * @var CategoryServeInterface
-     */
-    protected CategoryServeInterface $categories;
-
-    /**
      * @param EntityManagerInterface $em
      * @param RequestStack $requestStack
-     * @param CategoryServeInterface $categories
      */
     public function __construct(
         protected readonly EntityManagerInterface $em,
         protected RequestStack                    $requestStack,
-        CategoryServeInterface                    $categories
     )
     {
         $this->request = $this->requestStack->getCurrentRequest();
-        $this->categories = $categories;
-        $this->repository = $this->categories->categoryProductRepository();
     }
 
     /**
      * @param StoreProduct $product
-     * @return $this
+     * @return void
      */
-    protected function attributes(StoreProduct $product): self
+    private function flushAttributes(StoreProduct $product): void
+    {
+        foreach ($product->getStoreProductAttributes() as $attribute) {
+            $values = $attribute->getStoreProductAttributeValues();
+            foreach ($values as $value) {
+                $this->em->remove($value);
+                $this->em->flush();
+            }
+        }
+    }
+
+    /**
+     * @param StoreProduct $product
+     * @param bool $up
+     * @return void
+     */
+    protected function attributes(StoreProduct $product, bool $up = false): void
     {
         $attributes['colors'] = $this->form->get('color')->getData();
         $attributes['size'] = $this->form->get('size')->getData();
 
+        if($up) {
+            $this->flushAttributes($product);
+        }
+
         if ($attributes['colors']) {
-            $attribute = new StoreProductAttribute();
-            $attribute->setProduct($product)->setName('color')->setInFront(1);
-            $attributeColors = array_flip(MarketAttributeValues::ATTRIBUTES['Color']);
+            $attributeColors = array_flip(StoreAttributeValues::ATTRIBUTES['Color']);
+
+            $attribute = $this->em->getRepository(StoreProductAttribute::class)->findOneBy(['product' => $product, 'name' => 'color']);
+
+            if (!$attribute) {
+                $attribute = new StoreProductAttribute();
+                $attribute->setProduct($product)->setName('color')->setInFront(1);
+                $this->em->persist($attribute);
+            }
 
             foreach ($attributes['colors'] as $color) {
                 $attributeValue = new StoreProductAttributeValue();
                 $value = $attributeValue->setAttribute($attribute)->setValue($attributeColors[$color])->setExtra([$color]);
                 $this->em->persist($value);
             }
-            $this->em->persist($attribute);
         }
 
         if ($attributes['size']) {
-            $attribute = new StoreProductAttribute();
-            $attribute->setProduct($product)->setName('size')->setInFront(1);
+            $attributeSize = array_flip(StoreAttributeValues::ATTRIBUTES['Size']);
+
+            $attribute = $this->em->getRepository(StoreProductAttribute::class)->findOneBy(['product' => $product, 'name' => 'size']);
+
+            if (!$attribute) {
+                $attribute = new StoreProductAttribute();
+                $attribute->setProduct($product)->setName('size')->setInFront(1);
+                $this->em->persist($attribute);
+            }
 
             foreach ($attributes['size'] as $size) {
                 $attributeValue = new StoreProductAttributeValue();
-                $value = $attributeValue->setAttribute($attribute)->setValue($size)->setExtra([$size]);
+                $value = $attributeValue->setAttribute($attribute)->setValue($attributeSize[$size]);
                 $this->em->persist($value);
             }
-            $this->em->persist($attribute);
         }
-        return $this;
     }
 
     /**
      * @param StoreProduct $product
-     * @return $this
+     * @return StoreProduct
      */
-    protected function handleRelations(StoreProduct $product): self
+    protected function sku(StoreProduct $product): StoreProduct
+    {
+        $sku = $this->form->get('sku')->getData();
+
+        if (!$sku) {
+            $sku = [
+                'S' . $this->request->get('store'),
+                'C' . $this->form->get('category')->getData(),
+                'P' . $product->getId(),
+                'N' . mb_substr($this->form->get('name')->getData(), 0, 4, 'utf8'),
+                'C' . (int)$this->form->get('cost')->getData()
+            ];
+            $sku = join('-', $sku);
+        }
+
+        $product->setSku($sku);
+
+        return $product;
+    }
+
+    /**
+     * @param StoreProduct $product
+     * @return void
+     */
+    protected function handleRelations(StoreProduct $product): void
     {
         $supplier = $this->em->getRepository(StoreSupplier::class)
             ->findOneBy(['id' => $this->form->get('supplier')->getData()]);
@@ -151,8 +188,6 @@ abstract class Handle
                 $this->em->getRepository(StoreProductManufacturer::class)->drop($pm->getId());
             }
         }
-
-        return $this;
     }
 
 }

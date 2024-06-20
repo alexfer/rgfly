@@ -3,9 +3,10 @@
 namespace App\Form\Type\Dashboard\MarketPlace;
 
 use AllowDynamicProperties;
-use App\Entity\MarketPlace\{Store, StoreProduct};
+use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\MarketPlace\{Store, StoreCategory, StoreProduct};
 use App\Service\MarketPlace\Dashboard\Category\Interface\ServeInterface as StoreCategoryInterface;
-use App\Service\MarketPlace\Dashboard\Store\Interface\ServeInterface as StoreProductInterface;
+use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreProductInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{ChoiceType,
@@ -36,17 +37,17 @@ use Symfony\Component\Validator\Constraints\{Length, NotBlank};
     /**
      * @param Security $security
      * @param StoreProductInterface $store
-     * @param StoreCategoryInterface $serve
+     * @param EntityManagerInterface $em
      */
     public function __construct(
         Security               $security,
         StoreProductInterface  $store,
-        StoreCategoryInterface $serve,
+        EntityManagerInterface    $em,
     )
     {
         $user = $security->getUser();
-        $this->store = $store->handle($user);
-        $this->categories = $serve->handle([], ['id' => 'asc']);
+        $this->store = $store->supports($user);
+        $this->categories = $em->getRepository(StoreCategory::class)->findby([], ['id' => 'DESC']);
     }
 
     /**
@@ -59,9 +60,9 @@ use Symfony\Component\Validator\Constraints\{Length, NotBlank};
 
         $brands = $suppliers = $manufacturers = $categories = [];
 
-        $marketBrands = $this->store->getStoreBrands()->toArray();
-        $marketSuppliers = $this->store->getStoreSuppliers()->toArray();
-        $marketSManufacturers = $this->store->getStoreManufacturers();
+        $Brands = $this->store->getStoreBrands()->toArray();
+        $Suppliers = $this->store->getStoreSuppliers()->toArray();
+        $Manufacturers = $this->store->getStoreManufacturers()->toArray();
 
         if ($this->categories) {
             foreach ($this->categories as $category) {
@@ -71,20 +72,20 @@ use Symfony\Component\Validator\Constraints\{Length, NotBlank};
             }
         }
 
-        if ($marketBrands) {
-            foreach ($marketBrands as $brand) {
+        if ($Brands) {
+            foreach ($Brands as $brand) {
                 $brands[$brand->getId()] = $brand->getName();
             }
         }
 
-        if ($marketSuppliers) {
-            foreach ($marketSuppliers as $supplier) {
+        if ($Suppliers) {
+            foreach ($Suppliers as $supplier) {
                 $suppliers[$supplier->getId()] = $supplier->getName();
             }
         }
 
-        if ($marketSManufacturers) {
-            foreach ($marketSManufacturers as $manufacturer) {
+        if ($Manufacturers) {
+            foreach ($Manufacturers as $manufacturer) {
                 $manufacturers[$manufacturer->getId()] = $manufacturer->getName();
             }
         }

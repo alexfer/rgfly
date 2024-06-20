@@ -4,16 +4,14 @@ namespace App\Service\MarketPlace\Dashboard\Product\Interface;
 
 use App\Entity\MarketPlace\{Store, StoreProduct};
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
-interface ServeInterface
+interface ServeProductInterface
 {
     /**
-     * @param UserInterface $user
      * @param FormInterface|null $form
      * @return FormInterface|null
      */
-    public function handle(UserInterface $user, ?FormInterface $form = null): ?FormInterface;
+    public function supports(?FormInterface $form = null): ?FormInterface;
 
     /**
      * @param Store $store
@@ -30,12 +28,6 @@ interface ServeInterface
      * @return array|null
      */
     public function coupon(Store $store, string $type): ?array;
-
-    /**
-     * @param Store $store
-     * @return string
-     */
-    public function currency(Store $store): string;
 
     /**
      * @param Store $store
