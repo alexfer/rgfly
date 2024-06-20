@@ -54,7 +54,7 @@
                         </button>
                     </h2>
                     <div id="order-body-{{ key }}"
-                         class="!visible{% if key > 0 %} hidden{% endif %} border-0"
+                         class="!visible{% if key > 0 %} hidden{% endif %} border-0 shadow-xl shadow-red-500/50"
                          data-twe-collapse-item
                             {% if key == 0 %} data-twe-collapse-show{% endif %}
                          data-twe-parent="#accordion-flush"
@@ -122,7 +122,13 @@
                                 {% for product in order.products %}
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <th scope="row" class="px-6 py-4 text-gray-900 truncate dark:text-white">
-                                            <a data-twe-toggle="tooltip" title="{{ product.product.name }}" target="_blank" class="font-semibold text-gray-600 dark:text-gray-50" href="{{ path('app_market_place_product', {slug: product.product.slug, tab: 'about'}) }}">{{ product.product.short_name }}
+                                            <a data-twe-toggle="tooltip"
+                                               title="{{ product.product.name }}"
+                                               target="_blank"
+                                               class="font-semibold text-gray-600 dark:text-gray-50"
+                                               href="{{ path('app_market_place_product', {slug: product.product.slug, tab: 'about'}) }}">
+                                                {{ product.product.short_name|length >= 40 ? product.product.short_name|slice(0, 40) ~ '...' : product.product.short_name }}
+                                            </a>
                                         </th>
                                         <td class="px-6 py-4 text-center">{{ product.quantity }}{{ 'label.form.quantity_pcs'|trans }}</td>
                                         <td class="px-6 py-4 text-center">{{ product.product.discount }}<small>%</small></td>

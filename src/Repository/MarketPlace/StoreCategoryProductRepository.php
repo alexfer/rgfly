@@ -31,7 +31,7 @@ class StoreCategoryProductRepository extends ServiceEntityRepository
      * @param StoreProduct $product
      * @return mixed
      */
-    public function removeCategoryProduct(StoreProduct $product): mixed
+    public function removeCategoryProduct(StoreProduct $product)
     {
         return $this->createQueryBuilder('cp')
             ->delete()

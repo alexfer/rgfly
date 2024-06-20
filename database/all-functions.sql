@@ -1058,4 +1058,96 @@ $$;
 
 alter function get_random_store() owner to rgfly;
 
+create or replace function backdrop_products(store_id integer, query text DEFAULT NULL::text, start integer DEFAULT 0, row_count integer DEFAULT 25) returns json
+    language plpgsql
+as
+$$
+DECLARE
+    results    JSON;
+    rows_count INTEGER;
+BEGIN
+    SELECT json_agg(json_build_object(
+                            'id', p.id,
+                            'store', p.store_id,
+                            'name', p.name,
+                            'short_name', p.short_name,
+                            'cost', p.cost,
+                            'quantity', p.quantity,
+                            'discount', p.discount::integer,
+                            'fee', p.fee,
+                            'created', p.created_at,
+                            'deleted', p.deleted_at,
+                            'coupons', json_build_object(
+                                    'coupon', sc.id,
+                                    'product', scsp.store_product_id
+                                       )
+                    ) ORDER BY p.id DESC)
+    INTO results
+    FROM store_product p
+             LEFT JOIN store_coupon sc ON sc.store_id = p.store_id AND sc.type = 'product'
+             LEFT JOIN store_coupon_store_product scsp on sc.id = scsp.store_coupon_id
+    WHERE LOWER(p.short_name) LIKE LOWER('%' || query::text || '%')
+        AND p.store_id = backdrop_products.store_id
+    OFFSET backdrop_products.start LIMIT backdrop_products.row_count;
+
+    SELECT COUNT(*)
+    INTO rows_count
+    FROM store_product p
+    WHERE LOWER(p.short_name) LIKE LOWER('%' || query::text || '%')
+        AND p.store_id = backdrop_products.store_id;
+
+    RETURN json_build_object(
+            'result', results,
+            'query', query::text,
+            'store', backdrop_products.store_id,
+            'rows', rows_count
+           );
+END ;
+$$;
+
+alter function backdrop_products(integer, text, integer, integer) owner to rgfly;
+
+create or replace function backdrop_store_extra(store_id integer) returns json
+    language plpgsql
+as
+$$
+DECLARE
+    suppliers     JSON;
+    brands        JSON;
+    manufacturers JSON;
+BEGIN
+    SELECT json_agg(json_build_object(
+                            'id', b.id,
+                            'name', b.name
+                    ) ORDER BY b.name ASC)
+    INTO brands
+    FROM store_brand b
+    WHERE b.store_id = backdrop_store_extra.store_id;
+
+    SELECT json_agg(json_build_object(
+                            'id', s.id,
+                            'name', s.name
+                    ) ORDER BY s.name ASC)
+    INTO suppliers
+    FROM store_supplier s
+    WHERE s.store_id = backdrop_store_extra.store_id;
+
+    SELECT json_agg(json_build_object(
+                            'id', m.id,
+                            'name', m.name
+                    ) ORDER BY m.name ASC)
+    INTO manufacturers
+    FROM store_manufacturer m
+    WHERE m.store_id = backdrop_store_extra.store_id;
+
+    RETURN json_build_object(
+            'suppliers', suppliers,
+            'brands', brands,
+            'manufacturers', manufacturers
+           );
+END;
+$$;
+
+alter function backdrop_store_extra(integer) owner to rgfly;
+
 
