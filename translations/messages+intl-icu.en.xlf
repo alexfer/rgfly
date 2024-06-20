@@ -487,6 +487,14 @@
                 <source>table.header.created_at</source>
                 <target>Created</target>
             </trans-unit>
+            <trans-unit id="table.header.orders">
+                <source>table.header.orders</source>
+                <target>Orders</target>
+            </trans-unit>
+            <trans-unit id="table.header.messages">
+                <source>table.header.messages</source>
+                <target>Messages</target>
+            </trans-unit>
             <trans-unit id="table.header.requested_at">
                 <source>table.header.requested_at</source>
                 <target>Requested</target>
@@ -510,6 +518,10 @@
             <trans-unit id="table.header.handle">
                 <source>table.header.handle</source>
                 <target>Handle</target>
+            </trans-unit>
+            <trans-unit id="table.header.review">
+                <source>table.header.review</source>
+                <target>Review</target>
             </trans-unit>
             <trans-unit id="tooltip.show.more">
                 <source>tooltip.show.more</source>

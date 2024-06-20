@@ -2,9 +2,12 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
+use App\Entity\MarketPlace\Store;
 use App\Entity\MarketPlace\StoreOrders;
 use App\Service\MarketPlace\Currency;
+use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreInterface;
 use App\Service\MarketPlace\StoreTrait;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -21,21 +24,42 @@ class OrderController extends AbstractController
     use StoreTrait;
 
     /**
+     * @param UserInterface $user
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     * @throws Exception
+     */
+    #[Route('', name: 'app_dashboard_market_place_order_stores')]
+    public function index(
+        UserInterface $user,
+        Request $request,
+        EntityManagerInterface $manager,
+    ): Response
+    {
+        $stores = $manager->getRepository(Store::class)->stores($user);
+
+        return $this->render('dashboard/content/market_place/order/stores.html.twig', [
+            'stores' => $stores['result'],
+        ]);
+    }
+
+    /**
      * @param Request $request
      * @param UserInterface $user
      * @param EntityManagerInterface $em
+     * @param StoreInterface $serveStore
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
-    #[Route('/{store}', name: 'app_dashboard_market_place_order_market')]
-    public function index(
+    #[Route('/{store}', name: 'app_dashboard_market_place_order_store_current')]
+    public function current(
         Request                $request,
         UserInterface          $user,
         EntityManagerInterface $em,
+        StoreInterface        $serveStore,
     ): Response
     {
-        $store = $this->store($request, $user, $em);
+        $store = $this->store($serveStore, $user);
 
         $currency = Currency::currency($store->getCurrency());
         $orders = $em->getRepository(StoreOrders::class)->findBy(['store' => $store], ['id' => 'desc']);
@@ -51,20 +75,18 @@ class OrderController extends AbstractController
      * @param Request $request
      * @param StoreOrders $order
      * @param UserInterface $user
-     * @param EntityManagerInterface $em
+     * @param StoreInterface $serveStore
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/{store}/{number}', name: 'app_dashboard_market_place_order_details_market')]
     public function details(
         Request                $request,
         StoreOrders            $order,
         UserInterface          $user,
-        EntityManagerInterface $em,
+        StoreInterface        $serveStore,
     ): Response
     {
-        $store = $this->store($request, $user, $em);
+        $store = $this->store($serveStore, $user);
         $currency = Currency::currency($store->getCurrency());
 
         $products = $fee = $itemSubtotal = [];

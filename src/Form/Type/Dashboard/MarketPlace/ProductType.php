@@ -52,6 +52,7 @@ use Symfony\Component\Validator\Constraints\{Length, NotBlank};
     {
         $user = $security->getUser();
         $this->store = $store->supports($user);
+
         $this->categories = $em->getRepository(StoreCategory::class);
         $this->extra = $store->extra();
     }

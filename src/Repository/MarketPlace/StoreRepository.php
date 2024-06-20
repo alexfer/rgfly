@@ -28,6 +28,19 @@ class StoreRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param UserInterface $user
+     * @return array|null
+     * @throws Exception
+     */
+    public function stores(UserInterface $user): ?array
+    {
+        $statement = $this->connection->prepare('select backdrop_stores(:owner_id)');
+        $statement->bindValue('owner_id', $user->getId(), \PDO::PARAM_INT);
+        $result = $statement->executeQuery()->fetchAllAssociative();
+        return json_decode($result[0]['backdrop_stores'], true) ?: [];
+    }
+
+    /**
      * @param Store $store
      * @return array|null
      * @throws Exception
