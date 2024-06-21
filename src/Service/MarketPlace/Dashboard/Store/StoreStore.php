@@ -3,24 +3,31 @@
 namespace App\Service\MarketPlace\Dashboard\Store;
 
 use App\Entity\MarketPlace\Store;
+use App\Entity\User;
 use App\Service\MarketPlace\Currency;
 use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class ServeStoreStore extends Handle implements ServeStoreInterface
+class StoreStore extends Handle implements ServeStoreInterface
 {
 
     protected Store $store;
 
     /**
      * @param UserInterface $user
-     * @return Store|null
+     * @return StoreStore|null
      */
     public function supports(UserInterface $user): ?Store
     {
+        $criteria = ['id' => $this->request->get('store')];
+
+        if (!in_array(User::ROLE_ADMIN, $user->getRoles())) {
+            $criteria = ['id' => $this->request->get('store'), 'owner' => $user];
+        }
+
         $store = $this->em->getRepository(Store::class)
-            ->findOneBy(['id' => $this->request->get('store'), 'owner' => $user]);
+            ->findOneBy($criteria);
 
         if (!$store) {
             throw new AccessDeniedException();

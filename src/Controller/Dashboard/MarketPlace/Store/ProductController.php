@@ -2,14 +2,14 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
-use App\Entity\Attach;
+use App\Entity\{Attach, User};
 use App\Entity\MarketPlace\{StoreCoupon, StoreProduct, StoreProductAttach};
 use App\Form\Type\Dashboard\MarketPlace\ProductType;
 use App\Security\Voter\ProductVoter;
 use App\Service\FileUploader;
 use App\Service\Interface\ImageValidatorInterface;
 use App\Service\MarketPlace\Dashboard\Product\Interface\ServeProductInterface;
-use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreInterface;
+use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface;
 use App\Service\MarketPlace\StoreTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
@@ -32,7 +32,7 @@ class ProductController extends AbstractController
      * @param Request $request
      * @param UserInterface $user
      * @param ServeProductInterface $serveProduct
-     * @param StoreInterface $serveStore
+     * @param ServeStoreInterface $serveStore
      * @return Response
      */
     #[Route('/{store}/{search}', name: 'app_dashboard_market_place_market_product', defaults: ['search' => null])]
@@ -40,7 +40,7 @@ class ProductController extends AbstractController
         Request               $request,
         UserInterface         $user,
         ServeProductInterface $serveProduct,
-        StoreInterface        $serveStore,
+        ServeStoreInterface   $serveStore,
     ): Response
     {
         $store = $this->store($serveStore, $user);
@@ -59,7 +59,7 @@ class ProductController extends AbstractController
      * @param UserInterface $user
      * @param TranslatorInterface $translator
      * @param ServeProductInterface $serveProduct
-     * @param StoreInterface $serveStore
+     * @param ServeStoreInterface $serveStore
      * @return Response
      */
     #[Route('/edit/{store}/{id}/{tab}', name: 'app_dashboard_market_place_edit_product', methods: ['GET', 'POST'])]
@@ -70,7 +70,7 @@ class ProductController extends AbstractController
         UserInterface         $user,
         TranslatorInterface   $translator,
         ServeProductInterface $serveProduct,
-        StoreInterface        $serveStore,
+        ServeStoreInterface   $serveStore,
     ): Response
     {
         $store = $this->store($serveStore, $user);
@@ -101,7 +101,7 @@ class ProductController extends AbstractController
      * @param UserInterface $user
      * @param TranslatorInterface $translator
      * @param ServeProductInterface $serveProduct
-     * @param StoreInterface $serveStore
+     * @param ServeStoreInterface $serveStore
      * @return Response
      */
     #[Route('/create/{store}/{tab}', name: 'app_dashboard_market_place_create_product', methods: ['GET', 'POST'])]
@@ -110,20 +110,25 @@ class ProductController extends AbstractController
         UserInterface         $user,
         TranslatorInterface   $translator,
         ServeProductInterface $serveProduct,
-        StoreInterface        $serveStore,
+        ServeStoreInterface   $serveStore,
     ): Response
     {
         $store = $this->store($serveStore, $user);
         $product = new StoreProduct();
+        $requestStore = $request->get('store');
 
         $form = $this->createForm(ProductType::class, $product);
         $handle = $serveProduct->supports($form);
+
+        if (in_array(User::ROLE_ADMIN, $user->getRoles())) {
+            $store = $requestStore;
+        }
 
         if ($handle->isSubmitted() && $handle->isValid()) {
             $product = $serveProduct->create($store, $product);
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
             return $this->redirectToRoute('app_dashboard_market_place_edit_product', [
-                'store' => $request->get('store'),
+                'store' => $requestStore,
                 'id' => $product->getId(),
                 'tab' => $request->get('tab'),
             ]);
@@ -140,7 +145,7 @@ class ProductController extends AbstractController
      * @param UserInterface $user
      * @param StoreProduct $product
      * @param EntityManagerInterface $em
-     * @param StoreInterface $serveStore
+     * @param ServeStoreInterface $serveStore
      * @return Response
      * @throws \Exception
      */
@@ -150,7 +155,7 @@ class ProductController extends AbstractController
         UserInterface          $user,
         StoreProduct           $product,
         EntityManagerInterface $em,
-        StoreInterface         $serveStore,
+        ServeStoreInterface    $serveStore,
     ): Response
     {
         $store = $this->store($serveStore, $user);
@@ -175,7 +180,7 @@ class ProductController extends AbstractController
      * @param UserInterface $user
      * @param StoreProduct $product
      * @param EntityManagerInterface $em
-     * @param StoreInterface $iStore
+     * @param ServeStoreInterface $iStore
      * @return Response
      */
     #[Route('/restore/{store}/{id}', name: 'app_dashboard_restore_product')]
@@ -183,7 +188,7 @@ class ProductController extends AbstractController
         UserInterface          $user,
         StoreProduct           $product,
         EntityManagerInterface $em,
-        StoreInterface         $serveStore,
+        ServeStoreInterface    $serveStore,
     ): Response
     {
         $store = $this->store($serveStore, $user);

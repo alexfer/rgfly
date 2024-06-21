@@ -4,14 +4,11 @@ namespace App\Controller\Dashboard\MarketPlace\Store;
 
 use App\Entity\MarketPlace\StoreBrand;
 use App\Form\Type\Dashboard\MarketPlace\BrandType;
+use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface;
 use App\Service\MarketPlace\StoreTrait;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -25,18 +22,18 @@ class BrandController extends AbstractController
      * @param Request $request
      * @param UserInterface $user
      * @param EntityManagerInterface $em
+     * @param ServeStoreInterface $serveStore
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/{store}', name: 'app_dashboard_market_place_store_brand')]
     public function index(
         Request                $request,
         UserInterface          $user,
         EntityManagerInterface $em,
+        ServeStoreInterface    $serveStore,
     ): Response
     {
-        $store = $this->store($request, $user, $em);
+        $store = $this->store($serveStore, $user);
         $brands = $em->getRepository(StoreBrand::class)->brands($store, $request->query->get('search'));
 
         return $this->render('dashboard/content/market_place/brand/index.html.twig', [
@@ -50,9 +47,8 @@ class BrandController extends AbstractController
      * @param UserInterface $user
      * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
+     * @param ServeStoreInterface $serveStore
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/create/{store}', name: 'app_dashboard_market_place_create_brand', methods: ['GET', 'POST'])]
     public function create(
@@ -60,9 +56,10 @@ class BrandController extends AbstractController
         UserInterface          $user,
         EntityManagerInterface $em,
         TranslatorInterface    $translator,
+        ServeStoreInterface    $serveStore,
     ): Response
     {
-        $store = $this->store($request, $user, $em);
+        $store = $this->store($serveStore, $user);
         $brand = new StoreBrand();
 
         $form = $this->createForm(BrandType::class, $brand);
@@ -91,9 +88,8 @@ class BrandController extends AbstractController
      * @param StoreBrand $brand
      * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
+     * @param ServeStoreInterface $serveStore
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/edit/{store}/{id}', name: 'app_dashboard_market_place_edit_brand', methods: ['GET', 'POST'])]
     public function edit(
@@ -102,9 +98,10 @@ class BrandController extends AbstractController
         StoreBrand             $brand,
         EntityManagerInterface $em,
         TranslatorInterface    $translator,
+        ServeStoreInterface    $serveStore,
     ): Response
     {
-        $store = $this->store($request, $user, $em);
+        $store = $this->store($serveStore, $user);
 
         $form = $this->createForm(BrandType::class, $brand);
         $form->handleRequest($request);
@@ -132,9 +129,8 @@ class BrandController extends AbstractController
      * @param UserInterface $user
      * @param StoreBrand $brand
      * @param EntityManagerInterface $em
+     * @param ServeStoreInterface $serveStore
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/delete/{store}/{id}', name: 'app_dashboard_delete_brand', methods: ['POST'])]
     public function delete(
@@ -142,9 +138,10 @@ class BrandController extends AbstractController
         UserInterface          $user,
         StoreBrand             $brand,
         EntityManagerInterface $em,
+        ServeStoreInterface    $serveStore,
     ): Response
     {
-        $store = $this->store($request, $user, $em);
+        $store = $this->store($serveStore, $user);
         $token = $request->get('_token');
 
         if (!$token) {
@@ -164,18 +161,18 @@ class BrandController extends AbstractController
      * @param Request $request
      * @param UserInterface $user
      * @param EntityManagerInterface $em
+     * @param ServeStoreInterface $serveStore
      * @return JsonResponse
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/xhr_create/{store}', name: 'app_dashboard_market_place_xhr_create_brand', methods: ['POST'])]
     public function xshCreate(
         Request                $request,
         UserInterface          $user,
         EntityManagerInterface $em,
+        ServeStoreInterface    $serveStore,
     ): JsonResponse
     {
-        $store = $this->store($request, $user, $em);
+        $store = $this->store($serveStore, $user);
         $requestGetPost = $request->get('brand');
         $responseJson = [];
 

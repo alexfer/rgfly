@@ -1,6 +1,6 @@
 {% extends 'dashboard/index.html.twig' %}
 
-{% block title_content %}{{ user.userDetails.firstName }} {{ user.userDetails.lastName }}{% endblock %}
+{% block title_content %}{{ customer.firstName }} {{ customer.lastName }}{% endblock %}
 
 {% block content %}
     <div class="w-full max-w-sm bg-white mx-auto border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -19,12 +19,12 @@
                 <ul class="py-2" aria-labelledby="dropdownButton">
                     {% if user.deletedAt is null %}
                         <li>
-                            <a href="{{ path('app_dashboard_secure_user', {id: user.id, tab: app.request.get('tab'), part: 'details', action: 'lock'}) }}"
+                            <a href="{{ path('app_dashboard_secure_user', {id: user.id, tab: app.request.get('tab'), part: 'customer', action: 'lock'}) }}"
                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">{{ 'user.lock'|trans }}</a>
                         </li>
                     {% else %}
                         <li>
-                            <a href="{{ path('app_dashboard_secure_user', {id: user.id, tab: app.request.get('tab'), part: 'details', action: 'unlock'}) }}"
+                            <a href="{{ path('app_dashboard_secure_user', {id: user.id, tab: app.request.get('tab'), part: 'customer', action: 'unlock'}) }}"
                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">{{ 'user.unlock'|trans }}</a>
                         </li>
                     {% endif %}
@@ -32,15 +32,9 @@
             </div>
         </div>
         <div class="flex flex-col items-center pb-10">
-            {% for picture in user.userDetails.attach|slice(0, 1) %}
-                {% set _picture = 'storage/user/picture/' ~ user.id ~ '/' ~ picture.name %}
-                <img class="w-24 h-24 mb-3 rounded-full shadow-lg"
-                     src="{{ asset(_picture) | imagine_filter('user_preview') }}" alt="..."/>
-            {% else %}
-                <img src="{{ asset('img/200x200.png') }}" class="w-24 h-24 mb-3 rounded-full shadow-lg"/>
-            {% endfor %}
-            <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{ user.userDetails.firstName }} {{ user.userDetails.lastName }}</h5>
-            <span class="text-sm text-gray-500 dark:text-gray-400">{{ user.email }}</span>
+            <img src="{{ asset('img/200x200.png') }}" class="w-24 h-24 mb-3 rounded-full shadow-lg"/>
+            <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{ customer.firstName }} {{ customer.lastName }}</h5>
+            <span class="text-sm text-gray-500 dark:text-gray-400">{{ customer.email }}</span>
         </div>
     </div>
     <div class="flex flex-col mt-5">
@@ -79,21 +73,12 @@
             </li>
             <li class="me-2" role="presentation">
                 <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-                        id="social-tab"
-                        data-tabs-target="#social"
+                        id="address-tab"
+                        data-tabs-target="#address"
                         type="button"
                         role="tab"
-                        aria-controls="social"
-                        aria-selected="{{ _tab == 'social' ? 'true' : 'false' }}">{{ 'user.tab.social'|trans }}</button>
-            </li>
-            <li class="me-2" role="presentation">
-                <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-                        id="about-tab"
-                        data-tabs-target="#about"
-                        type="button"
-                        role="tab"
-                        aria-controls="about"
-                        aria-selected="{{ _tab == 'about' ? 'true' : 'false' }}">{{ 'user.tab.about'|trans }}</button>
+                        aria-controls="address"
+                        aria-selected="{{ _tab == 'address' ? 'true' : 'false' }}">{{ 'user.tab.address'|trans }}</button>
             </li>
         </ul>
         <div class="pb-5 shadow-lg border border-t-gray-200 rounded-md dark:bg-gray-800 dark:border-gray-900 p-3"
@@ -104,7 +89,7 @@
                         {{ 'user.info.first_name'|trans }}
                     </div>
                     <div class="w-auto text-gray-600">
-                        {{ user.userDetails.firstName }}
+                        {{ customer.firstName }}
                     </div>
                 </div>
                 <div class="flex flex-row px-4 py-3">
@@ -112,7 +97,7 @@
                         {{ 'user.info.last_name'|trans }}
                     </div>
                     <div class="w-auto text-gray-500">
-                        {{ user.userDetails.lastName }}
+                        {{ customer.lastName }}
                     </div>
                 </div>
                 <div class="flex flex-row px-4 py-3">
@@ -120,15 +105,7 @@
                         <label>{{ 'user.info.phone_number'|trans }}</label>
                     </div>
                     <div class="w-auto text-gray-500">
-                        {{ user.userDetails.phone|default('n/a') }}
-                    </div>
-                </div>
-                <div class="flex flex-row px-4 py-3">
-                    <div class="w-48 font-semibold text-gray-400">
-                        <label>{{ 'user.info.birth_date'|trans }}</label>
-                    </div>
-                    <div class="w-auto text-gray-500">
-                        {{ user.userDetails.dateBirth|date(date_format)|default('n/a') }}
+                        {{ customer.phone|default('n/a') }}
                     </div>
                 </div>
                 <div class="flex flex-row px-4 py-3">
@@ -136,7 +113,7 @@
                         <label>{{ 'user.info.registered'|trans }}</label>
                     </div>
                     <div class="w-auto text-gray-500">
-                        {{ user.createdAt|date(datetime_format) }}
+                        {{ customer.createdAt|date(datetime_format) }}
                     </div>
                 </div>
                 <div class="flex flex-row px-4 py-3">
@@ -144,7 +121,7 @@
                         <label>{{ 'user.info.last_login'|trans }}</label>
                     </div>
                     <div class="w-auto text-gray-500">
-                        {{ user.lastLoginAt|date(datetime_format) }}
+                        {{ customer.member.lastLoginAt|date(datetime_format) }}
                     </div>
                 </div>
                 <div class="flex flex-row px-4 py-3">
@@ -152,7 +129,7 @@
                         <label>{{ 'user.info.ip_address'|trans }}</label>
                     </div>
                     <div class="w-auto text-gray-500">
-                        {{ user.ip|default('0.0.0.0') }}
+                        {{ customer.member.ip|default('0.0.0.0') }}
                     </div>
                 </div>
                 {% if user.deletedAt is not null %}
@@ -180,38 +157,55 @@
                         <label>{{ 'user.info.city'|trans }}</label>
                     </div>
                     <div class="w-auto text-gray-500">
-                        {{ user.userDetails.city|default('n/a') }}
+                        {{ customer.storeAddress.city }}
                     </div>
                 </div>
             </div>
-            <div id="security" role="tabpanel" aria-labelledby="security-tab">
+            <div id="security" role="tabpanel" aria-labelledby="security-tab" class="p-5">
                 {% include 'dashboard/content/user/_form.html.twig' %}
             </div>
-            <div id="social" role="tabpanel" aria-labelledby="social-tab">
-                <ul class="mx-auto w-1/2 flex justify-between items-center p-4">
-                    <li class="w-full inline-block text-center px-5">
-                        <a href="{{ user.userDetails.userSocial.facebookProfile|default('#') }}">
-                            <h1 class="text-2xl fa fa-facebook text-indigo-700"></h1>
-                        </a>
-                    </li>
-                    <li class="w-full inline-block text-center px-5">
-                        <a href="{{ user.userDetails.userSocial.twitterProfile|default('#') }}">
-                            <h1 class="text-2xl fa fa-twitter text-info-600"></h1>
-                        </a>
-                    </li>
-                    <li class="w-full inline-block text-center px-5">
-                        <a href="{{ user.userDetails.userSocial.instagramProfile|default('#') }}">
-                            <h1 class="text-2xl fa fa-instagram text-info"></h1>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div id="about" role="tabpanel" class="text-gray-600 dark:text-gray-100 p-4" aria-labelledby="about-tab">
-                {% if  user.userDetails.about is not empty %}
-                    {{ user.userDetails.about|nl2br|raw }}
-                {% else %}
-                    {{ ''|default('n/a') }}
-                {% endif %}
+            <div id="address" role="tabpanel" class="text-gray-600 dark:text-gray-100 p-4"
+                 aria-labelledby="address-tab">
+                <div class="flex flex-row px-4 py-3">
+                    <div class="w-48 font-semibold text-gray-400">
+                        <label>{{ 'user.info.country'|trans }}</label>
+                    </div>
+                    <div class="w-auto text-gray-500">
+                        {{ country|default('n/a') }}
+                    </div>
+                </div>
+                <div class="flex flex-row px-4 py-3">
+                    <div class="w-48 font-semibold text-gray-400">
+                        <label>{{ 'user.info.city'|trans }}</label>
+                    </div>
+                    <div class="w-auto text-gray-500">
+                        {{ customer.storeAddress.city }}
+                    </div>
+                </div>
+                <div class="flex flex-row px-4 py-3">
+                    <div class="w-48 font-semibold text-gray-400">
+                        <label>{{ 'label.form.address_line_1'|trans }}</label>
+                    </div>
+                    <div class="w-auto text-gray-500">
+                        {{ customer.storeAddress.line1 }}
+                    </div>
+                </div>
+                <div class="flex flex-row px-4 py-3">
+                    <div class="w-48 font-semibold text-gray-400">
+                        <label>{{ 'label.form.address_line_2'|trans }}</label>
+                    </div>
+                    <div class="w-auto text-gray-500">
+                        {{ customer.storeAddress.line2 }}
+                    </div>
+                </div>
+                <div class="flex flex-row px-4 py-3">
+                    <div class="w-48 font-semibold text-gray-400">
+                        <label>{{ 'label.form.zip'|trans }}</label>
+                    </div>
+                    <div class="w-auto text-gray-500">
+                        {{ customer.storeAddress.postal }}
+                    </div>
+                </div>
             </div>
         </div>
     </div>

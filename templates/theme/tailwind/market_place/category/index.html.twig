@@ -105,6 +105,7 @@
     </h2>
     <div class="grid w-full gap-3 lg:grid-cols-3 md:grid-cols-2">
         {% for product in products %}
+            {% set product = product.product %}
             <div class="min-h-full">
                 <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                     <div class="lg:max-w-xl relative overflow-hidden bg-cover bg-no-repeat">

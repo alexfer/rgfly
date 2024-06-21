@@ -69,21 +69,27 @@
                         <a target="_blank" href="">@{{ entry.first_name }}</a>
                         <i class="fa fa-user"></i>
                         <ul class="list-none inline-flex justify-items-end float-right">
-                            <li>
-                                <a href="{{ entry.facebook_profile }}" target="_blank" class="mx-1 text-lg">
-                                    <i class="fa fa-facebook text-blue-700"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ entry.twitter_profile }}" target="_blank" class="mx-1 text-lg">
-                                    <i class="fa fa-twitter text-blue-600"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ entry.instagram_profile }}" target="_blank" class="mx-1 text-lg">
-                                    <i class="fa fa-instagram text-indigo-700"></i>
-                                </a>
-                            </li>
+                            {% if entry.facebook_profile is not null %}
+                                <li>
+                                    <a href="{{ entry.facebook_profile }}" target="_blank" class="mx-1 text-lg">
+                                        <i class="fa fa-facebook text-blue-700"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if entry.twitter_profile is not null %}
+                                <li>
+                                    <a href="{{ entry.twitter_profile }}" target="_blank" class="mx-1 text-lg">
+                                        <i class="fa fa-twitter text-blue-600"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if entry.instagram_profile is not null %}
+                                <li>
+                                    <a href="{{ entry.instagram_profile }}" target="_blank" class="mx-1 text-lg">
+                                        <i class="fa fa-instagram text-indigo-700"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
                         </ul>
                     </div>
 

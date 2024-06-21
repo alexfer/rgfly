@@ -3,6 +3,7 @@
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
 use App\Entity\MarketPlace\{Store, StorePaymentGateway, StorePaymentGatewayStore, StoreSocial};
+use App\Entity\User;
 use App\Form\Type\Dashboard\MarketPlace\StoreType;
 use App\Service\FileUploader;
 use Doctrine\DBAL\Exception;
@@ -33,7 +34,13 @@ class StoreController extends AbstractController
         EntityManagerInterface $em,
     ): Response
     {
-        $stores = $em->getRepository(Store::class)->findBy(['owner' => $user], ['created_at' => 'desc'], 20, 0);
+        $criteria = [];
+
+        if (!in_array(User::ROLE_ADMIN, $user->getRoles())) {
+            $criteria = ['owner' => $user];
+        }
+
+        $stores = $em->getRepository(Store::class)->findBy($criteria, ['created_at' => 'desc'], 20, 0);
 
         return $this->render('dashboard/content/market_place/store/index.html.twig', [
             'stores' => $stores,

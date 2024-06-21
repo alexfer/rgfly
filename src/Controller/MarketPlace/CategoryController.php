@@ -26,7 +26,7 @@ class CategoryController extends AbstractController
     /**
      * @var int
      */
-    private int $limit = 8;
+    private int $limit = 9;
 
     /**
      * @param RequestStack $stack
@@ -83,7 +83,7 @@ class CategoryController extends AbstractController
 
         return $this->render('market_place/category/index.html.twig', [
             'parent' => null,
-            'products' => $products['data'],
+            'products' => $products['data']['products'],
             'rows_count' => $products['rows_count'],
             'categories' => $categories,
             'customer' => $this->customer($user),
@@ -115,7 +115,7 @@ class CategoryController extends AbstractController
             'parent' => null,
             'parent_name' => $category->getName(),
             'children' => $children,
-            'products' => $products['data'],
+            'products' => $products['data']['products'],
             'rows_count' => $products['rows_count'],
             'categories' => null,
             'customer' => $this->customer($user),
@@ -155,7 +155,7 @@ class CategoryController extends AbstractController
             'parent_name' => $parent->getName(),
             'parent' => $parent,
             'categories' => null,
-            'products' => $products['data'],
+            'products' => $products['data']['products'],
             'rows_count' => $products['rows_count'],
             'customer' => $this->customer($user),
         ]);
