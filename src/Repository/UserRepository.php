@@ -109,11 +109,31 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->leftJoin(UserDetails::class, 'd', 'WITH', 'u.id = d.user')
             ->leftJoin(StoreCustomer::class, 'cu', 'WITH', 'cu.member = u.id')
             ->orWhere('u.email LIKE :query')
+            ->orWhere('cu.email LIKE :query')
+            ->orWhere('d.first_name LIKE :query')
+            ->orWhere('d.last_name LIKE :query')
+            ->orWhere('cu.first_name LIKE :query')
+            ->orWhere('cu.last_name LIKE :query')
             ->setParameter('query', '%' . $query . '%')
             ->orderBy('u.last_login_at', 'DESC')
             ->setFirstResult($offset)
             ->setMaxResults($limit);
 
-        return $qb->getQuery()->getResult();
+        $rows = $this->createQueryBuilder('uc')
+            ->select('COUNT(uc.id)')
+            ->leftJoin(UserDetails::class, 'd', 'WITH', 'uc.id = d.user')
+            ->leftJoin(StoreCustomer::class, 'cu', 'WITH', 'cu.member = uc.id')
+            ->orWhere('uc.email LIKE :query')
+            ->orWhere('cu.email LIKE :query')
+            ->orWhere('d.first_name LIKE :query')
+            ->orWhere('d.last_name LIKE :query')
+            ->orWhere('cu.first_name LIKE :query')
+            ->orWhere('cu.last_name LIKE :query')
+            ->setParameter('query', '%' . $query . '%');
+
+        return [
+            'rows' => $rows->getQuery()->getResult(),
+            'results' => $qb->getQuery()->getResult(),
+        ];
     }
 }

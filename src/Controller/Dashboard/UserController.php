@@ -30,7 +30,10 @@ class UserController extends AbstractController
     {
         $query = $request->query->get('search');
         $users = $em->getRepository(User::class)->fetch($query);
-        return $this->render('dashboard/content/user/index.html.twig', ['users' => $users]);
+        return $this->render('dashboard/content/user/index.html.twig', [
+            'users' => $users['results'],
+            'rows' => reset($users['rows'][0]),
+        ]);
     }
 
     /**
@@ -110,13 +113,13 @@ class UserController extends AbstractController
 
     #[Route('/secure/{id}/{tab}/{part}/{action}', name: 'app_dashboard_secure_user', methods: ['GET'])]
     public function detail(
-        Request                    $request,
-        TranslatorInterface         $translator,
-        User                        $user,
-        EntityManagerInterface      $em,
+        Request                $request,
+        TranslatorInterface    $translator,
+        User                   $user,
+        EntityManagerInterface $em,
     ): Response
     {
-        if($request->get('action') == 'lock') {
+        if ($request->get('action') == 'lock') {
             $user->setDeletedAt(new \DateTime());
         } else {
             $user->setDeletedAt(null);
@@ -127,7 +130,7 @@ class UserController extends AbstractController
         $this->addFlash('success', json_encode(['message' => $translator->trans(sprintf('user.%s.changed', $request->get('action')))]));
 
         $route = 'app_dashboard_customer_user';
-        if($request->get('part') == 'details') {
+        if ($request->get('part') == 'details') {
             $route = 'app_dashboard_details_user';
         }
         return $this->redirectToRoute($route, ['id' => $user->getId(), 'tab' => $request->get('tab')]);
