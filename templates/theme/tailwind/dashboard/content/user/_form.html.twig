@@ -1,5 +1,10 @@
 {% set _message = app.flashes('success') %}
-{{ form_start(form, {attr: {class: 'm-3 w-2/3 mx-auto', action: path('app_dashboard_details_user', {id: entry.id, tab: 'security'}), novalidate: 'novalidate'}}) }}
+{% set _role = user.roles|join(', ')|replace({'_':''})|replace({'ROLE':''})|lower %}
+{% set _path = 'app_dashboard_details_user' %}
+{% if _role == 'customer' %}
+    {% set _path = 'app_dashboard_customer_user' %}
+{% endif %}
+{{ form_start(form, {attr: {class: 'm-3 w-2/3 mx-auto', action: path(_path, {id: user.id, tab: 'security'}), novalidate: 'novalidate'}}) }}
 <div class="flex mb-3">
     {{ form_label(form.plainPassword.children.first, 'label.form.new_password', {label_attr: {class: 'inlin-block w-32 mr-2 pt-3 align-baseline mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
     <div class="w-1/2">

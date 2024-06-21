@@ -3,19 +3,14 @@
 namespace App\Repository\MarketPlace;
 
 use App\Entity\MarketPlace\{Store, StoreCustomer};
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\{Connection, Exception};
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @extends ServiceEntityRepository<Store>
- *
- * @method Store|null find($id, $lockMode = null, $lockVersion = null)
- * @method Store|null findOneBy(array $criteria, array $orderBy = null)
- * @method Store[]    findAll()
- * @method Store[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class StoreRepository extends ServiceEntityRepository
 {
@@ -31,6 +26,38 @@ class StoreRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Store::class);
         $this->connection = $this->getEntityManager()->getConnection();
+    }
+
+    /**
+     * @param UserInterface $user
+     * @return array|null
+     * @throws Exception
+     */
+    public function stores(UserInterface $user): ?array
+    {
+        if (in_array(User::ROLE_ADMIN, $user->getRoles(), true)) {
+            $statement = $this->connection->prepare('select backdrop_admin_stores()');
+            $result = $statement->executeQuery()->fetchAllAssociative();
+            return json_decode($result[0]['backdrop_admin_stores'], true) ?: [];
+        } else {
+            $statement = $this->connection->prepare('select backdrop_stores(:owner_id)');
+            $statement->bindValue('owner_id', $user->getId(), \PDO::PARAM_INT);
+            $result = $statement->executeQuery()->fetchAllAssociative();
+            return json_decode($result[0]['backdrop_stores'], true) ?: [];
+        }
+    }
+
+    /**
+     * @param Store $store
+     * @return array|null
+     * @throws Exception
+     */
+    public function extra(Store $store): ?array
+    {
+        $statement = $this->connection->prepare('select backdrop_store_extra(:store_id)');
+        $statement->bindValue('store_id', $store->getId(), \PDO::PARAM_INT);
+        $result = $statement->executeQuery()->fetchOne();
+        return json_decode($result, true) ?: [];
     }
 
     /**

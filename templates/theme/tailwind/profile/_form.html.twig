@@ -85,6 +85,10 @@
 </div>
 <div class="grid grid-cols-1 mb-3">
     <ul id="attachments" class="flex flex-wrap items-left justify-start">
+        <li class="template relative my-1 mx-0.5 overflow-hidden bg-cover bg-no-repeat">
+            <img class="h-auto max-w-xs shadow-xl dark:shadow-gray-800 rounded" src="">
+            <div class="absolute bottom-0 right-0 bg-opacity-60 bg-white block w-full justify-end"></div>
+        </li>
         {% for key, picture in app.user.userDetails.attach|slice(0, 16) %}
             <li class="relative my-1 mx-0.5 overflow-hidden bg-cover bg-no-repeat">
                 {% set _picture = 'storage/user/picture/' ~ app.user.id ~ '/' ~ picture.name %}
@@ -93,7 +97,7 @@
                     <div id="overlay" class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-red-700 bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-40"></div>
                 <div class="absolute bottom-0 right-0 bg-opacity-60 bg-white block w-full justify-end"
                      data-id="{{ picture.id }}">
-                    {% if app.user.attach.id != picture.id %}
+                    {% if app.user.attach is not null and app.user.attach.id != picture.id %}
                         <a href="{{ path('app_profile_attach_remove') }}" class="mr-1 my-1 fa fa-trash text-indigo-700 hover:text-black/40 confirm-delete float-end"></a>
                     {% endif %}
                     <a href="{{ path('app_profile_attach_default') }}" class="mr-1 my-1 fa fa-user-plus text-indigo-700 hover:text-black/40 confirm-change float-end"></a>
@@ -106,9 +110,9 @@
     <div class="relative mb-5">
         {{ form_label(form.picture, 'label.form.picture', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white', 'data-label': 'label.form.picture'|trans}}) }}
         {{ form_widget(form.picture, {attr: {class: 'block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400', 'data-url': path('app_profile_attach'), 'aria-describedby': 'picture' }}) }}
-        <small class="mt-1 text-sm font-thin text-gray-400 dark:text-gray-200"
-               id="file_input_help">{{ form.picture.vars.attr.accept|upper }}
-            (MAX. {{ form.picture.vars.attr.max|format_bytes }}).</small>
+        <small class="mt-1 text-xs font-thin text-gray-400 dark:text-gray-200"
+               id="file_input_help">{{ form.picture.vars.attr.accept|capitalize }}
+            (max. {{ form.picture.vars.attr.max|format_bytes|capitalize }}).</small>
     </div>
 </div>
 <input type="hidden" name="flash-success" value="{{ _message[0]|default([]|json_encode) }}">

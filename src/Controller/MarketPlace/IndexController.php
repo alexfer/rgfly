@@ -25,14 +25,14 @@ class IndexController extends AbstractController
      */
     #[Route('', name: 'app_market_place_index')]
     public function index(
-        Request                 $request,
-        ?UserInterface          $user,
-        EntityManagerInterface  $em,
+        Request                $request,
+        ?UserInterface         $user,
+        EntityManagerInterface $em,
         StoreProductRepository $repository,
     ): Response
     {
         $offset = $request->get('offset') ?: 0;
-        $limit = $request->get('limit') ?: 8;
+        $limit = $request->get('limit') ?: 9;
 
         $products = $repository->fetchProducts($offset, $limit);
 
@@ -41,7 +41,7 @@ class IndexController extends AbstractController
         ]);
 
         return $this->render('market_place/index.html.twig', [
-            'products' => $products['data'],
+            'products' => $products['data']['products'],
             'rows_count' => $products['rows_count'],
             'customer' => $customer,
         ]);

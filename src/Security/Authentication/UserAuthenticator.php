@@ -65,11 +65,8 @@ class UserAuthenticator extends AbstractAuthenticator
                 if (!$user) {
                     throw new UserNotFoundException();
                 }
-                $user->setIp($request->getClientIp());
-
-                if (!in_array(User::ROLE_CUSTOMER, $user->getRoles(), true)) {
-                    $user->getUserDetails()->setUpdatedAt(new \DateTime());
-                }
+                $user->setIp($request->getClientIp())
+                    ->setLastLoginAt(new \DateTimeImmutable());
                 $this->em->persist($user);
                 $this->em->flush();
                 return $user;

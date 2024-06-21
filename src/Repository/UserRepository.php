@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\MarketPlace\StoreCustomer;
 use App\Entity\User;
 use App\Entity\UserDetails;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -62,9 +63,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      */
     public function loadUserByIdentifier(string $email): ?User
     {
-        $entityManager = $this->getEntityManager();
+        $em = $this->getEntityManager();
 
-        return $entityManager->createQuery('SELECT u FROM App\Entity\User u WHERE u.email = :query AND u.deleted_at IS NULL')
+        return $em->createQuery('SELECT u FROM App\Entity\User u WHERE u.email = :query AND u.deleted_at IS NULL')
             ->setParameter('query', $email)
             ->getOneOrNullResult();
     }
@@ -85,26 +86,54 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $statement->executeQuery()->fetchOne();
     }
 
-
+    /**
+     * @param string|null $query
+     * @param int $limit
+     * @param int $offset
+     * @return array
+     */
     public function fetch(string $query = null, int $limit = 25, int $offset = 0): array
     {
         $qb = $this->createQueryBuilder('u')
             ->select([
                 'u.id',
                 'u.created_at',
-                'details.updated_at',
+                'u.deleted_at',
+                'u.last_login_at',
                 'u.roles',
-                'details.first_name',
-                'details.last_name',
+                'd.first_name as member_first_name',
+                'd.last_name as member_last_name',
+                'cu.first_name as customer_first_name',
+                'cu.last_name as customer_last_name',
             ])
-            ->join(UserDetails::class, 'details', 'WITH', 'u.id = details.user')
-            ->where('details.first_name LIKE :query')
-            ->orWhere('details.last_name LIKE :query')
+            ->leftJoin(UserDetails::class, 'd', 'WITH', 'u.id = d.user')
+            ->leftJoin(StoreCustomer::class, 'cu', 'WITH', 'cu.member = u.id')
             ->orWhere('u.email LIKE :query')
+            ->orWhere('cu.email LIKE :query')
+            ->orWhere('d.first_name LIKE :query')
+            ->orWhere('d.last_name LIKE :query')
+            ->orWhere('cu.first_name LIKE :query')
+            ->orWhere('cu.last_name LIKE :query')
             ->setParameter('query', '%' . $query . '%')
+            ->orderBy('u.last_login_at', 'DESC')
             ->setFirstResult($offset)
             ->setMaxResults($limit);
 
-        return $qb->getQuery()->getResult();
+        $rows = $this->createQueryBuilder('uc')
+            ->select('COUNT(uc.id)')
+            ->leftJoin(UserDetails::class, 'd', 'WITH', 'uc.id = d.user')
+            ->leftJoin(StoreCustomer::class, 'cu', 'WITH', 'cu.member = uc.id')
+            ->orWhere('uc.email LIKE :query')
+            ->orWhere('cu.email LIKE :query')
+            ->orWhere('d.first_name LIKE :query')
+            ->orWhere('d.last_name LIKE :query')
+            ->orWhere('cu.first_name LIKE :query')
+            ->orWhere('cu.last_name LIKE :query')
+            ->setParameter('query', '%' . $query . '%');
+
+        return [
+            'rows' => $rows->getQuery()->getResult(),
+            'results' => $qb->getQuery()->getResult(),
+        ];
     }
 }

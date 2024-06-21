@@ -13,14 +13,14 @@
                 <th scope="col" class="px-6 py-3 text-center">{{ 'table.header.customer'|trans }}</th>
                 <th class="text-center px-6 py-3" scope="col">{{ 'table.header.created_at'|trans }}</th>
                 <th scope="col" class="px-6 py-3 text-center">{{ 'table.header.priority'|trans }}</th>
-                <th class="text-center px-6 py-3" scope="col">{{ 'table.header.handle'|trans }}</th>
+                <th class="text-center px-6 py-3" scope="col">{{ 'table.header.review'|trans }}</th>
             </tr>
             </thead>
             <tbody>
             {% for message in messages %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <th scope="row"
-                        class="px-6 py-3 w-2/5 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         {% if message.product is not null %}
                             <a class="font-semibold text-gray-500 hover:text-gray-700 dark:hover:text-white"
                                target="_blank"
@@ -33,17 +33,22 @@
                         {% elseif message.order is not null %}
                             {{ message.order.number }}
                         {% else %}
-                            {{ 'market.message.question'|trans }}
+                            {{ 'store.message.question'|trans }}
                         {% endif %}
                     </th>
-                    <td class="text-center px-6 py-3 w-1/5">
+                    <td class="text-center px-6 py-3">
                         {{ message.customer.full_name }}
                     </td>
-                    <td class="text-center px-6 py-3 w-1/5">
+                    <td class="text-center px-6 py-3">
                         {{ message.created|date(datetime_format) }}
                     </td>
-                    <td class="text-center px-6 py-3 w-1/5">{{ message.priority }}</td>
-                    <td class="text-center px-6 py-3 w-1/5"></td>
+                    <td class="text-center px-6 py-3">{{ message.priority }}</td>
+                    <td class="text-center px-6 py-3">
+                        <a role="button" href=""
+                           class="border rounded px-1.5 py-1.5 mr-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
+                            <i class="fa fa-comments text-blue-500 dark:text-white"></i>
+                        </a>
+                    </td>
                 </tr>
             {% else %}
                 <tr>

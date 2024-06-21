@@ -2,23 +2,13 @@
 
 namespace App\Repository\MarketPlace;
 
-use App\Entity\MarketPlace\Store;
-use App\Entity\MarketPlace\StoreCoupon;
-use App\Entity\MarketPlace\StoreProduct;
+use App\Entity\MarketPlace\{Store, StoreProduct};
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Statement;
-use Doctrine\ORM\Query\Expr;
+use Doctrine\DBAL\{Connection, Exception, Statement};
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<StoreProduct>
- *
- * @method StoreProduct|null find($id, $lockMode = null, $lockVersion = null)
- * @method StoreProduct|null findOneBy(array $criteria, array $orderBy = null)
- * @method StoreProduct[]    findAll()
- * @method StoreProduct[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class StoreProductRepository extends ServiceEntityRepository
 {
@@ -63,13 +53,11 @@ class StoreProductRepository extends ServiceEntityRepository
      */
     public function fetchProducts(int $offset = 0, int $limit = 10): array
     {
-        $products = [];
-
         $statement = $this->connection->prepare('select get_products(:offset, :limit)');
         $statement = $this->bindPagination($statement, $offset, $limit);
         $result = $statement->executeQuery()->fetchAllAssociative();
 
-        return json_decode($result[0]['get_products'], true) ?: $products;
+        return json_decode($result[0]['get_products'], true) ?: [];
     }
 
     /**
@@ -99,14 +87,12 @@ class StoreProductRepository extends ServiceEntityRepository
         int $limit = 10,
     ): array
     {
-        $products = [];
-
         $statement = $this->connection->prepare('select get_products_by_child_category(:child_id, :offset, :limit)');
         $statement->bindValue('child_id', $id, \PDO::PARAM_INT);
         $statement = $this->bindPagination($statement, $offset, $limit);
         $result = $statement->executeQuery()->fetchAllAssociative();
 
-        return json_decode($result[0]['get_products_by_child_category'], true) ?: $products;
+        return json_decode($result[0]['get_products_by_child_category'], true) ?: [];
     }
 
 
@@ -123,14 +109,12 @@ class StoreProductRepository extends ServiceEntityRepository
         int    $limit = 10,
     ): array
     {
-        $products = [];
-
         $statement = $this->connection->prepare('select get_products_by_parent_category(:slug, :offset, :limit)');
         $statement->bindValue('slug', $slug, \PDO::PARAM_STR);
         $statement = $this->bindPagination($statement, $offset, $limit);
         $result = $statement->executeQuery()->fetchAllAssociative();
 
-        return json_decode($result[0]['get_products_by_parent_category'], true) ?: $products;
+        return json_decode($result[0]['get_products_by_parent_category'], true) ?: [];
     }
 
     /**
@@ -139,6 +123,7 @@ class StoreProductRepository extends ServiceEntityRepository
      * @param int $offset
      * @param int $limit
      * @return array
+     * @throws Exception
      */
     public function products(
         Store   $store,
@@ -147,19 +132,13 @@ class StoreProductRepository extends ServiceEntityRepository
         int     $limit = 10,
     ): array
     {
-        $qb = $this->createQueryBuilder('p')
-            ->leftJoin(StoreCoupon::class, 'sc', Expr\Join::WITH, 'sc.store = :store')
-            ->leftJoin('p.storeCoupons', 'pc')
-            ->where('p.store = :store')
-            ->setParameter('store', $store);
+        $statement = $this->connection->prepare('select backdrop_products(:store_id, :query, :offset, :limit)');
+        $statement->bindValue('store_id', $store->getId(), \PDO::PARAM_INT);
+        $statement->bindValue('query', $search ?: '', \PDO::PARAM_STR);
+        $statement = $this->bindPagination($statement, $offset, $limit);
+        $result = $statement->executeQuery()->fetchAllAssociative();
 
-        if (!empty($search)) {
-            $qb->andWhere('LOWER(p.name) LIKE :search')
-                ->setParameter('search', '%' . strtolower($search) . '%');
-        }
-
-        $qb->setFirstResult($offset)->setMaxResults($limit);
-        return $qb->getQuery()->getResult();
+        return json_decode($result[0]['backdrop_products'], true) ?: [];
     }
 
 }

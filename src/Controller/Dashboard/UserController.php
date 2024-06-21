@@ -2,21 +2,15 @@
 
 namespace App\Controller\Dashboard;
 
+use App\Entity\MarketPlace\StoreCustomer;
 use App\Entity\User;
 use App\Form\Type\User\ChangePasswordProfileType;
-use App\Repository\{AttachRepository, UserDetailsRepository,};
-use App\Service\FileUploader;
-use App\Service\Interface\ImageValidatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
-use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\{Request, Response,};
 use Symfony\Component\Intl\{Countries, Locale,};
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/dashboard/user')]
@@ -36,70 +30,10 @@ class UserController extends AbstractController
     {
         $query = $request->query->get('search');
         $users = $em->getRepository(User::class)->fetch($query);
-        return $this->render('dashboard/content/user/index.html.twig', ['users' => $users]);
-    }
-
-    /**
-     * @param Request $request
-     * @param TranslatorInterface $translator
-     * @param EntityManagerInterface $em
-     * @param UserDetailsRepository $repository
-     * @param SluggerInterface $slugger
-     * @param CacheManager $cacheManager
-     * @param ParameterBagInterface $params
-     * @param AttachRepository $attachRepository
-     * @param ImageValidatorInterface $imageValidator
-     * @return Response
-     * @throws Exception
-     */
-    #[Route('/details/{id}/change-picture', name: 'app_dashboard_change_picture_user', methods: ['POST'])]
-    public function changePicture(
-        Request                 $request,
-        TranslatorInterface     $translator,
-        EntityManagerInterface  $em,
-        UserDetailsRepository   $repository,
-        SluggerInterface        $slugger,
-        CacheManager            $cacheManager,
-        ParameterBagInterface   $params,
-        AttachRepository        $attachRepository,
-        ImageValidatorInterface $imageValidator,
-    ): Response
-    {
-        $user = $repository->find($request->get('id'));
-        $file = $request->files->get('file');
-
-        if ($file) {
-
-            $validate = $imageValidator->validate($file, $translator);
-
-            if ($validate->has(0)) {
-                return $this->json(['message' => $validate->get(0)->getMessage(), 'picture' => null]);
-            }
-
-            $fileUploader = new FileUploader($this->getTargetDir($user->getId(), $params), $slugger, $em);
-
-            try {
-                $attach = $fileUploader->upload($file)->handle($user);
-            } catch (Exception $ex) {
-                throw new Exception($ex->getMessage());
-            }
-
-            $attachments = $attachRepository->findAll();
-            foreach ($attachments as $attachment) {
-                $user->removeAttach($attachment);
-            }
-
-            $user->getUser()->setAttach($attach);
-            $user->addAttach($attach);
-        }
-
-        $em->persist($user);
-        $em->flush();
-
-        $url = "storage/user/picture/{$request->get('id')}/{$attach->getName()}";
-        $picture = $cacheManager->getBrowserPath(parse_url($url, PHP_URL_PATH), 'user_preview', [], null);
-
-        return $this->json(['message' => $translator->trans('user.picture.changed'), 'picture' => $picture]);
+        return $this->render('dashboard/content/user/index.html.twig', [
+            'users' => $users['results'],
+            'rows' => reset($users['rows'][0]),
+        ]);
     }
 
     /**
@@ -115,28 +49,21 @@ class UserController extends AbstractController
         Request                     $request,
         UserPasswordHasherInterface $passwordHasher,
         EntityManagerInterface      $em,
+        User                        $user,
         TranslatorInterface         $translator,
     ): Response
     {
-        $user = $em->getRepository(User::class)->find($request->get('id'));
         $country = $user->getUserDetails()->getCountry();
 
         $form = $this->createForm(ChangePasswordProfileType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $encodedPassword = $passwordHasher->hashPassword(
-                $user,
-                $form->get('plainPassword')->getData()
-            );
-
+            $encodedPassword = $passwordHasher->hashPassword($user, $form->get('plainPassword')->getData());
             $user->setPassword($encodedPassword);
             $em->flush();
-
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.password.changed')]));
-
-            return $this->redirectToRoute('app_dashboard_details_user', ['id' => $user->getId(), 'tab' => 'security']);
+            return $this->redirectToRoute('app_dashboard_details_user', ['id' => $user->getId(), 'tab' => $request->get('tab')]);
         }
 
         return $this->render('dashboard/content/user/details.html.twig', [
@@ -147,13 +74,65 @@ class UserController extends AbstractController
     }
 
     /**
-     *
-     * @param int|null $id
-     * @param ParameterBagInterface $params
-     * @return string
+     * @param Request $request
+     * @param UserPasswordHasherInterface $passwordHasher
+     * @param User $user
+     * @param EntityManagerInterface $em
+     * @param TranslatorInterface $translator
+     * @return Response
      */
-    private function getTargetDir(?int $id, ParameterBagInterface $params): string
+    #[Route('/customer/{id}/{tab}', name: 'app_dashboard_customer_user', methods: ['GET', 'POST'])]
+    public function customer(
+        Request                     $request,
+        UserPasswordHasherInterface $passwordHasher,
+        User                        $user,
+        EntityManagerInterface      $em,
+        TranslatorInterface         $translator,
+    ): Response
     {
-        return sprintf('%s/picture/', $params->get('user_storage_dir')) . $id;
+        $customer = $em->getRepository(StoreCustomer::class)->findOneBy(['member' => $request->get('id')]);
+        $country = $customer->getCountry();
+        $form = $this->createForm(ChangePasswordProfileType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $encodedPassword = $passwordHasher->hashPassword($user, $form->get('plainPassword')->getData());
+            $user->setPassword($encodedPassword);
+            $em->flush();
+            $this->addFlash('success', json_encode(['message' => $translator->trans('user.password.changed')]));
+            return $this->redirectToRoute('app_dashboard_customer_user', ['id' => $user->getId(), 'tab' => $request->get('tab')]);
+        }
+
+        return $this->render('dashboard/content/user/customer.html.twig', [
+            'customer' => $customer,
+            'user' => $user,
+            'form' => $form,
+            'country' => $country ? Countries::getNames(Locale::getDefault())[$country] : null,
+        ]);
+    }
+
+    #[Route('/secure/{id}/{tab}/{part}/{action}', name: 'app_dashboard_secure_user', methods: ['GET'])]
+    public function detail(
+        Request                $request,
+        TranslatorInterface    $translator,
+        User                   $user,
+        EntityManagerInterface $em,
+    ): Response
+    {
+        if ($request->get('action') == 'lock') {
+            $user->setDeletedAt(new \DateTime());
+        } else {
+            $user->setDeletedAt(null);
+        }
+        $em->persist($user);
+        $em->flush();
+
+        $this->addFlash('success', json_encode(['message' => $translator->trans(sprintf('user.%s.changed', $request->get('action')))]));
+
+        $route = 'app_dashboard_customer_user';
+        if ($request->get('part') == 'details') {
+            $route = 'app_dashboard_details_user';
+        }
+        return $this->redirectToRoute($route, ['id' => $user->getId(), 'tab' => $request->get('tab')]);
     }
 }

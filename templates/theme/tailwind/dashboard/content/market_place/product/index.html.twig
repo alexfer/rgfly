@@ -7,7 +7,7 @@
 {% block content %}
     {% include 'dashboard/content/market_place/navbar/nav.html.twig' %}
     {% if store.deletedAt %}
-        <div class="text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 py-2.5 ps-4 mb-3 ms-2  dar"
+        <div class="text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 py-2.5 ps-4 mb-3"
              id="liveAlertPlaceholder" role="alert">
             {{ 'product.unavailable'|trans }}
         </div>
@@ -40,14 +40,14 @@
                 <tbody class="whitespace-nowrap">
                 {% for key, product in products %}
                     {% set disabled = null %}
-                    {% for coupon in product.storeCoupons %}
-                        {% for item in coupon.product %}
-                            {% if item.id == product.id %}
-                                {% set disabled = 'disabled' %}
-                            {% endif %}
-                        {% endfor %}
-                    {% endfor %}
-                    <tr class="{{ disabled is null ? 'bg-white' : 'bg-green-100 dark:bg-green-950' }} border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 {% if product.deletedAt %}text-gray-400 bg-gray-200{% endif %}">
+{#                    {% for coupon in product.storeCoupons %}#}
+{#                        {% for item in coupon.product %}#}
+{#                            {% if item.id == product.id %}#}
+{#                                {% set disabled = 'disabled' %}#}
+{#                            {% endif %}#}
+{#                        {% endfor %}#}
+{#                    {% endfor %}#}
+                    <tr class="{{ disabled is null ? 'bg-white' : 'bg-green-100 dark:bg-green-950' }} border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 {% if product.deleted %}text-gray-400 bg-gray-200{% endif %}">
                         <td class="p-3 w-4">
                             <label class="relative flex items-center rounded-full cursor-pointer" for="i-{{ key }}">
                                 <input type="checkbox" {{ disabled }} name="product[{{ key }}]" value="{{ product.id }}"
@@ -58,10 +58,10 @@
                         <td class="px-3 py-3">
                             <a data-twe-toggle="tooltip"
                                data-twe-placement="left"
-                               class="block text-wrap font-semibold truncate hover:underline hover:text-gray-400 dark:text-gray-400 {% if product.deletedAt %}line-through{% endif %}"
+                               class="block text-wrap font-semibold truncate hover:underline hover:text-gray-400 dark:text-gray-400 {% if product.deleted %}line-through{% endif %}"
                                title="{{ product.name }}"
                                href="{{ path('app_dashboard_market_place_edit_product', {store: product.store.id, id: product.id, tab: 'details'}) }}">
-                                {{ product.shortName|length >= 40 ? product.shortName|slice(0, 40) ~ '...' : product.shortName }}
+                                {{ product.short_name|length >= 40 ? product.short_name|slice(0, 40) ~ '...' : product.short_name }}
                             </a>
                         </td>
                         <td class="px-3 py-3 text-center">
@@ -71,12 +71,12 @@
                         <td class="px-3 py-3 text-center">
                             <a href="#" data-twe-toggle="tooltip" title="{{ product.cost }} + {{ product.fee }} * {{ product.quantity }}" class="focus:cursor-help">{{ ((product.cost + product.fee) * product.quantity)|amount_format }}</a><small class="text-gray-600">{{ currency['symbol_native'] }}</small>
                         </td>
-                        <td class="px-3 py-3 text-center">{{ product.createdAt|date(date_format) }}</td>
+                        <td class="px-3 py-3 text-center">{{ product.created|date(date_format) }}</td>
                         <td class="px-3 py-3 text-center">
-                            {% if product.deletedAt %}
-                                <a class="border rounded px-1.5 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800 {{ product.store.deletedAt ? 'pointer-events-none' : '' }}"
-                                   href="{{ path('app_dashboard_restore_product', {store: product.store.id, id: product.id}) }}">
-                                    <i class="fa fa-{{ product.store.deletedAt ? 'ban' : 'arrow-up' }} dark:text-white"></i>
+                            {% if product.deleted %}
+                                <a class="border rounded px-1.5 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800{{ product.store.deleted ? ' pointer-events-none' : '' }}"
+                                   href="{% if product.store.deleted is null %}{{ path('app_dashboard_restore_product', {store: product.store.id, id: product.id}) }}{% endif %}">
+                                    <i class="fa fa-{{ product.store.deleted ? 'ban' : 'arrow-up' }} dark:text-white"></i>
                                 </a>
                             {% else %}
                                 <a href="{{ path('app_dashboard_market_place_edit_product', {store: product.store.id, id: product.id, tab: 'details'}) }}"

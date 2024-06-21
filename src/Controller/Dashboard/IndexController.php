@@ -3,9 +3,8 @@
 namespace App\Controller\Dashboard;
 
 use App\Entity\MarketPlace\Store;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -19,8 +18,7 @@ class IndexController extends AbstractController
      * @param UserInterface $user
      * @param EntityManagerInterface $em
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws Exception
      */
     #[Route('', name: 'app_dashboard')]
     public function index(
@@ -28,7 +26,7 @@ class IndexController extends AbstractController
         EntityManagerInterface $em,
     ): Response
     {
-        $stores = $em->getRepository(Store::class)->findBy(['owner' => $user]);
+        $stores = $em->getRepository(Store::class)->stores($user);
         return $this->render('dashboard/content/index.html.twig',  [
                 'stores' => $stores,
             ]);

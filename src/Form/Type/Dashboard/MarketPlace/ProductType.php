@@ -4,6 +4,7 @@ namespace App\Form\Type\Dashboard\MarketPlace;
 
 use AllowDynamicProperties;
 use App\Entity\MarketPlace\{Store, StoreCategory, StoreProduct};
+use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreProductInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -16,7 +17,6 @@ use Symfony\Component\Form\Extension\Core\Type\{ChoiceType,
     TextareaType,
     TextType};
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\{Length, NotBlank};
 
@@ -29,6 +29,11 @@ use Symfony\Component\Validator\Constraints\{Length, NotBlank};
     private null|Store $store;
 
     /**
+     * @var array
+     */
+    private array $extra;
+
+    /**
      * @var EntityRepository
      */
     private EntityRepository $categories;
@@ -36,19 +41,20 @@ use Symfony\Component\Validator\Constraints\{Length, NotBlank};
 
     /**
      * @param Security $security
-     * @param RequestStack $requestStack
+     * @param StoreProductInterface $store
      * @param EntityManagerInterface $em
      */
     public function __construct(
         Security               $security,
-        RequestStack           $requestStack,
+        StoreProductInterface  $store,
         EntityManagerInterface $em,
     )
     {
         $user = $security->getUser();
-        $store = $requestStack->getCurrentRequest()->get('store');
-        $this->store = $em->getRepository(Store::class)->find($store);
+        $this->store = $store->supports($user);
+
         $this->categories = $em->getRepository(StoreCategory::class);
+        $this->extra = $store->extra();
     }
 
     /**
@@ -58,37 +64,32 @@ use Symfony\Component\Validator\Constraints\{Length, NotBlank};
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-
-        $brands = $suppliers = $manufacturers = $categories = [];
-
-        $marketBrands = $this->store->getStoreBrands()->toArray();
-        $marketSuppliers = $this->store->getStoreSuppliers()->toArray();
-        $marketSManufacturers = $this->store->getStoreManufacturers();
+        $extra = [];
         $marketCategory = $this->categories->findBy([], ['id' => 'asc']);
 
         if ($marketCategory) {
             foreach ($marketCategory as $category) {
                 if ($category->getParent()) {
-                    $categories[$category->getParent()->getName()][$category->getName()] = $category->getId();
+                    $extra['categories'][$category->getParent()->getName()][$category->getName()] = $category->getId();
                 }
             }
         }
 
-        if ($marketBrands) {
-            foreach ($marketBrands as $brand) {
-                $brands[$brand->getId()] = $brand->getName();
+        if ($this->extra['brands']) {
+            foreach ($this->extra['brands'] as $value) {
+                $extra['brands'][$value['name']] = $value['id'];
             }
         }
 
-        if ($marketSuppliers) {
-            foreach ($marketSuppliers as $supplier) {
-                $suppliers[$supplier->getId()] = $supplier->getName();
+        if ($this->extra['suppliers']) {
+            foreach ($this->extra['suppliers'] as $value) {
+                $extra['suppliers'][$value['name']] = $value['id'];
             }
         }
 
-        if ($marketSManufacturers) {
-            foreach ($marketSManufacturers as $manufacturer) {
-                $manufacturers[$manufacturer->getId()] = $manufacturer->getName();
+        if ($this->extra['manufacturers']) {
+            foreach ($this->extra['manufacturers'] as $value) {
+                $extra['manufacturers'][$value['name']] = $value['id'];
             }
         }
 
@@ -219,7 +220,7 @@ use Symfony\Component\Validator\Constraints\{Length, NotBlank};
                     ]),
                 ],
                 'data' => $options['data']?->getStoreCategoryProducts()?->first() ? $options['data']?->getStoreCategoryProducts()?->first()?->getCategory()?->getId() : null,
-                'choices' => $categories,
+                'choices' => $extra['categories'],
             ])
             ->add('brand', ChoiceType::class, [
                 'mapped' => false,
@@ -228,7 +229,7 @@ use Symfony\Component\Validator\Constraints\{Length, NotBlank};
                 'expanded' => false,
                 'data' => $options['data']?->getStoreProductBrand()?->getBrand()?->getid(),
                 'placeholder' => 'label.form.brand_name',
-                'choices' => array_flip($brands),
+                'choices' => $extra['brands'] ?? [],
             ])
             ->add('supplier', ChoiceType::class, [
                 'mapped' => false,
@@ -237,7 +238,7 @@ use Symfony\Component\Validator\Constraints\{Length, NotBlank};
                 'expanded' => false,
                 'data' => $options['data']?->getStoreProductSupplier()?->getSupplier()?->getid(),
                 'placeholder' => 'label.form.supplier_name',
-                'choices' => array_flip($suppliers),
+                'choices' => $extra['suppliers'] ?? [],
             ])
             ->add('manufacturer', ChoiceType::class, [
                 'mapped' => false,
@@ -246,7 +247,7 @@ use Symfony\Component\Validator\Constraints\{Length, NotBlank};
                 'expanded' => false,
                 'data' => $options['data']?->getStoreProductManufacturer()?->getManufacturer()?->getid(),
                 'placeholder' => 'label.form.manufacturer_name',
-                'choices' => array_flip($manufacturers),
+                'choices' => $extra['manufacturers'] ?? [],
             ])
             ->add('description', TextareaType::class, [
                 'attr' => [
