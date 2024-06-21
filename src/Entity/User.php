@@ -39,6 +39,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTime $created_at;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $last_login_at = null;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTime $deleted_at = null;
 
@@ -318,6 +321,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $store->setOwner(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTimeImmutable|null
+     */
+    public function getLastLoginAt(): ?\DateTimeImmutable
+    {
+        return $this->last_login_at;
+    }
+
+    /**
+     * @param \DateTimeImmutable|null $last_login_at
+     * @return $this
+     */
+    public function setLastLoginAt(?\DateTimeImmutable $last_login_at): static
+    {
+        $this->last_login_at = $last_login_at;
 
         return $this;
     }

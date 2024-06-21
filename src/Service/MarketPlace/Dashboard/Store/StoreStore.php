@@ -8,14 +8,14 @@ use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class ServeStoreStore extends Handle implements ServeStoreInterface
+class StoreStore extends Handle implements ServeStoreInterface
 {
 
     protected Store $store;
 
     /**
      * @param UserInterface $user
-     * @return Store|null
+     * @return StoreStore|null
      */
     public function supports(UserInterface $user): ?Store
     {
@@ -42,6 +42,6 @@ class ServeStoreStore extends Handle implements ServeStoreInterface
      */
     public function extra(): ?array
     {
-        return $this->em->getRepository(Store::class)->extra($this->store);
+        return $this->em->getRepository(StoreStore::class)->extra($this->store);
     }
 }

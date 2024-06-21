@@ -48,7 +48,7 @@ class OrderController extends AbstractController
      * @param Request $request
      * @param UserInterface $user
      * @param EntityManagerInterface $em
-     * @param StoreInterface $serveStore
+     * @param ServeStoreInterface $serveStore
      * @return Response
      */
     #[Route('/{store}', name: 'app_dashboard_market_place_order_store_current')]
@@ -56,7 +56,7 @@ class OrderController extends AbstractController
         Request                $request,
         UserInterface          $user,
         EntityManagerInterface $em,
-        StoreInterface        $serveStore,
+        ServeStoreInterface    $serveStore,
     ): Response
     {
         $store = $this->store($serveStore, $user);
@@ -75,15 +75,15 @@ class OrderController extends AbstractController
      * @param Request $request
      * @param StoreOrders $order
      * @param UserInterface $user
-     * @param StoreInterface $serveStore
+     * @param ServeStoreInterface $serveStore
      * @return Response
      */
     #[Route('/{store}/{number}', name: 'app_dashboard_market_place_order_details_market')]
     public function details(
-        Request                $request,
-        StoreOrders            $order,
-        UserInterface          $user,
-        StoreInterface        $serveStore,
+        Request             $request,
+        StoreOrders         $order,
+        UserInterface       $user,
+        ServeStoreInterface $serveStore,
     ): Response
     {
         $store = $this->store($serveStore, $user);

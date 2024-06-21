@@ -435,6 +435,10 @@
                 <source>table.header.name</source>
                 <target>Name</target>
             </trans-unit>
+            <trans-unit id="table.header.role">
+                <source>table.header.role</source>
+                <target>Role</target>
+            </trans-unit>
             <trans-unit id="table.header.country">
                 <source>table.header.country</source>
                 <target>Country</target>
@@ -856,7 +860,18 @@
                 <source>label.form.visible</source>
                 <target>Published</target>
             </trans-unit>
-
+            <trans-unit id="user.lock">
+                <source>user.lock</source>
+                <target>Lock user</target>
+            </trans-unit>
+            <trans-unit id="user.locked">
+                <source>user.locked</source>
+                <target>Locked At</target>
+            </trans-unit>
+            <trans-unit id="user.unlock">
+                <source>user.unlock</source>
+                <target>Unlock user</target>
+            </trans-unit>
             <trans-unit id="user.tab.summary">
                 <source>user.tab.summary</source>
                 <target>Summary</target>
@@ -876,6 +891,10 @@
             <trans-unit id="user.tab.about">
                 <source>user.tab.about</source>
                 <target>About</target>
+            </trans-unit>
+            <trans-unit id="user.tab.address">
+                <source>user.tab.address</source>
+                <target>Address</target>
             </trans-unit>
             <trans-unit id="user.info.first_name">
                 <source>user.info.first_name</source>
@@ -1082,6 +1101,14 @@
             <trans-unit id="user.password.changed">
                 <source>user.password.changed</source>
                 <target><![CDATA[User password has been changed successfully.]]></target>
+            </trans-unit>
+            <trans-unit id="user.lock.changed">
+                <source>user.lock.changed</source>
+                <target><![CDATA[User locked successfully.]]></target>
+            </trans-unit>
+            <trans-unit id="user.unlock.changed">
+                <source>user.unlock.changed</source>
+                <target><![CDATA[User unlocked successfully.]]></target>
             </trans-unit>
             <trans-unit id="entry.info.draft">
                 <source>entry.info.draft</source>
@@ -1403,6 +1430,10 @@
             <trans-unit id="label.form.postal">
                 <source>label.form.postal</source>
                 <target>Your Zip/Postal code</target>
+            </trans-unit>
+            <trans-unit id="label.form.zip">
+                <source>label.form.zip</source>
+                <target>Zip/Postal</target>
             </trans-unit>
             <trans-unit id="required.text">
                 <source>required.text</source>

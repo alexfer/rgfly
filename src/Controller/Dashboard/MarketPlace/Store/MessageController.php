@@ -42,7 +42,7 @@ class MessageController extends AbstractController
      * @param Request $request
      * @param UserInterface $user
      * @param EntityManagerInterface $em
-     * @param StoreInterface $serveStore
+     * @param ServeStoreInterface $serveStore
      * @return Response
      * @throws Exception
      */
@@ -51,7 +51,7 @@ class MessageController extends AbstractController
         Request                $request,
         UserInterface          $user,
         EntityManagerInterface $em,
-        StoreInterface         $serveStore,
+        ServeStoreInterface    $serveStore,
     ): Response
     {
         $store = $this->store($serveStore, $user);
