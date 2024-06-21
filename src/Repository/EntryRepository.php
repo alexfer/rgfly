@@ -115,7 +115,8 @@ class EntryRepository extends ServiceEntityRepository
         }
 
         if ($date) {
-            $qb->where('e.created_at = :date')->setParameter('date', new \DateTimeImmutable($date), Types::DATETIME_IMMUTABLE);
+            $qb->where('e.created_at >= :date')
+                ->setParameter('date', new \DateTimeImmutable($date), Types::DATETIME_IMMUTABLE);
         }
 
         $qb->andWhere('e.type = :type')

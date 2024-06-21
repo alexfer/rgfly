@@ -36,6 +36,7 @@ class BlogController extends AbstractController
      * @param Request $request
      * @param EntityManagerInterface $em
      * @return Response
+     * @throws \Exception
      */
     #[Route('/category', name: 'app_blog_category_index')]
     #[Route('/category/{slug}', name: 'app_blog_category')]
