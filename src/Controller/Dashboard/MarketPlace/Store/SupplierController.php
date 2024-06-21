@@ -4,10 +4,9 @@ namespace App\Controller\Dashboard\MarketPlace\Store;
 
 use App\Entity\MarketPlace\StoreSupplier;
 use App\Form\Type\Dashboard\MarketPlace\SupplerType;
+use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface;
 use App\Service\MarketPlace\StoreTrait;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
 use Symfony\Component\Intl\Countries;
@@ -25,18 +24,18 @@ class SupplierController extends AbstractController
      * @param Request $request
      * @param UserInterface $user
      * @param EntityManagerInterface $em
+     * @param ServeStoreInterface $serveStore
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/{store}', name: 'app_dashboard_market_place_store_supplier')]
     public function index(
         Request                $request,
         UserInterface          $user,
         EntityManagerInterface $em,
+        ServeStoreInterface    $serveStore,
     ): Response
     {
-        $store = $this->store($request, $user, $em);
+        $store = $this->store($serveStore, $user);
         $suppliers = $em->getRepository(StoreSupplier::class)->suppliers($store, $request->query->get('search'));
 
         return $this->render('dashboard/content/market_place/supplier/index.html.twig', [
@@ -51,9 +50,8 @@ class SupplierController extends AbstractController
      * @param UserInterface $user
      * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
+     * @param ServeStoreInterface $serveStore
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/create/{store}', name: 'app_dashboard_market_place_create_supplier', methods: ['GET', 'POST'])]
     public function create(
@@ -61,9 +59,10 @@ class SupplierController extends AbstractController
         UserInterface          $user,
         EntityManagerInterface $em,
         TranslatorInterface    $translator,
+        ServeStoreInterface    $serveStore,
     ): Response
     {
-        $store = $this->store($request, $user, $em);
+        $store = $this->store($serveStore, $user);
         $supplier = new StoreSupplier();
 
         $form = $this->createForm(SupplerType::class, $supplier);
@@ -92,9 +91,8 @@ class SupplierController extends AbstractController
      * @param StoreSupplier $supplier
      * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
+     * @param ServeStoreInterface $serveStore
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/edit/{store}/{id}', name: 'app_dashboard_market_place_edit_supplier', methods: ['GET', 'POST'])]
     public function edit(
@@ -103,9 +101,10 @@ class SupplierController extends AbstractController
         StoreSupplier          $supplier,
         EntityManagerInterface $em,
         TranslatorInterface    $translator,
+        ServeStoreInterface    $serveStore,
     ): Response
     {
-        $store = $this->store($request, $user, $em);
+        $store = $this->store($serveStore, $user);
 
         $form = $this->createForm(SupplerType::class, $supplier);
         $form->handleRequest($request);
@@ -132,9 +131,8 @@ class SupplierController extends AbstractController
      * @param UserInterface $user
      * @param StoreSupplier $supplier
      * @param EntityManagerInterface $em
+     * @param ServeStoreInterface $serveStore
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/delete/{store}/{id}', name: 'app_dashboard_delete_supplier', methods: ['POST'])]
     public function delete(
@@ -142,9 +140,10 @@ class SupplierController extends AbstractController
         UserInterface          $user,
         StoreSupplier          $supplier,
         EntityManagerInterface $em,
+        ServeStoreInterface    $serveStore,
     ): Response
     {
-        $store = $this->store($request, $user, $em);
+        $store = $this->store($serveStore, $user);
         $token = $request->get('_token');
 
         if (!$token) {
@@ -157,25 +156,25 @@ class SupplierController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('app_dashboard_market_place_market_supplier', ['store' => $store->getId()]);
+        return $this->redirectToRoute('app_dashboard_market_place_store_supplier', ['store' => $store->getId()]);
     }
 
     /**
      * @param Request $request
      * @param UserInterface $user
      * @param EntityManagerInterface $em
+     * @param ServeStoreInterface $serveStore
      * @return JsonResponse
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/xhr-create/{store}', name: 'app_dashboard_market_place_xhr_create_supplier', methods: ['POST'])]
     public function xhrCreate(
         Request                $request,
         UserInterface          $user,
         EntityManagerInterface $em,
+        ServeStoreInterface    $serveStore,
     ): JsonResponse
     {
-        $store = $this->store($request, $user, $em);
+        $store = $this->store($serveStore, $user);
         $requestGetPost = $request->request->all();
         $responseJson = [];
 
@@ -205,24 +204,19 @@ class SupplierController extends AbstractController
     }
 
     /**
-     * @param Request $request
      * @param UserInterface $user
-     * @param EntityManagerInterface $em
+     * @param ServeStoreInterface $serveStore
      * @return JsonResponse
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/xhr-load-countries/{store}', name: 'app_dashboard_market_place_xhr_load_countries', methods: ['GET'])]
     public function xhrLoadCounties(
-        Request                $request,
         UserInterface          $user,
-        EntityManagerInterface $em,
+        ServeStoreInterface    $serveStore,
     ): JsonResponse
     {
-        $store = $this->store($request, $user, $em);
 
         $countries = [
-            'store' => $store->getName(),
+            'store' => $this->store($serveStore, $user)->getName(),
             'countries' => Countries::getNames(Locale::getDefault())
         ];
 

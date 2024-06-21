@@ -2,18 +2,14 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
-use App\Entity\MarketPlace\Store;
-use App\Entity\MarketPlace\StoreOrders;
+use App\Entity\MarketPlace\{Store, StoreOrders};
 use App\Service\MarketPlace\Currency;
 use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreInterface;
 use App\Service\MarketPlace\StoreTrait;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -32,8 +28,8 @@ class OrderController extends AbstractController
      */
     #[Route('', name: 'app_dashboard_market_place_order_stores')]
     public function index(
-        UserInterface $user,
-        Request $request,
+        UserInterface          $user,
+        Request                $request,
         EntityManagerInterface $manager,
     ): Response
     {
@@ -48,7 +44,7 @@ class OrderController extends AbstractController
      * @param Request $request
      * @param UserInterface $user
      * @param EntityManagerInterface $em
-     * @param ServeStoreInterface $serveStore
+     * @param StoreInterface $serveStore
      * @return Response
      */
     #[Route('/{store}', name: 'app_dashboard_market_place_order_store_current')]
@@ -56,7 +52,7 @@ class OrderController extends AbstractController
         Request                $request,
         UserInterface          $user,
         EntityManagerInterface $em,
-        ServeStoreInterface    $serveStore,
+        StoreInterface         $serveStore,
     ): Response
     {
         $store = $this->store($serveStore, $user);
@@ -75,15 +71,15 @@ class OrderController extends AbstractController
      * @param Request $request
      * @param StoreOrders $order
      * @param UserInterface $user
-     * @param ServeStoreInterface $serveStore
+     * @param StoreInterface $serveStore
      * @return Response
      */
     #[Route('/{store}/{number}', name: 'app_dashboard_market_place_order_details_market')]
     public function details(
-        Request             $request,
-        StoreOrders         $order,
-        UserInterface       $user,
-        ServeStoreInterface $serveStore,
+        Request        $request,
+        StoreOrders    $order,
+        UserInterface  $user,
+        StoreInterface $serveStore,
     ): Response
     {
         $store = $this->store($serveStore, $user);
@@ -91,7 +87,7 @@ class OrderController extends AbstractController
 
         $products = $fee = $itemSubtotal = [];
         foreach ($order->getStoreOrdersProducts() as $item) {
-            $cost =  round($item->getProduct()->getCost(), 2) + round($item->getProduct()->getFee(), 2);
+            $cost = round($item->getProduct()->getCost(), 2) + round($item->getProduct()->getFee(), 2);
             $discount = $item->getProduct()->getDiscount();
             $itemSubtotal[] = $item->getQuantity() * ($cost - (($cost * $discount) - $discount) / 100);
         }

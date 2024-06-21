@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const img = document.createElement('img');
                 const inner = document.createElement('div');
 
-                wrap.className = attachments.firstChild.nextElementSibling.getAttribute('class');
+                wrap.className = attachments.querySelector('li').getAttribute('class');
                 img.className = attachments.querySelector('img').getAttribute('class');
                 inner.className = attachments.querySelector('div').getAttribute('class');
                 img.src = data.picture;

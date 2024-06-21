@@ -2,7 +2,7 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
-use App\Entity\Attach;
+use App\Entity\{Attach, User};
 use App\Entity\MarketPlace\{StoreCoupon, StoreProduct, StoreProductAttach};
 use App\Form\Type\Dashboard\MarketPlace\ProductType;
 use App\Security\Voter\ProductVoter;
@@ -115,15 +115,20 @@ class ProductController extends AbstractController
     {
         $store = $this->store($serveStore, $user);
         $product = new StoreProduct();
+        $requestStore = $request->get('store');
 
         $form = $this->createForm(ProductType::class, $product);
         $handle = $serveProduct->supports($form);
+
+        if (in_array(User::ROLE_ADMIN, $user->getRoles())) {
+            $store = $requestStore;
+        }
 
         if ($handle->isSubmitted() && $handle->isValid()) {
             $product = $serveProduct->create($store, $product);
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
             return $this->redirectToRoute('app_dashboard_market_place_edit_product', [
-                'store' => $request->get('store'),
+                'store' => $requestStore,
                 'id' => $product->getId(),
                 'tab' => $request->get('tab'),
             ]);

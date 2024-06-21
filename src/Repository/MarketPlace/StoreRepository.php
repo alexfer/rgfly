@@ -3,6 +3,7 @@
 namespace App\Repository\MarketPlace;
 
 use App\Entity\MarketPlace\{Store, StoreCustomer};
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\{Connection, Exception};
 use Doctrine\Persistence\ManagerRegistry;
@@ -34,10 +35,16 @@ class StoreRepository extends ServiceEntityRepository
      */
     public function stores(UserInterface $user): ?array
     {
-        $statement = $this->connection->prepare('select backdrop_stores(:owner_id)');
-        $statement->bindValue('owner_id', $user->getId(), \PDO::PARAM_INT);
-        $result = $statement->executeQuery()->fetchAllAssociative();
-        return json_decode($result[0]['backdrop_stores'], true) ?: [];
+        if (in_array(User::ROLE_ADMIN, $user->getRoles(), true)) {
+            $statement = $this->connection->prepare('select backdrop_admin_stores()');
+            $result = $statement->executeQuery()->fetchAllAssociative();
+            return json_decode($result[0]['backdrop_admin_stores'], true) ?: [];
+        } else {
+            $statement = $this->connection->prepare('select backdrop_stores(:owner_id)');
+            $statement->bindValue('owner_id', $user->getId(), \PDO::PARAM_INT);
+            $result = $statement->executeQuery()->fetchAllAssociative();
+            return json_decode($result[0]['backdrop_stores'], true) ?: [];
+        }
     }
 
     /**

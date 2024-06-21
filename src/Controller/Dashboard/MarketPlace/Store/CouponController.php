@@ -4,10 +4,10 @@ namespace App\Controller\Dashboard\MarketPlace\Store;
 
 use App\Entity\MarketPlace\{Store, StoreCoupon, StoreCouponCode, StoreProduct};
 use App\Form\Type\Dashboard\MarketPlace\CouponType;
+use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface;
 use App\Service\MarketPlace\StoreTrait;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,9 +24,8 @@ class CouponController extends AbstractController
      * @param UserInterface $user
      * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
+     * @param ServeStoreInterface $serveStore
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      * @throws \Exception
      */
     #[Route('/{store}', name: 'app_dashboard_market_place_product_coupon', methods: ['GET'])]
@@ -35,10 +34,14 @@ class CouponController extends AbstractController
         UserInterface          $user,
         EntityManagerInterface $em,
         TranslatorInterface    $translator,
+        ServeStoreInterface    $serveStore,
     ): Response
     {
-        $store = $this->store($request, $user, $em);
-        $coupons = $em->getRepository(StoreCoupon::class)->findBy(['store' => $store], ['expired_at' => 'asc'], 25, 0);
+        $store = $this->store($serveStore, $user);
+        $limit = $request->query->getInt('limit', 10);
+        $offset = $request->query->getInt('offset', 0);
+
+        $coupons = $em->getRepository(StoreCoupon::class)->findBy(['store' => $store], ['expired_at' => 'asc'], $limit, $offset);
 
         $result = array_map(function ($val) use ($store, $translator) {
             $start = new \DateTime($val->getStartedAt()->format('Y-m-d H:i:s'));
@@ -129,9 +132,8 @@ class CouponController extends AbstractController
      * @param UserInterface $user
      * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
+     * @param ServeStoreInterface $serveStore
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/create/{store}', name: 'app_dashboard_market_place_create_coupon', methods: ['GET', 'POST'])]
     public function create(
@@ -139,9 +141,10 @@ class CouponController extends AbstractController
         UserInterface          $user,
         EntityManagerInterface $em,
         TranslatorInterface    $translator,
+        ServeStoreInterface    $serveStore,
     ): Response
     {
-        $store = $this->store($request, $user, $em);
+        $store = $this->store($serveStore, $user);
         $coupon = new StoreCoupon();
 
         $form = $this->createForm(CouponType::class, $coupon);
@@ -181,9 +184,8 @@ class CouponController extends AbstractController
      * @param StoreCoupon $coupon
      * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
+     * @param ServeStoreInterface $serveStore
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/edit/{store}/{id}', name: 'app_dashboard_market_place_edit_coupon', methods: ['GET', 'POST'])]
     public function edit(
@@ -192,9 +194,10 @@ class CouponController extends AbstractController
         StoreCoupon            $coupon,
         EntityManagerInterface $em,
         TranslatorInterface    $translator,
+        ServeStoreInterface    $serveStore,
     ): Response
     {
-        $store = $this->store($request, $user, $em);
+        $store = $this->store($serveStore, $user);
         $form = $this->createForm(CouponType::class, $coupon);
         $form->handleRequest($request);
 
@@ -223,9 +226,8 @@ class CouponController extends AbstractController
      * @param Request $request
      * @param UserInterface|null $user
      * @param EntityManagerInterface $em
+     * @param ServeStoreInterface $serveStore
      * @return JsonResponse
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      * @throws Exception
      */
     #[Route('/codes/{store}/{id}/{type}', name: 'app_dashboard_market_place_coupon_codes', methods: ['GET'])]
@@ -233,9 +235,10 @@ class CouponController extends AbstractController
         Request                $request,
         ?UserInterface         $user,
         EntityManagerInterface $em,
+        ServeStoreInterface    $serveStore,
     ): JsonResponse
     {
-        $store = $this->store($request, $user, $em);
+        $store = $this->store($serveStore, $user);
         $coupon = $em->getRepository(StoreCoupon::class)
             ->codes($store, $request->get('id'), $request->get('type'));
 
@@ -249,9 +252,8 @@ class CouponController extends AbstractController
      * @param StoreCoupon $coupon
      * @param UserInterface|null $user
      * @param EntityManagerInterface $em
+     * @param ServeStoreInterface $serveStore
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/delete/{store}/{id}', name: 'app_dashboard_market_place_delete_coupon', methods: ['POST'])]
     public function delete(
@@ -259,9 +261,10 @@ class CouponController extends AbstractController
         StoreCoupon            $coupon,
         ?UserInterface         $user,
         EntityManagerInterface $em,
+        ServeStoreInterface    $serveStore,
     ): Response
     {
-        $store = $this->store($request, $user, $em);
+        $store = $this->store($serveStore, $user);
         $token = $request->get('_token');
 
         if (!$token) {
