@@ -1,8 +1,8 @@
 RgFly ecommerce solution.
 ============
 
-- (Tailwind theme (dev))
-- (Bootstrap theme (not full compatibility yet))
+- Tailwind theme
+- Bootstrap theme (optional)
 
 ### Requirements:
 - [Nginx HTTP Server `1.26.0`](http://nginx.org/en/CHANGES-1.24)
