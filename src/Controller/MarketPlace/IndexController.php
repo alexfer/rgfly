@@ -2,13 +2,11 @@
 
 namespace App\Controller\MarketPlace;
 
-use App\Entity\MarketPlace\StoreCustomer;
-use App\Repository\MarketPlace\StoreProductRepository;
+use App\Entity\MarketPlace\{StoreCustomer, StoreProduct};
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -19,7 +17,6 @@ class IndexController extends AbstractController
      * @param Request $request
      * @param UserInterface|null $user
      * @param EntityManagerInterface $em
-     * @param StoreProductRepository $repository
      * @return Response
      * @throws Exception
      */
@@ -28,13 +25,12 @@ class IndexController extends AbstractController
         Request                $request,
         ?UserInterface         $user,
         EntityManagerInterface $em,
-        StoreProductRepository $repository,
     ): Response
     {
         $offset = $request->get('offset') ?: 0;
         $limit = $request->get('limit') ?: 9;
 
-        $products = $repository->fetchProducts($offset, $limit);
+        $products = $em->getRepository(StoreProduct::class)->fetchProducts($offset, $limit);
 
         $customer = $em->getRepository(StoreCustomer::class)->findOneBy([
             'member' => $user,
