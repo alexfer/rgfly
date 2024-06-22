@@ -109,16 +109,18 @@
             <div class="min-h-full">
                 <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                     <div class="lg:max-w-xl relative overflow-hidden bg-cover bg-no-repeat">
-                        {% if product.attach_name %}
-                            {% set _picture = 'storage/product/' ~ product.id ~ '/' ~ product.attach_name %}
-                            <img src="{{ asset(_picture)|imagine_filter('product_preview') }}"
-                                 class="object-cover w-full transition duration-300 ease-in-out hover:scale-125 hover:inset-1/2 rounded-t-lg"
-                                 alt="{{ product.name }}">
-                        {% else %}
-                            <img src="{{ asset('img/300x200.png') }}"
-                                 class="object-cover w-full transition duration-300 ease-in-out hover:scale-125 hover:inset-1/2 rounded-t-lg"
-                                 alt="{{ product.name }}">
-                        {% endif %}
+                        <a title="{{ product.name }}" href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}">
+                            {% if product.attach_name %}
+                                {% set _picture = 'storage/product/' ~ product.id ~ '/' ~ product.attach_name %}
+                                <img src="{{ asset(_picture)|imagine_filter('product_preview') }}"
+                                     class="object-cover w-full transition duration-300 ease-in-out hover:scale-125 hover:inset-1/2 rounded-t-lg"
+                                     alt="{{ product.name }}">
+                            {% else %}
+                                <img src="{{ asset('img/300x200.png') }}"
+                                     class="object-cover w-full transition duration-300 ease-in-out hover:scale-125 hover:inset-1/2 rounded-t-lg"
+                                     alt="{{ product.name }}">
+                            {% endif %}
+                        </a>
                         <div class="absolute top-5 w-full">
                             <div class="flex justify-between">
                                 <span class="ml-2 bg-gray-600 bg-opacity-90 text-gray-500 text-md shadow-xl font-medium me-2 px-2.5 py-0.5 rounded-md dark:bg-gray-900 dark:text-gray-300">

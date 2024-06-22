@@ -557,7 +557,7 @@ BEGIN
                                LEFT JOIN store_wishlist w ON w.product_id = p.id
                                JOIN store m ON m.id = p.store_id
                       WHERE p.deleted_at IS NULL OFFSET start LIMIT row_count)
-    SELECT json_build_object('products', json_agg(products ORDER BY RANDOM()))
+    SELECT json_agg(products ORDER BY RANDOM())
     INTO get_products FROM products;
 
     SELECT COUNT(*)
@@ -1151,7 +1151,7 @@ BEGIN
                         AND c.parent_id in (SELECT id FROM store_category WHERE slug = category_slug)
                       OFFSET start LIMIT row_count)
 
-    SELECT json_build_object('products', json_agg(products ORDER BY product DESC))
+    SELECT json_agg(products ORDER BY product DESC)
     INTO get_products
     FROM products;
 
@@ -1213,7 +1213,7 @@ BEGIN
                       WHERE p.deleted_at IS NULL
                         AND cp.category_id = child_id
                       OFFSET start LIMIT row_count)
-    SELECT json_build_object('products', json_agg(products ORDER BY product DESC))
+    SELECT json_agg(products ORDER BY product DESC)
     INTO get_products
     FROM products;
     
