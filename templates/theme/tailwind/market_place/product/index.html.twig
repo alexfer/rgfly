@@ -155,7 +155,7 @@
                 </form>
             </div>
             <div class="flex mt-5 justify-start items-start">
-                <button class="bg-gray-100 text-gray-600 border-spacing-1.5 px-4 pt-2 pb-1 mr-2 rounded-md hover:bg-gray-300 hover:text-gray-500"
+                <button class="bg-gray-100 text-gray-600 border-spacing-1.5 px-4 pt-2 pb-1 mr-2 rounded-md hover:bg-gray-300 hover:text-gray-500 sr-only"
                         data-twe-toggle="tooltip" title="{{ 'store.product.compare'|trans }}">
                     <i class="fa fa-code-fork"></i>
                 </button>
@@ -240,7 +240,7 @@
              aria-labelledby="about-tab"
                 {% if _tab == 'about' %} data-twe-tab-active{% endif %}>
             <h5 class="block text-lg font-medium text-gray-600 py-3">{{ product.short_name }}</h5>
-            <div class="text-sm font-light text-gray-500 dark:text-gray-400">{{ product.description|striptags|raw|nl2br }}</div>
+            <div class="text-sm font-light text-gray-500 dark:text-gray-400">{{ product.description|striptags|replace({'<p>': '<p class="text-sm text-gray-400 dark:text-gray-300 mb-5">'})|raw|nl2br }}</div>
         </div>
         <div class="hidden opacity-{% if _tab == 'product-info' %}100{% else %}0{% endif %} transition-opacity duration-150 ease-linear data-[twe-tab-active]:block p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
              id="product-info"
@@ -292,7 +292,7 @@
              aria-labelledby="seller-info-tab"
                 {% if _tab == 'seller-info' %} data-twe-tab-active{% endif %}>
             <h5 class="block text-lg font-medium text-gray-600 py-3">{{ product.store.name }}</h5>
-            <div class="text-sm font-light text-gray-500 dark:text-gray-400">{{ product.store.description|default('info.no_content'|trans)|raw }}</div>
+            <div class="text-sm font-light text-gray-500 dark:text-gray-400">{{ product.store.description|default('info.no_content'|trans)|striptags|replace({'<p>': '<p class="text-sm text-gray-400 dark:text-gray-300 mb-5">'})|raw|nl2br }}</div>
         </div>
         <div class="hidden opacity-{% if _tab == 'tabs-contact' %}100{% else %}0{% endif %} transition-opacity duration-150 ease-linear data-[twe-tab-active]:block p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
              id="seller-contact"

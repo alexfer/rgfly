@@ -41,7 +41,7 @@ class IndexController extends AbstractController
         ]);
 
         return $this->render('market_place/index.html.twig', [
-            'products' => $products['data']['products'],
+            'products' => $products['data'],
             'rows_count' => $products['rows_count'],
             'customer' => $customer,
         ]);
