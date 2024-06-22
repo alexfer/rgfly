@@ -1,16 +1,9 @@
 const Encore = require('@symfony/webpack-encore');
-let dotenv = require('dotenv');
+//let dotenv = require('dotenv');
 
-const env = dotenv.config();
-let theme = null;
-
-if (env.error) {
-    theme = 'bootstrap'
-    throw env.error;
-} else {
-    theme = env.parsed.APP_THEME;
-}
-
+//const env = dotenv.config();
+//let theme = env.parsed.APP_THEME || 'tailwind';
+// ${theme}
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -20,22 +13,11 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 Encore
     .setOutputPath('public/build/')
     .setPublicPath('/build')
-    .addEntry('app', `./assets/${theme}/app.js`)
-    .enableStimulusBridge(`./assets/${theme}/controllers.json`);
-if (theme === 'tailwind') {
-    Encore.addEntry('coupon-js', `./assets/${theme}/js/coupon.js`)
-        .addEntry('message-js', `./assets/${theme}/js/message.js`);
-}
-Encore.addEntry('market-js', `./assets/${theme}/js/market.js`);
-if (theme === 'bootstrap') {
-    Encore
-        .addEntry('layout', `./assets/${theme}/js/layout.js`)
-        .addEntry('image', `./assets/${theme}/js/image.js`)
-        .addEntry('responsive', `./assets/${theme}/js/responsive.js`)
-        .addStyleEntry('sidebar', `./assets/${theme}/styles/sidebar.css`)
-        .addStyleEntry('market', `./assets/${theme}/styles/market.css`);
-}
-Encore
+    .addEntry('app', `./assets/tailwind/app.js`)
+    .enableStimulusBridge(`./assets/tailwind/controllers.json`)
+    .addEntry('coupon-js', `./assets/tailwind/js/coupon.js`)
+    .addEntry('message-js', `./assets/tailwind/js/message.js`)
+    .addEntry('market-js', `./assets/tailwind/js/market.js`)
     .enablePostCssLoader((options) => {
         options.postcssOptions = {
             config: './postcss.config.js',
