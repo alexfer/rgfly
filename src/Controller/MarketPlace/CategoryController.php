@@ -26,7 +26,7 @@ class CategoryController extends AbstractController
     /**
      * @var int
      */
-    private int $limit = 9;
+    private int $limit = 3;
 
     /**
      * @param RequestStack $stack
@@ -38,8 +38,11 @@ class CategoryController extends AbstractController
     )
     {
         $this->request = $stack->getCurrentRequest();
-        $this->offset = $this->request->query->get('offset', $this->offset);
-        $this->limit = $this->request->query->get('limit', $this->limit);
+        $page = is_numeric($this->request->query->get('page')) ?: null;
+
+        if (isset($page)) {
+            $this->offset = $this->limit * ($page - 1);
+        }
     }
 
     /**
@@ -84,7 +87,7 @@ class CategoryController extends AbstractController
         return $this->render('market_place/category/index.html.twig', [
             'parent' => null,
             'products' => $products['data'],
-            'rows_count' => $products['rows_count'],
+            'pages' => ceil($products['rows_count'] / $this->limit),
             'categories' => $categories,
             'customer' => $this->customer($user),
         ]);
@@ -107,6 +110,7 @@ class CategoryController extends AbstractController
         }
 
         $children = $category->getChildren()->toArray();
+
         $products = $this->em->getRepository(StoreProduct::class)
             ->findProductsByParentCategory($slug, $this->offset, $this->limit);
 
@@ -116,7 +120,7 @@ class CategoryController extends AbstractController
             'parent_name' => $category->getName(),
             'children' => $children,
             'products' => $products['data'],
-            'rows_count' => $products['rows_count'],
+            'pages' => ceil($products['rows_count'] / $this->limit),
             'categories' => null,
             'customer' => $this->customer($user),
         ]);
@@ -156,7 +160,7 @@ class CategoryController extends AbstractController
             'parent' => $parent,
             'categories' => null,
             'products' => $products['data'],
-            'rows_count' => $products['rows_count'],
+            'pages' => ceil($products['rows_count'] / $this->limit),
             'customer' => $this->customer($user),
         ]);
     }
