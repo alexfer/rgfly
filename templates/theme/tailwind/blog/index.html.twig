@@ -47,11 +47,11 @@
                         {% set _picture = 'storage/entry/picture/' ~ entry.id ~ '/' ~ entry.attach %}
                         <a href="{{ path('app_blog_view', {slug: entry.slug}) }}">
                             {% if entry.attach %}
-                                <img src="{{ asset(_picture)|imagine_filter('entry_preview') }}"
+                                <img loading="lazy" src="{{ asset(_picture)|imagine_filter('entry_preview') }}"
                                      class="object-cover w-full transition duration-300 ease-linear hover:scale-125 rounded-t-lg"
                                      width="415" alt="{{ entry.title }}"/>
                             {% else %}
-                                <img src="{{ asset('img/380x200.png') }}"
+                                <img loading="lazy" src="{{ asset('img/380x200.png') }}"
                                      class="object-cover w-full transition duration-300 ease-linear hover:scale-125 rounded-t-lg opacity-50"
                                      width="415" alt="{{ entry.title }}"/>
                             {% endif %}
