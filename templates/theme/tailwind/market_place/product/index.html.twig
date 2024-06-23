@@ -13,7 +13,7 @@
                     {% if product.attachments_count %}
                         {% set _picture = 'storage/product/' ~ product.id ~ '/' ~ product.attachments[0].name %}
                         <div class="hidden duration-200 ease-linear" data-carousel-item="active">
-                            <img src="{{ asset(_picture)|imagine_filter('product_view') }}"
+                            <img loading="lazy" src="{{ asset(_picture)|imagine_filter('product_view') }}"
                                  class="absolute block transition duration-300 ease-linear hover:scale-125 w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
                                  alt="{{ product.name }}">
                             <div class="absolute inset-x-[15%] left-1/2 transform -translate-x-1/2 w-full bottom-5 py-5 text-center text-white md:block">
@@ -23,7 +23,7 @@
                         </div>
                     {% else %}
                         <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
-                            <img src="{{ asset('img/carousel.svg') }}"
+                            <img loading="lazy" src="{{ asset('img/carousel.svg') }}"
                                  class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 opacity-20"
                                  alt="{{ product.name }}">
                             <div class="absolute z-10 inset-x-[15%] left-1/2 transform -translate-x-1/2 w-full bottom-5 py-5 text-center text-gray-600 md:block">
@@ -35,7 +35,7 @@
                     {% for image in product.attachments|slice(1, product.attachments|length) %}
                         <div class="hidden duration-200 ease-linear" data-carousel-item>
                             {% set _image = 'storage/product/' ~ product.id ~ '/' ~ image.name %}
-                            <img src="{{ asset(_image)|imagine_filter('product_view') }}"
+                            <img loading="lazy" src="{{ asset(_image)|imagine_filter('product_view') }}"
                                  class="absolute block transition duration-300 ease-linear hover:scale-125 w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
                                  alt="{{ product.short_name }}">
                             <div class="absolute inset-x-[15%] left-1/2 transform -translate-x-1/2 w-full bottom-5 py-5 text-center text-white md:block">

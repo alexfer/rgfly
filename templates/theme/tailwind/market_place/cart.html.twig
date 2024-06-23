@@ -12,7 +12,7 @@
                             <a class="mb-2" href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}">
                                 {% if product.attach %}
                                     {% set _picture = 'storage/product/' ~ product.id ~ '/' ~  product.attach %}
-                                    <img src="{{ asset(_picture)|imagine_filter('product_thumb') }}" class="rounded-md"
+                                    <img loading="lazy" src="{{ asset(_picture)|imagine_filter('product_thumb') }}" class="rounded-md"
                                          alt="{{ product.name }}">
                                 {% else %}
                                     <div class="flex justify-center items-center">

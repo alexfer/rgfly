@@ -359,6 +359,22 @@
                 <source>title.dashboard.edit_faq</source>
                 <target>Change Question</target>
             </trans-unit>
+            <trans-unit id="pagination.name">
+                <source>pagination.name</source>
+                <target>Page navigation</target>
+            </trans-unit>
+            <trans-unit id="pagination.previous">
+                <source>pagination.previous</source>
+                <target>Previous</target>
+            </trans-unit>
+            <trans-unit id="pagination.current">
+                <source>pagination.current</source>
+                <target>current</target>
+            </trans-unit>
+            <trans-unit id="pagination.next">
+                <source>pagination.next</source>
+                <target>Next</target>
+            </trans-unit>
             <trans-unit id="table.footer.not_found">
                 <source>table.footer.not_found</source>
                 <target>Results can't be found</target>
@@ -530,6 +546,10 @@
             <trans-unit id="tooltip.show.more">
                 <source>tooltip.show.more</source>
                 <target>Details about the</target>
+            </trans-unit>
+            <trans-unit id="button.show.more">
+                <source>button.show.more</source>
+                <target>Show more</target>
             </trans-unit>
             <trans-unit id="label.form.new_password">
                 <source>label.form.new_password</source>
