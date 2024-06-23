@@ -26,7 +26,7 @@ class CategoryController extends AbstractController
     /**
      * @var int
      */
-    private int $limit = 3;
+    private int $limit = 30;
 
     /**
      * @param RequestStack $stack

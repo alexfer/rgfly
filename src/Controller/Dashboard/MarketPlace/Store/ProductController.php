@@ -3,6 +3,7 @@
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
 use App\Entity\{Attach, User};
+use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\MarketPlace\{StoreCoupon, StoreProduct, StoreProductAttach};
 use App\Form\Type\Dashboard\MarketPlace\ProductType;
 use App\Security\Voter\ProductVoter;
@@ -38,17 +39,25 @@ class ProductController extends AbstractController
     #[Route('/{store}/{search}', name: 'app_dashboard_market_place_market_product', defaults: ['search' => null])]
     public function index(
         Request               $request,
+        PaginatorInterface $paginator,
         UserInterface         $user,
         ServeProductInterface $serveProduct,
         ServeStoreInterface   $serveStore,
     ): Response
     {
         $store = $this->store($serveStore, $user);
+        $products = $serveProduct->index($store, $request->query->get('search'));
+
+        $pagination = $paginator->paginate(
+            $products,
+            $request->query->getInt('page', 1),
+            25
+        );
 
         return $this->render('dashboard/content/market_place/product/index.html.twig', [
             'store' => $store,
             'currency' => $serveStore->currency(),
-            'products' => $serveProduct->index($store, $request->query->get('search')),
+            'products' => $pagination,
             'coupons' => $serveProduct->coupon($store, StoreCoupon::COUPON_PRODUCT),
         ]);
     }
