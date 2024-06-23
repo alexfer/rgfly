@@ -40,13 +40,13 @@
                 <tbody class="whitespace-nowrap">
                 {% for key, product in products %}
                     {% set disabled = null %}
-{#                    {% for coupon in product.storeCoupons %}#}
-{#                        {% for item in coupon.product %}#}
-{#                            {% if item.id == product.id %}#}
-{#                                {% set disabled = 'disabled' %}#}
-{#                            {% endif %}#}
-{#                        {% endfor %}#}
-{#                    {% endfor %}#}
+                    {#                    {% for coupon in product.storeCoupons %} #}
+                    {#                        {% for item in coupon.product %} #}
+                    {#                            {% if item.id == product.id %} #}
+                    {#                                {% set disabled = 'disabled' %} #}
+                    {#                            {% endif %} #}
+                    {#                        {% endfor %} #}
+                    {#                    {% endfor %} #}
                     <tr class="{{ disabled is null ? 'bg-white' : 'bg-green-100 dark:bg-green-950' }} border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 {% if product.deleted %}text-gray-400 bg-gray-200{% endif %}">
                         <td class="p-3 w-4">
                             <label class="relative flex items-center rounded-full cursor-pointer" for="i-{{ key }}">
@@ -65,11 +65,16 @@
                             </a>
                         </td>
                         <td class="px-3 py-3 text-center">
-                            <a href="" data-twe-toggle="tooltip" title="{{ product.cost }} + {{ product.fee }}">{{ (product.cost + product.fee) }}</a><small class="text-gray-600">{{ currency['symbol_native'] }}</small>
+                            <a href="" data-twe-toggle="tooltip"
+                               title="{{ product.cost }} + {{ product.fee }}">{{ (product.cost + product.fee) }}</a><small
+                                    class="text-gray-600">{{ currency['symbol_native'] }}</small>
                         </td>
                         <td class="px-3 py-3 text-center">{{ product.quantity }}</td>
                         <td class="px-3 py-3 text-center">
-                            <a href="#" data-twe-toggle="tooltip" title="{{ product.cost }} + {{ product.fee }} * {{ product.quantity }}" class="focus:cursor-help">{{ ((product.cost + product.fee) * product.quantity)|amount_format }}</a><small class="text-gray-600">{{ currency['symbol_native'] }}</small>
+                            <a href="#" data-twe-toggle="tooltip"
+                               title="{{ product.cost }} + {{ product.fee }} * {{ product.quantity }}"
+                               class="focus:cursor-help">{{ ((product.cost + product.fee) * product.quantity)|amount_format }}</a><small
+                                    class="text-gray-600">{{ currency['symbol_native'] }}</small>
                         </td>
                         <td class="px-3 py-3 text-center">{{ product.created|date(date_format) }}</td>
                         <td class="px-3 py-3 text-center">
