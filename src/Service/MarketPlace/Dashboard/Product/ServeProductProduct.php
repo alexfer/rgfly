@@ -124,12 +124,12 @@ class ServeProductProduct extends Handle implements ServeProductInterface
      * @param string|null $search
      * @param int $offset
      * @param int $limit
-     * @return array|null
+     * @return array
      */
-    public function index(Store $store, string $search = null, int $offset = 0, int $limit = 20): ?array
+    public function index(Store $store, string $search = null, int $offset = 0, int $limit = 20): array
     {
         return $this->em->getRepository(StoreProduct::class)
-            ->products($store, $search, $offset, $limit)['result'] ?? null;
+            ->products($store, $search, $offset, $limit)['result'] ?? [];
     }
 
     /**
