@@ -60,10 +60,16 @@ class OrderController extends AbstractController
         $currency = Currency::currency($store->getCurrency());
         $orders = $em->getRepository(StoreOrders::class)->findBy(['store' => $store], ['id' => 'desc']);
 
+        $pagination = $this->paginator->paginate(
+            $orders,
+            $request->query->getInt('page', 1),
+            self::LIMIT
+        );
+
         return $this->render('dashboard/content/market_place/order/index.html.twig', [
             'store' => $store,
             'currency' => $currency,
-            'orders' => $orders,
+            'orders' => $pagination,
         ]);
     }
 

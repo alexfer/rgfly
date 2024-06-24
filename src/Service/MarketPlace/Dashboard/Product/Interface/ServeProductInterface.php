@@ -18,9 +18,9 @@ interface ServeProductInterface
      * @param string|null $search
      * @param int $offset
      * @param int $limit
-     * @return array|null
+     * @return array
      */
-    public function index(Store $store, string $search = null, int $offset = 0, int $limit = 20): ?array;
+    public function index(Store $store, string $search = null, int $offset = 0, int $limit = 20): array;
 
     /**
      * @param Store $store

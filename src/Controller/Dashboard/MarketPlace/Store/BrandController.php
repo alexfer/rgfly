@@ -36,9 +36,15 @@ class BrandController extends AbstractController
         $store = $this->store($serveStore, $user);
         $brands = $em->getRepository(StoreBrand::class)->brands($store, $request->query->get('search'));
 
+        $pagination = $this->paginator->paginate(
+            $brands,
+            $request->query->getInt('page', 1),
+            self::LIMIT
+        );
+
         return $this->render('dashboard/content/market_place/brand/index.html.twig', [
             'store' => $store,
-            'brands' => $brands,
+            'brands' => $pagination,
         ]);
     }
 

@@ -8,6 +8,7 @@ use App\Form\Type\Dashboard\MarketPlace\StoreType;
 use App\Service\FileUploader;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,13 +24,20 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/dashboard/marker-place')]
 class StoreController extends AbstractController
 {
+
+    public final const int LIMIT = 25;
+
     /**
+     * @param Request $request
+     * @param PaginatorInterface $paginator
      * @param UserInterface $user
      * @param EntityManagerInterface $em
      * @return Response
      */
     #[Route('/store', name: 'app_dashboard_market_place_market')]
     public function index(
+        Request                $request,
+        PaginatorInterface     $paginator,
         UserInterface          $user,
         EntityManagerInterface $em,
     ): Response
@@ -41,9 +49,14 @@ class StoreController extends AbstractController
         }
 
         $stores = $em->getRepository(Store::class)->findBy($criteria, ['created_at' => 'desc'], 20, 0);
+        $pagination = $paginator->paginate(
+            $stores,
+            $request->query->getInt('page', 1),
+            self::LIMIT
+        );
 
         return $this->render('dashboard/content/market_place/store/index.html.twig', [
-            'stores' => $stores,
+            'stores' => $pagination,
         ]);
     }
 

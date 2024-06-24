@@ -38,9 +38,15 @@ class SupplierController extends AbstractController
         $store = $this->store($serveStore, $user);
         $suppliers = $em->getRepository(StoreSupplier::class)->suppliers($store, $request->query->get('search'));
 
+        $pagination = $this->paginator->paginate(
+            $suppliers,
+            $request->query->getInt('page', 1),
+            self::LIMIT
+        );
+
         return $this->render('dashboard/content/market_place/supplier/index.html.twig', [
             'store' => $store,
-            'suppliers' => $suppliers,
+            'suppliers' => $pagination,
             'countries' => Countries::getNames(Locale::getDefault()),
         ]);
     }

@@ -12,7 +12,6 @@ use App\Service\MarketPlace\Dashboard\Product\Interface\ServeProductInterface;
 use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface;
 use App\Service\MarketPlace\StoreTrait;
 use Doctrine\ORM\EntityManagerInterface;
-use Knp\Component\Pager\PaginatorInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -31,7 +30,6 @@ class ProductController extends AbstractController
 
     /**
      * @param Request $request
-     * @param PaginatorInterface $paginator
      * @param UserInterface $user
      * @param ServeProductInterface $serveProduct
      * @param ServeStoreInterface $serveStore
@@ -40,7 +38,6 @@ class ProductController extends AbstractController
     #[Route('/{store}/{search}', name: 'app_dashboard_market_place_market_product', defaults: ['search' => null])]
     public function index(
         Request               $request,
-        PaginatorInterface    $paginator,
         UserInterface         $user,
         ServeProductInterface $serveProduct,
         ServeStoreInterface   $serveStore,
@@ -49,10 +46,10 @@ class ProductController extends AbstractController
         $store = $this->store($serveStore, $user);
         $products = $serveProduct->index($store, $request->query->get('search'));
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $products,
             $request->query->getInt('page', 1),
-            25
+            self::LIMIT
         );
 
         return $this->render('dashboard/content/market_place/product/index.html.twig', [
