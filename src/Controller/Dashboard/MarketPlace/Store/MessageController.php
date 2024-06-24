@@ -42,7 +42,7 @@ class MessageController extends AbstractController
      * @param Request $request
      * @param UserInterface $user
      * @param EntityManagerInterface $em
-     * @param ServeStoreInterface $serveStore
+     * @param StoreInterface $serveStore
      * @return Response
      * @throws Exception
      */
@@ -51,14 +51,20 @@ class MessageController extends AbstractController
         Request                $request,
         UserInterface          $user,
         EntityManagerInterface $em,
-        ServeStoreInterface    $serveStore,
+        StoreInterface    $serveStore,
     ): Response
     {
         $store = $this->store($serveStore, $user);
         $messages = $em->getRepository(StoreMessage::class)->fetchAll($store, 'low', 0, 20);
 
+        $pagination = $this->paginator->paginate(
+            $messages['data'],
+            $request->query->getInt('page', 1),
+            self::LIMIT
+        );
+
         return $this->render('dashboard/content/market_place/message/index.html.twig', [
-            'messages' => $messages['data'],
+            'messages' => $pagination,
         ]);
     }
 }

@@ -36,9 +36,15 @@ class ManufacturerController extends AbstractController
         $store = $this->store($serveStore, $user);
         $manufacturers = $em->getRepository(StoreManufacturer::class)->manufacturers($store, $request->query->get('search'));
 
+        $pagination = $this->paginator->paginate(
+            $manufacturers,
+            $request->query->getInt('page', 1),
+            self::LIMIT
+        );
+
         return $this->render('dashboard/content/market_place/manufacturer/index.html.twig', [
             'store' => $store,
-            'manufacturers' => $manufacturers,
+            'manufacturers' => $pagination,
         ]);
     }
 

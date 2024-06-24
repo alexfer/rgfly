@@ -10,7 +10,7 @@ use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -89,9 +89,15 @@ class CouponController extends AbstractController
             ];
         }, $coupons);
 
+        $pagination = $this->paginator->paginate(
+            $result,
+            $request->query->getInt('page', 1),
+            self::LIMIT
+        );
+
         return $this->render('dashboard/content/market_place/coupon/index.html.twig', [
             'store' => $store,
-            'coupons' => $result,
+            'coupons' => $pagination,
         ]);
     }
 

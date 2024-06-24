@@ -73,15 +73,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    if (elements.storesButton) {
-        elements.storesButton.addEventListener('click', (e) => {
+    if (elements.storeButton) {
+        elements.storeButton.addEventListener('click', () => {
             let search = document.getElementById('input-store-search');
-            let url = elements.storesButton.getAttribute('data-url');
+            let url = elements.storeButton.dataset.url;
             let list = document.getElementById('search-list');
             let ms = 0;
             search.value = null;
 
-            search.addEventListener('input', (e) => {
+            search.addEventListener('input', () => {
                 clearTimeout(ms);
                 ms = setTimeout(() => {
                     fetch(url + '/' + search.value)
