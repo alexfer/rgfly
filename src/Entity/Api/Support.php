@@ -17,11 +17,12 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/support/{id}',
             requirements: ['id' => '\d+'],
-            security: "is_granted('ROLE_USER')"
+            security: "is_granted('ROLE_USER'",
+            name: 'ROLE_USER',
         ),
         new Post(
             uriTemplate: '/support',
-            security: "is_granted('ROLE_ADMIN')"
+            security: 'is_granted("ROLE_ADMIN")',
         ),
         new Put(
             uriTemplate: '/support/{id}', requirements: ['id' => '\d+'], security: "is_granted('ROLE_ADMIN')"),
@@ -41,6 +42,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     paginationItemsPerPage: 10
 )]
 #[ORM\Entity(repositoryClass: SupportRepository::class)]
+#[ORM\Table(name: 'support', indexes: [new ORM\Index(columns: ['name'], name: 'name_idx')])]
 class Support
 {
     #[ORM\Id]
