@@ -66,6 +66,7 @@ class Support
     private ?bool $active;
 
     #[ORM\Column]
+    #[Groups(['read'])]
     private ?\DateTimeImmutable $created_at;
 
     #[ORM\Column(nullable: true)]
