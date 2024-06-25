@@ -76,7 +76,9 @@
                             {{ store.name|length > 25 ? store.name|slice(0, 50) ~ ' ... ' : store.name }}
                         </a>
                     </th>
-                    <td class="px-6 py-3">{{ store.owner.email }}</td>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <td class="px-6 py-3">{{ store.owner.email }}</td>
+                    {% endif %}
                     <td class="text-center px-6 py-3">{{ store.products.count }}</td>
                     <td class="text-center px-6 py-3">{{ store.createdAt|date(date_format) }}</td>
                     <td class="text-center px-6 py-3">

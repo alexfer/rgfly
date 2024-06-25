@@ -70,7 +70,7 @@ class ProductController extends AbstractController
      * @return Response
      */
     #[Route('/edit/{store}/{id}/{tab}', name: 'app_dashboard_market_place_edit_product', methods: ['GET', 'POST'])]
-    #[IsGranted(ProductVoter::EDIT, subject: 'product', statusCode: Response::HTTP_FORBIDDEN)]
+    #[IsGranted(ProductVoter::UPDATE, subject: 'product', statusCode: Response::HTTP_FORBIDDEN)]
     public function edit(
         Request               $request,
         StoreProduct          $product,

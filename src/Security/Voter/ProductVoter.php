@@ -11,9 +11,11 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 class ProductVoter extends Voter
 {
 
-    const DELETE = 'delete';
-    const VIEW = 'view';
-    const EDIT = 'edit';
+    const string DELETE = 'delete';
+
+    const string READ = 'read';
+
+    const string UPDATE = 'update';
 
 
     /**
@@ -28,10 +30,9 @@ class ProductVoter extends Voter
      * @param mixed $subject
      * @return bool
      */
-    #[\Override]
     protected function supports(string $attribute, mixed $subject): bool
     {
-        if (!in_array($attribute, [self::DELETE, self::VIEW, self::EDIT])) {
+        if (!in_array($attribute, [self::DELETE, self::READ, self::UPDATE])) {
             return false;
         }
 
@@ -48,7 +49,6 @@ class ProductVoter extends Voter
      * @param TokenInterface $token
      * @return bool
      */
-    #[\Override]
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
@@ -66,8 +66,8 @@ class ProductVoter extends Voter
 
         return match ($attribute) {
             self::DELETE => $this->canDelete($entity, $user),
-            self::VIEW => $this->canView($entity, $user),
-            self::EDIT => $this->canEdit($entity, $user),
+            self::READ => $this->canRead($entity, $user),
+            self::UPDATE => $this->canUpdate($entity, $user),
             default => throw new \LogicException('This code should not be reached!')
         };
     }
@@ -77,10 +77,10 @@ class ProductVoter extends Voter
      * @param User $user
      * @return bool
      */
-    private function canView(StoreProduct $product, User $user): bool
+    private function canRead(StoreProduct $product, User $user): bool
     {
         // if they can edit, they can view
-        if ($this->canEdit($product, $user)) {
+        if ($this->canUpdate($product, $user)) {
             return true;
         }
 
@@ -92,7 +92,7 @@ class ProductVoter extends Voter
      * @param User $user
      * @return bool
      */
-    private function canEdit(StoreProduct $product, User $user): bool
+    private function canUpdate(StoreProduct $product, User $user): bool
     {
         return $user === $product->getStore()->getOwner();
     }
