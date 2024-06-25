@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Entity\Api;
 
-use ApiPlatform\Metadata\{ApiResource, Delete, Get, Post, Put};
+use ApiPlatform\Metadata\{ApiResource, Delete, Get, GetCollection, Post, Put};
+use App\Entity\User;
 use App\Repository\SupportRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,16 +14,29 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
-        new Get(security: "is_granted('ROLE_USER')"),
-        new Post(security: "is_granted('ROLE_ADMIN')"),
-        new Put(security: "is_granted('ROLE_ADMIN')"),
-        new Delete(security: "is_granted('ROLE_ADMIN')")
+        new Get(
+            uriTemplate: '/support/{id}',
+            requirements: ['id' => '\d+'],
+            security: "is_granted('ROLE_USER')"
+        ),
+        new Post(
+            uriTemplate: '/support',
+            security: "is_granted('ROLE_ADMIN')"
+        ),
+        new Put(
+            uriTemplate: '/support/{id}', requirements: ['id' => '\d+'], security: "is_granted('ROLE_ADMIN')"),
+        new Delete(uriTemplate: '/support/{id}', requirements: ['id' => '\d+'], security: "is_granted('ROLE_ADMIN')"),
+        new GetCollection(
+            uriTemplate: '/supports',
+            normalizationContext: ['groups' => ['read']],
+            security: "is_granted('ROLE_ADMIN')",
+        ),
     ],
     normalizationContext: ['groups' => ['read']],
     denormalizationContext: ['groups' => ['write']],
     openapiContext: [
-        'summary' => 'Retrieve a collection of products',
-        'description' => 'This endpoint returns a collection of products.',
+        'summary' => 'Retrieve a collection of questions',
+        'description' => 'This endpoint returns a collection of questions.',
     ],
     paginationItemsPerPage: 10
 )]

@@ -35,6 +35,7 @@
         "dompdf/dompdf": "^3.0",
         "endroid/pdf": "^1.5",
         "knplabs/knp-paginator-bundle": "^6.4",
+        "lexik/jwt-authentication-bundle": "^3.0",
         "liip/imagine-bundle": "^2.12",
         "nelmio/cors-bundle": "^2.4",
         "phpdocumentor/reflection-docblock": "^5.4",

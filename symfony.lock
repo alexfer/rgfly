@@ -55,6 +55,18 @@
     "knplabs/knp-paginator-bundle": {
         "version": "v6.4.0"
     },
+    "lexik/jwt-authentication-bundle": {
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.5",
+            "ref": "e9481b233a11ef7e15fe055a2b21fd3ac1aa2bb7"
+        },
+        "files": [
+            "config/packages/lexik_jwt_authentication.yaml"
+        ]
+    },
     "liip/imagine-bundle": {
         "version": "2.12",
         "recipe": {
