@@ -70,21 +70,23 @@
                     <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         <a data-twe-toggle="tooltip"
                            data-twe-placement="left"
-                           class="block text-wrap font-semibold hover:underline hover:text-gray-400 dark:text-gray-400 {% if store.deletedAt is not null %}line-through{% endif %}"
+                           class="block text-wrap font-semibold hover:underline hover:text-gray-400 dark:text-gray-400 {% if store.deleted is not null %}line-through{% endif %}"
                            title="{{ store.name }}"
                            href="{{ path('app_dashboard_market_place_edit_market', {id: store.id, tab: 'details'}) }}">
                             {{ store.name|length > 25 ? store.name|slice(0, 50) ~ ' ... ' : store.name }}
                         </a>
                     </th>
-                    <td class="px-6 py-3">{{ store.owner.email }}</td>
-                    <td class="text-center px-6 py-3">{{ store.products.count }}</td>
-                    <td class="text-center px-6 py-3">{{ store.createdAt|date(date_format) }}</td>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <td class="px-6 py-3">{{ store.owner }}</td>
+                    {% endif %}
+                    <td class="text-center px-6 py-3">{{ store.products }}</td>
+                    <td class="text-center px-6 py-3">{{ store.created|date(date_format) }}</td>
                     <td class="text-center px-6 py-3">
                         <a href="{{ path('app_dashboard_market_place_market_product', {store: store.id}) }}"
                            class="border rounded pl-2 pr-1 py-1.5 mr-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
                             <i class="fa fa-cart-plus text-green-500 dark:text-white"></i>
                         </a>
-                        {% if store.deletedAt is not null %}
+                        {% if store.deleted is not null %}
                             <a class="border rounded px-2 py-1.5 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800"
                                href="{{ path('app_dashboard_restore_market', {id: store.id}) }}">
                                 <i class="fa fa-arrow-up dark:text-white"></i>
