@@ -27,12 +27,15 @@ class StoreController extends AbstractController
 
     public final const int LIMIT = 25;
 
+    private int $offset = 0;
+
     /**
      * @param Request $request
      * @param PaginatorInterface $paginator
      * @param UserInterface $user
      * @param EntityManagerInterface $em
      * @return Response
+     * @throws Exception
      */
     #[Route('/store', name: 'app_dashboard_market_place_market')]
     public function index(
@@ -42,16 +45,18 @@ class StoreController extends AbstractController
         EntityManagerInterface $em,
     ): Response
     {
-        $criteria = [];
 
-        if (!in_array(User::ROLE_ADMIN, $user->getRoles())) {
-            $criteria = ['owner' => $user];
+        $page = $request->query->getInt('page', 1);
+
+        if ($page) {
+            $this->offset = self::LIMIT * ($page - 1);
         }
 
-        $stores = $em->getRepository(Store::class)->findBy($criteria, ['created_at' => 'desc'], 20, 0);
+        $stores = $em->getRepository(Store::class)->backdrop_stores($user, $this->offset, self::LIMIT);
+
         $pagination = $paginator->paginate(
-            $stores,
-            $request->query->getInt('page', 1),
+            $stores['result'],
+            $page,
             self::LIMIT
         );
 

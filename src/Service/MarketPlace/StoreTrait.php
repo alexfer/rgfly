@@ -9,7 +9,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 trait StoreTrait
 {
-    public final const int LIMIT = 25;
+    public final const int LIMIT = 2;
+
+    public int $offset = 0;
 
     /**
      * @var PaginatorInterface
@@ -19,7 +21,7 @@ trait StoreTrait
     /**
      * @param PaginatorInterface $paginator
      */
-    public function __construct(PaginatorInterface    $paginator)
+    public function __construct(PaginatorInterface $paginator)
     {
         return $this->paginator = $paginator;
     }

@@ -5,7 +5,7 @@ namespace App\Repository\MarketPlace;
 use App\Entity\MarketPlace\{Store, StoreCustomer};
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\{Connection, Exception};
+use Doctrine\DBAL\{Connection, Exception, Statement};
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -29,6 +29,24 @@ class StoreRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param Statement $statement
+     * @param int $offset
+     * @param int $limit
+     * @return Statement
+     * @throws Exception
+     */
+    private function bindPagination(
+        Statement $statement,
+        int       $offset,
+        int       $limit,
+    ): Statement
+    {
+        $statement->bindValue('offset', $offset, \PDO::PARAM_INT);
+        $statement->bindValue('limit', $limit, \PDO::PARAM_INT);
+        return $statement;
+    }
+
+    /**
      * @param UserInterface $user
      * @return array|null
      * @throws Exception
@@ -45,6 +63,35 @@ class StoreRepository extends ServiceEntityRepository
             $result = $statement->executeQuery()->fetchAllAssociative();
             return json_decode($result[0]['backdrop_stores'], true) ?: [];
         }
+    }
+
+    /**
+     * @param UserInterface $user
+     * @param int $offset
+     * @param int $limit
+     * @return array|null
+     * @throws Exception
+     */
+    public function backdrop_stores(
+        UserInterface $user,
+        int           $offset = 0,
+        int           $limit = 20,
+    ): ?array
+    {
+        if (in_array(User::ROLE_ADMIN, $user->getRoles(), true)) {
+            $statement = $this->connection->prepare('select backdrop_fetch_stores(:offset, :limit)');
+            $statement = $this->bindPagination($statement, $offset, $limit);
+            $result = $statement->executeQuery()->fetchAllAssociative();
+            $result = $result[0]['backdrop_fetch_stores'];
+        } else {
+            $statement = $this->connection->prepare('select backdrop_owner_stores(:owner_id, :offset, :limit)');
+            $statement->bindValue('owner_id', $user->getId(), \PDO::PARAM_INT);
+            $statement = $this->bindPagination($statement, $offset, $limit);
+            $result = $statement->executeQuery()->fetchAllAssociative();
+            $result = $result[0]['backdrop_owner_stores'];
+
+        }
+        return json_decode($result, true) ?: [];
     }
 
     /**
@@ -102,8 +149,7 @@ class StoreRepository extends ServiceEntityRepository
         $statement = $this->connection->prepare('select get_store(:slug, :customer_id, :offset, :limit)');
         $statement->bindValue('slug', $slug, \PDO::PARAM_STR);
         $statement->bindValue('customer_id', $customer?->getId(), \PDO::PARAM_INT);
-        $statement->bindValue('offset', $offset, \PDO::PARAM_INT);
-        $statement->bindValue('limit', $limit, \PDO::PARAM_INT);
+        $statement = $this->bindPagination($statement, $offset, $limit);
 
         $result = $statement->executeQuery()->fetchAllAssociative();
         return json_decode($result[0]['get_store'], true) ?: null;

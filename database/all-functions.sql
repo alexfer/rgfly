@@ -557,7 +557,7 @@ BEGIN
                                LEFT JOIN store_wishlist w ON w.product_id = p.id
                                JOIN store m ON m.id = p.store_id
                       WHERE p.deleted_at IS NULL OFFSET start LIMIT row_count)
-    SELECT json_agg(products ORDER BY RANDOM())
+    SELECT json_agg(products ORDER BY product DESC)
     INTO get_products FROM products;
 
     SELECT COUNT(*)
@@ -984,61 +984,6 @@ $$;
 
 alter function backdrop_store_extra(integer) owner to rgfly;
 
-create or replace function backdrop_products(store_id integer, query text DEFAULT NULL::text, start integer DEFAULT 0, row_count integer DEFAULT 25) returns json
-    language plpgsql
-as
-$$
-DECLARE
-    results    JSON;
-    rows_count INTEGER;
-BEGIN
-    SELECT json_agg(json_build_object(
-                            'id', p.id,
-                            'store', (SELECT json_build_object(
-                                                     'id', s.id,
-                                                     'deleted', s.deleted_at
-                                             )
-                                      FROM store s
-                                      WHERE s.id = p.store_id
-                                      LIMIT 1),
-                            'name', p.name,
-                            'short_name', p.short_name,
-                            'cost', p.cost,
-                            'quantity', p.quantity,
-                            'discount', p.discount::integer,
-                            'fee', p.fee,
-                            'created', p.created_at,
-                            'deleted', p.deleted_at,
-                            'coupons', json_build_object(
-                                    'coupon', sc.id,
-                                    'product', scsp.store_product_id
-                                       )
-                    ) ORDER BY p.id DESC)
-    INTO results
-    FROM store_product p
-             LEFT JOIN store_coupon sc ON sc.store_id = p.store_id AND sc.type = 'product'
-             LEFT JOIN store_coupon_store_product scsp on sc.id = scsp.store_coupon_id
-    WHERE LOWER(p.short_name) LIKE LOWER('%' || query::text || '%')
-      AND p.store_id = backdrop_products.store_id
-    OFFSET backdrop_products.start LIMIT backdrop_products.row_count;
-
-    SELECT COUNT(*)
-    INTO rows_count
-    FROM store_product p
-    WHERE LOWER(p.short_name) LIKE LOWER('%' || query::text || '%')
-      AND p.store_id = backdrop_products.store_id;
-
-    RETURN json_build_object(
-            'result', results,
-            'query', query::text,
-            'store', backdrop_products.store_id,
-            'rows', rows_count
-           );
-END ;
-$$;
-
-alter function backdrop_products(integer, text, integer, integer) owner to rgfly;
-
 create or replace function backdrop_stores(owner_id integer) returns json
     language plpgsql
 as
@@ -1232,5 +1177,129 @@ END;
 $$;
 
 alter function get_products_by_child_category(integer, integer, integer, text) owner to rgfly;
+
+create or replace function backdrop_fetch_stores(start integer DEFAULT 0, row_count integer DEFAULT 10) returns json
+    language plpgsql
+as
+$$
+DECLARE
+    results JSON;
+BEGIN
+    WITH stores AS (SELECT DISTINCT jsonb_build_object(
+                                            'id', s.id,
+                                            'name', s.name,
+                                            'products', (SELECT COUNT(p.id) FROM store_product p WHERE p.store_id = s.id),
+                                            'owner', (SELECT u.email FROM "user" u WHERE u.id = s.owner_id),
+                                            'created', s.created_at,
+                                            'deleted', s.deleted_at
+                                    ) AS store
+                    FROM store s
+                    OFFSET start LIMIT row_count)
+    SELECT json_agg(store ORDER BY store->>'id' DESC)
+    INTO results
+    FROM stores;
+
+    RETURN json_build_object(
+            'result', results,
+            'rows', (SELECT COUNT(*) FROM store)
+           );
+END;
+$$;
+
+alter function backdrop_fetch_stores(integer, integer) owner to rgfly;
+
+create or replace function backdrop_products(store_id integer, query text DEFAULT NULL::text, start integer DEFAULT 0, row_count integer DEFAULT 25) returns json
+    language plpgsql
+as
+$$
+DECLARE
+    results    JSON;
+    rows_count INTEGER;
+BEGIN
+    WITH products AS (SELECT DISTINCT jsonb_build_object(
+                                              'id', p.id,
+                                              'store', (SELECT json_build_object(
+                                                                       'id', s.id,
+                                                                       'deleted', s.deleted_at
+                                                               )
+                                                        FROM store s
+                                                        WHERE s.id = p.store_id
+                                                        LIMIT 1),
+                                              'name', p.name,
+                                              'short_name', p.short_name,
+                                              'cost', p.cost,
+                                              'quantity', p.quantity,
+                                              'discount', p.discount::integer,
+                                              'fee', p.fee,
+                                              'created', p.created_at,
+                                              'deleted', p.deleted_at,
+                                              'coupons', json_build_object(
+                                                      'coupon', sc.id,
+                                                      'product', scsp.store_product_id
+                                                         )
+                                      ) AS product
+                      FROM store_product p
+                               LEFT JOIN store_coupon sc ON sc.store_id = p.store_id AND sc.type = 'product'
+                               LEFT JOIN store_coupon_store_product scsp on sc.id = scsp.store_coupon_id
+                      WHERE LOWER(p.short_name) LIKE LOWER('%' || query::text || '%')
+                        AND p.store_id = backdrop_products.store_id
+                      OFFSET start LIMIT row_count)
+    SELECT json_agg(product ORDER BY product->>'id' DESC)
+    INTO results
+    FROM products;
+
+    SELECT COUNT(*)
+    INTO rows_count
+    FROM store_product p
+    WHERE LOWER(p.short_name) LIKE LOWER('%' || query::text || '%')
+      AND p.store_id = backdrop_products.store_id;
+
+    RETURN json_build_object(
+            'result', results,
+            'query', query::text,
+            'store', backdrop_products.store_id,
+            'rows', rows_count
+           );
+END ;
+$$;
+
+alter function backdrop_products(integer, text, integer, integer) owner to rgfly;
+
+create or replace function backdrop_owner_stores(owner_id integer, start integer DEFAULT 0, row_count integer DEFAULT 10) returns json
+    language plpgsql
+as
+$$
+DECLARE
+    results JSON;
+BEGIN
+    WITH stores AS (SELECT DISTINCT jsonb_build_object(
+                                            'id', s.id,
+                                            'name', s.name,
+                                            'products', (SELECT COUNT(p.id)
+                                                         FROM store_product p
+                                                         WHERE p.store_id = s.id
+                                                         LIMIT 1),
+                                            'owner', (SELECT u.email
+                                                      FROM "user" u
+                                                      WHERE u.id = s.owner_id
+                                                      LIMIT 1),
+                                            'created', s.created_at,
+                                            'deleted', s.deleted_at
+                                    ) AS store
+                    FROM store s
+                    WHERE s.owner_id = backdrop_owner_stores.owner_id
+                    OFFSET start LIMIT row_count)
+    SELECT json_agg(store ORDER BY store ->> 'id' DESC)
+    INTO results
+    FROM stores;
+
+    RETURN json_build_object(
+            'result', results,
+            'rows', (SELECT COUNT(*) FROM store s WHERE s.owner_id = backdrop_owner_stores.owner_id)
+           );
+END;
+$$;
+
+alter function backdrop_owner_stores(integer, integer, integer) owner to rgfly;
 
 
