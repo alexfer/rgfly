@@ -31,7 +31,7 @@ class ProductController extends AbstractController
     /**
      * @param Request $request
      * @param UserInterface $user
-     * @param ServeProductInterface $serveProduct
+     * @param ServeProductInterface $product
      * @param ServeStoreInterface $serveStore
      * @return Response
      */
@@ -39,24 +39,27 @@ class ProductController extends AbstractController
     public function index(
         Request               $request,
         UserInterface         $user,
-        ServeProductInterface $serveProduct,
+        ServeProductInterface $product,
         ServeStoreInterface   $serveStore,
     ): Response
     {
-        $store = $this->store($serveStore, $user);
-        $products = $serveProduct->index($store, $request->query->get('search'));
+        $page = $request->query->get('page');
+        $page = !is_numeric($page) ? (int)$page : 1;
 
-        $pagination = $this->paginator->paginate(
-            $products,
-            $request->query->getInt('page', 1),
-            self::LIMIT
-        );
+        if ($page) {
+            $this->offset = self::LIMIT * ($page - 1);
+        }
+
+        $store = $this->store($serveStore, $user);
+        $products = $product->index($store, $request->query->get('search'), $this->offset, self::LIMIT);
 
         return $this->render('dashboard/content/market_place/product/index.html.twig', [
             'store' => $store,
             'currency' => $serveStore->currency(),
-            'products' => $pagination,
-            'coupons' => $serveProduct->coupon($store, StoreCoupon::COUPON_PRODUCT),
+            'rows' => $products['rows'],
+            'pages' => ceil($products['rows'] / self::LIMIT),
+            'products' => $products['result'],
+            'coupons' => $product->coupon($store, StoreCoupon::COUPON_PRODUCT),
         ]);
     }
 

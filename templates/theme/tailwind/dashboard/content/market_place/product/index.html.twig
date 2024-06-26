@@ -109,7 +109,11 @@
             </table>
         </form>
     </div>
-    <div class="navigation mt-5 w-full mx-auto">
-        {{ knp_pagination_render(products) }}
-    </div>
+    {% if rows > products|length %}
+        <div class="navigation mt-5 w-full mx-auto">
+            {% include 'dashboard/content/market_place/paginator/custom_pages.html.twig' with {
+                route: app.current_route
+            } %}
+        </div>
+    {% endif %}
 {% endblock %}

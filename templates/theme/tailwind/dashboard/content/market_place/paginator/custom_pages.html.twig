@@ -1,0 +1,44 @@
+{% set requestPage = app.request.get('page') is null ? 1 : app.request.get('page') %}
+<div class="inline-block float-end">
+    <div class="flex items-baseline flex-row border border-gray-400 rounded-sm w-auto">
+        {% if requestPage > 1 %}
+            <span class="bg-white text-gray-600 px-3 py-2 text-sm border-r border-gray-400 font-bold">
+                    <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({page: 1})) }}">
+                        <i class="fa fa-angle-double-left"></i>
+                    </a>
+                </span>
+        {% endif %}
+        {% if requestPage > 2 %}
+            <span class="bg-white text-gray-600 px-3 text-sm py-2 border-r border-gray-400">
+                <a rel="prev"
+                   href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({page: (0 + requestPage|number_format - 1)})) }}">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            </span>
+        {% endif %}
+        {% for key, page in 1..pages %}
+            {% if 1+key != requestPage %}
+                <span class="bg-white text-gray-600 px-3 py-2 text-sm border-r border-gray-400">
+                    <a href="{{ path(route, app.request.attributes.get('_route_params')|merge({page: page})) }}">{{ page }}</a>
+                </span>
+            {% else %}
+                <span class="bg-gray-600 text-white px-3 py-2 text-sm font-bold">{{ page }}</span>
+            {% endif %}
+        {% endfor %}
+        {% if requestPage < pages - 1 %}
+            <span class="bg-white text-gray-600 px-3 py-2 text-sm border-r border-gray-400">
+                <a rel="next"
+                   href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({page: (0 + requestPage|number_format + 1)})) }}">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </span>
+        {% endif %}
+        {% if requestPage < pages %}
+            <span class="bg-white text-gray-600 px-3 py-2 text-sm border-gray-400 font-bold">
+                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({page: pages})) }}">
+                    <i class="fa fa-angle-double-right"></i>
+                </a>
+            </span>
+        {% endif %}
+    </div>
+</div>
