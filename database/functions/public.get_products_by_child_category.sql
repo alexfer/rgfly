@@ -39,7 +39,7 @@ BEGIN
                       WHERE p.deleted_at IS NULL
                         AND cp.category_id = child_id
                       OFFSET start LIMIT row_count)
-    SELECT json_build_object('products', json_agg(products ORDER BY product DESC))
+    SELECT json_agg(product ORDER BY product->>'id' DESC )
     INTO get_products
     FROM products;
 

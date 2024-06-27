@@ -75,6 +75,20 @@ class StoreProductRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param int $limit
+     * @return array
+     * @throws Exception
+     */
+    public function randomProducts(int $limit): array
+    {
+        $statement = $this->connection->prepare('select get_random_products(:rows_count)');
+        $statement->bindValue('rows_count', $limit, \PDO::PARAM_STR);
+        $result = $statement->executeQuery()->fetchAllAssociative();
+
+        return json_decode($result[0]['get_random_products'], true) ?: [];
+    }
+
+    /**
      * @param int $id
      * @param int $offset
      * @param int $limit

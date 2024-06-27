@@ -25,8 +25,7 @@ class IndexController extends AbstractController
         EntityManagerInterface $em,
     ): Response
     {
-
-        $products = $em->getRepository(StoreProduct::class)->fetchProducts(0, 9);
+        $products = $em->getRepository(StoreProduct::class)->randomProducts(9);
 
         $customer = $em->getRepository(StoreCustomer::class)->findOneBy([
             'member' => $user,
