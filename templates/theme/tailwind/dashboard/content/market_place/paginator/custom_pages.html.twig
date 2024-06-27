@@ -1,4 +1,5 @@
 {% set requestPage = app.request.get('page') is null ? 1 : app.request.get('page') %}
+{% set middle = 4 %}
 <div class="inline-block float-end">
     <div class="flex items-baseline flex-row border border-gray-400 rounded-sm w-auto">
         {% if requestPage > 1 %}
@@ -16,15 +17,22 @@
                 </a>
             </span>
         {% endif %}
-        {% for key, page in 1..pages %}
-            {% if 1+key != requestPage %}
-                <span class="bg-white text-gray-600 px-3 py-2 text-sm border-r border-gray-400">
-                    <a href="{{ path(route, app.request.attributes.get('_route_params')|merge({page: page})) }}">{{ page }}</a>
-                </span>
+        {% for i in 1..pages %}
+            {% if 0 == ((requestPage) - middle) - loop.index %}
+                <span class="bg-white text-gray-600 px-3 py-2 text-sm border-r border-gray-400">..</span>
+            {% elseif 0 == (requestPage + middle) - loop.index %}
+                <span class="bg-white text-gray-600 px-3 py-2 text-sm border-r border-gray-400">..</span>
+            {% elseif 0 < (requestPage - middle) - loop.index %}
+            {% elseif 0 > (requestPage + middle) - loop.index %}
             {% else %}
-                <span class="bg-gray-600 text-white px-3 py-2 text-sm font-bold">{{ page }}</span>
+                <span class="{{ loop.index == requestPage ? 'bg-gray-600 text-white font-bold' : 'bg-white text-gray-600 border-r border-gray-400' }} px-3 py-2 text-sm">
+                    <a href="{{ path(route, app.request.attributes.get('_route_params')|merge({page: i})) }}">{{ loop.index }}</a>
+                </span>
             {% endif %}
         {% endfor %}
+        {% if middle < requestPage %}
+            <span class="bg-white text-gray-600 px-3 text-sm py-2 border-r border-gray-400">..</span>
+        {% endif %}
         {% if requestPage < pages - 1 %}
             <span class="bg-white text-gray-600 px-3 py-2 text-sm border-r border-gray-400">
                 <a rel="next"

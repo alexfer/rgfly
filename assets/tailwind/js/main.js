@@ -121,6 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 let option = document.createElement('option');
                 let form = document.getElementById('form[' + owner + ']');
                 let input = form.querySelector('input[type="text"]');
+                const span = document.createElement('span');
 
                 if (xhr !== null) {
                     fetch(xhr)
@@ -137,10 +138,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     ev.preventDefault();
                     const response = await fetch(url, {method: 'POST', body: new FormData(form)});
                     const data = await response.json();
+                    input.value = null;
                     let json = data.json;
+
+                    if(json.constraints !== undefined) {
+                        span.classList = input.nextElementSibling.classList;
+                        span.classList.replace('hidden', 'block');
+                        span.textContent = json.constraints.invalid;
+                        input.after(span);
+                        return false;
+                    }
+
                     option.value = json.option.id;
                     option.text = json.option.name;
                     option.selected = true;
+                    span.remove();
                     document.querySelector(data.json.id).append(option);
                     setTimeout(() => {
                         input.value = null;

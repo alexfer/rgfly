@@ -33,8 +33,9 @@ BEGIN
                                LEFT JOIN store_coupon_store_product scsp on sc.id = scsp.store_coupon_id
                       WHERE LOWER(p.short_name) LIKE LOWER('%' || query::text || '%')
                         AND p.store_id = backdrop_products.store_id
+                      ORDER BY product DESC
                       OFFSET start LIMIT row_count)
-    SELECT json_agg(product ORDER BY product->>'id' DESC)
+    SELECT json_agg(product)
     INTO results
     FROM products;
 

@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 trait StoreTrait
 {
-    public final const int LIMIT = 2;
+    public final const int LIMIT = 25;
 
     public int $offset = 0;
 
