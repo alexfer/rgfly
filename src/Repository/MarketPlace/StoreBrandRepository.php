@@ -2,18 +2,13 @@
 
 namespace App\Repository\MarketPlace;
 
-use App\Entity\MarketPlace\Store;
-use App\Entity\MarketPlace\StoreBrand;
+use App\Entity\MarketPlace\{Store, StoreBrand};
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<StoreBrand>
- *
- * @method StoreBrand|null find($id, $lockMode = null, $lockVersion = null)
- * @method StoreBrand|null findOneBy(array $criteria, array $orderBy = null)
- * @method StoreBrand[]    findAll()
- * @method StoreBrand[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class StoreBrandRepository extends ServiceEntityRepository
 {
@@ -27,16 +22,30 @@ class StoreBrandRepository extends ServiceEntityRepository
 
     /**
      * @param Store $store
+     * @param string $name
+     * @return bool
+     * @throws NonUniqueResultException
+     */
+    public function exists(Store $store, string $name): bool
+    {
+        $qb = $this->createQueryBuilder('b')
+            ->select('count(b.id) as exists')
+            ->where('b.store = :store')
+            ->andWhere('LOWER(b.name) LIKE :search')
+            ->setParameter('store', $store)
+            ->setParameter('search', '%' . strtolower($name) . '%');
+
+        return (bool)$qb->getQuery()->getOneOrNullResult()['exists'];
+    }
+
+    /**
+     * @param Store $store
      * @param string|null $search
-     * @param int $offset
-     * @param int $limit
      * @return array
      */
     public function brands(
         Store   $store,
-        ?string $search = null,
-        int     $offset = 0,
-        int     $limit = 10,
+        ?string $search = null
     ): array
     {
         $qb = $this->createQueryBuilder('b')
@@ -44,7 +53,8 @@ class StoreBrandRepository extends ServiceEntityRepository
             ->setParameter('store', $store)
             ->andWhere('LOWER(b.name) LIKE :search')
             ->setParameter('search', '%' . strtolower($search) . '%')
-            ->setFirstResult($offset)->setMaxResults($limit);
+            ->orderBy('b.id', 'DESC');
+
         return $qb->getQuery()->getResult();
     }
 }

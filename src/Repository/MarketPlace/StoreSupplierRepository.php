@@ -2,9 +2,9 @@
 
 namespace App\Repository\MarketPlace;
 
-use App\Entity\MarketPlace\Store;
-use App\Entity\MarketPlace\StoreSupplier;
+use App\Entity\MarketPlace\{Store, StoreSupplier};
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -27,16 +27,30 @@ class StoreSupplierRepository extends ServiceEntityRepository
 
     /**
      * @param Store $store
+     * @param string $name
+     * @return bool
+     * @throws NonUniqueResultException
+     */
+    public function exists(Store $store, string $name): bool
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->select('count(s.id) as exists')
+            ->where('s.store = :store')
+            ->andWhere('LOWER(s.name) LIKE :search')
+            ->setParameter('store', $store)
+            ->setParameter('search', '%' . strtolower($name) . '%');
+
+        return (bool)$qb->getQuery()->getOneOrNullResult()['exists'];
+    }
+
+    /**
+     * @param Store $store
      * @param string|null $search
-     * @param int $offset
-     * @param int $limit
      * @return array
      */
     public function suppliers(
-        Store  $store,
+        Store   $store,
         ?string $search = null,
-        int     $offset = 0,
-        int     $limit = 10,
     ): array
     {
         $qb = $this->createQueryBuilder('s')
@@ -44,7 +58,8 @@ class StoreSupplierRepository extends ServiceEntityRepository
             ->setParameter('store', $store)
             ->andWhere('LOWER(s.name) LIKE :search')
             ->setParameter('search', '%' . strtolower($search) . '%')
-            ->setFirstResult($offset)->setMaxResults($limit);
+            ->orderBy('s.id', 'DESC');
+
         return $qb->getQuery()->getResult();
     }
 

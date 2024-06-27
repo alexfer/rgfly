@@ -3,7 +3,7 @@
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
 use App\Entity\{Attach, User};
-use App\Entity\MarketPlace\{StoreCoupon, StoreProduct, StoreProductAttach};
+use App\Entity\MarketPlace\{Store, StoreCoupon, StoreProduct, StoreProductAttach};
 use App\Form\Type\Dashboard\MarketPlace\ProductType;
 use App\Security\Voter\ProductVoter;
 use App\Service\FileUploader;
@@ -43,8 +43,8 @@ class ProductController extends AbstractController
         ServeStoreInterface   $serveStore,
     ): Response
     {
-        $page = $request->query->get('page');
-        $page = !is_numeric($page) ? (int)$page : 1;
+        $page = $request->get('page');
+        $page = is_numeric($page) ? (int)$page : 1;
 
         if ($page) {
             $this->offset = self::LIMIT * ($page - 1);
@@ -113,6 +113,8 @@ class ProductController extends AbstractController
      * @param ServeProductInterface $serveProduct
      * @param ServeStoreInterface $serveStore
      * @return Response
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     #[Route('/create/{store}/{tab}', name: 'app_dashboard_market_place_create_product', methods: ['GET', 'POST'])]
     public function create(
@@ -131,7 +133,7 @@ class ProductController extends AbstractController
         $handle = $serveProduct->supports($form);
 
         if (in_array(User::ROLE_ADMIN, $user->getRoles())) {
-            $store = $requestStore;
+            //$store = $this->container->get(EntityManagerInterface::class)->getRepository(Store::class)->find($requestStore)    ;
         }
 
         if ($handle->isSubmitted() && $handle->isValid()) {
