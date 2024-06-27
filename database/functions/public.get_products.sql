@@ -37,11 +37,9 @@ BEGIN
                                           ORDER BY pa.product_id) a ON a.product_id = p.id
                                LEFT JOIN store_wishlist w ON w.product_id = p.id
                                JOIN store m ON m.id = p.store_id
-                      WHERE p.deleted_at IS NULL
-                      OFFSET start LIMIT row_count)
-    SELECT json_build_object('products', json_agg(products ORDER BY RANDOM()))
-    INTO get_products
-    FROM products;
+                      WHERE p.deleted_at IS NULL OFFSET start LIMIT row_count)
+    SELECT json_agg(product ORDER BY product->>'id' DESC )
+    INTO get_products FROM products;
 
     SELECT COUNT(*)
     INTO rows_count
