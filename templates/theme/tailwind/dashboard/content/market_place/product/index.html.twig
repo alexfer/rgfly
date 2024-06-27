@@ -110,7 +110,7 @@
         </form>
     </div>
     {% if rows > products|length %}
-        <div class="navigation mt-5 w-full mx-auto">
+        <div class="navigation mt-5 pb-5 w-full mx-auto">
             {% include 'dashboard/content/market_place/paginator/custom_pages.html.twig' with {
                 route: app.current_route
             } %}

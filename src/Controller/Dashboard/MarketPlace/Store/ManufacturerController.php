@@ -6,7 +6,7 @@ use App\Entity\MarketPlace\StoreManufacturer;
 use App\Form\Type\Dashboard\MarketPlace\ManufacturerType;
 use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface;
 use App\Service\MarketPlace\StoreTrait;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\{EntityManagerInterface, NonUniqueResultException};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
 use Symfony\Component\Routing\Annotation\Route;
@@ -55,6 +55,7 @@ class ManufacturerController extends AbstractController
      * @param TranslatorInterface $translator
      * @param ServeStoreInterface $serveStore
      * @return Response
+     * @throws NonUniqueResultException
      */
     #[Route('/create/{store}', name: 'app_dashboard_market_place_create_manufacturer', methods: ['GET', 'POST'])]
     public function create(
@@ -72,15 +73,23 @@ class ManufacturerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $manufacturer->setStore($store);
-            $em->persist($manufacturer);
-            $em->flush();
+            $name = $form->get('name')->getData();
 
-            $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
-            return $this->redirectToRoute('app_dashboard_market_place_edit_manufacturer', [
-                'store' => $request->get('store'),
-                'id' => $manufacturer->getId(),
-            ]);
+            $exists = $em->getRepository(StoreManufacturer::class)->exists($store, trim($name));
+
+            if (!$exists) {
+                $manufacturer->setStore($store);
+                $em->persist($manufacturer);
+                $em->flush();
+
+                $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
+                return $this->redirectToRoute('app_dashboard_market_place_edit_manufacturer', [
+                    'store' => $request->get('store'),
+                    'id' => $manufacturer->getId(),
+                ]);
+            } else {
+                $this->addFlash('danger', json_encode(['message' => $translator->trans('choice.invalid', ['%name%' => $name], 'validators')]));
+            }
         }
 
         return $this->render('dashboard/content/market_place/manufacturer/_form.html.twig', [
@@ -113,7 +122,6 @@ class ManufacturerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $manufacturer->setStore($store);
             $em->persist($manufacturer);
             $em->flush();
@@ -168,6 +176,7 @@ class ManufacturerController extends AbstractController
      * @param UserInterface $user
      * @param EntityManagerInterface $em
      * @param ServeStoreInterface $serveStore
+     * @param TranslatorInterface $translator
      * @return JsonResponse
      */
     #[Route('/xhr_create/{store}', name: 'app_dashboard_market_place_xhr_create_manufacturer', methods: ['POST'])]
@@ -176,6 +185,7 @@ class ManufacturerController extends AbstractController
         UserInterface          $user,
         EntityManagerInterface $em,
         ServeStoreInterface    $serveStore,
+        TranslatorInterface    $translator,
     ): JsonResponse
     {
         $store = $this->store($serveStore, $user);
@@ -184,23 +194,36 @@ class ManufacturerController extends AbstractController
 
         if ($requestGetPost && isset($requestGetPost['name'])) {
             if ($this->isCsrfTokenValid('create', $requestGetPost['_token'])) {
-                $manufacturer = new StoreManufacturer();
-                $manufacturer->setName($requestGetPost['name']);
-                $manufacturer->setStore($store);
-                $em->persist($manufacturer);
-                $em->flush();
+                $manufacturer = $em->getRepository(StoreManufacturer::class)->findOneBy(['store' => $store, 'name' => trim($requestGetPost['name'])]);
 
-                $responseJson = [
-                    'json' => [
-                        'id' => "#product_manufacturer",
-                        'option' => [
-                            'id' => $manufacturer->getId(),
-                            'name' => $manufacturer->getName(),
+                if (!$manufacturer) {
+                    $manufacturer = new StoreManufacturer();
+                    $manufacturer->setName($requestGetPost['name']);
+                    $manufacturer->setStore($store);
+                    $em->persist($manufacturer);
+                    $em->flush();
+
+                    $responseJson = [
+                        'json' => [
+                            'id' => "#product_manufacturer",
+                            'option' => [
+                                'id' => $manufacturer->getId(),
+                                'name' => $manufacturer->getName(),
+                            ],
                         ],
-                    ],
-                ];
+                    ];
+                } else {
+                    $responseJson = [
+                        'json' => [
+                            'constraints' => [
+                                'invalid' => $translator->trans('choice.invalid', ['%name%' => $requestGetPost['name']], 'validators')
+                            ],
+                        ]
+                    ];
+                }
             }
         }
+
         $response = new JsonResponse($responseJson);
         $response->headers->set('Content-Type', 'application/json');
         return $response;

@@ -6,7 +6,7 @@ use App\Entity\MarketPlace\StoreBrand;
 use App\Form\Type\Dashboard\MarketPlace\BrandType;
 use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface;
 use App\Service\MarketPlace\StoreTrait;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\{EntityManagerInterface, NonUniqueResultException};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
 use Symfony\Component\Routing\Annotation\Route;
@@ -55,6 +55,7 @@ class BrandController extends AbstractController
      * @param TranslatorInterface $translator
      * @param ServeStoreInterface $serveStore
      * @return Response
+     * @throws NonUniqueResultException
      */
     #[Route('/create/{store}', name: 'app_dashboard_market_place_create_brand', methods: ['GET', 'POST'])]
     public function create(
@@ -72,15 +73,23 @@ class BrandController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $brand->setStore($store);
-            $em->persist($brand);
-            $em->flush();
+            $name = $form->get('name')->getData();
 
-            $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
-            return $this->redirectToRoute('app_dashboard_market_place_edit_brand', [
-                'store' => $request->get('store'),
-                'id' => $brand->getId(),
-            ]);
+            $exists = $em->getRepository(StoreBrand::class)->exists($store, trim($name));
+
+            if (!$exists) {
+                $brand->setStore($store);
+                $em->persist($brand);
+                $em->flush();
+
+                $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
+                return $this->redirectToRoute('app_dashboard_market_place_edit_brand', [
+                    'store' => $request->get('store'),
+                    'id' => $brand->getId(),
+                ]);
+            } else {
+                $this->addFlash('danger', json_encode(['message' => $translator->trans('choice.invalid', ['%name%' => $name], 'validators')]));
+            }
         }
 
         return $this->render('dashboard/content/market_place/brand/_form.html.twig', [
@@ -113,7 +122,6 @@ class BrandController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $brand->setStore($store);
             $em->persist($brand);
             $em->flush();
@@ -160,7 +168,7 @@ class BrandController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('app_dashboard_market_place_market_brand', ['store' => $store->getId()]);
+        return $this->redirectToRoute('app_dashboard_market_place_store_brand', ['store' => $store->getId()]);
     }
 
     /**
@@ -168,7 +176,9 @@ class BrandController extends AbstractController
      * @param UserInterface $user
      * @param EntityManagerInterface $em
      * @param ServeStoreInterface $serveStore
+     * @param TranslatorInterface $translator
      * @return JsonResponse
+     * @throws NonUniqueResultException
      */
     #[Route('/xhr_create/{store}', name: 'app_dashboard_market_place_xhr_create_brand', methods: ['POST'])]
     public function xshCreate(
@@ -176,6 +186,7 @@ class BrandController extends AbstractController
         UserInterface          $user,
         EntityManagerInterface $em,
         ServeStoreInterface    $serveStore,
+        TranslatorInterface    $translator,
     ): JsonResponse
     {
         $store = $this->store($serveStore, $user);
@@ -184,21 +195,33 @@ class BrandController extends AbstractController
 
         if ($requestGetPost && isset($requestGetPost['name'])) {
             if ($this->isCsrfTokenValid('create', $requestGetPost['_token'])) {
-                $brand = new StoreBrand();
-                $brand->setName($requestGetPost['name']);
-                $brand->setStore($store);
-                $em->persist($brand);
-                $em->flush();
+                $brand = $em->getRepository(StoreBrand::class)->exists($store, trim($requestGetPost['name']));
 
-                $responseJson = [
-                    'json' => [
-                        'id' => "#product_brand",
-                        'option' => [
-                            'id' => $brand->getId(),
-                            'name' => $brand->getName(),
+                if (!$brand) {
+                    $brand = new StoreBrand();
+                    $brand->setName($requestGetPost['name']);
+                    $brand->setStore($store);
+                    $em->persist($brand);
+                    $em->flush();
+
+                    $responseJson = [
+                        'json' => [
+                            'id' => "#product_brand",
+                            'option' => [
+                                'id' => $brand->getId(),
+                                'name' => $brand->getName(),
+                            ],
                         ],
-                    ],
-                ];
+                    ];
+                } else {
+                    $responseJson = [
+                        'json' => [
+                            'constraints' => [
+                                'invalid' => $translator->trans('choice.invalid', ['%name%' => $requestGetPost['name']], 'validators')
+                            ],
+                        ]
+                    ];
+                }
             }
         }
         $response = new JsonResponse($responseJson);

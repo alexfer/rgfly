@@ -6,7 +6,7 @@ use App\Entity\MarketPlace\StoreSupplier;
 use App\Form\Type\Dashboard\MarketPlace\SupplerType;
 use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface;
 use App\Service\MarketPlace\StoreTrait;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\{EntityManagerInterface, NonUniqueResultException};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
 use Symfony\Component\Intl\Countries;
@@ -58,6 +58,7 @@ class SupplierController extends AbstractController
      * @param TranslatorInterface $translator
      * @param ServeStoreInterface $serveStore
      * @return Response
+     * @throws NonUniqueResultException
      */
     #[Route('/create/{store}', name: 'app_dashboard_market_place_create_supplier', methods: ['GET', 'POST'])]
     public function create(
@@ -75,15 +76,24 @@ class SupplierController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $supplier->setStore($store);
-            $em->persist($supplier);
-            $em->flush();
+            $name = $form->get('name')->getData();
 
-            $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
-            return $this->redirectToRoute('app_dashboard_market_place_edit_supplier', [
-                'store' => $request->get('store'),
-                'id' => $supplier->getId(),
-            ]);
+            $exists = $em->getRepository(StoreSupplier::class)->exists($store, trim($name));
+
+            if (!$exists) {
+                $supplier->setStore($store);
+                $em->persist($supplier);
+                $em->flush();
+
+                $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
+
+                return $this->redirectToRoute('app_dashboard_market_place_edit_supplier', [
+                    'store' => $request->get('store'),
+                    'id' => $supplier->getId(),
+                ]);
+            } else {
+                $this->addFlash('danger', json_encode(['message' => $translator->trans('choice.invalid', ['%name%' => $name], 'validators')]));
+            }
         }
 
         return $this->render('dashboard/content/market_place/supplier/_form.html.twig', [
@@ -170,6 +180,7 @@ class SupplierController extends AbstractController
      * @param UserInterface $user
      * @param EntityManagerInterface $em
      * @param ServeStoreInterface $serveStore
+     * @param TranslatorInterface $translator
      * @return JsonResponse
      */
     #[Route('/xhr-create/{store}', name: 'app_dashboard_market_place_xhr_create_supplier', methods: ['POST'])]
@@ -178,6 +189,7 @@ class SupplierController extends AbstractController
         UserInterface          $user,
         EntityManagerInterface $em,
         ServeStoreInterface    $serveStore,
+        TranslatorInterface    $translator,
     ): JsonResponse
     {
         $store = $this->store($serveStore, $user);
@@ -186,24 +198,37 @@ class SupplierController extends AbstractController
 
         if ($requestGetPost && isset($requestGetPost['supplier']['name'])) {
             if ($this->isCsrfTokenValid('create', $requestGetPost['supplier']['_token'])) {
-                $supplier = new StoreSupplier();
-                $supplier->setName($requestGetPost['supplier']['name']);
-                $supplier->setCountry($requestGetPost['supplier']['country']);
-                $supplier->setStore($store);
-                $em->persist($supplier);
-                $em->flush();
+                $supplier = $em->getRepository(StoreSupplier::class)->findOneBy(['store' => $store, 'name' => trim($requestGetPost['supplier']['name'])]);
 
-                $responseJson = [
-                    'json' => [
-                        'id' => "#product_supplier",
-                        'option' => [
-                            'id' => $supplier->getId(),
-                            'name' => $supplier->getName(),
+                if (!$supplier) {
+                    $supplier = new StoreSupplier();
+                    $supplier->setName($requestGetPost['supplier']['name']);
+                    $supplier->setCountry($requestGetPost['supplier']['country']);
+                    $supplier->setStore($store);
+                    $em->persist($supplier);
+                    $em->flush();
+
+                    $responseJson = [
+                        'json' => [
+                            'id' => "#product_supplier",
+                            'option' => [
+                                'id' => $supplier->getId(),
+                                'name' => $supplier->getName(),
+                            ],
                         ],
-                    ],
-                ];
+                    ];
+                } else {
+                    $responseJson = [
+                        'json' => [
+                            'constraints' => [
+                                'invalid' => $translator->trans('choice.invalid', ['%name%' => $requestGetPost['supplier']['name']], 'validators')
+                            ]
+                        ]
+                    ];
+                }
             }
         }
+
         $response = new JsonResponse($responseJson);
         $response->headers->set('Content-Type', 'application/json');
         return $response;
@@ -216,8 +241,8 @@ class SupplierController extends AbstractController
      */
     #[Route('/xhr-load-countries/{store}', name: 'app_dashboard_market_place_xhr_load_countries', methods: ['GET'])]
     public function xhrLoadCounties(
-        UserInterface          $user,
-        ServeStoreInterface    $serveStore,
+        UserInterface       $user,
+        ServeStoreInterface $serveStore,
     ): JsonResponse
     {
 

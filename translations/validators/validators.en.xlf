@@ -299,6 +299,10 @@
                 <source>form.description.min</source>
                 <target>The description is too short. It should have {{ limit }} characters or more.</target>
             </trans-unit>
+            <trans-unit id="choice.invalid">
+                <source>choice.invalid</source>
+                <target><![CDATA[The selected choice is invalid. The «%name%» already in use.]]></target>
+            </trans-unit>
             <trans-unit id="form.short_content.max">
                 <source>form.short_content.max</source>
                 <target>The short content is too long. It should have {{ limit }} characters or less.</target>
