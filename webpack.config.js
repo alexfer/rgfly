@@ -14,16 +14,20 @@ Encore
     .setOutputPath('public/build/')
     .setPublicPath('/build')
     .addEntry('app', `./assets/tailwind/app.js`)
-    .enableStimulusBridge(`./assets/tailwind/controllers.json`)
+    //.enableStimulusBridge(`./assets/tailwind/controllers.json`)
     .addEntry('coupon-js', `./assets/tailwind/js/coupon.js`)
     .addEntry('message-js', `./assets/tailwind/js/message.js`)
     .addEntry('market-js', `./assets/tailwind/js/market.js`)
+    .addEntry('chart-js', `./assets/tailwind/js/dashboard/summary.js`)
     .enablePostCssLoader((options) => {
         options.postcssOptions = {
             config: './postcss.config.js',
         }
     })
     .splitEntryChunks()
+
+    // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
+    .enableStimulusBridge('./assets/controllers.json')
     .enableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()
     .enableBuildNotifications()

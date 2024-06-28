@@ -69,6 +69,7 @@
         "symfony/translation": "7.1.*",
         "symfony/twig-bundle": "7.1.*",
         "symfony/uid": "7.1.*",
+        "symfony/ux-chartjs": "^2.18",
         "symfony/ux-twig-component": "^v2.13.3",
         "symfony/validator": "7.1.*",
         "symfony/web-link": "7.1.*",
