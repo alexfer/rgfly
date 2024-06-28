@@ -166,4 +166,8 @@ class StoreRepository extends ServiceEntityRepository
         return json_decode($result[0]['get_random_store'], true) ?: null;
     }
 
+    public function findStoreSummaryBySlug(string $slug): ?array
+    {
+    }
+
 }
