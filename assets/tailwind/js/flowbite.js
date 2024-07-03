@@ -1,6 +1,31 @@
 import {Dismiss, initFlowbite} from "flowbite";
+import {Datepicker} from 'flowbite-datepicker';
+
 
 initFlowbite();
+
+const datepicker = document.getElementById('period-date');
+const year = new Date().getFullYear();
+const month = new Date().getMonth() + 1;
+
+new Datepicker(datepicker, {
+    maxDate: Date.UTC(year, month),
+    minDate: Date.UTC(year, 0),
+    format: 'yyyy-mm-dd',
+    //inline: true
+});
+
+window.onload = function () {
+    // const grid = datepicker.querySelector('.datepicker-grid');
+    // grid.querySelectorAll('span').forEach(span => {
+    //     span.addEventListener('click', function () {
+    //         let time = span.previousElementSibling.getAttribute('data-date');
+    //
+    //         let value = span.textContent;
+    //         console.log(new Date(time / value / 42).getDate());
+    //     })
+    // });
+}
 
 const toast = document.getElementById('toast-success');
 const toastClose = document.querySelector('[data-dismiss-target="#toast-success"]');
@@ -36,7 +61,7 @@ const successTooltipMessageEmail = document.getElementById('success-tooltip-mess
 const defaultTooltipMessagePhone = document.getElementById('default-tooltip-message-phone');
 const successTooltipMessagePhone = document.getElementById('success-tooltip-message-phone');
 
-if(clipboardPhone !== undefined) {
+if (clipboardPhone !== undefined) {
     clipboardPhone.updateOnCopyCallback((clipboard) => {
         showSuccess(tooltipPhone, defaultIconPhone, successIconPhone, defaultTooltipMessagePhone, successTooltipMessagePhone);
         setTimeout(() => {
@@ -45,7 +70,7 @@ if(clipboardPhone !== undefined) {
     });
 }
 
-if(clipboardEmail !== undefined) {
+if (clipboardEmail !== undefined) {
     clipboardEmail.updateOnCopyCallback((clipboard) => {
         showSuccess(tooltipEmail, defaultIconEmail, successIconEmail, defaultTooltipMessageEmail, successTooltipMessageEmail);
         setTimeout(() => {

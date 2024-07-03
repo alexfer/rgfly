@@ -1,63 +1,41 @@
-import {Chart, Colors} from "chart.js";
-
-Chart.register(Colors);
+import {Chart} from "chart.js";
 
 const dashboard = {
     chartOrders: document.getElementById('chart-orders'),
-    chartCustomers: document.getElementById('chart-customers'),
-    chartInvoices: document.getElementById('chart-invoices'),
+    chartTotal: document.getElementById('chart-total'),
 };
 
 const dataOrders = dashboard.chartOrders.getAttribute('data-orders');
-const dataO = [100 - dataOrders, dataOrders];
 
-const dataCustomers = dashboard.chartCustomers.getAttribute('data-customers');
-const dataC = [100 - dataCustomers, dataCustomers];
+const dataChartTotal = dashboard.chartTotal.getAttribute('data-total');
+const dataChartProfit = dashboard.chartTotal.getAttribute('data-profit');
 
-const dataInvoices = dashboard.chartInvoices.getAttribute('data-invoices');
-const dataI = [100 - dataInvoices, dataInvoices];
-
-let chartOrders = new Chart(dashboard.chartOrders, {
+let orders = new Chart(dashboard.chartOrders, {
     type: 'doughnut',
     data: {
         datasets: [{
-            label: ' ',
+            label: ' orders',
             backgroundColor: [
                 'rgba(11,142,11,0.8)',
                 'rgba(11,18,142,0.8)',
             ],
             clip: 2,
-            data: dataO,
-            borderWidth: 3
-        }]
-    }
-});
-
-let chartCustomers = new Chart(dashboard.chartCustomers, {
-    type: 'doughnut',
-    data: {
-        datasets: [{
-            label: ' ',
-            backgroundColor: [
-                'rgba(197,43,97,0.8)',
-                'rgba(11,142,33,0.8)',
-            ],
-            data: dataC,
+            data: [100 - dataOrders, dataOrders],
             borderWidth: 2
         }]
     }
 });
 
-let chartInvoices = new Chart(dashboard.chartInvoices, {
-    type: 'doughnut',
+let total = new Chart(dashboard.chartTotal, {
+    type: 'pie',
     data: {
         datasets: [{
-            label: ' ',
+            label: ' total',
             backgroundColor: [
                 'rgba(255,168,6,0.8)',
                 'rgba(189,27,71,0.8)',
             ],
-            data: dataI,
+            data: [dataChartProfit - dataChartTotal, dataChartTotal],
             borderWidth: 2
         }]
     }
