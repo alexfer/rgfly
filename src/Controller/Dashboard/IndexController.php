@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Helper\MarketPlace\MarketPlaceHelper;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
+use PDO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,6 +28,49 @@ class IndexController extends AbstractController
 
     }
 
+    #[Route('/{slug}/{date?}', name: 'app_dashboard_by_date')]
+    public function summaryByDate(
+        Request                $request,
+        UserInterface          $user,
+        EntityManagerInterface $em,
+        TranslatorInterface    $translator,
+    ): Response
+    {
+        $slug = $request->get('slug');
+        $date = $request->get('date');
+        $criteria = ['owner' => $user];
+        $adminStore = $chart = null;
+
+        if ($slug) {
+            $criteria['slug'] = $slug;
+        }
+
+        if (in_array(User::ROLE_ADMIN, $user->getRoles())) {
+            if ($slug) {
+                $adminStore = $em->getRepository(Store::class)->findOneBy(['slug' => $slug]);
+            }
+            $stores = $em->getRepository(Store::class)->findAll();
+
+        } else {
+            $stores = $em->getRepository(Store::class)->findBy($criteria);
+        }
+
+        $store = $adminStore ?: reset($stores);
+        $repository = $em->getRepository(StoreOrders::class);
+
+        $orders = $repository->backdropOrderSummaryByDate($store, $date);
+
+        if (count($orders) > 0) {
+            $chart = $this->chartBuilder($orders, $date, $translator);
+        }
+
+        return $this->render('dashboard/content/calendar.html.twig', [
+            'chart' => $chart ?: null,
+            'stores' => $stores,
+            'store' => $store,
+        ]);
+    }
+
     /**
      * @param Request $request
      * @param UserInterface $user
@@ -37,8 +81,8 @@ class IndexController extends AbstractController
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws Exception
      */
-    #[Route('/{slug?}/{period?}/{month?}/{day?}', name: 'app_dashboard')]
-    public function index(
+    #[Route('/{slug?}/{period?}/{month?}', name: 'app_dashboard')]
+    public function summaryIndex(
         Request                $request,
         UserInterface          $user,
         EntityManagerInterface $em,
@@ -48,10 +92,9 @@ class IndexController extends AbstractController
         $period = $request->get('period');
         $slug = $request->get('slug');
         $month = $request->get('month');
-        $day = $request->get('day');
         $criteria = ['owner' => $user];
         $ids = [];
-        $adminStore= $chart = $m = null;
+        $adminStore = $chart = $m = null;
 
         $year = date('Y');
         $currentMonth = strtolower(date('F'));
@@ -74,8 +117,8 @@ class IndexController extends AbstractController
         $store = $adminStore ?: reset($stores);
         $repository = $em->getRepository(StoreOrders::class);
 
-        if($period == 'month') {
-            $dmonth = $month?:date('m');
+        if ($period == 'month') {
+            $dmonth = $month ?: date('m');
             $date = new \DateTimeImmutable("$year-$dmonth-01 00:00:00");
             $m = $date->format('m');
         }

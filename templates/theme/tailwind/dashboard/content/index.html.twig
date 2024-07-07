@@ -94,7 +94,7 @@
                     {% elseif period == 'date' %}
                         <div id="dropdown-{{ period }}" class="z-10 hidden">
                             <div class="py-2" aria-labelledby="dropdownButton">
-                                <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="period-date" type="text" name="period-date" placeholder="{{ 'option.attribute.choice_attribute'|trans }}">
+                                <div data-url="{{ path('app_dashboard_by_date', {slug: _slug}) }}" id="period-date" data-date="{{ _date }}"></div>
                             </div>
                         </div>
                     {% else %}
@@ -129,6 +129,7 @@
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('chart-js') }}
+    {{ encore_entry_script_tags('datepicker-js') }}
     <script type="text/javascript">
         const selector = document.getElementById('store').querySelector('select');
         selector.addEventListener('change', () => window.location.replace(selector.value));

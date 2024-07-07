@@ -1,4 +1,6 @@
-import {Chart} from "chart.js";
+import {Chart, registerables} from "chart.js";
+
+Chart.register(...registerables);
 
 const dashboard = {
     chartOrders: document.getElementById('chart-orders'),

@@ -1,31 +1,6 @@
 import {Dismiss, initFlowbite} from "flowbite";
-import {Datepicker} from 'flowbite-datepicker';
-
 
 initFlowbite();
-
-const datepicker = document.getElementById('period-date');
-const year = new Date().getFullYear();
-const month = new Date().getMonth() + 1;
-
-new Datepicker(datepicker, {
-    maxDate: Date.UTC(year, month),
-    minDate: Date.UTC(year, 0),
-    format: 'yyyy-mm-dd',
-    //inline: true
-});
-
-window.onload = function () {
-    // const grid = datepicker.querySelector('.datepicker-grid');
-    // grid.querySelectorAll('span').forEach(span => {
-    //     span.addEventListener('click', function () {
-    //         let time = span.previousElementSibling.getAttribute('data-date');
-    //
-    //         let value = span.textContent;
-    //         console.log(new Date(time / value / 42).getDate());
-    //     })
-    // });
-}
 
 const toast = document.getElementById('toast-success');
 const toastClose = document.querySelector('[data-dismiss-target="#toast-success"]');

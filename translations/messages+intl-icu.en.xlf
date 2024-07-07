@@ -339,6 +339,10 @@
                 <source>title.dashboard.summary</source>
                 <target>Summary</target>
             </trans-unit>
+            <trans-unit id="title.dashboard.calendar">
+                <source>title.dashboard.calendar</source>
+                <target>Summary by period</target>
+            </trans-unit>
             <trans-unit id="title.dashboard.users">
                 <source>title.dashboard.users</source>
                 <target>Registered Users</target>
