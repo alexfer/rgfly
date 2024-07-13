@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Elastic\Elasticsearch\ClientBuilder;
 use Elastic\Elasticsearch\Exception\AuthenticationException;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
+use Elastic\Elasticsearch\Exception\MissingParameterException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -18,9 +19,12 @@ use Symfony\Component\Routing\Attribute\Route;
 class SearchController extends AbstractController
 {
 
+    private mixed $options;
+
     public function __construct(ParameterBagInterface $params)
     {
-        $this->dsn = $params->get('app.elastic.dsn');
+        $this->options['dsn'] = $params->get('app.elastic.dsn');
+        $this->options['index'] = $params->get('app.elastic.index');
     }
 
     /**
@@ -35,24 +39,32 @@ class SearchController extends AbstractController
         ]);
     }
 
+
     /**
      * @throws AuthenticationException
      * @throws ClientResponseException
      * @throws ServerResponseException
+     * @throws MissingParameterException
      */
-    #[Route('/search', name: 'app_market_place_search')]
+    #[Route('/search/{query?}', name: 'app_market_place_search')]
     public function find(
-        Request       $request
+        Request $request
     ): Response
     {
-        $client = ClientBuilder::create()->setHosts([$this->dsn])->build();
-        try {
-            $response = $client->getTransport();
-        } catch (ClientResponseException|ServerResponseException $e) {
-            throw new ServerResponseException($e->getMessage());
-        }
-
-
-        dd($response);
+        $query = $request->get('query');
+        $client = ClientBuilder::create()->setHosts([$this->options['dsn']])->build();
+        $params = [
+            'index' => $this->options['index'],
+            'body' => [
+                'query' => [
+                    'match' => [
+                        'name' => $query,
+                    ],
+                ],
+            ],
+        ];
+        $results = $client->search($params);
+        $doc   = $results['hits']['hits'];
+        dd($doc[0]['_source']);
     }
 }

@@ -23,6 +23,7 @@ parameters:
     app.notifications.email_sender: '%env(EMAIL_SENDER)%'
     app.notifications.email_sender_name: '%env(EMAIL_SENDER_NAME)%'
     app.elastic.dsn: '%env(ELASTIC_DSN)%'
+    app.elastic.index: '%env(ELASTIC_INDEX)%'
 
 services:
     # default configuration for services in *this* file
