@@ -32,4 +32,33 @@ class MarketPlaceHelper
         $rand = substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $length);
         return $today . strtoupper($rand);
     }
+
+    /**
+     * @param int $num
+     * @return string
+     */
+    public static function shortNumber(int $num): string
+    {
+        $units = ['', 'K', 'M', 'B', 'T'];
+        for ($i = 0; $num >= 1000; $i++) {
+            $num /= 1000;
+        }
+        return round($num, 1) . $units[$i];
+    }
+
+    /**
+     * @param int $month
+     * @return array
+     */
+    public static function months(int $month): array
+    {
+        $months = [];
+        foreach (range(12, 1) as $i) {
+            if ($i <= $month) {
+                $months[] = strtolower(date('F', mktime(0, 0, 0, $i, 1)));
+
+            }
+        }
+        return $months;
+    }
 }

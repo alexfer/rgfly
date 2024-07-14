@@ -7,17 +7,19 @@
                 class="flex-shrink-0 shadow-md z-10 inline-flex items-center py-2.5 px-4 ps-7 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
                 type="button">{{ 'search.form.categories'|trans }}
         </button>
-        <svg class="absolute z-10 top-4 w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+        <svg class="absolute z-10 top-4 w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+             fill="none"
              viewBox="0 0 10 6">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="m1 1 4 4 4-4"></path>
         </svg>
-        <div id="dropdown" class="z-10 hidden start-5 bg-white divide-y divide-gray-100 rounded-lg shadow w-auto dark:bg-gray-700">
+        <div id="dropdown"
+             class="z-10 hidden start-5 bg-white divide-y divide-gray-100 rounded-lg shadow w-auto dark:bg-gray-700">
             {{ render(controller('App\\Controller\\MarketPlace\\SearchController::index')) }}
         </div>
         <div class="relative w-full shadow-md">
             <input type="hidden" name="category" value="">
-            <input type="search" id="search" name="query" value="{{ app.request.query.get('query') }}"
+            <input type="search" id="search" data-url="{{ path('app_market_place_search') }}" name="query" value="{{ app.request.query.get('query') }}"
                    class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-1 border border-gray-300 focus:ring-gray-300 focus:border-gray-300 dark:bg-gray-700 dark:border-s-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-gray-500"
                    placeholder="{{ 'search.form.placeholder'|trans }}" autocomplete="off" required/>
             <button type="submit"
@@ -29,7 +31,12 @@
                 </svg>
                 <span class="sr-only">{{ 'title.search'|trans }}</span>
             </button>
+            <div class="absolute z-10 top-[42px] w-[93%] border-b border-l border-r bg-white rounded-b-lg dark:bg-surface-dark">
+                <ul id="autocomplete" class="list-none m-0 p-0 overflow-y-auto" role="listbox">
+                </ul>
+            </div>
         </div>
     </div>
 </form>
+
 

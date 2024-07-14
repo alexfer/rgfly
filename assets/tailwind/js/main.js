@@ -1,5 +1,5 @@
 import Swal from "sweetalert2";
-import i18next from "i18next"
+import i18next from "i18next";
 import './utils';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -21,8 +21,32 @@ document.addEventListener('DOMContentLoaded', () => {
         tabList: document.querySelector('ul[role="tablist"]'),
         addEntry: document.querySelectorAll('.add-entry'),
         storeButton: document.getElementById('store-search'),
-        coupons: document.querySelectorAll('.coupons')
+        coupons: document.querySelectorAll('.coupons'),
+        search: document.getElementById('search'),
     };
+
+
+    if (elements.search !== undefined) {
+        const input = elements.search;
+        let ms = 0;
+
+        input.addEventListener('input', (e) => {
+            clearTimeout(ms);
+            ms = setTimeout(() => {
+                const t = e.target;
+                if (input.value.length > 2) {
+                    fetch(t.dataset.url + '?term=' + input.value)
+                        .then(data => data.json())
+                        .then(data => {
+                            if (data) {
+                                document.getElementById('autocomplete').innerHTML = data.template;
+                            }
+                        });
+                }
+            }, 500);
+
+        });
+    }
 
     if (elements.coupons.length > 0) {
         const coupons = elements.coupons;
@@ -141,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     input.value = null;
                     let json = data.json;
 
-                    if(json.constraints !== undefined) {
+                    if (json.constraints !== undefined) {
                         span.classList = input.nextElementSibling.classList;
                         span.classList.replace('hidden', 'block');
                         span.textContent = json.constraints.invalid;
