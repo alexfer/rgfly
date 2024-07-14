@@ -2,8 +2,10 @@
 
 namespace App\Command;
 
+use App\Entity\MarketPlace\Store;
 use App\Entity\MarketPlace\StoreProduct;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Expr\Join;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientBuilder;
 use Elastic\Elasticsearch\Exception\AuthenticationException;
@@ -21,8 +23,8 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 #[AsCommand(
     name: 'app:populate:indices',
-    description: 'Populate indexes into elasticsearch',
-    aliases: ['app:elasticsearch-indexing'],
+    description: 'Populate indices into elasticsearch',
+    aliases: ['app:elasticsearch:indexing'],
     hidden: false,
 )]
 class ElasticPopulateCommand extends Command
@@ -112,7 +114,19 @@ class ElasticPopulateCommand extends Command
                 ->getRepository(StoreProduct::class)
                 ->createQueryBuilder('p');
 
-            $products = $queryBuilder->select(['p.id', 'p.slug', 'p.name', 'p.short_name'])
+            $products = $queryBuilder->select([
+                'p.id',
+                'p.slug',
+                'p.name',
+                'p.short_name',
+                's.name as store_name',
+                's.slug as store_slug',
+            ])
+                ->join(
+                    Store::class,
+                    's',
+                    Join::WITH,
+                    's.id = p.store')
                 ->where('p.deleted_at IS NULL')
                 ->andWhere('p.quantity > 0')
                 ->getQuery()
@@ -132,10 +146,12 @@ class ElasticPopulateCommand extends Command
                                 'id' => $product['id'],
                                 'short_name' => $product['short_name'],
                                 'slug' => $product['slug'],
+                                'store_name' => $product['store_name'],
+                                'store_slug' => $product['store_slug'],
                             ]
                         ]
                     ]);
-                    $io->writeln(sprintf('Added [%s] to elasticsearch]', $product['name']));
+                    $io->writeln(sprintf('Added [%s] to elasticsearch]', $product['slug']));
                 } catch (ClientResponseException|MissingParameterException|ServerResponseException $e) {
                     $io->error($e->getMessage());
                 }
@@ -211,6 +227,6 @@ class ElasticPopulateCommand extends Command
         ];
 
         $client->indices()->create($options);
-        return ['message' => 'Created'];
+        return ['message' => 'CREATED'];
     }
 }

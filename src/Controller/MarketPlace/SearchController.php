@@ -7,7 +7,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Elastic\Elasticsearch\ClientBuilder;
 use Elastic\Elasticsearch\Exception\AuthenticationException;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
-use Elastic\Elasticsearch\Exception\MissingParameterException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -44,27 +43,51 @@ class SearchController extends AbstractController
      * @throws AuthenticationException
      * @throws ClientResponseException
      * @throws ServerResponseException
-     * @throws MissingParameterException
      */
-    #[Route('/search/{query?}', name: 'app_market_place_search')]
+    #[Route('/search', name: 'app_market_place_search')]
     public function find(
         Request $request
     ): Response
     {
-        $query = $request->get('query');
-        $client = ClientBuilder::create()->setHosts([$this->options['dsn']])->build();
-        $params = [
-            'index' => $this->options['index'],
-            'body' => [
-                'query' => [
-                    'match' => [
-                        'name' => $query,
+        $term = $request->query->get('term');
+        $results = [];
+
+        if ($term) {
+            $client = ClientBuilder::create()->setHosts([$this->options['dsn']])->build();
+            $params = [
+                'index' => $this->options['index'],
+                'body' => [
+                    'query' => [
+                        'wildcard' => [
+                            'name' => sprintf('*%s*', $term),
+                        ],
                     ],
                 ],
-            ],
-        ];
-        $results = $client->search($params);
-        $doc   = $results['hits']['hits'];
-        dd($doc[0]['_source']);
+            ];
+            $response = $client->search($params);
+            $docs = $response['hits']['hits'];
+
+            if (count($docs)) {
+                foreach ($docs as $key => $doc) {
+                    $product = $doc['_source']['product'];
+                    $id = $product['id'];
+                    $results[$id] = [
+                        'id' => $id,
+                        'name' => $doc['_source']['name'],
+                        'short_name' => $product['short_name'],
+                        'product_slug' => $product['slug'],
+                        'store' => $product['store_name'],
+                        'store_slug' => $product['store_slug'],
+                    ];
+                    if($key > 10) {
+                        break;
+                    }
+                }
+            }
+
+        }
+        return $this->json([
+            'template' => $this->renderView('market_place/search/autocomplete.html.twig', ['results' => $results])
+        ], Response::HTTP_OK);
     }
 }
