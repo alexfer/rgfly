@@ -31,6 +31,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.16",
         "dompdf/dompdf": "^3.0",
+        "elasticsearch/elasticsearch": "^8.14",
         "endroid/pdf": "^1.5",
         "knplabs/knp-paginator-bundle": "^6.4",
         "liip/imagine-bundle": "^2.12",

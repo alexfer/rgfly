@@ -4,7 +4,9 @@ namespace App\Repository\MarketPlace;
 
 use App\Entity\MarketPlace\StoreCustomerOrders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\{Connection, Exception};
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -18,11 +20,17 @@ use Doctrine\Persistence\ManagerRegistry;
 class StoreCustomerOrdersRepository extends ServiceEntityRepository
 {
     /**
+     * @var Connection
+     */
+    private Connection $connection;
+
+    /**
      * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, StoreCustomerOrders::class);
+        $this->connection = $this->getEntityManager()->getConnection();
     }
 
     /**
@@ -38,14 +46,31 @@ class StoreCustomerOrdersRepository extends ServiceEntityRepository
         int $limit = 25,
     ): ?array
     {
-        $connection = $this->getEntityManager()->getConnection();
-        $statement = $connection->prepare('select get_customer_orders(:customer_id, :offset, :limit)');
+        $statement = $this->connection->prepare('select get_customer_orders(:customer_id, :offset, :limit)');
         $statement->bindValue('customer_id', $customerId, \PDO::PARAM_INT);
         $statement->bindValue('offset', $offset, \PDO::PARAM_INT);
         $statement->bindValue('limit', $limit, \PDO::PARAM_INT);
         $result = $statement->executeQuery()->fetchAllAssociative();
 
         return json_decode($result[0]['get_customer_orders'], true) ?: [];
+    }
+
+    /**
+     * @param array $ids
+     * @return string|null
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function summaryCustomers(array $ids): array
+    {
+        $qb = $this->createQueryBuilder('co')
+            //->distinct()
+            ->select('count(co.id) as total')
+            ->where('co.orders IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->groupBy('co.customer');
+
+        return $qb->getQuery()->getResult();
     }
 
 }

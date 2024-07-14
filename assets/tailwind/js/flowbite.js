@@ -36,7 +36,7 @@ const successTooltipMessageEmail = document.getElementById('success-tooltip-mess
 const defaultTooltipMessagePhone = document.getElementById('default-tooltip-message-phone');
 const successTooltipMessagePhone = document.getElementById('success-tooltip-message-phone');
 
-if(clipboardPhone !== undefined) {
+if (clipboardPhone !== undefined) {
     clipboardPhone.updateOnCopyCallback((clipboard) => {
         showSuccess(tooltipPhone, defaultIconPhone, successIconPhone, defaultTooltipMessagePhone, successTooltipMessagePhone);
         setTimeout(() => {
@@ -45,7 +45,7 @@ if(clipboardPhone !== undefined) {
     });
 }
 
-if(clipboardEmail !== undefined) {
+if (clipboardEmail !== undefined) {
     clipboardEmail.updateOnCopyCallback((clipboard) => {
         showSuccess(tooltipEmail, defaultIconEmail, successIconEmail, defaultTooltipMessageEmail, successTooltipMessageEmail);
         setTimeout(() => {

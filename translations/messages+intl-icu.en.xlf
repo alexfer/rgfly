@@ -339,6 +339,10 @@
                 <source>title.dashboard.summary</source>
                 <target>Summary</target>
             </trans-unit>
+            <trans-unit id="title.dashboard.calendar">
+                <source>title.dashboard.calendar</source>
+                <target>Summary by period</target>
+            </trans-unit>
             <trans-unit id="title.dashboard.users">
                 <source>title.dashboard.users</source>
                 <target>Registered Users</target>
@@ -434,6 +438,10 @@
             <trans-unit id="table.header.customer">
                 <source>table.header.customer</source>
                 <target>Customer</target>
+            </trans-unit>
+            <trans-unit id="table.header.customers">
+                <source>table.header.customers</source>
+                <target>Customers</target>
             </trans-unit>
             <trans-unit id="table.header.products">
                 <source>table.header.products</source>

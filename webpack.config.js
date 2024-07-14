@@ -19,14 +19,13 @@ Encore
     .addEntry('message-js', `./assets/tailwind/js/message.js`)
     .addEntry('market-js', `./assets/tailwind/js/market.js`)
     .addEntry('chart-js', `./assets/tailwind/js/dashboard/summary.js`)
+    .addEntry('datepicker-js', `./assets/tailwind/js/dashboard/datepicker.js`)
     .enablePostCssLoader((options) => {
         options.postcssOptions = {
             config: './postcss.config.js',
         }
     })
     .splitEntryChunks()
-
-    // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
     .enableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()
