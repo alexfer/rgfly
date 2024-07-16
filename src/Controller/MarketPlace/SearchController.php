@@ -3,27 +3,43 @@
 namespace App\Controller\MarketPlace;
 
 use App\Entity\MarketPlace\StoreCategory;
+use App\Entity\MarketPlace\StoreCustomer;
+use App\Entity\MarketPlace\StoreProduct;
 use Doctrine\ORM\EntityManagerInterface;
+use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientBuilder;
-use Elastic\Elasticsearch\Exception\AuthenticationException;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
+use function Symfony\Component\String\u;
 
 #[Route('/market-place')]
 class SearchController extends AbstractController
 {
 
-    private mixed $options;
+    /**
+     * @var mixed
+     */
+    private static mixed $options;
 
+    /**
+     * @var Client
+     */
+    private Client $client;
+
+    /**
+     * @param ParameterBagInterface $params
+     */
     public function __construct(ParameterBagInterface $params)
     {
-        $this->options['dsn'] = $params->get('app.elastic.dsn');
-        $this->options['index'] = $params->get('app.elastic.index');
+        self::$options['index'] = $params->get('app.elastic.index');
+        $this->client = ClientBuilder::create()->setHosts([$params->get('app.elastic.dsn')])->build();
     }
 
     /**
@@ -38,33 +54,56 @@ class SearchController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return Response
+     * @throws ClientResponseException
+     * @throws ServerResponseException
+     * @throws \Doctrine\DBAL\Exception
+     */
+    #[Route('/search', name: 'app_market_place_search')]
+    public function search(
+        Request                $request,
+        EntityManagerInterface $em,
+        ?UserInterface         $user,
+    ): Response
+    {
+        $products = [];
+        $query = $request->query->get('query');
+
+        $category = $request->query->get('category');
+        $customer = $em->getRepository(StoreCustomer::class)->findOneBy([
+            'member' => $user,
+        ]);
+
+        if ($query) {
+            $products = $em->getRepository(StoreProduct::class)->search($query, $category);
+            $products = $products['data'];
+        }
+
+        return $this->render('market_place/search/result.html.twig', [
+            'products' => $products,
+            'customer' => $customer,
+        ]);
+    }
 
     /**
-     * @throws AuthenticationException
+     * @param Request $request
+     * @return JsonResponse
      * @throws ClientResponseException
      * @throws ServerResponseException
      */
-    #[Route('/search', name: 'app_market_place_search')]
-    public function find(
+    #[Route('/autocomplete', name: 'app_market_place_search_autocomplete')]
+    public function autocomplete(
         Request $request
-    ): Response
+    ): JsonResponse
     {
         $term = $request->query->get('term');
         $results = [];
 
         if ($term) {
-            $client = ClientBuilder::create()->setHosts([$this->options['dsn']])->build();
-            $params = [
-                'index' => $this->options['index'],
-                'body' => [
-                    'query' => [
-                        'wildcard' => [
-                            'name' => sprintf('*%s*', $term),
-                        ],
-                    ],
-                ],
-            ];
-            $response = $client->search($params);
+            $response = $this->client->search(self::params($term));
             $docs = $response['hits']['hits'];
 
             if (count($docs)) {
@@ -79,7 +118,7 @@ class SearchController extends AbstractController
                         'store' => $product['store_name'],
                         'store_slug' => $product['store_slug'],
                     ];
-                    if($key > 10) {
+                    if ($key > 10) {
                         break;
                     }
                 }
@@ -89,5 +128,23 @@ class SearchController extends AbstractController
         return $this->json([
             'template' => $this->renderView('market_place/search/autocomplete.html.twig', ['results' => $results])
         ], Response::HTTP_OK);
+    }
+
+    /**
+     * @param string $query
+     * @return array
+     */
+    private static function params(string $query): array
+    {
+        return [
+            'index' => self::$options['index'],
+            'body' => [
+                'query' => [
+                    'wildcard' => [
+                        'name' => sprintf('*%s*', $query),
+                    ],
+                ],
+            ],
+        ];
     }
 }
