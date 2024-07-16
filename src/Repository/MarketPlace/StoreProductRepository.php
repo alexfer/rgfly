@@ -155,4 +155,27 @@ class StoreProductRepository extends ServiceEntityRepository
         return json_decode($result[0]['backdrop_products'], true) ?: [];
     }
 
+    /**
+     * @param string $term
+     * @param string|null $category
+     * @param int $offset
+     * @param int $limit
+     * @return array
+     * @throws Exception
+     */
+    public function search(
+        string  $term,
+        ?string $category,
+        int     $offset = 0,
+        int     $limit = 10,
+    ): array
+    {
+        $statement = $this->connection->prepare('select search_products(:term, :category, :offset, :limit)');
+        $statement->bindValue('category', $category ?: null, \PDO::PARAM_STR);
+        $statement->bindValue('term', $term, \PDO::PARAM_STR);
+        $statement = $this->bindPagination($statement, $offset, $limit);
+        $result = $statement->executeQuery()->fetchAllAssociative();
+        return json_decode($result[0]['search_products'], true) ?: [];
+    }
+
 }

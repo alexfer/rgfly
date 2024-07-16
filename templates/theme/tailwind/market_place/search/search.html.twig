@@ -1,4 +1,4 @@
-<form class="w-full px-3">
+<form class="w-full px-3" action="{{ path('app_market_place_search') }}">
     <div class="flex relative">
         <label for="search-dropdown"
                class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">{{ 'title.search'|trans }}</label>
@@ -19,7 +19,7 @@
         </div>
         <div class="relative w-full shadow-md">
             <input type="hidden" name="category" value="">
-            <input type="search" id="search" data-url="{{ path('app_market_place_search') }}" name="query" value="{{ app.request.query.get('query') }}"
+            <input type="search" id="search" data-url="{{ path('app_market_place_search_autocomplete') }}" name="query" value="{{ app.request.query.get('query') }}"
                    class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-1 border border-gray-300 focus:ring-gray-300 focus:border-gray-300 dark:bg-gray-700 dark:border-s-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-gray-500"
                    placeholder="{{ 'search.form.placeholder'|trans }}" autocomplete="off" required/>
             <button type="submit"

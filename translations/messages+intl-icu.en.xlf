@@ -1178,6 +1178,14 @@
                 <source>search.form.categories</source>
                 <target>All categories</target>
             </trans-unit>
+            <trans-unit id="search.results">
+                <source>search.results</source>
+                <target>Search results</target>
+            </trans-unit>
+            <trans-unit id="search.results.term">
+                <source>search.results.term</source>
+                <target>Result search by term</target>
+            </trans-unit>
             <trans-unit id="search.form.placeholder">
                 <source>search.form.placeholder</source>
                 <target><![CDATA[Computers & Notebooks, Smartphones, TV, Electronics, Products for home, Sports & Leisure...]]></target>
