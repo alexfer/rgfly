@@ -1,0 +1,19 @@
+{% extends 'market_place/index.html.twig' %}
+
+{% block content_body %}
+    <h2 class="text-2xl pb-4 font-oswald font-extrabold text-primary-700 dark:text-white">{{ 'search.results'|trans }}</h2>
+    <div class="text-gray-500 mb-5 dark:text-gray-50">{{ 'search.results.term'|trans }}: <span class="text-primary-600 dark:text-gray-50">{{ app.request.query.get('query')|e }}</span></div>
+    {% if products|length %}
+        <div class="grid w-full gap-3 lg:grid-cols-3 md:grid-cols-2">
+            {% for product in products %}
+                {% include 'market_place/grid/main.html.twig' %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="flex w-full items-center flex-wrap justify-center bg-gray-50 border rounded-xl">
+            <div class="h-full w-full relative">
+                <div class="text-3xl text-center p-8 text-gray-400 font-bold">No results for "{{ app.request.query.get('query')|e|striptags }}"</div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

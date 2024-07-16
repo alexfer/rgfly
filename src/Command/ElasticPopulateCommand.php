@@ -1,8 +1,10 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Command;
 
 use App\Entity\MarketPlace\Store;
+use App\Entity\MarketPlace\StoreCategory;
+use App\Entity\MarketPlace\StoreCategoryProduct;
 use App\Entity\MarketPlace\StoreProduct;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\Join;
@@ -109,7 +111,7 @@ class ElasticPopulateCommand extends Command
             }
         }
 
-        if($populate) {
+        if ($populate) {
             $queryBuilder = $this->manager
                 ->getRepository(StoreProduct::class)
                 ->createQueryBuilder('p');
@@ -121,12 +123,29 @@ class ElasticPopulateCommand extends Command
                 'p.short_name',
                 's.name as store_name',
                 's.slug as store_slug',
+                'cc.name as category_name',
+                'cc.slug as category_slug',
             ])
                 ->join(
                     Store::class,
                     's',
                     Join::WITH,
                     's.id = p.store')
+                ->join(
+                    StoreCategoryProduct::class,
+                    'cp',
+                    Join::WITH,
+                    'cp.product = p.id')
+                ->join(
+                    StoreCategory::class,
+                    'c',
+                    Join::WITH,
+                    'c.id = cp.category')
+                ->join(
+                    StoreCategory::class,
+                    'cc',
+                    Join::WITH,
+                    'c.parent = cc.id')
                 ->where('p.deleted_at IS NULL')
                 ->andWhere('p.quantity > 0')
                 ->getQuery()
@@ -144,6 +163,8 @@ class ElasticPopulateCommand extends Command
                             'name' => $product['name'],
                             'product' => [
                                 'id' => $product['id'],
+                                'category_name' => $product['category_name'],
+                                'category_slug' => $product['category_slug'],
                                 'short_name' => $product['short_name'],
                                 'slug' => $product['slug'],
                                 'store_name' => $product['store_name'],

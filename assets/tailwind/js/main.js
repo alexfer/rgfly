@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 
-    if (elements.search !== undefined) {
+    if (elements.search !== null) {
         const input = elements.search;
         let ms = 0;
 
