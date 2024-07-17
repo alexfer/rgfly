@@ -67,8 +67,8 @@
                                     </span>
                     </button>
                     <button type="button"
-                        class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-                        data-carousel-next>
+                            class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                            data-carousel-next>
                             <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
                                 <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
                                      aria-hidden="true"
@@ -118,27 +118,29 @@
                                 <input type="hidden" name="color" value="">
                                 <input type="hidden" name="size" value="">
                                 {% if attribute.in_front %}
-                                    <span class="block mt-3 text-gray-600 dark:text-white md:text-sm tracking-widest">{{ attribute.name|capitalize }}</span>
+                                    <span class="block mt-3 text-gray-600 dark:text-white md:text-sm tracking-widest">
+                                       {{ attribute.name|capitalize }}
+                                    </span>
                                     <div class="flex mt-1" id="{{ attribute.name }}">
                                         {% for attr in product.attribute_values %}
                                             {% if attribute.id == attr.attribute_id %}
-                                            <div class="inline-block mr-1 p-1 border-2 {% if attribute.name == 'color' %} rounded-full{% else %} text-xs rounded-md px-1.5 py-0.5 hover:bg-gray-100{% endif %}">
-                                                <input type="radio" name="attr[{{ attribute.name }}]"
-                                                       class="hidden peer"
-                                                       data-name="{{ attr.value }}"
-                                                       data-extra="{{ attr.extra|join }}"
-                                                       data-root-name="{{ attribute.name }}"
-                                                       id="attr-check-{{ attr.id }}" value="{{ attr.id }}"
-                                                       autocomplete="off">
-                                                <label class="flex cursor-pointer peer-checked:shadow-4-strong{% if attribute.name == 'color' %} rounded-full{% endif %}"
-                                                       for="attr-check-{{ attr.id }}" {% if attribute.name == 'color' %} style="background-color: {{ attr.extra|join }};"{% endif %}>
-                                                    {% if attribute.name == 'size' %}
-                                                        <span class="p-1">{{ attr.value|capitalize }}</span>
-                                                    {% else %}
-                                                        <span class="p-2"></span>
-                                                    {% endif %}
-                                                </label>
-                                            </div>
+                                                <div class="inline-block mr-1 p-1 border-2 {% if attribute.name == 'color' %} rounded-full{% else %} text-xs rounded-md px-1.5 py-0.5 hover:bg-gray-100{% endif %}">
+                                                    <input type="radio" name="attr[{{ attribute.name }}]"
+                                                           class="hidden peer"
+                                                           data-name="{{ attr.value }}"
+                                                           data-extra="{{ attr.extra|join }}"
+                                                           data-root-name="{{ attribute.name }}"
+                                                           id="attr-check-{{ attr.id }}" value="{{ attr.id }}"
+                                                           autocomplete="off">
+                                                    <label class="flex cursor-pointer peer-checked:shadow-4-strong{% if attribute.name == 'color' %} rounded-full{% endif %}"
+                                                           for="attr-check-{{ attr.id }}" {% if attribute.name == 'color' %} style="background-color: {{ attr.extra|join }};"{% endif %}>
+                                                        {% if attribute.name == 'size' %}
+                                                            <span class="p-1">{{ attr.value|capitalize }}</span>
+                                                        {% else %}
+                                                            <span class="p-2"></span>
+                                                        {% endif %}
+                                                    </label>
+                                                </div>
                                             {% endif %}
                                         {% endfor %}
                                     </div>
@@ -187,7 +189,8 @@
         </div>
     </div>
     {% set _tab = app.request.get('tab') %}
-    <ul id="product-ifo-ref" class="mt-5 flex list-none flex-row flex-wrap border-b-0 ps-0" role="tablist" data-twe-nav-ref>
+    <ul id="product-ifo-ref" class="mt-5 flex list-none flex-row flex-wrap border-b-0 ps-0" role="tablist"
+        data-twe-nav-ref>
         <li role="presentation">
             <a
                     href="#about"

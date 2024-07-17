@@ -119,7 +119,6 @@
     </h2>
     <div class="grid w-full gap-3 lg:grid-cols-3 md:grid-cols-2">
         {% for product in products %}
-{#            {% set product = product.product %}#}
             {% include 'market_place/grid/category.html.twig' %}
         {% endfor %}
     </div>
@@ -137,9 +136,11 @@
     {% endif %}
 {% endblock %}
 {% block loading %}
-    <div class="max-w-screen-xl flex mx-auto justify-center my-10">
-        {% include 'layouts/pagination/pages.html.twig' with {
-            route: app.request.get('_route')
-        } %}
-    </div>
+    {% if products|length %}
+        <div class="max-w-screen-xl flex mx-auto justify-center my-10">
+            {% include 'layouts/pagination/pages.html.twig' with {
+                route: app.request.get('_route')
+            } %}
+        </div>
+    {% endif %}
 {% endblock %}

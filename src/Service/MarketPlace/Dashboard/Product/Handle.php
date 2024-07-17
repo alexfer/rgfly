@@ -60,7 +60,7 @@ abstract class Handle
         $attributes['colors'] = $this->form->get('color')->getData();
         $attributes['size'] = $this->form->get('size')->getData();
 
-        if($up) {
+        if ($up) {
             $this->flushAttributes($product);
         }
 
@@ -79,7 +79,10 @@ abstract class Handle
                 $attributeValue = new StoreProductAttributeValue();
                 $value = $attributeValue->setAttribute($attribute)->setValue($attributeColors[$color])->setExtra([$color]);
                 $this->em->persist($value);
+                $this->setInFront('color', $product, 1);
             }
+        } else {
+            $this->setInFront('color', $product, 0);
         }
 
         if ($attributes['size']) {
@@ -97,7 +100,19 @@ abstract class Handle
                 $attributeValue = new StoreProductAttributeValue();
                 $value = $attributeValue->setAttribute($attribute)->setValue($attributeSize[$size]);
                 $this->em->persist($value);
+                $this->setInFront('size', $product, 1);
             }
+        } else {
+            $this->setInFront('size', $product, 0);
+        }
+    }
+
+    private function setInFront(string $name, StoreProduct $product, int $value): void
+    {
+        $attribute = $this->em->getRepository(StoreProductAttribute::class)->findOneBy(['product' => $product, 'name' => $name]);
+        if ($attribute !== null) {
+            $attribute->setInFront($value);
+            $this->em->persist($attribute);
         }
     }
 

@@ -175,6 +175,7 @@ class StoreProductRepository extends ServiceEntityRepository
         $statement->bindValue('term', $term, \PDO::PARAM_STR);
         $statement = $this->bindPagination($statement, $offset, $limit);
         $result = $statement->executeQuery()->fetchAllAssociative();
+
         return json_decode($result[0]['search_products'], true) ?: [];
     }
 
