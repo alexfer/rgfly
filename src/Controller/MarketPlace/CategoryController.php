@@ -78,6 +78,7 @@ class CategoryController extends AbstractController
     #[Route('', name: 'app_market_place_category')]
     public function index(?UserInterface $user): Response
     {
+        $user = $this->getUser();
         $products = $this->em->getRepository(StoreProduct::class)
             ->fetchProducts($this->offset, $this->limit);
 
