@@ -5,15 +5,18 @@ namespace App\Controller\MarketPlace;
 use App\Entity\MarketPlace\StoreCategory;
 use App\Entity\MarketPlace\StoreCustomer;
 use App\Entity\MarketPlace\StoreProduct;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientBuilder;
+use Elastic\Elasticsearch\Exception\AuthenticationException;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -24,9 +27,19 @@ class SearchController extends AbstractController
 {
 
     /**
+     * @var int
+     */
+    private int $offset = 0;
+
+    /**
+     * @var int
+     */
+    private int $limit = 30;
+
+    /**
      * @var mixed
      */
-    private static mixed $options;
+    private static string $index = 'marketplace';
 
     /**
      * @var Client
@@ -34,11 +47,22 @@ class SearchController extends AbstractController
     private Client $client;
 
     /**
+     * @param RequestStack $stack
      * @param ParameterBagInterface $params
+     * @throws AuthenticationException
      */
-    public function __construct(ParameterBagInterface $params)
+    public function __construct(
+        RequestStack                            $stack,
+        ParameterBagInterface $params
+    )
     {
-        self::$options['index'] = $params->get('app.elastic.index');
+        $page = is_numeric($stack->getCurrentRequest()->query->get('page')) ?: null;
+
+        if (isset($page)) {
+            $this->offset = $this->limit * ($page - 1);
+        }
+
+        self::$index = $params->get('app.elastic.index');
         $this->client = ClientBuilder::create()->setHosts([$params->get('app.elastic.dsn')])->build();
     }
 
@@ -57,10 +81,9 @@ class SearchController extends AbstractController
     /**
      * @param Request $request
      * @param EntityManagerInterface $em
+     * @param UserInterface|null $user
      * @return Response
-     * @throws ClientResponseException
-     * @throws ServerResponseException
-     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
      */
     #[Route('/search', name: 'app_market_place_search')]
     public function search(
@@ -70,6 +93,7 @@ class SearchController extends AbstractController
     ): Response
     {
         $products = [];
+        $rows = 0;
         $query = $request->query->get('query');
 
         $category = $request->query->get('category');
@@ -78,12 +102,14 @@ class SearchController extends AbstractController
         ]);
 
         if ($query) {
-            $products = $em->getRepository(StoreProduct::class)->search($query, $category);
+            $products = $em->getRepository(StoreProduct::class)->search($query, $category, $this->offset, $this->limit);
+            $rows = $products['rows_count'];
             $products = $products['data'];
         }
 
         return $this->render('market_place/search/result.html.twig', [
             'products' => $products,
+            'pages' => ceil($rows / $this->limit),
             'customer' => $customer,
         ]);
     }
@@ -137,7 +163,7 @@ class SearchController extends AbstractController
     private static function params(string $query): array
     {
         return [
-            'index' => self::$options['index'],
+            'index' => self::$index,
             'body' => [
                 'query' => [
                     'wildcard' => [

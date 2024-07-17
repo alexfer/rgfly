@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (elements.search !== null) {
         const input = elements.search;
         let ms = 0;
+        const autocomplete = document.getElementById('autocomplete');
 
         input.addEventListener('input', (e) => {
             clearTimeout(ms);
@@ -39,12 +40,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         .then(data => data.json())
                         .then(data => {
                             if (data) {
-                                document.getElementById('autocomplete').innerHTML = data.template;
+                                autocomplete.innerHTML = data.template;
                             }
                         });
                 }
             }, 500);
+        });
 
+        document.body.addEventListener('click', (e) => {
+            autocomplete.innerHTML = '';
         });
     }
 
