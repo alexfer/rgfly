@@ -2,7 +2,12 @@
 
 namespace App\Service\MarketPlace\Dashboard\Product;
 
-use App\Entity\MarketPlace\{Store, StoreCategory, StoreCategoryProduct, StoreCoupon, StoreProduct};
+use App\Entity\MarketPlace\{Store,
+    StoreCategory,
+    StoreCategoryProduct,
+    StoreCoupon,
+    StoreProduct,
+    StoreProductDiscount};
 use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Service\MarketPlace\Dashboard\Product\Interface\ServeProductInterface;
 use Symfony\Component\Form\FormInterface;
@@ -53,7 +58,7 @@ class ServeProductProduct extends Handle implements ServeProductInterface
         $product = $this->sku($product);
         $this->attributes($product, true);
         $this->em->persist($product);
-        $this->em->flush();
+        $this->discount($product, true);
 
         return $product;
     }
@@ -84,10 +89,29 @@ class ServeProductProduct extends Handle implements ServeProductInterface
         $product = $this->sku($product);
         // apply attributes to product if the need
         $this->attributes($product);
+        // apply values to product
         $this->em->persist($product);
-        $this->em->flush();
+        // setup discount
+        $this->discount($product);
 
         return $product;
+    }
+
+    protected function discount(StoreProduct $product, bool $up = false): void
+    {
+        $discount = new StoreProductDiscount();
+
+        if ($up) {
+            $discount = $this->em->getRepository(StoreProductDiscount::class)->findOneBy(['product' => $product]);
+        } else {
+            $discount->setProduct($product);
+        }
+
+        $discount->setValue($this->post['product']['value'] ?: '0.00')
+            ->setUnit($this->post['product']['unit']);
+
+        $this->em->persist($discount);
+        $this->em->flush();
     }
 
     /**
@@ -98,7 +122,7 @@ class ServeProductProduct extends Handle implements ServeProductInterface
     {
         $category = $this->form->get('category')->getData();
 
-        if($up) {
+        if ($up) {
             $this->em->getRepository(StoreCategoryProduct::class)->removeCategoryProduct($product);
         }
 

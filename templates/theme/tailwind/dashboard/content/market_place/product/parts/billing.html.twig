@@ -37,4 +37,14 @@
             <span class="text-xs text-gray-600 mt-0.5">{{ 'label.form.fee.help'|trans }}</span>
         </div>
     </div>
+    <div class="grid grid-cols-2 gap-4 mb-3">
+        <div class="relative mb-3">
+            {{ form_label(form.value, '', {label_attr: {class: 'inline-block text-sm font-medium text-gray-900 dark:text-white'}}) }}
+            {{ form_widget(form.value, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: '0'}}) }}
+        </div>
+        <div class="relative mb-3">
+            {{ form_label(form.unit, 'label.form.unit', {label_attr: {class: 'inline-block text-sm font-medium text-gray-900 dark:text-white'}}) }}
+            {{ form_widget(form.unit, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: '0'}}) }}
+        </div>
+    </div>
 </div>

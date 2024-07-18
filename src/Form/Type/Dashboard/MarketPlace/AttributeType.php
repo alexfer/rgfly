@@ -53,4 +53,9 @@ class AttributeType extends AbstractType
             'data_class' => StoreProductAttribute::class,
         ]);
     }
+
+    public function getParent(): string
+    {
+        return DiscountType::class;
+    }
 }

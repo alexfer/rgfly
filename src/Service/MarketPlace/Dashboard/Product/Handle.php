@@ -24,6 +24,11 @@ abstract class Handle
     protected ?Request $request;
 
     /**
+     * @var array
+     */
+    protected array $post;
+
+    /**
      * @param EntityManagerInterface $em
      * @param RequestStack $requestStack
      */
@@ -33,6 +38,7 @@ abstract class Handle
     )
     {
         $this->request = $this->requestStack->getCurrentRequest();
+        $this->post = $this->request->request->all();
     }
 
     /**

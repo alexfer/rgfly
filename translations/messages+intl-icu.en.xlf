@@ -852,6 +852,14 @@
                 <source>label.form.discount</source>
                 <target>Discount</target>
             </trans-unit>
+            <trans-unit id="label.form.unit">
+                <source>label.form.unit</source>
+                <target>Unit by</target>
+            </trans-unit>
+            <trans-unit id="placeholder.choose.unit">
+                <source>placeholder.choose.unit</source>
+                <target>Choose unit</target>
+            </trans-unit>
             <trans-unit id="label.form.fee">
                 <source>label.form.fee</source>
                 <target>Fee</target>
