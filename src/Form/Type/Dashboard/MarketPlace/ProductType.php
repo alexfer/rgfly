@@ -176,7 +176,7 @@ use Symfony\Component\Validator\Constraints\{Length, NotBlank};
                     'min' => 0,
                     'max' => 100,
                     'step' => 1,
-                    'value' => $options['data']?->getDiscount() ?: 0,
+                    'value' => (int)$options['data']?->getDiscount() ?: 0,
                 ],
                 'constraints' => [
                     new Length([

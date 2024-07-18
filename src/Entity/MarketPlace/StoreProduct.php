@@ -100,6 +100,9 @@ class StoreProduct
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: StoreMessage::class)]
     private Collection $storeMessages;
 
+    #[ORM\OneToOne(mappedBy: 'product', cascade: ['persist', 'remove'])]
+    private ?StoreProductDiscount $storeProductDiscount = null;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
@@ -742,6 +745,28 @@ class StoreProduct
                 $storeMessage->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStoreProductDiscount(): ?StoreProductDiscount
+    {
+        return $this->storeProductDiscount;
+    }
+
+    public function setStoreProductDiscount(?StoreProductDiscount $storeProductDiscount): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($storeProductDiscount === null && $this->storeProductDiscount !== null) {
+            $this->storeProductDiscount->setProduct(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($storeProductDiscount !== null && $storeProductDiscount->getProduct() !== $this) {
+            $storeProductDiscount->setProduct($this);
+        }
+
+        $this->storeProductDiscount = $storeProductDiscount;
 
         return $this;
     }

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240609144941 extends AbstractMigration
+final class Version20240718051231 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -45,7 +45,7 @@ final class Version20240609144941 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_7CE748AA76ED395 ON reset_password_request (user_id)');
         $this->addSql('COMMENT ON COLUMN reset_password_request.requested_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN reset_password_request.expires_at IS \'(DC2Type:datetime_immutable)\'');
-        $this->addSql('CREATE TABLE store (id SERIAL NOT NULL, owner_id INT DEFAULT NULL, attach_id INT DEFAULT NULL, name VARCHAR(512) NOT NULL, address VARCHAR(255) DEFAULT NULL, email VARCHAR(255) DEFAULT NULL, phone VARCHAR(255) DEFAULT NULL, slug VARCHAR(512) DEFAULT NULL, currency VARCHAR(5) DEFAULT NULL, website VARCHAR(1024) DEFAULT NULL, url VARCHAR(1024) DEFAULT NULL, description TEXT DEFAULT NULL, messages TEXT NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, deleted_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE store (id SERIAL NOT NULL, owner_id INT DEFAULT NULL, attach_id INT DEFAULT NULL, name VARCHAR(512) NOT NULL, address VARCHAR(255) DEFAULT NULL, email VARCHAR(255) DEFAULT NULL, phone VARCHAR(255) DEFAULT NULL, slug VARCHAR(512) DEFAULT NULL, currency VARCHAR(5) DEFAULT NULL, website VARCHAR(1024) DEFAULT NULL, url VARCHAR(1024) DEFAULT NULL, description TEXT DEFAULT NULL, tax NUMERIC(10, 2) DEFAULT NULL, messages TEXT NOT NULL, cc TEXT DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, deleted_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_FF575877989D9B62 ON store (slug)');
         $this->addSql('CREATE INDEX IDX_FF5758777E3C61F9 ON store (owner_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_FF575877E784F8B7 ON store (attach_id)');
@@ -97,7 +97,7 @@ final class Version20240609144941 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_AFB51198CFFE9AD6 ON store_message (orders_id)');
         $this->addSql('COMMENT ON COLUMN store_message.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN store_message.updated_at IS \'(DC2Type:datetime_immutable)\'');
-        $this->addSql('CREATE TABLE store_orders (id SERIAL NOT NULL, store_id INT DEFAULT NULL, number VARCHAR(50) NOT NULL, total NUMERIC(10, 2) DEFAULT NULL, session VARCHAR(255) DEFAULT NULL, status VARCHAR(100) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, completed_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE store_orders (id SERIAL NOT NULL, store_id INT DEFAULT NULL, number VARCHAR(50) NOT NULL, total NUMERIC(10, 2) DEFAULT NULL, session VARCHAR(255) DEFAULT NULL, status VARCHAR(100) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, completed_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, tax NUMERIC(10, 2) DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_81386B78B092A811 ON store_orders (store_id)');
         $this->addSql('COMMENT ON COLUMN store_orders.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE store_orders_product (id SERIAL NOT NULL, orders_id INT DEFAULT NULL, product_id INT DEFAULT NULL, size VARCHAR(100) DEFAULT NULL, color VARCHAR(100) DEFAULT NULL, quantity INT NOT NULL, PRIMARY KEY(id))');
@@ -121,6 +121,9 @@ final class Version20240609144941 extends AbstractMigration
         $this->addSql('CREATE TABLE store_product_brand (id SERIAL NOT NULL, product_id INT DEFAULT NULL, brand_id INT DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_9CAD1F9A4584665A ON store_product_brand (product_id)');
         $this->addSql('CREATE INDEX IDX_9CAD1F9A44F5D008 ON store_product_brand (brand_id)');
+        $this->addSql('CREATE TABLE store_product_discount (id SERIAL NOT NULL, product_id INT DEFAULT NULL, value NUMERIC(10, 2) DEFAULT NULL, unit VARCHAR(20) DEFAULT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_56ED4D474584665A ON store_product_discount (product_id)');
+        $this->addSql('COMMENT ON COLUMN store_product_discount.updated_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE store_product_manufacturer (id SERIAL NOT NULL, product_id INT DEFAULT NULL, manufacturer_id INT DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_81A8E1564584665A ON store_product_manufacturer (product_id)');
         $this->addSql('CREATE INDEX IDX_81A8E156A23B42D ON store_product_manufacturer (manufacturer_id)');
@@ -136,9 +139,10 @@ final class Version20240609144941 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_A29655CB4584665A ON store_wishlist (product_id)');
         $this->addSql('CREATE INDEX IDX_A29655CBB092A811 ON store_wishlist (store_id)');
         $this->addSql('COMMENT ON COLUMN store_wishlist.created_at IS \'(DC2Type:datetime_immutable)\'');
-        $this->addSql('CREATE TABLE "user" (id SERIAL NOT NULL, attach_id INT DEFAULT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, ip VARCHAR(255) DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, deleted_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE "user" (id SERIAL NOT NULL, attach_id INT DEFAULT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, ip VARCHAR(255) DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, last_login_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, deleted_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649E7927C74 ON "user" (email)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649E784F8B7 ON "user" (attach_id)');
+        $this->addSql('COMMENT ON COLUMN "user".last_login_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE user_details (id SERIAL NOT NULL, user_id INT DEFAULT NULL, first_name VARCHAR(255) DEFAULT NULL, last_name VARCHAR(255) DEFAULT NULL, phone VARCHAR(255) DEFAULT NULL, country VARCHAR(2) DEFAULT NULL, city VARCHAR(255) DEFAULT NULL, about TEXT DEFAULT NULL, date_birth TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_2A2B1580A76ED395 ON user_details (user_id)');
         $this->addSql('CREATE TABLE user_social (id SERIAL NOT NULL, details_id INT DEFAULT NULL, facebook_profile VARCHAR(512) DEFAULT NULL, twitter_profile VARCHAR(512) DEFAULT NULL, instagram_profile VARCHAR(512) DEFAULT NULL, PRIMARY KEY(id))');
@@ -207,6 +211,7 @@ final class Version20240609144941 extends AbstractMigration
         $this->addSql('ALTER TABLE store_product_attribute_value ADD CONSTRAINT FK_6574716BB6E62EFA FOREIGN KEY (attribute_id) REFERENCES store_product_attribute (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE store_product_brand ADD CONSTRAINT FK_9CAD1F9A4584665A FOREIGN KEY (product_id) REFERENCES store_product (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE store_product_brand ADD CONSTRAINT FK_9CAD1F9A44F5D008 FOREIGN KEY (brand_id) REFERENCES store_brand (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE store_product_discount ADD CONSTRAINT FK_56ED4D474584665A FOREIGN KEY (product_id) REFERENCES store_product (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE store_product_manufacturer ADD CONSTRAINT FK_81A8E1564584665A FOREIGN KEY (product_id) REFERENCES store_product (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE store_product_manufacturer ADD CONSTRAINT FK_81A8E156A23B42D FOREIGN KEY (manufacturer_id) REFERENCES store_manufacturer (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE store_product_supplier ADD CONSTRAINT FK_2C2795374584665A FOREIGN KEY (product_id) REFERENCES store_product (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
@@ -272,6 +277,7 @@ final class Version20240609144941 extends AbstractMigration
         $this->addSql('ALTER TABLE store_product_attribute_value DROP CONSTRAINT FK_6574716BB6E62EFA');
         $this->addSql('ALTER TABLE store_product_brand DROP CONSTRAINT FK_9CAD1F9A4584665A');
         $this->addSql('ALTER TABLE store_product_brand DROP CONSTRAINT FK_9CAD1F9A44F5D008');
+        $this->addSql('ALTER TABLE store_product_discount DROP CONSTRAINT FK_56ED4D474584665A');
         $this->addSql('ALTER TABLE store_product_manufacturer DROP CONSTRAINT FK_81A8E1564584665A');
         $this->addSql('ALTER TABLE store_product_manufacturer DROP CONSTRAINT FK_81A8E156A23B42D');
         $this->addSql('ALTER TABLE store_product_supplier DROP CONSTRAINT FK_2C2795374584665A');
@@ -317,6 +323,7 @@ final class Version20240609144941 extends AbstractMigration
         $this->addSql('DROP TABLE store_product_attribute');
         $this->addSql('DROP TABLE store_product_attribute_value');
         $this->addSql('DROP TABLE store_product_brand');
+        $this->addSql('DROP TABLE store_product_discount');
         $this->addSql('DROP TABLE store_product_manufacturer');
         $this->addSql('DROP TABLE store_product_supplier');
         $this->addSql('DROP TABLE store_social');
