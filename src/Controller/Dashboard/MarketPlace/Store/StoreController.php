@@ -3,7 +3,6 @@
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
 use App\Entity\MarketPlace\{Store, StorePaymentGateway, StorePaymentGatewayStore, StoreSocial};
-use App\Entity\User;
 use App\Form\Type\Dashboard\MarketPlace\StoreType;
 use App\Service\FileUploader;
 use Doctrine\DBAL\Exception;
