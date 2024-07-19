@@ -5,25 +5,155 @@
 {% block title_content %}{{ _title_extend }}{% endblock %}
 
 {% block content %}
-    {% set periods = {year: 'year', month: 'month', date: 'date'} %}
-    <form name="store" method="get" id="store">
-        <label for="slug">
-            <select name="slug" id="slug">
-                {% if stores|length > 1 %}
-                    <option value="{{ url('app_dashboard') }}">{{ 'menu.dashboard'|trans }}</option>
-                {% endif %}
-                {% for store in stores %}
-                    <option value="{{ url('app_dashboard', {slug: store.slug}) }}"{{ store.slug == app.request.get('slug') ? ' selected="selected"' : null }}>{{ store.name }}</option>
-                {% endfor %}
-            </select>
-        </label>
-    </form>
-    <h4 class="mt-5 text-3xl text-gray-500 dark:text-gray-50 font-oswald">{{ store.name }}</h4>
+    {% if stores|length %}
+        <form name="store" method="get" id="store">
+            <label for="slug">
+                <select name="slug" id="slug">
+                    {% if stores|length > 1 %}
+                        <option value="{{ url('app_dashboard') }}">{{ 'menu.dashboard'|trans }}</option>
+                    {% endif %}
+                    {% for store in stores %}
+                        <option value="{{ url('app_dashboard', {slug: store.slug}) }}"{{ store.slug == app.request.get('slug') ? ' selected="selected"' : null }}>{{ store.name }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </form>
+    {% endif %}
+    <h4 class="my-5 ms-2 text-3xl text-gray-500 dark:text-gray-50 font-oswald">{{ store ? store.name : 'Welcome ' ~ app.user.userDetails.firstName }}</h4>
+    <div class="grid grid-cols-2 gap-3">
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <caption
+                        class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">{{ 'table.header.customers'|trans }}</caption>
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        {{ 'customer.name'|trans }}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        {{ 'table.header.joined_at'|trans }}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        {{ 'table.header.orders'|trans }}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        {{ 'table.header.country'|trans }}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <span class="sr-only">{{ 'table.header.handle'|trans }}</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="5"
+                            class="px-6 py-3 text-center text-gray-700 bg-gray-100 dark:bg-gray-500 dark:text-white">{{ 'table.footer.not_found'|trans }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <caption
+                        class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">{{ 'table.header.products'|trans }}</caption>
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        {{ 'label.form.product_name'|trans }}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        {{ 'table.header.created_at'|trans }}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        {{ 'table.header.price'|trans }}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        {{ 'table.header.quantity'|trans }}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <span class="sr-only">{{ 'table.header.handle'|trans }}</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="5"
+                            class="px-6 py-3 text-center text-gray-700 bg-gray-100 dark:bg-gray-500 dark:text-white">{{ 'table.footer.not_found'|trans }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+    <div class="grid grid-cols-2 gap-3">
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <caption
+                        class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">{{ 'table.header.messages'|trans }}</caption>
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        {{ 'table.header.customer'|trans }}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        {{ 'table.header.created_at'|trans }}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        {{ 'table.header.priority'|trans }}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <span class="sr-only">{{ 'table.header.review'|trans }}</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="4"
+                            class="px-6 py-3 text-center text-gray-700 bg-gray-100 dark:bg-gray-500 dark:text-white">{{ 'table.footer.not_found'|trans }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <caption
+                        class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">{{ 'table.header.orders'|trans }}</caption>
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        {{ 'table.header.order_number'|trans }}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        {{ 'table.header.created_at'|trans }}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        {{ 'table.header.status'|trans }}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        {{ 'table.header.total'|trans }}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <span class="sr-only">{{ 'table.header.handle'|trans }}</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="5"
+                            class="px-6 py-3 text-center text-gray-700 bg-gray-100 dark:bg-gray-500 dark:text-white">{{ 'table.footer.not_found'|trans }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
-        const selector = document.getElementById('store').querySelector('select');
-        selector.addEventListener('change', () => window.location.replace(selector.value));
+        let selector = document.getElementById('store');
+        if (selector !== null) {
+            selector = selector.querySelector('select');
+            selector.addEventListener('change', () => window.location.replace(selector.value));
+        }
     </script>
 {% endblock %}
