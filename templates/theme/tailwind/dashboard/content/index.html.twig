@@ -5,20 +5,21 @@
 {% block title_content %}{{ _title_extend }}{% endblock %}
 
 {% block content %}
-    {% set periods = {year: 'year', month: 'month', date: 'date'} %}
-    <form name="store" method="get" id="store">
-        <label for="slug">
-            <select name="slug" id="slug">
-                {% if stores|length > 1 %}
-                    <option value="{{ url('app_dashboard') }}">{{ 'menu.dashboard'|trans }}</option>
-                {% endif %}
-                {% for store in stores %}
-                    <option value="{{ url('app_dashboard', {slug: store.slug}) }}"{{ store.slug == app.request.get('slug') ? ' selected="selected"' : null }}>{{ store.name }}</option>
-                {% endfor %}
-            </select>
-        </label>
-    </form>
-    <h4 class="mt-5 text-3xl text-gray-500 dark:text-gray-50 font-oswald">{{ store.name }}</h4>
+    {% if stores|length %}
+        <form name="store" method="get" id="store">
+            <label for="slug">
+                <select name="slug" id="slug">
+                    {% if stores|length > 1 %}
+                        <option value="{{ url('app_dashboard') }}">{{ 'menu.dashboard'|trans }}</option>
+                    {% endif %}
+                    {% for store in stores %}
+                        <option value="{{ url('app_dashboard', {slug: store.slug}) }}"{{ store.slug == app.request.get('slug') ? ' selected="selected"' : null }}>{{ store.name }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </form>
+    {% endif %}
+    <h4 class="mt-5 ms-2 text-3xl text-gray-500 dark:text-gray-50 font-oswald">{{ store ? store.name : 'Welcome ' ~ app.user.userDetails.firstName }}</h4>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}

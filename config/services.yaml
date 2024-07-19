@@ -26,6 +26,15 @@ parameters:
     app.elastic.index: '%env(ELASTIC_INDEX)%'
 
 services:
+    Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
+        arguments:
+            - '@Redis'
+            - { 'prefix': 'rgfly_', 'ttl': 3600 }
+    Redis:
+        class: \Redis
+        calls:
+            - connect:
+                  - '%env(REDIS_SOCKET)%'
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
