@@ -51,6 +51,7 @@
         "symfony/framework-bundle": "7.1.*",
         "symfony/google-mailer": "7.1.*",
         "symfony/http-client": "7.1.*",
+        "symfony/http-foundation": "7.1.*",
         "symfony/intl": "7.1.*",
         "symfony/lock": "7.1.*",
         "symfony/mailer": "7.1.*",
