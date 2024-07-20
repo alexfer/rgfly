@@ -71,7 +71,7 @@ class Processor implements ProcessorInterface
 
         return new JsonResponse([
             'success' => true,
-            'message' => $this->translator->trans('market.message.success'),
+            'message' => $this->translator->trans('store.message.success'),
         ], Response::HTTP_OK);
     }
 
@@ -118,7 +118,7 @@ class Processor implements ProcessorInterface
      */
     private function validate(?array $exclude, $user = null): array
     {
-        if(!$user instanceof StoreCustomer){
+        if (!in_array('ROLE_CUSTOMER', $user->getRoles())) {
             return [
                 'success' => false,
                 'error' => $this->translator->trans('store.message.unauthorized'),

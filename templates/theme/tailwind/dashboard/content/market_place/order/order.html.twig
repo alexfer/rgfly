@@ -89,7 +89,7 @@
             <tr>
                 <td class="px-6 py-3 border border-slate-100">{{ loop.index }}</td>
                 <td class="px-6 py-3 border border-slate-100">{{ orderProduct.product.sku }}</td>
-                <td class="px-6 py-3 border border-slate-100">{{ orderProduct.product.shortName }}</td>
+                <td class="px-6 py-3 border border-slate-100 max-w-sm truncate">{{ orderProduct.product.shortName }}</td>
                 {% if amount is not defined %}
                     {% set amount = orderProduct.product.cost %}
                 {% endif %}

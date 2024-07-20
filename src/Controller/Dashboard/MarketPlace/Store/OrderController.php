@@ -75,23 +75,26 @@ class OrderController extends AbstractController
 
     /**
      * @param Request $request
-     * @param StoreOrders $order
+     * @param EntityManagerInterface $em
      * @param UserInterface $user
      * @param StoreInterface $serveStore
      * @return Response
      */
     #[Route('/{store}/{number}', name: 'app_dashboard_market_place_order_details_market')]
     public function details(
-        Request        $request,
-        StoreOrders    $order,
-        UserInterface  $user,
-        StoreInterface $serveStore,
+        Request                $request,
+        EntityManagerInterface $em,
+        UserInterface          $user,
+        StoreInterface         $serveStore,
     ): Response
     {
         $store = $this->store($serveStore, $user);
         $currency = Currency::currency($store->getCurrency());
 
-        $products = $fee = $itemSubtotal = [];
+        $order = $em->getRepository(StoreOrders::class)->findOneBy(['store' => $store, 'number' => $request->get('number')]);
+
+        $itemSubtotal = [];
+
         foreach ($order->getStoreOrdersProducts() as $item) {
             $cost = round($item->getProduct()->getCost(), 2) + round($item->getProduct()->getFee(), 2);
             $discount = $item->getProduct()->getDiscount();

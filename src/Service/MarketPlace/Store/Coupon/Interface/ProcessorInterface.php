@@ -2,7 +2,7 @@
 
 namespace App\Service\MarketPlace\Store\Coupon\Interface;
 
-use App\Entity\MarketPlace\{Store, StoreCouponCode, StoreCustomer};
+use App\Entity\MarketPlace\{Store, StoreCustomer};
 use Symfony\Component\Security\Core\User\UserInterface;
 
 interface ProcessorInterface

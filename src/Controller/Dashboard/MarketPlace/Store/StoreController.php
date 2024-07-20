@@ -3,7 +3,6 @@
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
 use App\Entity\MarketPlace\{Store, StorePaymentGateway, StorePaymentGatewayStore, StoreSocial};
-use App\Entity\User;
 use App\Form\Type\Dashboard\MarketPlace\StoreType;
 use App\Service\FileUploader;
 use Doctrine\DBAL\Exception;
@@ -226,7 +225,7 @@ class StoreController extends AbstractController
      * @return Response
      * @throws \Exception
      */
-    #[Route('/edit/{id}/{tab}', name: 'app_dashboard_market_place_edit_market', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}/{tab}', name: 'app_dashboard_market_place_edit_market', defaults: ['tabs' => 'details'], methods: ['GET', 'POST'])]
     public function edit(
         Request                $request,
         Store                  $store,
