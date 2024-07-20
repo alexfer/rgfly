@@ -463,6 +463,10 @@
                 <source>table.caption.customers</source>
                 <target><![CDATA[Your customers that placed orders to your store.]]></target>
             </trans-unit>
+            <trans-unit id="table.caption.blogs">
+                <source>table.caption.blogs</source>
+                <target><![CDATA[Your <a class="underline hover:no-underline" href="{ path }"><strong>blogs</strong></a> related to your store. <a class="text-success underline font-bold hover:no-underlinse" href="{ create }">Create blog</a>.]]></target>
+            </trans-unit>
             <trans-unit id="table.header.answers">
                 <source>table.header.answers</source>
                 <target>Answers</target>

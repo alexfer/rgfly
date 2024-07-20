@@ -62,9 +62,10 @@
                             <td class="px-6 py-4">
                                 {{ countries[customer.country] }}
                             </td>
-                            <td class="px-6 py-4 text-right">
-                                <a href="#" data-modal-target="address-modal" data-modal-toggle="address-modal"
-                                   class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                            <td class="px-6 py-4 flex justify-end items-end">
+                                <a href="#" data-modal-target="customer-modal" data-modal-toggle="customer-modal"
+                                   data-url="{{ path('app_dashboard_customer_xhr', {id: customer.id}) }}"
+                                   class="customer font-medium text-blue-600 dark:text-blue-500 hover:underline">
                                     <svg class="w-[20px] h-[20px] text-blue-800 dark:text-white" aria-hidden="true"
                                          xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                          viewBox="0 0 24 24">
@@ -133,15 +134,14 @@
                             <td class="px-6 py-4">
                                 {{ product.quantity }}
                             </td>
-                            <td class="px-6 py-4 text-right">
+                            <td class="px-6 py-4 flex justify-end items-end">
                                 <a href="{{ path('app_dashboard_market_place_edit_product', {store: store.id, id: product.id, tab: 'details'}) }}"
                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                    <svg class="w-[20px] h-[20px] text-green-700 dark:text-white" aria-hidden="true"
-                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                         viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                              stroke-width="2"
-                                              d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"></path>
+                                    <svg class="h-5 w-5 text-gray-600 dark:text-gray-50" fill="currentColor"
+                                         viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                              d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                                              clip-rule="evenodd"></path>
                                     </svg>
                                 </a>
                             </td>
@@ -195,7 +195,7 @@
                             <td class="px-6 py-4 capitalize">
                                 {{ message.priority }}
                             </td>
-                            <td class="px-6 py-4 text-right">
+                            <td class="px-6 py-4 flex justify-end items-end">
                                 <a href="#"
                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                                     <svg class="w-[20px] h-[20px] text-blue-700 dark:text-white" aria-hidden="true"
@@ -259,7 +259,7 @@
                                 {{ order.total|amount_format }}<small
                                         class="ps-0.5">{{ store.currency|currency }}</small>
                             </td>
-                            <td class="px-6 py-4 text-right">
+                            <td class="px-6 py-4 flex justify-end items-end">
                                 <a href="{{ path('app_dashboard_market_place_order_details_market', {store: store.id, number: order.number}) }}"
                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                                     <svg class="w-[20px] h-[20px] text-blue-700 dark:text-white" aria-hidden="true"
@@ -282,7 +282,7 @@
                 </table>
             </div>
         </div>
-        <div id="address-modal" tabindex="-1" aria-hidden="true"
+        <div id="customer-modal" tabindex="-1" aria-hidden="true"
              class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
             <div class="relative p-4 w-full max-w-2xl max-h-full">
                 <!-- Modal content -->
@@ -290,48 +290,183 @@
                     <!-- Modal header -->
                     <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                         <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                            {{ 'customer.address'|trans }}
+                            {{ 'table.header.customer'|trans }}
                         </h3>
                         <button type="button"
                                 class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                data-modal-hide="address-modal">
+                                data-modal-hide="customer-modal">
                             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                                  viewBox="0 0 14 14">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                       stroke-width="2"
                                       d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"></path>
                             </svg>
-                            <span class="sr-only">Close modal</span>
+                            <span class="sr-only">{{ 'form.action.close'|trans }}</span>
                         </button>
                     </div>
-                    <div class="p-4 md:p-5 space-y-4">
-                        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                            With less than a month to go before the European Union enacts new consumer privacy laws for
-                            its
-                            citizens, companies around the world are updating their terms of service agreements to
-                            comply.
-                        </p>
-                        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                            The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May
-                            25
-                            and is meant to ensure a common set of data rights in the European Union. It requires
-                            organizations to notify users as soon as possible of high-risk data breaches that could
-                            personally affect them.
-                        </p>
+                    <div id="modal-body" class="p-4 md:p-5 space-y-4">
+                        <div class="px-4 sm:px-0">
+                            <h3 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">{{ 'customer.cabinet.personal_information'|trans }}</h3>
+                        </div>
+                        <dl class="divide-y divide-gray-100">
+                            <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-white">{{ 'user.info.first_name'|trans }}</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200 first_name"></dd>
+                            </div>
+                            <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-white">{{ 'user.info.last_name'|trans }}</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200 last_name"></dd>
+                            </div>
+                            <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-white">{{ 'customer.phone'|trans }}</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200 phone"></dd>
+                            </div>
+                            <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-white">{{ 'user.info.country'|trans }}</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200 country"></dd>
+                            </div>
+                        </dl>
+                        <div class="px-4 sm:px-0">
+                            <h3 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">{{ 'customer.cabinet.address'|trans }}</h3>
+                        </div>
+                        <dl class="divide-y divide-gray-100">
+                            <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-white">{{ 'user.info.city'|trans }}</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200 address_city"></dd>
+                            </div>
+                            <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-white">{{ 'user.info.country'|trans }}</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200 address_country"></dd>
+                            </div>
+                            <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-white">{{ 'label.form.region'|trans }}</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200 address_region"></dd>
+                            </div>
+                            <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-white">{{ 'label.form.zip'|trans }}</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200 address_postal"></dd>
+                            </div>
+                            <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-white">{{ 'label.form.address_line_1'|trans }}</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200 address_line1"></dd>
+                            </div>
+                            <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-white">{{ 'label.form.address_line_2'|trans }}</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200 address_line2"></dd>
+                            </div>
+                            <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-white">{{ 'user.info.phone_number'|trans }}</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200 address_phone"></dd>
+                            </div>
+                        </dl>
                     </div>
                     <div class="text-right p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                        <button data-modal-hide="address-modal" type="button"
+                        <button data-modal-hide="customer-modal" type="button"
                                 class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">{{ 'form.action.close'|trans }}</button>
                     </div>
                 </div>
             </div>
         </div>
+        <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
     {% endif %}
+    <div class="grid grid-cols-1 gap-3">
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <caption
+                        class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+                    {{ 'title.blogs'|trans }}
+                    <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
+                        {{ 'table.caption.blogs'|trans({path: path('app_dashboard_blog'), create: path('app_dashboard_create_blog')})|raw }}
+                    </p>
+                </caption>
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        {{ 'table.header.title'|trans }}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        {{ 'table.header.created_at'|trans }}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        {{ 'table.header.status'|trans }}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <span class="sr-only">{{ 'table.header.handle'|trans }}</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for blog in blogs %}
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row"
+                            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-xs truncate">
+                            <a target="_blank"
+                               href="{{ path('app_blog_view', {slug: blog.slug}) }}">{{ blog.entryDetails.title }}</a>
+                        </th>
+                        <td class="px-6 py-4">
+                            {{ blog.createdAt|date(date_format) }}
+                        </td>
+                        <td class="px-6 py-4 capitalize">
+                            {{ blog.status }}
+                        </td>
+                        <td class="px-6 py-4 flex justify-end items-end">
+                            <a href="{{ path('app_dashboard_edit_blog', {id: blog.id}) }}"
+                               class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                <svg class="w-[20px] h-[20px] text-green-700 dark:text-white" aria-hidden="true"
+                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                     viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                          stroke-width="2"
+                                          d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"></path>
+                                </svg>
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4"
+                            class="px-6 py-4 text-center text-gray-700 bg-gray-100 dark:bg-gray-500 dark:text-white">{{ 'table.footer.not_found'|trans }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
         let selector = document.getElementById('store');
+        const customers = document.querySelectorAll('.customer');
+
+        if (customers !== undefined) {
+            [...customers].forEach((el) => {
+                const url = el.dataset.url;
+
+                el.addEventListener('click', (e) => {
+                    fetch(url, {'Content-type': 'application/json'})
+                        .then((response) => response.json())
+                        .then((json) => {
+                            if (json.customer.length) {
+                                const customer = json.customer.shift();
+                                const body = document.getElementById('modal-body');
+                                for (const [key, value] of Object.entries(customer)) {
+                                    body.querySelectorAll('dd').forEach((el) => {
+                                        if(el.classList.contains(key)) {
+                                            if(value === null) {
+                                                el.parentElement.remove();
+                                            } else {
+                                                el.innerHTML = value.toString();
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                });
+            });
+        }
+
         if (selector !== null) {
             selector = selector.querySelector('select');
             selector.addEventListener('change', () => window.location.replace(selector.value));
