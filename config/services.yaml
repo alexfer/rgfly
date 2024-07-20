@@ -29,7 +29,7 @@ services:
     Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
         arguments:
             - '@Redis'
-            - { 'prefix': 'rgfly_', 'ttl': 3600 }
+            - { 'prefix': 'rgfly_', 'ttl': 604800 }
     Redis:
         class: \Redis
         calls:

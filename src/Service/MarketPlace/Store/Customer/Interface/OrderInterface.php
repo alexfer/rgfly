@@ -2,7 +2,6 @@
 
 namespace App\Service\MarketPlace\Store\Customer\Interface;
 
-use App\Entity\User;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 

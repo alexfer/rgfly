@@ -6,7 +6,7 @@ use App\Entity\MarketPlace\{Store, StoreCustomer, StoreCustomerOrders, StoreOrde
 use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Service\MarketPlace\Store\Order\Interface\ProcessorInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\{JsonResponse, Request, RequestStack};
+use Symfony\Component\HttpFoundation\{Request, RequestStack};
 
 final class Processor implements ProcessorInterface
 {
@@ -38,7 +38,7 @@ final class Processor implements ProcessorInterface
         $this->request = $requestStack->getCurrentRequest();
         $session = $this->request->getSession();
 
-        if(!$session->isStarted()) {
+        if (!$session->isStarted()) {
             $session->start();
         }
 

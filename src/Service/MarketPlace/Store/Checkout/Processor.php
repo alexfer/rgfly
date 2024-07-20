@@ -2,7 +2,6 @@
 
 namespace App\Service\MarketPlace\Store\Checkout;
 
-use Doctrine\Common\Collections\Criteria;
 use App\Entity\MarketPlace\{StoreCustomer, StoreInvoice, StoreOrders, StorePaymentGateway, StoreProduct};
 use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Service\MarketPlace\Store\Checkout\Interface\ProcessorInterface;
@@ -62,7 +61,7 @@ class Processor implements ProcessorInterface
             'status' => $status,
         ];
 
-        if($customer) {
+        if ($customer) {
             unset($criteria['session']);
         }
 
@@ -89,7 +88,7 @@ class Processor implements ProcessorInterface
     /**
      * @return void
      */
-    public function updateProducts(): void
+    protected function updateProducts(): void
     {
         foreach ($this->getProducts() as $product) {
             $item = $this->em->getRepository(StoreProduct::class)->find($product->getProduct());
@@ -133,6 +132,7 @@ class Processor implements ProcessorInterface
     {
         $order = $this->order->setSession(null)->setStatus($status);
         $this->em->persist($order);
+        $this->updateProducts();
         $this->em->flush();
     }
 

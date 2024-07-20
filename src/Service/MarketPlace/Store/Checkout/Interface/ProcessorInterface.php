@@ -14,11 +14,6 @@ interface ProcessorInterface
     public function findOrder(?string $status, ?StoreCustomer $customer = null): ?StoreOrders;
 
     /**
-     * @return void
-     */
-    public function updateProducts(): void;
-
-    /**
      * @param string|null $status
      * @return void
      */
