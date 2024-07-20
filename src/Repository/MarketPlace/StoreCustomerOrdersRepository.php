@@ -2,20 +2,16 @@
 
 namespace App\Repository\MarketPlace;
 
-use App\Entity\MarketPlace\StoreCustomerOrders;
+use App\Entity\MarketPlace\{StoreCustomer, StoreCustomerOrders};
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\{Connection, Exception};
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<StoreCustomerOrders>
- *
- * @method StoreCustomerOrders|null find($id, $lockMode = null, $lockVersion = null)
- * @method StoreCustomerOrders|null findOneBy(array $criteria, array $orderBy = null)
- * @method StoreCustomerOrders[]    findAll()
- * @method StoreCustomerOrders[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class StoreCustomerOrdersRepository extends ServiceEntityRepository
 {
@@ -71,6 +67,41 @@ class StoreCustomerOrdersRepository extends ServiceEntityRepository
             ->groupBy('co.customer');
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param array $ids
+     * @param int $offset
+     * @param int $limit
+     * @return array
+     */
+    public function customers(
+        array $ids,
+        int   $offset = 0,
+        int   $limit = 20,
+    ): array
+    {
+        $qb = $this->createQueryBuilder('co')
+            ->select([
+                'concat(c.first_name, \' \', c.last_name) as full_name',
+                'c.created_at',
+                'c.country',
+            ])
+            ->addSelect('count(co.id) as orders')
+            ->join(StoreCustomer::class, 'c', Join::WITH, 'co.customer = c.id')
+            ->where('co.orders IN (:ids)')
+            ->setParameter('ids', $ids)->setMaxResults($limit)
+            ->addGroupBy('c.id')
+            ->addGroupBy('c.email')
+            ->orderBy('c.id', 'DESC')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit);
+        $result = $qb->getQuery()->getResult();
+
+        return [
+            'total' => count($qb->getQuery()->getResult()),
+            'result' => $result,
+        ];
     }
 
 }
