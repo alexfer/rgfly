@@ -204,7 +204,8 @@ class StoreController extends AbstractController
                 return $this->redirectToRoute('app_dashboard_market_place_edit_market', ['id' => $store->getId(), 'tab' => $request->get('tab')]);
             }
         } else {
-            throw new AccessDeniedHttpException('Permission denied.');
+            $this->addFlash('danger', $translator->trans('restriction.access', ['email' => $params->get('app.notifications.email_sender')]));
+            //throw new AccessDeniedHttpException('Permission denied.');
         }
 
         return $this->render('dashboard/content/market_place/store/_form.html.twig', [

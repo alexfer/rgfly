@@ -2078,6 +2078,10 @@
                 <source>caption.wishlist</source>
                 <target>Your wishlist</target>
             </trans-unit>
+            <trans-unit id="restriction.access">
+                <source>restriction.access</source>
+                <target><![CDATA[Restriction access. You can create in your plan only one store. Please contact via email to know how to use additional store. <a href="mailto:{ email }">{ email }</a>.]]></target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
