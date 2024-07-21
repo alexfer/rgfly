@@ -44,7 +44,9 @@
             </button>
         </div>
         <div class="p-4 border-1 border-gray-50 rounded-lg dark:border-gray-700">
-            {% block body %}{% endblock %}
+            {% block body %}
+                <div {{ stimulus_controller('hello') }}>...</div>
+            {% endblock %}
         </div>
     </div>
     <footer class="bg-gray-950 h-[64px] sticky z-[1000] top-[100vh]">
