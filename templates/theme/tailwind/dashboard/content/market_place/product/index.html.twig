@@ -58,10 +58,10 @@
                         <td class="px-3 py-3">
                             <a data-twe-toggle="tooltip"
                                data-twe-placement="left"
-                               class="block text-wrap font-semibold truncate hover:underline hover:text-gray-400 dark:text-gray-400 {% if product.deleted %}line-through{% endif %}"
+                               class="block text-nowrap max-w-[351px] font-semibold truncate hover:underline hover:text-gray-400 dark:text-gray-400 {% if product.deleted %}line-through{% endif %}"
                                title="{{ product.name }}"
                                href="{{ path('app_dashboard_market_place_edit_product', {store: product.store.id, id: product.id, tab: 'details'}) }}">
-                                {{ product.short_name|length >= 40 ? product.short_name|slice(0, 40) ~ '...' : product.short_name }}
+                                {{ product.short_name }}
                             </a>
                         </td>
                         <td class="px-3 py-3 text-center">
@@ -84,18 +84,18 @@
                                     <i class="fa fa-{{ product.store.deleted ? 'ban' : 'arrow-up' }} dark:text-white"></i>
                                 </a>
                             {% else %}
-                                <a href="{{ path('app_dashboard_market_place_edit_product', {store: product.store.id, id: product.id, tab: 'details'}) }}"
+                                <a role="button" href="{{ path('app_dashboard_market_place_edit_product', {store: product.store.id, id: product.id, tab: 'details'}) }}"
                                    class="border rounded ps-1.5 pr-1 py-1 mr-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
                                     <i class="fa fa-pencil text-indigo-600 dark:text-white"></i>
                                 </a>
-                                <a
-                                        class="border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
+                                <button type="button"
+                                        class="border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800"
                                         data-token="{{ csrf_token('delete') }}"
                                         data-url="{{ url('app_dashboard_delete_product', {store: product.store.id, id: product.id}) }}"
                                         data-bs-toggle="modal"
                                         data-bs-target="#modal-delete">
                                     <i class="fa fa-trash text-red-600 dark:text-white"></i>
-                                </a>
+                                </button>
                             {% endif %}
                         </td>
                     </tr>

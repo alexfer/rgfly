@@ -9,6 +9,7 @@ import './styles/tailwind.css';
 import './styles/default.css';
 import 'font-awesome/css/font-awesome.min.css'
 import 'flowbite/dist/flowbite.min.css';
+import 'sweetalert2/dist/sweetalert2.css'
 // import js files into app.js
 import './twe'
 import './bootstrap';

@@ -18,7 +18,7 @@ Encore
     .addEntry('coupon-js', `./assets/tailwind/js/coupon.js`)
     .addEntry('message-js', `./assets/tailwind/js/message.js`)
     .addEntry('market-js', `./assets/tailwind/js/market.js`)
-    .addEntry('chart-js', `./assets/tailwind/js/dashboard/summary.js`)
+    .addEntry('dashboard-js', `./assets/tailwind/js/dashboard/index.js`)
     .addEntry('datepicker-js', `./assets/tailwind/js/dashboard/datepicker.js`)
     .enablePostCssLoader((options) => {
         options.postcssOptions = {

@@ -363,6 +363,34 @@
                 <source>title.dashboard.edit_faq</source>
                 <target>Change Question</target>
             </trans-unit>
+            <trans-unit id="text.edit">
+                <source>text.edit</source>
+                <target>Edit</target>
+            </trans-unit>
+            <trans-unit id="text.change">
+                <source>text.change</source>
+                <target>Change</target>
+            </trans-unit>
+            <trans-unit id="text.move">
+                <source>text.move</source>
+                <target>Move</target>
+            </trans-unit>
+            <trans-unit id="text.update">
+                <source>text.update</source>
+                <target>Update</target>
+            </trans-unit>
+            <trans-unit id="text.delete">
+                <source>text.delete</source>
+                <target>Delete</target>
+            </trans-unit>
+            <trans-unit id="text.remove">
+                <source>text.remove</source>
+                <target>Remove</target>
+            </trans-unit>
+            <trans-unit id="text.restore">
+                <source>text.restore</source>
+                <target>Restore</target>
+            </trans-unit>
             <trans-unit id="pagination.name">
                 <source>pagination.name</source>
                 <target>Page navigation</target>
