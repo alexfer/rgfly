@@ -211,10 +211,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 Swal.fire({
                     text: i18next.t('question'),
                     showCancelButton: true,
+                    showConfirmButton: true,
                     confirmButtonText: i18next.t('proceed'),
                     denyButtonText: i18next.t('cancel'),
-                    icon: "question",
-                    showLoaderOnConfirm: true
+                    icon: "question"
                 }).then(async (result) => {
                     if (result.isConfirmed) {
                         const response = await fetch(url, {

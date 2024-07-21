@@ -53,9 +53,7 @@ class StoreCustomerOrdersRepository extends ServiceEntityRepository
 
     /**
      * @param array $ids
-     * @return string|null
-     * @throws NoResultException
-     * @throws NonUniqueResultException
+     * @return array
      */
     public function summaryCustomers(array $ids): array
     {
@@ -83,6 +81,7 @@ class StoreCustomerOrdersRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('co')
             ->select([
+                'c.id',
                 'concat(c.first_name, \' \', c.last_name) as full_name',
                 'c.created_at',
                 'c.country',

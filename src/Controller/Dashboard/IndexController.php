@@ -2,7 +2,9 @@
 
 namespace App\Controller\Dashboard;
 
+use App\Entity\Entry;
 use App\Entity\MarketPlace\Store;
+use App\Entity\MarketPlace\StoreCustomer;
 use App\Entity\MarketPlace\StoreCustomerOrders;
 use App\Entity\MarketPlace\StoreMessage;
 use App\Entity\MarketPlace\StoreOrders;
@@ -10,6 +12,7 @@ use App\Entity\MarketPlace\StoreProduct;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Intl\{Countries, Locale,};
@@ -64,6 +67,8 @@ class IndexController extends AbstractController
 
         $store = $adminStore ?: reset($stores);
 
+        $blogs = $em->getRepository(Entry::class)->findBy(['user' => $user], ['id' => 'DESC'], self::$limit, self::$offset);
+
         $products = $em->getRepository(StoreProduct::class)->findBy(['store' => $store], ['updated_at' => 'DESC'], self::$limit, self::$offset);
         $orders = $em->getRepository(StoreOrders::class)->findBy(['store' => $store], ['id' => 'DESC'], self::$limit, self::$offset);
         $messages = $em->getRepository(StoreMessage::class)->findBy(['store' => $store], ['created_at' => 'DESC'], self::$limit, self::$offset);
@@ -82,8 +87,35 @@ class IndexController extends AbstractController
             'messages' => $messages,
             'countries' => Countries::getNames(Locale::getDefault()),
             'customers' => $customers['result'],
+            'blogs' => $blogs,
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param UserInterface $user
+     * @param EntityManagerInterface $em
+     * @return JsonResponse
+     */
+    #[Route('/customer/{id}', name: 'app_dashboard_customer_xhr')]
+    public function customerXhr(
+        Request                $request,
+        UserInterface          $user,
+        EntityManagerInterface $em,
+    ): JsonResponse
+    {
+        $store = $em->getRepository(Store::class)->findOneBy(['owner' => $user]);
 
+        if (!$store) {
+            return $this->json(['message' => 'Permission denied'], Response::HTTP_FORBIDDEN);
+        }
+
+        $customer = $em->getRepository(StoreCustomer::class)->get($request->get('id'));
+
+        if (!$customer) {
+            return $this->json(['message' => 'Not found'], Response::HTTP_NOT_FOUND);
+        }
+        //dd($customer);
+        return $this->json(['customer' => $customer], Response::HTTP_OK);
+    }
 }

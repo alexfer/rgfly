@@ -2,9 +2,11 @@
 
 namespace App\Repository\MarketPlace;
 
+use App\Entity\MarketPlace\StoreAddress;
 use App\Entity\MarketPlace\StoreCustomer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -43,6 +45,39 @@ class StoreCustomerRepository extends ServiceEntityRepository
         $statement->bindValue('values', $jsonValues, \PDO::PARAM_STR);
 
         return $statement->executeQuery()->fetchOne();
+    }
+
+    /**
+     * @param int $id
+     * @return array|null
+     */
+    public function get(int $id): ?array
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select([
+                'c.id',
+                'c.first_name',
+                'c.last_name',
+                'c.phone',
+                'c.country',
+                'a.city as address_city',
+                'a.country as address_country',
+                'a.phone as address_phone',
+                'a.region as address_region',
+                'a.postal as address_postal',
+                'a.line1 as address_line1',
+                'a.line2 as address_line2',
+            ])
+            ->join(
+                StoreAddress::class,
+                'a',
+                Join::WITH,
+                'a.customer = c.id')
+            ->where('c.id = :id')
+            ->setParameter('id', $id, \PDO::PARAM_INT)
+            ->setMaxResults(1);
+
+        return $qb->getQuery()->getArrayResult();
     }
 
 }
