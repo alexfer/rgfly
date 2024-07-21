@@ -3,7 +3,7 @@
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
 use App\Entity\{Attach, User};
-use App\Entity\MarketPlace\{Store, StoreCoupon, StoreProduct, StoreProductAttach};
+use App\Entity\MarketPlace\{StoreCoupon, StoreProduct, StoreProductAttach};
 use App\Form\Type\Dashboard\MarketPlace\ProductType;
 use App\Security\Voter\ProductVoter;
 use App\Service\FileUploader;
@@ -185,18 +185,20 @@ class ProductController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('app_dashboard_market_place_market_product', ['store' => $store->getId()]);
+        return $this->redirect($request->headers->get('referer'));
     }
 
     /**
+     * @param Request $request
      * @param UserInterface $user
      * @param StoreProduct $product
      * @param EntityManagerInterface $em
-     * @param ServeStoreInterface $iStore
+     * @param ServeStoreInterface $serveStore
      * @return Response
      */
     #[Route('/restore/{store}/{id}', name: 'app_dashboard_restore_product')]
     public function restore(
+        Request                $request,
         UserInterface          $user,
         StoreProduct           $product,
         EntityManagerInterface $em,
@@ -208,7 +210,7 @@ class ProductController extends AbstractController
         $em->persist($product);
         $em->flush();
 
-        return $this->redirectToRoute('app_dashboard_market_place_market_product', ['store' => $store->getId()]);
+        return $this->redirect($request->headers->get('referer'));
     }
 
     /**
