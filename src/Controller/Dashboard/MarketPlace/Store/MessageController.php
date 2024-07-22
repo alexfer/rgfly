@@ -51,20 +51,40 @@ class MessageController extends AbstractController
         Request                $request,
         UserInterface          $user,
         EntityManagerInterface $em,
-        StoreInterface    $serveStore,
+        StoreInterface         $serveStore,
     ): Response
     {
         $store = $this->store($serveStore, $user);
         $messages = $em->getRepository(StoreMessage::class)->fetchAll($store, 'low', 0, 20);
 
         $pagination = $this->paginator->paginate(
-            $messages['data'],
+            $messages['data'] !== null ? $messages['data'] : [],
             $request->query->getInt('page', 1),
             self::LIMIT
         );
 
         return $this->render('dashboard/content/market_place/message/index.html.twig', [
             'messages' => $pagination,
+        ]);
+    }
+
+    #[Route('/{store}/{id}', name: 'app_dashboard_market_place_message_conversation')]
+    public function conversation(
+        Request                $request,
+        UserInterface          $user,
+        StoreInterface         $serveStore,
+        EntityManagerInterface $em,
+    ): Response
+    {
+        $store = $this->store($serveStore, $user);
+        $repository = $em->getRepository(StoreMessage::class);
+
+        $message = $repository->findOneBy(['store' => $store, 'id' => $request->get('id')]);
+        $conversation = $repository->findBy(['store' => $store, 'parent' => $message->getId()]);
+
+        return $this->render('dashboard/content/market_place/message/conversation.html.twig', [
+            'message' => $message,
+            'conversation' => $conversation,
         ]);
     }
 }

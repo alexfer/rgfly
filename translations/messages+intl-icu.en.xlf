@@ -287,6 +287,10 @@
                 <source>title.dashboard.overview_messages</source>
                 <target>Messages Overview</target>
             </trans-unit>
+            <trans-unit id="title.dashboard.overview_message.conversation">
+                <source>title.dashboard.overview_message.conversation</source>
+                <target>Message Conversation</target>
+            </trans-unit>
             <trans-unit id="title.dashboard.overview_other">
                 <source>title.dashboard.overview_other</source>
                 <target>Other Entries Overview</target>

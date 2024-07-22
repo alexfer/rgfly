@@ -1,0 +1,65 @@
+{% extends 'dashboard/index.html.twig' %}
+{% set _title_extend = 'title.dashboard.overview_message.conversation'|trans %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}{{ _title_extend }}{% endblock %}
+
+{% block content %}
+    <div class="flex items-start gap-2.5 my-5">
+        <img class="w-8 h-8 rounded-full" src="{{ asset('img/64x64.png') }}" alt="...">
+        <div class="flex flex-col w-full max-w-2xl leading-1.5">
+            <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ message.customer.firstName }} {{ message.customer.lastName }}</span>
+                <span class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ message.createdAt|date(datetime_format) }}</span>
+            </div>
+            <p class="text-sm font-normal my-1.5 p-4 bg-gray-50 rounded-lg text-gray-900 dark:bg-gray-500 dark:text-white ">{{ message.message }}</p>
+            {% include 'dashboard/content/market_place/message/_form.html.twig' with {id: message.id} %}
+            <div class="flex justify-between items-center my-1 px-0.5">
+                <a role="button"
+                   class="answer text-xs px-2.5 py-1.5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-md dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{{ 'text.answer'|trans }}</a>
+                <span class="text-sm capitalize font-normal text-gray-500 dark:text-gray-400">{{ message.priority }}</span>
+            </div>
+        </div>
+    </div>
+    {% for row in conversation %}
+        <div class="flex items-start gap-2.5">
+            <img class="w-8 h-8 rounded-full" src="{{ asset('img/64x64.png') }}" alt="...">
+            <div class="flex flex-col w-full max-w-lg leading-1.5">
+                <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                    <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ app.user.userDetails.firstName }} {{ app.user.userDetails.lastName }}</span>
+                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ row.createdAt|date(datetime_format) }}</span>
+                </div>
+                <p class="text-sm font-normal py-2 text-gray-900 dark:text-white">{{ row.message }}</p>
+                <span class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ row.priority }}</span>
+            </div>
+        </div>
+    {% else %}
+        <div class="flex items-start gap-2.5">
+            <div class="flex flex-col w-full max-w-lg leading-1.5">
+                <div class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
+                     role="alert">
+                    <span class="font-medium me-2">{{ 'text.info'|trans }}</span>{{ 'info.no_content'|trans }}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+        const answer = document.querySelectorAll('.answer');
+        const form = document.getElementById('form-answer');
+
+        if (answer !== null) {
+            answer.forEach((el) => {
+                el.addEventListener('click', () => {
+                    form.classList.remove('sr-only');
+                    el.setAttribute('disable', 'disabled');
+                    form.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        console.log(e.currentTarget)
+                    });
+                });
+            });
+        }
+    </script>
+{% endblock %}
+

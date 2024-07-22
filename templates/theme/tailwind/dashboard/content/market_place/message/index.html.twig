@@ -44,7 +44,7 @@
                     </td>
                     <td class="text-center px-6 py-3">{{ message.priority }}</td>
                     <td class="text-center px-6 py-3">
-                        <a role="button" href=""
+                        <a role="button" href="{{ path('app_dashboard_market_place_message_conversation', {store: message.store, id: message.id}) }}"
                            class="border rounded px-1.5 py-1.5 mr-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
                             <i class="fa fa-comments text-blue-500 dark:text-white"></i>
                         </a>
