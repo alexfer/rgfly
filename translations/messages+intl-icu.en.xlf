@@ -2070,6 +2070,14 @@
                 <source>customer.cabinet.messages</source>
                 <target>Messages</target>
             </trans-unit>
+            <trans-unit id="customer.order.messages">
+                <source>customer.order.messages</source>
+                <target>Request about order</target>
+            </trans-unit>
+            <trans-unit id="customer.product.messages">
+                <source>customer.product.messages</source>
+                <target>Request about product</target>
+            </trans-unit>
             <trans-unit id="customer.cabinet.order.notpaid">
                 <source>customer.cabinet.order.notpaid</source>
                 <target>Not paid yet.</target>

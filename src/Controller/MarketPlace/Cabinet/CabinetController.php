@@ -76,15 +76,29 @@ class CabinetController extends AbstractController
      * @return Response
      * @throws Exception
      */
-    #[Route('/messages', name: 'app_cabinet_messages', methods: ['GET'])]
+    #[Route('/messages/{id}', name: 'app_cabinet_messages', defaults: ['id' => null], methods: ['GET', 'POST'])]
     public function messages(
         Request                $request,
         UserInterface          $user,
         EntityManagerInterface $em,
     ): Response
     {
+        $id = $request->get('id');
         $customer = $this->customer($user, $em);
-        $messages = $em->getRepository(StoreMessage::class)->fetchByCustomer($customer);
+        $repository = $em->getRepository(StoreMessage::class);
+
+        if($id) {
+            $message = $repository->findOneBy(['customer' => $customer, 'id' => $id]);
+            $conversation = $repository->findBy(['customer' => $customer, 'parent' => $message->getId()]);
+            
+            return $this->render('market_place/cabinet/message/conversation.html.twig', [
+                'customer' => $customer,
+                'message' => $message,
+                'conversation' => $conversation,
+            ]);
+        }
+
+        $messages = $repository->fetchByCustomer($customer);
 
         return $this->render('market_place/cabinet/message/index.html.twig', [
             'customer' => $customer,

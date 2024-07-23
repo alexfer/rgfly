@@ -2,7 +2,7 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
-use App\Entity\MarketPlace\{Store, StoreMessage};
+use App\Entity\MarketPlace\{Store, StoreCustomer, StoreMessage};
 use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreInterface;
 use App\Service\MarketPlace\StoreTrait;
 use Doctrine\DBAL\Exception;
@@ -68,7 +68,7 @@ class MessageController extends AbstractController
         ]);
     }
 
-    #[Route('/{store}/{id}', name: 'app_dashboard_market_place_message_conversation')]
+    #[Route('/{store}/{id}', name: 'app_dashboard_market_place_message_conversation', methods: ['GET', 'POST'])]
     public function conversation(
         Request                $request,
         UserInterface          $user,
@@ -81,6 +81,32 @@ class MessageController extends AbstractController
 
         $message = $repository->findOneBy(['store' => $store, 'id' => $request->get('id')]);
         $conversation = $repository->findBy(['store' => $store, 'parent' => $message->getId()]);
+
+        if($request->isMethod('POST')) {
+            $payload = $request->getPayload()->all();
+            $customer = $em->getRepository(StoreCustomer::class)->find($payload['customer']);
+            $answer = new StoreMessage();
+            $answer->setStore($store);
+            $answer->setParent($repository->find($payload['id']));
+            $answer->setCustomer($customer);
+            $answer->setOwner($user);
+            $answer->setMessage(mb_substr($payload['message'], 0, 255));
+            $answer->setUpdatedAt(new \DateTimeImmutable('now'));
+            $em->persist($answer);
+            $em->flush();
+
+            return $this->json([
+                'template' => $this->renderView('dashboard/content/market_place/message/answers.html.twig', [
+                    'row' => [
+                        'id' => $answer->getId(),
+                        'message' => $answer->getMessage(),
+                        'createdAt' => $answer->getCreatedAt(),
+                        'owner' => $answer->getOwner(),
+                        'priority' => $answer->getPriority(),
+                    ],
+                ])
+            ], Response::HTTP_CREATED);
+        }
 
         return $this->render('dashboard/content/market_place/message/conversation.html.twig', [
             'message' => $message,

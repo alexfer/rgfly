@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2 class="text-2xl pb-4 relative font-extrabold text-primary-700 dark:text-white">{{ 'customer.cabinet'|trans }}
+        <span class="absolute right-0 mr-2 text-lg pe-4 font-normal">{{ customer.firstName }} {{ customer.lastName }}</span>
+    </h2>
+    <div class="grid grid-cols-8 gap-4">
+        <aside class="col-span-2 h-screen transition-transform -translate-x-full sm:translate-x-0">
+            <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 rounded-lg">
+                {% include 'market_place/cabinet/aside.html.twig' %}
+            </div>
+        </aside>
+        <section class="col-span-6">
+            <h4 class="pb-2 block w-full mb-4 text-xl font-semibold text-red-500 text-center max-w-sm truncate text-sm-start">
+                {% if message.orders %}
+                    {{ 'customer.order.messages'|trans }}: {{ message.orders.number }}
+                {% elseif message.product %}
+                    {{ 'customer.product.messages'|trans }}: {{ message.product.shortName }}
+                {% else %}
+                    {{ 'customer.cabinet.messages'|trans }}
+                {% endif %}
+            </h4>
+            <div class="flex items-start gap-2.5 my-5">
+                <img class="w-8 h-8 rounded-full" src="{{ asset('img/64x64.png') }}" alt="...">
+                <div class="flex flex-col w-full max-w-2xl leading-1.5">
+                    <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                        <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ message.customer.firstName }} {{ message.customer.lastName }}</span>
+                        <span class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ message.createdAt|date(datetime_format) }}</span>
+                    </div>
+                    <p class="text-sm font-normal my-1.5 p-4 bg-gray-50 rounded-lg text-gray-900 dark:bg-gray-500 dark:text-white ">{{ message.message }}</p>
+                    <div class="flex justify-between items-center my-1 px-0.5">
+                        {% if conversation|length == 0 %}
+                            <a role="button"
+                               class="answer text-xs px-2.5 py-1.5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-md dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{{ 'text.answer'|trans }}</a>
+                        {% endif %}
+                        <span class="{{ conversation|length ? 'w-full text-end': null }} text-sm capitalize font-normal text-gray-500 dark:text-gray-400">{{ message.priority }}</span>
+                    </div>
+                </div>
+            </div>
+            {% for row in conversation %}
+                {% include 'market_place/cabinet/message/answers.html.twig' %}
+            {% endfor %}
+            {% include 'market_place/cabinet/message/answer_form.html.twig' with {id: message.id} %}
+        </section>
+    </div>
+{% endblock %}
+
