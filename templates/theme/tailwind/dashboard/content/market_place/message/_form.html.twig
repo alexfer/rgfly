@@ -1,4 +1,4 @@
-<form class="sr-only group mb-3" id="form-answer" action="{{ path('app_dashboard_market_place_message_conversation', {store: app.request.get('store'), id: id}) }}">
+<form class="group mb-3" id="form-answer" action="{{ path('app_dashboard_market_place_message_conversation', {store: app.request.get('store'), id: id}) }}">
     <input type="hidden" name="id" value="{{ id }}">
     <input type="hidden" name="customer" value="{{ customer }}">
     <label for="chat" class="sr-only">{{ 'form.your.message'|trans }}</label>

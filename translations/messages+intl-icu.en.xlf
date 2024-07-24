@@ -2070,6 +2070,10 @@
                 <source>customer.cabinet.messages</source>
                 <target>Messages</target>
             </trans-unit>
+            <trans-unit id="customer.cabinet.question">
+                <source>customer.cabinet.question</source>
+                <target>Question from { date }</target>
+            </trans-unit>
             <trans-unit id="customer.order.messages">
                 <source>customer.order.messages</source>
                 <target>Request about order</target>

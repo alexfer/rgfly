@@ -755,7 +755,7 @@ BEGIN
             'id', sm.id,
             'created', sm.created_at,
             'priority', INITCAP(sm.priority),
-            'answers', (SELECT COUNT(*) FROM store_message sm WHERE sm.parent_id = sm.id),
+            'answers', (SELECT COUNT(*) FROM store_message s WHERE s.parent_id = sm.id),
             'store', json_build_object(
                     'id', s.id,
                     'name', s.name,
@@ -1377,7 +1377,7 @@ BEGIN
             'store', get_messages.store_id,
             'created', sm.created_at,
             'priority', INITCAP(sm.priority),
-            'answers', (SELECT COUNT(*) FROM store_message mc WHERE mc.parent_id = sc.id),
+            'answers', (SELECT COUNT(*) FROM store_message mc WHERE mc.parent_id = sm.id),
             'customer', json_build_object(
                     'id', sc.id,
                     'full_name', CONCAT_WS(' ', sc.first_name, sc.last_name)

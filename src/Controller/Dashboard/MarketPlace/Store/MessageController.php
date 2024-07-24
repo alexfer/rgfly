@@ -2,6 +2,7 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
+use App\Service\MarketPlace\Store\Message\Interface\ProcessorInterface;
 use App\Entity\MarketPlace\{Store, StoreCustomer, StoreMessage};
 use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreInterface;
 use App\Service\MarketPlace\StoreTrait;
@@ -73,27 +74,18 @@ class MessageController extends AbstractController
         Request                $request,
         UserInterface          $user,
         StoreInterface         $serveStore,
+        ProcessorInterface     $processor,
         EntityManagerInterface $em,
     ): Response
     {
         $store = $this->store($serveStore, $user);
         $repository = $em->getRepository(StoreMessage::class);
 
-        $message = $repository->findOneBy(['store' => $store, 'id' => $request->get('id')]);
-        $conversation = $repository->findBy(['store' => $store, 'parent' => $message->getId()]);
-
         if($request->isMethod('POST')) {
             $payload = $request->getPayload()->all();
-            $customer = $em->getRepository(StoreCustomer::class)->find($payload['customer']);
-            $answer = new StoreMessage();
-            $answer->setStore($store);
-            $answer->setParent($repository->find($payload['id']));
-            $answer->setCustomer($customer);
-            $answer->setOwner($user);
-            $answer->setMessage(mb_substr($payload['message'], 0, 255));
-            $answer->setUpdatedAt(new \DateTimeImmutable('now'));
-            $em->persist($answer);
-            $em->flush();
+            $payload['store'] = $store->getId();
+            $processor->process($payload, null, null, false);
+            $answer = $processor->answer($user);
 
             return $this->json([
                 'template' => $this->renderView('dashboard/content/market_place/message/answers.html.twig', [
@@ -107,6 +99,9 @@ class MessageController extends AbstractController
                 ])
             ], Response::HTTP_CREATED);
         }
+
+        $message = $repository->findOneBy(['store' => $store, 'id' => $request->get('id')]);
+        $conversation = $repository->findBy(['store' => $store, 'parent' => $message->getId()]);
 
         return $this->render('dashboard/content/market_place/message/conversation.html.twig', [
             'message' => $message,

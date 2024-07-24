@@ -11,6 +11,7 @@
             <tr>
                 <th scope="col" class="px-6 py-3">{{ 'table.header.related'|trans }}</th>
                 <th scope="col" class="px-6 py-3 text-center">{{ 'table.header.customer'|trans }}</th>
+                <th scope="col" class="px-6 py-3 text-center">{{ 'table.header.answers'|trans }}</th>
                 <th class="text-center px-6 py-3" scope="col">{{ 'table.header.created_at'|trans }}</th>
                 <th scope="col" class="px-6 py-3 text-center">{{ 'table.header.priority'|trans }}</th>
                 <th class="text-center px-6 py-3" scope="col">{{ 'table.header.review'|trans }}</th>
@@ -38,6 +39,9 @@
                     </th>
                     <td class="text-center px-6 py-3">
                         {{ message.customer.full_name }}
+                    </td>
+                    <td class="text-center px-6 py-3">
+                        {{ message.answers }}
                     </td>
                     <td class="text-center px-6 py-3">
                         {{ message.created|date(datetime_format) }}
