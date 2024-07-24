@@ -10,6 +10,7 @@ use App\Entity\MarketPlace\StoreMessage;
 use App\Entity\MarketPlace\StoreOrders;
 use App\Entity\MarketPlace\StoreProduct;
 use App\Entity\User;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -38,6 +39,7 @@ class IndexController extends AbstractController
      * @param UserInterface $user
      * @param EntityManagerInterface $em
      * @return Response
+     * @throws Exception
      */
     #[Route('/{slug?}', name: 'app_dashboard')]
     public function summaryIndex(
@@ -71,7 +73,7 @@ class IndexController extends AbstractController
 
         $products = $em->getRepository(StoreProduct::class)->findBy(['store' => $store], ['updated_at' => 'DESC'], self::$limit, self::$offset);
         $orders = $em->getRepository(StoreOrders::class)->findBy(['store' => $store], ['id' => 'DESC'], self::$limit, self::$offset);
-        $messages = $em->getRepository(StoreMessage::class)->findBy(['store' => $store, 'parent' => null], ['created_at' => 'DESC'], self::$limit, self::$offset);
+        $messages = $em->getRepository(StoreMessage::class)->fetchAll($store, 'low', self::$offset, self::$limit);
 
         $ids = array_map(function ($order) {
             return $order->getId();
@@ -84,7 +86,7 @@ class IndexController extends AbstractController
             'store' => $store,
             'products' => $products,
             'orders' => $orders,
-            'messages' => $messages,
+            'messages' => $messages['data'],
             'countries' => Countries::getNames(Locale::getDefault()),
             'customers' => $customers['result'],
             'blogs' => $blogs,

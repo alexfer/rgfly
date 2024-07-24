@@ -101,6 +101,9 @@ class MessageController extends AbstractController
         }
 
         $message = $repository->findOneBy(['store' => $store, 'id' => $request->get('id')]);
+        if($message === null) {
+            throw $this->createNotFoundException();
+        }
         $conversation = $repository->findBy(['store' => $store, 'parent' => $message->getId()]);
 
         return $this->render('dashboard/content/market_place/message/conversation.html.twig', [
