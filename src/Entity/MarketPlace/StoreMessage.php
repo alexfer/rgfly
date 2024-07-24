@@ -2,6 +2,7 @@
 
 namespace App\Entity\MarketPlace;
 
+use App\Entity\User;
 use App\Repository\MarketPlace\StoreMessageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -35,6 +36,9 @@ class StoreMessage
     private ?StoreProduct $product = null;
     #[ORM\ManyToOne(inversedBy: 'storeMessages')]
     private ?StoreOrders $orders = null;
+
+    #[ORM\ManyToOne(inversedBy: 'storeMessages')]
+    private ?User $owner = null;
 
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $priority = null;
@@ -296,6 +300,25 @@ class StoreMessage
     public function setOrders(?StoreOrders $orders): static
     {
         $this->orders = $orders;
+
+        return $this;
+    }
+
+    /**
+     * @return User|null
+     */
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param User|null $owner
+     * @return $this
+     */
+    public function setOwner(?User $owner): static
+    {
+        $this->owner = $owner;
 
         return $this;
     }

@@ -2,7 +2,8 @@
 
 namespace App\Controller\MarketPlace\Cabinet;
 
-use App\Entity\MarketPlace\{StoreCustomer, StoreCustomerOrders, StoreMessage, StoreOrders, StoreWishlist};
+use App\Service\MarketPlace\Store\Message\Interface\ProcessorInterface;
+use App\Entity\MarketPlace\{Store, StoreCustomer, StoreCustomerOrders, StoreMessage, StoreOrders, StoreWishlist};
 use App\Form\Type\MarketPlace\{AddressType, CustomerProfileType};
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
@@ -73,18 +74,54 @@ class CabinetController extends AbstractController
      * @param Request $request
      * @param UserInterface $user
      * @param EntityManagerInterface $em
+     * @param ProcessorInterface $processor
      * @return Response
      * @throws Exception
      */
-    #[Route('/messages', name: 'app_cabinet_messages', methods: ['GET'])]
+    #[Route('/messages/{id}', name: 'app_cabinet_messages', defaults: ['id' => null], methods: ['GET', 'POST'])]
     public function messages(
         Request                $request,
         UserInterface          $user,
         EntityManagerInterface $em,
+        ProcessorInterface     $processor,
     ): Response
     {
+        $id = $request->get('id');
+        $repository = $em->getRepository(StoreMessage::class);
+
+        if ($request->isMethod('POST')) {
+            $payload = $request->getPayload()->all();
+            $processor->process($payload, null, null, false);
+            $answer = $processor->answer($user, true);
+
+            return $this->json([
+                'template' => $this->renderView('market_place/cabinet/message/answers.html.twig', [
+                    'row' => [
+                        'id' => $answer->getId(),
+                        'message' => $answer->getMessage(),
+                        'createdAt' => $answer->getCreatedAt(),
+                        'owner' => $answer->getOwner(),
+                        'customer' => $answer->getCustomer(),
+                        'priority' => $answer->getPriority(),
+                    ],
+                ])
+            ], Response::HTTP_CREATED);
+        }
+
         $customer = $this->customer($user, $em);
-        $messages = $em->getRepository(StoreMessage::class)->fetchByCustomer($customer);
+
+        if ($id) {
+            $message = $repository->findOneBy(['customer' => $customer, 'id' => $id]);
+            $conversation = $repository->findBy(['customer' => $customer, 'parent' => $message->getId()]);
+
+            return $this->render('market_place/cabinet/message/conversation.html.twig', [
+                'customer' => $customer,
+                'message' => $message,
+                'conversation' => $conversation,
+            ]);
+        }
+
+        $messages = $repository->fetchByCustomer($customer);
 
         return $this->render('market_place/cabinet/message/index.html.twig', [
             'customer' => $customer,

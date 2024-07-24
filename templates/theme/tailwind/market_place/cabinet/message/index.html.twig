@@ -23,10 +23,10 @@
                             </caption>
                             <tbody id="bulk-item">
                             {% for message in messages %}
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <tr class="bg-white border-b text-gray-500 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <th scope="row" class="p-3">
                                         {% if message.product is not null %}
-                                            <a class="font-semibold text-gray-500 hover:text-gray-700 dark:hover:text-white"
+                                            <a class="font-semibold hover:text-gray-700 dark:hover:text-white"
                                                target="_blank"
                                                href="{{ path('app_market_place_product', {slug: message.product.slug, tab: 'about'}) }}">
                                                 {{ message.product.short_name }}
@@ -40,18 +40,26 @@
                                             {{ 'store.message.question'|trans }}
                                         {% endif %}
                                     </th>
-                                    <td class="p-3 text-gray-500">
+                                    <td class="p-3">
                                         {{ message.created|date(date_format) }}
                                     </td>
                                     <td class="p-3 text-gray-500">
                                         {{ message.priority }}
                                     </td>
-                                    <td class="p-3 text-gray-500 text-center">
+                                    <td class="p-3 text-center">
                                         {{ message.answers }}
                                     </td>
-                                    <td class="p-3 text-gray-500">
+                                    <td class="p-3">
                                         <a href="{{ path('app_market_place_market', {slug: message.store.slug}) }}">
                                             {{ message.store.name }}
+                                        </a>
+                                    </td>
+                                    <td class="flex p-3 justify-end items-end">
+                                        <a href="{{ path('app_cabinet_messages', {id: message.id}) }}">
+                                            <svg class="w-[20px] h-[20px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                <path fill-rule="evenodd" d="M4 3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h1v2a1 1 0 0 0 1.707.707L9.414 13H15a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4Z" clip-rule="evenodd"></path>
+                                                <path fill-rule="evenodd" d="M8.023 17.215c.033-.03.066-.062.098-.094L10.243 15H15a3 3 0 0 0 3-3V8h2a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-1v2a1 1 0 0 1-1.707.707L14.586 18H9a1 1 0 0 1-.977-.785Z" clip-rule="evenodd"></path>
+                                            </svg>
                                         </a>
                                     </td>
                                 </tr>

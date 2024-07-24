@@ -2,7 +2,8 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
-use App\Entity\MarketPlace\{Store, StoreMessage};
+use App\Service\MarketPlace\Store\Message\Interface\ProcessorInterface;
+use App\Entity\MarketPlace\{Store, StoreCustomer, StoreMessage};
 use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreInterface;
 use App\Service\MarketPlace\StoreTrait;
 use Doctrine\DBAL\Exception;
@@ -51,20 +52,63 @@ class MessageController extends AbstractController
         Request                $request,
         UserInterface          $user,
         EntityManagerInterface $em,
-        StoreInterface    $serveStore,
+        StoreInterface         $serveStore,
     ): Response
     {
         $store = $this->store($serveStore, $user);
         $messages = $em->getRepository(StoreMessage::class)->fetchAll($store, 'low', 0, 20);
 
         $pagination = $this->paginator->paginate(
-            $messages['data'],
+            $messages['data'] !== null ? $messages['data'] : [],
             $request->query->getInt('page', 1),
             self::LIMIT
         );
 
         return $this->render('dashboard/content/market_place/message/index.html.twig', [
             'messages' => $pagination,
+        ]);
+    }
+
+    #[Route('/{store}/{id}', name: 'app_dashboard_market_place_message_conversation', methods: ['GET', 'POST'])]
+    public function conversation(
+        Request                $request,
+        UserInterface          $user,
+        StoreInterface         $serveStore,
+        ProcessorInterface     $processor,
+        EntityManagerInterface $em,
+    ): Response
+    {
+        $store = $this->store($serveStore, $user);
+        $repository = $em->getRepository(StoreMessage::class);
+
+        if($request->isMethod('POST')) {
+            $payload = $request->getPayload()->all();
+            $payload['store'] = $store->getId();
+            $processor->process($payload, null, null, false);
+            $answer = $processor->answer($user);
+
+            return $this->json([
+                'template' => $this->renderView('dashboard/content/market_place/message/answers.html.twig', [
+                    'row' => [
+                        'id' => $answer->getId(),
+                        'message' => $answer->getMessage(),
+                        'createdAt' => $answer->getCreatedAt(),
+                        'owner' => $answer->getOwner(),
+                        'priority' => $answer->getPriority(),
+                    ],
+                ])
+            ], Response::HTTP_CREATED);
+        }
+
+        $message = $repository->findOneBy(['store' => $store, 'id' => $request->get('id')]);
+        if($message === null) {
+            throw $this->createNotFoundException();
+        }
+        $conversation = $repository->findBy(['store' => $store, 'parent' => $message->getId()]);
+
+        return $this->render('dashboard/content/market_place/message/conversation.html.twig', [
+            'message' => $message,
+            'conversation' => $conversation,
         ]);
     }
 }

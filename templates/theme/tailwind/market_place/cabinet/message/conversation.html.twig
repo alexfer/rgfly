@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2 class="text-2xl pb-4 relative font-extrabold text-primary-700 dark:text-white">{{ 'customer.cabinet'|trans }}
+        <span class="absolute right-0 mr-2 text-lg pe-4 font-normal">{{ customer.firstName }} {{ customer.lastName }}</span>
+    </h2>
+    <div class="grid grid-cols-8 gap-4">
+        <aside class="col-span-2 h-screen-max transition-transform -translate-x-full sm:translate-x-0">
+            <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 rounded-xl">
+                {% include 'market_place/cabinet/aside.html.twig' %}
+            </div>
+        </aside>
+        <section class="col-span-6">
+            <h4 class="pb-2 block w-full mb-4 text-xl font-semibold text-red-500 max-w-lg truncate text-sm-start">
+                {% if message.orders %}
+                    {{ 'customer.order.messages'|trans }}: {{ message.orders.number }}
+                {% elseif message.product %}
+                    {{ 'customer.product.messages'|trans }}: {{ message.product.shortName }}
+                {% else %}
+                    {{ 'customer.cabinet.question'|trans({date: message.createdAt|date('l, F jS, Y, g:i a')}) }}
+                {% endif %}
+            </h4>
+            {% set priority = {low: 'green', medium: 'yellow', high: 'red'} %}
+            <div class="flex items-start gap-2.5 my-5">
+                <img class="w-8 h-8 rounded-full" src="{{ asset('img/64x64.png') }}" alt="...">
+                <div class="flex flex-col w-full max-w-2xl leading-1.5">
+                    <div class="flex justify-between items-stretch space-x-2 rtl:space-x-reverse">
+                        <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ message.customer.firstName }} {{ message.customer.lastName }}</span>
+                        <span class="bg-{{ priority[message.priority] }}-100 text-{{ priority[message.priority] }}-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-{{ priority[message.priority] }}-900 dark:text-{{ priority[message.priority] }}-300 capitalize">{{ message.priority }}</span>
+                        <span class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ message.createdAt|date(datetime_format) }}</span>
+                    </div>
+                    <p class="text-sm font-normal my-1.5 p-4 bg-gray-50 rounded-lg text-gray-900 dark:bg-gray-500 dark:text-white ">{{ message.message }}</p>
+                </div>
+            </div>
+            {% for row in conversation %}
+                {% include 'market_place/cabinet/message/answers.html.twig' %}
+            {% endfor %}
+            {% set last = conversation|last %}
+            {% if last|length and last.owner is not null %}
+                {% include 'market_place/cabinet/message/answer_form.html.twig' with {id: message.id, store: last.store.id} %}
+            {% endif %}
+            <div id="response"></div>
+        </section>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('message-js') }}
+{% endblock %}
+
