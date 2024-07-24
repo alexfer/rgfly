@@ -44,13 +44,24 @@ class Processor implements ProcessorInterface
      * @param array $payload
      * @param UserInterface|null $user
      * @param array|null $exclude
-     * @return array
+     * @param bool $validate
+     * @return array|null
      */
-    public function process(array $payload, ?UserInterface $user, ?array $exclude): array
+    public function process(array $payload, ?UserInterface $user, ?array $exclude, bool $validate = true): ?array
     {
         $this->payload = $payload;
-        return $this->validate($exclude, $user);
+        if ($validate) {
+            return $this->validate($exclude, $user);
+        }
+        return null;
+    }
 
+    /**
+     * @return StoreMessage
+     */
+    private function message(): StoreMessage
+    {
+        return new StoreMessage();
     }
 
     /**
@@ -59,7 +70,7 @@ class Processor implements ProcessorInterface
      */
     public function obtainAndResponse(?UserInterface $user): JsonResponse
     {
-        $message = new StoreMessage();
+        $message = $this->message();
         $message->setMessage($this->payload['message']);
         $message->setStore($this->store());
         $message->setCustomer($this->customer($user));
@@ -108,7 +119,14 @@ class Processor implements ProcessorInterface
      */
     private function customer(?UserInterface $user): StoreCustomer
     {
-        return $this->em->getRepository(StoreCustomer::class)->findOneBy(['member' => $user]);
+        $repository = $this->em->getRepository(StoreCustomer::class);
+        $customer = $repository->findOneBy(['member' => $user]);
+
+        if (!$customer) {
+            return $repository->find($this->payload['customer']);
+        }
+
+        return $customer;
     }
 
     /**
@@ -177,5 +195,30 @@ class Processor implements ProcessorInterface
         }
 
         return $jsonErrors;
+    }
+
+    /**
+     * @param UserInterface|null $user
+     * @param bool $customer
+     * @return StoreMessage
+     */
+    public function answer(?UserInterface $user, bool $customer = false): StoreMessage
+    {
+        $message = $this->em->getRepository(StoreMessage::class)->find($this->payload['id']);
+        $answer = $this->message();
+
+        $answer->setCustomer($this->customer($user));
+        if (!$customer) {
+            $answer->setOwner($user);
+        }
+        $answer->setStore($this->store())
+            ->setParent($message)
+            ->setMessage($this->payload['message'])
+            ->setUpdatedAt(new \DateTimeImmutable());
+
+        $this->em->persist($answer);
+        $this->em->flush();
+
+        return $answer;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\MarketPlace\Store;
+use App\Entity\MarketPlace\StoreMessage;
 use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -54,6 +55,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Store::class)]
     private Collection $stores;
 
+    /**
+     * @var Collection<int, StoreMessage>
+     */
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: StoreMessage::class)]
+    private Collection $storeMessages;
+
     final public const string ROLE_USER = 'ROLE_USER';
 
     final public const string ROLE_ADMIN = 'ROLE_ADMIN';
@@ -63,6 +70,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->created_at = new DateTime();
         $this->stores = new ArrayCollection();
+        $this->storeMessages = new ArrayCollection();
     }
 
     /**
@@ -340,6 +348,44 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastLoginAt(?\DateTimeImmutable $last_login_at): static
     {
         $this->last_login_at = $last_login_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, StoreMessage>
+     */
+    public function getStoreMessages(): Collection
+    {
+        return $this->storeMessages;
+    }
+
+    /**
+     * @param StoreMessage $storeMessage
+     * @return $this
+     */
+    public function addStoreMessage(StoreMessage $storeMessage): static
+    {
+        if (!$this->storeMessages->contains($storeMessage)) {
+            $this->storeMessages->add($storeMessage);
+            $storeMessage->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param StoreMessage $storeMessage
+     * @return $this
+     */
+    public function removeStoreMessage(StoreMessage $storeMessage): static
+    {
+        if ($this->storeMessages->removeElement($storeMessage)) {
+            // set the owning side to null (unless already changed)
+            if ($storeMessage->getOwner() === $this) {
+                $storeMessage->setOwner(null);
+            }
+        }
 
         return $this;
     }

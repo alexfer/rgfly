@@ -50,7 +50,9 @@
                     {% for customer in customers %}
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                             <th scope="row"
-                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-10 truncate">
+                                data-twe-toggle="tooltip" data-twe-placement="top"
+                                title="{{ customer.full_name }}"
+                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-10 truncate cursor-pointer">
                                 {{ customer.full_name }}
                             </th>
                             <td class="px-6 py-4">
@@ -197,6 +199,9 @@
                             {{ 'table.header.created_at'|trans }}
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            {{ 'table.header.answers'|trans }}
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             {{ 'table.header.priority'|trans }}
                         </th>
                         <th scope="col" class="px-6 py-3">
@@ -210,16 +215,19 @@
                             <th scope="row" data-twe-toggle="tooltip" data-twe-html="true" data-twe-placement="top"
                                 title="{{ message.customer.phone }}"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-10 truncate cursor-pointer">
-                                {{ message.customer.firstName }} {{ message.customer.lastName }}
+                                {{ message.customer.full_name }}
                             </th>
                             <td class="px-6 py-4">
-                                {{ message.createdAt|date(date_format) }}
+                                {{ message.created|date(date_format) }}
+                            </td>
+                            <td class="px-6 py-4 capitalize">
+                                {{ message.answers }}
                             </td>
                             <td class="px-6 py-4 capitalize">
                                 {{ message.priority }}
                             </td>
                             <td class="px-6 py-4 flex justify-end items-end">
-                                <a href="#"
+                                <a href="{{ path('app_dashboard_market_place_message_conversation', {store: message.store, id: message.id}) }}"
                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                                     <svg class="w-[20px] h-[20px] text-blue-700 dark:text-white" aria-hidden="true"
                                          xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
@@ -232,7 +240,7 @@
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="4"
+                            <td colspan="5"
                                 class="px-6 py-4 text-center text-gray-700 bg-gray-100 dark:bg-gray-500 dark:text-white">{{ 'table.footer.not_found'|trans }}</td>
                         </tr>
                     {% endfor %}

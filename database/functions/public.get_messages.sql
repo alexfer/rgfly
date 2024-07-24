@@ -10,9 +10,10 @@ DECLARE
 BEGIN
     SELECT json_agg(json_build_object(
             'id', sm.id,
+            'store', get_messages.store_id,
             'created', sm.created_at,
             'priority', INITCAP(sm.priority),
-            'answers', (SELECT COUNT(*) FROM store_message mc WHERE mc.parent_id = sc.id),
+            'answers', (SELECT COUNT(*) FROM store_message mc WHERE mc.parent_id = sm.id),
             'customer', json_build_object(
                     'id', sc.id,
                     'full_name', CONCAT_WS(' ', sc.first_name, sc.last_name)

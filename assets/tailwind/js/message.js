@@ -9,8 +9,33 @@ const el = {
     search: document.getElementById('order-search'),
     danger: document.getElementById('toast-danger'),
     success: document.getElementById('toast-success'),
-    modal: document.getElementById('modal-message')
+    modal: document.getElementById('modal-message'),
+    formAnswer: document.getElementById('form-answer')
 };
+
+if (el.formAnswer !== null) {
+    const form = el.formAnswer;
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const url = form.getAttribute('action');
+        const inputs = form.querySelectorAll('input, textarea');
+
+        let message = {};
+        [...inputs].forEach((input) => {
+            message[input.getAttribute('name')] = input.value;
+        });
+
+        const response = await fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(message)
+        }).catch((e) => {
+            console.log(e);
+        });
+        const data = await response.json();
+        document.getElementById('response').innerHTML = data.template;
+        form.remove();
+    });
+}
 
 if (el.form !== null) {
     el.form.addEventListener('submit', async (e) => {
