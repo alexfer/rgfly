@@ -1,25 +1,25 @@
 <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
     <div class="lg:max-w-xl relative overflow-hidden bg-cover bg-no-repeat">
-        <a title="{{ product.name }}" href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}">
+        <a class="block h-72" title="{{ product.name }}" href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}">
             {% if product.attach_name %}
                 {% set _picture = 'storage/product/' ~ product.id ~ '/' ~ product.attach_name %}
                 <img loading="lazy" src="{{ asset(_picture)|imagine_filter('product_preview') }}"
-                     class="object-cover h-72 w-full transition duration-300 ease-in-out hover:scale-125 hover:inset-1/2 rounded-t-lg"
+                     class="object-none h-auto max-w-full transition duration-300 ease-in-out hover:scale-125 hover:inset-1/2 rounded-t-lg"
                      alt="{{ product.name }}">
             {% else %}
                 <img loading="lazy" src="{{ asset('img/300x200.png') }}"
-                     class="object-cover h-72 w-full transition duration-300 ease-in-out hover:scale-125 hover:inset-1/2 rounded-t-lg"
+                     class="object-cover h-auto max-w-full transition duration-300 ease-in-out hover:scale-125 hover:inset-1/2 rounded-t-lg"
                      alt="{{ product.name }}">
             {% endif %}
         </a>
         <div class="absolute top-5 w-full">
             <div class="flex justify-between">
-                                <span class="ml-2 bg-gray-600 bg-opacity-90 text-gray-500 text-md shadow-xl font-medium me-2 px-2.5 py-0.5 rounded-md dark:bg-gray-900 dark:text-gray-300">
-                                    <a title="{{ product.name }}"
-                                       href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}"
-                                       class="text-white hover:text-neutral-100 hover:animate-pulse">{{ 'store.product.details'|trans }}
-                                    </a>
-                                </span>
+                <span class="ml-2 bg-gray-600 bg-opacity-90 text-gray-500 text-md shadow-xl font-medium me-2 px-2.5 py-0.5 rounded-md dark:bg-gray-900 dark:text-gray-300">
+                    <a title="{{ product.name }}"
+                       href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}"
+                       class="text-white hover:text-neutral-100 hover:animate-pulse">{{ 'store.product.details'|trans }}
+                    </a>
+                </span>
                 {% if product.discount %}
                     <span class="bg-red-700 bg-opacity-75 text-white text-md font-medium me-2 px-2.5 py-0.5 rounded-xl dark:bg-red-900 dark:text-white">{{ product.discount }}% {{ 'store.product.off'|trans }}</span>
                 {% endif %}

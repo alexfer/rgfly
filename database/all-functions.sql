@@ -1380,6 +1380,7 @@ BEGIN
             'answers', (SELECT COUNT(*) FROM store_message mc WHERE mc.parent_id = sm.id),
             'customer', json_build_object(
                     'id', sc.id,
+                    'phone', sc.phone,
                     'full_name', CONCAT_WS(' ', sc.first_name, sc.last_name)
                         ),
             'product', (CASE
