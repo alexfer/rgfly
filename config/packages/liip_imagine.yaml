@@ -2,6 +2,8 @@
 # Bundle sizing: https://symfony.com/bundles/LiipImagineBundle/current/filters/sizing.html
 liip_imagine:
     # valid drivers options include "gd" or "gmagick" or "imagick"
+    default_filter_set_settings:
+        format: webp
     driver: "gd"
     twig:
         mode: lazy

@@ -38,14 +38,8 @@
             {% block loading %}{% endblock %}
         </section>
     </main>
-    <footer class="bg-gray-950 h-[64px] sticky top-[100vh]">
-        <div class="container mx-auto text-white pt-1">
-            <div class="text-center py-3">
-                {% set year =  'now' | date('Y') %}
-                {% set build_year = '2023' %}
-                <span>&copy; {{ year == build_year ? build_year : build_year ~ '-' ~ year }} {{ 'site.title'|trans }} - {{ 'text.all_right_reserved'|trans }}</span>
-            </div>
-        </div>
+    <footer class="bg-gray-950 h-auto sticky top-[100vh]">
+        {% include 'layouts/footer.html.twig' %}
     </footer>
 </div>
 {% include 'layouts/cart.html.twig' %}
