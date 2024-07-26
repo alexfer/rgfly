@@ -61,7 +61,8 @@
             <span>&copy; {{ year == build_year ? build_year : build_year ~ '-' ~ year }} {{ 'site.title'|trans }} - {{ 'text.all_right_reserved'|trans }}</span>
         </div>
         <div class="flex justify-end">
-            <a href="#" class="text-gray-400 hover:text-gray-100 dark:hover:text-white">
+            <a href="https://www.facebook.com/AlexanderShtyher/"
+               class="text-gray-400 hover:text-gray-100 dark:hover:text-white">
                 <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                      viewBox="0 0 8 19">
                     <path fill-rule="evenodd"
@@ -70,12 +71,41 @@
                 </svg>
                 <span class="sr-only">Facebook page</span>
             </a>
-            <a href="#" class="text-gray-400 hover:text-gray-100 dark:hover:text-white ms-5">
-                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 .333A9.911 9.911 0 0 0 6.866 19.65c.5.092.678-.215.678-.477 0-.237-.01-1.017-.014-1.845-2.757.6-3.338-1.169-3.338-1.169a2.627 2.627 0 0 0-1.1-1.451c-.9-.615.07-.6.07-.6a2.084 2.084 0 0 1 1.518 1.021 2.11 2.11 0 0 0 2.884.823c.044-.503.268-.973.63-1.325-2.2-.25-4.516-1.1-4.516-4.9A3.832 3.832 0 0 1 4.7 7.068a3.56 3.56 0 0 1 .095-2.623s.832-.266 2.726 1.016a9.409 9.409 0 0 1 4.962 0c1.89-1.282 2.717-1.016 2.717-1.016.366.83.402 1.768.1 2.623a3.827 3.827 0 0 1 1.02 2.659c0 3.807-2.319 4.644-4.525 4.889a2.366 2.366 0 0 1 .673 1.834c0 1.326-.012 2.394-.012 2.72 0 .263.18.572.681.475A9.911 9.911 0 0 0 10 .333Z" clip-rule="evenodd"></path>
+            <a href="https://github.com/alexfer" class="text-gray-400 hover:text-gray-100 dark:hover:text-white ms-5">
+                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                     viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                          d="M10 .333A9.911 9.911 0 0 0 6.866 19.65c.5.092.678-.215.678-.477 0-.237-.01-1.017-.014-1.845-2.757.6-3.338-1.169-3.338-1.169a2.627 2.627 0 0 0-1.1-1.451c-.9-.615.07-.6.07-.6a2.084 2.084 0 0 1 1.518 1.021 2.11 2.11 0 0 0 2.884.823c.044-.503.268-.973.63-1.325-2.2-.25-4.516-1.1-4.516-4.9A3.832 3.832 0 0 1 4.7 7.068a3.56 3.56 0 0 1 .095-2.623s.832-.266 2.726 1.016a9.409 9.409 0 0 1 4.962 0c1.89-1.282 2.717-1.016 2.717-1.016.366.83.402 1.768.1 2.623a3.827 3.827 0 0 1 1.02 2.659c0 3.807-2.319 4.644-4.525 4.889a2.366 2.366 0 0 1 .673 1.834c0 1.326-.012 2.394-.012 2.72 0 .263.18.572.681.475A9.911 9.911 0 0 0 10 .333Z"
+                          clip-rule="evenodd"></path>
                 </svg>
                 <span class="sr-only">GitHub</span>
             </a>
         </div>
     </div>
 </div>
+{% if app.request.cookies.get('accept-cookie') != 'accepted' %}
+    <div id="cookie-alert" class="fixed bottom-0 right-0 mb-4 mr-4 w-64">
+        <div class="bg-gray-50 bg-opacity-90 rounded-lg shadow-lg p-4">
+            <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center">
+                    <img src="https://www.svgrepo.com/show/401340/cookie.svg" alt="Cookie" class="h-6 w-6 mr-2">
+                    <span class="text-gray-700 font-bold text-sm">Cookie Policy</span>
+                </div>
+                <button class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+            <p class="text-gray-600 text-sm">
+                We use cookies to enhance your experience. By continuing to visit this site, you agree to our use of
+                cookies.
+            </p>
+            <button id="accept-cookie"
+                    class="mt-4 bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded">
+                Accept
+            </button>
+        </div>
+    </div>
+{% endif %}

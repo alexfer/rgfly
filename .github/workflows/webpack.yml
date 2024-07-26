@@ -2,6 +2,8 @@ name: NodeJS with Webpack
 
 on:
   push:
+    paths-ignore:
+      - '**/ux-autocomplete/**'
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
