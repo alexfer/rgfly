@@ -26,7 +26,7 @@
         </div>
         <div class="grid grid-cols-1 gap-6 sm:gap-4 sm:grid-cols-2">
             <div>
-                <h2 class="mb-4 text-sm font-oswald text-gray-100 uppercase dark:text-white">Resources</h2>
+                <h2 class="mb-4 text-sm font-oswald text-gray-100 uppercase dark:text-white">{{ 'title.resources'|trans }}</h2>
                 <ul class="text-gray-500 dark:text-gray-400 font-medium">
                     <li class="mb-2">
                         <a href="https://symfony.com/" class="hover:underline">Symfony</a>
@@ -40,13 +40,16 @@
                 </ul>
             </div>
             <div>
-                <h2 class="mb-4 text-sm font-oswald text-gray-100 uppercase dark:text-white">Legal</h2>
+                <h2 class="mb-4 text-sm font-oswald text-gray-100 uppercase dark:text-white">{{ 'title.legal'|trans }}</h2>
                 <ul class="text-gray-500 dark:text-gray-400 font-medium">
                     <li class="mb-2">
-                        <a href="{{ path('policy') }}" class="hover:underline">Privacy Policy</a>
+                        <a href="{{ path('policy') }}" class="hover:underline">{{ 'title.privacy_policy'|trans }}</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="{{ path('terms') }}" class="hover:underline">{{ 'title.terms'|trans|raw }}</a>
                     </li>
                     <li>
-                        <a href="{{ path('terms') }}" class="hover:underline">Terms &amp; Conditions</a>
+                        <a href="{{ path('cookie') }}" class="hover:underline">{{ 'title.cookie_policy'|trans }}</a>
                     </li>
                 </ul>
             </div>
@@ -100,7 +103,7 @@
             </div>
             <p class="text-gray-600 text-sm">
                 We use cookies to enhance your experience. By continuing to visit this site, you agree to our use of
-                cookies.
+                cookies. <a class="underline text-green-700 hover:no-underline" href="{{ path('cookie') }}">cookie policy</a>.
             </p>
             <button id="accept-cookie"
                     class="mt-4 bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded">

@@ -164,9 +164,17 @@
                 <source>title.contact_us</source>
                 <target>Contact Us</target>
             </trans-unit>
-            <trans-unit id="title.privacy_policy">
-                <source>title.privacy_policy</source>
-                <target>Privacy Policy</target>
+            <trans-unit id="title.cookie_policy">
+                <source>title.cookie_policy</source>
+                <target>Cookie Policy</target>
+            </trans-unit>
+            <trans-unit id="title.legal">
+                <source>title.legal</source>
+                <target>Legal</target>
+            </trans-unit>
+            <trans-unit id="title.resources">
+                <source>title.resources</source>
+                <target>Resources</target>
             </trans-unit>
             <trans-unit id="title.terms">
                 <source>title.terms</source>
