@@ -2,8 +2,6 @@ name: NodeJS with Webpack
 
 on:
   push:
-    paths-ignore:
-      - '**/vendor/symfony/ux-autocomplete/assets/**'  
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
