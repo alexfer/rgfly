@@ -3,7 +3,7 @@ name: NodeJS with Webpack
 on:
   push:
     paths-ignore:
-      - '**/ux-autocomplete/**'
+      - '@symfony/ux-autocomplete/package.json'
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
