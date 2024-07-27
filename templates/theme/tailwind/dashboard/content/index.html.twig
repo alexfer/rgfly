@@ -6,7 +6,8 @@
     {% if stores|length and is_granted('ROLE_ADMIN') %}
         <form name="store" method="get" id="store">
             <label for="slug">
-                <select name="slug" id="slug" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <select name="slug" id="slug"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     {% if stores|length > 1 %}
                         <option value="{{ url('app_dashboard') }}">{{ 'menu.dashboard'|trans }}</option>
                     {% endif %}
@@ -137,7 +138,8 @@
                                 {{ product.quantity }}
                             </td>
                             <td class="px-6 py-4 flex justify-end items-end">
-                                <a id="dropdown-menu" role="button" data-dropdown-toggle="dropdown-context" data-dropdown-placement="bottom">
+                                <a id="dropdown-menu" role="button" data-dropdown-toggle="dropdown-context"
+                                   data-dropdown-placement="bottom">
                                     <svg class="h-5 w-5 text-gray-600 dark:text-gray-50" fill="currentColor"
                                          viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd"
@@ -155,12 +157,12 @@
                                         </li>
                                         <li>
                                             {% if product.deletedAt is null %}
-                                            <a href="#"
-                                               data-token="{{ csrf_token('delete') }}"
-                                               data-bs-toggle="modal"
-                                               data-bs-target="#modal-delete"
-                                               data-url="{{ url('app_dashboard_delete_product', {store: store.id, id: product.id}) }}"
-                                               class="block delete-entry text-red-600 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ 'text.remove'|trans }}</a>
+                                                <a href="#"
+                                                   data-token="{{ csrf_token('delete') }}"
+                                                   data-bs-toggle="modal"
+                                                   data-bs-target="#modal-delete"
+                                                   data-url="{{ url('app_dashboard_delete_product', {store: store.id, id: product.id}) }}"
+                                                   class="block delete-entry text-red-600 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ 'text.remove'|trans }}</a>
                                             {% else %}
                                                 <a href="{{ path('app_dashboard_restore_product', {store: store.id, id: product.id}) }}"
                                                    class="block text-green-600 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
@@ -433,7 +435,8 @@
                 </thead>
                 <tbody>
                 {% for blog in blogs %}
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <tr id="blog-{{ blog.id }}"
+                        class="{{ blog.lockedTo is not null ? 'bg-red-100' : 'bg-white' }} border-b dark:bg-gray-800 dark:border-gray-700">
                         <th scope="row"
                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-xs truncate">
                             <a target="_blank"
@@ -451,6 +454,24 @@
                             {{ blog.status }}
                         </td>
                         <td class="px-6 py-4 flex justify-end items-end">
+                            <a role="button" class="lock {{ blog.lockedTo is not null ? 'pointer-events-none' : null }}" data-id="{{ blog.id }}"
+                               data-url="{{ path('app_dashboard_lock_xhr', {target: 'entry'}) }}">
+                                {% if blog.lockedTo is null %}
+                                    <svg class="w-[20px] h-[20px] text-red-700 me-2 dark:text-white"
+                                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"></path>
+                                    </svg>
+                                {% else %}
+                                    <svg class="w-[20px] h-[20px] text-red-700 me-2 dark:text-white"
+                                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"></path>
+                                    </svg>
+                                {% endif %}
+                            </a>
                             <a href="{{ path('app_dashboard_edit_blog', {id: blog.id}) }}"
                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                                 <svg class="w-[20px] h-[20px] text-green-700 dark:text-white" aria-hidden="true"
@@ -465,7 +486,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="4"
+                        <td colspan="{{ is_granted('ROLE_ADMIN') ? 5 : 4 }}"
                             class="px-6 py-4 text-center text-gray-700 bg-gray-100 dark:bg-gray-500 dark:text-white">{{ 'table.footer.not_found'|trans }}</td>
                     </tr>
                 {% endfor %}

@@ -51,7 +51,6 @@ class IndexController extends AbstractController
         $slug = $request->get('slug');
         $criteria = ['owner' => $user];
         $adminStore = null;
-        $ordersIds = [];
 
         if ($slug) {
             $criteria['slug'] = $slug;
@@ -111,6 +110,7 @@ class IndexController extends AbstractController
         EntityManagerInterface $em,
     ): JsonResponse
     {
+        // TODO: check grant access
         $store = $em->getRepository(Store::class)->findOneBy(['owner' => $user]);
 
         if (!$store) {
@@ -122,7 +122,39 @@ class IndexController extends AbstractController
         if (!$customer) {
             return $this->json(['message' => 'Not found'], Response::HTTP_NOT_FOUND);
         }
-        //dd($customer);
+
         return $this->json(['customer' => $customer], Response::HTTP_OK);
+    }
+
+    /**
+     * @param Request $request
+     * @param UserInterface $user
+     * @param EntityManagerInterface $em
+     * @return JsonResponse
+     */
+    #[Route('/lock/{target}', name: 'app_dashboard_lock_xhr', methods: ['POST'])]
+    public function lock(
+        Request                $request,
+        UserInterface          $user,
+        EntityManagerInterface $em,
+    ): JsonResponse
+    {
+        $target = $request->get('target');
+        $payload = $request->getPayload()->all();
+        $entry = null;
+
+        if (!in_array(User::ROLE_ADMIN, $user->getRoles())) {
+            return $this->json(['message' => 'Permission denied'], Response::HTTP_FORBIDDEN);
+        }
+
+        if($target == 'entry') {
+            $entry = $em->getRepository(Entry::class)->find($payload['id']);
+            $entry->setLockedTo(new \DateTime($payload['date']));
+            $em->persist($entry);
+            $em->flush();
+            $entry = $entry->getId();
+        }
+
+        return $this->json(['locked' => true, 'entry' => $entry], Response::HTTP_OK);
     }
 }
