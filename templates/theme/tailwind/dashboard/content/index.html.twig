@@ -418,6 +418,11 @@
                     <th scope="col" class="px-6 py-3">
                         {{ 'table.header.created_at'|trans }}
                     </th>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <th scope="col" class="px-6 py-3">
+                            {{ 'table.header.owner'|trans }}
+                        </th>
+                    {% endif %}
                     <th scope="col" class="px-6 py-3">
                         {{ 'table.header.status'|trans }}
                     </th>
@@ -437,6 +442,11 @@
                         <td class="px-6 py-4">
                             {{ blog.createdAt|date(date_format) }}
                         </td>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <td class="px-6 py-4 lowercase text-primary-600 dark:text-blue-200">
+                                {{ blog.user.email }}
+                            </td>
+                        {% endif %}
                         <td class="px-6 py-4 capitalize">
                             {{ blog.status }}
                         </td>

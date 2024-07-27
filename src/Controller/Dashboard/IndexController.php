@@ -68,8 +68,13 @@ class IndexController extends AbstractController
         }
 
         $store = $adminStore ?: reset($stores);
+        $criteriaEntries = ['type' => Entry::TYPE['Blog'], 'user' => $user];
 
-        $blogs = $em->getRepository(Entry::class)->findBy(['user' => $user], ['id' => 'DESC'], self::$limit, self::$offset);
+        if (in_array(User::ROLE_ADMIN, $user->getRoles())) {
+            $criteriaEntries = ['type' => Entry::TYPE['Blog']];
+        }
+
+        $blogs = $em->getRepository(Entry::class)->findBy($criteriaEntries, ['id' => 'DESC'], self::$limit, self::$offset);
 
         $products = $em->getRepository(StoreProduct::class)->findBy(['store' => $store], ['updated_at' => 'DESC'], self::$limit, self::$offset);
         $orders = $em->getRepository(StoreOrders::class)->findBy(['store' => $store], ['id' => 'DESC'], self::$limit, self::$offset);
