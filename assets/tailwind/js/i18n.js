@@ -7,6 +7,7 @@ const messages = {
                 proceed: 'Proceed?',
                 cancel: 'Cancel',
                 question: 'Do you want to remove this element?',
+                confirmLock: 'Do you want to lock this element?',
                 removed: 'Removed',
                 notFound: 'Order not found',
                 fileTooLarge: 'The file size too large'
