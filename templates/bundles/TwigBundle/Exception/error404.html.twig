@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'http_error.name'|trans({ 'status_code': 404 }) }}{% endblock %}
+
+{% block body %}
+    <section class="bg-white dark:bg-gray-900">
+        <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
+            <div class="mx-auto max-w-screen-sm text-center">
+                <h1 class="mb-4 text-7xl tracking-tight font-oswald font-extrabold lg:text-9xl text-red-600 dark:text-red-500">{{ 'http_error.name'|trans({ 'status_code': 404 }) }}</h1>
+                <p class="mb-4 text-3xl tracking-tight font-bold text-gray-900 md:text-4xl dark:text-white">{{ 'http_error_404.description'|trans }}</p>
+                <p class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">{{ 'http_error_404.suggestion'|trans|raw }} </p>
+                <a href="{{ path('app_index') }}"
+                   class="inline-flex text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-red-900 my-4">{{ 'site.back.home'|trans }}</a>
+            </div>
+        </div>
+    </section>
+{% endblock %}
