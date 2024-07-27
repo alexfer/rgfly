@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EntryRepository::class)]
-#[ORM\Index(columns: ['status', 'type'], name: 'idx')]
+#[ORM\Index(name: 'idx', columns: ['status', 'type'])]
 class Entry
 {
 
@@ -52,6 +52,13 @@ class Entry
     #[ORM\Column]
     private ?int $comments;
 
+    #[ORM\OneToMany(targetEntity: EntryAttachment::class, mappedBy: 'details')]
+    #[ORM\OrderBy(['id' => 'desc'])]
+    private Collection $entryAttachments;
+
+    #[ORM\OneToMany(targetEntity: EntryCategory::class, mappedBy: 'entry')]
+    private Collection $entryCategories;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created_at;
 
@@ -61,12 +68,8 @@ class Entry
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $deleted_at = null;
 
-    #[ORM\OneToMany(mappedBy: 'details', targetEntity: EntryAttachment::class)]
-    #[ORM\OrderBy(['id' => 'desc'])]
-    private Collection $entryAttachments;
-
-    #[ORM\OneToMany(mappedBy: 'entry', targetEntity: EntryCategory::class)]
-    private Collection $entryCategories;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $locked_to = null;
 
     public function __construct()
     {
@@ -328,6 +331,25 @@ class Entry
                 $entryCategory->setEntry(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTimeInterface|null
+     */
+    public function getLockedTo(): ?\DateTimeInterface
+    {
+        return $this->locked_to;
+    }
+
+    /**
+     * @param \DateTimeInterface|null $locked_to
+     * @return $this
+     */
+    public function setLockedTo(?\DateTimeInterface $locked_to): static
+    {
+        $this->locked_to = $locked_to;
 
         return $this;
     }

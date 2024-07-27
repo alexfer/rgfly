@@ -12,6 +12,7 @@
             <span class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ row.createdAt|date(datetime_format) }}</span>
         </div>
         <p class="text-sm font-normal py-4 px-2 my-2 {{ row.owner == null ? 'bg-gray-50' : 'bg-blue-50' }} shadow-sm rounded-md text-gray-900 dark:text-white">{{ row.message }}</p>
+        {% set priority = {low: 'green', medium: 'yellow', high: 'red'} %}
         <span class="text-center w-16 bg-{{ priority[row.priority] }}-100 text-{{ priority[row.priority] }}-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-{{ priority[row.priority] }}-900 dark:text-{{ priority[row.priority] }}-300 capitalize">{{ row.priority }}</span>
     </div>
 </div>
