@@ -18,6 +18,7 @@ class PageController extends AbstractController
      */
     #[Route('/terms', name: 'terms')]
     #[Route('/policy', name: 'policy')]
+    #[Route('/cookie-policy', name: 'cookie')]
     #[Route('/about', name: 'about')]
     #[Route('/service', name: 'service')]
     public function index(

@@ -36,7 +36,7 @@
             <trans-unit id="http_error_404.suggestion">
                 <source>http_error_404.suggestion</source>
                 <target>
-                    <![CDATA[Check out any misspelling in the URL or go back to the <a cass="link" href="{ url }">Homepage</a>.]]></target>
+                    <![CDATA[Sorry, we can't find that page. You'll find lots to explore on the home page.]]></target>
             </trans-unit>
             <trans-unit id="http_error_429.description">
                 <source>http_error_429.description</source>
@@ -55,6 +55,10 @@
                 <source>http_error_500.suggestion</source>
                 <target>
                     <![CDATA[Try loading this page again in some minutes or go back to the <a cass="link" href="{ url }">Homepage</a>.]]></target>
+            </trans-unit>
+            <trans-unit id="site.back.home">
+                <source>site.back.home</source>
+                <target>Back to Homepage</target>
             </trans-unit>
             <trans-unit id="site.title">
                 <source>site.title</source>
@@ -164,9 +168,17 @@
                 <source>title.contact_us</source>
                 <target>Contact Us</target>
             </trans-unit>
-            <trans-unit id="title.privacy_policy">
-                <source>title.privacy_policy</source>
-                <target>Privacy Policy</target>
+            <trans-unit id="title.cookie_policy">
+                <source>title.cookie_policy</source>
+                <target>Cookie Policy</target>
+            </trans-unit>
+            <trans-unit id="title.legal">
+                <source>title.legal</source>
+                <target>Legal</target>
+            </trans-unit>
+            <trans-unit id="title.resources">
+                <source>title.resources</source>
+                <target>Resources</target>
             </trans-unit>
             <trans-unit id="title.terms">
                 <source>title.terms</source>
