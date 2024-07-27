@@ -23,7 +23,6 @@
         "@iconify-icons/ci": "^1.2.9",
         "@popperjs/core": "^2.11.8",
         "@symfony/stimulus-bridge": "^3.2.2",
-        "@symfony/ux-autocomplete": "file:vendor/symfony/ux-autocomplete/assets",
         "@symfony/webpack-encore": "^4.0.0",
         "autoprefixer": "^10.4.19",
         "core-js": "^3.23.0",
