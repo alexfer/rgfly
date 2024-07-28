@@ -113,7 +113,7 @@ class IndexController extends AbstractController
         // TODO: check grant access
         $store = $em->getRepository(Store::class)->findOneBy(['owner' => $user]);
 
-        if (!$store) {
+        if (!$store && !in_array(User::ROLE_ADMIN, $user->getRoles())) {
             return $this->json(['message' => 'Permission denied'], Response::HTTP_FORBIDDEN);
         }
 
@@ -133,8 +133,8 @@ class IndexController extends AbstractController
      * @return JsonResponse
      * @throws \Exception
      */
-    #[Route('/lock/{target}', name: 'app_dashboard_lock_xhr', methods: ['POST'])]
-    public function lock(
+    #[Route('/permit/{target}', name: 'app_dashboard_permit_xhr', methods: ['POST'])]
+    public function permit(
         Request                $request,
         UserInterface          $user,
         EntityManagerInterface $em,
@@ -148,14 +148,29 @@ class IndexController extends AbstractController
             return $this->json(['message' => 'Permission denied'], Response::HTTP_FORBIDDEN);
         }
 
-        if($target == 'entry') {
+        if ($target == 'store') {
+            $store = $em->getRepository(Store::class)->find($payload['id']);
+            $date = new \DateTime($payload['date']);
+            $store->setLockedTo($payload['op'] == 'lock' ? $date : null);
+            $store->setDeletedAt($payload['op'] == 'lock' ? $date : null);
+            foreach ($store->getProducts() as $product) {
+                $product->setDeletedAt($payload['op'] == 'lock' ? $date : null);
+                $em->persist($product);
+            }
+            $em->persist($store);
+            $em->flush();
+            $entry = $store->getId();
+        }
+
+        if ($target == 'entry') {
             $entry = $em->getRepository(Entry::class)->find($payload['id']);
-            $entry->setLockedTo(new \DateTime($payload['date']));
+            $date = new \DateTime($payload['date']);
+            $entry->setLockedTo($payload['op'] == 'lock' ? $date : null);
             $em->persist($entry);
             $em->flush();
             $entry = $entry->getId();
         }
 
-        return $this->json(['locked' => true, 'entry' => $entry], Response::HTTP_OK);
+        return $this->json(['locked' => $payload['op'] == 'lock', 'entry' => $entry], Response::HTTP_OK);
     }
 }

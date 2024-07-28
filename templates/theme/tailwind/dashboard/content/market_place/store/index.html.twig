@@ -87,9 +87,9 @@
                             <i class="fa fa-cart-plus text-green-500 dark:text-white"></i>
                         </a>
                         {% if store.deleted is not null %}
-                            <a class="border rounded px-2 py-1.5 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800"
+                            <a class="border rounded px-2 py-1.5 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800 {{ store.locked ? 'pointer-events-none' : null }}"
                                href="{{ path('app_dashboard_restore_market', {id: store.id}) }}">
-                                <i class="fa fa-arrow-up dark:text-white"></i>
+                                <i class="fa {{ store.locked ? 'fa-ban' : 'fa-arrow-up' }} dark:text-white"></i>
                             </a>
                         {% else %}
                             <a href="{{ path('app_dashboard_market_place_edit_market', {id: store.id, tab: 'details'}) }}"

@@ -10,6 +10,7 @@ SELECT json_agg(json_build_object(
         'name', s.name,
         'created', s.created_at,
         'deleted', s.deleted_at,
+        'locked', s.locked_to,
         'orders', (SELECT COUNT(*)
                    FROM store_orders o
                    WHERE o.store_id = s.id
