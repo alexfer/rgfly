@@ -17,6 +17,8 @@ use Symfony\Component\Form\Extension\Core\Type\{ChoiceType,
     TextType,
     UrlType};
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Intl\Countries;
+use Symfony\Component\Intl\Locale;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\{Email, Image, Length, NotBlank, Regex};
 
@@ -101,6 +103,19 @@ class StoreType extends AbstractType
                     ]),
                 ],
                 'html5' => true,
+            ])
+            ->add('country', ChoiceType::class, [
+                'placeholder' => 'form.country.placeholder',
+                'label' => 'label.country',
+                'required' => true,
+                'multiple' => false,
+                'expanded' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'form.country.not_blank',
+                    ]),
+                ],
+                'choices' => array_flip(Countries::getNames(Locale::getDefault())),
             ])
             ->add('currency', ChoiceType::class, [
                 'placeholder' => 'label.form.store_currency.placeholder',

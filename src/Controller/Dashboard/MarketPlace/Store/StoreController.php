@@ -205,7 +205,6 @@ class StoreController extends AbstractController
             }
         } else {
             $this->addFlash('danger', $translator->trans('restriction.access', ['email' => $params->get('app.notifications.email_sender')]));
-            //throw new AccessDeniedHttpException('Permission denied.');
         }
 
         return $this->render('dashboard/content/market_place/store/_form.html.twig', [

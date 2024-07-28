@@ -28,6 +28,9 @@ class Store
     #[ORM\Column(length: 512)]
     private ?string $name = null;
 
+    #[ORM\Column(length: 3)]
+    private ?string $country = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $address = null;
 
@@ -55,52 +58,52 @@ class Store
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $tax = null;
 
-    #[ORM\OneToMany(mappedBy: 'store', targetEntity: StoreProduct::class)]
+    #[ORM\OneToMany(targetEntity: StoreProduct::class, mappedBy: 'store')]
     private Collection $products;
 
-    #[ORM\OneToMany(mappedBy: 'store', targetEntity: StoreBrand::class)]
+    #[ORM\OneToMany(targetEntity: StoreBrand::class, mappedBy: 'store')]
     #[ORM\OrderBy(['name' => 'asc'])]
     private Collection $storeBrands;
 
-    #[ORM\OneToMany(mappedBy: 'store', targetEntity: StoreSupplier::class)]
+    #[ORM\OneToMany(targetEntity: StoreSupplier::class, mappedBy: 'store')]
     #[ORM\OrderBy(['name' => 'asc'])]
     private Collection $storeSuppliers;
 
-    #[ORM\OneToMany(mappedBy: 'store', targetEntity: StoreManufacturer::class)]
+    #[ORM\OneToMany(targetEntity: StoreManufacturer::class, mappedBy: 'store')]
     #[ORM\OrderBy(['name' => 'asc'])]
     private Collection $storeManufacturers;
 
     #[ORM\OneToOne(inversedBy: 'store', cascade: ['persist', 'remove'])]
     private ?Attach $attach = null;
 
-    #[ORM\OneToMany(mappedBy: 'store', targetEntity: StoreOrders::class)]
+    #[ORM\OneToMany(targetEntity: StoreOrders::class, mappedBy: 'store')]
     private Collection $storeOrders;
 
     #[ORM\Column(type: Types::SIMPLE_ARRAY)]
     private array $messages = [];
 
-    #[ORM\OneToMany(mappedBy: 'store', targetEntity: StorePaymentGatewayStore::class)]
+    #[ORM\OneToMany(targetEntity: StorePaymentGatewayStore::class, mappedBy: 'store')]
     private Collection $storePaymentGatewayStores;
 
-    #[ORM\OneToMany(mappedBy: 'store', targetEntity: StoreWishlist::class)]
+    #[ORM\OneToMany(targetEntity: StoreWishlist::class, mappedBy: 'store')]
     private Collection $storeWishlists;
 
     /**
      * @var Collection<int, StoreCoupon>
      */
-    #[ORM\OneToMany(mappedBy: 'store', targetEntity: StoreCoupon::class)]
+    #[ORM\OneToMany(targetEntity: StoreCoupon::class, mappedBy: 'store')]
     private Collection $storeCoupons;
 
     /**
      * @var Collection<int, StoreMessage>
      */
-    #[ORM\OneToMany(mappedBy: 'store', targetEntity: StoreMessage::class)]
+    #[ORM\OneToMany(targetEntity: StoreMessage::class, mappedBy: 'store')]
     private Collection $storeMessages;
 
     /**
      * @var Collection<int, StoreSocial>
      */
-    #[ORM\OneToMany(mappedBy: 'store', targetEntity: StoreSocial::class)]
+    #[ORM\OneToMany(targetEntity: StoreSocial::class, mappedBy: 'store')]
     private Collection $storeSocials;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -111,6 +114,9 @@ class Store
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $deleted_at = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $locked_to = null;
 
     public function __construct()
     {
@@ -819,6 +825,44 @@ class Store
     public function setCc(?string $cc): static
     {
         $this->cc = $cc;
+
+        return $this;
+    }
+
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getLockedTo(): ?\DateTimeInterface
+    {
+        return $this->locked_to;
+    }
+
+    /**
+     * @param DateTimeInterface|null $locked_to
+     * @return $this
+     */
+    public function setLockedTo(?\DateTimeInterface $locked_to): static
+    {
+        $this->locked_to = $locked_to;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param string|null $country
+     * @return $this
+     */
+    public function setCountry(?string $country): static
+    {
+        $this->country = $country;
 
         return $this;
     }

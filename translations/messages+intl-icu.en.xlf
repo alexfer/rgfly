@@ -487,6 +487,10 @@
                 <source>table.header.customers</source>
                 <target>Customers</target>
             </trans-unit>
+            <trans-unit id="table.header.stores">
+                <source>table.header.stores</source>
+                <target>Shops</target>
+            </trans-unit>
             <trans-unit id="table.header.products">
                 <source>table.header.products</source>
                 <target>Products</target>
@@ -506,6 +510,10 @@
             <trans-unit id="table.caption.customers">
                 <source>table.caption.customers</source>
                 <target><![CDATA[Your customers that placed orders to your store.]]></target>
+            </trans-unit>
+            <trans-unit id="table.caption.shops">
+                <source>table.caption.shops</source>
+                <target><![CDATA[Latest 20 shops that uses platform.]]></target>
             </trans-unit>
             <trans-unit id="table.caption.blogs">
                 <source>table.caption.blogs</source>
