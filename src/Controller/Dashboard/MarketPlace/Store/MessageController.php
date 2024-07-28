@@ -89,6 +89,7 @@ class MessageController extends AbstractController
 
             return $this->json([
                 'template' => $this->renderView('dashboard/content/market_place/message/answers.html.twig', [
+                    'animated' => true,
                     'row' => [
                         'id' => $answer->getId(),
                         'message' => $answer->getMessage(),
@@ -108,6 +109,7 @@ class MessageController extends AbstractController
 
         return $this->render('dashboard/content/market_place/message/conversation.html.twig', [
             'message' => $message,
+            'animated' => false,
             'conversation' => $conversation,
         ]);
     }

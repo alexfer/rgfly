@@ -44,6 +44,7 @@
     "dependencies": {
         "@babel/core": "^7.22.10",
         "@preline/toggle-password": "^2.1.0",
+        "animate.css": "^4.1.1",
         "bootstrap": "^5.3.2",
         "bootstrap-icons": "^1.11.1",
         "bootstrap-select": "^1.13.18",
