@@ -208,11 +208,13 @@ class Processor implements ProcessorInterface
         $answer = $this->message();
 
         $answer->setCustomer($this->customer($user));
+
         if (!$customer) {
             $answer->setOwner($user);
         }
         $answer->setStore($this->store())
             ->setParent($message)
+            ->setPriority($this->payload['priority'])
             ->setMessage($this->payload['message'])
             ->setUpdatedAt(new \DateTimeImmutable());
 

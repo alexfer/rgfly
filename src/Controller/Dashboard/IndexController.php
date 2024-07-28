@@ -131,6 +131,7 @@ class IndexController extends AbstractController
      * @param UserInterface $user
      * @param EntityManagerInterface $em
      * @return JsonResponse
+     * @throws \Exception
      */
     #[Route('/lock/{target}', name: 'app_dashboard_lock_xhr', methods: ['POST'])]
     public function lock(
