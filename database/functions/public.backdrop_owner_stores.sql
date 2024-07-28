@@ -18,7 +18,8 @@ BEGIN
                                                       WHERE u.id = s.owner_id
                                                       LIMIT 1),
                                             'created', s.created_at,
-                                            'deleted', s.deleted_at
+                                            'deleted', s.deleted_at,
+                                            'locked', s.locked_to
                                     ) AS store
                     FROM store s
                     WHERE s.owner_id = backdrop_owner_stores.owner_id
