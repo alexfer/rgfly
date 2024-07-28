@@ -13,6 +13,7 @@ import 'flowbite/dist/flowbite.min.css';
 // import js files into app.js
 import './twe';
 import './bootstrap';
+import 'animate.css';
 import './js/market';
 import './js/flowbite';
 import './js/main';

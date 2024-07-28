@@ -18,10 +18,17 @@ if (el.formAnswer !== null) {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const url = form.getAttribute('action');
-        const inputs = form.querySelectorAll('input, textarea');
-
+        const inputs = form.querySelectorAll('input[type="hidden"], textarea');
+        const radios = document.getElementsByName('priority');
         let message = {};
-        [...inputs].forEach((input) => {
+
+        for (let i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                message['priority'] = radios[i].value;
+            }
+        }
+
+        [...inputs].forEach((input, i) => {
             message[input.getAttribute('name')] = input.value;
         });
 

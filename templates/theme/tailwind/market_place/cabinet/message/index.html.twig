@@ -24,18 +24,28 @@
                             <tbody id="bulk-item">
                             {% for message in messages %}
                                 <tr class="bg-white border-b text-gray-500 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <th scope="row" class="p-3">
+                                    <th scope="row" class="p-3 truncate mx-w-16">
                                         {% if message.product is not null %}
                                             <a class="font-semibold hover:text-gray-700 dark:hover:text-white"
+                                               data-twe-toggle="tooltip"
+                                               data-twe-placement="left"
+                                               title="{{ message.product.short_name }}"
                                                target="_blank"
                                                href="{{ path('app_market_place_product', {slug: message.product.slug, tab: 'about'}) }}">
                                                 {{ message.product.short_name }}
-                                                <svg class="w-4 h-4 mb-1 inline-block text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 14v4.833A1.166 1.166 0 0 1 16.833 20H5.167A1.167 1.167 0 0 1 4 18.833V7.167A1.166 1.166 0 0 1 5.167 6h4.618m4.447-2H20v5.768m-7.889 2.121 7.778-7.778"></path>
+                                                <svg class="w-4 h-4 mb-1 inline-block text-gray-800 dark:text-white"
+                                                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                                     height="24" fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                          stroke-linejoin="round" stroke-width="2"
+                                                          d="M18 14v4.833A1.166 1.166 0 0 1 16.833 20H5.167A1.167 1.167 0 0 1 4 18.833V7.167A1.166 1.166 0 0 1 5.167 6h4.618m4.447-2H20v5.768m-7.889 2.121 7.778-7.778"></path>
                                                 </svg>
                                             </a>
                                         {% elseif message.order is not null %}
-                                            {{ message.order.number }}
+                                            <abb data-twe-toggle="tooltip" class="cursor-pointer" data-twe-placement="left"
+                                                 title="{{ message.order.number }}">
+                                                {{ message.order.number }}
+                                            </abb>
                                         {% else %}
                                             {{ 'store.message.question'|trans }}
                                         {% endif %}
@@ -56,9 +66,15 @@
                                     </td>
                                     <td class="flex p-3 justify-end items-end">
                                         <a href="{{ path('app_cabinet_messages', {id: message.id}) }}">
-                                            <svg class="w-[20px] h-[20px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                                <path fill-rule="evenodd" d="M4 3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h1v2a1 1 0 0 0 1.707.707L9.414 13H15a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4Z" clip-rule="evenodd"></path>
-                                                <path fill-rule="evenodd" d="M8.023 17.215c.033-.03.066-.062.098-.094L10.243 15H15a3 3 0 0 0 3-3V8h2a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-1v2a1 1 0 0 1-1.707.707L14.586 18H9a1 1 0 0 1-.977-.785Z" clip-rule="evenodd"></path>
+                                            <svg class="w-[20px] h-[20px] text-gray-800 dark:text-white"
+                                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                                 height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                <path fill-rule="evenodd"
+                                                      d="M4 3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h1v2a1 1 0 0 0 1.707.707L9.414 13H15a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4Z"
+                                                      clip-rule="evenodd"></path>
+                                                <path fill-rule="evenodd"
+                                                      d="M8.023 17.215c.033-.03.066-.062.098-.094L10.243 15H15a3 3 0 0 0 3-3V8h2a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-1v2a1 1 0 0 1-1.707.707L14.586 18H9a1 1 0 0 1-.977-.785Z"
+                                                      clip-rule="evenodd"></path>
                                             </svg>
                                         </a>
                                     </td>
