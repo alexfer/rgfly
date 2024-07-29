@@ -24,6 +24,7 @@ parameters:
     app.notifications.email_sender_name: '%env(EMAIL_SENDER_NAME)%'
     app.elastic.dsn: '%env(ELASTIC_DSN)%'
     app.elastic.index: '%env(ELASTIC_INDEX)%'
+    app.hostip.url: '%env(HOST_API_URL)%'
 
 services:
     Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
