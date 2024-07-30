@@ -1531,6 +1531,10 @@
                 <source>label.form.country</source>
                 <target>Your Country</target>
             </trans-unit>
+            <trans-unit id="label.form.address_country">
+                <source>label.form.address_country</source>
+                <target>Country address</target>
+            </trans-unit>
             <trans-unit id="label.form.supplier_country">
                 <source>label.form.supplier_country</source>
                 <target>Supplier Country</target>

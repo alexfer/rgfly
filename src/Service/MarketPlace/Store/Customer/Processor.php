@@ -120,7 +120,7 @@ readonly class Processor implements ProcessorInterface
     }
 
     /**
-     * @param array $args
+     * @param StoreCustomer $customer
      * @param mixed $formData
      * @return void
      */
@@ -154,7 +154,7 @@ readonly class Processor implements ProcessorInterface
             'city' => $form->get('city')->getData(),
             'region' => $form->get('region')->getData(),
             'postal' => $form->get('postal')->getData(),
-            'country' => $form->get('country')->getData(),
+            'country' => $form->get('address_country')->getData(),
             'phone' => $form->get('phone')->getData(),
         ];
         return $this;

@@ -38,7 +38,7 @@ class StoreManufacturerRepository extends ServiceEntityRepository
             ->where('m.store = :store')
             ->andWhere('LOWER(m.name) LIKE :search')
             ->setParameter('store', $store)
-            ->setParameter('search', '%' . strtolower($name) . '%');
+            ->setParameter('search', '%' . mb_strtolower($name ?: '') . '%');
 
         return (bool)$qb->getQuery()->getOneOrNullResult()['exists'];
     }
@@ -57,7 +57,7 @@ class StoreManufacturerRepository extends ServiceEntityRepository
             ->where('m.store = :store')
             ->setParameter('store', $store)
             ->andWhere('LOWER(m.name) LIKE :search')
-            ->setParameter('search', '%' . strtolower($search) . '%')
+            ->setParameter('search', '%' . mb_strtolower($search ?: '') . '%')
             ->orderBy('m.id', 'DESC');
 
         return $qb->getQuery()->getResult();
