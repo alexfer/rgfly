@@ -2,13 +2,16 @@
 
 namespace App\Controller\MarketPlace\Cabinet;
 
-use App\Service\MarketPlace\Store\Message\Interface\ProcessorInterface;
-use App\Entity\MarketPlace\{Store, StoreCustomer, StoreCustomerOrders, StoreMessage, StoreOrders, StoreWishlist};
+use App\Entity\MarketPlace\{StoreCustomer, StoreCustomerOrders, StoreMessage, StoreOrders, StoreWishlist};
 use App\Form\Type\MarketPlace\{AddressType, CustomerProfileType};
+use App\Message\MessageNotification;
+use App\Service\MarketPlace\Store\Message\Interface\ProcessorInterface;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
+use Symfony\Component\Messenger\Exception\ExceptionInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -75,8 +78,10 @@ class CabinetController extends AbstractController
      * @param UserInterface $user
      * @param EntityManagerInterface $em
      * @param ProcessorInterface $processor
+     * @param MessageBusInterface $bus
      * @return Response
      * @throws Exception
+     * @throws ExceptionInterface
      */
     #[Route('/messages/{id}', name: 'app_cabinet_messages', defaults: ['id' => null], methods: ['GET', 'POST'])]
     public function messages(
@@ -84,6 +89,7 @@ class CabinetController extends AbstractController
         UserInterface          $user,
         EntityManagerInterface $em,
         ProcessorInterface     $processor,
+        MessageBusInterface    $bus,
     ): Response
     {
         $id = $request->get('id');
@@ -93,6 +99,16 @@ class CabinetController extends AbstractController
             $payload = $request->getPayload()->all();
             $processor->process($payload, null, null, false);
             $answer = $processor->answer($user, true);
+
+            $notify = [
+                'id' => $answer->getId(),
+                'store' => $answer->getStore()->getId(),
+                'message' => $answer->getMessage(),
+                'parent' => $answer->getParent()->getId(),
+            ];
+
+            $notify = json_encode($notify);
+            $bus->dispatch(new MessageNotification($notify));
 
             return $this->json([
                 'template' => $this->renderView('market_place/cabinet/message/answers.html.twig', [

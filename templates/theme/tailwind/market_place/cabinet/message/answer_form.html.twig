@@ -16,6 +16,7 @@
             </svg>
             <span class="sr-only">{{ 'label.form.picture'|trans }}</span>
         </button>
+        <input type="radio" class="sr-only" name="priority" id="priority" value="low" checked>
         <textarea id="message" autocomplete="off" name="message" minlength="20" maxlength="255" rows="1" required
                   class="invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500 peer block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="{{ 'form.your.message'|trans }}"></textarea>

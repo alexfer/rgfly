@@ -25,6 +25,7 @@ parameters:
     app.elastic.dsn: '%env(ELASTIC_DSN)%'
     app.elastic.index: '%env(ELASTIC_INDEX)%'
     app.hostip.url: '%env(HOST_API_URL)%'
+    app.redis.dsn: '%env(REDIS_SOCKET)%'
 
 services:
     Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
