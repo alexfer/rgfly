@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service\HostApi;
 
 use Psr\Log\LoggerInterface;
@@ -11,7 +13,7 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\DomCrawler\Crawler;
 
-class HostApi implements ApiInterface
+class HostApi implements HostApiInterface
 {
     /**
      * @var string|null
@@ -79,7 +81,7 @@ class HostApi implements ApiInterface
         $coordinates = explode(",", $coordinates);
         $coordinates = array_reverse($coordinates);
 
-        $result = [
+        return [
             'ip' => $ip,
             'city' => $city,
             'countryName' => $countryName,
@@ -89,7 +91,5 @@ class HostApi implements ApiInterface
                 'lng' => $coordinates[1],
             ],
         ];
-
-        return $result;
     }
 }
