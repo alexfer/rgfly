@@ -4,9 +4,11 @@ namespace App\Form\Type\MarketPlace;
 
 use App\Entity\MarketPlace\StoreCustomer;
 use App\Form\Type\User\RegistrationType;
+use App\Service\HostApi\HostApiInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, EmailType, TelType, TextType};
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Intl\Locale;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,6 +16,29 @@ use Symfony\Component\Validator\Constraints\{Email, Length, NotBlank, Regex};
 
 class CustomerRegistrationType extends AbstractType
 {
+
+    /**
+     * @var array
+     */
+    private array $location;
+
+    /**
+     * @param RequestStack $requestStack
+     * @param HostApiInterface $hostApi
+     */
+    public function __construct(
+        RequestStack     $requestStack,
+        HostApiInterface $hostApi
+    )
+    {
+        $meta = $hostApi->determine($requestStack->getCurrentRequest()->getClientIp());
+
+        $this->location = [
+            'countryCode' => $meta['countryCode'],
+            'city' => $meta['city'],
+        ];
+    }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -75,6 +100,7 @@ class CustomerRegistrationType extends AbstractType
             ])
             ->add('city', TextType::class, [
                 'mapped' => false,
+                'data' => $this->location['city'] ?: null,
                 'attr' => [
                     'min' => 3,
                     'max' => 250,
@@ -98,6 +124,7 @@ class CustomerRegistrationType extends AbstractType
                 'required' => true,
                 'multiple' => false,
                 'expanded' => false,
+                'data' => $this->location['countryCode'] ?: null,
                 'choices' => array_flip(Countries::getNames(Locale::getDefault())),
             ])
             ->add('phone', TelType::class, [

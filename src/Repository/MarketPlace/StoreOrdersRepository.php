@@ -65,7 +65,7 @@ class StoreOrdersRepository extends ServiceEntityRepository
             ->leftJoin(StoreCustomerOrders::class, 'mco', Join::WITH, 'mo.id = mco.orders')
             ->where('mco.customer = :customer')
             ->andWhere("LOWER(mo.number) LIKE :query")
-            ->setParameter('query', '%' . strtolower($query) . '%')
+            ->setParameter('query', '%' . mb_strtolower($query) . '%')
             ->setParameter('customer', $customer);
 
         return $qb->getQuery()->getOneOrNullResult();

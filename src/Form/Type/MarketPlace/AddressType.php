@@ -4,11 +4,13 @@ namespace App\Form\Type\MarketPlace;
 
 use App\Entity\MarketPlace\StoreAddress;
 use App\Entity\MarketPlace\StoreCustomer;
+use App\Service\HostApi\HostApiInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Intl\Locale;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,13 +21,34 @@ use Symfony\Component\Validator\Constraints\Regex;
 class AddressType extends AbstractType
 {
     /**
+     * @var array
+     */
+    private array $location;
+
+    /**
+     * @param RequestStack $requestStack
+     * @param HostApiInterface $hostApi
+     */
+    public function __construct(
+        RequestStack     $requestStack,
+        HostApiInterface $hostApi
+    )
+    {
+        $meta = $hostApi->determine($requestStack->getCurrentRequest()->getClientIp());
+
+        $this->location = [
+            'countryCode' => $meta['countryCode'],
+            'city' => $meta['city'],
+        ];
+    }
+
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      * @return void
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-
         if ($options['data'] instanceof StoreCustomer) {
             $options = $options['data']->getStoreAddress();
         } else {
@@ -71,19 +94,19 @@ class AddressType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('country', ChoiceType::class, [
+            ->add('address_country', ChoiceType::class, [
                 'mapped' => false,
                 'placeholder' => 'form.country.placeholder',
                 'label' => 'label.country',
-                'data' => $options?->getCountry(),
                 'required' => true,
                 'multiple' => false,
+                'data' => $this->location['countryCode'] ?: $options?->getCountry(),
                 'expanded' => false,
                 'choices' => array_flip(Countries::getNames(Locale::getDefault())),
             ])
             ->add('city', TextType::class, [
                 'mapped' => false,
-                'data' => $options?->getCity(),
+                'data' => $this->location['city'] ?: $options?->getCity(),
                 'attr' => [
                     'min' => 3,
                     'max' => 250,
