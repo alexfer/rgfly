@@ -32,7 +32,7 @@ class MessageNotificationHandler
         $data = json_decode($message->getAnswer(), true);
 
         try {
-            $this->connection->redis()->setex("mess_{$data['id']}:{$data['parent']}:{$data['store']}", self::TTL, $message->getAnswer());
+            $this->connection->redis()->setex("mess:{$data['id']}:{$data['parent']}:{$data['store']}", self::TTL, $message->getAnswer());
         } catch (\RedisException $e) {
             $this->logger->critical('{ exception }', [
                 'exception' => $e->getMessage(),
