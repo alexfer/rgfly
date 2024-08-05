@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: StoreMessageRepository::class)]
 class StoreMessage
@@ -20,10 +21,16 @@ class StoreMessage
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'storeMessages')]
     private ?self $parent = null;
 
+    #[ORM\Column(type: 'uuid')]
+    private ?Uuid $identity = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $read = null;
+
     /**
      * @var Collection<int, self>
      */
-    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent')]
     private Collection $storeMessages;
 
     #[ORM\ManyToOne(inversedBy: 'storeMessages')]
@@ -41,7 +48,7 @@ class StoreMessage
     private ?User $owner = null;
 
     #[ORM\Column(length: 50, nullable: true)]
-    private ?string $priority = null;
+    private ?string $priority;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $message = null;
@@ -66,6 +73,8 @@ class StoreMessage
         $this->created_at = new \DateTimeImmutable();
         $this->priority = self::PRIORITY_LOW;
         $this->storeMessages = new ArrayCollection();
+        $this->identity = !$this->identity ? Uuid::v4() : $this->identity;
+        $this->read = false;
     }
 
     /**
@@ -319,6 +328,44 @@ class StoreMessage
     public function setOwner(?User $owner): static
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * @return Uuid|null
+     */
+    public function getIdentity(): ?Uuid
+    {
+        return $this->identity;
+    }
+
+    /**
+     * @param Uuid $identity
+     * @return $this
+     */
+    public function setIdentity(Uuid $identity): static
+    {
+        $this->identity = $identity;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isRead(): ?bool
+    {
+        return $this->read;
+    }
+
+    /**
+     * @param bool|null $read
+     * @return $this
+     */
+    public function setRead(?bool $read): static
+    {
+        $this->read = $read;
 
         return $this;
     }

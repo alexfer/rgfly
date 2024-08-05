@@ -10,7 +10,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 class MessageNotificationHandler
 {
-    const int TTL = 3600;
+    const int TTL = 3600 * 24;
 
     /**
      * @param ConnectionInterface $connection
@@ -32,7 +32,7 @@ class MessageNotificationHandler
         $data = json_decode($message->getAnswer(), true);
 
         try {
-            $this->connection->redis()->setex("mess:{$data['id']}:{$data['parent']}:{$data['store']}", self::TTL, $message->getAnswer());
+            $this->connection->redis()->setex("{$data['recipient']}:{$data['id']}", self::TTL, $message->getAnswer());
         } catch (\RedisException $e) {
             $this->logger->critical('{ exception }', [
                 'exception' => $e->getMessage(),

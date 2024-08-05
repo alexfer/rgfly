@@ -2,6 +2,7 @@
       action="{{ path('app_dashboard_market_place_message_conversation', {store: app.request.get('store'), id: id}) }}">
     <input type="hidden" id="id" name="id" value="{{ id }}">
     <input type="hidden" id="customer" name="customer" value="{{ customer }}">
+    <input type="hidden" id="last" name="last" value="{{ last }}">
     <label for="message" class="sr-only">{{ 'form.your.message'|trans }}</label>
     <div class="flex items-center px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700">
         <button type="button"

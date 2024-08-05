@@ -26,7 +26,7 @@ interface ProcessorInterface
     /**
      * @param UserInterface|null $user
      * @param bool $customer
-     * @return StoreMessage
+     * @return array
      */
-    public function answer(?UserInterface $user, bool $customer = false): StoreMessage;
+    public function answer(?UserInterface $user, bool $customer = false): array;
 }

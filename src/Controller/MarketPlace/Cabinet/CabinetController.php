@@ -99,27 +99,13 @@ class CabinetController extends AbstractController
             $payload = $request->getPayload()->all();
             $processor->process($payload, null, null, false);
             $answer = $processor->answer($user, true);
-
-            $notify = [
-                'id' => $answer->getId(),
-                'store' => $answer->getStore()->getId(),
-                'message' => $answer->getMessage(),
-                'parent' => $answer->getParent()->getId(),
-            ];
-
-            $notify = json_encode($notify);
+            $notify = json_encode($answer);
             $bus->dispatch(new MessageNotification($notify));
+            unset($answer['recipient']);
 
             return $this->json([
                 'template' => $this->renderView('market_place/cabinet/message/answers.html.twig', [
-                    'row' => [
-                        'id' => $answer->getId(),
-                        'message' => $answer->getMessage(),
-                        'createdAt' => $answer->getCreatedAt(),
-                        'owner' => $answer->getOwner(),
-                        'customer' => $answer->getCustomer(),
-                        'priority' => $answer->getPriority(),
-                    ],
+                    'row' => $answer,
                 ])
             ], Response::HTTP_CREATED);
         }

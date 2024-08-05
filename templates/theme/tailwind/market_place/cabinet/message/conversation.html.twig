@@ -37,7 +37,12 @@
             {% endfor %}
             {% set last = conversation|last %}
             {% if last|length and last.owner is not null %}
-                {% include 'market_place/cabinet/message/answer_form.html.twig' with {id: message.id, store: last.store.id} %}
+                {% include 'market_place/cabinet/message/answer_form.html.twig' with {
+                    id: message.id,
+                    last: last.id,
+                    identity: last.identity,
+                    store: last.store.id
+                } %}
             {% endif %}
             <div id="response"></div>
         </section>

@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -200,18 +201,25 @@ class Processor implements ProcessorInterface
     /**
      * @param UserInterface|null $user
      * @param bool $customer
-     * @return StoreMessage
+     * @return array
      */
-    public function answer(?UserInterface $user, bool $customer = false): StoreMessage
+    public function answer(?UserInterface $user, bool $customer = false): array
     {
         $message = $this->em->getRepository(StoreMessage::class)->find($this->payload['id']);
-        $answer = $this->message();
+        $previous = $this->em->getRepository(StoreMessage::class)->find($this->payload['last']);
 
+        $previous->setRead(true);
+        $this->em->persist($previous);
+        $this->em->flush();
+
+        // new instance
+        $answer = $this->message();
         $answer->setCustomer($this->customer($user));
 
         if (!$customer) {
             $answer->setOwner($user);
         }
+
         $answer->setStore($this->store())
             ->setParent($message)
             ->setPriority($this->payload['priority'])
@@ -221,6 +229,17 @@ class Processor implements ProcessorInterface
         $this->em->persist($answer);
         $this->em->flush();
 
-        return $answer;
+        return [
+            'id' => $answer->getId(),
+            'store' => $answer->getStore()->getId(),
+            'message' => $answer->getMessage(),
+            'createdAt' => $answer->getCreatedAt(),
+            'parent' => $answer->getParent()->getId(),
+            'identity' => $answer->getIdentity(),
+            'recipient' => $customer ? $previous->getOwner()->getEmail() : $previous->getCustomer()->getEmail(),
+            'customer' => $answer->getCustomer(),
+            'priority' => $answer->getPriority(),
+            'owner' => $answer->getOwner(),
+        ];
     }
 }
