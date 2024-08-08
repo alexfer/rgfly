@@ -33,8 +33,9 @@
                    role="button"
                    data-twe-dropdown-toggle-ref
                    aria-expanded="false"
-                   class="text-white dark:text-white block uppercase hover:bg-gray-50 hover:text-red-900 focus:ring-1 focus:ring-gray-100 font-medium rounded-md text-sm px-4 lg:px-5 py-2 lg:py-2.5 ml-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-red-800">
+                   class="relative text-white dark:text-white block uppercase hover:bg-gray-50 hover:text-red-900 focus:ring-1 focus:ring-gray-100 font-medium rounded-md text-sm px-4 lg:px-5 py-2 lg:py-2.5 ml-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-red-800">
                     <i class="fa fa-user text-md-end mr-2"></i>{{ 'title.account'|trans }}
+                    <div id="notify" class="absolute inline-flex items-center justify-center border-2 border-white w-4 h-4 bg-gray-500 rounded-full -top-2 -end-2"></div>
                 </a>
                 <ul class="absolute z-[1000] w-48 hidden min-w-max list-none space-y-1 overflow-hidden p-2 rounded-md border-none bg-white bg-clip-padding text-left text-base shadow-xl data-[twe-dropdown-show]:block dark:bg-surface-dark"
                     aria-labelledby="account"

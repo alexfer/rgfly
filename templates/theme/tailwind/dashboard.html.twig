@@ -18,7 +18,7 @@
     <link rel="manifest" href="{{ asset('site.webmanifest') }}">
 </head>
 <body class="dark:bg-gray-600">
-<div class="h-screen">
+<div class="h-screen" id="key" data-hash="{{ app.user.email|crypto }}">
     {{ include('dashboard/sidebar.html.twig') }}
     <div class="sm:ml-64">
         <div class="flex w-full p-2 rounded-lg bg-gradient bg-gray-100 justify-between items-center dark:bg-gray-700">
@@ -41,6 +41,7 @@
                     <span class="sr-only">{{ 'title.search'|trans }}</span>
                 </button>
             </form>
+            <div id="notify" class="sr-only"></div>
             <button id="theme-toggle" type="button" class="w-24 end-0 text-gray-500 dark:text-gray-400 focus:outline-none rounded-full text-sm p-2">
                 <span class="inline-flex float-start pe-3">{{ 'text.theme'|trans }}</span>
                 <svg id="theme-toggle-dark-icon" class="hidden w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
