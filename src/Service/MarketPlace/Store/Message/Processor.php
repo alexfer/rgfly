@@ -8,14 +8,17 @@ use App\Entity\MarketPlace\StoreCustomer;
 use App\Entity\MarketPlace\StoreMessage;
 use App\Entity\MarketPlace\StoreOrders;
 use App\Entity\MarketPlace\StoreProduct;
+use App\Message\DeleteMessage;
 use App\Service\MarketPlace\Store\Message\Interface\ProcessorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\Exception\ExceptionInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
-use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -30,12 +33,15 @@ class Processor implements ProcessorInterface
      * @param ValidatorInterface $validator
      * @param EntityManagerInterface $em
      * @param CsrfTokenManagerInterface $csrfTokenManager
+     * @param RouterInterface $router
      */
     public function __construct(
         private readonly TranslatorInterface       $translator,
         private readonly ValidatorInterface        $validator,
         private readonly EntityManagerInterface    $em,
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
+        private readonly RouterInterface           $router,
+        private readonly MessageBusInterface        $bus,
     )
     {
 
@@ -200,14 +206,20 @@ class Processor implements ProcessorInterface
 
     /**
      * @param UserInterface|null $user
+     * @param MessageBusInterface|null $bus
      * @param bool $customer
      * @return array
+     * @throws ExceptionInterface
      */
     public function answer(?UserInterface $user, bool $customer = false): array
     {
         $message = $this->em->getRepository(StoreMessage::class)->find($this->payload['id']);
         $previous = $this->em->getRepository(StoreMessage::class)->find($this->payload['last']);
 
+        $id = $this->payload['last'];
+        $recipient = $customer ? $this->customer($user)->getEmail(): $user->getEmail();
+
+        $this->bus->dispatch(new DeleteMessage("{$recipient}:{$id}"));
         $previous->setRead(true);
         $this->em->persist($previous);
         $this->em->flush();
@@ -240,6 +252,10 @@ class Processor implements ProcessorInterface
             'customer' => $answer->getCustomer(),
             'priority' => $answer->getPriority(),
             'owner' => $answer->getOwner(),
+            'url' => $this->router->generate('app_dashboard_market_place_message_conversation', [
+                'store' => $answer->getStore()->getId(),
+                'id' => $answer->getParent()->getId(),
+            ])
         ];
     }
 }

@@ -9,19 +9,22 @@ class Crypto implements CryptoInterface
     /**
      * @var string
      */
-    private static string $ciphering = "AES-256-CBC";
+    private static string $ciphering = "aes-256-cbc";
 
     /**
      * @var string|null
      */
     private static ?string $encryptionKey = null;
 
+    private static ?string $encryptionIV = null;
+
     /**
      * @param ParameterBagInterface $params
      */
     public function __construct(private readonly ParameterBagInterface $params)
     {
-        self::$encryptionKey = $this->getKey();
+        self::$encryptionKey = base64_decode($this->getKey()['encryption_key']);
+        self::$encryptionIV = base64_decode($this->getKey()['encryption_iv']);
     }
 
     /**
@@ -30,22 +33,34 @@ class Crypto implements CryptoInterface
      */
     public function encrypt(string $data): string
     {
-        $ivLen = openssl_cipher_iv_length(self::$ciphering);
-        $iv = openssl_random_pseudo_bytes($ivLen);
-
-        return openssl_encrypt($data, self::$ciphering, self::$encryptionKey, 0, $iv);
+        return openssl_encrypt($data, self::$ciphering, self::$encryptionKey, 0, self::$encryptionIV);
     }
 
     /**
-     * @return string
+     * @return array
      */
-    private function getKey(): string
+    private function getKey(): array
     {
         $file = sprintf('%s/.encryptionKey', $this->params->get('kernel.project_dir'));
+
         if (!file_exists($file)) {
             throw new \RuntimeException('Encryption key not found');
         }
-        $encryptionKey = file_get_contents($file);
-        return trim($encryptionKey);
+        $encryptionKeys = file_get_contents($file);
+
+        if (empty($encryptionKeys)) {
+            throw new \RuntimeException('Encryption key not found');
+        }
+
+        $encryptionKeys = explode("::", $encryptionKeys);
+
+        if (!is_array($encryptionKeys)) {
+            throw new \RuntimeException('Encryption keys not found');
+        }
+
+        return [
+            'encryption_key' => $encryptionKeys[0],
+            'encryption_iv' => $encryptionKeys[1],
+        ];
     }
 }
