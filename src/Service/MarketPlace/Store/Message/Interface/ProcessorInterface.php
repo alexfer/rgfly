@@ -2,8 +2,8 @@
 
 namespace App\Service\MarketPlace\Store\Message\Interface;
 
-use App\Entity\MarketPlace\StoreMessage;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 interface ProcessorInterface
@@ -26,7 +26,7 @@ interface ProcessorInterface
     /**
      * @param UserInterface|null $user
      * @param bool $customer
-     * @return StoreMessage
+     * @return array
      */
-    public function answer(?UserInterface $user, bool $customer = false): StoreMessage;
+    public function answer(?UserInterface $user, bool $customer = false): array;
 }

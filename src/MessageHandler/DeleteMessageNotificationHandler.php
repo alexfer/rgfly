@@ -2,16 +2,14 @@
 
 namespace App\MessageHandler;
 
-use App\Message\MessageNotification;
+use App\Message\DeleteMessage;
 use App\Service\Redis\ConnectionInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-class MessageNotificationHandler
+class DeleteMessageNotificationHandler
 {
-    const int TTL = 3600 * 24;
-
     /**
      * @param ConnectionInterface $connection
      * @param LoggerInterface $logger
@@ -24,15 +22,14 @@ class MessageNotificationHandler
     }
 
     /**
-     * @param MessageNotification $message
+     * @param DeleteMessage $message
      * @return void
      */
-    public function __invoke(MessageNotification $message): void
+    public function __invoke(DeleteMessage $message): void
     {
-        $data = json_decode($message->getAnswer(), true);
 
         try {
-            $this->connection->redis()->setex("{$data['recipient']}:{$data['id']}", self::TTL, $message->getAnswer());
+            $this->connection->redis()->del($message->getMessage());
         } catch (\RedisException $e) {
             $this->logger->critical('{ exception }', [
                 'exception' => $e->getMessage(),

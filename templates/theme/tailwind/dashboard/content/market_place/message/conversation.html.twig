@@ -16,7 +16,7 @@
             <p class="text-sm font-normal my-1.5 p-4 bg-gray-50 rounded-lg text-gray-900 dark:bg-gray-500 dark:text-white ">{{ message.message }}</p>
             <div class="block w-full justify-start items-start my-1 px-0.5">
                 {% if conversation|length == 0 %}
-                    {% include 'dashboard/content/market_place/message/_form.html.twig' with {id: message.id, customer: message.customer.id} %}
+                    {% include 'dashboard/content/market_place/message/_form.html.twig' with {id: message.id, last: message.id, customer: message.customer.id} %}
                 {% endif %}
             </div>
         </div>
@@ -26,7 +26,7 @@
     {% endfor %}
     {% set last = conversation|last %}
     {% if last|length and last.owner is null %}
-        {% include 'dashboard/content/market_place/message/_form.html.twig' with {id: message.id, customer: message.customer.id} %}
+        {% include 'dashboard/content/market_place/message/_form.html.twig' with {id: message.id, last: last.id, customer: message.customer.id} %}
     {% endif %}
     <div id="response"></div>
 {% endblock %}

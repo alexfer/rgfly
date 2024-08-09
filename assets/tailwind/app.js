@@ -19,4 +19,5 @@ import './js/flowbite';
 import './js/main';
 import './js/loader';
 import './js/theme';
-import './js/cookie-policy'
+import './js/cookie-policy';
+import './js/notifications';

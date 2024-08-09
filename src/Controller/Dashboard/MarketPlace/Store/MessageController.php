@@ -2,6 +2,7 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
+use App\Message\MessageNotification;
 use App\Service\MarketPlace\Store\Message\Interface\ProcessorInterface;
 use App\Entity\MarketPlace\{Store, StoreCustomer, StoreMessage};
 use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreInterface;
@@ -10,6 +11,8 @@ use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
+use Symfony\Component\Messenger\Exception\ExceptionInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -69,6 +72,16 @@ class MessageController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param UserInterface $user
+     * @param StoreInterface $serveStore
+     * @param ProcessorInterface $processor
+     * @param EntityManagerInterface $em
+     * @param MessageBusInterface $bus
+     * @return Response
+     * @throws ExceptionInterface
+     */
     #[Route('/{store}/{id}', name: 'app_dashboard_market_place_message_conversation', methods: ['GET', 'POST'])]
     public function conversation(
         Request                $request,
@@ -76,6 +89,7 @@ class MessageController extends AbstractController
         StoreInterface         $serveStore,
         ProcessorInterface     $processor,
         EntityManagerInterface $em,
+        MessageBusInterface    $bus,
     ): Response
     {
         $store = $this->store($serveStore, $user);
@@ -86,17 +100,13 @@ class MessageController extends AbstractController
             $payload['store'] = $store->getId();
             $processor->process($payload, null, null, false);
             $answer = $processor->answer($user);
+            $notify = json_encode($answer);
+            $bus->dispatch(new MessageNotification($notify));
 
             return $this->json([
                 'template' => $this->renderView('dashboard/content/market_place/message/answers.html.twig', [
                     'animated' => true,
-                    'row' => [
-                        'id' => $answer->getId(),
-                        'message' => $answer->getMessage(),
-                        'createdAt' => $answer->getCreatedAt(),
-                        'owner' => $answer->getOwner(),
-                        'priority' => $answer->getPriority(),
-                    ],
+                    'row' => $answer,
                 ])
             ], Response::HTTP_CREATED);
         }

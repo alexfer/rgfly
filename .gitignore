@@ -33,5 +33,5 @@ yarn-error.log
 /public/media/cache/
 /public/storage/
 ###< liip/imagine-bundle ###
-
+.encryptionKey
 .DS_Store
