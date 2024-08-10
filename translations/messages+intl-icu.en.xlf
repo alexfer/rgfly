@@ -194,6 +194,10 @@
                 <source>title.service.message</source>
                 <target>Service Message</target>
             </trans-unit>
+            <trans-unit id="title.push.message">
+                <source>title.push.message</source>
+                <target>Notification</target>
+            </trans-unit>
             <trans-unit id="title.service.text">
                 <source>title.service.text</source>
                 <target>

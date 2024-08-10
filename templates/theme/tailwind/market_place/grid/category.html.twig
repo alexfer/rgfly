@@ -1,6 +1,7 @@
 <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
     <div class="lg:max-w-xl relative overflow-hidden bg-cover bg-no-repeat">
-        <a class="block h-72" title="{{ product.name }}" href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}">
+        <a class="block h-72" title="{{ product.name }}"
+           href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}">
             {% if product.attach_name %}
                 {% set _picture = 'storage/product/' ~ product.id ~ '/' ~ product.attach_name %}
                 <img loading="lazy" src="{{ asset(_picture)|imagine_filter('product_preview') }}"

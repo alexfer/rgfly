@@ -38,7 +38,8 @@
                         </div>
                     </div>
                 {% endif %}
-                <ul id="search-list" class="p-3 h-auto space-y-1 overflow-y-auto text-sm text-gray-700 dark:text-gray-200">
+                <ul id="search-list"
+                    class="p-3 h-auto space-y-1 overflow-y-auto text-sm text-gray-700 dark:text-gray-200">
                     {% for store in stores %}
                         <li>
                             <a href="{{ path('app_dashboard_market_place_market_product', {store: store.id}) }}"
@@ -78,11 +79,13 @@
                     <td class="text-center px-6 py-3">{{ store.products }}</td>
                     <td class="text-center px-6 py-3">{{ store.created|date(date_format) }}</td>
                     <td class="text-center px-6 py-3">
-                        <a role="button" href="{{ path('app_dashboard_market_place_market_product', {store: store.id}) }}"
+                        <a role="button"
+                           href="{{ path('app_dashboard_market_place_market_product', {store: store.id}) }}"
                            class="border rounded px-1.5 py-1.5 mr-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
                             <i class="fa fa-cart-plus text-green-500 dark:text-white"></i>
                         </a>
-                        <a role="button" href="{{ path('app_dashboard_market_place_order_store_current', {store: store.id}) }}"
+                        <a role="button"
+                           href="{{ path('app_dashboard_market_place_order_store_current', {store: store.id}) }}"
                            class="border rounded px-1.5 py-1.5 mr-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
                             <i class="fa fa-newspaper-o text-blue-500 dark:text-white"></i>
                         </a>

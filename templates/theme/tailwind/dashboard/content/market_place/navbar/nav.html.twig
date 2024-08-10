@@ -65,10 +65,10 @@
                                 data-token="{{ csrf_token('apply') }}"
                                 aria-labelledby="dropdownLargeButton">
                                 {% for coupon in coupons %}
-                                <li>
-                                    <a data-id="{{ coupon.id }}" href="#"
-                                       class="coupons block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ coupon.name }}</a>
-                                </li>
+                                    <li>
+                                        <a data-id="{{ coupon.id }}" href="#"
+                                           class="coupons block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ coupon.name }}</a>
+                                    </li>
                                 {% endfor %}
                             </ul>
                         </div>

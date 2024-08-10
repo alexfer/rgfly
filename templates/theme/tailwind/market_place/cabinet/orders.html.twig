@@ -92,30 +92,31 @@
                         </div>
                         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+                                <caption
+                                        class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
                                     {{ order.store.name }}
                                     <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
                                         {{ order.invoice.payment_gateway.name|default('n/a') }}
                                     </p>
                                 </caption>
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                    <tr>
-                                        <th scope="col" class="px-6 py-3">
-                                            {{ 'label.form.product_name'|trans }}
-                                        </th>
-                                        <th scope="col" class="px-6 py-3 text-center">
-                                            {{ 'label.form.quantity'|trans }}
-                                        </th>
-                                        <th scope="col" class="px-6 py-3 text-center">
-                                            {{ 'label.form.discount'|trans }}
-                                        </th>
-                                        <th scope="col" class="px-6 py-3 text-right">
-                                            {{ 'table.header.price'|trans }}
-                                        </th>
-                                        <th scope="col" class="px-6 py-3 text-right">
-                                            {{ 'table.header.amount'|trans }}
-                                        </th>
-                                    </tr>
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">
+                                        {{ 'label.form.product_name'|trans }}
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-center">
+                                        {{ 'label.form.quantity'|trans }}
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-center">
+                                        {{ 'label.form.discount'|trans }}
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-right">
+                                        {{ 'table.header.price'|trans }}
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-right">
+                                        {{ 'table.header.amount'|trans }}
+                                    </th>
+                                </tr>
                                 </thead>
                                 <tbody>
                                 {% set discount = 0 %}
@@ -131,59 +132,69 @@
                                             </a>
                                         </th>
                                         <td class="px-6 py-4 text-center">{{ product.quantity }}{{ 'label.form.quantity_pcs'|trans }}</td>
-                                        <td class="px-6 py-4 text-center">{{ product.product.discount }}<small>%</small></td>
+                                        <td class="px-6 py-4 text-center">{{ product.product.discount }}<small>%</small>
+                                        </td>
                                         <td class="px-6 py-4 text-right">
-                                            {{ (product.product.cost + product.product.fee)|amount_format }}<small class="ms-1">{{ order.store.currency|currency }}</small>
+                                            {{ (product.product.cost + product.product.fee)|amount_format }}<small
+                                                    class="ms-1">{{ order.store.currency|currency }}</small>
                                         </td>
                                         <td class="px-6 py-4 text-right">
                                             {% set cost = (product.product.cost + product.product.fee) %}
                                             {% set discount = product.product.discount %}
                                             {% set amount = (cost - (cost * discount)/100)|round(2) %}
-                                            {{ amount|amount_format }}<small class="ms-1">{{ order.store.currency|currency }}</small>
+                                            {{ amount|amount_format }}<small
+                                                    class="ms-1">{{ order.store.currency|currency }}</small>
                                         </td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
                                 <tfoot>
+                                <tr class="font-semibold text-gray-900 dark:text-white">
+                                    <th scope="row" class="px-6 py-3 text-base">{{ 'order.service.tax'|trans }}</th>
+                                    <td class="px-6 py-3"></td>
+                                    <td class="px-6 py-3"></td>
+                                    <td class="px-6 py-3"></td>
+                                    <td class="px-6 py-3 text-right">{{ order.tax }}<small>%</small></td>
+                                </tr>
+                                {% if order.coupon is not null %}
                                     <tr class="font-semibold text-gray-900 dark:text-white">
-                                        <th scope="row" class="px-6 py-3 text-base">{{ 'order.service.tax'|trans }}</th>
+                                        <th scope="row"
+                                            class="px-6 py-3 text-base">{{ 'order.service.coupon'|trans }} {{ 'store.product.off'|trans }}</th>
                                         <td class="px-6 py-3"></td>
                                         <td class="px-6 py-3"></td>
                                         <td class="px-6 py-3"></td>
-                                        <td class="px-6 py-3 text-right">{{ order.tax }}<small>%</small></td>
+                                        {% if order.coupon.discount is not null %}
+                                            {% set discount = ((order.total * order.coupon.discount)/100)|round(2) %}
+                                            <td class="px-6 py-3 text-right">{{ order.coupon.discount|amount_format(2) }}
+                                                <small>%</small></td>
+                                        {% elseif order.coupon.price is not null %}
+                                            {% set discount = (order.total - order.coupon.price)|round(2) %}
+                                            <td class="px-6 py-3 text-right">{{ order.coupon.price|amount_format }}
+                                                <small>%</small></td>
+                                        {% endif %}
                                     </tr>
-                                    {% if order.coupon is not null %}
-                                        <tr class="font-semibold text-gray-900 dark:text-white">
-                                            <th scope="row" class="px-6 py-3 text-base">{{ 'order.service.coupon'|trans }} {{ 'store.product.off'|trans }}</th>
-                                            <td class="px-6 py-3"></td>
-                                            <td class="px-6 py-3"></td>
-                                            <td class="px-6 py-3"></td>
-                                            {% if order.coupon.discount is not null %}
-                                                {% set discount = ((order.total * order.coupon.discount)/100)|round(2) %}
-                                                <td class="px-6 py-3 text-right">{{ order.coupon.discount|amount_format(2) }}<small>%</small></td>
-                                            {% elseif order.coupon.price is not null %}
-                                                {% set discount = (order.total - order.coupon.price)|round(2) %}
-                                                <td class="px-6 py-3 text-right">{{ order.coupon.price|amount_format }}<small>%</small></td>
-                                            {% endif %}
-                                        </tr>
-                                    {% endif %}
-                                    <tr class="font-semibold text-gray-900 dark:text-white">
-                                        <th scope="row" class="px-6 py-3 text-base">{{ 'table.header.total'|trans }}</th>
-                                        <td class="px-6 py-3 text-center">{{ order.total_quantity }}</td>
-                                        <td class="px-6 py-3 text-center font-medium">{{ discount|amount_format(2) }}<small class="ms-1">{{ order.store.currency|currency }}</small></td>
-                                        <td class="px-6 py-3 text-center font-medium">
-                                            {% if order.coupon is not null %}
-                                                {{ (order.total + (order.total * order.tax)/100) |amount_format(2) }}<small class="ms-1">{{ order.store.currency|currency }}</small>
-                                            {% endif %}
-                                        </td>
-                                        <td class="px-6 py-3 text-right">
-                                            {% if order.coupon is not null %}
-                                                {{ ((order.total + (order.total * order.tax)/100) - discount)|amount_format(2) }}<small class="ms-1">{{ order.store.currency|currency }}</small>
-                                            {% else %}
-                                                {{ (order.total + (order.total * order.tax)/100) |amount_format(2) }}<small class="ms-1">{{ order.store.currency|currency }}</small>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
+                                {% endif %}
+                                <tr class="font-semibold text-gray-900 dark:text-white">
+                                    <th scope="row" class="px-6 py-3 text-base">{{ 'table.header.total'|trans }}</th>
+                                    <td class="px-6 py-3 text-center">{{ order.total_quantity }}</td>
+                                    <td class="px-6 py-3 text-center font-medium">{{ discount|amount_format(2) }}<small
+                                                class="ms-1">{{ order.store.currency|currency }}</small></td>
+                                    <td class="px-6 py-3 text-center font-medium">
+                                        {% if order.coupon is not null %}
+                                            {{ (order.total + (order.total * order.tax)/100) |amount_format(2) }}<small
+                                                class="ms-1">{{ order.store.currency|currency }}</small>
+                                        {% endif %}
+                                    </td>
+                                    <td class="px-6 py-3 text-right">
+                                        {% if order.coupon is not null %}
+                                            {{ ((order.total + (order.total * order.tax)/100) - discount)|amount_format(2) }}
+                                            <small class="ms-1">{{ order.store.currency|currency }}</small>
+                                        {% else %}
+                                            {{ (order.total + (order.total * order.tax)/100) |amount_format(2) }}<small
+                                                class="ms-1">{{ order.store.currency|currency }}</small>
+                                        {% endif %}
+                                    </td>
+                                </tr>
                                 </tfoot>
                             </table>
                         </div>
@@ -202,12 +213,12 @@
         </div>
     </div>
     {% if orders|length %}
-    {% include 'market_place/cabinet/message/form.html.twig' %}
-    {% include 'layouts/toast/success.html.twig' %}
-    {% include 'layouts/toast/danger.html.twig' %}
+        {% include 'market_place/cabinet/message/form.html.twig' %}
+        {% include 'layouts/toast/success.html.twig' %}
+        {% include 'layouts/toast/danger.html.twig' %}
     {% endif %}
-{% endblock %}
-{% block javascripts %}
+    {% endblock %}
+    {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('message-js') }}
 {% endblock %}

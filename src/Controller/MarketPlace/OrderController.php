@@ -127,8 +127,8 @@ class OrderController extends AbstractController
      */
     #[Route('/cart', name: 'app_market_place_product_order_cart', methods: ['POST', 'GET'])]
     public function cart(
-        Request              $request,
-        CollectionInterface  $order,
+        Request             $request,
+        CollectionInterface $order,
     ): JsonResponse
     {
         $collection = $order->collection();

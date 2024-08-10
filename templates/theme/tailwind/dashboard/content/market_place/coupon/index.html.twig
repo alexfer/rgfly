@@ -45,9 +45,9 @@
                             <i class="fa fa-pencil text-indigo-600 dark:text-white"></i>
                         </a>
                         <button type="button"
-                           class="border rounded delete-entry py-1 px-2 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800"
-                           data-token="{{ csrf_token('delete') }}"
-                           data-url="{{ path('app_dashboard_market_place_delete_coupon', {store: store.id, id: coupon.id}) }}">
+                                class="border rounded delete-entry py-1 px-2 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800"
+                                data-token="{{ csrf_token('delete') }}"
+                                data-url="{{ path('app_dashboard_market_place_delete_coupon', {store: store.id, id: coupon.id}) }}">
                             <i class="fa fa-trash dark:text-white"></i>
                         </button>
                     </td>

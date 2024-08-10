@@ -153,7 +153,7 @@
         const accordion = document.getElementById('accordion-collapse');
         const ul = document.getElementById('codes');
 
-        if(accordion) {
+        if (accordion) {
             accordion.addEventListener('click', (e) => {
                 const url = accordion.getAttribute('data-url');
                 fetch(url, {headers: {'Content-type': 'application/json'}})
