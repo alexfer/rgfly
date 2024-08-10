@@ -28,9 +28,9 @@ class ContactController extends AbstractController
         UserInterface          $user,
     ): Response
     {
-        return $this->render('dashboard/content/contact/index.html.twig',  [
-                'entries' => $em->getRepository(Contact::class)->findBy([], ['id' => 'desc']),
-            ]);
+        return $this->render('dashboard/content/contact/index.html.twig', [
+            'entries' => $em->getRepository(Contact::class)->findBy([], ['id' => 'desc']),
+        ]);
     }
 
     /**
@@ -97,9 +97,9 @@ class ContactController extends AbstractController
             return $this->redirectToRoute('app_dashboard_review_contact', ['id' => $contact->getId()]);
         }
 
-        return $this->render('dashboard/content/contact/review.html.twig',  [
-                'contact' => $contact,
-                'answers' => $em->getRepository(Answer::class)->findBy(['contact' => $contact->getId()], ['id' => 'desc']),
-            ]);
+        return $this->render('dashboard/content/contact/review.html.twig', [
+            'contact' => $contact,
+            'answers' => $em->getRepository(Answer::class)->findBy(['contact' => $contact->getId()], ['id' => 'desc']),
+        ]);
     }
 }

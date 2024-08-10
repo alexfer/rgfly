@@ -20,7 +20,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use function Symfony\Component\String\u;
 
 #[Route('/market-place')]
 class SearchController extends AbstractController
@@ -52,7 +51,7 @@ class SearchController extends AbstractController
      * @throws AuthenticationException
      */
     public function __construct(
-        RequestStack                            $stack,
+        RequestStack          $stack,
         ParameterBagInterface $params
     )
     {

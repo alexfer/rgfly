@@ -48,10 +48,10 @@
                         {% endif %}
                         <div class="my-4 flex justify-center items-center">
                             {% for social in store.socials %}
-                                    <a class="mr-3 mb-2 hover:text-blue-800" target="_blank" rel="nofollow"
-                                       href="{{ social.source }}">
-                                        <h4 class="text-2xl fa fa-{{ social.source_name }}"></h4>
-                                    </a>
+                                <a class="mr-3 mb-2 hover:text-blue-800" target="_blank" rel="nofollow"
+                                   href="{{ social.source }}">
+                                    <h4 class="text-2xl fa fa-{{ social.source_name }}"></h4>
+                                </a>
                             {% endfor %}
                         </div>
                         <h6 class="text-md-start font-oswald font-medium text-cyan-700 underline underline-offset-8 mb-4">{{ 'form.header.message'|trans }}</h6>

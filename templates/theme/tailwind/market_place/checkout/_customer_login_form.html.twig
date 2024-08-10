@@ -1,6 +1,7 @@
 {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
 <div class="flex flex-col border w-full px-16 mb-5 pt-3 rounded-md shadow-sm">
-    <h2 class="text-xl text-center mt-5 pb-4 font-extrabold text-gray-600 dark:text-white"><i class="fa fa-lock mr-3"></i>{{ 'text.login'|trans }}</h2>
+    <h2 class="text-xl text-center mt-5 pb-4 font-extrabold text-gray-600 dark:text-white"><i
+                class="fa fa-lock mr-3"></i>{{ 'text.login'|trans }}</h2>
     {% if error %}
         <div class="flex items-center p-4 mb-4 text-red-600 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
              role="alert">

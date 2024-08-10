@@ -88,7 +88,7 @@ class StoreCouponRepository extends ServiceEntityRepository
         $statement->bindValue('event', $event, \PDO::PARAM_INT);
         $result = $statement->executeQuery()->fetchAllAssociative();
 
-        if(is_numeric($result[0]['get_active_coupon'])) {
+        if (is_numeric($result[0]['get_active_coupon'])) {
             return $result[0]['get_active_coupon'];
         }
 
