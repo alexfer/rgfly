@@ -9,7 +9,8 @@
         <span class="lg:block xs:hidden">
             {% include 'dashboard/content/market_place/navbar/search.html.twig' %}
         </span>
-        <div class="absolute end-0 mt-5 me-4 text-sm text-gray-600 dark:text-gray-100">{{ 'title.dashboard.users'|trans }}: {{ rows }}</div>
+        <div class="absolute end-0 mt-5 me-4 text-sm text-gray-600 dark:text-gray-100">{{ 'title.dashboard.users'|trans }}
+            : {{ rows }}</div>
     </div>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -43,7 +44,7 @@
                             {% endif %}
                         </a>
                     </th>
-                    <td class="px-6 py-3">{{  _role|capitalize }}</td>
+                    <td class="px-6 py-3">{{ _role|capitalize }}</td>
                     <td class="px-6 py-3 text-center">
                         <span data-twe-toggle="tooltip"
                               title="{{ user.created_at|date(datetime_format) }}"
@@ -57,7 +58,8 @@
                         </span>
                     </td>
                     <td class="px-6 py-3 text-center">
-                        <a role="button" class="border rounded ps-1.5 pt-1.5 pe-1 pb-1 hover:shadow-md {{ user.deleted_at is null ? 'hover:bg-gray-100 dark:hover:bg-black' : 'dark:text-black' }}"
+                        <a role="button"
+                           class="border rounded ps-1.5 pt-1.5 pe-1 pb-1 hover:shadow-md {{ user.deleted_at is null ? 'hover:bg-gray-100 dark:hover:bg-black' : 'dark:text-black' }}"
                            href="{{ path(_path, {id: user.id, tab: 'summary'}) }}">
                             <i class="fa fa-user-circle {{ user.deleted_at is null ? 'dark:text-white' : 'dark:text-black' }}"></i>
                         </a>

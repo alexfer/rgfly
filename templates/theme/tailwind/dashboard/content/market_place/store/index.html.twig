@@ -38,7 +38,8 @@
                         </div>
                     </div>
                 {% endif %}
-                <ul id="search-list" class="p-3 h-auto space-y-1 overflow-y-auto text-sm text-gray-700 dark:text-gray-200">
+                <ul id="search-list"
+                    class="p-3 h-auto space-y-1 overflow-y-auto text-sm text-gray-700 dark:text-gray-200">
                     {% for store in stores %}
                         <li>
                             <a href="{{ path('app_dashboard_market_place_market_product', {store: store.id}) }}"

@@ -2,10 +2,10 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
+use App\Entity\MarketPlace\{Store, StoreMessage};
 use App\Message\MessageNotification;
-use App\Service\MarketPlace\Store\Message\Interface\ProcessorInterface;
-use App\Entity\MarketPlace\{Store, StoreCustomer, StoreMessage};
 use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreInterface;
+use App\Service\MarketPlace\Store\Message\Interface\ProcessorInterface;
 use App\Service\MarketPlace\StoreTrait;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
@@ -95,7 +95,7 @@ class MessageController extends AbstractController
         $store = $this->store($serveStore, $user);
         $repository = $em->getRepository(StoreMessage::class);
 
-        if($request->isMethod('POST')) {
+        if ($request->isMethod('POST')) {
             $payload = $request->getPayload()->all();
             $payload['store'] = $store->getId();
             $processor->process($payload, null, null, false);
@@ -112,7 +112,7 @@ class MessageController extends AbstractController
         }
 
         $message = $repository->findOneBy(['store' => $store, 'id' => $request->get('id')]);
-        if($message === null) {
+        if ($message === null) {
             throw $this->createNotFoundException();
         }
         $conversation = $repository->findBy(['store' => $store, 'parent' => $message->getId()]);

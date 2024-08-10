@@ -28,9 +28,9 @@ class FaqController extends AbstractController
         UserInterface          $user,
     ): Response
     {
-        return $this->render('dashboard/content/faq/index.html.twig',  [
-                'entries' => $em->getRepository(Faq::class)->findBy([], ['id' => 'desc']),
-            ]);
+        return $this->render('dashboard/content/faq/index.html.twig', [
+            'entries' => $em->getRepository(Faq::class)->findBy([], ['id' => 'desc']),
+        ]);
     }
 
     /**
@@ -109,9 +109,9 @@ class FaqController extends AbstractController
             return $this->redirectToRoute('app_dashboard_edit_faq', ['id' => $entry->getId()]);
         }
 
-        return $this->render('dashboard/content/faq/_form.html.twig',  [
-                'form' => $form,
-            ]);
+        return $this->render('dashboard/content/faq/_form.html.twig', [
+            'form' => $form,
+        ]);
     }
 
     /**
@@ -140,8 +140,8 @@ class FaqController extends AbstractController
             return $this->redirectToRoute('app_dashboard_edit_faq', ['id' => $entry->getId()]);
         }
 
-        return $this->render('dashboard/content/faq/_form.html.twig',  [
-                'form' => $form,
-            ]);
+        return $this->render('dashboard/content/faq/_form.html.twig', [
+            'form' => $form,
+        ]);
     }
 }

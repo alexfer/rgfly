@@ -5,8 +5,6 @@ namespace App\Repository\MarketPlace;
 use App\Entity\MarketPlace\{StoreCustomer, StoreCustomerOrders};
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\{Connection, Exception};
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 

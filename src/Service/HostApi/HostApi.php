@@ -6,12 +6,12 @@ namespace App\Service\HostApi;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Component\DomCrawler\Crawler;
 
 class HostApi implements HostApiInterface
 {
@@ -27,7 +27,7 @@ class HostApi implements HostApiInterface
     public function __construct(
         private readonly HttpClientInterface $httpClient,
         private readonly LoggerInterface     $logger,
-        ParameterBagInterface $params
+        ParameterBagInterface                $params
     )
     {
         self::$apiUrl = $params->get("app.hostip.url");
@@ -64,7 +64,7 @@ class HostApi implements HostApiInterface
     {
         $response = $this->request($ipAddress);
 
-        if(!$response) {
+        if (!$response) {
             return null;
         }
 

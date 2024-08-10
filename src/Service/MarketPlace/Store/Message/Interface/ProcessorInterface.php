@@ -3,7 +3,6 @@
 namespace App\Service\MarketPlace\Store\Message\Interface;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 interface ProcessorInterface

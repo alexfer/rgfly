@@ -8,6 +8,7 @@ use App\Entity\MarketPlace\StoreCustomer;
 use App\Entity\MarketPlace\StoreMessage;
 use App\Entity\MarketPlace\StoreOrders;
 use App\Entity\MarketPlace\StoreProduct;
+use App\Entity\UserDetails;
 use App\Message\DeleteMessage;
 use App\Service\MarketPlace\Store\Message\Interface\ProcessorInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -41,7 +42,7 @@ class Processor implements ProcessorInterface
         private readonly EntityManagerInterface    $em,
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
         private readonly RouterInterface           $router,
-        private readonly MessageBusInterface        $bus,
+        private readonly MessageBusInterface       $bus,
     )
     {
 
@@ -217,9 +218,9 @@ class Processor implements ProcessorInterface
         $previous = $this->em->getRepository(StoreMessage::class)->find($this->payload['last']);
 
         $id = $this->payload['last'];
-        $recipient = $customer ? $this->customer($user)->getEmail(): $user->getEmail();
+        $recipientEmail = $customer ? $this->customer($user)->getEmail() : $user->getEmail();
 
-        $this->bus->dispatch(new DeleteMessage("{$recipient}:{$id}"));
+        $this->bus->dispatch(new DeleteMessage("{$recipientEmail}:{$id}"));
         $previous->setRead(true);
         $this->em->persist($previous);
         $this->em->flush();
@@ -241,6 +242,12 @@ class Processor implements ProcessorInterface
         $this->em->persist($answer);
         $this->em->flush();
 
+        $userDetails = $this->em->getRepository(UserDetails::class)->find($user);
+
+        $recipientName = $customer ?
+            sprintf("%s %s", $this->customer($user)->getFirstName(), $this->customer($user)->getLastName()) :
+            sprintf("%s %s", $userDetails->getFirstName(), $userDetails->getLastName());
+
         return [
             'id' => $answer->getId(),
             'store' => $answer->getStore()->getId(),
@@ -248,6 +255,7 @@ class Processor implements ProcessorInterface
             'createdAt' => $answer->getCreatedAt(),
             'parent' => $answer->getParent()->getId(),
             'identity' => $answer->getIdentity(),
+            'from' => $recipientName,
             'recipient' => $customer ? $previous->getOwner()->getEmail() : $previous->getCustomer()->getEmail(),
             'customer' => $answer->getCustomer(),
             'priority' => $answer->getPriority(),

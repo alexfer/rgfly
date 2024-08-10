@@ -6,9 +6,9 @@
 {% block title_content %}
     {{ _title_extend }}
     {% if app.request.get('id') %}
-{#        <a role="button" target="_blank"#}
-{#           class="text-sm font-normal border shadow-md hover:border-gray-400 hover:bg-gray-100 hover:shadow-lg rounded-md px-3 py-2 float-end mb-1 dark:text-white dark:hover:bg-black"#}
-{#           href="{{ path('app_blog_view', {slug: form.vars.data.slug}) }}">{{ 'user.entry.preview'|trans }}</a>#}
+        {#        <a role="button" target="_blank" #}
+        {#           class="text-sm font-normal border shadow-md hover:border-gray-400 hover:bg-gray-100 hover:shadow-lg rounded-md px-3 py-2 float-end mb-1 dark:text-white dark:hover:bg-black" #}
+        {#           href="{{ path('app_blog_view', {slug: form.vars.data.slug}) }}">{{ 'user.entry.preview'|trans }}</a> #}
     {% endif %}
 {% endblock %}
 {% block content %}
@@ -19,7 +19,8 @@
         </div>
     {% endif %}
     {% if error %}
-        <div class="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
+        <div class="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300"
+             role="alert">
             {{ error }}
         </div>
     {% endif %}

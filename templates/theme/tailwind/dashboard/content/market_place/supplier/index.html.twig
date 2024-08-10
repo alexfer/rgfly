@@ -9,7 +9,7 @@
         inject: true,
         name: 'store.supplier.create'|trans,
         path: path('app_dashboard_market_place_create_supplier', {store: store.id})
-        } %}
+    } %}
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-500 uppercase bg-info-50 dark:bg-gray-700 dark:text-gray-400">
@@ -38,15 +38,16 @@
                             <i class="fa fa-pencil text-indigo-600 dark:text-white"></i>
                         </a>
                         <a class="border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer {{ supplier.storeProductSuppliers.count ? 'pointer-events-none' : '' }}"
-                                data-token="{{ csrf_token('delete') }}"
-                                data-url="{{ url('app_dashboard_delete_supplier', {store: supplier.store.id, id: supplier.id}) }}">
+                           data-token="{{ csrf_token('delete') }}"
+                           data-url="{{ url('app_dashboard_delete_supplier', {store: supplier.store.id, id: supplier.id}) }}">
                             <i class="fa fa-{{ supplier.storeProductSuppliers.count ? 'ban' : 'trash' }} dark:text-white"></i>
                         </a>
                     </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="3" class="px-6 py-3 text-center text-gray-700 bg-gray-100 dark:bg-gray-500 dark:text-white">{{ 'table.footer.not_found'|trans }}</td>
+                    <td colspan="3"
+                        class="px-6 py-3 text-center text-gray-700 bg-gray-100 dark:bg-gray-500 dark:text-white">{{ 'table.footer.not_found'|trans }}</td>
                 </tr>
             {% endfor %}
             </tbody>
