@@ -50,13 +50,17 @@ class StoreController extends AbstractController
             $this->offset = self::LIMIT * ($page - 1);
         }
 
+        $pagination = [];
+
         $stores = $em->getRepository(Store::class)->backdrop_stores($user, $this->offset, self::LIMIT);
 
-        $pagination = $paginator->paginate(
-            $stores['result'],
-            $page,
-            self::LIMIT
-        );
+        if($stores['result']) {
+            $pagination = $paginator->paginate(
+                $stores['result'],
+                $page,
+                self::LIMIT
+            );
+        }
 
         return $this->render('dashboard/content/market_place/store/index.html.twig', [
             'stores' => $pagination,
