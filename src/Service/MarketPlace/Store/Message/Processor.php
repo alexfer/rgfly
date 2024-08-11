@@ -248,6 +248,17 @@ class Processor implements ProcessorInterface
             sprintf("%s %s", $this->customer($user)->getFirstName(), $this->customer($user)->getLastName()) :
             sprintf("%s %s", $userDetails->getFirstName(), $userDetails->getLastName());
 
+        $url = $this->router->generate('app_dashboard_market_place_message_conversation', [
+            'store' => $answer->getStore()->getId(),
+            'id' => $answer->getParent()->getId(),
+        ]);
+
+        if(!$customer) {
+            $url = $this->router->generate('app_cabinet_messages', [
+                'id' => $answer->getParent()->getId(),
+            ]);
+        }
+
         return [
             'id' => $answer->getId(),
             'store' => $answer->getStore()->getId(),
@@ -260,10 +271,7 @@ class Processor implements ProcessorInterface
             'customer' => $answer->getCustomer(),
             'priority' => $answer->getPriority(),
             'owner' => $answer->getOwner(),
-            'url' => $this->router->generate('app_dashboard_market_place_message_conversation', [
-                'store' => $answer->getStore()->getId(),
-                'id' => $answer->getParent()->getId(),
-            ])
+            'url' => $url,
         ];
     }
 }
