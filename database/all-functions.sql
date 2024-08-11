@@ -756,7 +756,7 @@ BEGIN
             'id', sm.id,
             'created', sm.created_at,
             'priority', INITCAP(sm.priority),
-            'answers', (SELECT COUNT(*) FROM store_message s WHERE s.parent_id = sm.id),
+            'answers', (SELECT COUNT(*) FROM store_message m WHERE m.parent_id = sm.id),
             'store', json_build_object(
                     'id', s.id,
                     'name', s.name,
@@ -980,7 +980,10 @@ BEGIN
                                             'name', s.name,
                                             'products',
                                             (SELECT COUNT(p.id) FROM store_product p WHERE p.store_id = s.id),
-                                            'owner', (SELECT u.email FROM "user" u WHERE u.id = s.owner_id),
+                                            'owner', (SELECT json_build_object(
+                                                                     'email', u.email, 
+                                                                     'roles', u.roles
+                                                             ) FROM "user" u WHERE u.id = s.owner_id),
                                             'created', s.created_at,
                                             'deleted', s.deleted_at
                                     ) AS store
@@ -1382,7 +1385,6 @@ BEGIN
             'answers', (SELECT COUNT(*) FROM store_message mc WHERE mc.parent_id = sm.id),
             'customer', json_build_object(
                     'id', sc.id,
-                    'phone', sc.phone,
                     'full_name', CONCAT_WS(' ', sc.first_name, sc.last_name)
                         ),
             'product', (CASE

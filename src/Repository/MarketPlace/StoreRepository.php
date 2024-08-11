@@ -168,6 +168,7 @@ class StoreRepository extends ServiceEntityRepository
 
     public function findStoreSummaryBySlug(string $slug): ?array
     {
+        return [];
     }
 
 }

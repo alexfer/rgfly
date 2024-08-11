@@ -34,7 +34,7 @@
                         </a>
                     </th>
                     {% if is_granted('ROLE_ADMIN') %}
-                        <td class="px-6 py-3">{{ store.owner }}</td>
+                        <td class="px-6 py-3">{{ store.owner.email }}</td>
                     {% endif %}
                     <td class="text-center px-6 py-3">{{ store.products }}</td>
                     <td class="text-center px-6 py-3">{{ store.created|date(date_format) }}</td>
@@ -53,12 +53,14 @@
                                class="border rounded pl-2 pr-1 py-1.5 mr-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
                                 <i class="fa fa-pencil text-indigo-600 dark:text-white"></i>
                             </a>
-                            <button
-                                    class="border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800"
-                                    data-token="{{ csrf_token('delete') }}"
-                                    data-url="{{ url('app_dashboard_delete_market', {id: store.id}) }}">
-                                <i class="fa fa-trash text-red-600 dark:text-white"></i>
-                            </button>
+                            {% if 'ROLE_ADMIN' not in store.owner.roles %}
+                                <button
+                                        class="border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800"
+                                        data-token="{{ csrf_token('delete') }}"
+                                        data-url="{{ url('app_dashboard_delete_market', {id: store.id}) }}">
+                                    <i class="fa fa-trash text-red-600 dark:text-white"></i>
+                                </button>
+                            {% endif %}
                         {% endif %}
                     </td>
                 </tr>

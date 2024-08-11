@@ -1,4 +1,5 @@
-CREATE OR REPLACE FUNCTION public.backdrop_fetch_stores(start integer DEFAULT 0, row_count integer DEFAULT 10)
+CREATE
+    OR REPLACE FUNCTION public.backdrop_fetch_stores(start integer DEFAULT 0, row_count integer DEFAULT 10)
     RETURNS json
     LANGUAGE plpgsql
 AS
@@ -11,7 +12,12 @@ BEGIN
                                             'name', s.name,
                                             'products',
                                             (SELECT COUNT(p.id) FROM store_product p WHERE p.store_id = s.id),
-                                            'owner', (SELECT u.email FROM "user" u WHERE u.id = s.owner_id),
+                                            'owner', (SELECT json_build_object(
+                                                                     'email', u.email,
+                                                                     'roles', u.roles
+                                                             )
+                                                      FROM "user" u
+                                                      WHERE u.id = s.owner_id),
                                             'created', s.created_at,
                                             'deleted', s.deleted_at
                                     ) AS store
@@ -23,7 +29,8 @@ BEGIN
 
     RETURN json_build_object(
             'result', results,
-            'rows', (SELECT COUNT(*) FROM store)
+            'rows', (SELECT COUNT(*)
+                     FROM store)
            );
 END;
 $function$
