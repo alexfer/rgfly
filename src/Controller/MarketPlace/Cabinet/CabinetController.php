@@ -2,6 +2,7 @@
 
 namespace App\Controller\MarketPlace\Cabinet;
 
+use FontLib\Table\Type\name;
 use App\Entity\MarketPlace\{StoreCustomer, StoreCustomerOrders, StoreMessage, StoreOrders, StoreWishlist};
 use App\Form\Type\MarketPlace\{AddressType, CustomerProfileType};
 use App\Message\MessageNotification;
@@ -16,7 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[Route('/cabinet')]
+#[Route(path: '/cabinet')]
 class CabinetController extends AbstractController
 {
 

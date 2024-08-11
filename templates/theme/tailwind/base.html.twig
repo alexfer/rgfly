@@ -48,6 +48,13 @@
     </footer>
 </div>
 {% include 'layouts/cart.html.twig' %}
+{% set routes = _route|split('_') %}
+{% if routes[1] == 'cabinet' %}
+    {% include 'market_place/notification.html.twig' with {
+        end: 'bottom',
+        start: 'start'
+    } %}
+{% endif %}
 {% block toast %}{% endblock %}
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}

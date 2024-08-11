@@ -77,7 +77,10 @@
         </div>
     </footer>
 </div>
-{% include 'market_place/notification.html.twig' %}
+{% include 'market_place/notification.html.twig' with {
+    end: 'bottom',
+    start: 'start'
+} %}
 {% block toast %}{% endblock %}
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
