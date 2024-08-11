@@ -16,5 +16,8 @@
                 {% include 'market_place/grid/main.html.twig' %}
             {% endfor %}
         </div>
+        {% if products|length == 0 %}
+            {% include 'pages/blank-grid.html.twig' %}
+        {% endif %}
     {% endblock %}
 {% endblock %}

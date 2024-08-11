@@ -51,6 +51,7 @@ class IndexController extends AbstractController
         $slug = $request->get('slug');
         $criteria = ['owner' => $user];
         $adminStore = null;
+        $products = $messages = $customers = $orders = [];
 
         if ($slug) {
             $criteria['slug'] = $slug;
@@ -75,24 +76,26 @@ class IndexController extends AbstractController
 
         $blogs = $em->getRepository(Entry::class)->findBy($criteriaEntries, ['id' => 'DESC'], self::$limit, self::$offset);
 
-        $products = $em->getRepository(StoreProduct::class)->findBy(['store' => $store], ['updated_at' => 'DESC'], self::$limit, self::$offset);
-        $orders = $em->getRepository(StoreOrders::class)->findBy(['store' => $store], ['id' => 'DESC'], self::$limit, self::$offset);
-        $messages = $em->getRepository(StoreMessage::class)->fetchAll($store, 'low', self::$offset, self::$limit);
+        if ($store) {
+            $products = $em->getRepository(StoreProduct::class)->findBy(['store' => $store], ['updated_at' => 'DESC'], self::$limit, self::$offset);
+            $orders = $em->getRepository(StoreOrders::class)->findBy(['store' => $store], ['id' => 'DESC'], self::$limit, self::$offset);
+            $messages = $em->getRepository(StoreMessage::class)->fetchAll($store, 'low', self::$offset, self::$limit);
 
-        $ids = array_map(function ($order) {
-            return $order->getId();
-        }, $orders);
+            $ids = array_map(function ($order) {
+                return $order->getId();
+            }, $orders);
 
-        $customers = $em->getRepository(StoreCustomerOrders::class)->customers($ids, self::$offset, self::$limit);
+            $customers = $em->getRepository(StoreCustomerOrders::class)->customers($ids, self::$offset, self::$limit);
+        }
 
         return $this->render('dashboard/content/index.html.twig', [
             'stores' => $stores,
             'store' => $store,
             'products' => $products,
             'orders' => $orders,
-            'messages' => $messages['data'],
+            'messages' => $messages ? $messages['data'] : $messages,
             'countries' => Countries::getNames(Locale::getDefault()),
-            'customers' => $customers['result'],
+            'customers' => $customers ? $customers['result'] : $customers,
             'blogs' => $blogs,
         ]);
     }
