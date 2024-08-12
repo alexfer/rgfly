@@ -10,6 +10,7 @@ use App\Entity\MarketPlace\StoreOrders;
 use App\Entity\MarketPlace\StoreProduct;
 use App\Entity\UserDetails;
 use App\Message\DeleteMessage;
+use App\Message\MessageNotification;
 use App\Service\MarketPlace\Store\Message\Interface\ProcessorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,6 +28,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class Processor implements ProcessorInterface
 {
 
+    /**
+     * @var array
+     */
     private array $payload;
 
     /**
@@ -35,6 +39,7 @@ class Processor implements ProcessorInterface
      * @param EntityManagerInterface $em
      * @param CsrfTokenManagerInterface $csrfTokenManager
      * @param RouterInterface $router
+     * @param MessageBusInterface $bus
      */
     public function __construct(
         private readonly TranslatorInterface       $translator,
@@ -75,18 +80,39 @@ class Processor implements ProcessorInterface
     /**
      * @param UserInterface|null $user
      * @return JsonResponse
+     * @throws ExceptionInterface
      */
     public function obtainAndResponse(?UserInterface $user): JsonResponse
     {
+        $customer = $this->customer($user);
         $message = $this->message();
         $message->setMessage($this->payload['message']);
         $message->setStore($this->store());
-        $message->setCustomer($this->customer($user));
+        $message->setCustomer($customer);
         $message->setProduct($this->product());
         $message->setOrders($this->order());
 
         $this->em->persist($message);
         $this->em->flush();
+
+        $url = $this->router->generate('app_dashboard_market_place_message_conversation', [
+            'store' => $message->getStore()->getId(),
+            'id' => $message->getId(),
+        ]);
+
+        $request = [
+            'id' => $message->getId(),
+            'message' => $message->getMessage(),
+            'createdAt' => $message->getCreatedAt(),
+            'identity' => $message->getIdentity(),
+            'from' => sprintf("%s %s", $customer->getFirstName(), $customer->getLastName()),
+            'recipient' => $message->getStore()->getOwner()->getEmail(),
+            'priority' => $message->getPriority(),
+            'url' => $url,
+        ];
+
+        $notify = json_encode($request);
+        $this->bus->dispatch(new MessageNotification($notify));
 
         return new JsonResponse([
             'success' => true,
@@ -207,7 +233,6 @@ class Processor implements ProcessorInterface
 
     /**
      * @param UserInterface|null $user
-     * @param MessageBusInterface|null $bus
      * @param bool $customer
      * @return array
      * @throws ExceptionInterface
@@ -253,7 +278,7 @@ class Processor implements ProcessorInterface
             'id' => $answer->getParent()->getId(),
         ]);
 
-        if(!$customer) {
+        if (!$customer) {
             $url = $this->router->generate('app_cabinet_messages', [
                 'id' => $answer->getParent()->getId(),
             ]);
