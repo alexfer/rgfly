@@ -2,8 +2,8 @@ import {Dismiss, initFlowbite} from "flowbite";
 
 initFlowbite();
 
-const toast = document.getElementById('toast-success');
-const toastClose = document.querySelector('[data-dismiss-target="#toast-success"]');
+let toast = document.getElementById('toast-success');
+let toastClose = document.querySelector('[data-dismiss-target="#toast-success"]');
 
 if (toast !== undefined) {
     const options = {
@@ -17,12 +17,20 @@ if (toast !== undefined) {
     };
     const dismiss = new Dismiss(toast, toastClose, options, instanceOptions);
 }
+let clipboardEmail, tooltipEmail, clipboardPhone, tooltipPhone = undefined;
 
-const clipboardEmail = FlowbiteInstances.getInstance('CopyClipboard', 'email');
-const tooltipEmail = FlowbiteInstances.getInstance('Tooltip', 'tooltip-copy-email');
-
-const clipboardPhone = FlowbiteInstances.getInstance('CopyClipboard', 'phone');
-const tooltipPhone = FlowbiteInstances.getInstance('Tooltip', 'tooltip-copy-phone');
+if (document.getElementById('email') !== null) {
+    clipboardEmail = FlowbiteInstances.getInstance('CopyClipboard', 'email');
+}
+if (document.getElementById('tooltip-copy-email') !== null) {
+    tooltipEmail = FlowbiteInstances.getInstance('Tooltip', 'tooltip-copy-email');
+}
+if (document.getElementById('phone') !== null) {
+    clipboardPhone = FlowbiteInstances.getInstance('CopyClipboard', 'phone');
+}
+if (document.getElementById('tooltip-copy-phone') !== null) {
+    tooltipPhone = FlowbiteInstances.getInstance('Tooltip', 'tooltip-copy-phone');
+}
 
 const defaultIconEmail = document.getElementById('default-icon-email');
 const successIconEmail = document.getElementById('success-icon-email');
