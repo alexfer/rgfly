@@ -18,7 +18,7 @@
     <link rel="manifest" href="{{ asset('site.webmanifest') }}">
 </head>
 <body class="dark:bg-gray-600">
-<div class="h-screen" id="key" data-hash="{{ app.user.email|base64encode }}">
+<div class="h-screen" id="key" data-email="{{ app.user.email }}" data-hash="{{ app.user.email|crypto|base64encode }}">
     {{ include('dashboard/sidebar.html.twig') }}
     <div class="sm:ml-64">
         <div class="flex w-full p-2 rounded-lg bg-gradient bg-gray-100 justify-between items-center dark:bg-gray-700">

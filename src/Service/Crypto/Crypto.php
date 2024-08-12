@@ -16,15 +16,12 @@ class Crypto implements CryptoInterface
      */
     private static ?string $encryptionKey = null;
 
-    private static ?string $encryptionIV = null;
-
     /**
      * @param ParameterBagInterface $params
      */
     public function __construct(private readonly ParameterBagInterface $params)
     {
-        self::$encryptionKey = base64_decode($this->getKey()['encryption_key']);
-        self::$encryptionIV = base64_decode($this->getKey()['encryption_iv']);
+        self::$encryptionKey = $this->getKey();
     }
 
     /**
@@ -33,34 +30,31 @@ class Crypto implements CryptoInterface
      */
     public function encrypt(string $data): string
     {
-        return openssl_encrypt($data, self::$ciphering, self::$encryptionKey, 0, self::$encryptionIV);
+        $length = openssl_cipher_iv_length(self::$ciphering);
+        $iv = openssl_random_pseudo_bytes($length);
+
+        $cipherText = openssl_encrypt($data, self::$ciphering, self::$encryptionKey, OPENSSL_RAW_DATA, $iv);
+        $ciphertextHex = bin2hex($cipherText);
+        $ivHex = bin2hex($iv);
+        return "$ivHex:$ciphertextHex";
     }
 
     /**
-     * @return array
+     * @return string
      */
-    private function getKey(): array
+    private function getKey(): string
     {
         $file = sprintf('%s/.encryptionKey', $this->params->get('kernel.project_dir'));
 
         if (!file_exists($file)) {
             throw new \RuntimeException('Encryption key not found');
         }
-        $encryptionKeys = file_get_contents($file);
+        $encryptionKey = file_get_contents($file);
 
-        if (empty($encryptionKeys)) {
+        if (empty($encryptionKey)) {
             throw new \RuntimeException('Encryption key not found');
         }
 
-        $encryptionKeys = explode("::", $encryptionKeys);
-
-        if (!is_array($encryptionKeys)) {
-            throw new \RuntimeException('Encryption keys not found');
-        }
-
-        return [
-            'encryption_key' => $encryptionKeys[0],
-            'encryption_iv' => $encryptionKeys[1],
-        ];
+        return $encryptionKey;
     }
 }
