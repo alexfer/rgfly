@@ -4,34 +4,29 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Controller\Trait\ControllerTrait;
 use App\Entity\Category;
 use App\Entity\Entry;
-use App\Entity\MarketPlace\Store;
-use App\Entity\MarketPlace\StoreCategory;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\MarketPlace\{Store, StoreCategory};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SiteMapController extends AbstractController
 {
+    use ControllerTrait;
+
     /**
-     * @param Request $request
-     * @param EntityManagerInterface $em
      * @return Response
      */
     #[Route('/sitemap.{format}', name: 'app_sitemap')]
-    public function index(
-        Request                $request,
-        EntityManagerInterface $em
-    ): Response
+    public function index(): Response
     {
-        $shops = $em->getRepository(Store::class)->findAll();
-        $categories = $em->getRepository(StoreCategory::class)->findAll();
-        $blogs = $em->getRepository(Entry::class)->findBy(['type' => Entry::TYPE['Blog']], ['updated_at' => 'DESC']);
-        $entryCategorise = $em->getRepository(Category::class)->findAll();
+        $shops = $this->em->getRepository(Store::class)->findAll();
+        $categories = $this->em->getRepository(StoreCategory::class)->findAll();
+        $blogs = $this->em->getRepository(Entry::class)->findBy(['type' => Entry::TYPE['Blog']], ['updated_at' => 'DESC']);
+        $entryCategorise = $this->em->getRepository(Category::class)->findAll();
         $urls = [];
 
         foreach ($entryCategorise as $category) {

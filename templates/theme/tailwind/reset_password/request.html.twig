@@ -4,7 +4,7 @@
 {% block class %}{% endblock %}
 
 {% block body %}
-    <div class="max-w-xl flex mx-auto bg-gray-50/40 rounded-xl shadow-xl my-8 lg:my-16 py-4 lg:py-8">
+    <div class="max-w-xl flex mx-auto bg-gray-50/40 rounded-xl shadow-xl my-8 lg:my-16 py-4 lg:py-8 dark:bg-gray-600">
         {{ form_start(requestForm, {attr: {class: 'w-full group', novalidate: ''}}) }}
         <h2 class="text-2xl py-4 ps-5 font-extrabold text-primary-700 dark:text-white">{{ 'text.reset_password'|trans }}</h2>
         {% for flash_error in app.flashes('reset_password_error') %}

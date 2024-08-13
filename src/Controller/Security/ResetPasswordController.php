@@ -2,11 +2,11 @@
 
 namespace App\Controller\Security;
 
+use App\Controller\Trait\ControllerTrait;
 use App\Entity\User;
 use App\Form\Type\User\ChangePasswordFormType;
 use App\Form\Type\User\ResetPasswordRequestFormType;
 use App\Service\Interface\EmailNotificationInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\{RedirectResponse, Request, Response,};
@@ -21,17 +21,13 @@ use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 class ResetPasswordController extends AbstractController
 {
 
-    use ResetPasswordControllerTrait;
+    use ResetPasswordControllerTrait,
+        ControllerTrait;
 
     /**
-     *
      * @param ResetPasswordHelperInterface $resetPasswordHelper
-     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(
-        private readonly ResetPasswordHelperInterface $resetPasswordHelper,
-        private readonly EntityManagerInterface       $entityManager
-    )
+    public function __construct(private readonly ResetPasswordHelperInterface $resetPasswordHelper)
     {
 
     }
@@ -133,16 +129,13 @@ class ResetPasswordController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // A password reset token should be used only once, remove it.
-            $this->resetPasswordHelper->removeResetRequest($token);
 
-            // Encode(hash) the plain password, and set it.
+            $this->resetPasswordHelper->removeResetRequest($token);
             $encodedPassword = $passwordHasher->hashPassword($user, $form->get('plainPassword')->getData());
 
             $user->setPassword($encodedPassword);
-            $this->entityManager->flush();
+            $this->em->flush();
 
-            // The session is cleaned up after the password has been changed.
             $this->cleanSessionAfterReset();
 
             return $this->redirectToRoute('app_login');

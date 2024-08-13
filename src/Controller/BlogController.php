@@ -2,8 +2,9 @@
 
 namespace App\Controller;
 
+use App\Controller\Trait\ControllerTrait;
 use App\Entity\{Category, Entry};
-use Doctrine\ORM\{EntityManagerInterface, NonUniqueResultException};
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
@@ -12,17 +13,18 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/blog')]
 class BlogController extends AbstractController
 {
+    use ControllerTrait;
+
     /**
-     * @param EntityManagerInterface $em
      * @return Response
      * @throws NonUniqueResultException
      */
     #[Route('', name: 'app_blog')]
-    public function index(EntityManagerInterface $em): Response
+    public function index(): Response
     {
-        $primary = $em->getRepository(Entry::class)->primary(Entry::TYPE['Blog']);
-        $timeline = $em->getRepository(Entry::class)->timeline('blog', 12);
-        $authors = $em->getRepository(Entry::class)->findEntriesByAuthors('blog', 4);
+        $primary = $this->em->getRepository(Entry::class)->primary(Entry::TYPE['Blog']);
+        $timeline = $this->em->getRepository(Entry::class)->timeline('blog');
+        $authors = $this->em->getRepository(Entry::class)->findEntriesByAuthors('blog', 4);
         shuffle($authors);
 
         return $this->render('blog/primary.html.twig', [
@@ -34,22 +36,18 @@ class BlogController extends AbstractController
 
     /**
      * @param Request $request
-     * @param EntityManagerInterface $em
      * @return Response
      * @throws \Exception
      */
     #[Route('/category', name: 'app_blog_category_index')]
     #[Route('/category/{slug}', name: 'app_blog_category')]
     #[Route('/date/{date}', name: 'app_blog_date')]
-    public function mixed(
-        Request                $request,
-        EntityManagerInterface $em,
-    ): Response
+    public function mixed(Request $request): Response
     {
         $slug = $request->get('slug');
         $date = $request->get('date');
-        $categoryRepository = $em->getRepository(Category::class);
-        $entries = $em->getRepository(Entry::class)->findEntriesByCondition($slug, $date, 'blog', 12);
+        $categoryRepository = $this->em->getRepository(Category::class);
+        $entries = $this->em->getRepository(Entry::class)->findEntriesByCondition($slug, $date, 'blog', 12);
         $category = $categoryRepository->findOneBy(['slug' => $slug]);
         $categories = $categoryRepository->findBy([], ['slug' => 'asc']);
 
@@ -62,18 +60,16 @@ class BlogController extends AbstractController
 
     /**
      * @param Request $request
-     * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
      * @return Response
      */
     #[Route('/{slug}', name: 'app_blog_view')]
     public function view(
-        Request                $request,
-        EntityManagerInterface $em,
-        TranslatorInterface    $translator,
+        Request             $request,
+        TranslatorInterface $translator,
     ): Response
     {
-        $entry = $em->getRepository(Entry::class)->findOneBy(['slug' => $request->get('slug')]);
+        $entry = $this->em->getRepository(Entry::class)->findOneBy(['slug' => $request->get('slug')]);
 
         if (is_null($entry)) {
             throw $this->createNotFoundException($translator->trans('http_error_404.description'));

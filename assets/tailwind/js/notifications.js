@@ -44,6 +44,7 @@ if (key !== null || push !== null) {
                                 created.innerText = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
                                 url.href = data.notify.url;
                                 push.classList.remove('sr-only');
+                                push.classList.add('animate__animated', 'animate__bounceInUp', 'animate__delay-2s');
                             }
                         }
                     };
