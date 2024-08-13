@@ -29,7 +29,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     #[ORM\Column]
-    private array $roles = [self::ROLE_USER];
+    private array $roles = [self::ROLE_USER, self::ROLE_ADMIN, self::ROLE_CUSTOMER];
 
     #[ORM\Column]
     private ?string $password = null;
@@ -52,13 +52,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Attach $attach = null;
 
-    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Store::class)]
+    #[ORM\OneToMany(targetEntity: Store::class, mappedBy: 'owner')]
     private Collection $stores;
 
     /**
      * @var Collection<int, StoreMessage>
      */
-    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: StoreMessage::class)]
+    #[ORM\OneToMany(targetEntity: StoreMessage::class, mappedBy: 'owner')]
     private Collection $storeMessages;
 
     final public const string ROLE_USER = 'ROLE_USER';
@@ -135,7 +135,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
+        // guarantee every user at least has ROLE_CUSTOMER
         $roles[] = self::ROLE_CUSTOMER;
 
         return array_unique($roles);
@@ -143,11 +143,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @param string $role
-     * @return array
+     * @return bool
      */
-    public function hasRole(string $role): array
+    public function hasRole(string $role): bool
     {
-        return $this->roles[$role];
+        return in_array($role, $this->roles);
     }
 
     /**

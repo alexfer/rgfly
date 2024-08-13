@@ -2,24 +2,23 @@
 
 namespace App\Controller;
 
+use App\Controller\Trait\ControllerTrait;
 use App\Entity\Faq;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class FaqController extends AbstractController
 {
+    use ControllerTrait;
 
     /**
-     *
-     * @param EntityManagerInterface $em
      * @return Response
      */
     #[Route('/faq', name: 'faq')]
-    public function index(EntityManagerInterface $em): Response
+    public function index(): Response
     {
-        $entries = $em->getRepository(Faq::class)->findBy([
+        $entries = $this->em->getRepository(Faq::class)->findBy([
             'deleted_at' => null,
             'visible' => true,
         ], [

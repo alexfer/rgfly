@@ -23,7 +23,7 @@
                             </caption>
                             <tbody id="bulk-item">
                             {% for message in messages %}
-                                <tr class="bg-white border-b text-gray-500 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <tr class="{{ message.read ? 'bg-green-200': 'bg-white' }} border-b text-gray-500 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <th scope="row" class="p-3 truncate mx-w-16">
                                         {% if message.product is not null %}
                                             <a class="font-semibold hover:text-gray-700 dark:hover:text-white"
@@ -55,7 +55,7 @@
                                         {{ message.created|date(date_format) }}
                                     </td>
                                     <td class="p-3 text-gray-500">
-                                        {{ message.priority }}
+                                        <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">{{ message.priority }}</span>
                                     </td>
                                     <td class="p-3 text-center">
                                         {{ message.answers }}
