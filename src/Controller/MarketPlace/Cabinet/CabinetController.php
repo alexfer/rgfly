@@ -2,58 +2,52 @@
 
 namespace App\Controller\MarketPlace\Cabinet;
 
-use FontLib\Table\Type\name;
+use App\Controller\Trait\ControllerTrait;
+use App\Entity\User;
 use App\Entity\MarketPlace\{StoreCustomer, StoreCustomerOrders, StoreMessage, StoreOrders, StoreWishlist};
 use App\Form\Type\MarketPlace\{AddressType, CustomerProfileType};
 use App\Message\MessageNotification;
 use App\Service\MarketPlace\Store\Message\Interface\ProcessorInterface;
-use Doctrine\DBAL\Exception;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route(path: '/cabinet')]
 class CabinetController extends AbstractController
 {
 
+    use ControllerTrait;
+
     /**
-     * @param UserInterface $user
-     * @param EntityManagerInterface $em
      * @return StoreCustomer
      */
-    private function customer(
-        UserInterface          $user,
-        EntityManagerInterface $em,
-    ): StoreCustomer
+    private function customer(): StoreCustomer
     {
-        return $em->getRepository(StoreCustomer::class)->findOneBy([
+        $user = $this->em->getRepository(User::class)->find($this->getUser());
+
+        if (!$user->hasRole('ROLE_CUSTOMER')) {
+            return throw $this->createAccessDeniedException();
+        }
+
+        return $this->em->getRepository(StoreCustomer::class)->findOneBy([
             'member' => $user,
         ]);
     }
 
     /**
      * @param Request $request
-     * @param UserInterface $user
-     * @param EntityManagerInterface $em
      * @return Response
-     * @throws Exception
      */
     #[Route('', name: 'app_cabinet', methods: ['GET'])]
-    public function index(
-        Request                $request,
-        UserInterface          $user,
-        EntityManagerInterface $em,
-    ): Response
+    public function index(Request $request): Response
     {
         $offset = $request->query->getInt('offset', 0);
         $limit = $request->query->getInt('limit', 25);
-        $customer = $this->customer($user, $em);
-        $result = $em->getRepository(StoreCustomerOrders::class)->getCustomerOrders($customer->getId(), $offset, $limit);
+        $customer = $this->customer();
+        $result = $this->em->getRepository(StoreCustomerOrders::class)->getCustomerOrders($customer->getId(), $offset, $limit);
         //dd($result['orders']);
 
 //        $summary = $fee = $products = [];
@@ -77,30 +71,26 @@ class CabinetController extends AbstractController
 
     /**
      * @param Request $request
-     * @param UserInterface $user
-     * @param EntityManagerInterface $em
      * @param ProcessorInterface $processor
      * @param MessageBusInterface $bus
      * @return Response
-     * @throws Exception
      * @throws ExceptionInterface
      */
     #[Route('/messages/{id}', name: 'app_cabinet_messages', defaults: ['id' => null], methods: ['GET', 'POST'])]
     public function messages(
-        Request                $request,
-        UserInterface          $user,
-        EntityManagerInterface $em,
-        ProcessorInterface     $processor,
-        MessageBusInterface    $bus,
+        Request             $request,
+        ProcessorInterface  $processor,
+        MessageBusInterface $bus,
     ): Response
     {
         $id = $request->get('id');
-        $repository = $em->getRepository(StoreMessage::class);
+        $repository = $this->em->getRepository(StoreMessage::class);
+        $customer = $this->customer();
 
         if ($request->isMethod('POST')) {
             $payload = $request->getPayload()->all();
             $processor->process($payload, null, null, false);
-            $answer = $processor->answer($user, true);
+            $answer = $processor->answer($this->getUser(), true);
             $notify = json_encode($answer);
             $bus->dispatch(new MessageNotification($notify));
             unset($answer['recipient']);
@@ -112,8 +102,6 @@ class CabinetController extends AbstractController
                 ])
             ], Response::HTTP_CREATED);
         }
-
-        $customer = $this->customer($user, $em);
 
         if ($id) {
             $message = $repository->findOneBy(['customer' => $customer, 'id' => $id]);
@@ -135,16 +123,16 @@ class CabinetController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     #[Route('/search-order', name: 'app_cabinet_search_order', methods: ['POST'])]
-    public function searchOrders(
-        Request                $request,
-        UserInterface          $user,
-        EntityManagerInterface $em,
-    ): JsonResponse
+    public function searchOrders(Request $request): JsonResponse
     {
         $query = $request->getPayload()->get('query');
-        $customer = $this->customer($user, $em);
-        $order = $em->getRepository(StoreOrders::class)->singleFetch($query, $customer);
+        $customer = $this->customer();
+        $order = $this->em->getRepository(StoreOrders::class)->singleFetch($query, $customer);
 
         return $this->json([
             'query' => $query,
@@ -154,20 +142,16 @@ class CabinetController extends AbstractController
 
     /**
      * @param Request $request
-     * @param UserInterface $user
-     * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
      * @return Response
      */
     #[Route('/personal-information', name: 'app_cabinet_personal_information', methods: ['GET', 'POST'])]
     public function personalInformation(
-        Request                $request,
-        UserInterface          $user,
-        EntityManagerInterface $em,
-        TranslatorInterface    $translator,
+        Request             $request,
+        TranslatorInterface $translator,
     ): Response
     {
-        $customer = $this->customer($user, $em);
+        $customer = $this->customer();
         $form = $this->createForm(CustomerProfileType::class, $customer);
         $form->handleRequest($request);
 
@@ -180,8 +164,8 @@ class CabinetController extends AbstractController
                 ->setCountry($form->get('country')->getData())
                 ->setUpdatedAt(new \DateTimeImmutable());
 
-            $em->persist($customer);
-            $em->flush();
+            $this->em->persist($customer);
+            $this->em->flush();
 
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.profile.updated')]));
             return $this->redirectToRoute('app_cabinet_personal_information');
@@ -195,21 +179,14 @@ class CabinetController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param UserInterface $user
-     * @param EntityManagerInterface $em
      * @return Response
      */
     #[Route('/wishlist', name: 'app_cabinet_wishlist', methods: ['GET'])]
-    public function wishlist(
-        Request                $request,
-        UserInterface          $user,
-        EntityManagerInterface $em,
-    ): Response
+    public function wishlist(): Response
     {
-        $customer = $this->customer($user, $em);
+        $customer = $this->customer();
 
-        $wishlist = $em->getRepository(StoreWishlist::class)->findBy([
+        $wishlist = $this->em->getRepository(StoreWishlist::class)->findBy([
             'customer' => $customer,
         ], ['created_at' => 'desc']);
 
@@ -221,27 +198,21 @@ class CabinetController extends AbstractController
 
     /**
      * @param Request $request
-     * @param UserInterface $user
-     * @param EntityManagerInterface $em
      * @return Response
      */
     #[Route('/wishlist/bulk-delete', name: 'app_cabinet_wishlist_bulk_delete', methods: ['POST'])]
-    public function wishlistBulkDelete(
-        Request                $request,
-        UserInterface          $user,
-        EntityManagerInterface $em,
-    ): Response
+    public function wishlistBulkDelete(Request $request): Response
     {
-        $customer = $this->customer($user, $em);
+        $customer = $this->customer();
         $parameters = json_decode($request->getContent(), true);
         $items = $parameters['items'];
 
         foreach ($parameters['items'] as $key => $item) {
-            $wishlist = $em->getRepository(StoreWishlist::class)
+            $wishlist = $this->em->getRepository(StoreWishlist::class)
                 ->findOneBy(['customer' => $customer, 'id' => $item]);
-            $em->remove($wishlist);
+            $this->em->remove($wishlist);
         }
-        $em->flush();
+        $this->em->flush();
 
         $response = new Response();
         $response->setStatusCode(Response::HTTP_NO_CONTENT);
@@ -251,20 +222,16 @@ class CabinetController extends AbstractController
 
     /**
      * @param Request $request
-     * @param UserInterface $user
-     * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
      * @return Response
      */
     #[Route('/address', name: 'app_cabinet_address', methods: ['GET', 'POST'])]
     public function address(
-        Request                $request,
-        UserInterface          $user,
-        EntityManagerInterface $em,
-        TranslatorInterface    $translator,
+        Request             $request,
+        TranslatorInterface $translator,
     ): Response
     {
-        $customer = $this->customer($user, $em);
+        $customer = $this->customer();
         $address = $customer->getStoreAddress();
         $form = $this->createForm(AddressType::class, $address);
         $form->handleRequest($request);
@@ -279,8 +246,8 @@ class CabinetController extends AbstractController
                 ->setPostal($form->get('postal')->getData())
                 ->setUpdatedAt(new \DateTimeImmutable());
 
-            $em->persist($address);
-            $em->flush();
+            $this->em->persist($address);
+            $this->em->flush();
 
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.address.updated')]));
             return $this->redirectToRoute('app_cabinet_address');
