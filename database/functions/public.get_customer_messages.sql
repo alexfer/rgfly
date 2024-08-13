@@ -12,6 +12,7 @@ BEGIN
             'id', sm.id,
             'created', sm.created_at,
             'priority', INITCAP(sm.priority),
+            'read', (SELECT sm2.read FROM store_message sm2 WHERE sm2.owner_id IS NULL ORDER BY sm2.id DESC LIMIT 1),
             'answers', (SELECT COUNT(*) FROM store_message m WHERE m.parent_id = sm.id),
             'store', json_build_object(
                     'id', s.id,

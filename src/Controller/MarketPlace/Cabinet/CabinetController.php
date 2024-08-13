@@ -41,6 +41,7 @@ class CabinetController extends AbstractController
      * @param UserInterface $user
      * @param EntityManagerInterface $em
      * @return Response
+     * @throws Exception
      */
     #[Route('', name: 'app_cabinet', methods: ['GET'])]
     public function index(
@@ -106,6 +107,7 @@ class CabinetController extends AbstractController
 
             return $this->json([
                 'template' => $this->renderView('market_place/cabinet/message/answers.html.twig', [
+                    'animated' => true,
                     'row' => $answer,
                 ])
             ], Response::HTTP_CREATED);
@@ -120,6 +122,7 @@ class CabinetController extends AbstractController
             return $this->render('market_place/cabinet/message/conversation.html.twig', [
                 'customer' => $customer,
                 'message' => $message,
+                'animated' => false,
                 'conversation' => $conversation,
             ]);
         }

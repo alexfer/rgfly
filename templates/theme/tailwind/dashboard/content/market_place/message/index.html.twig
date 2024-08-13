@@ -19,7 +19,7 @@
             </thead>
             <tbody>
             {% for message in messages %}
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <tr class="{{ message.read ? 'bg-green-200': 'bg-white' }} border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <th scope="row"
                         class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap max-w-xs xs:max-w-xl md:max-w-sm lg:max-w-xs truncate dark:text-white">
                         {% if message.product is not null %}
@@ -53,7 +53,10 @@
                     <td class="text-center px-6 py-3">
                         {{ message.created|date(datetime_format) }}
                     </td>
-                    <td class="text-center px-6 py-3">{{ message.priority }}</td>
+                    <td class="text-center px-6 py-3">
+                        {% set priority = {low: 'green', medium: 'yellow', high: 'red'} %}
+                        <span class="text-center w-16 bg-{{ priority[message.priority] }}-100 text-{{ priority[message.priority] }}-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-{{ priority[message.priority] }}-900 dark:text-{{ priority[message.priority] }}-300 capitalize">{{ message.priority }}</span>
+                    </td>
                     <td class="text-center px-6 py-3">
                         <a role="button"
                            href="{{ path('app_dashboard_market_place_message_conversation', {store: message.store, id: message.id}) }}"

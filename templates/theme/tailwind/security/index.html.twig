@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ 'text.login'|trans }}{% endblock %}
-{% block class %}{% endblock %}
+{% block class %}rounded-lg shadow-4{% endblock %}
 {% block body %}
-    <div class="max-w-xl flex mx-auto bg-gray-50/40 rounded-xl shadow-xl my-8 lg:my-16 py-4 lg:py-8">
+    <div class="max-w-xl flex mx-auto bg-gray-50/40 rounded-xl shadow-xl my-8 lg:my-16 py-4 lg:py-8 dark:bg-gray-600">
         {{ include('security/_form.html.twig') }}
     </div>
 {% endblock %}
