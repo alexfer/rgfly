@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    <div class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+    <div class="relative flex flex-1 flex-col">
         <h2 class="text-xl md:text-2xl pl-2 text-red-400 font-semibold mb-2 dark:bg-gray-600">{% block title_content %}{{ 'text.dashboard'|trans }}{% endblock %}</h2>
         {% block content %}
             {% include 'dashboard/content/index.html.twig' %}
