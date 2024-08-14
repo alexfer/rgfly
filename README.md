@@ -8,7 +8,7 @@ RgFly E-commerce solution.
 
 ### Requirements:
 - [Nginx HTTP Server `1.26.0`](http://nginx.org/en/CHANGES-1.24)
-- [PHP `>=8.2`](https://www.php.net/releases/8.3/en.php)
+- [PHP `>=8.3`](https://www.php.net/releases/8.3/en.php)
 - [PostgreSQL `16.*`](https://www.postgresql.org/)
 - [Symfony `7.1.*`](https://symfony.com/releases/7.1)
 - [Redis `7.*`](https://redis.io/downloads/)

@@ -280,9 +280,9 @@ class CouponController extends AbstractController
 
         if ($this->isCsrfTokenValid('delete', $token)) {
 
-            $code = $em->getRepository(StoreCouponCode::class)->find($coupon->getId());
+            $codes = $em->getRepository(StoreCouponCode::class)->findBy(['coupon' => $coupon]);
 
-            if ($code) {
+            foreach ($codes as $code) {
                 $em->remove($code);
             }
 
@@ -290,6 +290,10 @@ class CouponController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('app_dashboard_market_place_market_brand', ['store' => $store->getId()]);
+        return $this->json([
+            'redirect' => $this->generateUrl('app_dashboard_market_place_product_coupon', [
+                'store' => $store->getId()
+            ])
+        ], Response::HTTP_OK);
     }
 }

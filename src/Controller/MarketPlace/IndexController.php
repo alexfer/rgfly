@@ -1,35 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\MarketPlace;
 
-use App\Entity\MarketPlace\{StoreCustomer, StoreProduct};
+use App\Controller\Trait\ControllerTrait;
+use App\Entity\MarketPlace\StoreProduct;
 use Doctrine\DBAL\Exception;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route('/market-place')]
 class IndexController extends AbstractController
 {
+    use ControllerTrait;
+
     /**
-     * @param UserInterface|null $user
-     * @param EntityManagerInterface $em
      * @return Response
-     * @throws Exception
      */
     #[Route('', name: 'app_market_place_index')]
-    public function index(
-        ?UserInterface         $user,
-        EntityManagerInterface $em,
-    ): Response
+    public function index(): Response
     {
-        $products = $em->getRepository(StoreProduct::class)->randomProducts(9);
+        $products = $this->em->getRepository(StoreProduct::class)->randomProducts(9);
 
-        $customer = $em->getRepository(StoreCustomer::class)->findOneBy([
-            'member' => $user,
-        ]);
+        $customer = $this->getCustomer($this->getUser());
 
         return $this->render('market_place/index.html.twig', [
             'products' => $products['data'],

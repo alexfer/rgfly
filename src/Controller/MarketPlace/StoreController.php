@@ -1,27 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\MarketPlace;
 
-use App\Entity\MarketPlace\{Store, StoreCustomer};
-use Doctrine\DBAL\Exception;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Controller\Trait\ControllerTrait;
+use App\Entity\MarketPlace\Store;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route('/market-place/store')]
 class StoreController extends AbstractController
 {
+    use ControllerTrait;
+
+
     /**
-     * @param EntityManagerInterface $em
      * @return Response
-     * @throws Exception
      */
     #[Route('', name: 'app_market_place_stores')]
-    public function index(EntityManagerInterface $em): Response
+    public function index(): Response
     {
-        $random = $em->getRepository(Store::class)->random();
+        $random = $this->em->getRepository(Store::class)->random();
 
         return $this->render('market_place/store/index.html.twig', [
             'store' => $random['store'],
@@ -31,25 +32,16 @@ class StoreController extends AbstractController
 
     /**
      * @param Request $request
-     * @param UserInterface|null $user
-     * @param EntityManagerInterface $em
      * @return Response
-     * @throws Exception
      */
     #[Route('/{slug}', name: 'app_market_place_market')]
-    public function market(
-        Request                $request,
-        ?UserInterface         $user,
-        EntityManagerInterface $em,
-    ): Response
+    public function market(Request $request): Response
     {
-        $customer = $em->getRepository(StoreCustomer::class)->findOneBy([
-            'member' => $user,
-        ]);
+        $customer = $this->getCustomer($this->getUser());
 
         $offset = $request->query->getInt('offset', 0);
         $limit = $request->query->getInt('limit', 10);
-        $store = $em->getRepository(Store::class)->fetch($request->get('slug'), $customer, $offset, $limit);
+        $store = $this->em->getRepository(Store::class)->fetch($request->get('slug'), $customer, $offset, $limit);
 
         if ($store['result'] === null) {
             throw $this->createNotFoundException();

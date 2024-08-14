@@ -53,16 +53,19 @@ class HostApi implements HostApiInterface
         return $request->getContent();
     }
 
+
     /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ClientExceptionInterface
-     * @throws \Exception
+     * @param string $ipAddress
+     * @return array|null
      */
     public function determine(string $ipAddress): ?array
     {
-        $response = $this->request($ipAddress);
+        try {
+            $response = $this->request($ipAddress);
+        } catch (ClientExceptionInterface|RedirectionExceptionInterface|ServerExceptionInterface|TransportExceptionInterface $e) {
+            $this->logger->error($e->getMessage());
+            return null;
+        }
 
         if (!$response) {
             return null;

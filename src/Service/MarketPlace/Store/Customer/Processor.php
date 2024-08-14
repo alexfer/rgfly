@@ -87,6 +87,21 @@ readonly class Processor implements ProcessorInterface
         $this->updateOrder();
     }
 
+    public function updateAddress(StoreAddress $address, FormInterface $form): void
+    {
+        $address->setLine1($form->get('line1')->getData())
+            ->setLine2($form->get('line2')->getData())
+            ->setCity($form->get('city')->getData())
+            ->setCountry($form->get('address_country')->getData())
+            ->setRegion($form->get('region')->getData())
+            ->setPhone($form->get('phone')->getData())
+            ->setPostal($form->get('postal')->getData())
+            ->setUpdatedAt(new \DateTimeImmutable());
+
+        $this->em->persist($address);
+        $this->em->flush();
+    }
+
     /**
      * @param StoreAddress $address
      * @param StoreCustomer|null $customer
@@ -102,6 +117,7 @@ readonly class Processor implements ProcessorInterface
             ->setPostal($this->args['postal'])
             ->setPhone($this->args['phone'])
             ->setRegion($this->args['region']);
+
         if ($customer) {
             $address->setUpdatedAt(new \DateTime());
         }
@@ -122,9 +138,10 @@ readonly class Processor implements ProcessorInterface
     /**
      * @param StoreCustomer $customer
      * @param mixed $formData
+     * @param bool $address
      * @return void
      */
-    public function updateCustomer(StoreCustomer $customer, mixed $formData): void
+    public function updateCustomer(StoreCustomer $customer, mixed $formData, bool $address = true): void
     {
         $customer->setFirstName($formData->getFirstName())
             ->setLastName($formData->getLastName())
@@ -134,7 +151,10 @@ readonly class Processor implements ProcessorInterface
             ->setUpdatedAt(new \DateTime());
 
         $this->em->persist($customer);
-        $this->postUpdateAddress($customer->getStoreAddress(), $customer);
+
+        if ($address) {
+            $this->postUpdateAddress($customer->getStoreAddress(), $customer);
+        }
     }
 
     public function __destruct()

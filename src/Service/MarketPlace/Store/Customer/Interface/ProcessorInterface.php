@@ -2,7 +2,7 @@
 
 namespace App\Service\MarketPlace\Store\Customer\Interface;
 
-use App\Entity\MarketPlace\{StoreCustomer, StoreOrders};
+use App\Entity\MarketPlace\{StoreAddress, StoreCustomer, StoreOrders};
 use App\Entity\User;
 use Symfony\Component\Form\FormInterface;
 
@@ -31,13 +31,21 @@ interface ProcessorInterface
     /**
      * @param StoreCustomer $customer
      * @param mixed $formData
+     * @param bool $address
      * @return void
      */
-    public function updateCustomer(StoreCustomer $customer, mixed $formData): void;
+    public function updateCustomer(StoreCustomer $customer, mixed $formData, bool $address = true): void;
 
     /**
      * @param FormInterface $form
      * @return self
      */
     public function bind(FormInterface $form): self;
+
+    /**
+     * @param StoreAddress $address
+     * @param FormInterface $form
+     * @return void
+     */
+    public function updateAddress(StoreAddress $address, FormInterface $form): void;
 }
