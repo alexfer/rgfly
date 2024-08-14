@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\MarketPlace;
 
 use App\Entity\MarketPlace\StoreInvoice;
@@ -13,7 +15,6 @@ use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -24,7 +25,6 @@ class CheckoutController extends AbstractController
 
     /**
      * @param Request $request
-     * @param UserInterface|null $user
      * @param TranslatorInterface $translator
      * @param UserManagerInterface $userManager
      * @param Checkout $checkout
@@ -37,7 +37,6 @@ class CheckoutController extends AbstractController
     #[Route('/confirm/{order}/{tab}', name: 'app_market_place_order_checkout', methods: ['GET', 'POST'])]
     public function checkout(
         Request              $request,
-        ?UserInterface       $user,
         TranslatorInterface  $translator,
         UserManagerInterface $userManager,
         Checkout             $checkout,
@@ -47,6 +46,7 @@ class CheckoutController extends AbstractController
     {
         $session = $request->getSession();
         $hasUsed = false;
+        $user = $this->getUser();
 
         $customer = $userManager->get($user);
         $form = $this->createForm(CustomerType::class, $customer);

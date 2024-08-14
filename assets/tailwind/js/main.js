@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
 import i18next from "i18next";
 import './utils';
+import customCss from "./customCss";
 
 document.addEventListener('DOMContentLoaded', () => {
     const formData = new FormData();
@@ -212,6 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     text: i18next.t('question'),
                     showCancelButton: true,
                     showConfirmButton: true,
+                    customClass: customCss,
                     confirmButtonText: i18next.t('proceed'),
                     denyButtonText: i18next.t('cancel'),
                     icon: "question"
@@ -223,7 +225,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                 headers: headers
                             }
                         );
-                        window.location.reload();
+                        const data = await response.json();
+                        document.location.href = data.redirect;
                     }
                 });
             });
