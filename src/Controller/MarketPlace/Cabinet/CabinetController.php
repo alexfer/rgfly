@@ -1,12 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\MarketPlace\Cabinet;
 
 use App\Controller\Trait\ControllerTrait;
-use App\Entity\User;
 use App\Entity\MarketPlace\{StoreCustomer, StoreCustomerOrders, StoreMessage, StoreOrders, StoreWishlist};
+use App\Entity\User;
 use App\Form\Type\MarketPlace\{AddressType, CustomerProfileType};
 use App\Message\MessageNotification;
+use App\Service\MarketPlace\Store\Customer\Interface\ProcessorInterface as CustomerInterface;
 use App\Service\MarketPlace\Store\Message\Interface\ProcessorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
@@ -48,24 +51,11 @@ class CabinetController extends AbstractController
         $limit = $request->query->getInt('limit', 25);
         $customer = $this->customer();
         $result = $this->em->getRepository(StoreCustomerOrders::class)->getCustomerOrders($customer->getId(), $offset, $limit);
-        //dd($result['orders']);
-
-//        $summary = $fee = $products = [];
-//        foreach ($orders as $order) {
-//            foreach ($order->getOrders()->getStoreOrdersProducts() as $item) {
-//                $products[$order->getId()][] = $item->getCost() - ((($item->getCost() * $item->getQuantity()) * $item->getDiscount()) - $item->getDiscount()) / 100;
-//                $fee[$order->getId()][] = $item->getProduct()->getFee();
-//            }
-//            $summary[$order->getOrders()->getId()] = [
-//                'total' => array_sum($products[$order->getId()]) + array_sum($fee[$order->getId()]),
-//            ];
-//        }
 
         return $this->render('market_place/cabinet/orders.html.twig', [
             'customer' => $customer,
             'orders' => $result['orders'],
             'rows' => $result['rows_count'],
-            //'summary' => $summary,
         ]);
     }
 
@@ -149,6 +139,7 @@ class CabinetController extends AbstractController
     public function personalInformation(
         Request             $request,
         TranslatorInterface $translator,
+        CustomerInterface   $processor,
     ): Response
     {
         $customer = $this->customer();
@@ -157,14 +148,7 @@ class CabinetController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $customer->setFirstName($form->get('first_name')->getData())
-                ->setLastName($form->get('last_name')->getData())
-                ->setEmail($form->get('email')->getData())
-                ->setPhone($form->get('phone')->getData())
-                ->setCountry($form->get('country')->getData())
-                ->setUpdatedAt(new \DateTimeImmutable());
-
-            $this->em->persist($customer);
+            $processor->updateCustomer($customer, $form->getData(), false);
             $this->em->flush();
 
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.profile.updated')]));
@@ -229,6 +213,7 @@ class CabinetController extends AbstractController
     public function address(
         Request             $request,
         TranslatorInterface $translator,
+        CustomerInterface   $processor,
     ): Response
     {
         $customer = $this->customer();
@@ -237,17 +222,7 @@ class CabinetController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $address->setLine1($form->get('line1')->getData())
-                ->setLine2($form->get('line2')->getData())
-                ->setCity($form->get('city')->getData())
-                ->setCountry($form->get('country')->getData())
-                ->setRegion($form->get('region')->getData())
-                ->setPhone($form->get('phone')->getData())
-                ->setPostal($form->get('postal')->getData())
-                ->setUpdatedAt(new \DateTimeImmutable());
-
-            $this->em->persist($address);
-            $this->em->flush();
+            $processor->updateAddress($address, $form);
 
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.address.updated')]));
             return $this->redirectToRoute('app_cabinet_address');

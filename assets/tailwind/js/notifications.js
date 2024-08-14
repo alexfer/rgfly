@@ -7,16 +7,16 @@ const push = document.getElementById('push-notification');
 
 if (key !== null || push !== null) {
     if(key.dataset.hash) {
-        const socket = new WebSocket("ws://localhost:8443");
+        const client = new WebSocket("ws://localhost:8443");
         const persist = () => {
-            socket.onopen = (event) => {
-                sendMessage(socket, key.dataset.hash);
+            client.onopen = () => {
+                sendMessage(client, key.dataset.hash);
                 interval = setInterval(() => {
-                    sendMessage(socket, key.dataset.hash);
-                    socket.onmessage = (event) => {
+                    sendMessage(client, key.dataset.hash);
+                    client.onmessage = (event) => {
                         const data = JSON.parse(event.data);
 
-                        if (data.hash === key.dataset.email || data.hash === push.dataset.email) {
+                        if (push !== null && (data.hash === key.dataset.email || data.hash === push.dataset.email)) {
                             const keys = Object.keys(data.notify);
 
                             if (notify !== null) {
@@ -33,12 +33,12 @@ if (key !== null || push !== null) {
                             const from = document.getElementById('push-notification-from');
                             const url = document.getElementById('push-notification-url');
 
-                            if (keys.length === 0 && push !== null) {
+                            if (keys.length === 0) {
                                 push.classList.add('sr-only');
                             }
 
-                            if (keys.length > 0 && push !== null) {
-                                body.innerText = data.notify.message.length > 50 ? data.notify.message.substr(0, 50) + '...' : data.notify.message;
+                            if (keys.length > 0) {
+                                body.innerText = data.notify.message.length > 25 ? data.notify.message.substr(0, 25) + '...' : data.notify.message;
                                 from.innerText = data.notify.from;
                                 const date = new Date(data.notify.createdAt.date);
                                 created.innerText = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
@@ -51,7 +51,7 @@ if (key !== null || push !== null) {
                 }, refreshInterval);
             };
         }
-        socket.onclose = function (event) {
+        client.onclose = function () {
             setInterval(() => {
                 persist();
                 console.log('Reconnecting...');
@@ -59,16 +59,16 @@ if (key !== null || push !== null) {
             clearInterval(interval);
         };
 
-        socket.onerror = function (error) {
-            console.error('Socket encountered error: ', error.message, 'Closing socket');
-            socket.close();
+        client.onerror = function (error) {
+            console.error('Socket encountered error: ', error, 'Closing socket');
+            client.close();
         };
         persist();
     }
 }
 
-const sendMessage = (socket, key) => {
-    socket.send(JSON.stringify({
+const sendMessage = (client, key) => {
+    client.send(JSON.stringify({
         hash: key
     }));
 };

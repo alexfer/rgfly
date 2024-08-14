@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\MarketPlace;
 
 use App\Service\MarketPlace\Store\Message\Interface\ProcessorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/market-place/message')]
@@ -14,7 +15,6 @@ class MessageController extends AbstractController
 {
     /**
      * @param Request $request
-     * @param UserInterface|null $user
      * @param TranslatorInterface $translator
      * @param ProcessorInterface $message
      * @return JsonResponse
@@ -22,12 +22,13 @@ class MessageController extends AbstractController
     #[Route('', name: 'market_place_obtain_message')]
     public function obtain(
         Request             $request,
-        ?UserInterface      $user,
         TranslatorInterface $translator,
         ProcessorInterface  $message,
 
     ): JsonResponse
     {
+        $user = $this->getUser();
+
         if (!$user) {
             return $this->json([
                 'success' => false,

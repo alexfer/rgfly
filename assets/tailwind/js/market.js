@@ -1,8 +1,9 @@
 import Swal from "sweetalert2";
 import i18next from "i18next";
 import messages from "./i18n";
+import customCss from "./customCss";
 
-i18next.init(messages);
+await i18next.init(messages);
 
 const cart = document.getElementById('shopping-cart');
 const attributes = document.querySelectorAll('#attributes');
@@ -84,6 +85,7 @@ if (typeof drops !== 'undefined') {
                 showCancelButton: true,
                 confirmButtonText: i18next.t('proceed'),
                 denyButtonText: i18next.t('cancel'),
+                customClass: customCss,
                 icon: "question",
                 showLoaderOnConfirm: true
             }).then(async (result) => {

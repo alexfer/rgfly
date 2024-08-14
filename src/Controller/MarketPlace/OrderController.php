@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\MarketPlace;
 
 use App\Service\MarketPlace\Store\Customer\Interface\UserManagerInterface;
@@ -11,14 +13,13 @@ use App\Service\MarketPlace\Store\Order\Interface\{CollectionInterface,
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route('/market-place/order')]
 class OrderController extends AbstractController
 {
+
     /**
      * @param Request $request
-     * @param UserInterface|null $user
      * @param UserManagerInterface $userManager
      * @param SummaryInterface $orderSummary
      * @param CollectionInterface $orderCollection
@@ -28,14 +29,13 @@ class OrderController extends AbstractController
     #[Route('/summary/remove', name: 'app_market_place_order_remove_product', methods: ['POST'])]
     public function remove(
         Request              $request,
-        ?UserInterface       $user,
         UserManagerInterface $userManager,
         SummaryInterface     $orderSummary,
         CollectionInterface  $orderCollection,
         ProductInterface     $orderProduct,
     ): Response
     {
-        $customer = $userManager->get($user);
+        $customer = $userManager->get($this->getUser());
         $orderProduct->process($customer);
 
         $session = $request->getSession();
@@ -95,8 +95,6 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param UserInterface|null $user
      * @param UserManagerInterface $userManager
      * @param SummaryInterface $order
      * @param CollectionInterface $collection
@@ -104,14 +102,12 @@ class OrderController extends AbstractController
      */
     #[Route('/summary', name: 'app_market_place_order_summary', methods: ['GET'])]
     public function summary(
-        Request              $request,
-        ?UserInterface       $user,
         UserManagerInterface $userManager,
         SummaryInterface     $order,
         CollectionInterface  $collection,
     ): Response
     {
-        $customer = $userManager->get($user);
+        $customer = $userManager->get($this->getUser());
         $orders = $collection->getOrders($customer);
 
         return $this->render('market_place/order/summary.html.twig', [
@@ -141,7 +137,6 @@ class OrderController extends AbstractController
 
     /**
      * @param Request $request
-     * @param UserInterface|null $user
      * @param ProcessorInterface $processor
      * @param UserManagerInterface $userManager
      * @param CollectionInterface $collection
@@ -150,7 +145,6 @@ class OrderController extends AbstractController
     #[Route('/{product}', name: 'app_market_place_product_order', methods: ['POST'])]
     public function order(
         Request              $request,
-        ?UserInterface       $user,
         ProcessorInterface   $processor,
         UserManagerInterface $userManager,
         CollectionInterface  $collection,
@@ -166,7 +160,7 @@ class OrderController extends AbstractController
 
         $session = $request->getSession();
 
-        $customer = $userManager->get($user);
+        $customer = $userManager->get($this->getUser());
         $order = $processor->findOrder();
 
         $processor->processOrder($order, $customer);
