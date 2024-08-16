@@ -2,8 +2,10 @@
 
 namespace App\Service\MarketPlace\Store\Order;
 
+use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Entity\MarketPlace\{StoreCustomer, StoreOrders};
 use App\Service\MarketPlace\Store\Order\Interface\CollectionInterface;
+use App\Twig\Extension\DiscountExtension;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\{Request, RequestStack};
 
@@ -90,6 +92,13 @@ final readonly class Collection implements CollectionInterface
 
             foreach ($order['products'] as $product) {
                 $attach = $product['product']['attachment'];
+                $price = MarketPlaceHelper::discount(
+                        $product['product']['cost'],
+                        $product['product']['reduce']['value'],
+                        $product['product']['fee'],
+                        $product['quantity'],
+                        $product['product']['reduce']['unit']
+                    );
 
                 $products[$id][$product['id']] = [
                     'id' => $product['product']['id'],
@@ -98,17 +107,16 @@ final readonly class Collection implements CollectionInterface
                     'slug' => $product['product']['slug'],
                     'order_id' => $id,
                     'cost' => $product['product']['cost'],
+                    'price' => $price,
+                    'reduce' => $product['product']['reduce'],
                     'fee' => $product['product']['fee'],
-                    'percent' => $product['product']['discount'],
                     'quantity' => $product['quantity'],
                     'size' => $product['size'],
                     'color' => $product['color'],
                     'attach' => $attach,
                 ];
 
-                $cost = $product['product']['cost'] + $product['product']['fee'];
-                $discount = intval($product['product']['discount']);
-                $total[$id][] = round($cost - ($cost * $discount - $discount) / 100, 2);
+                $total[$id][] = $price;
                 $fee[$id][] = $product['product']['fee'];
 
             }

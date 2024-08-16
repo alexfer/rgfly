@@ -4,6 +4,7 @@ namespace App\Service\MarketPlace\Store\Order;
 
 use App\Entity\MarketPlace\StoreOrders;
 use App\Entity\MarketPlace\StoreOrdersProduct;
+use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Service\MarketPlace\Store\Order\Interface\ComputeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -33,10 +34,15 @@ class Compute implements ComputeInterface
             $product = $this->orderProduct($key);
             $product->setQuantity($value);
             $this->em->persist($product);
-            $cost = round($product->getProduct()->getCost()) + round($product->getProduct()->getFee());
-            $discount = intval($product->getProduct()->getDiscount());
+
             $this->orders[$product->getOrders()->getId()][$product->getId()] = [
-                'amount' => round(($cost - (($cost * $discount) - $discount) / 100)) * $value,
+                'amount' => MarketPlaceHelper::discount(
+                    $product->getProduct()->getCost(),
+                    $product->getProduct()->getStoreProductDiscount()->getValue(),
+                    $product->getProduct()->getFee(),
+                    $value,
+                    $product->getProduct()->getStoreProductDiscount()->getUnit()
+                ),
             ];
         }
 

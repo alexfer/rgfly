@@ -90,28 +90,28 @@
                     <h4 class="text-center font-oswald hidden lg:block text-2xl py-3 border-b-1 shadow-sm text-gray-600 font-semibold mb-5">{{ 'store.products'|trans }}
                         <span class="text-gray-500 font-medium ml-2">{{ store.products_count }}</span>
                     </h4>
-                    <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-3">
+                    <div class="grid w-full gap-3 lg:grid-cols-3 md:grid-cols-2">
                         {% for product in store.products %}
                             <div class="lg:max-w-sm md:max-w-md sm:w-auto border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                                <div class="relative overflow-hidden bg-cover bg-no-repeat">
+                                <div class="relative h-200 overflow-hidden bg-cover bg-no-repeat">
                                     {% if product.attachment is not null %}
                                         {% set _picture= 'storage/product/' ~ product.id ~ '/' ~ product.attachment %}
                                         <a href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}">
-                                            <img class="transition duration-300 ease-linear hover:scale-110 rounded-t-lg"
+                                            <img class="h-200 transition duration-300 ease-linear hover:scale-110 rounded-t-lg"
                                                  src="{{ asset(_picture)|imagine_filter('product_preview') }}"
                                                  alt="{{ product.name }}">
                                         </a>
                                     {% else %}
-                                        <img class="transition opacity-50 duration-300 ease-linear hover:scale-110 rounded-t-lg"
+                                        <img class="h-200 transition opacity-50 rounded-t-lg"
                                              src="{{ asset('img/600x400.png') }}"
                                              alt="{{ product.name }}">
                                     {% endif %}
                                     <div class="absolute z-10 opacity-100 top-5 w-full">
                                         <div class="flex justify-between">
-                                                    <span class="ml-2 bg-gray-600 text-sm bg-opacity-90 text-gray-500 text-md shadow-xl font-medium px-2.5 py-0.5 rounded-md dark:bg-gray-900 dark:text-gray-300">
+                                                    <span class="ml-2 bg-gray-600 bg-opacity-90 text-gray-500 text-md shadow-xl px-2.5 pt-1 pb-0.5 rounded-md dark:bg-gray-900 dark:text-gray-300">
                                                         <a title="{{ product.name }}"
                                                            href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}"
-                                                           class="text-white hover:text-neutral-100 hover:animate-pulse">{{ 'store.product.details'|trans }}
+                                                           class="text-white text-sm hover:text-neutral-100">{{ 'store.product.details'|trans }}
                                                         </a>
                                                     </span>
                                             {% if product.discount|round %}

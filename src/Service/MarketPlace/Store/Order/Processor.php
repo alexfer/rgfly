@@ -107,14 +107,13 @@ final class Processor implements ProcessorInterface
      */
     private function total(): float|int
     {
-        $cost = round($this->getProduct()->getCost()) + round($this->getProduct()->getFee());
-        $discount = intval($this->getProduct()->getDiscount());
-        $total = ($cost - (($cost * $discount) - $discount) / 100);
-
-        if (!$discount) {
-            $total = $cost;
-        }
-        return $total;
+        return MarketPlaceHelper::discount(
+            $this->getProduct()->getCost(),
+            $this->getProduct()->getStoreProductDiscount()->getValue(),
+            $this->getProduct()->getFee(),
+            1,
+            $this->getProduct()->getStoreProductDiscount()->getUnit()
+        );
     }
 
     /**

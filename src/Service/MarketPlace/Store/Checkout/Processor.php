@@ -152,10 +152,14 @@ class Processor implements ProcessorInterface
     {
         $sum = [];
         foreach ($this->getProducts() as $product) {
-            $cost = $product->getProduct()->getCost() + $product->getProduct()->getFee();
-            $discount = intval($product->getProduct()->getDiscount());
-            $sum['itemSubtotal'][] = $product->getQuantity() * round($cost - (($cost * $discount) - $discount) / 100);
-            $sum['fee'][] = $product->getProduct()->getFee();
+            $price = MarketPlaceHelper::discount(
+                $product->getProduct()->getCost(),
+                $product->getProduct()->getStoreProductDiscount()->getValue(),
+                $product->getProduct()->getFee(),
+                $product->getQuantity(),
+                $product->getProduct()->getStoreProductDiscount()->getUnit()
+            );
+            $sum['itemSubtotal'][] = $price;
         }
 
         return $sum;

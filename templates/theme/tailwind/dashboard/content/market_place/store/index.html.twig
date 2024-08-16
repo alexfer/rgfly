@@ -53,7 +53,7 @@
                                class="border rounded pl-2 pr-1 py-1.5 mr-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
                                 <i class="fa fa-pencil text-indigo-600 dark:text-white"></i>
                             </a>
-                            {% if 'ROLE_ADMIN' not in store.owner.roles %}
+                            {% if 'ROLE_ADMIN' not in app.user.roles %}
                                 <button
                                         class="border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800"
                                         data-token="{{ csrf_token('delete') }}"

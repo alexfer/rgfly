@@ -16,13 +16,12 @@ class StoreOrders
     const array STATUS = [
         'delivered' => 'delivered',
         'unreached' => 'unreached',
-        'paid' => 'paid',
-        'confirmed' => 'confirmed',
-        'processing' => 'processing',
+        'confirmed' => 'confirmed', // in use
+        'processing' => 'processing', // in use
         'pending' => 'pending',
         'on-hold' => 'on-hold',
         'shipped' => 'shipped',
-        'cancelled' => 'cancelled',
+        'cancelled' => 'cancelled', // in use
         'refused' => 'refused',
         'awaiting-return' => 'awaiting-return',
         'returned' => 'returned',
@@ -42,6 +41,9 @@ class StoreOrders
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '2', nullable: true)]
     private ?string $total = null;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $tax = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $session = null;
 
@@ -51,26 +53,23 @@ class StoreOrders
     #[ORM\Column]
     private ?DateTimeImmutable $created_at;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTimeInterface $completed_at = null;
-
     #[ORM\OneToOne(mappedBy: 'orders', cascade: ['persist', 'remove'])]
     private ?StoreInvoice $storeInvoice = null;
 
-    #[ORM\OneToMany(mappedBy: 'orders', targetEntity: StoreOrdersProduct::class)]
+    #[ORM\OneToMany(targetEntity: StoreOrdersProduct::class, mappedBy: 'orders')]
     private Collection $storeOrdersProducts;
 
-    #[ORM\OneToMany(mappedBy: 'orders', targetEntity: StoreCustomerOrders::class)]
+    #[ORM\OneToMany(targetEntity: StoreCustomerOrders::class, mappedBy: 'orders')]
     private Collection $storeCustomerOrders;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $completed_at = null;
 
     /**
      * @var Collection<int, StoreMessage>
      */
-    #[ORM\OneToMany(mappedBy: 'orders', targetEntity: StoreMessage::class)]
+    #[ORM\OneToMany(targetEntity: StoreMessage::class, mappedBy: 'orders')]
     private Collection $storeMessages;
-
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?string $tax = null;
 
     public function __construct()
     {

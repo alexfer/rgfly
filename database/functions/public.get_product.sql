@@ -24,7 +24,13 @@ BEGIN
                    'description', p.description,
                    'cost', p.cost,
                    'fee', p.fee,
-                   'discount', p.discount::integer,
+                   'reduce', (SELECT json_build_object(
+                                             'value', spd.value,
+                                             'unit', spd.unit
+                                     )
+                              FROM store_product_discount spd
+                              WHERE spd.product_id = p.id
+                              LIMIT 1),
                    'sku', p.sku,
                    'quantity', p.quantity,
                    'pckg', p.pckg_quantity,

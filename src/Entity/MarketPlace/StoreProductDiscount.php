@@ -10,8 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
 class StoreProductDiscount
 {
     const string UNIT_PERCENTAGE = 'percentage';
-    const string UNIT_PRICE = 'price';
+
     const string UNIT_STOCK = 'stock';
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "IDENTITY")]
     #[ORM\Column(type: "integer")]
