@@ -2,6 +2,7 @@
 
 namespace App\Service\MarketPlace\Store\Order;
 
+use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Service\MarketPlace\Currency;
 use App\Service\MarketPlace\Store\Order\Interface\SummaryInterface;
 
@@ -20,9 +21,15 @@ final class Summary implements SummaryInterface
 
             foreach ($order['products'] as $product) {
                 $cost = $product['product']['cost'] + $product['product']['fee'];
-                $discount = intval($product['product']['discount']);
-                $itemSubtotal[$id][] = $cost + $product['product']['fee'];
-                $total[$id][] = $product['quantity'] * round($cost - (($cost * $discount) - $discount) / 100);
+                $price = MarketPlaceHelper::discount(
+                    $product['product']['cost'],
+                    $product['product']['reduce']['value'],
+                    $product['product']['fee'],
+                    $product['quantity'],
+                    $product['product']['reduce']['unit'],
+                );
+                $itemSubtotal[$id][] = $cost;
+                $total[$id][] = floatval($price);
             }
 
             if ($formatted) {

@@ -47,17 +47,15 @@
                                             </span>
                                         {% endif %}
                                         <div class="relative justify-start">
-                                            {% if product.product.discount %}
-                                                {% set percent = product.product.discount %}
-                                                {% set cost = product.product.cost + product.product.fee %}
-                                                {% set discount = (cost - (cost * percent)/100) %}
+                                            {% if product.product.reduce.unit is not empty %}
                                                 <div class="font-medium whitespace-nowrap text-xl">
-                                                    <span class="inline-block text-xs text-white opacity-85 bg-red-600 px-2 pt-1 pb-0.5 rounded-md">{{ product.product.discount }}%{{ 'store.product.off'|trans }}</span>
-                                                    {{ discount|amount_format }}
+                                                    <span class="inline-block text-xs text-white opacity-85 bg-red-600 px-2 pt-1 pb-0.5 rounded-md">{{ product.product.reduce.value }}{{ product.product.reduce.unit|convert(order.store.currency|currency) }} {{ 'store.product.off'|trans }}</span>
+                                                    {% set price = discount(product.product.cost, product.product.reduce.value, product.product.fee, 1, product.product.reduce.unit) %}
+                                                    {{ price|amount_format }}
                                                     <small>{{ order.store.currency|currency }}</small>
                                                 </div>
                                             {% else %}
-                                                <span class="font-sm whitespace-nowrap text-xl">{{ ((product.product.cost * product.quantity) + product.product.fee)|amount_format }}<small>{{ order.store.currency|currency }}</small></span>
+                                                <span class="font-sm whitespace-nowrap text-xl">{{ ((product.product.cost) + product.product.fee)|amount_format }}<small>{{ order.store.currency|currency }}</small></span>
                                             {% endif %}
                                         </div>
                                         <div class="py-1 whitespace-nowrap text-gray-600">
@@ -171,7 +169,7 @@
                                 <div class="stores-summary mb-2">
                                     <div class="flex justify-between items-start">
                                         <div class="me-auto">{{ 'order.item.subtotal'|trans }}</div>
-                                        <span id="item-subtotal-{{ order.store_id }}">{{ (order.total)|amount_format }}<small>{{ order.currency }}</small></span>
+                                        <span id="item-subtotal-{{ order.store_id }}">{{ order.total|amount_format }}<small>{{ order.currency }}</small></span>
                                     </div>
                                     <div class="flex justify-between items-start">
                                         <div class="me-auto">{{ 'order.service.tax'|trans }}</div>

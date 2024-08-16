@@ -6,7 +6,10 @@ namespace App\Controller\MarketPlace;
 
 use App\Controller\Trait\ControllerTrait;
 use App\Entity\MarketPlace\StoreCategory;
+use App\Entity\MarketPlace\StoreCustomer;
 use App\Entity\MarketPlace\StoreProduct;
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\EntityManagerInterface;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientBuilder;
 use Elastic\Elasticsearch\Exception\AuthenticationException;
@@ -19,13 +22,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route('/market-place')]
 class SearchController extends AbstractController
 {
-
-    use ControllerTrait;
-
     /**
      * @var int
      */
@@ -67,12 +68,12 @@ class SearchController extends AbstractController
     }
 
     /**
+     * @param EntityManagerInterface $em
      * @return Response
      */
-    public function index(): Response
+    public function index(EntityManagerInterface $em): Response
     {
-        $categories = $this->em->getRepository(StoreCategory::class)->findBy(['parent' => null]);
-
+        $categories = $em->getRepository(StoreCategory::class)->findBy(['parent' => null]);
         return $this->render('market_place/search/categories.html.twig', [
             'categories' => $categories,
         ]);
@@ -80,20 +81,27 @@ class SearchController extends AbstractController
 
     /**
      * @param Request $request
+     * @param EntityManagerInterface $em
      * @return Response
+     * @throws Exception
      */
     #[Route('/search', name: 'app_market_place_search')]
-    public function search(Request $request): Response
+    public function search(
+        Request                $request,
+        EntityManagerInterface $em,
+    ): Response
     {
         $products = [];
         $rows = 0;
         $query = $request->query->get('query');
 
         $category = $request->query->get('category');
-        $customer = $this->getCustomer($this->getUser());
+        $customer = $em->getRepository(StoreCustomer::class)->findOneBy([
+            'member' => $this->getUser(),
+        ]);
 
         if ($query) {
-            $products = $this->em->getRepository(StoreProduct::class)->search($query, $category, $this->offset, $this->limit);
+            $products = $em->getRepository(StoreProduct::class)->search($query, $category, $this->offset, $this->limit);
             $rows = $products['rows_count'];
             $products = $products['data'];
         }
@@ -112,7 +120,9 @@ class SearchController extends AbstractController
      * @throws ServerResponseException
      */
     #[Route('/autocomplete', name: 'app_market_place_search_autocomplete')]
-    public function autocomplete(Request $request): JsonResponse
+    public function autocomplete(
+        Request $request
+    ): JsonResponse
     {
         $term = $request->query->get('term');
         $results = [];

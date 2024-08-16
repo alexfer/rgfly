@@ -32,14 +32,14 @@
                                 <a title="{{ product.name }}"
                                    class="truncate font-bold w-48 inline-block align-top text-gray-900"
                                    href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}">{{ product.short_name }}</a>
-                                {% if product.percent|round %}
-                                    {% set discount = product.percent %}
-                                    {% set cost = product.cost + product.fee %}
+                                {% if product.reduce.unit is not empty %}
+                                    {% set price = discount(product.cost, product.reduce.value, product.fee, 1, product.reduce.unit) %}
                                     <span class="font-light inline-block text-success">
-                                        {{ (cost - ((cost * discount) - discount)/100)|amount_format }}<small>{{ order.store.currency|currency }}</small>
-                                        <span class="ml-2 text-xs text-red-500">{{ product.percent }}%{{ 'store.product.off'|trans }}</span>
+                                        {{ price|amount_format }}<small>{{ order.store.currency|currency }}</small>
+                                        <span class="ml-2 text-xs text-red-500">{{ product.reduce.value }}{{ product.reduce.unit|convert(order.store.currency|currency) }} {{ 'store.product.off'|trans }}</span>
                                     </span>
                                     <span class="block line-through font-light text-gray-300">
+
                                         {{ (product.cost + product.fee)|amount_format }}<small>{{ order.store.currency|currency }}</small>
                                     </span>
                                 {% else %}

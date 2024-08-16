@@ -19,7 +19,13 @@ BEGIN
                                               'short_name', p.short_name,
                                               'cost', p.cost,
                                               'quantity', p.quantity,
-                                              'discount', p.discount::integer,
+                                              'reduce', (SELECT json_build_object(
+                                                                        'value', spd.value,
+                                                                        'unit', spd.unit
+                                                                )
+                                                         FROM store_product_discount spd
+                                                         WHERE spd.product_id = p.id
+                                                         LIMIT 1),
                                               'fee', p.fee,
                                               'created', p.created_at,
                                               'deleted', p.deleted_at,

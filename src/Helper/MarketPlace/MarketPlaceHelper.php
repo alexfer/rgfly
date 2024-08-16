@@ -6,6 +6,28 @@ class MarketPlaceHelper
 {
 
     /**
+     * @param mixed $cost
+     * @param mixed $discount
+     * @param mixed $fee
+     * @param int $quantity
+     * @param string $unit
+     * @return string
+     */
+    public static function discount(mixed $cost, mixed $discount, mixed $fee, int $quantity, string $unit): string
+    {
+        $cost = $cost + $fee;
+        $discount = (int)$discount;
+
+        $value = match ($unit) {
+            'percentage' => ($quantity * round($cost - (($cost * $discount) - $discount) / 100)),
+            'stock' => ($cost - $discount) * $quantity,
+            default => $quantity * $cost
+        };
+
+        return number_format($value, 2, '.', ' ');
+    }
+
+    /**
      * @param int $id
      * @param int $length
      * @param string|null $key

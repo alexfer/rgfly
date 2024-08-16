@@ -100,13 +100,13 @@ class AddressType extends AbstractType
                 'label' => 'label.country',
                 'required' => true,
                 'multiple' => false,
-                'data' => $options->getId() === null ? $this->location['countryCode'] : $options->getCountry(),
+                'data' => $options?->getId() === null ? $this->location['countryCode'] : $options->getCountry(),
                 'expanded' => false,
                 'choices' => array_flip(Countries::getNames(Locale::getDefault())),
             ])
             ->add('city', TextType::class, [
                 'mapped' => false,
-                'data' => $options->getId() === null ? $this->location['city'] : $options->getCity(),
+                'data' => $options?->getId() === null ? $this->location['city'] : $options->getCity(),
                 'attr' => [
                     'min' => 3,
                     'max' => 250,
