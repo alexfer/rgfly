@@ -35,6 +35,7 @@ class DiscountExtension extends AbstractExtension
         return match ($uint) {
             'percentage' => '%',
             'stock' => $currency,
+            default => $uint,
         };
     }
 
