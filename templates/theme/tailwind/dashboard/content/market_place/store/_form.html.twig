@@ -26,7 +26,7 @@
     {% if app.user.stores|length and not form.vars.data.id %}
         <div class="flex items-center p-4 mb-4 text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-400"
              role="alert">
-            <h6 class="text-center text-xl py-3">{{ 'dashboard.market.restrict'|trans }}</h6>
+            <h6 class="text-center text-sm">{{ 'dashboard.market.restrict'|trans }}</h6>
         </div>
     {% else %}
         {% set _message = app.flashes('success') %}

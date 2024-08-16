@@ -20,14 +20,7 @@
                     <h4 class="font-medium font-oswald text-gray-600 text-xl mt-5 mb-4 text-center">{{ 'order.summary'|trans }}</h4>
                     {% set product_count = order.storeOrdersProducts.count() %}
                     {% for product in order.storeOrdersProducts %}
-                        {% if product.product.discount %}
-                            {% set percent = product.product.discount %}
-                            {% set cost = product.product.cost + product.product.fee %}
-                            {% set discount = (cost - ((cost * percent) - percent)/100) %}
-                            {% set item_cost = (discount)|amount_format %}
-                        {% else %}
-                            {% set item_cost = (product.product.cost * product.quantity + product.product.fee)|amount_format %}
-                        {% endif %}
+                        {% set price = discount(product.product.cost, product.product.storeProductDiscount.value, product.product.fee, 1, product.product.storeProductDiscount.unit) %}
                         <div class="flex items-center pb-2 border-b">
                             <a class="block shrink-0 mr-2"
                                href="{{ path('app_market_place_product', {slug: product.product.slug, tab: 'about'}) }}">
@@ -48,7 +41,7 @@
                                     </a>
                                 </h5>
                                 <span class="text-sm text-gray-500">
-                                    {{ item_cost }}<small>{{ order.store.currency|currency }}</small>&times;{{ product.quantity }} {{ 'label.form.quantity_pcs'|trans }}
+                                    {{ price }}<small>{{ order.store.currency|currency }}</small>&times;{{ product.quantity }} {{ 'label.form.quantity_pcs'|trans }}
                                 </span>
                             </div>
                         </div>

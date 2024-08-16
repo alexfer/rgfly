@@ -73,7 +73,7 @@ class CheckoutController extends AbstractController
 
             if (!$customer->getId()) {
 
-                $password = substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 8);
+                $password = substr(base_convert(sha1(uniqid((string)mt_rand())), 16, 36), 0, 8);
                 $session->set('_temp_password', $password);
 
                 $customerManager->process($customer, $form->getData(), $order);
@@ -83,7 +83,7 @@ class CheckoutController extends AbstractController
                 $customerManager->bind($form)->updateCustomer($customer, $form->getData());
             }
 
-            $checkout->addInvoice(new StoreInvoice(), $tax);
+            $checkout->addInvoice(new StoreInvoice(), floatval($tax));
             $checkout->updateOrder();
             $session->set('quantity', $checkout->countOrders());
 
@@ -100,7 +100,6 @@ class CheckoutController extends AbstractController
         return $this->render('market_place/checkout/index.html.twig', [
             'order' => $order,
             'itemSubtotal' => array_sum($sum['itemSubtotal']),
-            'fee' => array_sum($sum['fee']),
             'tax' => $tax,
             'creditCards' => $cc,
             'total' => array_sum($sum['itemSubtotal']),

@@ -55,7 +55,13 @@ BEGIN
             'short_name', p.short_name,
             'cost', p.cost,
             'fee', p.fee,
-            'discount', p.discount,
+            'reduce', (SELECT json_build_object(
+                                      'value', spd.value,
+                                      'unit', spd.unit
+                              )
+                       FROM store_product_discount spd
+                       WHERE spd.product_id = p.id
+                LIMIT 1),
             'payments', (SELECT json_agg(json_build_object(
                     'name', g.name,
                     'icon', g.icon

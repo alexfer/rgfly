@@ -36,7 +36,6 @@ class DiscountType extends AbstractType
                 'data' => $options['data']->getStoreProductDiscount()?->getUnit(),
                 'choices' => [
                     ucfirst(StoreProductDiscount::UNIT_PERCENTAGE) => 'percentage',
-                    ucfirst(StoreProductDiscount::UNIT_PRICE) => 'price',
                     ucfirst(StoreProductDiscount::UNIT_STOCK) => 'stock',
                 ]
             ]);

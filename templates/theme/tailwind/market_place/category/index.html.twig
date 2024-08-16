@@ -117,7 +117,7 @@
             {{ 'search.form.categories'|trans }}
         {% endif %}
     </h2>
-    <div class="grid w-full gap-3 lg:grid-cols-3 md:grid-cols-2">
+    <div class="grid grid-cols-4 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 gap-3">
         {% for product in products %}
             {% include 'market_place/grid/category.html.twig' %}
         {% endfor %}

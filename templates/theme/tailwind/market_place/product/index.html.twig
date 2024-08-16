@@ -92,22 +92,20 @@
             <div class="grow">
                 <form class="shopping-cart" method="post"
                       action="{{ path('app_market_place_product_order', {product: product.slug}) }}">
-                    {% if product.discount|round %}
+                    {% if product.reduce.unit is not empty %}
                         <div class="relative">
                             <div class="pt-1 absolute right-0 bg-red-500 text-white text-sm font-light me-2 px-2.5 py-0.5 rounded-md dark:bg-red-900 dark:text-white">
-                                {{ product.discount|round }}
-                                % {{ 'store.product.off'|trans }}
+                                {{ product.reduce.value }}{{ product.reduce.unit|convert(product.store.currency|currency) }} {{ 'store.product.off'|trans }}
                             </div>
                         </div>
                     {% endif %}
                     <div class="flex-nowrap mb-10 block w-72">
-                        {% if product.discount|round %}
-                            {% set discount = product.discount %}
-                            {% set cost = product.cost + product.fee %}
+                        {% if product.reduce.unit is not empty %}
                             <span class="font-medium text-2xl text-success pr-2">
-                                {{ (cost - ((cost * discount) - discount)/100)|amount_format }}<small>{{ product.store.currency|currency }}</small>
+                                {% set price = discount(product.cost, product.reduce.value, product.fee, 1, product.reduce.unit) %}
+                                {{ price|amount_format }}<small>{{ product.store.currency|currency }}</small>
                             </span>
-                            <span class="line-through text-lg font-medium text-gray-400">{{ (product.cost)|amount_format }}<small>{{ product.store.currency|currency }}</small></span>
+                            <span class="line-through text-lg font-medium text-gray-400">{{ (product.cost + product.fee)|amount_format }}<small>{{ product.store.currency|currency }}</small></span>
                         {% else %}
                             <span class="font-medium text-2xl text-surface-dark">{{ (product.cost + product.fee)|amount_format }}<small>{{ product.store.currency|currency }}</small></span>
                         {% endif %}
