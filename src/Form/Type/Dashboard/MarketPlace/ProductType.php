@@ -2,7 +2,6 @@
 
 namespace App\Form\Type\Dashboard\MarketPlace;
 
-use AllowDynamicProperties;
 use App\Entity\MarketPlace\{Store, StoreCategory, StoreProduct};
 use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreProductInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,7 +19,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\{Length, NotBlank};
 
-#[AllowDynamicProperties] class ProductType extends AbstractType
+class ProductType extends AbstractType
 {
 
     /**
@@ -171,19 +170,19 @@ use Symfony\Component\Validator\Constraints\{Length, NotBlank};
                     ]),
                 ],
             ])
-            ->add('discount', RangeType::class, [
+            ->add('pckg_discount', RangeType::class, [
                 'attr' => [
                     'min' => 0,
                     'max' => 100,
                     'step' => 1,
-                    'value' => (int)$options['data']?->getDiscount() ?: 0,
+                    'value' => (int)$options['data']?->getPckgDiscount() ?: 0,
                 ],
                 'constraints' => [
                     new Length([
                         'min' => 1,
-                        'minMessage' => 'form.discount.min',
+                        'minMessage' => 'form.pckg_discount.min',
                         'max' => 100,
-                        'maxMessage' => 'form.discount.max',
+                        'maxMessage' => 'form.pckg_discount.max',
                     ]),
                 ],
             ])

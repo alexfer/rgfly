@@ -36,7 +36,7 @@ class StoreCategory
     /**
      * @var Collection
      */
-    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: StoreCategory::class)]
+    #[ORM\OneToMany(targetEntity: StoreCategory::class, mappedBy: 'parent')]
     private Collection $children;
 
 
@@ -62,7 +62,7 @@ class StoreCategory
     /**
      * @var Collection
      */
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: StoreCategoryProduct::class)]
+    #[ORM\OneToMany(targetEntity: StoreCategoryProduct::class, mappedBy: 'category')]
     private Collection $storeCategoryProducts;
 
     public function __construct()

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<products>
+    <product>
+        <psu>HEH-9133</psu>
+        <name>Ліхтар кемпінговий акумуляторний з магнітом та функцією Powerbank (3w9led)</name>
+        <shortName>Ліхтар кемпінговий акумуляторний</shortName>
+        <cost>300.20</cost>
+        <fee>20.55</fee>
+        <quantity>20</quantity>
+        <picture>http://rgfly.local/media/cache/product_view/storage/product/2/300508906-66bce80917dfc.webp</picture>
+        <description>Характеристики та комплектація товару можуть змінюватися виробником без повідомлення</description>
+        <category>Ліхтарі й аксесуари</category>
+        <brand>Без бренда</brand>
+        <supplier>
+            <name>Lantern</name>
+            <country>Taiwan</country>
+        </supplier>
+        <manufacturer>China</manufacturer>
+        <colors>
+            <color>White</color>
+            <color>Orange</color>
+        </colors>
+        <sizes>
+            <size>S</size>
+            <Size>M</Size>
+        </sizes>
+        <discount>
+            <value>12.00</value>
+            <unit>stock</unit>
+        </discount>
+        <package>
+            <quantity>20</quantity>
+            <discount>15</discount>
+        </package>
+        <createdAt>2018-03-03 17:41:13</createdAt>
+    </product>
+    <product>
+        <sku>HET-21845</sku>
+        <name>Ніж складаний RZTK Defender Black</name>
+        <shortName>Ніж складаний RZTK Defender Black</shortName>
+        <cost>300.20</cost>
+        <fee>20.55</fee>
+        <quantity>20</quantity>
+        <picture>https://content1.rozetka.com.ua/goods/images/big/297536407.jpg</picture>
+        <description>Ножі з клинком завдовжки до 90 мм і/або завтовшки до 2.6 мм не належать до холодної зброї
+            відповідно до «Методики криміналістичного дослідження холодної зброї
+        </description>
+        <category>Тактичне спорядження</category>
+        <brand>RZTK</brand>
+        <supplier>
+            <name>RZTK</name>
+            <country>Ukraine</country>
+        </supplier>
+        <manufacturer>Ukraine</manufacturer>
+        <colors>
+            <color>Black</color>
+        </colors>
+        <discount>
+            <value>12.00</value>
+            <unit>Stock</unit>
+        </discount>
+        <package>
+            <quantity>20</quantity>
+            <discount>15</discount>
+        </package>
+        <createdAt>2018-03-03 17:41:13</createdAt>
+    </product>
+</products>

@@ -24,7 +24,7 @@ class StoreSupplier
     #[ORM\Column(length: 3)]
     private ?string $country = null;
 
-    #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: StoreProductSupplier::class)]
+    #[ORM\OneToMany(targetEntity: StoreProductSupplier::class, mappedBy: 'supplier')]
     private Collection $storeProductSuppliers;
 
     public function __construct()

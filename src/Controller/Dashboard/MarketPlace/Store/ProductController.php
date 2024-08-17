@@ -8,10 +8,13 @@ use App\Form\Type\Dashboard\MarketPlace\ProductType;
 use App\Security\Voter\ProductVoter;
 use App\Service\FileUploader;
 use App\Service\Interface\ImageValidatorInterface;
+use App\Service\MarketPlace\Dashboard\Product\Interface\CopyServiceInterface;
 use App\Service\MarketPlace\Dashboard\Product\Interface\ServeProductInterface;
 use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface;
 use App\Service\MarketPlace\StoreTrait;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\OptimisticLockException;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -61,6 +64,29 @@ class ProductController extends AbstractController
             'products' => $products['result'],
             'coupons' => $product->coupon($store, StoreCoupon::COUPON_PRODUCT),
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param StoreProduct $product
+     * @param CopyServiceInterface $service
+     * @return Response
+     */
+    #[Route('/copy/{store}/{id}', name: 'app_dashboard_market_place_product_copy')]
+    #[IsGranted(ProductVoter::EDIT, subject: 'product', statusCode: Response::HTTP_FORBIDDEN)]
+    public function copy(
+        Request              $request,
+        StoreProduct         $product,
+        CopyServiceInterface $service
+    ): Response
+    {
+        $ready = false;
+
+        if(!$ready) {
+            throw $this->createAccessDeniedException();
+        }
+        $service->copyProduct($product->getId());
+        return $this->redirectToRoute('app_dashboard_market_place_market_product', ['store' => $request->get('store')]);
     }
 
     /**

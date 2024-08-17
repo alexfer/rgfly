@@ -1,0 +1,12 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% set _title_extend = 'title.dashboard.export'|trans %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}{{ _title_extend }}{% endblock %}
+
+{% block content %}
+<form method="post" action="{{ path('app_dashboard_market_place_operation_export', {'store': app.request.get('store')}) }}">
+    <input type="hidden" name="format" value="xml">
+    <button type="submit" class="text-sm text-white bg-blue-700 px-2.5 py-1.5 rounded hover:bg-blue-800">{{ 'text.export'|trans }}</button>
+</form>
+{% endblock %}

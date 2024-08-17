@@ -85,6 +85,18 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ path('app_dashboard_market_place_operation') }}"
+                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                            <svg class="w-4 h-4 text-gray-800 dark:text-white inline-flex mr-2" aria-hidden="true"
+                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                 viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                      stroke-width="2" d="M9 17h6l3 3v-3h2V9h-2M4 4h11v8H9l-3 3v-3H4V4Z"></path>
+                            </svg>
+                            {{ 'menu.dashboard.operations'|trans }}
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ path('app_dashboard_market_place_create_market', {tab: 'details'}) }}"
                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
                             <svg class="w-4 h-4 text-gray-800 dark:text-white inline-flex mr-2" aria-hidden="true"
