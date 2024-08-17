@@ -40,8 +40,8 @@ class StoreProduct
     #[ORM\Column(length: 80)]
     private ?string $short_name = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '2', nullable: true)]
-    private ?string $discount = null;
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    private ?string $pckg_discount = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $sku = null;
@@ -61,10 +61,10 @@ class StoreProduct
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $deleted_at = null;
 
-    #[ORM\OneToMany(targetEntity: StoreCategoryProduct::class, mappedBy: 'product')]
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: StoreCategoryProduct::class)]
     private Collection $storeCategoryProducts;
 
-    #[ORM\OneToMany(targetEntity: StoreProductAttach::class, mappedBy: 'product')]
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: StoreProductAttach::class)]
     private Collection $storeProductAttaches;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
@@ -79,13 +79,13 @@ class StoreProduct
     #[ORM\OneToOne(mappedBy: 'product', cascade: ['persist', 'remove'])]
     private ?StoreProductManufacturer $storeProductManufacturer = null;
 
-    #[ORM\OneToMany(targetEntity: StoreOrdersProduct::class, mappedBy: 'product')]
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: StoreOrdersProduct::class)]
     private Collection $storeOrdersProducts;
 
-    #[ORM\OneToMany(targetEntity: StoreProductAttribute::class, mappedBy: 'product')]
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: StoreProductAttribute::class)]
     private Collection $storeProductAttributes;
 
-    #[ORM\OneToMany(targetEntity: StoreWishlist::class, mappedBy: 'product')]
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: StoreWishlist::class)]
     private Collection $storeWishlists;
 
     /**
@@ -122,6 +122,13 @@ class StoreProduct
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function __clone()
+    {
+        if ($this->id) {
+            $this->id = null;
+        }
     }
 
     /**
@@ -529,20 +536,20 @@ class StoreProduct
     }
 
     /**
-     * @return string|null
+     * @return int|null
      */
-    public function getDiscount(): ?string
+    public function getPckgDiscount(): ?int
     {
-        return $this->discount;
+        return $this->pckg_discount;
     }
 
     /**
-     * @param string|null $discount
+     * @param int|null $pckg_discount
      * @return $this
      */
-    public function setDiscount(?string $discount): static
+    public function setPckgDiscount(?int $pckg_discount): static
     {
-        $this->discount = number_format($discount, 2, '.', '');
+        $this->pckg_discount = $pckg_discount;
 
         return $this;
     }

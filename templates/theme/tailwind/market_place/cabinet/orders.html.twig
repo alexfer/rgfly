@@ -28,9 +28,10 @@
                     {% set discount = 0 %}
                     <h2 id="order-flush-heading-{{ key }}">
                         <button type="button"
-                                class="flex items-center pl-5 justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3"
+                                class="flex items-center pl-5 justify-between w-full py-5 font-medium border bg-gray-50 rtl:text-right focus:ring-1 focus:ring-gray-200 active:bg-gray-100 hover:bg-gray-100 text-gray-500 dark:border-gray-700 dark:text-gray-400 gap-3"
                                 data-twe-target="#order-body-{{ key }}"
                                 data-twe-collapse-init
+                                data-twe-ripple-color="black"
                                 aria-expanded="{{ key == 0 ? 'true' : 'false' }}"
                                 aria-controls="order-body-{{ key }}">
                             <h5 class="flex text-md-start subpixel-antialiased hover:text-black dark:text-white">
@@ -54,7 +55,7 @@
                         </button>
                     </h2>
                     <div id="order-body-{{ key }}"
-                         class="!visible{% if key > 0 %} hidden{% endif %} border-0 shadow-xl shadow-red-500/50"
+                         class="!visible{% if key > 0 %} hidden{% endif %} border-0 shadow-lg shadow-gray-100"
                          data-twe-collapse-item
                             {% if key == 0 %} data-twe-collapse-show{% endif %}
                          data-twe-parent="#accordion-flush"

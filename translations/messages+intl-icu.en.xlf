@@ -928,6 +928,10 @@
                 <source>label.form.sku</source>
                 <target>SKU</target>
             </trans-unit>
+            <trans-unit id="label.form.pckg_discount">
+                <source>label.form.pckg_discount</source>
+                <target>Package discount</target>
+            </trans-unit>
             <trans-unit id="label.form.discount">
                 <source>label.form.discount</source>
                 <target>Discount</target>
