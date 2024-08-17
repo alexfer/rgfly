@@ -38,7 +38,7 @@ class Category
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $deleted_at = null;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: EntryCategory::class)]
+    #[ORM\OneToMany(targetEntity: EntryCategory::class, mappedBy: 'category')]
     private Collection $entryCategories;
 
     public function __construct()

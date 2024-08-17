@@ -152,6 +152,14 @@
                 <source>text.read</source>
                 <target>Read more..</target>
             </trans-unit>
+            <trans-unit id="text.export">
+                <source>text.export</source>
+                <target>Export</target>
+            </trans-unit>
+            <trans-unit id="text.import">
+                <source>text.import</source>
+                <target>Import</target>
+            </trans-unit>
             <trans-unit id="title.search_for">
                 <source>title.search_for</source>
                 <target>Search for</target>
@@ -250,6 +258,30 @@
             <trans-unit id="menu.dashboard.messages">
                 <source>menu.dashboard.messages</source>
                 <target>Messages</target>
+            </trans-unit>
+            <trans-unit id="menu.dashboard.operations">
+                <source>menu.dashboard.operations</source>
+                <target>Import/Export</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.operations">
+                <source>title.dashboard.operations</source>
+                <target>Import/Export</target>
+            </trans-unit>
+            <trans-unit id="menu.dashboard.import">
+                <source>menu.dashboard.import</source>
+                <target>Import products</target>
+            </trans-unit>
+            <trans-unit id="menu.dashboard.export">
+                <source>menu.dashboard.export</source>
+                <target>Export products</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.import">
+                <source>title.dashboard.import</source>
+                <target>Import products</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.export">
+                <source>title.dashboard.export</source>
+                <target>Export products</target>
             </trans-unit>
             <trans-unit id="menu.dashboard.orders">
                 <source>menu.dashboard.orders</source>
@@ -598,6 +630,14 @@
             <trans-unit id="table.header.orders">
                 <source>table.header.orders</source>
                 <target>Orders</target>
+            </trans-unit>
+            <trans-unit id="table.header.imports">
+                <source>table.header.imports</source>
+                <target>Imports</target>
+            </trans-unit>
+            <trans-unit id="table.header.exports">
+                <source>table.header.exports</source>
+                <target>Exports</target>
             </trans-unit>
             <trans-unit id="table.header.messages">
                 <source>table.header.messages</source>

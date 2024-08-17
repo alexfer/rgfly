@@ -61,10 +61,10 @@ class StoreProduct
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $deleted_at = null;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: StoreCategoryProduct::class)]
+    #[ORM\OneToMany(targetEntity: StoreCategoryProduct::class, mappedBy: 'product')]
     private Collection $storeCategoryProducts;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: StoreProductAttach::class)]
+    #[ORM\OneToMany(targetEntity: StoreProductAttach::class, mappedBy: 'product')]
     private Collection $storeProductAttaches;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
@@ -79,13 +79,13 @@ class StoreProduct
     #[ORM\OneToOne(mappedBy: 'product', cascade: ['persist', 'remove'])]
     private ?StoreProductManufacturer $storeProductManufacturer = null;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: StoreOrdersProduct::class)]
+    #[ORM\OneToMany(targetEntity: StoreOrdersProduct::class, mappedBy: 'product')]
     private Collection $storeOrdersProducts;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: StoreProductAttribute::class)]
+    #[ORM\OneToMany(targetEntity: StoreProductAttribute::class, mappedBy: 'product')]
     private Collection $storeProductAttributes;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: StoreWishlist::class)]
+    #[ORM\OneToMany(targetEntity: StoreWishlist::class, mappedBy: 'product')]
     private Collection $storeWishlists;
 
     /**
@@ -97,7 +97,7 @@ class StoreProduct
     /**
      * @var Collection<int, StoreMessage>
      */
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: StoreMessage::class)]
+    #[ORM\OneToMany(targetEntity: StoreMessage::class, mappedBy: 'product')]
     private Collection $storeMessages;
 
     #[ORM\OneToOne(mappedBy: 'product', cascade: ['persist', 'remove'])]

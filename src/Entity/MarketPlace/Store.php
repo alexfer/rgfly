@@ -118,6 +118,12 @@ class Store
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $locked_to = null;
 
+    /**
+     * @var Collection<int, StoreOperation>
+     */
+    #[ORM\OneToMany(targetEntity: StoreOperation::class, mappedBy: 'store')]
+    private Collection $storeOperations;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
@@ -132,6 +138,7 @@ class Store
         $this->storeCoupons = new ArrayCollection();
         $this->storeMessages = new ArrayCollection();
         $this->storeSocials = new ArrayCollection();
+        $this->storeOperations = new ArrayCollection();
     }
 
     /**
@@ -863,6 +870,36 @@ class Store
     public function setCountry(?string $country): static
     {
         $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, StoreOperation>
+     */
+    public function getStoreOperations(): Collection
+    {
+        return $this->storeOperations;
+    }
+
+    public function addStoreOperation(StoreOperation $storeOperation): static
+    {
+        if (!$this->storeOperations->contains($storeOperation)) {
+            $this->storeOperations->add($storeOperation);
+            $storeOperation->setStore($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStoreOperation(StoreOperation $storeOperation): static
+    {
+        if ($this->storeOperations->removeElement($storeOperation)) {
+            // set the owning side to null (unless already changed)
+            if ($storeOperation->getStore() === $this) {
+                $storeOperation->setStore(null);
+            }
+        }
 
         return $this;
     }

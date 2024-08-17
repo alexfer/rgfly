@@ -26,6 +26,10 @@ parameters:
     app.elastic.index: '%env(ELASTIC_INDEX)%'
     app.hostip.url: '%env(HOST_API_URL)%'
     app.redis.dsn: '%env(REDIS_SOCKET)%'
+    s3.key: '%env(S3_KEY)%'
+    s3.app_key: '%env(S3_APP_KEY)%'
+    s3.name: '%env(S3_NAME)%'
+    s3.bucket: '%env(S3_BUCKET)%'
 
 services:
     Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
