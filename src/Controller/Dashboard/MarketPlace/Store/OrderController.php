@@ -2,7 +2,7 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
-use App\Entity\MarketPlace\{Store, StoreOrders};
+use App\Entity\MarketPlace\{Enum\EnumStoreOrderStatus, Store, StoreOrders};
 use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Service\MarketPlace\Currency;
 use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreInterface;
@@ -92,7 +92,7 @@ class OrderController extends AbstractController
 
         $order = $em->getRepository(StoreOrders::class)->findOneBy(['store' => $store, 'number' => $request->get('number')]);
 
-        if($order->getStatus() != StoreOrders::STATUS['confirmed']) {
+        if($order->getStatus()->value != EnumStoreOrderStatus::Confirmed->value) {
             return $this->redirectToRoute('app_dashboard_market_place_order_store_current', [
                 'store' => $store->getId(),
             ]);

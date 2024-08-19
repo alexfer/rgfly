@@ -3,6 +3,7 @@
 namespace App\Controller\Dashboard;
 
 use App\Entity\Entry;
+use App\Entity\MarketPlace\Enum\EnumStoreOrderStatus;
 use App\Entity\MarketPlace\Store;
 use App\Entity\MarketPlace\StoreCustomer;
 use App\Entity\MarketPlace\StoreCustomerOrders;
@@ -80,7 +81,7 @@ class IndexController extends AbstractController
             $products = $em->getRepository(StoreProduct::class)->findBy(['store' => $store], ['updated_at' => 'DESC'], self::$limit, self::$offset);
             $orders = $em->getRepository(StoreOrders::class)->findBy([
                 'store' => $store,
-                'status' => StoreOrders::STATUS['confirmed'],
+                'status' => EnumStoreOrderStatus::Confirmed->value,
             ], ['id' => 'DESC'], self::$limit, self::$offset);
             $messages = $em->getRepository(StoreMessage::class)->fetchAll($store, 'low', self::$offset, self::$limit);
 
