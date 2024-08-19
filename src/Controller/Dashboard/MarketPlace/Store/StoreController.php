@@ -117,7 +117,6 @@ class StoreController extends AbstractController
     /**
      * @param Request $request
      * @param EntityManagerInterface $em
-     * @param UserInterface $user
      * @param SluggerInterface $slugger
      * @param TranslatorInterface $translator
      * @param ParameterBagInterface $params
@@ -128,7 +127,6 @@ class StoreController extends AbstractController
     public function create(
         Request                $request,
         EntityManagerInterface $em,
-        UserInterface          $user,
         SluggerInterface       $slugger,
         TranslatorInterface    $translator,
         ParameterBagInterface  $params,
@@ -137,7 +135,7 @@ class StoreController extends AbstractController
         $store = new Store();
         $form = $this->createForm(StoreType::class, $store);
 
-        $stores = $user->getStores()->count();
+        $stores = $this->getUser()->getStores()->count();
 
         if (!$stores) {
             $form->handleRequest($request);
@@ -155,7 +153,7 @@ class StoreController extends AbstractController
                 }
 
 
-                $store->setOwner($user)->setSlug($slugger->slug($form->get('name')->getData())->lower());
+                $store->setOwner($this->getUser())->setSlug($slugger->slug($form->get('name')->getData())->lower());
                 $em->persist($store);
                 $em->flush();
 
@@ -320,6 +318,7 @@ class StoreController extends AbstractController
             }
 
             $store->setCc(json_encode($form->get('cc')->getData()));
+            $store->getStoreOptions()->setBackupSchedule($form->get('backupSchedule')->getData());
 
             $em->persist($store);
             $em->flush();

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\MarketPlace;
 
+use App\Entity\MarketPlace\Enum\EnumStoreOrderStatus;
 use App\Entity\MarketPlace\StoreInvoice;
-use App\Entity\MarketPlace\StoreOrders;
 use App\Form\Type\MarketPlace\CustomerType;
 use App\Form\Type\User\LoginType;
 use App\Service\MarketPlace\Store\Checkout\Interface\ProcessorInterface as Checkout;
@@ -50,7 +50,7 @@ class CheckoutController extends AbstractController
 
         $customer = $userManager->get($user);
         $form = $this->createForm(CustomerType::class, $customer);
-        $order = $checkout->findOrder(StoreOrders::STATUS['processing'], $customer);
+        $order = $checkout->findOrder(EnumStoreOrderStatus::Processing->value, $customer);
         $process = $coupon->process($order->getStore());
         $tax = $order->getStore()->getTax();
         $cc = $order->getStore()->getCc();

@@ -2,22 +2,22 @@
 
 namespace App\Repository\MarketPlace;
 
-use App\Entity\MarketPlace\StoreProductDiscount;
+use App\Entity\MarketPlace\StoreOptions;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<StoreProductDiscount>
+ * @extends ServiceEntityRepository<StoreOptions>
  */
-class StoreProductDiscountRepository extends ServiceEntityRepository
+class StoreOptionsRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, StoreProductDiscount::class);
+        parent::__construct($registry, StoreOptions::class);
     }
 
     //    /**
-    //     * @return EnumStoreProductDiscount[] Returns an array of EnumStoreProductDiscount objects
+    //     * @return StoreOptions[] Returns an array of StoreOptions objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -31,7 +31,7 @@ class StoreProductDiscountRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?EnumStoreProductDiscount
+    //    public function findOneBySomeField($value): ?StoreOptions
     //    {
     //        return $this->createQueryBuilder('s')
     //            ->andWhere('s.exampleField = :val')

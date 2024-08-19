@@ -2,7 +2,12 @@
 
 namespace App\Service\MarketPlace\Store\Checkout;
 
-use App\Entity\MarketPlace\{StoreCustomer, StoreInvoice, StoreOrders, StorePaymentGateway, StoreProduct};
+use App\Entity\MarketPlace\{Enum\EnumStoreOrderStatus,
+    StoreCustomer,
+    StoreInvoice,
+    StoreOrders,
+    StorePaymentGateway,
+    StoreProduct};
 use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Service\MarketPlace\Store\Checkout\Interface\ProcessorInterface;
 use Doctrine\Common\Collections\Collection;
@@ -53,7 +58,7 @@ class Processor implements ProcessorInterface
      * @param StoreCustomer|null $customer
      * @return StoreOrders|null
      */
-    public function findOrder(?string $status = StoreOrders::STATUS['processing'], ?StoreCustomer $customer = null): ?StoreOrders
+    public function findOrder(?string $status = EnumStoreOrderStatus::Processing->value, ?StoreCustomer $customer = null): ?StoreOrders
     {
         $criteria = [
             'number' => $this->request->get('order'),
@@ -128,7 +133,7 @@ class Processor implements ProcessorInterface
      * @param string|null $status
      * @return void
      */
-    public function updateOrder(?string $status = StoreOrders::STATUS['confirmed']): void
+    public function updateOrder(?string $status = EnumStoreOrderStatus::Confirmed->value): void
     {
         $order = $this->order->setSession(null)->setStatus($status);
         $this->em->persist($order);

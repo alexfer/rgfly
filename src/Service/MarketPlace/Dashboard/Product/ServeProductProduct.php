@@ -2,7 +2,8 @@
 
 namespace App\Service\MarketPlace\Dashboard\Product;
 
-use App\Entity\MarketPlace\{Store,
+use App\Entity\MarketPlace\{Enum\EnumStoreProductDiscount,
+    Store,
     StoreCategory,
     StoreCategoryProduct,
     StoreCoupon,
@@ -108,7 +109,7 @@ class ServeProductProduct extends Handle implements ServeProductInterface
         }
 
         $discount->setValue($this->post['product']['value'] ?: '0.00')
-            ->setUnit($this->post['product']['unit']);
+            ->setUnit(EnumStoreProductDiscount::from($this->post['product']['unit']));
 
         $this->em->persist($discount);
         $this->em->flush();

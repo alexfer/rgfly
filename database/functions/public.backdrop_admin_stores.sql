@@ -1,4 +1,5 @@
-CREATE OR REPLACE FUNCTION public.backdrop_admin_stores(start integer DEFAULT 0, row_count integer DEFAULT 25)
+CREATE
+    OR REPLACE FUNCTION public.backdrop_admin_stores(start integer DEFAULT 0, row_count integer DEFAULT 25)
     RETURNS json
     LANGUAGE plpgsql
 AS
@@ -15,6 +16,10 @@ BEGIN
                                        FROM store_orders o
                                        WHERE o.store_id = s.id
                                        LIMIT 1),
+                            'exports', (SELECT COUNT(*)
+                                        FROM store_operation o
+                                        WHERE o.store_id = s.id
+                                        LIMIT 1),
                             'messages', (SELECT COUNT(*)
                                          FROM store_message m
                                          WHERE m.store_id = s.id
