@@ -124,6 +124,9 @@ class Store
     #[ORM\OneToMany(targetEntity: StoreOperation::class, mappedBy: 'store')]
     private Collection $storeOperations;
 
+    #[ORM\OneToOne(mappedBy: 'store', cascade: ['persist', 'remove'])]
+    private ?StoreOptions $storeOptions = null;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
@@ -900,6 +903,28 @@ class Store
                 $storeOperation->setStore(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStoreOptions(): ?StoreOptions
+    {
+        return $this->storeOptions;
+    }
+
+    public function setStoreOptions(?StoreOptions $storeOptions): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($storeOptions === null && $this->storeOptions !== null) {
+            $this->storeOptions->setStore(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($storeOptions !== null && $storeOptions->getStore() !== $this) {
+            $storeOptions->setStore($this);
+        }
+
+        $this->storeOptions = $storeOptions;
 
         return $this;
     }
