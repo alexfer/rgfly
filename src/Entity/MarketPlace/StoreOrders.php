@@ -2,6 +2,7 @@
 
 namespace App\Entity\MarketPlace;
 
+use App\Entity\MarketPlace\Enum\EnumStoreOrderStatus;
 use App\Repository\MarketPlace\StoreOrdersRepository;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -13,20 +14,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: StoreOrdersRepository::class)]
 class StoreOrders
 {
-    const array STATUS = [
-        'delivered' => 'delivered',
-        'unreached' => 'unreached',
-        'confirmed' => 'confirmed', // in use
-        'processing' => 'processing', // in use
-        'pending' => 'pending',
-        'on-hold' => 'on-hold',
-        'shipped' => 'shipped',
-        'cancelled' => 'cancelled', // in use
-        'refused' => 'refused',
-        'awaiting-return' => 'awaiting-return',
-        'returned' => 'returned',
-    ];
-
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "IDENTITY")]
     #[ORM\Column(type: "integer")]
@@ -47,8 +34,8 @@ class StoreOrders
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $session = null;
 
-    #[ORM\Column(length: 100)]
-    private ?string $status;
+    #[ORM\Column(length: 100, enumType: EnumStoreOrderStatus::class)]
+    private ?EnumStoreOrderStatus $status;
 
     #[ORM\Column]
     private ?DateTimeImmutable $created_at;
@@ -75,7 +62,7 @@ class StoreOrders
     {
         $this->created_at = new DateTimeImmutable();
         $this->storeOrdersProducts = new ArrayCollection();
-        $this->status = self::STATUS['processing'];
+        $this->status = EnumStoreOrderStatus::Processing;
         $this->storeCustomerOrders = new ArrayCollection();
         $this->storeMessages = new ArrayCollection();
     }
@@ -269,18 +256,18 @@ class StoreOrders
     }
 
     /**
-     * @return string|null
+     * @return EnumStoreOrderStatus|null
      */
-    public function getStatus(): ?string
+    public function getStatus(): ?EnumStoreOrderStatus
     {
         return $this->status;
     }
 
     /**
-     * @param string|null $status
+     * @param EnumStoreOrderStatus|null $status
      * @return $this
      */
-    public function setStatus(?string $status): static
+    public function setStatus(?EnumStoreOrderStatus $status): static
     {
         $this->status = $status;
 
