@@ -366,7 +366,7 @@
                                 {{ order.createdAt|date(date_format) }}
                             </td>
                             <td class="px-6 py-4 capitalize">
-                                {{ order.status }}
+                                {{ order.status.name }}
                             </td>
                             <td class="px-6 py-4">
                                 {{ order.total|amount_format }}<small
