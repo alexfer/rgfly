@@ -89,9 +89,7 @@
         </thead>
         <tbody>
         {% for orderProduct in order.storeOrdersProducts %}
-            {% set discount = orderProduct.product.discount %}
-            {% set cost = orderProduct.product.cost  + orderProduct.product.fee %}
-            {% set amount = (cost - ((cost * discount) - discount)/100) %}
+            {% set price = discount(orderProduct.product.cost, orderProduct.product.storeProductDiscount.value, orderProduct.product.fee, orderProduct.quantity, orderProduct.product.storeProductDiscount.unit) %}#}
             <tr>
                 <td class="px-6 py-3 border border-slate-100">{{ loop.index }}</td>
                 <td class="px-6 py-3 border border-slate-100">{{ orderProduct.product.sku }}</td>
@@ -102,7 +100,9 @@
                 <td class="px-6 py-3 border border-slate-100 text-end">{{ orderProduct.product.cost|amount_format }}{{ order.store.currency|currency }}</td>
                 <td class="px-6 py-3 border border-slate-100 text-end">{{ orderProduct.product.fee|amount_format }}{{ order.store.currency|currency }}</td>
                 <td class="px-6 py-3 border border-slate-100 text-end">{{ orderProduct.quantity }}</td>
-                <td class="px-6 py-3 border border-slate-100 text-end">{{ discount }}<small>%</small></td>
+                <td class="px-6 py-3 border border-slate-100 text-end">
+                    {{ orderProduct.product.storeProductDiscount.value|amount_format }}<small>{{ orderProduct.product.storeProductDiscount.unit|convert(order.store.currency|currency) }}
+                </td>
                 <td class="px-6 py-3 border border-slate-100 text-end">
                     {{ (amount * orderProduct.quantity)|amount_format }}{{ order.store.currency|currency }}
                 </td>

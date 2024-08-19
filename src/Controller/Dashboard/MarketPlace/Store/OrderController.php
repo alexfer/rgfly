@@ -3,6 +3,7 @@
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
 use App\Entity\MarketPlace\{Store, StoreOrders};
+use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Service\MarketPlace\Currency;
 use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreInterface;
 use App\Service\MarketPlace\StoreTrait;
@@ -21,7 +22,6 @@ class OrderController extends AbstractController
 
     /**
      * @param UserInterface $user
-     * @param Request $request
      * @param EntityManagerInterface $manager
      * @return Response
      * @throws Exception
@@ -29,7 +29,6 @@ class OrderController extends AbstractController
     #[Route('', name: 'app_dashboard_market_place_order_stores')]
     public function index(
         UserInterface          $user,
-        Request                $request,
         EntityManagerInterface $manager,
     ): Response
     {
@@ -93,12 +92,23 @@ class OrderController extends AbstractController
 
         $order = $em->getRepository(StoreOrders::class)->findOneBy(['store' => $store, 'number' => $request->get('number')]);
 
+        if($order->getStatus() != StoreOrders::STATUS['confirmed']) {
+            return $this->redirectToRoute('app_dashboard_market_place_order_store_current', [
+                'store' => $store->getId(),
+            ]);
+        }
+
         $itemSubtotal = [];
 
         foreach ($order->getStoreOrdersProducts() as $item) {
-            $cost = round($item->getProduct()->getCost(), 2) + round($item->getProduct()->getFee(), 2);
-            $discount = $item->getProduct()->getDiscount();
-            $itemSubtotal[] = $item->getQuantity() * ($cost - (($cost * $discount) - $discount) / 100);
+            $discount = MarketPlaceHelper::discount(
+                $item->getProduct()->getCost(),
+                $item->getProduct()->getStoreProductDiscount()->getValue(),
+                $item->getProduct()->getFee(),
+                $item->getQuantity(),
+                $item->getProduct()->getStoreProductDiscount()->getUnit()
+            );
+            $itemSubtotal[] = $discount;
         }
 
         return $this->render('dashboard/content/market_place/order/order.html.twig', [

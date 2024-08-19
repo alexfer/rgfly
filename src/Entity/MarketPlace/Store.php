@@ -907,11 +907,18 @@ class Store
         return $this;
     }
 
+    /**
+     * @return StoreOptions|null
+     */
     public function getStoreOptions(): ?StoreOptions
     {
         return $this->storeOptions;
     }
 
+    /**
+     * @param StoreOptions|null $storeOptions
+     * @return $this
+     */
     public function setStoreOptions(?StoreOptions $storeOptions): static
     {
         // unset the owning side of the relation if necessary

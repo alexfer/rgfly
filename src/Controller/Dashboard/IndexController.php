@@ -78,7 +78,10 @@ class IndexController extends AbstractController
 
         if ($store) {
             $products = $em->getRepository(StoreProduct::class)->findBy(['store' => $store], ['updated_at' => 'DESC'], self::$limit, self::$offset);
-            $orders = $em->getRepository(StoreOrders::class)->findBy(['store' => $store], ['id' => 'DESC'], self::$limit, self::$offset);
+            $orders = $em->getRepository(StoreOrders::class)->findBy([
+                'store' => $store,
+                'status' => StoreOrders::STATUS['confirmed'],
+            ], ['id' => 'DESC'], self::$limit, self::$offset);
             $messages = $em->getRepository(StoreMessage::class)->fetchAll($store, 'low', self::$offset, self::$limit);
 
             $ids = array_map(function ($order) {
