@@ -50,6 +50,16 @@
             </li>
             <li class="me-2 flex-auto text-center" role="presentation">
                 <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                        id="options-tab"
+                        data-tabs-target="#market-options"
+                        type="button"
+                        role="tab"
+                        aria-controls="options"
+                        aria-selected="{{ _tab == 'options' ? 'true' : 'false' }}">{{ 'entry.form.store_options'|trans }}
+                </button>
+            </li>
+            <li class="me-2 flex-auto text-center" role="presentation">
+                <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                         id="market-billing-tab"
                         data-tabs-target="#market-billing"
                         type="button"
@@ -128,6 +138,22 @@
                         {{ form_label(form.description, 'label.form.store_description', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
                         {{ form_widget(form.description, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', rows: 6, placeholder: 'label.form.store_description'}}) }}
                         <span class="mt-0.5 block text-sm text-red-500">{{ form_errors(form.description) }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hidden p-4"
+                 id="market-options"
+                 role="tabpanel"
+                 aria-labelledby="options-tab">
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="flex flex-col flex-wrap mb-3">
+                        <div class="block mb-4 text-sm font-medium text-gray-900 dark:text-white">{{ 'entry.form.store_options'|trans }}</div>
+                        <label for="{{ form.backupSchedule.vars.id }}"
+                               class="inline-flex items-center mb-5 cursor-pointer">
+                            {{ form_widget(form.backupSchedule, {attr: {class: 'sr-only peer'}}) }}
+                            <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                            <span class="ms-3 relative text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.backupSchedule.vars.label|trans }}</span>
+                        </label>
                     </div>
                 </div>
             </div>
@@ -260,5 +286,12 @@
             editorplaceholder: '{{ 'label.form.store_description'|trans }}',
             removePlugins: 'simage,image,youtube,html5video,iframe,uicolor,videodetector,preview',
         });
+
+        // const options = document.querySelector('[id^="store_storeOptions_"]');
+        // const label = document.getElementById('sb-label');
+        // options.addEventListener('change', () => {
+        //     options.value = options.value === '0' ? '1' : '0';
+        //     label.textContent = document.getElementById('label-' + options.value).textContent;
+        // });
     </script>
 {% endblock %}

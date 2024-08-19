@@ -31,16 +31,26 @@ class StoreOperation
         $this->created_at = new \DateTimeImmutable();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return EnumOperation|null
+     */
     public function getFormat(): ?EnumOperation
     {
         return $this->format;
     }
 
+    /**
+     * @param EnumOperation $format
+     * @return $this
+     */
     public function setFormat(EnumOperation $format): static
     {
         $this->format = $format;
@@ -48,11 +58,18 @@ class StoreOperation
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getRevision(): ?string
     {
         return $this->revision;
     }
 
+    /**
+     * @param string $revision
+     * @return $this
+     */
     public function setRevision(string $revision): static
     {
         $this->revision = $revision;
@@ -60,11 +77,18 @@ class StoreOperation
         return $this;
     }
 
+    /**
+     * @return Store|null
+     */
     public function getStore(): ?Store
     {
         return $this->store;
     }
 
+    /**
+     * @param Store|null $store
+     * @return $this
+     */
     public function setStore(?Store $store): static
     {
         $this->store = $store;
@@ -72,11 +96,18 @@ class StoreOperation
         return $this;
     }
 
+    /**
+     * @return \DateTimeImmutable|null
+     */
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->created_at;
     }
 
+    /**
+     * @param \DateTimeImmutable $created_at
+     * @return $this
+     */
     public function setCreatedAt(\DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;

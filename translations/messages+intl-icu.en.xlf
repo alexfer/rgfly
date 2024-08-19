@@ -511,6 +511,34 @@
                 <source>table.header.title</source>
                 <target>Title</target>
             </trans-unit>
+            <trans-unit id="table.header.format">
+                <source>table.header.format</source>
+                <target>Format</target>
+            </trans-unit>
+            <trans-unit id="table.header.revision">
+                <source>table.header.revision</source>
+                <target>Revision</target>
+            </trans-unit>
+            <trans-unit id="table.header.download">
+                <source>table.header.download</source>
+                <target>Download</target>
+            </trans-unit>
+            <trans-unit id="table.header.upload">
+                <source>table.header.upload</source>
+                <target>Upload</target>
+            </trans-unit>
+            <trans-unit id="text.schedule.backup">
+                <source>text.schedule.backup</source>
+                <target>Schedule backup</target>
+            </trans-unit>
+            <trans-unit id="text.schedule.backup.on">
+                <source>text.schedule.backup.on</source>
+                <target>On</target>
+            </trans-unit>
+            <trans-unit id="text.schedule.backup.off">
+                <source>text.schedule.backup.off</source>
+                <target>Off</target>
+            </trans-unit>
             <trans-unit id="table.header.related">
                 <source>table.header.related</source>
                 <target>Related to</target>
@@ -1354,6 +1382,10 @@
                 <source>entry.form.store_details</source>
                 <target>Store Details</target>
             </trans-unit>
+            <trans-unit id="entry.form.store_options">
+                <source>entry.form.store_options</source>
+                <target>Options</target>
+            </trans-unit>
             <trans-unit id="user.entry.updated">
                 <source>user.entry.updated</source>
                 <target><![CDATA[Entry has been updated successfully.]]></target>
@@ -1550,6 +1582,10 @@
             <trans-unit id="label.form.name">
                 <source>label.form.name</source>
                 <target>Your Name</target>
+            </trans-unit>
+            <trans-unit id="label.schedule.backup">
+                <source>label.schedule.backup</source>
+                <target>Schedule backup</target>
             </trans-unit>
             <trans-unit id="label.form.coupon_name">
                 <source>label.form.coupon_name</source>

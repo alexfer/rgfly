@@ -56,4 +56,12 @@ class SocialType extends AbstractType
             'data_class' => StoreSocial::class,
         ]);
     }
+
+    /**
+     * @return string
+     */
+    public function getParent(): string
+    {
+        return OptionsType::class;
+    }
 }

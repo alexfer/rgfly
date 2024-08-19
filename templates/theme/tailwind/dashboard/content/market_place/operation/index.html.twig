@@ -29,7 +29,7 @@
                         </a>
                     </th>
                     <td class="text-center px-6 py-3">0</td>
-                    <td class="text-center px-6 py-3">0</td>
+                    <td class="text-center px-6 py-3">{{ store.exports }}</td>
                     <td class="text-center px-6 py-3">{{ store.created|date(date_format) }}</td>
                     <td class="text-center px-6 py-3">
                         <a role="button"
@@ -61,5 +61,4 @@
             </tbody>
         </table>
     </div>
-    <input type="hidden" name="flash-success" value="{{ _message[0]|default([]|json_encode) }}">
 {% endblock %}
