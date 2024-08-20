@@ -5,23 +5,60 @@
 {% block title_content %}{{ _title_extend }}{% endblock %}
 
 {% block content %}
-    <form method="post" class="py-4 ps-4 flex justify-between"
+    <form method="post" class=""
           action="{{ path('app_dashboard_market_place_operation_export', {'store': app.request.get('store')}) }}">
-        <label class="inline-flex items-start cursor-pointer" for="backup">
-            <input type="checkbox" name="backup" id="backup" value="{{ store.storeOptions.backupSchedule is not null ? store.storeOptions.backupSchedule: 1 }}" class="sr-only peer">
-            <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-            <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{ 'text.schedule.backup'|trans }}</span>
-        </label>
         <input type="hidden" name="format" value="xml">
-        <button type="submit" class="text-sm text-white bg-blue-700 px-2.5 py-1.5 rounded hover:bg-blue-800">
-            <svg class="w-5 h-5 text-white dark:text-white inline-flex pe-0.5" aria-hidden="true"
-                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M19 10V4a1 1 0 0 0-1-1H9.914a1 1 0 0 0-.707.293L5.293 7.207A1 1 0 0 0 5 7.914V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2M10 3v4a1 1 0 0 1-1 1H5m5 6h9m0 0-2-2m2 2-2 2"></path>
-            </svg>
-            {{ 'text.export'|trans }}
-        </button>
+        <div class="flex justify-end">
+            <button type="submit" class="text-sm text-white bg-blue-700 px-2.5 py-1.5 rounded hover:bg-blue-800">
+                <svg class="w-5 h-5 text-white dark:text-white inline-flex pe-0.5" aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M19 10V4a1 1 0 0 0-1-1H9.914a1 1 0 0 0-.707.293L5.293 7.207A1 1 0 0 0 5 7.914V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2M10 3v4a1 1 0 0 1-1 1H5m5 6h9m0 0-2-2m2 2-2 2"></path>
+                </svg>
+                {{ 'text.export'|trans }}
+            </button>
+        </div>
         <input type="hidden" name="flash-success" value="{{ _message[0]|default([]|json_encode) }}">
+        <div id="options-block" data-accordion="collapse"
+             data-active-classes="my-2.5 bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+             data-inactive-classes="text-gray-500 my-2 bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+            <h2 id="options">
+                <button type="button"
+                        class="flex items-center justify-between w-full py-2 font-medium rtl:text-right text-gray-500 rounded-md dark:text-gray-400 gap-3"
+                        data-accordion-target="#options-body" aria-expanded="true"
+                        aria-controls="options-body">
+                <span class="ps-3 flex font-semibold">
+                    <svg class="w-5 h-5 me-2 shrink-0" aria-hidden="true"
+                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                         viewBox="0 0 24 24">
+                        <path d="M5 13.17a3.001 3.001 0 0 0 0 5.66V20a1 1 0 1 0 2 0v-1.17a3.001 3.001 0 0 0 0-5.66V4a1 1 0 0 0-2 0v9.17ZM11 20v-9.17a3.001 3.001 0 0 1 0-5.66V4a1 1 0 1 1 2 0v1.17a3.001 3.001 0 0 1 0 5.66V20a1 1 0 1 1-2 0Zm6-1.17V20a1 1 0 1 0 2 0v-1.17a3.001 3.001 0 0 0 0-5.66V4a1 1 0 1 0-2 0v9.17a3.001 3.001 0 0 0 0 5.66Z"></path>
+                    </svg>
+                    {{ 'entry.form.store_options'|trans }}
+                </span>
+                    <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0 me-3" aria-hidden="true"
+                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M9 5 5 1 1 5"></path>
+                    </svg>
+                </button>
+            </h2>
+            <div id="options-body" class="hidden mb-4" aria-labelledby="options">
+                <div class="py-5 border p-4 rounded-md bg-gray-50 border-gray-200 dark:bg-gray-700 dark:border-gray-700">
+                    <h3 class="text-md mb-4 font-semibold text-gray-800 dark:text-white">{{ 'entry.form.data_fields'|trans }}</h3>
+                    <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                        {% for option in options %}
+                            <div>
+                                <label for="{{ option }}" class="inline-flex items-center mb-5 cursor-pointer">
+                                    <input type="checkbox" name="option[{{ option }}]" id="{{ option }}" value="{{ option }}" class="sr-only peer" checked>
+                                    <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 dark:peer-focus:ring-green-800 rounded-xl peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                                    <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300 capitalize">{{ option|replace({'_': ' '}) }}</span>
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
     {% for message in app.flashes('danger') %}
         <div class="flex items-center p-4 mb-4 text-red-900 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"

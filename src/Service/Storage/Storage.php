@@ -101,7 +101,6 @@ class Storage implements StorageInterface
      */
     public function makeDirectory(string $directory): void
     {
-
         if (!$this->existsDirectory($this->storage . '/' . $directory)) {
             try {
                 $this->filesystem->mkdir($this->storage . '/' . $directory, $this->permission);
