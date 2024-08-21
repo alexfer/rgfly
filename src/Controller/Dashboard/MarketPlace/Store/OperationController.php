@@ -43,14 +43,21 @@ class OperationController extends AbstractController
      * @return void
      */
     #[Route('/{store}/import', name: 'app_dashboard_market_place_operation_import', methods: ['GET', 'POST'])]
-    public function import()
+    public function import(
+        Request        $request,
+        StoreInterface $serve,
+    ): Response
     {
-
+        $store = $this->store($serve, $this->getUser());
+        return $this->render('dashboard/content/market_place/operation/import.html.twig', [
+            'store' => $store,
+        ]);
     }
 
     /**
      * @param Request $request
      * @param OperationInterface $operation
+     * @param StoreInterface $serve
      * @return Response
      */
     #[Route('/{store}/export', name: 'app_dashboard_market_place_operation_export', methods: ['GET', 'POST'])]
@@ -64,17 +71,20 @@ class OperationController extends AbstractController
 
         if ($request->isMethod('POST')) {
 
-            $format = $request->request->get('format');
-            $operation = $operation->export(StoreProduct::class, $format, $store);
+            $options = $request->request->all();
+            $operation = $operation->export(StoreProduct::class, $options, $store);
 
             if ($operation) {
-                return $this->redirectToRoute('app_dashboard_market_place_operation');
+                return $this->redirectToRoute('app_dashboard_market_place_operation_export', [
+                    'store' => $store->getId(),
+                ]);
             }
         }
 
         return $this->render('dashboard/content/market_place/operation/export.html.twig', [
             'items' => $operation->fetch($store),
             'store' => $store,
+            'options' => $operation->metadata(),
         ]);
     }
 

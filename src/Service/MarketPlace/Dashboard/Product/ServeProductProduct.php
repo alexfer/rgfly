@@ -109,7 +109,7 @@ class ServeProductProduct extends Handle implements ServeProductInterface
         }
 
         $discount->setValue($this->post['product']['value'] ?: '0.00')
-            ->setUnit(EnumStoreProductDiscount::from($this->post['product']['unit']));
+            ->setUnit($this->post['product']['unit']);
 
         $this->em->persist($discount);
         $this->em->flush();

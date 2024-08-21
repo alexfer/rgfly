@@ -139,8 +139,6 @@ class ProductController extends AbstractController
      * @param ServeProductInterface $serveProduct
      * @param ServeStoreInterface $serveStore
      * @return Response
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     #[Route('/create/{store}/{tab}', name: 'app_dashboard_market_place_create_product', methods: ['GET', 'POST'])]
     public function create(

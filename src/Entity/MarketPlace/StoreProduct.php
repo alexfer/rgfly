@@ -756,11 +756,18 @@ class StoreProduct
         return $this;
     }
 
+    /**
+     * @return StoreProductDiscount|null
+     */
     public function getStoreProductDiscount(): ?StoreProductDiscount
     {
         return $this->storeProductDiscount;
     }
 
+    /**
+     * @param StoreProductDiscount|null $storeProductDiscount
+     * @return $this
+     */
     public function setStoreProductDiscount(?StoreProductDiscount $storeProductDiscount): static
     {
         // unset the owning side of the relation if necessary
