@@ -50,7 +50,10 @@ class Operation extends Handler implements OperationInterface
 
         switch ($format) {
             case EnumOperation::Xml->value:
-                $this->productXml($file, $class, $revision);
+                $this->xml($file, $class, $revision);
+                break;
+            case EnumOperation::Csv->value:
+                $this->csv($file, $class, $revision);
                 break;
             default:
                 throw new \RuntimeException(sprintf('Unknown operation format "%s"', $format));

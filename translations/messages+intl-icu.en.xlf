@@ -2210,6 +2210,18 @@
                 <source>restriction.access</source>
                 <target><![CDATA[Restriction access. You can create in your plan only one store. Please contact via email to know how to use additional store. <a href="mailto:{ email }">{ email }</a>.]]></target>
             </trans-unit>
+            <trans-unit id="option.select.all">
+                <source>option.select.all</source>
+                <target>Select all</target>
+            </trans-unit>
+            <trans-unit id="label.xml">
+                <source>label.xml</source>
+                <target>Format XML</target>
+            </trans-unit>
+            <trans-unit id="label.csv">
+                <source>label.csv</source>
+                <target>Format CSV</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

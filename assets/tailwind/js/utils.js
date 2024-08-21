@@ -28,11 +28,13 @@ const discount = document.querySelector('[id$="_discount"]');
 
 if (discount) {
     const output = document.querySelector(".discount-output");
-    output.textContent = discount.value + '%';
-
-    discount.addEventListener("input", () => {
+    if(output) {
         output.textContent = discount.value + '%';
-    });
+
+        discount.addEventListener("input", () => {
+            output.textContent = discount.value + '%';
+        });
+    }
 }
 
 if (any) {

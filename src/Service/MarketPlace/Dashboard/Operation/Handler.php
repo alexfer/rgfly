@@ -5,7 +5,11 @@ namespace App\Service\MarketPlace\Dashboard\Operation;
 use App\Entity\MarketPlace\Enum\EnumOperation;
 use App\Entity\MarketPlace\Store;
 use App\Entity\MarketPlace\StoreOperation;
+use App\Service\MarketPlace\Dashboard\Operation\Handler\CsvFactory;
+use App\Service\MarketPlace\Dashboard\Operation\Handler\XmlFactory;
 use Doctrine\ORM\EntityManagerInterface;
+use League\Csv\CannotInsertRecord;
+use League\Csv\Exception;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -38,108 +42,42 @@ class Handler
      * @param int $revision
      * @return void
      */
-    protected function productXml(string $file, string $class, int $revision): void
+    protected function xml(string $file, string $class, int $revision): void
     {
-        $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><products/>');
-
         $collection = $this->instance($class);
         $option = $this->options['option'];
 
-        foreach ($collection as $item) {
-            $createdAt = $item->getCreatedAt();
-            $child = $xml->addChild('product');
-            $child->addChild('id', (string)$item->getId());
+        $xml = new XmlFactory('products');
+        $xml->cacheManager = $this->cacheManager;
+        $xml->params = $this->params;
 
-            if (isset($option['name'])) {
-                $child->addChild('name', str_replace('&', 'and', $item->getName()));
-            }
+        $xml = $xml->build($collection, $option);
 
-            if (isset($option['short_name'])) {
-                $child->addChild('shortName', str_replace('&', 'and', $item->getShortName()));
-            }
-
-            if (isset($option['price'])) {
-                $child->addChild('price', number_format($item->getCost() + $item->getFee(), 2, '.', ' '));
-            }
-
-            if (isset($option['quantity'])) {
-                $child->addChild('quantity', (string)$item->getQuantity());
-            }
-
-            if (isset($option['description'])) {
-                $child->addChild('description', '<![CDATA[' . strip_tags($item->getDescription()) . ']]>');
-            }
-
-            if (isset($option['sku'])) {
-                $child->addChild('sku', $item->getSku());
-            }
-
-            if (isset($option['fee'])) {
-                $child->addChild('fee', (string)$item->getFee());
-            }
-
-            if (isset($option['cost'])) {
-                $child->addChild('cost', (string)$item->getCost());
-            }
-
-            if (isset($option['pckg_discount'])) {
-                $package = $child->addChild('package', null);
-                $package->addChild('discount', (string)$item->getPckgDiscount());
-                $package->addChild('quantity', (string)$item->getPckgQuantity());
-            }
-
-            if (isset($option['image'])) {
-                $image = $child->addChild('image', null);
-                $images = $item->getStoreProductAttaches();
-
-                foreach ($images as $attach) {
-                    $image->addAttribute('size', (string)$attach->getAttach()->getSize());
-                    $image->addAttribute('mime', $attach->getAttach()->getMime());
-                    $image->addChild('name', $attach->getAttach()->getName());
-                    $url = sprintf('%s/%d', $this->params->get('product_storage_dir'), $item->getId());
-                    $picture = $this->cacheManager->getBrowserPath(parse_url($url . '/' . $attach->getAttach()->getName(), PHP_URL_PATH), 'product_view', [], null);
-                    $image->addChild('url', $picture);
-                }
-            }
-
-            if (isset($option['category'])) {
-                $category = $child->addChild('category', null);
-                $categories = $item->getStoreCategoryProducts();
-
-                foreach ($categories as $_category) {
-                    $category->addChild('name', str_replace('&', 'and', $_category->getCategory()->getName()));
-                    $category->addChild('parent', str_replace('&', 'and', $_category->getCategory()->getParent()->getName()));
-                }
-            }
-
-            if (isset($option['supplier'])) {
-                $supplier = $child->addChild('supplier', null);
-                $supplier->addChild('name', $item->getStoreProductSupplier()?->getSupplier()?->getName());
-                $supplier->addChild('country', $item->getStoreProductSupplier()?->getSupplier()?->getCountry());
-            }
-
-            if (isset($option['manufacturer'])) {
-                $manufacturer = $child->addChild('manufacturer', null);
-                $manufacturer->addChild('name', $item->getStoreProductManufacturer()?->getManufacturer()?->getName());
-            }
-
-            if (isset($option['brand'])) {
-                $brand = $child->addChild('brand', null);
-                $brand->addChild('name', $item->getStoreProductBrand()?->getBrand()?->getName());
-            }
-
-            if (isset($option['discount'])) {
-                $discount = $child->addChild('discount', null);
-                $discount->addChild('value', (string)$item->getStoreProductDiscount()->getValue());
-                $discount->addChild('unit', $item->getStoreProductDiscount()->getUnit());
-            }
-
-            if (isset($option['created_at'])) {
-                $child->addChild('createdAt', $createdAt->format('Y-m-d H:i:s'));
-            }
-        }
         $this->save($revision, $this->options['format']);
-        $this->filesystem->dumpFile($file, html_entity_decode($xml->asXML()));
+        $this->filesystem->dumpFile($file, $xml);
+    }
+
+    /**
+     * @param string $file
+     * @param string $class
+     * @param int $revision
+     * @return void
+     * @throws CannotInsertRecord
+     * @throws Exception
+     */
+    protected function csv(string $file, string $class, int $revision): void
+    {
+        $collection = $this->instance($class);
+        $option = $this->options['option'];
+
+        $csv = new CsvFactory();
+        $csv->cacheManager = $this->cacheManager;
+        $csv->params = $this->params;
+
+        $csv = $csv->build($collection, $option);
+
+        $this->save($revision, $this->options['format']);
+        $this->filesystem->dumpFile($file, $csv);
     }
 
 
