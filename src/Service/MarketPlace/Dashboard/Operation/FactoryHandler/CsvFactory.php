@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\MarketPlace\Dashboard\Operation\Handler;
+namespace App\Service\MarketPlace\Dashboard\Operation\FactoryHandler;
 
 use League\Csv\CannotInsertRecord;
 use League\Csv\Exception;
@@ -11,8 +11,14 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class CsvFactory
 {
+    /**
+     * @var CacheManager
+     */
     public CacheManager $cacheManager;
 
+    /**
+     * @var array|string[]
+     */
     private array $header = [
         'Id',
         'Name',
@@ -45,12 +51,15 @@ class CsvFactory
     private Writer $writer;
 
     /**
+     * @param string $delimiter
+     * @param string $enclosure
+     * @param string $escape
      * @throws InvalidArgument
      */
-    public function __construct()
+    public function __construct(string $delimiter = ',', string $enclosure = '"', string $escape = '\\')
     {
         $this->writer = Writer::createFromString();
-        $this->writer->setDelimiter(',');
+        $this->writer->setDelimiter($delimiter);
     }
 
     /**
