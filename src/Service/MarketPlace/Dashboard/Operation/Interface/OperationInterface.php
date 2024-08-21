@@ -10,19 +10,19 @@ interface OperationInterface
 {
     /**
      * @param string $class
-     * @param string $format
+     * @param array $options
      * @param Store $store
      * @return bool
      */
-    public function export(string $class, string $format, Store $store): bool;
+    public function export(string $class, array $options, Store $store): bool;
 
     /**
      * @param string $class
-     * @param string $format
+     * @param array $options
      * @param Store $store
      * @return bool
      */
-    public function import(string $class, string $format, Store $store): bool;
+    public function import(string $class, array $options, Store $store): bool;
 
     /**
      * @param Store $store
@@ -37,4 +37,9 @@ interface OperationInterface
      * @return string
      */
     public function storage(string $format = null): string;
+
+    /**
+     * @return array
+     */
+    public function metadata(): array;
 }

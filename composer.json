@@ -34,6 +34,7 @@
         "elasticsearch/elasticsearch": "^8.14",
         "endroid/pdf": "^1.5",
         "knplabs/knp-paginator-bundle": "^v6.4.0",
+        "league/csv": "^9.16",
         "liip/imagine-bundle": "^2.13.1",
         "phpdocumentor/reflection-docblock": "^5.4",
         "phpstan/phpdoc-parser": "^1.29.1",
