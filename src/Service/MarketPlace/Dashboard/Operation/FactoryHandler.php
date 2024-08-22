@@ -5,8 +5,8 @@ namespace App\Service\MarketPlace\Dashboard\Operation;
 use App\Entity\MarketPlace\Enum\EnumOperation;
 use App\Entity\MarketPlace\Store;
 use App\Entity\MarketPlace\StoreOperation;
-use App\Service\MarketPlace\Dashboard\Operation\Handler\CsvFactory;
-use App\Service\MarketPlace\Dashboard\Operation\Handler\XmlFactory;
+use App\Service\MarketPlace\Dashboard\Operation\FactoryHandler\CsvFactory;
+use App\Service\MarketPlace\Dashboard\Operation\FactoryHandler\XmlFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\CannotInsertRecord;
 use League\Csv\Exception;
@@ -14,7 +14,7 @@ use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-class Handler
+class FactoryHandler
 {
     protected array $options;
 
@@ -53,8 +53,7 @@ class Handler
 
         $xml = $xml->build($collection, $option);
 
-        $this->save($revision, $this->options['format']);
-        $this->filesystem->dumpFile($file, $xml);
+        $this->store($revision, $this->options['format'], $file, $xml);
     }
 
     /**
@@ -75,9 +74,7 @@ class Handler
         $csv->params = $this->params;
 
         $csv = $csv->build($collection, $option);
-
-        $this->save($revision, $this->options['format']);
-        $this->filesystem->dumpFile($file, $csv);
+        $this->store($revision, $this->options['format'], $file, $csv);
     }
 
 
@@ -86,7 +83,7 @@ class Handler
      * @param $format
      * @return void
      */
-    private function save(int $revision, $format): void
+    private function save(int $revision, string $format): void
     {
         $operation = new StoreOperation();
         $operation->setFormat(EnumOperation::from($format))
@@ -94,6 +91,20 @@ class Handler
             ->setStore($this->store);
         $this->manager->persist($operation);
         $this->manager->flush();
+    }
+
+    /**
+     * @param int $revision
+     * @param string $format
+     * @param string $file
+     * @param string $data
+     * @return void
+     */
+    private function store(int $revision, string $format, string $file, string $data): void
+    {
+        $this->save($revision, $format);
+        $this->filesystem->dumpFile($file, $data);
+
     }
 
     /**
