@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\MarketPlace\Dashboard\Operation\Handler;
+namespace App\Service\MarketPlace\Dashboard\Operation\FactoryHandler;
 
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -26,9 +26,10 @@ class XmlFactory
      * @param string $root
      * @throws \Exception
      */
-    public function __construct(string $root)
+    public function __construct(string $root = 'products')
     {
-        $this->xml = new \SimpleXMLElement(sprintf('<?xml version="1.0" encoding="utf-8"?><%s/>', $root));
+        $xml = sprintf('<?xml version="1.0" encoding="utf-8"?><%s/>', $root);
+        $this->xml = new \SimpleXMLElement($xml);
     }
 
     /**

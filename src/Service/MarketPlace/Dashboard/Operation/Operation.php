@@ -10,8 +10,13 @@ use App\Entity\MarketPlace\StoreOperation;
 use App\Entity\MarketPlace\StoreProduct;
 use App\Service\MarketPlace\Dashboard\Operation\Interface\OperationInterface;
 
-class Operation extends Handler implements OperationInterface
+class Operation extends FactoryHandler implements OperationInterface
 {
+
+    /**
+     * @var array|string[]
+     */
+    private array $formats = ['csv', 'xml'];
 
     /**
      * @param string $class
@@ -48,17 +53,12 @@ class Operation extends Handler implements OperationInterface
         $format = $this->options['format'];
         $file = sprintf('%s/%d.%s', $this->storage(), $revision, $format);
 
-        switch ($format) {
-            case EnumOperation::Xml->value:
-                $this->xml($file, $class, $revision);
-                break;
-            case EnumOperation::Csv->value:
-                $this->csv($file, $class, $revision);
-                break;
-            default:
-                throw new \RuntimeException(sprintf('Unknown operation format "%s"', $format));
+        if (!in_array($format, $this->formats)) {
+            throw new \RuntimeException(sprintf('Unknown operation format "%s"', $format));
         }
 
+        $method = EnumOperation::from($format)->value;
+        $this->$method($file, $class, $revision);
 
         return $this->filesystem->exists($file);
     }
