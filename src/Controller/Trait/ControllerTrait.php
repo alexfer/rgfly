@@ -1,11 +1,11 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Controller\Trait;
 
 use App\Entity\MarketPlace\StoreCustomer;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 trait ControllerTrait
 {
@@ -23,10 +23,10 @@ trait ControllerTrait
     }
 
     /**
-     * @param $user
+     * @param UserInterface $user
      * @return StoreCustomer|null
      */
-    protected function getCustomer($user): ?StoreCustomer
+    protected function getCustomer(UserInterface $user): ?StoreCustomer
     {
         return $this->em->getRepository(StoreCustomer::class)->findOneBy(['member' => $user]);
     }

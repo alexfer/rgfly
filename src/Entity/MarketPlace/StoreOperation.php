@@ -1,12 +1,14 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity\MarketPlace;
 
 use App\Entity\MarketPlace\Enum\EnumOperation;
 use App\Repository\MarketPlace\StoreOperationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use FontLib\Table\Type\name;
 
 #[ORM\Entity(repositoryClass: StoreOperationRepository::class)]
+#[ORM\Index(name: 'revision_idx', columns: ['revision'])]
 class StoreOperation
 {
     #[ORM\Id]
