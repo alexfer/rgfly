@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Form\Type\Dashboard\MarketPlace;
 
@@ -19,7 +19,7 @@ class OptionsType extends AbstractType
     {
         $builder->add('backupSchedule', CheckboxType::class, [
             'label' => 'label.schedule.backup',
-            'data' => (bool)$options['data']->getStoreOptions()->getBackupSchedule(),
+            'data' => $options['data']->getStoreOptions() && $options['data']->getStoreOptions()->getBackupSchedule(),
             'mapped' => false,
             'required' => false,
         ]);
