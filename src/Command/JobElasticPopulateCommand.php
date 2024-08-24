@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Command\Elastic\ElasticServiceInterface;
 use App\Entity\MarketPlace\StoreProduct;
 use Doctrine\ORM\EntityManagerInterface;
 use Elastic\Elasticsearch\Client;
@@ -16,8 +17,8 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 #[AsCommand(
     name: 'app:populate:indices:job',
-    description: 'Populate indices into elasticsearch',
-    aliases: ['app:elasticsearch:indexing'],
+    description: 'Populate indices into elasticsearch using cron',
+    aliases: ['app:elasticsearch:indexing:job'],
     hidden: false,
 )]
 class JobElasticPopulateCommand extends Command
