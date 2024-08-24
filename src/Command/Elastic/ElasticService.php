@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Command;
+namespace App\Command\Elastic;
 
 use App\Entity\MarketPlace\Store;
 use App\Entity\MarketPlace\StoreCategory;
