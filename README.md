@@ -27,6 +27,7 @@ You should change database configuration
 ```shell
     $ cd projectdir/
     $ cp .env.dist .env
+    $ openssl rand -hex 16 > .encryptionKey # generate key
 ```
 ### 3. Install dependencies use Composer
 Use [Composer](https://getcomposer.org/) install to download and install the package.
