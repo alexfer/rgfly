@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
@@ -40,7 +38,9 @@ class OperationController extends AbstractController
     }
 
     /**
-     * @return void
+     * @param Request $request
+     * @param StoreInterface $serve
+     * @return Response
      */
     #[Route('/{store}/import', name: 'app_dashboard_market_place_operation_import', methods: ['GET', 'POST'])]
     public function import(

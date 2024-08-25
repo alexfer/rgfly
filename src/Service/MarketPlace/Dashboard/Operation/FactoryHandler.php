@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Service\MarketPlace\Dashboard\Operation;
 
@@ -80,7 +80,7 @@ class FactoryHandler
 
     /**
      * @param int $revision
-     * @param $format
+     * @param string $format
      * @return void
      */
     private function save(int $revision, string $format): void
