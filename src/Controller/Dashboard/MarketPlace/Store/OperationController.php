@@ -2,6 +2,7 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
+use App\Entity\MarketPlace\Enum\EnumOperation;
 use App\Entity\MarketPlace\Store;
 use App\Entity\MarketPlace\StoreProduct;
 use App\Service\MarketPlace\Dashboard\Operation\Interface\OperationInterface;
@@ -84,6 +85,7 @@ class OperationController extends AbstractController
         return $this->render('dashboard/content/market_place/operation/export.html.twig', [
             'items' => $operation->fetch($store),
             'store' => $store,
+            'formats' => EnumOperation::cases(),
             'options' => $operation->metadata(),
         ]);
     }

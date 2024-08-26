@@ -1,8 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
-use App\Entity\MarketPlace\{Store, StorePaymentGateway, StorePaymentGatewayStore, StoreSocial};
+use App\Entity\MarketPlace\{Store, StoreOptions, StorePaymentGateway, StorePaymentGatewayStore, StoreSocial};
 use App\Form\Type\Dashboard\MarketPlace\StoreType;
 use App\Service\FileUploader;
 use Doctrine\DBAL\Exception;
@@ -54,7 +54,7 @@ class StoreController extends AbstractController
 
         $stores = $em->getRepository(Store::class)->backdrop_stores($user, $this->offset, self::LIMIT);
 
-        if($stores['result']) {
+        if ($stores['result']) {
             $pagination = $paginator->paginate(
                 $stores['result'],
                 $page,
@@ -152,8 +152,9 @@ class StoreController extends AbstractController
                     return $this->redirectToRoute('app_dashboard_market_place_create_market', ['tab' => $request->get('tab')]);
                 }
 
+                $slug = $slugger->slug($form->get('name')->getData())->lower()->toString();
 
-                $store->setOwner($this->getUser())->setSlug($slugger->slug($form->get('name')->getData())->lower());
+                $store->setOwner($this->getUser())->setSlug($slug);
                 $em->persist($store);
                 $em->flush();
 
@@ -196,6 +197,10 @@ class StoreController extends AbstractController
                 }
 
                 $store->setCc(json_encode($form->get('cc')->getData()));
+
+                $options = new StoreOptions();
+                $options->setStore($store)->setBackupSchedule(0);
+                $em->persist($options);
 
                 $em->persist($store);
                 $em->flush();
@@ -318,7 +323,7 @@ class StoreController extends AbstractController
             }
 
             $store->setCc(json_encode($form->get('cc')->getData()));
-            $store->getStoreOptions()->setBackupSchedule($form->get('backupSchedule')->getData());
+            $store->getStoreOptions()->setBackupSchedule((int)$form->get('backupSchedule')->getData());
 
             $em->persist($store);
             $em->flush();

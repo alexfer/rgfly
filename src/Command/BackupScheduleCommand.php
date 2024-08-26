@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Command;
 
@@ -59,10 +57,12 @@ class BackupScheduleCommand extends Command
         $stores = $this->manager->getRepository(Store::class)->findAll();
 
         foreach ($stores as $store) {
-            $this->operation->export(StoreProduct::class, [
-                'format' => 'xml',
-                'option' => $this->options,
-            ], $store);
+            if ($store->getStoreOptions()->getBackupSchedule() === 1) {
+                $this->operation->export(StoreProduct::class, [
+                    'format' => 'xml',
+                    'option' => $this->options,
+                ], $store);
+            }
         }
 
         return Command::SUCCESS;
