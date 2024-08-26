@@ -40,32 +40,28 @@
                     </svg>
                 </button>
             </h2>
-            {# needs hidden class #}
             <div id="options-body" class="hidden mb-4" aria-labelledby="options">
                 <div class="py-5 border p-4 rounded-md bg-gray-50 border-gray-200 dark:bg-gray-700 dark:border-gray-700">
-                    <div class="flex justify-between">
-                        <h3 class="text-md mb-4 font-semibold text-gray-800 dark:text-white">{{ 'entry.form.data_fields'|trans }}</h3>
-                        <div class="grid my-5 grid-cols-2 gap-4">
-                            <div class="flex mb-3 bg-white px-5 items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
-                                <input id="format-xml" type="radio"
-                                       value="xml" name="format"
-                                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" checked>
-                                <label for="format-xml"
-                                       class="w-full cursor-pointer py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ 'label.xml'|trans }}</label>
-                            </div>
-                            <div class="flex mb-3 px-5 bg-white items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
-                                <input id="format-csv" type="radio"
-                                       value="csv" name="format"
-                                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                <label for="format-csv"
-                                       class="w-full cursor-pointer py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ 'label.csv'|trans }}</label>
-                            </div>
+                    <h3 class="text-md mb-4 font-semibold text-gray-800 dark:text-white">{{ 'entry.form.data_fields'|trans }}</h3>
+                    <div class="grid grid-cols-2 gap-6 mb-5 border rounded-md bg-white p-1">
+                        <div class="p-1">
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white sr-only"
+                                   for="format">{{ 'table.header.format'|trans }}</label>
+                            <select name="format" id="format"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500">
+                                {% for format in formats %}
+                                    <option value="{{ format.value }}">{{ format.name }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
-                        <label class="inline-flex items-center mb-5 cursor-pointer" for="select-all">
-                            <input type="checkbox" name="select-all" id="select-all" value="" class="sr-only peer">
-                            <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                            <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{ 'option.select.all'|trans }}</span>
-                        </label>
+                        <div class="flex justify-start items-start p-1">
+                            <label class="inline-flex items-center mt-2 cursor-pointer" for="select-all">
+                                <input type="checkbox" name="select-all" id="select-all" value="" class="sr-only peer"
+                                       checked>
+                                <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{ 'option.select.all'|trans }}</span>
+                            </label>
+                        </div>
                     </div>
                     <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                         {% for option in options %}
