@@ -5,16 +5,21 @@ namespace App\Controller\Dashboard\MarketPlace\Store;
 use App\Entity\MarketPlace\Enum\EnumOperation;
 use App\Entity\MarketPlace\Store;
 use App\Entity\MarketPlace\StoreProduct;
+use App\Service\FileValidator;
+use App\Service\Interface\FileValidatorInterface;
 use App\Service\MarketPlace\Dashboard\Operation\Interface\OperationInterface;
 use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreInterface;
 use App\Service\MarketPlace\StoreTrait;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/dashboard/marker-place/operation')]
 class OperationController extends AbstractController
@@ -40,18 +45,23 @@ class OperationController extends AbstractController
 
     /**
      * @param Request $request
+     * @param ParameterBagInterface $params
      * @param StoreInterface $serve
      * @return Response
      */
     #[Route('/{store}/import', name: 'app_dashboard_market_place_operation_import', methods: ['GET', 'POST'])]
     public function import(
-        Request        $request,
-        StoreInterface $serve,
+        Request               $request,
+        ParameterBagInterface $params,
+        StoreInterface        $serve,
     ): Response
     {
         $store = $this->store($serve, $this->getUser());
+
         return $this->render('dashboard/content/market_place/operation/import.html.twig', [
             'store' => $store,
+            'formats' => array_map(fn($case) => mb_strtoupper($case->value), EnumOperation::cases()),
+            'maxSize' => ini_get('post_max_size'),
         ]);
     }
 
@@ -121,5 +131,32 @@ class OperationController extends AbstractController
         }
 
         return $this->file($file, sprintf("products-%d.%s", $revision, $format));
+    }
+
+    #[Route('/{store}/upload', name: 'app_dashboard_market_place_operation_upload', methods: ['GET', 'POST'])]
+    public function upload(
+        Request               $request,
+        ParameterBagInterface $params,
+        SluggerInterface      $slugger,
+        Filesystem            $filesystem,
+        TranslatorInterface   $translator,
+        StoreInterface        $serveStore,
+    ): Response
+    {
+        $store = $this->store($serveStore, $this->getUser());
+        $storageTmp = $params->get('kernel.project_dir') . '/var/tmp';
+
+
+        if ($request->isMethod('POST')) {
+            $file = $request->files->get('file');
+            $constraint = (new FileValidator())->validate($file, $translator);
+
+            if ($constraint->count() > 0) {
+                return $this->json(['error' => $constraint->get(0)->getMessage()]);
+            }
+
+        }
+
+        return $this->json(['data' => 100], Response::HTTP_OK);
     }
 }

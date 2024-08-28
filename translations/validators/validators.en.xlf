@@ -315,6 +315,10 @@
                 <source>form.picture.not_valid_type</source>
                 <target>The mime type of the file is invalid ({{ type }}). Allowed mime types are {{ types }}.</target>
             </trans-unit>
+            <trans-unit id="form.file.not_valid_type">
+                <source>form.file.not_valid_type</source>
+                <target>The mime type of the file is invalid ({{ type }}). Allowed mime types are {{ types }}.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

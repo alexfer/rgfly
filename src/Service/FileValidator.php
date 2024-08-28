@@ -8,7 +8,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validation;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class ImageValidator implements FileValidatorInterface
+final class FileValidator implements FileValidatorInterface
 {
 
     /**
@@ -21,7 +21,7 @@ final class ImageValidator implements FileValidatorInterface
         $imageConstraints = new Image([
             // Change if needed own size, for instance it can be '2M'
             'maxSize' => ini_get('post_max_size'),
-            'mimeTypes' => ['image/jpeg', 'image/png', 'image/webp'],
+            'mimeTypes' => ['text/csv', 'text/xml', 'application/json'],
             'mimeTypesMessage' => $translator->trans('form.picture.not_valid_type', [], 'validators'),
         ]);
 
