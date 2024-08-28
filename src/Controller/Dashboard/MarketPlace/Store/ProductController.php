@@ -7,7 +7,7 @@ use App\Entity\MarketPlace\{StoreCoupon, StoreProduct, StoreProductAttach};
 use App\Form\Type\Dashboard\MarketPlace\ProductType;
 use App\Security\Voter\ProductVoter;
 use App\Service\FileUploader;
-use App\Service\Interface\ImageValidatorInterface;
+use App\Service\Interface\FileValidatorInterface;
 use App\Service\MarketPlace\Dashboard\Product\Interface\CopyServiceInterface;
 use App\Service\MarketPlace\Dashboard\Product\Interface\ServeProductInterface;
 use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface;
@@ -244,18 +244,18 @@ class ProductController extends AbstractController
      * @param SluggerInterface $slugger
      * @param CacheManager $cacheManager
      * @param ParameterBagInterface $params
-     * @param ImageValidatorInterface $imageValidator
+     * @param FileValidatorInterface $imageValidator
      * @return Response
      */
     #[Route('/attach/{store}/{id}', name: 'app_dashboard_product_attach')]
     public function attach(
-        Request                 $request,
-        TranslatorInterface     $translator,
-        EntityManagerInterface  $em,
-        SluggerInterface        $slugger,
-        CacheManager            $cacheManager,
-        ParameterBagInterface   $params,
-        ImageValidatorInterface $imageValidator,
+        Request                $request,
+        TranslatorInterface    $translator,
+        EntityManagerInterface $em,
+        SluggerInterface       $slugger,
+        CacheManager           $cacheManager,
+        ParameterBagInterface  $params,
+        FileValidatorInterface $imageValidator,
     ): Response
     {
         $file = $request->files->get('file');

@@ -28,7 +28,6 @@ new FlowbiteDatepicker(element, {
         let url = element.getAttribute('data-url');
         date = date.split('.');
         date = date.reverse().join('-');
-        console.log(url + '/' + date);
         window.history.replaceState({}, '', url + '/' + date);
     }
 });

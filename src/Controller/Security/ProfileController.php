@@ -9,7 +9,7 @@ use App\Repository\AttachRepository;
 use App\Repository\UserDetailsRepository;
 use App\Repository\UserRepository;
 use App\Service\FileUploader;
-use App\Service\Interface\ImageValidatorInterface;
+use App\Service\Interface\FileValidatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
@@ -122,21 +122,21 @@ class ProfileController extends AbstractController
      * @param SluggerInterface $slugger
      * @param CacheManager $cacheManager
      * @param ParameterBagInterface $params
-     * @param ImageValidatorInterface $imageValidator
+     * @param FileValidatorInterface $imageValidator
      * @return Response
      * @throws Exception
      */
     #[Route('/profile/attach', name: 'app_profile_attach', methods: ['POST'])]
     public function attach(
-        Request                 $request,
-        TranslatorInterface     $translator,
-        EntityManagerInterface  $em,
-        UserDetailsRepository   $repository,
-        UserInterface           $user,
-        SluggerInterface        $slugger,
-        CacheManager            $cacheManager,
-        ParameterBagInterface   $params,
-        ImageValidatorInterface $imageValidator,
+        Request                $request,
+        TranslatorInterface    $translator,
+        EntityManagerInterface $em,
+        UserDetailsRepository  $repository,
+        UserInterface          $user,
+        SluggerInterface       $slugger,
+        CacheManager           $cacheManager,
+        ParameterBagInterface  $params,
+        FileValidatorInterface $imageValidator,
     ): Response
     {
         $details = $repository->find($user->getId());
