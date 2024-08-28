@@ -2222,6 +2222,14 @@
                 <source>label.csv</source>
                 <target>Format CSV</target>
             </trans-unit>
+            <trans-unit id="html.dragdrop">
+                <source>html.dragdrop</source>
+                <target><![CDATA[<span>Drag and drop</span><span class="text-indigo-600"> or browse </span><span>to upload</span>]]></target>
+            </trans-unit>
+            <trans-unit id="constraint.formats">
+                <source>constraint.formats</source>
+                <target>{ formats } up to { size }</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
