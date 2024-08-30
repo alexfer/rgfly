@@ -79,14 +79,37 @@ class Operation extends FactoryHandler implements OperationInterface
 
     /**
      * @param Store $store
+     * @param bool $imports
      * @param int $offset
      * @param int $limit
      * @return object|array
      */
-    public function fetch(Store $store, int $offset = 0, int $limit = 20): object|array
+    public function fetch(Store $store, bool $imports = false, int $offset = 0, int $limit = 20): object|array
     {
         return $this->manager->getRepository(StoreOperation::class)
-            ->findBy(['store' => $store], ['created_at' => 'DESC'], $limit, $offset);
+            ->fetch($store, $imports, $limit, $offset);
+    }
+
+    /**
+     * @param Store $store
+     * @param int $id
+     * @return StoreOperation
+     */
+    public function find(Store $store, int $id): StoreOperation
+    {
+        return $this->manager->getRepository(StoreOperation::class)->findOneBy(['id' => $id, 'store' => $store]);
+    }
+
+    /**
+     * @param string $file
+     * @param StoreOperation $operation
+     * @return void
+     */
+    public function prune(string $file, StoreOperation $operation): void
+    {
+        $this->filesystem->remove($file);
+        $this->manager->remove($operation);
+        $this->manager->flush();
     }
 
     /**

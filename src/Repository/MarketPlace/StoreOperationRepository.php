@@ -2,6 +2,7 @@
 
 namespace App\Repository\MarketPlace;
 
+use App\Entity\MarketPlace\Store;
 use App\Entity\MarketPlace\StoreOperation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -11,33 +12,31 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class StoreOperationRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, StoreOperation::class);
     }
 
-    //    /**
-    //     * @return StoreOperation[] Returns an array of StoreOperation objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('s.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * @param Store $store
+     * @param bool $imports
+     * @param int $offset
+     * @param int $limit
+     * @return array
+     */
+    public function fetch(Store $store, bool $imports = false, int $offset = 0, int $limit = 25): array
+    {
+        $qb = $this->createQueryBuilder('so');
+        $qb->where('so.store = :store')
+            ->setParameter('store', $store)
+            ->andWhere($imports === true ? 'so.filename IS NOT NULL' : 'so.filename IS NULL')
+            ->orderBy('so.created_at', 'DESC')
+            ->setFirstResult($limit)
+            ->setMaxResults($offset);
 
-    //    public function findOneBySomeField($value): ?StoreOperation
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        return $qb->getQuery()->getResult();
+    }
 }
