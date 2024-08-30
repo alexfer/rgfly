@@ -66,7 +66,6 @@ class JobElasticPopulateCommand extends Command
         $client = $this->client();
         $index = $this->options['index'];
 
-
         $this->elastic->reset($client, $index);
         $io->writeln(strtoupper('deleted'));
         $result = $this->elastic->create($client, $index);
