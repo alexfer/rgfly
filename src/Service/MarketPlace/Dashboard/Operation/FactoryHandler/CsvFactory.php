@@ -22,7 +22,7 @@ class CsvFactory
     private array $header = [
         'Id',
         'Name',
-        'Shor Name',
+        'Short Name',
         'Description',
         'Cost',
         'Fee',
@@ -72,6 +72,7 @@ class CsvFactory
     public function build(array|object $collection, array $option): string
     {
         $this->writer->insertOne($this->header);
+        $data = [];
 
         foreach ($collection as $item) {
 
@@ -86,7 +87,7 @@ class CsvFactory
                 break;
             }
 
-            $this->writer->insertOne([
+            $data[] = [
                 $item->getId(),
                 $item->getName(),
                 $item->getShortName(),
@@ -105,8 +106,10 @@ class CsvFactory
                 $item->getStoreProductBrand()?->getBrand()?->getName(),
                 $item->getStoreProductManufacturer()?->getManufacturer()?->getName(),
                 $createdAt->format('Y-m-d H:i:s')
-            ]);
+            ];
         }
+
+        $this->writer->insertAll($data);
 
         return $this->writer->toString();
     }

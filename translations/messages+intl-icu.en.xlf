@@ -523,6 +523,10 @@
                 <source>table.header.download</source>
                 <target>Download</target>
             </trans-unit>
+            <trans-unit id="table.header.filename">
+                <source>table.header.filename</source>
+                <target>File</target>
+            </trans-unit>
             <trans-unit id="table.header.upload">
                 <source>table.header.upload</source>
                 <target>Upload</target>
@@ -2229,6 +2233,10 @@
             <trans-unit id="constraint.formats">
                 <source>constraint.formats</source>
                 <target>{ formats } up to { size }</target>
+            </trans-unit>
+            <trans-unit id="text.file.uploaded">
+                <source>text.file.uploaded</source>
+                <target>The file has been uploaded successfully.</target>
             </trans-unit>
         </body>
     </file>
