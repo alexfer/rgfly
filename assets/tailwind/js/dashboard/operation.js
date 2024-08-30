@@ -1,11 +1,24 @@
+import './../utils';
+import templateRow from "./template-row";
+import Swal from "sweetalert2";
+import i18next from "i18next";
+import messages from "./../i18n";
+import customCss from "./../customCss";
+import Papa from 'papaparse';
+
 const entry = document.getElementById('file-upload'),
     dropzone = document.getElementById('dropzone'),
     upload = document.getElementById('upload'),
     preview = document.getElementById('preview'),
     progressArea = document.querySelector('.progress-area'),
-    uploadedArea = document.querySelector('.uploaded-area');
+    toastSuccess = document.getElementById('toast-success'),
+    toastDanger = document.getElementById('toast-danger'),
+    uploadedArea = document.querySelector('.uploaded-area'),
+    table = document.getElementById('import-table')
+        .getElementsByTagName('tbody')[0];
 
-const allowed = ['text/xml', 'text/csv'];
+let collection = table.getElementsByClassName('remove');
+let allowed = entry.getAttribute('accept').split(',');
 let xhr = new XMLHttpRequest();
 const formData = new FormData();
 
@@ -24,6 +37,7 @@ dropzone.addEventListener('drop', e => {
     dropzone.classList.remove('bg-yellow-50');
     const file = e.dataTransfer.files[0];
     displayPreview(file);
+    formData.append('file', file);
 });
 
 
@@ -36,18 +50,25 @@ entry.addEventListener('change', e => {
         return false;
     }
     displayPreview(file);
+    //let data = Papa.parse(file, {header: false});
+    Papa.parse(file, {
+        skipEmptyLines: true,
+        complete: function (results) {
+            console.log("Finished:", results.data);
+        }
+    });
+
+
     dropzone.classList.add('bg-yellow-50');
     upload.classList.remove('pointer-events-none');
     formData.append('file', file);
 });
 
-upload.addEventListener('click', e => {
+upload.addEventListener('click', () => {
     xhr.open('POST', dropzone.dataset.url);
+
     xhr.upload.addEventListener('progress', ({loaded, total}) => {
         let fileLoaded = Math.floor((loaded / total) * 100);
-        let fileTotal = Math.floor(total / 1000);
-        let fileSize;
-        (fileTotal < 1024) ? fileSize = fileTotal + ' KB' : fileSize = (loaded / (1024 * 1024)).toFixed(2) + ' MB';
 
         let progressHTML = `<div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">` +
             `<div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: ${fileLoaded}%"> ${fileLoaded}%</div>` +
@@ -57,23 +78,55 @@ upload.addEventListener('click', e => {
         progressArea.innerHTML = progressHTML;
 
         if (loaded === total) {
-            progressArea.innerHTML = null;
-            let uploadedHTML = `${fileSize}`;
             uploadedArea.classList.remove('onprogress');
-            uploadedArea.insertAdjacentHTML('afterbegin', uploadedHTML);
         }
     });
 
     xhr.send(formData);
 
-    xhr.onload = (e) => {
+    xhr.onload = () => {
         const jsonResponse = JSON.parse(xhr.response);
-        console.log(jsonResponse.error);
+
+        if (jsonResponse.error !== undefined) {
+            showToast(toastDanger, jsonResponse.error);
+        }
+        if (jsonResponse.success !== undefined) {
+            showToast(toastSuccess, jsonResponse.success);
+            templateRow(table, jsonResponse.operation);
+            prune(collection);
+        }
+        upload.classList.add('pointer-events-none');
+        dropzone.classList.remove('bg-yellow-50');
     }
 });
 
+const prune = (collection) => {
+    [...collection].forEach((el) => {
+        el.addEventListener('click', e => {
+            e.preventDefault();
+            Swal.fire({
+                text: i18next.t('question'),
+                showCancelButton: true,
+                confirmButtonText: i18next.t('proceed'),
+                denyButtonText: i18next.t('cancel'),
+                customClass: customCss,
+                icon: "question",
+                showLoaderOnConfirm: true
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    await fetch(el.dataset.url, {
+                        method: 'POST',
+                    }).then((res) => {
+                        el.closest('tr').remove();
+                    });
+                }
+            });
+        });
+    });
+}
 
 const displayPreview = file => {
+
     if (!allowed.includes(file.type)) {
         upload.classList.add('pointer-events-none');
         return false;
@@ -86,3 +139,5 @@ const displayPreview = file => {
         upload.classList.remove('pointer-events-none');
     };
 }
+
+prune(collection);

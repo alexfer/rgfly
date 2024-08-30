@@ -5,19 +5,21 @@
 {% block title_content %}{{ _title_extend }}{% endblock %}
 
 {% block content %}
-    <div class="relative border-2 border-gray-300 border-dashed rounded-lg p-6 dark:!bg-gray-700" id="dropzone"
+    <div class="relative border-2 border-gray-300 border-dashed rounded-lg p-5 dark:!bg-gray-700"
+         id="dropzone"
          data-url="{{ path('app_dashboard_market_place_operation_upload', {store: app.request.get('store')}) }}">
-        <div class="text-center">
+        <div class="text-center px-5">
             <svg class="mx-auto h-12 w-12 dark:fill-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M19,13a1,1,0,0,0-1,1v.38L16.52,12.9a2.79,2.79,0,0,0-3.93,0l-.7.7L9.41,11.12a2.85,2.85,0,0,0-3.93,0L4,12.6V7A1,1,0,0,1,5,6h7a1,1,0,0,0,0-2H5A3,3,0,0,0,2,7V19a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V14A1,1,0,0,0,19,13ZM5,20a1,1,0,0,1-1-1V15.43l2.9-2.9a.79.79,0,0,1,1.09,0l3.17,3.17,0,0L15.46,20Zm13-1a.89.89,0,0,1-.18.53L13.31,15l.7-.7a.77.77,0,0,1,1.1,0L18,17.21ZM22.71,4.29l-3-3a1,1,0,0,0-.33-.21,1,1,0,0,0-.76,0,1,1,0,0,0-.33.21l-3,3a1,1,0,0,0,1.42,1.42L18,4.41V10a1,1,0,0,0,2,0V4.41l1.29,1.3a1,1,0,0,0,1.42,0A1,1,0,0,0,22.71,4.29Z"></path>
             </svg>
-            <h3 class="mt-2 text-sm font-medium text-gray-900">
+            <h3 class="mt-2 text-sm px-5 font-medium text-gray-900">
                 <label for="file-upload" class="relative cursor-pointer dark:text-white">
                     {{ 'html.dragdrop'|trans|raw }}
-                    <input id="file-upload" name="file-upload" type="file" class="sr-only skip" accept="text/xml, text/csv, application/json">
+                    <input id="file-upload" name="file-upload" type="file" class="sr-only skip"
+                           accept="text/xml,text/csv,application/json,text/plain">
                 </label>
             </h3>
-            <p class="mt-1 text-xs text-gray-500 dark:text-gray-100">
+            <p class="mt-1 text-xs px-5 text-gray-500 dark:text-gray-100">
                 {{ 'constraint.formats'|trans({
                     formats: formats|join(', '),
                     size: maxSize
@@ -28,12 +30,47 @@
             <section class="uploaded-area text-xs text-gray-700 dark:text-white"></section>
         </div>
     </div>
-    <div class="flex">
+    <div class="flex mb-5">
         <button id="upload"
                 class="bg-blue-500 mx-auto hover:bg-blue-600 z-1 text-sm text-white py-2 px-4 rounded-md mt-6 pointer-events-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-500 dark:focus:ring-opacity-50">
             Upload
         </button>
     </div>
+    <div class="relative mt-2 overflow-x-auto shadow-md sm:rounded-lg">
+        <table id="import-table" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-500 uppercase bg-info-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">{{ 'table.header.stores'|trans }}</th>
+                <th scope="col" class="px-6 py-3 text-center">{{ 'table.header.format'|trans }}</th>
+                <th class="text-center px-6 py-3" scope="col">{{ 'table.header.created_at'|trans }}</th>
+                <th class="text-center px-6 py-3" scope="col">{{ 'table.header.filename'|trans }}</th>
+                <th class="text-right px-6 py-3" scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in items %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <th scope="row" class="px-6 py-3 font-semibold text-gray-900 whitespace-nowrap dark:text-white">
+                        {{ item.store.name }}
+                    </th>
+                    <td class="text-center px-6 py-3">{{ item.format.name }}</td>
+                    <td class="text-center px-6 py-3">{{ item.createdAt|date(datetime_format) }}</td>
+                    <td class="text-center px-6 py-3">{{ item.filename }}</td>
+                    <td class="flex justify-end px-6 py-3 me-5">
+                        <a role="button" class="remove" data-url="{{ path('app_dashboard_market_place_operation_remove', {store: item.store.id, id: item.id}) }}">
+                            <svg width="800px" height="800px" viewBox="0 0 1024 1024" fill="#D2122E"  class="flex h-5 w-5"  version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M512 897.6c-108 0-209.6-42.4-285.6-118.4-76-76-118.4-177.6-118.4-285.6 0-108 42.4-209.6 118.4-285.6 76-76 177.6-118.4 285.6-118.4 108 0 209.6 42.4 285.6 118.4 157.6 157.6 157.6 413.6 0 571.2-76 76-177.6 118.4-285.6 118.4z m0-760c-95.2 0-184.8 36.8-252 104-67.2 67.2-104 156.8-104 252s36.8 184.8 104 252c67.2 67.2 156.8 104 252 104 95.2 0 184.8-36.8 252-104 139.2-139.2 139.2-364.8 0-504-67.2-67.2-156.8-104-252-104z" fill=""></path>
+                                <path d="M707.872 329.392L348.096 689.16l-31.68-31.68 359.776-359.768z" fill=""></path>
+                                <path d="M328 340.8l32-31.2 348 348-32 32z" fill=""></path>
+                            </svg>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
 {% endblock %}
 
 {% block javascripts %}

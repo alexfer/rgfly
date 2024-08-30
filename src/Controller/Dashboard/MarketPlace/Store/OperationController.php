@@ -4,6 +4,7 @@ namespace App\Controller\Dashboard\MarketPlace\Store;
 
 use App\Entity\MarketPlace\Enum\EnumOperation;
 use App\Entity\MarketPlace\Store;
+use App\Entity\MarketPlace\StoreOperation;
 use App\Entity\MarketPlace\StoreProduct;
 use App\Service\FileValidator;
 use App\Service\Interface\FileValidatorInterface;
@@ -14,6 +15,7 @@ use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,6 +55,7 @@ class OperationController extends AbstractController
     public function import(
         Request               $request,
         ParameterBagInterface $params,
+        OperationInterface    $operation,
         StoreInterface        $serve,
     ): Response
     {
@@ -62,6 +65,7 @@ class OperationController extends AbstractController
             'store' => $store,
             'formats' => array_map(fn($case) => mb_strtoupper($case->value), EnumOperation::cases()),
             'maxSize' => ini_get('post_max_size'),
+            'items' => $operation->fetch($store, true),
         ]);
     }
 
@@ -133,30 +137,97 @@ class OperationController extends AbstractController
         return $this->file($file, sprintf("products-%d.%s", $revision, $format));
     }
 
+    /**
+     * @param Request $request
+     * @param ParameterBagInterface $params
+     * @param SluggerInterface $slugger
+     * @param EntityManagerInterface $manager
+     * @param TranslatorInterface $translator
+     * @param StoreInterface $serveStore
+     * @return Response
+     */
     #[Route('/{store}/upload', name: 'app_dashboard_market_place_operation_upload', methods: ['GET', 'POST'])]
     public function upload(
-        Request               $request,
-        ParameterBagInterface $params,
-        SluggerInterface      $slugger,
-        Filesystem            $filesystem,
-        TranslatorInterface   $translator,
-        StoreInterface        $serveStore,
+        Request                $request,
+        ParameterBagInterface  $params,
+        SluggerInterface       $slugger,
+        EntityManagerInterface $manager,
+        TranslatorInterface    $translator,
+        StoreInterface         $serveStore,
     ): Response
     {
         $store = $this->store($serveStore, $this->getUser());
         $storageTmp = $params->get('kernel.project_dir') . '/var/tmp';
-
+        $file = $request->files->get('file');
+        $fileName = $operation = null;
 
         if ($request->isMethod('POST')) {
-            $file = $request->files->get('file');
+
             $constraint = (new FileValidator())->validate($file, $translator);
 
             if ($constraint->count() > 0) {
-                return $this->json(['error' => $constraint->get(0)->getMessage()]);
+                return $this->json(['error' => $constraint->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
             }
 
+            $format = $file->guessExtension();
+            $format = str_replace('txt', 'csv', $format);
+
+            $originalFileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $safeFileName = $slugger->slug($originalFileName);
+            $fileName = $safeFileName . '-' . uniqid() . '.' . $format;
+
+            try {
+                $file->move($storageTmp, $fileName);
+            } catch (IOExceptionInterface $exception) {
+                return $this->json(['error' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+
+            $operation = new StoreOperation();
+            $operation->setStore($store);
+            $operation->setRevision((string)time());
+            $operation->setFormat(EnumOperation::from($format));
+            $operation->setFilename($fileName);
+            $manager->persist($operation);
+            $manager->flush();
         }
 
-        return $this->json(['data' => 100], Response::HTTP_OK);
+        return $this->json([
+            'success' => $translator->trans('text.file.uploaded'),
+            'operation' => [
+                'url' => $this->generateUrl('app_dashboard_market_place_operation_remove', [
+                    'store' => $store->getId(),
+                    'id' => $operation->getId(),
+                ]),
+                'store' => $operation->getStore()->getName(),
+                'format' => $operation->getFormat()->name,
+                'filename' => $fileName,
+                'createdAt' => $operation->getCreatedAt()->format('D, d M Y H:i'),
+            ],
+        ], Response::HTTP_OK);
+    }
+
+    /**
+     * @param Request $request
+     * @param OperationInterface $operation
+     * @param StoreInterface $serveStore
+     * @return Response
+     */
+    #[Route('/{store}/rm/{id}', name: 'app_dashboard_market_place_operation_remove', methods: ['POST'])]
+    public function remove(
+        Request            $request,
+        OperationInterface $operation,
+        StoreInterface     $serveStore,
+        ParameterBagInterface $params,
+    ): Response
+    {
+        $store = $this->store($serveStore, $this->getUser());
+
+        if ($item = $operation->find($store, (int)$request->get('id'))) {
+            $storage = $params->get('kernel.project_dir') . '/var/tmp';
+            $file = sprintf('%s/%s', $storage, $item->getFilename());
+            $operation->prune($file, $item);
+        }
+
+        return $this->json(['success' => true], Response::HTTP_OK);
     }
 }

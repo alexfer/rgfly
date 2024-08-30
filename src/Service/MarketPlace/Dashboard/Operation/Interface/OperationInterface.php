@@ -3,6 +3,7 @@
 namespace App\Service\MarketPlace\Dashboard\Operation\Interface;
 
 use App\Entity\MarketPlace\Store;
+use App\Entity\MarketPlace\StoreOperation;
 
 interface OperationInterface
 {
@@ -24,11 +25,19 @@ interface OperationInterface
 
     /**
      * @param Store $store
+     * @param bool $imports
      * @param int $offset
      * @param int $limit
      * @return object|array
      */
-    public function fetch(Store $store, int $offset, int $limit): object|array;
+    public function fetch(Store $store, bool $imports = false, int $offset = 0, int $limit = 25): object|array;
+
+    /**
+     * @param Store $store
+     * @param int $id
+     * @return StoreOperation
+     */
+    public function find(Store $store, int $id): StoreOperation;
 
     /**
      * @param string|null $format
@@ -40,4 +49,11 @@ interface OperationInterface
      * @return array
      */
     public function metadata(): array;
+
+    /**
+     * @param string $file
+     * @param StoreOperation $operation
+     * @return void
+     */
+    public function prune(string $file, StoreOperation $operation): void;
 }
