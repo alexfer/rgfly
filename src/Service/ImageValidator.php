@@ -2,13 +2,13 @@
 
 namespace App\Service;
 
-use App\Service\Interface\FileValidatorInterface;
+use App\Service\Interface\ImageValidatorInterface;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validation;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class ImageValidator implements FileValidatorInterface
+final class ImageValidator implements ImageValidatorInterface
 {
 
     /**

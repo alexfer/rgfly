@@ -170,7 +170,7 @@ class OperationController extends AbstractController
             }
 
             $format = $file->guessExtension();
-            $format = str_replace('txt', 'csv', $format);
+            //$format = str_replace('txt', 'xls', $format);
 
             $originalFileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
             $safeFileName = $slugger->slug($originalFileName);
