@@ -5,16 +5,15 @@ namespace App\Service\MarketPlace\Dashboard\Operation;
 use App\Entity\MarketPlace\Enum\EnumOperation;
 use App\Entity\MarketPlace\Store;
 use App\Entity\MarketPlace\StoreOperation;
-use App\Service\MarketPlace\Dashboard\Operation\FactoryHandler\CsvFactory;
+use App\Service\MarketPlace\Dashboard\Operation\FactoryHandler\XlsxFactory;
 use App\Service\MarketPlace\Dashboard\Operation\FactoryHandler\XmlFactory;
+use App\Service\MarketPlace\Dashboard\Operation\Interface\HandleFactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Csv\CannotInsertRecord;
-use League\Csv\Exception;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-class FactoryHandler
+class FactoryHandler implements HandleFactoryInterface
 {
     protected array $options;
 
@@ -61,20 +60,17 @@ class FactoryHandler
      * @param string $class
      * @param int $revision
      * @return void
-     * @throws CannotInsertRecord
-     * @throws Exception
      */
-    protected function csv(string $file, string $class, int $revision): void
+    protected function xlsx(string $file, string $class, int $revision): void
     {
         $collection = $this->instance($class);
         $option = $this->options['option'];
 
-        $csv = new CsvFactory();
-        $csv->cacheManager = $this->cacheManager;
-        $csv->params = $this->params;
-
-        $csv = $csv->build($collection, $option);
-        $this->store($revision, $this->options['format'], $file, $csv);
+        $xlsx = new XlsxFactory();
+        $xlsx->cacheManager = $this->cacheManager;
+        $xlsx->params = $this->params;
+        $xlsx->build($revision, $collection, $option);
+        $this->save($revision, $this->options['format']);
     }
 
 

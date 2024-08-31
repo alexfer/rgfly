@@ -287,7 +287,10 @@ document.addEventListener('DOMContentLoaded', () => {
             attachments.parentElement.classList.add('invisible');
             status.classList.remove('hidden');
 
-            fetch(url, {method: 'POST', body: formData}).then(async response => {
+            fetch(url, {
+                method: 'POST',
+                body: formData
+            }).then(async response => {
                 const isJson = response.headers.get('content-type')?.includes('application/json') || undefined;
                 const data = isJson && await response.json();
                 showToast(elements.toastSuccess, data.message);

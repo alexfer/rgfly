@@ -21,7 +21,7 @@ final class FileValidator implements FileValidatorInterface
         $imageConstraints = new Image([
             // Change if needed own size, for instance it can be '2M'
             'maxSize' => ini_get('post_max_size'),
-            'mimeTypes' => ['text/csv', 'text/xml', 'application/json', 'text/plain'],
+            'mimeTypes' => ['application/vnd.ms-excel', 'text/xml', 'application/json'],
             'mimeTypesMessage' => $translator->trans('form.picture.not_valid_type', [], 'validators'),
         ]);
 

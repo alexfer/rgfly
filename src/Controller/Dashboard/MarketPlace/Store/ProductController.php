@@ -2,19 +2,18 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
+use App\Service\ImageValidator;
 use App\Entity\{Attach, User};
 use App\Entity\MarketPlace\{StoreCoupon, StoreProduct, StoreProductAttach};
 use App\Form\Type\Dashboard\MarketPlace\ProductType;
 use App\Security\Voter\ProductVoter;
 use App\Service\FileUploader;
-use App\Service\Interface\FileValidatorInterface;
+use App\Service\Interface\ImageValidatorInterface;
 use App\Service\MarketPlace\Dashboard\Product\Interface\CopyServiceInterface;
 use App\Service\MarketPlace\Dashboard\Product\Interface\ServeProductInterface;
 use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface;
 use App\Service\MarketPlace\StoreTrait;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Exception\ORMException;
-use Doctrine\ORM\OptimisticLockException;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -244,7 +243,7 @@ class ProductController extends AbstractController
      * @param SluggerInterface $slugger
      * @param CacheManager $cacheManager
      * @param ParameterBagInterface $params
-     * @param FileValidatorInterface $imageValidator
+     * @param ImageValidatorInterface $imageValidator
      * @return Response
      */
     #[Route('/attach/{store}/{id}', name: 'app_dashboard_product_attach')]
@@ -255,7 +254,7 @@ class ProductController extends AbstractController
         SluggerInterface       $slugger,
         CacheManager           $cacheManager,
         ParameterBagInterface  $params,
-        FileValidatorInterface $imageValidator,
+        ImageValidatorInterface $imageValidator,
     ): Response
     {
         $file = $request->files->get('file');

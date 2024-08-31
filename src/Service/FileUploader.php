@@ -1,28 +1,27 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Service;
 
-use AllowDynamicProperties;
 use App\Entity\Attach;
-use App\Entity\MarketPlace\Market;
-use App\Entity\MarketPlace\MarketProductAttach;
 use App\Entity\MarketPlace\Store;
 use App\Entity\MarketPlace\StoreProductAttach;
 use App\Entity\UserDetails;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-#[AllowDynamicProperties] class FileUploader
+class FileUploader
 {
 
     /**
-     *
-     * @var string|null
+     * @var string|File
      */
-    private ?string $target;
+    private string|File $target;
+
+    private string $fileName;
 
     /**
      *
@@ -45,7 +44,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
      */
     private function getSize(): ?int
     {
-        return filesize($this->target);
+        return $this->target->getSize();
     }
 
     /**
@@ -54,7 +53,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
      */
     private function getMimeType(): ?string
     {
-        return mime_content_type($this->target);
+        return mime_content_type($this->target->getRealPath());
     }
 
     /**
