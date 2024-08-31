@@ -68,7 +68,7 @@ class XlsxFactory
         $worksheet = new Worksheet($this->spreadsheet, 'Products');
         $this->spreadsheet->addSheet($worksheet, 0);
 
-        $data = [];
+        $data[] = $this->header;
 
         foreach ($collection as $item) {
 
@@ -90,7 +90,6 @@ class XlsxFactory
                 $picture = $this->cacheManager->getBrowserPath(parse_url($url . '/' . $attach->getAttach()->getName(), PHP_URL_PATH), 'product_view', [], null);
             }
 
-            $data[] = $this->header;
             $data[] = [
                 $item->getId(),
                 $item->getName(),
