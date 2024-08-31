@@ -2,7 +2,6 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
-use App\Service\ImageValidator;
 use App\Entity\{Attach, User};
 use App\Entity\MarketPlace\{StoreCoupon, StoreProduct, StoreProductAttach};
 use App\Form\Type\Dashboard\MarketPlace\ProductType;
@@ -81,7 +80,7 @@ class ProductController extends AbstractController
     {
         $ready = false;
 
-        if(!$ready) {
+        if (!$ready) {
             throw $this->createAccessDeniedException();
         }
         $service->copyProduct($product->getId());
@@ -248,12 +247,12 @@ class ProductController extends AbstractController
      */
     #[Route('/attach/{store}/{id}', name: 'app_dashboard_product_attach')]
     public function attach(
-        Request                $request,
-        TranslatorInterface    $translator,
-        EntityManagerInterface $em,
-        SluggerInterface       $slugger,
-        CacheManager           $cacheManager,
-        ParameterBagInterface  $params,
+        Request                 $request,
+        TranslatorInterface     $translator,
+        EntityManagerInterface  $em,
+        SluggerInterface        $slugger,
+        CacheManager            $cacheManager,
+        ParameterBagInterface   $params,
         ImageValidatorInterface $imageValidator,
     ): Response
     {

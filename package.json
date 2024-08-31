@@ -59,7 +59,6 @@
         "glyphicons": "^0.2.0",
         "i18next": "^23.8.2",
         "js-base64": "^3.7.7",
-        "papaparse": "^5.4.1",
         "raw-loader": "^4.0.2",
         "sass-loader": "^13.3.2",
         "sweetalert2": "^11.6.13",

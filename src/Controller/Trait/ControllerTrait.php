@@ -3,7 +3,6 @@
 namespace App\Controller\Trait;
 
 use App\Entity\MarketPlace\StoreCustomer;
-use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 

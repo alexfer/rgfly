@@ -5,7 +5,7 @@ namespace App\Service\Interface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-interface FileValidatorInterface
+interface OperationFileValidatorInterface
 {
     /**
      * @param mixed $file
