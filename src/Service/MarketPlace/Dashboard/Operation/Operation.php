@@ -14,7 +14,7 @@ class Operation extends FactoryHandler implements OperationInterface
     /**
      * @var array|string[]
      */
-    private array $formats = ['csv', 'xml'];
+    private array $formats = ['xlsx', 'xml'];
 
     /**
      * @param string $class

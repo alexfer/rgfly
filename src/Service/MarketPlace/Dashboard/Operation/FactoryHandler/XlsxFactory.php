@@ -2,14 +2,13 @@
 
 namespace App\Service\MarketPlace\Dashboard\Operation\FactoryHandler;
 
-use League\Csv\CannotInsertRecord;
-use League\Csv\Exception;
-use League\Csv\InvalidArgument;
-use League\Csv\Writer;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-class CsvFactory
+class XlsxFactory
 {
     /**
      * @var CacheManager
@@ -37,6 +36,7 @@ class CsvFactory
         'Supplier',
         'Brand',
         'Manufacturer',
+        'Image Url',
         'Created At'
     ];
 
@@ -46,32 +46,28 @@ class CsvFactory
     public ParameterBagInterface $params;
 
     /**
-     * @var Writer
+     * @var Spreadsheet
      */
-    private Writer $writer;
+    private Spreadsheet $spreadsheet;
 
-    /**
-     * @param string $delimiter
-     * @param string $enclosure
-     * @param string $escape
-     * @throws InvalidArgument
-     */
-    public function __construct(string $delimiter = ',', string $enclosure = '"', string $escape = '\\')
+    public function __construct()
     {
-        $this->writer = Writer::createFromString();
-        $this->writer->setDelimiter($delimiter);
+        $this->spreadsheet = new Spreadsheet();
     }
 
     /**
+     * @param int $revision
      * @param array|object $collection
      * @param array $option
-     * @return string
-     * @throws CannotInsertRecord
-     * @throws Exception
+     * @return void
      */
-    public function build(array|object $collection, array $option): string
+    public function build(int $revision, array|object $collection, array $option): void
     {
-        $this->writer->insertOne($this->header);
+        $this->spreadsheet->removeSheetByIndex(0);
+
+        $worksheet = new Worksheet($this->spreadsheet, 'Products');
+        $this->spreadsheet->addSheet($worksheet, 0);
+
         $data = [];
 
         foreach ($collection as $item) {
@@ -79,7 +75,7 @@ class CsvFactory
             $createdAt = $item->getCreatedAt();
 
             $categories = $item->getStoreCategoryProducts();
-            $category = $parent = null;
+            $category = $parent = $picture = null;
 
             foreach ($categories as $_category) {
                 $category = $_category->getCategory()->getName();
@@ -87,6 +83,14 @@ class CsvFactory
                 break;
             }
 
+            $images = $item->getStoreProductAttaches();
+
+            foreach ($images as $attach) {
+                $url = sprintf('%s/%d', $this->params->get('product_storage_dir'), $item->getId());
+                $picture = $this->cacheManager->getBrowserPath(parse_url($url . '/' . $attach->getAttach()->getName(), PHP_URL_PATH), 'product_view', [], null);
+            }
+
+            $data[] = $this->header;
             $data[] = [
                 $item->getId(),
                 $item->getName(),
@@ -94,7 +98,7 @@ class CsvFactory
                 $item->getDescription(),
                 $item->getCost(),
                 $item->getFee(),
-                number_format(($item->getCost() + $item->getFee()), 2,'.', ' '),
+                number_format(($item->getCost() + $item->getFee()), 2, '.', ' '),
                 $item->getQuantity(),
                 $item->getPckgQuantity(),
                 $item->getPckgDiscount(),
@@ -105,12 +109,22 @@ class CsvFactory
                 $item->getStoreProductSupplier()?->getSupplier()?->getName(),
                 $item->getStoreProductBrand()?->getBrand()?->getName(),
                 $item->getStoreProductManufacturer()?->getManufacturer()?->getName(),
-                $createdAt->format('Y-m-d H:i:s')
+                $picture,
+                $createdAt->format('Y-m-d H:i')
             ];
         }
 
-        $this->writer->insertAll($data);
+        $worksheet->fromArray($data);
+        $worksheets = [$worksheet];
 
-        return $this->writer->toString();
+        foreach ($worksheets as $sheet) {
+            foreach ($sheet->getColumnIterator() as $column) {
+                $sheet->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
+            }
+        }
+
+        $writer = IOFactory::createWriter($this->spreadsheet, 'Xlsx');
+        $writer->setPreCalculateFormulas(false);
+        $writer->save($this->params->get('private_storage') . sprintf('/xlsx/%d.xlsx', $revision));
     }
 }

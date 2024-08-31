@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240823033249 extends AbstractMigration
+final class Version20240830180530 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -99,7 +99,7 @@ final class Version20240823033249 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN store_message.identity IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN store_message.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN store_message.updated_at IS \'(DC2Type:datetime_immutable)\'');
-        $this->addSql('CREATE TABLE store_operation (id SERIAL NOT NULL, store_id INT DEFAULT NULL, format VARCHAR(255) NOT NULL, revision VARCHAR(100) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE store_operation (id SERIAL NOT NULL, store_id INT DEFAULT NULL, format VARCHAR(255) NOT NULL, revision VARCHAR(100) NOT NULL, filename VARCHAR(255) DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_44D7CA10B092A811 ON store_operation (store_id)');
         $this->addSql('CREATE INDEX revision_idx ON store_operation (revision)');
         $this->addSql('COMMENT ON COLUMN store_operation.created_at IS \'(DC2Type:datetime_immutable)\'');

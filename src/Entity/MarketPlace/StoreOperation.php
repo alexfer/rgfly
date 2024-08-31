@@ -5,7 +5,6 @@ namespace App\Entity\MarketPlace;
 use App\Entity\MarketPlace\Enum\EnumOperation;
 use App\Repository\MarketPlace\StoreOperationRepository;
 use Doctrine\ORM\Mapping as ORM;
-use FontLib\Table\Type\name;
 
 #[ORM\Entity(repositoryClass: StoreOperationRepository::class)]
 #[ORM\Index(name: 'revision_idx', columns: ['revision'])]
