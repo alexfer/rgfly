@@ -2,10 +2,10 @@
 
 namespace App\Service\MarketPlace\Dashboard\Operation\FactoryHandler;
 
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class XlsxFactory

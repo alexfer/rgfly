@@ -6,7 +6,6 @@ namespace App\Controller\MarketPlace;
 
 use App\Controller\Trait\ControllerTrait;
 use App\Entity\MarketPlace\StoreProduct;
-use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

@@ -2,9 +2,7 @@ import './../utils';
 import templateRow from "./template-row";
 import Swal from "sweetalert2";
 import i18next from "i18next";
-import messages from "./../i18n";
 import customCss from "./../customCss";
-import Papa from 'papaparse';
 
 const entry = document.getElementById('file-upload'),
     dropzone = document.getElementById('dropzone'),
@@ -50,14 +48,6 @@ entry.addEventListener('change', e => {
         return false;
     }
     displayPreview(file);
-    //let data = Papa.parse(file, {header: false});
-    Papa.parse(file, {
-        skipEmptyLines: true,
-        complete: function (results) {
-            console.log("Finished:", results.data);
-        }
-    });
-
 
     dropzone.classList.add('bg-yellow-50');
     upload.classList.remove('pointer-events-none');

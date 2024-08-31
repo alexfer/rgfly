@@ -5,7 +5,7 @@ namespace App\Controller\Dashboard;
 use App\Entity\{Attach, Category, Entry, EntryAttachment, EntryCategory, EntryDetails};
 use App\Form\Type\Dashboard\EntryDetailsType;
 use App\Service\FileUploader;
-use App\Service\Interface\FileValidatorInterface;
+use App\Service\Interface\OperationFileValidatorInterface;
 use DateTime;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -225,20 +225,20 @@ class BlogController extends AbstractController
      * @param SluggerInterface $slugger
      * @param CacheManager $cacheManager
      * @param ParameterBagInterface $params
-     * @param FileValidatorInterface $imageValidator
+     * @param OperationFileValidatorInterface $imageValidator
      * @return JsonResponse
      * @throws \Exception
      */
     #[Route('/attach/{id}', name: 'app_dashboard_blog_attach', methods: ['POST'])]
     public function attach(
-        Request                $request,
-        TranslatorInterface    $translator,
-        Entry                  $entry,
-        EntityManagerInterface $em,
-        SluggerInterface       $slugger,
-        CacheManager           $cacheManager,
-        ParameterBagInterface  $params,
-        FileValidatorInterface $imageValidator,
+        Request                         $request,
+        TranslatorInterface             $translator,
+        Entry                           $entry,
+        EntityManagerInterface          $em,
+        SluggerInterface                $slugger,
+        CacheManager                    $cacheManager,
+        ParameterBagInterface           $params,
+        OperationFileValidatorInterface $imageValidator,
     ): JsonResponse
     {
         $file = $request->files->get('file');

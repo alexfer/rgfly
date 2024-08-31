@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\MarketPlace;
 
-use App\Controller\Trait\ControllerTrait;
 use App\Entity\MarketPlace\StoreCategory;
 use App\Entity\MarketPlace\StoreCustomer;
 use App\Entity\MarketPlace\StoreProduct;
@@ -22,7 +21,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route('/market-place')]
 class SearchController extends AbstractController

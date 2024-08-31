@@ -6,8 +6,7 @@ use App\Entity\MarketPlace\Enum\EnumOperation;
 use App\Entity\MarketPlace\Store;
 use App\Entity\MarketPlace\StoreOperation;
 use App\Entity\MarketPlace\StoreProduct;
-use App\Service\FileValidator;
-use App\Service\Interface\FileValidatorInterface;
+use App\Service\Interface\OperationFileValidatorInterface;
 use App\Service\MarketPlace\Dashboard\Operation\Interface\OperationInterface;
 use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreInterface;
 use App\Service\MarketPlace\StoreTrait;
@@ -148,12 +147,13 @@ class OperationController extends AbstractController
      */
     #[Route('/{store}/upload', name: 'app_dashboard_market_place_operation_upload', methods: ['GET', 'POST'])]
     public function upload(
-        Request                $request,
-        ParameterBagInterface  $params,
-        SluggerInterface       $slugger,
-        EntityManagerInterface $manager,
-        TranslatorInterface    $translator,
-        StoreInterface         $serveStore,
+        Request                         $request,
+        ParameterBagInterface           $params,
+        SluggerInterface                $slugger,
+        EntityManagerInterface          $manager,
+        TranslatorInterface             $translator,
+        StoreInterface                  $serveStore,
+        OperationFileValidatorInterface $fileValidator
     ): Response
     {
         $store = $this->store($serveStore, $this->getUser());
@@ -163,7 +163,7 @@ class OperationController extends AbstractController
 
         if ($request->isMethod('POST')) {
 
-            $constraint = (new FileValidator())->validate($file, $translator);
+            $constraint = $fileValidator->validate($file, $translator);
 
             if ($constraint->count() > 0) {
                 return $this->json(['error' => $constraint->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
@@ -214,9 +214,9 @@ class OperationController extends AbstractController
      */
     #[Route('/{store}/rm/{id}', name: 'app_dashboard_market_place_operation_remove', methods: ['POST'])]
     public function remove(
-        Request            $request,
-        OperationInterface $operation,
-        StoreInterface     $serveStore,
+        Request               $request,
+        OperationInterface    $operation,
+        StoreInterface        $serveStore,
         ParameterBagInterface $params,
     ): Response
     {

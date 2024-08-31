@@ -2,10 +2,9 @@
 
 namespace App\Service\MarketPlace\Store\Order;
 
-use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Entity\MarketPlace\{StoreCustomer, StoreOrders};
+use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Service\MarketPlace\Store\Order\Interface\CollectionInterface;
-use App\Twig\Extension\DiscountExtension;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\{Request, RequestStack};
 
@@ -93,12 +92,12 @@ final readonly class Collection implements CollectionInterface
             foreach ($order['products'] as $product) {
                 $attach = $product['product']['attachment'];
                 $price = MarketPlaceHelper::discount(
-                        $product['product']['cost'],
-                        $product['product']['reduce']['value'],
-                        $product['product']['fee'],
-                        $product['quantity'],
-                        $product['product']['reduce']['unit']
-                    );
+                    $product['product']['cost'],
+                    $product['product']['reduce']['value'],
+                    $product['product']['fee'],
+                    $product['quantity'],
+                    $product['product']['reduce']['unit']
+                );
 
                 $products[$id][$product['id']] = [
                     'id' => $product['product']['id'],

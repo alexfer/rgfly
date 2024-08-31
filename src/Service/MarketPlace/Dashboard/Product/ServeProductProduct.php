@@ -2,8 +2,7 @@
 
 namespace App\Service\MarketPlace\Dashboard\Product;
 
-use App\Entity\MarketPlace\{Enum\EnumStoreProductDiscount,
-    Store,
+use App\Entity\MarketPlace\{Store,
     StoreCategory,
     StoreCategoryProduct,
     StoreCoupon,

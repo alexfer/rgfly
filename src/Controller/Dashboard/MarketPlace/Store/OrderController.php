@@ -92,7 +92,7 @@ class OrderController extends AbstractController
 
         $order = $em->getRepository(StoreOrders::class)->findOneBy(['store' => $store, 'number' => $request->get('number')]);
 
-        if($order->getStatus()->value != EnumStoreOrderStatus::Confirmed->value) {
+        if ($order->getStatus()->value != EnumStoreOrderStatus::Confirmed->value) {
             return $this->redirectToRoute('app_dashboard_market_place_order_store_current', [
                 'store' => $store->getId(),
             ]);
