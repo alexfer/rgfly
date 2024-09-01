@@ -14,7 +14,15 @@ module.exports = {
         },
         extend: {
             height: {
-                '200': '200px'
+                '100': '100px',
+                '150': '150px',
+                '200': '200px',
+                '250': '250px',
+                '300': '300px',
+                '400': '400px',
+            },
+            width: {
+                '295': '295px'
             },
             gridTemplateColumns: {
                 'auto-fill-200': 'repeat(auto-fill, minmax(200px, 1fr))',

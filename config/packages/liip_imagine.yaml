@@ -54,14 +54,13 @@ liip_imagine:
                     mode: outbound
         product_preview:
             filters:
-                thumbnail:
-                    size: [ 600, 400 ]
-                    mode: outbound
+                fixed:
+                    width: 350
+                    height: 350
         product_view:
             filters:
-                thumbnail:
-                    size: [ 1280, 800 ]
-                    mode: outbound
+                upscale:
+                    by: 0.7
         product_thumb:
             filters:
                 thumbnail:

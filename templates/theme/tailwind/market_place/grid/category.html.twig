@@ -1,15 +1,15 @@
 <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-    <div class="lg:max-w-xl relative overflow-hidden bg-cover bg-no-repeat">
-        <a class="block h-200" title="{{ product.name }}"
+    <div class="relative overflow-hidden h-250 rounded-t-lg">
+        <a title="{{ product.name }}"
            href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}">
             {% if product.attach_name %}
                 {% set _picture = 'storage/product/' ~ product.id ~ '/' ~ product.attach_name %}
                 <img loading="lazy" src="{{ asset(_picture)|imagine_filter('product_preview') }}"
-                     class="object-cover h-200 max-w-full transition duration-300 ease-in-out hover:scale-125 hover:inset-1/2 rounded-t-lg"
+                     class="object-contain h-auto max-w-full transition duration-700 ease-in-out hover:scale-105"
                      alt="{{ product.name }}">
             {% else %}
                 <img loading="lazy" src="{{ asset('img/600x400.png') }}"
-                     class="object-cover h-200 max-w-full rounded-t-lg"
+                     class="object-cover h-auto max-w-full rounded-t-lg"
                      alt="{{ product.name }}">
             {% endif %}
         </a>
@@ -40,7 +40,7 @@
         </div>
         <div class="mr-3">
             {% set price = discount(product.cost, product.reduce.value, product.fee, 1, product.reduce.unit) %}
-            <span class="text-2xl font-medium {% if product.reduce.unit is not empty %}text-rose-500{% else %}text-gray-900{% endif %} dark:text-white">{{ price|amount_format }}<small>{{ product.currency|currency }}</small></span>
+            <span class="text-2xl font-medium {% if product.reduce.unit is not empty %}text-rose-500{% else %}text-gray-900{% endif %} dark:text-white">{{ price }}<small>{{ product.currency|currency }}</small></span>
         </div>
     </div>
     {% if product.parent_category_name is not null %}

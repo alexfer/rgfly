@@ -68,7 +68,7 @@ class Compute implements ComputeInterface
         $amount = [];
         foreach ($this->orders as $order => $products) {
             foreach ($products as $product) {
-                $amount[$order][] = round($product['amount']);
+                $amount[$order][] = floatval($product['amount']);
             }
             $amount[$order] = array_sum($amount[$order]);
             $amount = $amount[$order];
