@@ -22,10 +22,10 @@ trait ControllerTrait
     }
 
     /**
-     * @param UserInterface $user
+     * @param UserInterface|null $user
      * @return StoreCustomer|null
      */
-    protected function getCustomer(UserInterface $user): ?StoreCustomer
+    protected function getCustomer(?UserInterface $user): ?StoreCustomer
     {
         return $this->em->getRepository(StoreCustomer::class)->findOneBy(['member' => $user]);
     }

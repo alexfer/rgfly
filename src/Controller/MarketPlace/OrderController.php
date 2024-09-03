@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Controller\MarketPlace;
 
@@ -57,7 +55,7 @@ class OrderController extends AbstractController
         if ($collection) {
             $store = [
                 'quantity' => $collection['count'] ?: 0,
-                'orders' => $collection['orders'] ?: [],
+                'orders' => $collection['clientOrders'] ?: [],
             ];
         }
 
@@ -144,10 +142,10 @@ class OrderController extends AbstractController
      */
     #[Route('/{product}', name: 'app_market_place_product_order', methods: ['POST'])]
     public function order(
-        Request              $request,
-        ProcessorInterface   $processor,
-        UserManagerInterface $userManager,
-        CollectionInterface  $collection,
+        Request               $request,
+        ProcessorInterface    $processor,
+        UserManagerInterface  $userManager,
+        CollectionInterface   $collection
     ): JsonResponse
     {
         $data = $request->toArray();
@@ -164,6 +162,7 @@ class OrderController extends AbstractController
         $order = $processor->findOrder();
 
         $processor->processOrder($order, $customer);
+
         $collection = $collection->getOrderProducts();
 
         $store = [

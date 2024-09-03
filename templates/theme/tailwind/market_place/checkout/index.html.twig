@@ -57,14 +57,14 @@
                         </div>
                         <div class="flex justify-between items-center mb-2">
                             <span class="font-semibold me-2">{{ 'order.service.tax'|trans }}:</span>
-                            <span class="text-end text-primary-emphasis">{{ tax }}<small>%</small></span>
+                            <span class="text-end text-primary-emphasis">{{ tax|round(2) }}<small>%</small></span>
                         </div>
                     </div>
                     <span class="{{ hasUsed == false or coupon == 0 ? 'hidden' : null }} absolute -rotate-45 inline-table top-100 bg-red-700 mt-5 start-4 opacity-70 px-2.5 text-white rounded-md pt-1 end-0 text-sm"><span
                                 class="pe-1" id="discount">{{ discount }}</span>{{ 'store.product.off'|trans }}</span>
                     <h3 class="font-light relative text-2xl text-red-700 text-center mt-4 mb-2">
                         {% set total = (total + (total * tax)/100) %}
-                        {{ total|round(2) }}<small>{{ order.store.currency|currency }}</small>
+                        {{ total|amount_format }}<small>{{ order.store.currency|currency }}</small>
                     </h3>
                     {% if creditCards is not null and creditCards|length %}
                         <ul class="list-none border-t flex mx-auto space-x-2 justify-between items-center">

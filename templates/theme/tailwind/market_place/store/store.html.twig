@@ -8,7 +8,7 @@
 {% block content_body %}
     <h2 class="text-2xl font-oswald mb-4 font-extrabold text-primary-700 dark:text-white text-ellipsis overflow-hidden">{{ store.name }}</h2>
     <div class="mt-3">
-        <div class="h-100">
+        <div class="h-full">
             <div class="grid grid-cols-12">
                 <div class="col-span-4 mb-5 hidden px-5 lg:block bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                     <div class="p-2">
@@ -92,30 +92,30 @@
                     </h4>
                     <div class="grid w-full gap-3 lg:grid-cols-3 md:grid-cols-2">
                         {% for product in store.products %}
-                            <div class="lg:max-w-sm md:max-w-md sm:w-auto border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                                <div class="relative h-200 overflow-hidden bg-cover bg-no-repeat">
+                            <div class="max-w-md bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                                <div class="relative overflow-hidden h-200 rounded-t-lg">
                                     {% if product.attachment is not null %}
                                         {% set _picture= 'storage/product/' ~ product.id ~ '/' ~ product.attachment %}
                                         <a href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}">
-                                            <img class="h-200 transition duration-300 ease-linear hover:scale-110 rounded-t-lg"
+                                            <img class="object-contain h-auto max-w-full transition duration-700 ease-in-out hover:scale-105"
                                                  src="{{ asset(_picture)|imagine_filter('product_preview') }}"
                                                  alt="{{ product.name }}">
                                         </a>
                                     {% else %}
-                                        <img class="h-200 transition opacity-50 rounded-t-lg"
+                                        <img class="h-200 transition opacity-50"
                                              src="{{ asset('img/600x400.png') }}"
                                              alt="{{ product.name }}">
                                     {% endif %}
                                     <div class="absolute z-10 opacity-100 top-5 w-full">
                                         <div class="flex justify-between">
-                                                    <span class="ml-2 bg-gray-600 bg-opacity-90 text-gray-500 text-md shadow-xl px-2.5 pt-1 pb-0.5 rounded-md dark:bg-gray-900 dark:text-gray-300">
-                                                        <a title="{{ product.name }}"
-                                                           href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}"
-                                                           class="text-white text-sm hover:text-neutral-100">{{ 'store.product.details'|trans }}
-                                                        </a>
-                                                    </span>
-                                            {% if product.discount|round %}
-                                                <span class="bg-red-700 bg-opacity-75 text-white text-xs font-medium me-2 px-2 pt-1 rounded-xl dark:bg-red-900 dark:text-white">{{ product.discount|number_format(0) }}% {{ 'store.product.off'|trans }}</span>
+                                            <span class="ml-2 bg-gray-600 bg-opacity-90 text-gray-500 text-md shadow-xl px-2.5 pt-1 pb-0.5 rounded-md dark:bg-gray-900 dark:text-gray-300">
+                                                <a title="{{ product.name }}"
+                                                   href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}"
+                                                   class="text-white text-sm hover:text-neutral-100">{{ 'store.product.details'|trans }}
+                                                </a>
+                                            </span>
+                                            {% if product.reduce.unit is not empty %}
+                                                <span class="bg-red-700 bg-opacity-75 text-white text-sm font-normal me-2 px-2.5 py-1 rounded-xl dark:bg-red-900 dark:text-white">{{ product.reduce.value }}{{ product.reduce.unit|convert(product.currency|currency) }} {{ 'store.product.off'|trans }}</span>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -142,10 +142,8 @@
                                                 class="fs-6 ms-1">Sales</small>
                                     </div>
                                     <div class="mr-3 mt-5">
-                                        {% set discount = product.discount %}
-                                        {% set cost = product.cost + product.fee %}
-                                        {% set discount_cost = (cost - ((cost * discount) - discount)/100) %}
-                                        <span class="text-xl font-medium {% if discount > 0 %}text-rose-500{% else %}text-gray-900{% endif %} dark:text-white">{{ (discount_cost)|amount_format }}<small>{{ store.currency|currency }}</small></span>
+                                        {% set price = discount(product.cost, product.reduce.value, product.fee, 1, product.reduce.unit) %}
+                                        <span class="text-2xl font-medium {% if product.reduce.unit is not empty %}text-rose-500{% else %}text-gray-900{% endif %} dark:text-white">{{ price }}<small>{{ store.currency|currency }}</small></span>
                                     </div>
                                 </div>
                                 <div class="flex items-center border-t mt-3 pt-1 bg-gray-50 bg-opacity-75 pb-2 px-3 justify-between">

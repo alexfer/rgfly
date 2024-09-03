@@ -1,7 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Service\MarketPlace\Store\Order;
 
+use App\Storage\MarketPlace\FrontSessionInterface;
 use App\Entity\MarketPlace\{Store, StoreCustomer, StoreCustomerOrders, StoreOrders, StoreOrdersProduct};
 use App\Service\MarketPlace\Store\Order\Interface\ProductInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,10 +17,12 @@ final class ProductProcessor implements ProductInterface
     /**
      * @param RequestStack $requestStack
      * @param EntityManagerInterface $em
+     * @param FrontSessionInterface $frontSession
      */
     public function __construct(
         protected RequestStack                  $requestStack,
         private readonly EntityManagerInterface $em,
+        private readonly FrontSessionInterface  $frontSession,
     )
     {
         $request = $requestStack->getCurrentRequest();
@@ -46,6 +49,7 @@ final class ProductProcessor implements ProductInterface
 
             $this->em->remove($customerOrder);
             $this->em->remove($order);
+            $this->frontSession->delete($this->requestStack->getCurrentRequest()->getSession()->getId());
         } else {
             $rewind = $order->getTotal() - ($this->getProduct()->getProduct()->getCost() * $this->getProduct()->getQuantity());
             $order->setTotal($rewind);
