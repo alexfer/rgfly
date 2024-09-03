@@ -14,7 +14,7 @@
                                 {% if product.attach %}
                                     {% set _picture = 'storage/product/' ~ product.id ~ '/' ~  product.attach %}
                                     <img loading="lazy" src="{{ asset(_picture)|imagine_filter('product_thumb') }}"
-                                         class="rounded-md"
+                                         class="object-scale-down h-auto rounded-md"
                                          alt="{{ product.name }}">
                                 {% else %}
                                     <div class="flex justify-center items-center">
