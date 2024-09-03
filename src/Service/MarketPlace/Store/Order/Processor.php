@@ -1,10 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Service\MarketPlace\Store\Order;
 
 use App\Entity\MarketPlace\{Store, StoreCustomer, StoreCustomerOrders, StoreOrders, StoreOrdersProduct, StoreProduct};
 use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Service\MarketPlace\Store\Order\Interface\ProcessorInterface;
+use App\Storage\MarketPlace\FrontSessionInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\{Request, RequestStack};
 
@@ -29,10 +30,12 @@ final class Processor implements ProcessorInterface
     /**
      * @param RequestStack $requestStack
      * @param EntityManagerInterface $em
+     * @param FrontSessionInterface $frontSession
      */
     public function __construct(
         protected RequestStack                  $requestStack,
         private readonly EntityManagerInterface $em,
+        private readonly FrontSessionInterface  $frontSession,
     )
     {
         $this->request = $requestStack->getCurrentRequest();
@@ -103,9 +106,9 @@ final class Processor implements ProcessorInterface
     }
 
     /**
-     * @return float|int
+     * @return string
      */
-    private function total(): float|int
+    private function total(): string
     {
         return MarketPlaceHelper::discount(
             $this->getProduct()->getCost(),

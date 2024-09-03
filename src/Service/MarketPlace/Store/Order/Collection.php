@@ -5,6 +5,7 @@ namespace App\Service\MarketPlace\Store\Order;
 use App\Entity\MarketPlace\{StoreCustomer, StoreOrders};
 use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Service\MarketPlace\Store\Order\Interface\CollectionInterface;
+use App\Storage\MarketPlace\FrontSessionInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\{Request, RequestStack};
 
@@ -27,7 +28,8 @@ final readonly class Collection implements CollectionInterface
      */
     public function __construct(
         protected RequestStack         $requestStack,
-        private EntityManagerInterface $em
+        private EntityManagerInterface $em,
+        private FrontSessionInterface  $frontSession,
     )
     {
         $this->request = $requestStack->getCurrentRequest();
@@ -40,8 +42,35 @@ final readonly class Collection implements CollectionInterface
      */
     public function getOrders(?StoreCustomer $customer = null): ?array
     {
-        return $this->em->getRepository(StoreOrders::class)
+        $orders = $this->em->getRepository(StoreOrders::class)
             ->collection($this->sessionId, $customer);
+
+        $this->setFrontSession($orders);
+
+        return $orders ?? null;
+    }
+
+    /**
+     * @param array|null $orders
+     * @return void
+     */
+    private function setFrontSession(?array $orders): void
+    {
+        $sessionOrders = [];
+        if ($orders['summary']) {
+            foreach ($orders['summary'] as $order) {
+                $sessionOrders[$order['id']] = [
+                    'store' => $order['store']['id'],
+                    'tax' => $order['store']['tax'],
+                    'number' => $order['number'],
+                    'quantity' => $order['qty'],
+                ];
+            }
+//            if($this->frontSession->has($this->sessionId)) {
+//                $this->frontSession->delete($this->sessionId);
+//            }
+            $this->frontSession->set($this->sessionId, serialize($sessionOrders));
+        }
     }
 
     /**
@@ -54,14 +83,16 @@ final readonly class Collection implements CollectionInterface
         if ($orders['summary'] === null) {
             return null;
         }
-        $result = [];
+        $result = $clientOrders = [];
         foreach ($orders['summary'] as $order) {
+            $clientOrders[] = $order['id'];
             foreach ($order['products'] as $product) {
                 $result[] = $product['id'];
             }
         }
         return [
             'count' => count($result),
+            'clientOrders' => $clientOrders,
         ];
     }
 
