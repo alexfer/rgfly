@@ -106,9 +106,9 @@ final class Processor implements ProcessorInterface
     }
 
     /**
-     * @return string
+     * @return int|float|string
      */
-    private function total(): string
+    private function total(): int|float|string
     {
         return MarketPlaceHelper::discount(
             $this->getProduct()->getCost(),
@@ -172,7 +172,7 @@ final class Processor implements ProcessorInterface
      */
     private function process(StoreOrders $order): StoreOrders
     {
-        $total = $order->getTotal() + $this->total();
+        $total = number_format(($order->getTotal() + $this->total()), 2, '.', '');
         $order->setTotal($total)
             ->setSession($this->sessionId);
         $order->addStoreOrdersProduct($this->orderProduct());

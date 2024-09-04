@@ -4,13 +4,12 @@ namespace App\Storage\MarketPlace;
 
 interface FrontSessionInterface
 {
-
     /**
      * @param string $key
-     * @param $value
+     * @param mixed $value
      * @return void
      */
-    public function set(string $key, $value): void;
+    public function set(string $key, mixed $value): void;
 
     /**
      * @param string $key
@@ -29,11 +28,4 @@ interface FrontSessionInterface
      * @return void
      */
     public function delete(string $key): void;
-
-    /**
-     * @param string $key
-     * @param mixed $value
-     * @return void
-     */
-    public function push(string $key, mixed $value): void;
 }

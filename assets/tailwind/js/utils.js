@@ -23,12 +23,27 @@ window.focusNextInput = (el, prevId, nextId) => {
     }
 }
 
+window.SetCookie = (name, value, time, secure = false) => {
+    let date = new Date();
+    date.setTime(date.getTime() + time);
+    let expires = "; expires=" + date.toUTCString();
+    document.cookie = name + "=" + (value || '') + expires + ";SameSite=Lax;Path=/;";
+}
+
+window.getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+        return parts.pop().split(';').shift();
+    }
+}
+
 const any = document.getElementById('any');
 const discount = document.querySelector('[id$="_discount"]');
 
 if (discount) {
     const output = document.querySelector(".discount-output");
-    if(output) {
+    if (output) {
         output.textContent = discount.value + '%';
 
         discount.addEventListener("input", () => {

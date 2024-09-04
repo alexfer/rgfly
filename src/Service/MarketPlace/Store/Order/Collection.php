@@ -25,6 +25,7 @@ final readonly class Collection implements CollectionInterface
     /**
      * @param RequestStack $requestStack
      * @param EntityManagerInterface $em
+     * @param FrontSessionInterface $frontSession
      */
     public function __construct(
         protected RequestStack         $requestStack,
@@ -66,9 +67,6 @@ final readonly class Collection implements CollectionInterface
                     'quantity' => $order['qty'],
                 ];
             }
-//            if($this->frontSession->has($this->sessionId)) {
-//                $this->frontSession->delete($this->sessionId);
-//            }
             $this->frontSession->set($this->sessionId, serialize($sessionOrders));
         }
     }
@@ -83,15 +81,15 @@ final readonly class Collection implements CollectionInterface
         if ($orders['summary'] === null) {
             return null;
         }
-        $result = $clientOrders = [];
+
+        $clientOrders = [];
+
         foreach ($orders['summary'] as $order) {
             $clientOrders[] = $order['id'];
-            foreach ($order['products'] as $product) {
-                $result[] = $product['id'];
-            }
         }
+
         return [
-            'count' => count($result),
+            'quantity' => $this->quantity(),
             'clientOrders' => $clientOrders,
         ];
     }
@@ -115,7 +113,8 @@ final readonly class Collection implements CollectionInterface
      */
     protected function getCollection(?array $orders): array
     {
-        $collection = $total = $fee = $products = [];
+        $ClientOrders = $total = $fee = $products = [];
+        $collection['quantity'] = $this->quantity();
 
         foreach ($orders['summary'] as $order) {
             $id = $order['id'];
@@ -150,7 +149,7 @@ final readonly class Collection implements CollectionInterface
                 $fee[$id][] = $product['product']['fee'];
 
             }
-            $collection[$id] = [
+            $ClientOrders[$id] = [
                 'id' => $id,
                 'number' => $order['number'],
                 'totalFee' => array_sum($fee[$id]),
@@ -163,7 +162,23 @@ final readonly class Collection implements CollectionInterface
                 'products' => $products,
             ];
         }
+        $collection['orders'] = $ClientOrders;
         return $collection;
+    }
+
+    private function quantity(): int
+    {
+        $quantity = [];
+        $orders = $this->frontSession->get($this->sessionId);
+
+        if ($orders) {
+            $orders = unserialize($orders);
+
+            foreach ($orders as $order) {
+                $quantity[] = $order['quantity'];
+            }
+        }
+        return array_sum($quantity);
     }
 
 }
