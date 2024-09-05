@@ -5,7 +5,6 @@ namespace App\Service\MarketPlace\Store\Order;
 use App\Entity\MarketPlace\{Store, StoreCustomer, StoreCustomerOrders, StoreOrders, StoreOrdersProduct, StoreProduct};
 use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Service\MarketPlace\Store\Order\Interface\ProcessorInterface;
-use App\Storage\MarketPlace\FrontSessionInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\{Request, RequestStack};
 
@@ -30,23 +29,21 @@ final class Processor implements ProcessorInterface
     /**
      * @param RequestStack $requestStack
      * @param EntityManagerInterface $em
-     * @param FrontSessionInterface $frontSession
      */
     public function __construct(
         protected RequestStack                  $requestStack,
         private readonly EntityManagerInterface $em,
-        private readonly FrontSessionInterface  $frontSession,
     )
     {
-        $this->request = $requestStack->getCurrentRequest();
-        $session = $this->request->getSession();
+        $request = $this->requestStack->getCurrentRequest();
+        $session = $request->getSession();
 
         if (!$session->isStarted()) {
             $session->start();
         }
 
         $this->sessionId = $session->getId();
-        $this->data = $this->request->toArray();
+        $this->data = $request->toArray();
     }
 
     /**
@@ -106,9 +103,9 @@ final class Processor implements ProcessorInterface
     }
 
     /**
-     * @return string
+     * @return int|float|string
      */
-    private function total(): string
+    private function total(): int|float|string
     {
         return MarketPlaceHelper::discount(
             $this->getProduct()->getCost(),
@@ -172,7 +169,7 @@ final class Processor implements ProcessorInterface
      */
     private function process(StoreOrders $order): StoreOrders
     {
-        $total = $order->getTotal() + $this->total();
+        $total = number_format(($order->getTotal() + $this->total()), 2, '.', '');
         $order->setTotal($total)
             ->setSession($this->sessionId);
         $order->addStoreOrdersProduct($this->orderProduct());
@@ -211,7 +208,7 @@ final class Processor implements ProcessorInterface
     {
         return $this->em->getRepository(StoreProduct::class)
             ->findOneBy([
-                'slug' => $this->request->get('product'),
+                'slug' => $this->requestStack->getCurrentRequest()->get('product'),
             ]);
     }
 }

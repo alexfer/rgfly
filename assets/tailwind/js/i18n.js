@@ -6,6 +6,7 @@ const messages = {
             translation: {
                 proceed: 'Proceed?',
                 cancel: 'Cancel',
+                close: 'Close',
                 question: 'Do you want to remove this element?',
                 confirmLock: 'Do you want to lock this element?',
                 confirmUnLock: 'Do you want to unlock this element?',

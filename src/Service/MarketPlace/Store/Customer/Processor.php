@@ -132,6 +132,7 @@ readonly class Processor implements ProcessorInterface
         $order = $this->em->getRepository(StoreCustomerOrders::class)->findOneBy(['orders' => $this->order]);
         $order->setCustomer($this->customer);
         $this->em->persist($order);
+        $this->em->flush();
 
     }
 
