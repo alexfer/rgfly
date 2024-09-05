@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Service\MarketPlace\Store\Checkout;
 
@@ -10,6 +10,8 @@ use App\Entity\MarketPlace\{Enum\EnumStoreOrderStatus,
     StoreProduct};
 use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Service\MarketPlace\Store\Checkout\Interface\ProcessorInterface;
+use App\Storage\MarketPlace\FrontSessionHandler;
+use App\Storage\MarketPlace\FrontSessionInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\{Request, RequestStack, Response};
@@ -40,16 +42,22 @@ class Processor implements ProcessorInterface
      * @param RequestStack $requestStack
      * @param TranslatorInterface $translator
      * @param RouterInterface $router
+     * @param FrontSessionInterface $frontSession
      */
     public function __construct(
         private readonly EntityManagerInterface $em,
         readonly RequestStack                   $requestStack,
         private readonly TranslatorInterface    $translator,
         private readonly RouterInterface        $router,
+        private readonly FrontSessionInterface  $frontSession,
     )
     {
         $this->request = $requestStack->getCurrentRequest();
         $this->sessionId = $this->request->getSession()->getId();
+
+        if ($this->request->cookies->has(FrontSessionHandler::NAME)) {
+            $this->sessionId = $this->request->cookies->get(FrontSessionHandler::NAME);
+        }
     }
 
 
@@ -124,7 +132,7 @@ class Processor implements ProcessorInterface
             ->setPaymentGateway($this->getPaymentGateway())
             ->setNumber(MarketPlaceHelper::slug($this->order->getId(), 6, 'i'))
             ->setAmount($this->order->getTotal())
-            ->setTax($tax);
+            ->setTax(number_format($tax, 2, '.', ''));
 
         $this->em->persist($invoice);
     }
@@ -135,10 +143,13 @@ class Processor implements ProcessorInterface
      */
     public function updateOrder(?string $status = EnumStoreOrderStatus::Confirmed->value): void
     {
-        $order = $this->order->setSession(null)->setStatus($status);
+        $order = $this->order->setSession(null)->setStatus(EnumStoreOrderStatus::from($status));
         $this->em->persist($order);
         $this->updateProducts();
         $this->em->flush();
+
+        $this->frontSession->delete($this->request->cookies->get(FrontSessionHandler::NAME));
+        $this->request->cookies->remove(FrontSessionHandler::NAME);
     }
 
     /**

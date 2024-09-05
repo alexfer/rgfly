@@ -20,8 +20,8 @@
                 <i class="fa fa-shopping-cart mr-2 text-md-end"></i>{{ 'store.product.cart'|trans }}
                 <div id="qty"
                      class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-gray-600 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
-                    {{ app.session.get('quantity')|default(0) }}
-                    <span class="sr-only">{{ app.session.get('quantity')|default(0) }}</span>
+                    {{ shop.quantity()|default(0) }}
+                    <span class="sr-only">{{ shop.quantity() }}</span>
                 </div>
             </a>
             <div

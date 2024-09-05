@@ -9,9 +9,11 @@ class FrontSessionHandler implements FrontSessionInterface
 {
     const int TTL = 604800;
 
+    const string NAME = 'rgfly';
+
     public function __construct(
         private readonly ConnectionInterface $connection,
-        private readonly LoggerInterface     $logger
+        private readonly LoggerInterface     $logger,
     )
     {
     }
@@ -38,8 +40,7 @@ class FrontSessionHandler implements FrontSessionInterface
      */
     public function get(string $key): ?string
     {
-        $value = null;
-
+        $value = false;
         try {
             $value = $this->connection->redis()->get($key);
         } catch (\RedisException $e) {
@@ -48,7 +49,7 @@ class FrontSessionHandler implements FrontSessionInterface
             ]);
         }
 
-        return $value;
+        return is_bool($value) ? (string)$value : $value;
     }
 
     /**
@@ -81,19 +82,5 @@ class FrontSessionHandler implements FrontSessionInterface
             ]);
         }
         return (bool)$exists;
-    }
-
-    /**
-     * @param string $key
-     * @param mixed $value
-     * @return void
-     * @throws \RedisException
-     */
-    public function push(string $key, mixed $value): void
-    {
-        $val = $this->connection->redis()->get($key);
-        $val = unserialize($val);
-        $val[] = $value;
-        $this->connection->redis()->set($key, $val, self::TTL);
     }
 }

@@ -32,6 +32,7 @@ class Compute implements ComputeInterface
     {
         foreach ($input['order']['quantity'] as $key => $value) {
             $product = $this->orderProduct($key);
+            $value = (int)$value;
             $product->setQuantity($value);
             $this->em->persist($product);
 
@@ -65,10 +66,11 @@ class Compute implements ComputeInterface
      */
     private function updateAmount(): void
     {
-        $amount = [];
+
         foreach ($this->orders as $order => $products) {
+            $amount = [];
             foreach ($products as $product) {
-                $amount[$order][] = floatval($product['amount']);
+                $amount[$order][] = $product['amount'];
             }
             $amount[$order] = array_sum($amount[$order]);
             $amount = $amount[$order];
@@ -84,7 +86,7 @@ class Compute implements ComputeInterface
     private function order(int $id, float $amount): void
     {
         $order = $this->em->getRepository(StoreOrders::class)->find($id);
-        $order->setTotal($amount);
+        $order->setTotal(number_format($amount, 2, '.', ''));
         $this->em->persist($order);
         $this->em->flush();
     }

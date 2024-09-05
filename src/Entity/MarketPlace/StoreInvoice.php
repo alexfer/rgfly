@@ -102,7 +102,7 @@ class StoreInvoice
      */
     public function setTax(string $tax): static
     {
-        $this->tax = number_format($tax, 2, '.', '');
+        $this->tax = $tax;
 
         return $this;
     }

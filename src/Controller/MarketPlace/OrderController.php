@@ -17,7 +17,6 @@ class OrderController extends AbstractController
 {
 
     /**
-     * @param Request $request
      * @param UserManagerInterface $userManager
      * @param SummaryInterface $orderSummary
      * @param CollectionInterface $orderCollection
@@ -26,7 +25,6 @@ class OrderController extends AbstractController
      */
     #[Route('/summary/remove', name: 'app_market_place_order_remove_product', methods: ['POST'])]
     public function remove(
-        Request              $request,
         UserManagerInterface $userManager,
         SummaryInterface     $orderSummary,
         CollectionInterface  $orderCollection,
@@ -35,8 +33,6 @@ class OrderController extends AbstractController
     {
         $customer = $userManager->get($this->getUser());
         $orderProduct->process($customer);
-
-        $session = $request->getSession();
         $orders = $orderCollection->getOrders();
 
         $countProducts = 0;
@@ -48,18 +44,7 @@ class OrderController extends AbstractController
         }
 
         $collection = $orderCollection->getOrderProducts();
-
-        $store['quantity'] = 0;
-        $store['orders'] = [];
-
-        if ($collection) {
-            $store = [
-                'quantity' => $collection['count'] ?: 0,
-                'orders' => $collection['clientOrders'] ?: [],
-            ];
-        }
-
-        $session->set('quantity', $store['quantity']);
+        $collection['quantity'] = $collection['quantity'] ?? 0;
 
         return $this->json([
             'products' => $countProducts,
@@ -67,8 +52,8 @@ class OrderController extends AbstractController
             'removed' => $orderProduct->getStore()->getId(),
             'redirect' => !($orders['summary'] !== null),
             'store' => [
-                'quantity' => $session->get('quantity'),
-                'orders' => $store['orders'],
+                'quantity' => $collection['quantity'],
+                'orders' => isset($collection['clientOrders']) ?: [],
             ],
             'redirectUrl' => $this->generateUrl('app_market_place_order_summary'),
         ]);
@@ -115,21 +100,17 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @param Request $request
      * @param CollectionInterface $order
      * @return JsonResponse
      */
-    #[Route('/cart', name: 'app_market_place_product_order_cart', methods: ['POST', 'GET'])]
-    public function cart(
-        Request             $request,
-        CollectionInterface $order,
-    ): JsonResponse
+    #[Route('/cart', name: 'app_market_place_product_order_cart')]
+    public function cart(CollectionInterface $order): JsonResponse
     {
         $collection = $order->collection();
 
         return $this->json([
-            'template' => $this->renderView('market_place/cart.html.twig', ['orders' => $collection]),
-            'quantity' => $request->getSession()->get('quantity'),
+            'template' => $this->renderView('market_place/cart.html.twig', ['orders' => $collection['orders']]),
+            'quantity' => $collection['quantity'],
         ]);
     }
 
@@ -142,10 +123,10 @@ class OrderController extends AbstractController
      */
     #[Route('/{product}', name: 'app_market_place_product_order', methods: ['POST'])]
     public function order(
-        Request               $request,
-        ProcessorInterface    $processor,
-        UserManagerInterface  $userManager,
-        CollectionInterface   $collection
+        Request              $request,
+        ProcessorInterface   $processor,
+        UserManagerInterface $userManager,
+        CollectionInterface  $collection
     ): JsonResponse
     {
         $data = $request->toArray();
@@ -156,24 +137,15 @@ class OrderController extends AbstractController
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        $session = $request->getSession();
-
         $customer = $userManager->get($this->getUser());
         $order = $processor->findOrder();
-
         $processor->processOrder($order, $customer);
-
         $collection = $collection->getOrderProducts();
-
-        $store = [
-            'quantity' => $collection['count'],
-        ];
-
-        $session->set('quantity', $store['quantity']);
 
         return $this->json([
             'store' => [
-                'quantity' => $session->get('quantity'),
+                'session' => $request->getSession()->getId(),
+                'quantity' => $collection['quantity'],
             ],
         ]);
     }

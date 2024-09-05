@@ -125,7 +125,12 @@ if (typeof drops !== 'undefined') {
                     if (data.redirect === true) {
                         document.location.href = data.redirectUrl;
                     } else {
-                        await Swal.fire(i18next.t('removed'), "", "success");
+                        await Swal.fire({
+                            title: i18next.t('removed'),
+                            html: "",
+                            customClass: customCss,
+                            icon: "success"
+                        });
                     }
                 }
             });
@@ -234,6 +239,9 @@ if (typeof forms != 'undefined') {
                     let qty = document.getElementById('qty');
                     if (qty) {
                         qty.innerHTML = json.store.quantity;
+                    }
+                    if(typeof getCookie('rgfly' === undefined)) {
+                        SetCookie('rgfly', json.store.session, 7 * (86400 * 1000));
                     }
                 })
                 .catch(err => {

@@ -84,8 +84,8 @@ class CheckoutController extends AbstractController
             }
 
             $checkout->addInvoice(new StoreInvoice(), floatval($tax));
-            $checkout->updateOrder();
-            $session->set('quantity', $checkout->countOrders());
+            $checkout->updateOrder(EnumStoreOrderStatus::Confirmed->value);
+            //$session->set('quantity', $checkout->countOrders());
 
             return $this->redirectToRoute('app_market_place_order_success');
         }
