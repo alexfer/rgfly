@@ -5,11 +5,12 @@ namespace App\Service\MarketPlace\Store\Order;
 use App\Entity\MarketPlace\{StoreCustomer, StoreOrders};
 use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Service\MarketPlace\Store\Order\Interface\CollectionInterface;
+use App\Storage\MarketPlace\FrontSessionHandler;
 use App\Storage\MarketPlace\FrontSessionInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\{Request, RequestStack};
 
-final readonly class Collection implements CollectionInterface
+final class Collection implements CollectionInterface
 {
 
     /**
@@ -28,13 +29,17 @@ final readonly class Collection implements CollectionInterface
      * @param FrontSessionInterface $frontSession
      */
     public function __construct(
-        protected RequestStack         $requestStack,
-        private EntityManagerInterface $em,
-        private FrontSessionInterface  $frontSession,
+        protected RequestStack                  $requestStack,
+        private readonly EntityManagerInterface $em,
+        private readonly FrontSessionInterface  $frontSession,
     )
     {
         $this->request = $requestStack->getCurrentRequest();
         $this->sessionId = $this->request->getSession()->getId();
+
+        if ($this->request->cookies->has(FrontSessionHandler::NAME)) {
+            $this->sessionId = $this->request->cookies->get(FrontSessionHandler::NAME);
+        }
     }
 
     /**

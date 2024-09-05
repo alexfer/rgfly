@@ -9,9 +9,11 @@ class FrontSessionHandler implements FrontSessionInterface
 {
     const int TTL = 604800;
 
+    const string NAME = 'rgfly';
+
     public function __construct(
         private readonly ConnectionInterface $connection,
-        private readonly LoggerInterface     $logger
+        private readonly LoggerInterface     $logger,
     )
     {
     }
@@ -81,5 +83,4 @@ class FrontSessionHandler implements FrontSessionInterface
         }
         return (bool)$exists;
     }
-
 }
