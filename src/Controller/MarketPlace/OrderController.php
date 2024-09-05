@@ -109,8 +109,8 @@ class OrderController extends AbstractController
         $collection = $order->collection();
 
         return $this->json([
-            'template' => $this->renderView('market_place/cart.html.twig', ['orders' => $collection['orders']]),
-            'quantity' => $collection['quantity'],
+            'template' => $this->renderView('market_place/cart.html.twig', ['orders' => $collection['orders'] ?? []]),
+            'quantity' => $collection['quantity'] ?? 0,
         ]);
     }
 
