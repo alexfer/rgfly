@@ -2,9 +2,10 @@
 
 namespace App\Service\MarketPlace\Store\Order;
 
-use App\Storage\MarketPlace\FrontSessionInterface;
 use App\Entity\MarketPlace\{Store, StoreCustomer, StoreCustomerOrders, StoreOrders, StoreOrdersProduct};
 use App\Service\MarketPlace\Store\Order\Interface\ProductInterface;
+use App\Storage\MarketPlace\FrontSessionHandler;
+use App\Storage\MarketPlace\FrontSessionInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -49,7 +50,10 @@ final class ProductProcessor implements ProductInterface
 
             $this->em->remove($customerOrder);
             $this->em->remove($order);
-            $this->frontSession->delete($this->requestStack->getCurrentRequest()->getSession()->getId());
+
+            $cookies = $this->requestStack->getCurrentRequest()->cookies;
+            $this->frontSession->delete($cookies->get(FrontSessionHandler::NAME));
+
         } else {
             $rewind = number_format($order->getTotal() - ($this->getProduct()->getProduct()->getCost() * $this->getProduct()->getQuantity()), 2, '.', '');
             $order->setTotal($rewind);

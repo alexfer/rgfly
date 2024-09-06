@@ -8,15 +8,10 @@ use App\Service\MarketPlace\Store\Order\Interface\CollectionInterface;
 use App\Storage\MarketPlace\FrontSessionHandler;
 use App\Storage\MarketPlace\FrontSessionInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\{Request, RequestStack};
+use Symfony\Component\HttpFoundation\{RequestStack};
 
 final class Collection implements CollectionInterface
 {
-
-    /**
-     * @var Request
-     */
-    protected Request $request;
 
     /**
      * @var string|null
@@ -34,33 +29,38 @@ final class Collection implements CollectionInterface
         private readonly FrontSessionInterface  $frontSession,
     )
     {
-        $this->request = $requestStack->getCurrentRequest();
-        $this->sessionId = $this->request->getSession()->getId();
+        $request = $requestStack->getCurrentRequest();
 
-        if ($this->request->cookies->has(FrontSessionHandler::NAME)) {
-            $this->sessionId = $this->request->cookies->get(FrontSessionHandler::NAME);
+        if ($request->cookies->has(FrontSessionHandler::NAME)) {
+            $this->sessionId = $request->cookies->get(FrontSessionHandler::NAME);
         }
     }
 
     /**
      * @param StoreCustomer|null $customer
+     * @param string|null $sessionId
      * @return array|null
      */
-    public function getOrders(?StoreCustomer $customer = null): ?array
+    public function getOrders(?StoreCustomer $customer = null, ?string $sessionId = null): ?array
     {
-        $orders = $this->em->getRepository(StoreOrders::class)
-            ->collection($this->sessionId, $customer);
+        if ($sessionId === null) {
+            $sessionId = $this->sessionId;
+        }
 
-        $this->setFrontSession($orders);
+        $orders = $this->em->getRepository(StoreOrders::class)
+            ->collection($sessionId, $customer);
+
+        $this->setFrontSession($orders, $sessionId);
 
         return $orders ?? null;
     }
 
     /**
      * @param array|null $orders
+     * @param string $sessionId
      * @return void
      */
-    private function setFrontSession(?array $orders): void
+    private function setFrontSession(?array $orders, string $sessionId): void
     {
         $sessionOrders = [];
         if ($orders['summary']) {
@@ -72,16 +72,17 @@ final class Collection implements CollectionInterface
                     'quantity' => $order['qty'],
                 ];
             }
-            $this->frontSession->set($this->sessionId, serialize($sessionOrders));
+            $this->frontSession->set($sessionId, serialize($sessionOrders));
         }
     }
 
     /**
+     * @param string|null $sessionId
      * @return array|null
      */
-    public function getOrderProducts(): ?array
+    public function getOrderProducts(?string $sessionId = null): ?array
     {
-        $orders = $this->getOrders();
+        $orders = $this->getOrders(null, $sessionId);
 
         if ($orders['summary'] === null) {
             return null;
@@ -94,32 +95,35 @@ final class Collection implements CollectionInterface
         }
 
         return [
-            'quantity' => $this->quantity(),
+            'quantity' => $this->quantity($sessionId),
             'clientOrders' => $clientOrders,
+            'sessionId' => $sessionId,
         ];
     }
 
     /**
+     * @param string|null $sessionId
      * @return array|null
      */
-    public function collection(): ?array
+    public function collection(?string $sessionId = null): ?array
     {
-        $orders = $this->getOrders();
+        $orders = $this->getOrders(null, $sessionId);
 
         if ($orders['summary'] === null) {
             return null;
         }
-        return $this->getCollection($orders);
+        return $this->getCollection($orders, $sessionId);
     }
 
     /**
      * @param array|null $orders
+     * @param string $sessionId
      * @return array
      */
-    protected function getCollection(?array $orders): array
+    protected function getCollection(?array $orders, string $sessionId): array
     {
         $ClientOrders = $total = $fee = $products = [];
-        $collection['quantity'] = $this->quantity();
+        $collection['quantity'] = $this->quantity($sessionId);
 
         foreach ($orders['summary'] as $order) {
             $id = $order['id'];
@@ -171,10 +175,14 @@ final class Collection implements CollectionInterface
         return $collection;
     }
 
-    private function quantity(): int
+    /**
+     * @param string $sessionId
+     * @return int
+     */
+    private function quantity(string $sessionId): int
     {
         $quantity = [];
-        $orders = $this->frontSession->get($this->sessionId);
+        $orders = $this->frontSession->get($sessionId);
 
         if ($orders) {
             $orders = unserialize($orders);

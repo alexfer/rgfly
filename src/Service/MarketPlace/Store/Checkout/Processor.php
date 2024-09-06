@@ -4,6 +4,7 @@ namespace App\Service\MarketPlace\Store\Checkout;
 
 use App\Entity\MarketPlace\{Enum\EnumStoreOrderStatus,
     StoreCustomer,
+    StoreCustomerOrders,
     StoreInvoice,
     StoreOrders,
     StorePaymentGateway,
@@ -139,13 +140,20 @@ class Processor implements ProcessorInterface
 
     /**
      * @param string|null $status
+     * @param StoreCustomer|null $customer
      * @return void
      */
-    public function updateOrder(?string $status = EnumStoreOrderStatus::Confirmed->value): void
+    public function updateOrder(?string $status = EnumStoreOrderStatus::Confirmed->value, ?StoreCustomer $customer = null): void
     {
-        $order = $this->order->setSession(null)->setStatus(EnumStoreOrderStatus::from($status));
+        $order = $this->order->setSession(null)
+            ->setStatus(EnumStoreOrderStatus::from($status));
         $this->em->persist($order);
         $this->updateProducts();
+
+        $orderCustomer = $this->em->getRepository(StoreCustomerOrders::class)->findOneBy(['orders' => $this->order]);
+        $orderCustomer->setCustomer($customer);
+        $this->em->persist($order);
+
         $this->em->flush();
 
         $this->frontSession->delete($this->request->cookies->get(FrontSessionHandler::NAME));

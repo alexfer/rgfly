@@ -118,12 +118,23 @@ if (typeof drops !== 'undefined') {
                     if (data.products >= 1) {
                         drop.closest('.parent').remove();
                     }
+
                     if (data.products === 0) {
                         drop.closest('.root').remove();
                         document.getElementById('store-' + data.removed).remove();
                     }
+
                     if (data.redirect === true) {
-                        document.location.href = data.redirectUrl;
+                        fetch(data.url, {
+                            method: 'OPTIONS', body: JSON.stringify({
+                                session: data.session,
+                            })
+                        }).then((response) => {
+                            response.text()
+                        });
+                        setTimeout(() => {
+                            document.location.href = data.redirectUrl;
+                        }, 1500);
                     } else {
                         await Swal.fire({
                             title: i18next.t('removed'),
@@ -239,10 +250,12 @@ if (typeof forms != 'undefined') {
                     let qty = document.getElementById('qty');
                     if (qty) {
                         qty.innerHTML = json.store.quantity;
+                        fetch(json.store.url, {
+                            method: 'OPTIONS',
+                            body: JSON.stringify({session: json.store.session})
+                        }).then((response) => response.text());
                     }
-                    if(typeof getCookie('rgfly' === undefined)) {
-                        SetCookie('rgfly', json.store.session, 7 * (86400 * 1000));
-                    }
+
                 })
                 .catch(err => {
                     console.log(err);
