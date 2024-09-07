@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity\MarketPlace;
 
@@ -41,7 +41,7 @@ class StoreProduct
     private ?string $short_name = null;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
-    private ?string $pckg_discount = null;
+    private ?int $pckg_discount = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $sku = null;

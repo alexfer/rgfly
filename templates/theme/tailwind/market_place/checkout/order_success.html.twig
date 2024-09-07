@@ -15,10 +15,3 @@
         {% include 'market_place/checkout/_customer_login_form.html.twig' %}
     </div>
 {% endblock %}
-{% block javascripts %}
-    {{ parent() }}
-    <script type="text/javascript">
-        const name = '{{ cookie_name }}';
-        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;SameSite=Lax;Path=/;";
-    </script>
-{% endblock %}

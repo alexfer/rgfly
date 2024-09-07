@@ -157,7 +157,7 @@ class OrderController extends AbstractController
         $payload = $request->getPayload()->all();
         $cookie = Cookie::create(FrontSessionHandler::NAME)
             ->withValue($payload['session'])
-            ->withExpires(strtotime('+1day'));
+            ->withExpires((strtotime('now') + FrontSessionHandler::TTL));
 
         $response->headers->setCookie($cookie);
         return $response;
@@ -186,15 +186,16 @@ class OrderController extends AbstractController
             ], Response::HTTP_BAD_REQUEST);
         }
 
+        $sessId = $this->getSessionId($request);
         $customer = $userManager->get($this->getUser());
-        $order = $processor->findOrder(null, $this->getSessionId($request));
+        $order = $processor->findOrder(null, $sessId);
         $processor->processOrder($order, $customer);
         $sessionId = $processor->getSessionId();
         $collection = $collection->getOrderProducts($sessionId);
 
         return $this->json([
             'store' => [
-                'url' => $this->generateUrl('app_market_place_shop_cookie'),
+                'url' => !$sessId ? $this->generateUrl('app_market_place_shop_cookie') : null,
                 'session' => $sessionId,
                 'quantity' => $collection['quantity'] ?: 1,
             ],

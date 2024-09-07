@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Controller\MarketPlace;
 
@@ -87,6 +85,9 @@ class CheckoutController extends AbstractController
             $checkout->addInvoice(new StoreInvoice(), floatval($tax));
             $checkout->updateOrder(EnumStoreOrderStatus::Confirmed->value, $customer);
 
+            $response = new Response();
+            $response->headers->clearCookie(FrontSessionHandler::NAME);
+            $response->send(false);
             return $this->redirectToRoute('app_market_place_order_success');
         }
 

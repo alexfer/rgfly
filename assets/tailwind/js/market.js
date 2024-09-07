@@ -130,11 +130,10 @@ if (typeof drops !== 'undefined') {
                                 session: data.session,
                             })
                         }).then((response) => {
-                            response.text()
+                            if (response.status === 200) {
+                                document.location.href = data.redirectUrl;
+                            }
                         });
-                        setTimeout(() => {
-                            document.location.href = data.redirectUrl;
-                        }, 1500);
                     } else {
                         await Swal.fire({
                             title: i18next.t('removed'),
@@ -250,10 +249,13 @@ if (typeof forms != 'undefined') {
                     let qty = document.getElementById('qty');
                     if (qty) {
                         qty.innerHTML = json.store.quantity;
-                        fetch(json.store.url, {
-                            method: 'OPTIONS',
-                            body: JSON.stringify({session: json.store.session})
-                        }).then((response) => response.text());
+
+                        if (json.store.url !== null) {
+                            fetch(json.store.url, {
+                                method: 'OPTIONS',
+                                body: JSON.stringify({session: json.store.session})
+                            }).then((response) => response.text());
+                        }
                     }
 
                 })

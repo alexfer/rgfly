@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Service\MarketPlace\Store\Order;
 
@@ -16,7 +16,7 @@ final class Collection implements CollectionInterface
     /**
      * @var string|null
      */
-    private ?string $sessionId;
+    private ?string $sessionId = null;
 
     /**
      * @param RequestStack $requestStack
@@ -45,6 +45,10 @@ final class Collection implements CollectionInterface
     {
         if ($sessionId === null) {
             $sessionId = $this->sessionId;
+        }
+
+        if(!$sessionId) {
+            return null;
         }
 
         $orders = $this->em->getRepository(StoreOrders::class)
@@ -109,7 +113,7 @@ final class Collection implements CollectionInterface
     {
         $orders = $this->getOrders(null, $sessionId);
 
-        if ($orders['summary'] === null) {
+        if (!$orders || $orders['summary'] === null) {
             return null;
         }
         return $this->getCollection($orders, $sessionId);
