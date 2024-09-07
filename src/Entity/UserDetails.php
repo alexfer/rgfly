@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -20,8 +20,8 @@ class UserDetails
     #[ORM\OneToOne(inversedBy: 'userDetails', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'userDetails', targetEntity: Attach::class)]
-    #[ORM\ORM\OrderBy(['id' => 'desc'])]
+    #[ORM\OneToMany(targetEntity: Attach::class, mappedBy: 'userDetails')]
+    #[ORM\OrderBy(['id' => 'desc'])]
     private Collection $attach;
 
     #[ORM\Column(length: 255, nullable: true)]

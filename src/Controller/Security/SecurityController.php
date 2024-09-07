@@ -54,6 +54,19 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * @return Response
+     */
+    #[Route('/web/login-template', name: 'app_login_template', methods: ['GET', 'POST'])]
+    public function loginTemplate(): Response
+    {
+        $form = $this->createForm(LoginType::class);
+
+        return $this->render('security/_clean_form.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
      *
      * @return Response
      * @throws Exception

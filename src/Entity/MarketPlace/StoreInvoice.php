@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity\MarketPlace;
 
@@ -19,10 +19,10 @@ class StoreInvoice
     #[ORM\Column(length: 50)]
     private ?string $number = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '2')]
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $tax = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '2', nullable: true)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $amount = null;
 
     #[ORM\OneToOne(inversedBy: 'storeInvoice', cascade: ['persist', 'remove'])]

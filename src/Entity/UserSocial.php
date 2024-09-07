@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -56,10 +56,9 @@ class UserSocial
         return $this;
     }
 
-    /*
-     * 
+    /**
+     * @return string|null
      */
-
     public function getFacebookProfile(): ?string
     {
         return $this->facebook_profile;

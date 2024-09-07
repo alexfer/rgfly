@@ -4,7 +4,15 @@
         <div class="ms-3 text-sm font-medium">{{ message }}</div>
     </div>
 {% endfor %}
-<h2 class="text-2xl font-medium text-gray-600 mr-2">{{ 'product.billing'|trans }}</h2>
+<div class="flex justify-between mx-auto">
+    <h2 class="text-2xl font-medium text-gray-600 mr-2">{{ 'product.billing'|trans }}</h2>
+    <div class="group pe-10">
+        <button data-modal-target="sign-in" data-modal-toggle="sign-in" type="button"
+                class="text-white bg-[#3b5998] hover:bg-[#3b5998]/90 focus:ring-4 focus:outline-none focus:ring-[#3b5998]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#3b5998]/55 me-0.5 mb-2">{{ 'title.user.login'|trans }}</button>
+        <button data-modal-target="register" data-modal-toggle="register" type="button"
+                class="text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mb-2">{{ 'text.register'|trans }}</button>
+    </div>
+</div>
 {% set _tab = app.request.get('tab') %}
 <ul class="flex list-none flex-row flex-wrap border-b-0 ps-0" role="tablist" data-twe-nav-ref>
     <li role="presentation">
@@ -113,3 +121,5 @@
     </div>
     {{ form_end(form) }}
 </div>
+{% include 'market_place/modal/login.html.twig' %}
+{% include 'market_place/modal/register.html.twig' %}

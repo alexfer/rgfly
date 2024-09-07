@@ -37,8 +37,8 @@ class AddressType extends AbstractType
         $meta = $hostApi->determine($requestStack->getCurrentRequest()->getClientIp());
 
         $this->location = [
-            'countryCode' => $meta['countryCode'],
-            'city' => $meta['city'],
+            'countryCode' => $meta['countryCode'] ?? null,
+            'city' => $meta['city'] ?? null,
         ];
     }
 
