@@ -6,16 +6,11 @@ use App\Entity\MarketPlace\{Store, StoreCustomer, StoreCustomerOrders, StoreOrde
 use App\Helper\MarketPlace\MarketPlaceHelper;
 use App\Service\MarketPlace\Store\Order\Interface\ProcessorInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\{Request, RequestStack};
+use Symfony\Component\HttpFoundation\{RequestStack};
+use Symfony\Component\Uid\Uuid;
 
 final class Processor implements ProcessorInterface
 {
-
-    /**
-     * @var Request
-     */
-    protected Request $request;
-
     /**
      * @var string|null
      */
@@ -35,23 +30,22 @@ final class Processor implements ProcessorInterface
         private readonly EntityManagerInterface $em,
     )
     {
-        $request = $this->requestStack->getCurrentRequest();
-        $session = $request->getSession();
-
-        if (!$session->isStarted()) {
-            $session->start();
-        }
-
-        $this->sessionId = $session->getId();
-        $this->data = $request->toArray();
+        $this->data = $requestStack->getCurrentRequest()->toArray();
     }
 
     /**
      * @param int|null $id
+     * @param string|null $sessionId
      * @return StoreOrders|null
      */
-    public function findOrder(int $id = null): ?StoreOrders
+    public function findOrder(int $id = null, ?string $sessionId = null): ?StoreOrders
     {
+        $this->sessionId = $sessionId;
+
+        if (null === $this->sessionId) {
+            $this->sessionId = Uuid::v4()->toString();
+        }
+
         $condition = [
             'store' => $this->store(),
             'session' => $this->sessionId,
@@ -210,5 +204,13 @@ final class Processor implements ProcessorInterface
             ->findOneBy([
                 'slug' => $this->requestStack->getCurrentRequest()->get('product'),
             ]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getSessionId(): string
+    {
+        return $this->sessionId;
     }
 }

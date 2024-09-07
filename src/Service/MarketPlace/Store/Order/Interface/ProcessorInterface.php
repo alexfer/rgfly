@@ -8,9 +8,10 @@ interface ProcessorInterface
 {
     /**
      * @param int|null $id
+     * @param string|null $sessionId
      * @return StoreOrders|null
      */
-    public function findOrder(int $id = null): ?StoreOrders;
+    public function findOrder(int $id = null, ?string $sessionId = null): ?StoreOrders;
 
     /**
      * @param StoreOrders|null $order
@@ -24,4 +25,9 @@ interface ProcessorInterface
      * @return void
      */
     public function updateQuantity(array $input): void;
+
+    /**
+     * @return string
+     */
+    public function getSessionId(): string;
 }

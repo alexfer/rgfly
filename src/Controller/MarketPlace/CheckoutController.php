@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Controller\MarketPlace;
 
@@ -10,6 +8,7 @@ use App\Form\Type\MarketPlace\CustomerType;
 use App\Form\Type\User\LoginType;
 use App\Service\MarketPlace\Store\Checkout\Interface\ProcessorInterface as Checkout;
 use App\Service\MarketPlace\Store\Coupon\Interface\ProcessorInterface as Coupon;
+use App\Storage\MarketPlace\FrontSessionHandler;
 use App\Service\MarketPlace\Store\Customer\Interface\{ProcessorInterface as Customer, UserManagerInterface};
 use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -84,9 +83,11 @@ class CheckoutController extends AbstractController
             }
 
             $checkout->addInvoice(new StoreInvoice(), floatval($tax));
-            $checkout->updateOrder(EnumStoreOrderStatus::Confirmed->value);
-            //$session->set('quantity', $checkout->countOrders());
+            $checkout->updateOrder(EnumStoreOrderStatus::Confirmed->value, $customer);
 
+            $response = new Response();
+            $response->headers->clearCookie(FrontSessionHandler::NAME);
+            $response->send(false);
             return $this->redirectToRoute('app_market_place_order_success');
         }
 
@@ -146,6 +147,7 @@ class CheckoutController extends AbstractController
 
         return $this->render('market_place/checkout/order_success.html.twig', [
             'error' => $error,
+            'cookie_name' => FrontSessionHandler::NAME,
             'temp_password' => $temp_password,
             'last_username' => $default['email'],
             'form' => $form->createView(),
