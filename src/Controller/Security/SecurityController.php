@@ -43,13 +43,28 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         $error = $request->getSession()->get(SecurityRequestAttributes::AUTHENTICATION_ERROR);
-        $quantity = $request->getSession()->get('quantity');
 
         return $this->render('security/index.html.twig', [
             'form' => $form->createView(),
             'last_username' => $default['email'],
             'error' => $error,
-            'quantity' => $quantity,
+        ]);
+    }
+
+    /**
+     * @param AuthenticationUtils $authenticationUtils
+     * @return Response
+     */
+    public function loginTemplate(AuthenticationUtils $authenticationUtils): Response
+    {
+        $payload = [
+            'email' => $authenticationUtils->getLastUsername(),
+        ];
+
+        $form = $this->createForm(LoginType::class, $payload);
+
+        return $this->render('security/_xhr_form.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 
@@ -62,7 +77,7 @@ class SecurityController extends AbstractController
     public function logout(): Response
     {
         // controller can be blank: it will never be called!
-        throw new Exception('Don\'t forget to activate logout in security.yaml');
+        throw new Exception('Activated');
     }
 
     /**

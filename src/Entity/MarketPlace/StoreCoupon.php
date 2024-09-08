@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity\MarketPlace;
 
@@ -25,7 +25,7 @@ class StoreCoupon
     #[ORM\Column(nullable: true)]
     private ?int $discount = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '2', nullable: true)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $price = null;
 
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
@@ -40,13 +40,13 @@ class StoreCoupon
     /**
      * @var Collection<int, StoreCouponCode>
      */
-    #[ORM\OneToMany(mappedBy: 'coupon', targetEntity: StoreCouponCode::class)]
+    #[ORM\OneToMany(targetEntity: StoreCouponCode::class, mappedBy: 'coupon')]
     private Collection $storeCouponCodes;
 
     /**
      * @var Collection<int, StoreCouponUsage>
      */
-    #[ORM\OneToMany(mappedBy: 'coupon', targetEntity: StoreCouponUsage::class)]
+    #[ORM\OneToMany(targetEntity: StoreCouponUsage::class, mappedBy: 'coupon')]
     private Collection $storeCouponUsages;
 
     #[ORM\Column]

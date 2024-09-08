@@ -34,7 +34,7 @@ class StoreProduct
     #[ORM\Column]
     private ?int $quantity;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '2')]
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private string $cost;
 
     #[ORM\Column(length: 80)]
@@ -49,7 +49,7 @@ class StoreProduct
     #[ORM\Column(nullable: true)]
     private ?int $pckg_quantity = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '2', nullable: true)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $fee;
 
     #[ORM\Column]

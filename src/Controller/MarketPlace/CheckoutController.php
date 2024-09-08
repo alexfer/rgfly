@@ -8,8 +8,8 @@ use App\Form\Type\MarketPlace\CustomerType;
 use App\Form\Type\User\LoginType;
 use App\Service\MarketPlace\Store\Checkout\Interface\ProcessorInterface as Checkout;
 use App\Service\MarketPlace\Store\Coupon\Interface\ProcessorInterface as Coupon;
-use App\Storage\MarketPlace\FrontSessionHandler;
 use App\Service\MarketPlace\Store\Customer\Interface\{ProcessorInterface as Customer, UserManagerInterface};
+use App\Storage\MarketPlace\FrontSessionHandler;
 use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
@@ -59,6 +59,7 @@ class CheckoutController extends AbstractController
         }
 
         $form->handleRequest($request);
+        $error = false;
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -67,34 +68,36 @@ class CheckoutController extends AbstractController
 
             if ($userManager->exists($form->get('email')->getData()) && !$isGranted) {
                 $this->addFlash('danger', $translator->trans('email.unique', [], 'validators'));
-                return $this->redirectToRoute('app_market_place_order_checkout', ['order' => $request->get('order'), 'tab' => $request->get('tab')]);
+                $error = true;
             }
+            if (!$error) {
+                if (!$customer->getId()) {
 
-            if (!$customer->getId()) {
+                    $password = substr(base_convert(sha1(uniqid((string)mt_rand())), 16, 36), 0, 8);
+                    $session->set('_temp_password', $password);
 
-                $password = substr(base_convert(sha1(uniqid((string)mt_rand())), 16, 36), 0, 8);
-                $session->set('_temp_password', $password);
+                    $customerManager->process($customer, $form->getData(), $order);
+                    $user = $customerManager->addUser($password);
+                    $customerManager->bind($form)->addCustomer($user);
+                } else {
+                    $customerManager->bind($form)->updateCustomer($customer, $form->getData());
+                }
 
-                $customerManager->process($customer, $form->getData(), $order);
-                $user = $customerManager->addUser($password);
-                $customerManager->bind($form)->addCustomer($user);
-            } else {
-                $customerManager->bind($form)->updateCustomer($customer, $form->getData());
+
+                $checkout->addInvoice(new StoreInvoice(), floatval($tax));
+                $checkout->updateOrder(EnumStoreOrderStatus::Confirmed->value, $customer);
+
+                $response = new Response();
+                $response->headers->clearCookie(FrontSessionHandler::NAME);
+                $response->send(false);
+                return $this->redirectToRoute('app_market_place_order_success');
             }
-
-            $checkout->addInvoice(new StoreInvoice(), floatval($tax));
-            $checkout->updateOrder(EnumStoreOrderStatus::Confirmed->value, $customer);
-
-            $response = new Response();
-            $response->headers->clearCookie(FrontSessionHandler::NAME);
-            $response->send(false);
-            return $this->redirectToRoute('app_market_place_order_success');
         }
 
         $sum = $checkout->sum();
         $discount = null;
 
-        if ($process) {
+        if ($process && !$error) {
             $discount = $coupon->discount($order->getStore());
         }
 

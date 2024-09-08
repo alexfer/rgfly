@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace App\Service;
+namespace App\Service\Validator;
 
-use App\Service\Interface\ImageValidatorInterface;
+use App\Service\Validator\Interface\OperationFileValidatorInterface;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validation;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class ImageValidator implements ImageValidatorInterface
+final class OperationOperationFileValidator implements OperationFileValidatorInterface
 {
 
     /**
@@ -21,7 +21,11 @@ final class ImageValidator implements ImageValidatorInterface
         $imageConstraints = new Image([
             // Change if needed own size, for instance it can be '2M'
             'maxSize' => ini_get('post_max_size'),
-            'mimeTypes' => ['image/jpeg', 'image/png', 'image/webp'],
+            'mimeTypes' => [
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'text/xml',
+                'application/json'
+            ],
             'mimeTypesMessage' => $translator->trans('form.picture.not_valid_type', [], 'validators'),
         ]);
 

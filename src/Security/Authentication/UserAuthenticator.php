@@ -1,11 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Security\Authentication;
 
 use App\Entity\User;
-use App\Service\MarketPlace\Store\Customer\Interface\OrderInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\{RedirectResponse, Request, Response};
+use Symfony\Component\HttpFoundation\{JsonResponse, RedirectResponse, Request, Response};
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -25,7 +24,6 @@ class UserAuthenticator extends AbstractAuthenticator
     public function __construct(
         private readonly RouterInterface        $router,
         private readonly EntityManagerInterface $em,
-        private readonly OrderInterface         $order
     )
     {
 
@@ -52,18 +50,21 @@ class UserAuthenticator extends AbstractAuthenticator
      */
     public function authenticate(Request $request): Passport
     {
-        $login = $request->request->all()['login'];
-
-        $email = $login['email'];
-        $password = $login['password'];
-        $token = $request->request->get('_csrf_token');
+        if ('json' == $request->getContentTypeFormat()) {
+            $payload = $request->getPayload()->all();
+            $token = $payload['_csrf_token'];
+        } else {
+            $payload = $request->request->all()['login'];
+            $token = $request->request->get('_csrf_token');
+        }
 
         return new Passport(
-            new UserBadge($email, function ($userIdentifier) use ($request) {
+            new UserBadge($payload['email'], function ($userIdentifier) use ($request) {
                 // optionally pass a callback to load the User manually
                 $user = $this->em->getRepository(User::class)->loadUserByIdentifier($userIdentifier);
+
                 if (!$user) {
-                    throw new UserNotFoundException();
+                    throw new UserNotFoundException('User not found.');
                 }
                 $user->setIp($request->getClientIp())
                     ->setLastLoginAt(new \DateTimeImmutable());
@@ -71,7 +72,7 @@ class UserAuthenticator extends AbstractAuthenticator
                 $this->em->flush();
                 return $user;
             }),
-            new PasswordCredentials($password), [
+            new PasswordCredentials($payload['password']), [
                 new CsrfTokenBadge('authenticate', $token),
                 new RememberMeBadge(),
             ]
@@ -92,12 +93,18 @@ class UserAuthenticator extends AbstractAuthenticator
     {
         $user = $token->getUser();
 
+        if ('json' == $request->getContentTypeFormat()) {
+            return new JsonResponse([
+                'success' => true,
+                'redirect' => $request->headers->get('referer'),
+            ]);
+        }
+
         if (in_array(User::ROLE_ADMIN, $user->getRoles(), true)) {
             return new RedirectResponse($this->router->generate('app_dashboard'));
         } elseif (in_array(User::ROLE_USER, $user->getRoles(), true)) {
             return new RedirectResponse($this->router->generate('app_dashboard'));
         } elseif (in_array(User::ROLE_CUSTOMER, $user->getRoles(), true)) {
-            $this->order->apply($request->getSession(), $user);
             return new RedirectResponse($this->router->generate('app_cabinet'));
         }
 
@@ -115,6 +122,10 @@ class UserAuthenticator extends AbstractAuthenticator
     ): Response
     {
         $request->getSession()->set(SecurityRequestAttributes::AUTHENTICATION_ERROR, $exception);
+
+        if ('json' == $request->getContentTypeFormat()) {
+            return new JsonResponse(['success' => false, 'errors' => $exception->getMessage()]);
+        }
 
         if ($request->getPathInfo() === '/market-place/checkout/order-success/login') {
             return new RedirectResponse($this->router->generate('app_market_place_order_success'));

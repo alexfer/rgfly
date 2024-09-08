@@ -7,15 +7,19 @@ use App\Form\Type\MarketPlace\CustomerRegistrationType;
 use App\Form\Type\User\DetailsType;
 use App\Repository\{UserDetailsRepository, UserRepository};
 use App\Repository\MarketPlace\{StoreAddressRepository, StoreCustomerRepository};
+use App\Service\Validator\Interface\CustomerRegistrationValidatorInterface;
 use Doctrine\DBAL\Exception;
 use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\{FormError, FormInterface};
 use Symfony\Component\HttpFoundation\{Request, Response};
+use Symfony\Component\Intl\Countries;
+use Symfony\Component\Intl\Locale;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RegistrationController extends AbstractController
@@ -57,7 +61,7 @@ class RegistrationController extends AbstractController
         $error = null;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $userData = $this->userData($form, $request, $hasher, User::ROLE_CUSTOMER);
+            $userData = $this->userData($request, $hasher, User::ROLE_CUSTOMER, $form);
 
             $user = $userRepository->create($userData);
 
@@ -102,6 +106,68 @@ class RegistrationController extends AbstractController
 
     /**
      * @param Request $request
+     * @param CustomerRegistrationValidatorInterface $validator
+     * @param ValidatorInterface $iValidator
+     * @param UserPasswordHasherInterface $hasher
+     * @param UserRepository $userRepository
+     * @param StoreCustomerRepository $customerRepository
+     * @param StoreAddressRepository $addressRepository
+     * @param TranslatorInterface $translator
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/customer_xhr', name: 'app_customer_register_xhr', methods: ['GET', 'POST'])]
+    public function registerTemplate(
+        Request                                $request,
+        CustomerRegistrationValidatorInterface $validator,
+        ValidatorInterface                     $iValidator,
+        UserPasswordHasherInterface            $hasher,
+        UserRepository                         $userRepository,
+        StoreCustomerRepository                $customerRepository,
+        StoreAddressRepository                 $addressRepository,
+        TranslatorInterface                    $translator,
+    ): Response
+    {
+        if ($request->isMethod('POST')) {
+            $payload = $request->getPayload()->all();
+            $errors = $validator->validate($payload, $iValidator);
+            if (count($errors) > 0) {
+                foreach ($errors as $error) {
+                    return $this->json(['success' => false, 'error' => $error->getMessage()], Response::HTTP_BAD_REQUEST);
+                }
+            }
+
+            $userData = $this->userData($request, $hasher, User::ROLE_CUSTOMER, null, $payload);
+            $user = $userRepository->create($userData);
+
+            if ($user == -1) {
+                $error = $translator->trans('email.unique', [], 'validators');
+                return $this->json(['success' => false, 'error' => $error], Response::HTTP_BAD_REQUEST);
+            }
+
+            $customer = $customerRepository->create($user, $payload);
+
+            $addressData = [
+                'line1' => $payload['address'],
+                'country' => $payload['country'],
+                'phone' => $payload['phone'],
+                'city' => $payload['city'],
+            ];
+
+            $addressRepository->create($customer, $addressData);
+            $this->authenticateUser($userRepository->find($user));
+
+            return $this->json(['success' => true, 'redirect' => $request->headers->get('referrer')], Response::HTTP_CREATED);
+        }
+        return $this->render('registration/_xhr_customer_form.html.twig', [
+            'countries' => Countries::getNames(Locale::getDefault()),
+        ]);
+    }
+
+    /**
+     * @param Request $request
      * @param UserPasswordHasherInterface $hasher
      * @param UserRepository $userRepository
      * @param UserDetailsRepository $detailsRepository
@@ -137,7 +203,7 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $userData = $this->userData($form, $request, $hasher, User::ROLE_USER);
+            $userData = $this->userData($request, $hasher, User::ROLE_USER, $form);
             $newUser = $userRepository->create($userData);
 
             if ($newUser == -1) {
@@ -170,23 +236,28 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @param FormInterface $form
+     * @param FormInterface|null $form
      * @param Request $request
      * @param UserPasswordHasherInterface $hasher
      * @param string $role
+     * @param array|null $inputs
      * @return array
      */
     private function userData(
-        FormInterface               $form,
         Request                     $request,
         UserPasswordHasherInterface $hasher,
-        string                      $role
+        string                      $role,
+        ?FormInterface              $form = null,
+        array                       $inputs = null
     ): array
     {
         return [
-            'email' => $form->get('email')->getData(),
+            'email' => $inputs ? $inputs['email'] : $form->get('email')->getData(),
             'roles' => [$role],
-            'password' => $hasher->hashPassword(new User(), $form->get('plainPassword')->getData()),
+            'password' => $hasher->hashPassword(
+                new User(),
+                $inputs ? $inputs['plainPassword'] : $form->get('plainPassword')->getData()
+            ),
             'ip' => $request->getClientIp(),
         ];
     }
