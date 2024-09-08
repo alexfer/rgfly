@@ -9,7 +9,7 @@ use App\Repository\AttachRepository;
 use App\Repository\UserDetailsRepository;
 use App\Repository\UserRepository;
 use App\Service\FileUploader;
-use App\Service\Interface\OperationFileValidatorInterface;
+use App\Service\Validator\Interface\OperationFileValidatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;

@@ -5,7 +5,7 @@ namespace App\Controller\Dashboard;
 use App\Entity\{Attach, Category, Entry, EntryAttachment, EntryCategory, EntryDetails};
 use App\Form\Type\Dashboard\EntryDetailsType;
 use App\Service\FileUploader;
-use App\Service\Interface\OperationFileValidatorInterface;
+use App\Service\Validator\Interface\OperationFileValidatorInterface;
 use DateTime;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;

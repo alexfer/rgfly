@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity\MarketPlace;
 
@@ -25,7 +25,7 @@ class StoreOrders
     #[ORM\Column(length: 50)]
     private ?string $number = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '2', nullable: true)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $total = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
@@ -127,7 +127,7 @@ class StoreOrders
      */
     public function setTotal(string $total): static
     {
-        $this->total = round($total);
+        $this->total = $total;
         return $this;
     }
 

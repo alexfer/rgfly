@@ -4,6 +4,7 @@ namespace App\Service\MarketPlace\Store\Checkout;
 
 use App\Entity\MarketPlace\{Enum\EnumStoreOrderStatus,
     StoreCustomer,
+    StoreCustomerOrders,
     StoreInvoice,
     StoreOrders,
     StorePaymentGateway,
@@ -14,19 +15,13 @@ use App\Storage\MarketPlace\FrontSessionHandler;
 use App\Storage\MarketPlace\FrontSessionInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\{Request, RequestStack, Response};
+use Symfony\Component\HttpFoundation\{RequestStack, Response};
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class Processor implements ProcessorInterface
 {
-
-    /**
-     * @var Request|null
-     */
-    protected ?Request $request;
-
     /**
      * @var StoreOrders|null
      */
@@ -52,11 +47,10 @@ class Processor implements ProcessorInterface
         private readonly FrontSessionInterface  $frontSession,
     )
     {
-        $this->request = $requestStack->getCurrentRequest();
-        $this->sessionId = $this->request->getSession()->getId();
+        $request = $requestStack->getCurrentRequest();
 
-        if ($this->request->cookies->has(FrontSessionHandler::NAME)) {
-            $this->sessionId = $this->request->cookies->get(FrontSessionHandler::NAME);
+        if ($request->cookies->has(FrontSessionHandler::NAME)) {
+            $this->sessionId = $request->cookies->get(FrontSessionHandler::NAME);
         }
     }
 
@@ -69,7 +63,7 @@ class Processor implements ProcessorInterface
     public function findOrder(?string $status = EnumStoreOrderStatus::Processing->value, ?StoreCustomer $customer = null): ?StoreOrders
     {
         $criteria = [
-            'number' => $this->request->get('order'),
+            'number' => $this->requestStack->getCurrentRequest()->get('order'),
             'session' => $this->sessionId,
             'status' => $status,
         ];
@@ -117,7 +111,7 @@ class Processor implements ProcessorInterface
     private function getPaymentGateway(): StorePaymentGateway
     {
         return $this->em->getRepository(StorePaymentGateway::class)->findOneBy([
-            'slug' => key($this->request->request->all('gateway')),
+            'slug' => key($this->requestStack->getCurrentRequest()->request->all('gateway')),
         ]);
     }
 
@@ -139,17 +133,24 @@ class Processor implements ProcessorInterface
 
     /**
      * @param string|null $status
+     * @param StoreCustomer|null $customer
      * @return void
      */
-    public function updateOrder(?string $status = EnumStoreOrderStatus::Confirmed->value): void
+    public function updateOrder(?string $status = EnumStoreOrderStatus::Confirmed->value, ?StoreCustomer $customer = null): void
     {
-        $order = $this->order->setSession(null)->setStatus(EnumStoreOrderStatus::from($status));
+        $order = $this->order->setSession(null)
+            ->setStatus(EnumStoreOrderStatus::from($status));
         $this->em->persist($order);
         $this->updateProducts();
+
+        $orderCustomer = $this->em->getRepository(StoreCustomerOrders::class)->findOneBy(['orders' => $this->order]);
+        $orderCustomer->setCustomer($customer);
+        $this->em->persist($order);
+
         $this->em->flush();
 
-        $this->frontSession->delete($this->request->cookies->get(FrontSessionHandler::NAME));
-        $this->request->cookies->remove(FrontSessionHandler::NAME);
+        $cookies = $this->requestStack->getCurrentRequest()->cookies;
+        $this->frontSession->delete($cookies->get(FrontSessionHandler::NAME));
     }
 
     /**

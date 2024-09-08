@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity\MarketPlace;
 
@@ -34,14 +34,14 @@ class StoreProduct
     #[ORM\Column]
     private ?int $quantity;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '2')]
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private string $cost;
 
     #[ORM\Column(length: 80)]
     private ?string $short_name = null;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
-    private ?string $pckg_discount = null;
+    private ?int $pckg_discount = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $sku = null;
@@ -49,7 +49,7 @@ class StoreProduct
     #[ORM\Column(nullable: true)]
     private ?int $pckg_quantity = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '2', nullable: true)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $fee;
 
     #[ORM\Column]

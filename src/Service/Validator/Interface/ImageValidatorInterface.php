@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\Interface;
+namespace App\Service\Validator\Interface;
 
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-interface OperationFileValidatorInterface
+interface ImageValidatorInterface
 {
     /**
      * @param mixed $file

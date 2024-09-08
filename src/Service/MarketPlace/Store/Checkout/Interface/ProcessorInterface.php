@@ -15,9 +15,10 @@ interface ProcessorInterface
 
     /**
      * @param string|null $status
+     * @param StoreCustomer|null $customer
      * @return void
      */
-    public function updateOrder(?string $status): void;
+    public function updateOrder(?string $status, ?StoreCustomer $customer = null): void;
 
     /**
      * @param StoreInvoice $invoice

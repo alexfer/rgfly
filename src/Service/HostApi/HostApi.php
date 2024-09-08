@@ -72,17 +72,20 @@ class HostApi implements HostApiInterface
         }
 
         $crawler = new Crawler($response);
-        $hostIp = $crawler->filterXPath('//gml:featureMember//Hostip');
 
+        try {
+            $hostIp = @$crawler->filterXPath('//gml:featureMember//Hostip');
+            $ip = $hostIp->filterXPath('//ip')->text();
+            $city = $hostIp->filterXPath('//gml:name')->text();
+            $countryName = $hostIp->filterXPath('//countryName')->text();
+            $countryCode = $hostIp->filterXPath('//countryAbbrev')->text();
 
-        $ip = $hostIp->filterXPath('//ip')->text();
-        $city = $hostIp->filterXPath('//gml:name')->text();
-        $countryName = $hostIp->filterXPath('//countryName')->text();
-        $countryCode = $hostIp->filterXPath('//countryAbbrev')->text();
-
-        $coordinates = $hostIp->filterXPath('//ipLocation//gml:pointProperty//gml:Point//gml:coordinates')->text();
-        $coordinates = explode(",", $coordinates);
-        $coordinates = array_reverse($coordinates);
+            $coordinates = $hostIp->filterXPath('//ipLocation//gml:pointProperty//gml:Point//gml:coordinates')->text();
+            $coordinates = explode(",", $coordinates);
+            $coordinates = array_reverse($coordinates);
+        } catch (\InvalidArgumentException $_e) {
+            return null;
+        }
 
         return [
             'ip' => $ip,
