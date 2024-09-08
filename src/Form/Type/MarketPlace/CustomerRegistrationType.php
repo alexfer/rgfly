@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Form\Type\MarketPlace;
 
@@ -34,8 +34,8 @@ class CustomerRegistrationType extends AbstractType
         $meta = $hostApi->determine($requestStack->getCurrentRequest()->getClientIp());
 
         $this->location = [
-            'countryCode' => $meta['countryCode'],
-            'city' => $meta['city'],
+            'countryCode' => $meta['countryCode'] ?? null,
+            'city' => $meta['city'] ?? null,
         ];
     }
 
@@ -173,7 +173,7 @@ class CustomerRegistrationType extends AbstractType
     }
 
     /**
-     * @return string
+     * @return null|string
      */
     public function getParent(): ?string
     {

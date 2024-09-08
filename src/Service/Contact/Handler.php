@@ -5,7 +5,7 @@ namespace App\Service\Contact;
 use App\Entity\Answer;
 use App\Entity\Contact;
 use App\Service\Contact\Interface\HandleInterface;
-use App\Service\Interface\EmailNotificationInterface;
+use App\Service\Validator\Interface\EmailNotificationInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\FormInterface;

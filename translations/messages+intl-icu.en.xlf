@@ -1666,7 +1666,7 @@
             <trans-unit id="form.agree_terms.help">
                 <source>form.agree_terms.help</source>
                 <target>
-                    <![CDATA[More about our <a class="link" target="_blank" href="{ policy }">Privacy Policy</a> and <a class="link" target="_blank" href="{ terms }">Terms &amp; Conditions</a>.]]>
+                    <![CDATA[More about our <a class="text-gray-900 underline hover:no-underline dark:text-white" target="_blank" href="{ policy }">Privacy Policy</a> and <a class="text-gray-900 underline hover:no-underline dark:text-white" target="_blank" href="{ terms }">Terms &amp; Conditions</a>.]]>
                 </target>
             </trans-unit>
             <trans-unit id="form.first_name.help">

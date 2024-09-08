@@ -127,7 +127,7 @@ class StoreOrders
      */
     public function setTotal(string $total): static
     {
-        $this->total = round($total);
+        $this->total = $total;
         return $this;
     }
 

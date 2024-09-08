@@ -121,7 +121,7 @@ class StoreInvoice
      */
     public function setAmount(string $amount): static
     {
-        $this->amount = number_format($amount, 2, '.', '');;
+        $this->amount = $amount;
 
         return $this;
     }
