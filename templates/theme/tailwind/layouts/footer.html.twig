@@ -91,14 +91,14 @@
     </div>
 </div>
 {% if app.request.cookies.get('accept-cookie') != 'accepted' %}
-    <div id="cookie-alert" class="fixed bottom-0 right-0 mb-4 mr-4 w-64">
+    <div id="cookie-alert" class="toast fixed bottom-0 right-0 mb-4 mr-4 w-64">
         <div class="bg-gray-50 bg-opacity-90 rounded-lg shadow-lg p-4">
             <div class="flex items-center justify-between mb-2">
                 <div class="flex items-center">
                     <img src="https://www.svgrepo.com/show/401340/cookie.svg" alt="Cookie" class="h-6 w-6 mr-2">
                     <span class="text-gray-700 font-bold text-sm">Cookie Policy</span>
                 </div>
-                <button class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                <button class="text-gray-500 hover:text-gray-700 focus:outline-none" data-dismiss-target=".toast">
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
                         </path>
