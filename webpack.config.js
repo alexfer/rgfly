@@ -20,7 +20,7 @@ Encore
     .addEntry('market-js', `./assets/tailwind/js/market.js`)
     .addEntry('operation-js', `./assets/tailwind/js/dashboard/operation.js`)
     .addEntry('dashboard-js', `./assets/tailwind/js/dashboard/index.js`)
-    .addEntry('customer-js', `./assets/tailwind/js/customer.js`)
+    .addEntry('checkout-js', `./assets/tailwind/js/checkout.js`)
     //.addEntry('datepicker-js', `./assets/tailwind/js/dashboard/datepicker.js`)
     .enablePostCssLoader((options) => {
         options.postcssOptions = {
