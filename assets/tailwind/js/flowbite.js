@@ -2,34 +2,38 @@ import {Dismiss, initFlowbite} from "flowbite";
 
 initFlowbite();
 
-let toast = document.getElementById('toast-success');
-let toastClose = document.querySelector('[data-dismiss-target="#toast-success"]');
+let toast = document.getElementsByClassName('toast')[0];
+let toastClose = document.querySelector('[data-dismiss-target=".toast"]');
 
 if (toast !== undefined) {
-    const options = {
-        transition: 'transition-opacity',
-        duration: 4000,
-        timing: 'ease-out'
-    };
+    const options = {};
     const instanceOptions = {
-        id: 'targetElement',
+        id: toast,
         override: true
     };
     const dismiss = new Dismiss(toast, toastClose, options, instanceOptions);
+
+    dismiss.updateOnHide(function () {
+        toast.classList.add('animate__animated', 'animate__fadeOutDown');
+    });
 }
+
 let clipboardEmail, tooltipEmail, clipboardPhone, tooltipPhone = undefined;
 
 if (document.getElementById('email') !== null) {
-    clipboardEmail = FlowbiteInstances.getInstance('CopyClipboard', 'email');
+    clipboardEmail = window.FlowbiteInstances.getInstance('CopyClipboard', 'email');
 }
+
 if (document.getElementById('tooltip-copy-email') !== null) {
-    tooltipEmail = FlowbiteInstances.getInstance('Tooltip', 'tooltip-copy-email');
+    tooltipEmail = window.FlowbiteInstances.getInstance('Tooltip', 'tooltip-copy-email');
 }
+
 if (document.getElementById('phone') !== null) {
-    clipboardPhone = FlowbiteInstances.getInstance('CopyClipboard', 'phone');
+    clipboardPhone = window.FlowbiteInstances.getInstance('CopyClipboard', 'phone');
 }
+
 if (document.getElementById('tooltip-copy-phone') !== null) {
-    tooltipPhone = FlowbiteInstances.getInstance('Tooltip', 'tooltip-copy-phone');
+    tooltipPhone = window.FlowbiteInstances.getInstance('Tooltip', 'tooltip-copy-phone');
 }
 
 const defaultIconEmail = document.getElementById('default-icon-email');
