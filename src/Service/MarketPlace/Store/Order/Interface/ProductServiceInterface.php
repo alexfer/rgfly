@@ -6,7 +6,7 @@ use App\Entity\MarketPlace\Store;
 use App\Entity\MarketPlace\StoreCustomer;
 use App\Entity\MarketPlace\StoreOrders;
 
-interface ProductInterface
+interface ProductServiceInterface
 {
     /**
      * @param StoreCustomer|null $customer

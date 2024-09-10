@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Service\MarketPlace\Store\Customer\Interface;
 
@@ -6,7 +6,7 @@ use App\Entity\MarketPlace\{StoreAddress, StoreCustomer, StoreOrders};
 use App\Entity\User;
 use Symfony\Component\Form\FormInterface;
 
-interface ProcessorInterface
+interface CustomerServiceInterface
 {
     /**
      * @param StoreCustomer $customer

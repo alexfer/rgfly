@@ -9,8 +9,8 @@ use App\Entity\MarketPlace\{StoreCustomer, StoreCustomerOrders, StoreMessage, St
 use App\Entity\User;
 use App\Form\Type\MarketPlace\{AddressType, CustomerProfileType};
 use App\Message\MessageNotification;
-use App\Service\MarketPlace\Store\Customer\Interface\ProcessorInterface as CustomerInterface;
-use App\Service\MarketPlace\Store\Message\Interface\ProcessorInterface;
+use App\Service\MarketPlace\Store\Customer\Interface\CustomerServiceInterface as CustomerInterface;
+use App\Service\MarketPlace\Store\Message\Interface\MessageServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
@@ -61,16 +61,16 @@ class CabinetController extends AbstractController
 
     /**
      * @param Request $request
-     * @param ProcessorInterface $processor
+     * @param MessageServiceInterface $processor
      * @param MessageBusInterface $bus
      * @return Response
      * @throws ExceptionInterface
      */
     #[Route('/messages/{id}', name: 'app_cabinet_messages', defaults: ['id' => null], methods: ['GET', 'POST'])]
     public function messages(
-        Request             $request,
-        ProcessorInterface  $processor,
-        MessageBusInterface $bus,
+        Request                 $request,
+        MessageServiceInterface $processor,
+        MessageBusInterface     $bus,
     ): Response
     {
         $id = $request->get('id');

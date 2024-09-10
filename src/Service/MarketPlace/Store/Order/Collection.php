@@ -47,7 +47,7 @@ final class Collection implements CollectionInterface
             $sessionId = $this->sessionId;
         }
 
-        if(!$sessionId) {
+        if (!$sessionId) {
             return null;
         }
 

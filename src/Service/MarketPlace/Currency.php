@@ -4,8 +4,6 @@ namespace App\Service\MarketPlace;
 
 class Currency
 {
-
-
     public const string USD = 'USD';
     public const string CAD = 'CAD';
     public const string EUR = 'EUR';

@@ -3,14 +3,14 @@
 namespace App\Service\MarketPlace\Store\Order;
 
 use App\Entity\MarketPlace\{Store, StoreCustomer, StoreCustomerOrders, StoreOrders, StoreOrdersProduct};
-use App\Service\MarketPlace\Store\Order\Interface\ProductInterface;
+use App\Service\MarketPlace\Store\Order\Interface\ProductServiceInterface;
 use App\Storage\MarketPlace\FrontSessionHandler;
 use App\Storage\MarketPlace\FrontSessionInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-final class ProductProcessor implements ProductInterface
+final class ProductService implements ProductServiceInterface
 {
 
     private readonly array $payload;

@@ -10,7 +10,7 @@ use App\Entity\MarketPlace\{Enum\EnumStoreOrderStatus,
     StorePaymentGateway,
     StoreProduct};
 use App\Helper\MarketPlace\MarketPlaceHelper;
-use App\Service\MarketPlace\Store\Checkout\Interface\ProcessorInterface;
+use App\Service\MarketPlace\Store\Checkout\Interface\CheckoutServiceInterface;
 use App\Storage\MarketPlace\FrontSessionHandler;
 use App\Storage\MarketPlace\FrontSessionInterface;
 use Doctrine\Common\Collections\Collection;
@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class Processor implements ProcessorInterface
+class CheckoutService implements CheckoutServiceInterface
 {
     /**
      * @var StoreOrders|null

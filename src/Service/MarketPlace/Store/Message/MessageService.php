@@ -1,7 +1,6 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Service\MarketPlace\Store\Message;
-
 
 use App\Entity\MarketPlace\Store;
 use App\Entity\MarketPlace\StoreCustomer;
@@ -11,7 +10,7 @@ use App\Entity\MarketPlace\StoreProduct;
 use App\Entity\UserDetails;
 use App\Message\DeleteMessage;
 use App\Message\MessageNotification;
-use App\Service\MarketPlace\Store\Message\Interface\ProcessorInterface;
+use App\Service\MarketPlace\Store\Message\Interface\MessageServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class Processor implements ProcessorInterface
+class MessageService implements MessageServiceInterface
 {
 
     /**

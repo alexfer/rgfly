@@ -1,10 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Service\Contact\Interface;
 
 use App\Entity\Contact;
+use App\Entity\User;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 interface HandleInterface
 {
@@ -21,5 +21,5 @@ interface HandleInterface
     public function notify(): void;
 
 
-    public function answer(Contact $contact, UserInterface $user, string $message): void;
+    public function answer(Contact $contact, User $user, string $message): void;
 }
