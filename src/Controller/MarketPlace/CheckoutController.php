@@ -13,6 +13,8 @@ use App\Storage\MarketPlace\FrontSessionHandler;
 use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
+use Symfony\Component\Intl\Countries;
+use Symfony\Component\Intl\Locale;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
@@ -111,6 +113,7 @@ class CheckoutController extends AbstractController
             'hasUsed' => $hasUsed,
             'discount' => $discount,
             'coupon' => $process,
+            'countries' => Countries::getNames(Locale::getDefault()),
             'errors' => $form->getErrors(true),
         ]);
     }

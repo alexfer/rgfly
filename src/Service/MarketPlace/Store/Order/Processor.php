@@ -17,11 +17,6 @@ final class Processor implements ProcessorInterface
     private ?string $sessionId;
 
     /**
-     * @var array|null
-     */
-    private ?array $data;
-
-    /**
      * @param RequestStack $requestStack
      * @param EntityManagerInterface $em
      */
@@ -30,7 +25,6 @@ final class Processor implements ProcessorInterface
         private readonly EntityManagerInterface $em,
     )
     {
-        $this->data = $requestStack->getCurrentRequest()->toArray();
     }
 
     /**
@@ -149,9 +143,11 @@ final class Processor implements ProcessorInterface
      */
     private function orderProduct(): StoreOrdersProduct
     {
+        $data = $this->requestStack->getCurrentRequest()->toArray();
         $product = new StoreOrdersProduct();
-        $product->setColor($this->data['color'] ?: null)
-            ->setSize($this->data['size'] ?: null)
+
+        $product->setColor($data['color'] ?: null)
+            ->setSize($data['size'] ?: null)
             ->setProduct($this->getProduct());
         $this->em->persist($product);
         return $product;
@@ -186,12 +182,13 @@ final class Processor implements ProcessorInterface
      */
     protected function existsProduct(StoreOrders $order): ?StoreOrdersProduct
     {
+        $data = $this->requestStack->getCurrentRequest()->toArray();
         return $this->em->getRepository(StoreOrdersProduct::class)
             ->findOneBy([
                 'orders' => $order,
                 'product' => $this->getProduct(),
-                'size' => $this->data['size'] ?: null,
-                'color' => $this->data['color'] ?: null,
+                'size' => $data['size'] ?: null,
+                'color' => $data['color'] ?: null,
             ]);
     }
 
@@ -212,5 +209,19 @@ final class Processor implements ProcessorInterface
     public function getSessionId(): string
     {
         return $this->sessionId;
+    }
+
+    /**
+     * @param int $orderId
+     * @param int $customerId
+     * @return void
+     */
+    public function updateAfterAuthenticate(int $orderId, int $customerId): void
+    {
+        $order = $this->em->getRepository(StoreOrders::class)->find($orderId);
+        $customerOrder = $this->em->getRepository(StoreCustomerOrders::class)->findOneBy(['orders' => $order]);
+        $customerOrder->setCustomer($this->em->getRepository(StoreCustomer::class)->find($customerId));
+        $this->em->persist($customerOrder);
+        $this->em->flush();
     }
 }

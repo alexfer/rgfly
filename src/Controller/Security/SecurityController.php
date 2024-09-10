@@ -52,10 +52,11 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * @param Request $request
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
      */
-    public function loginTemplate(AuthenticationUtils $authenticationUtils): Response
+    public function loginTemplate(Request $request, AuthenticationUtils $authenticationUtils): Response
     {
         $payload = [
             'email' => $authenticationUtils->getLastUsername(),
@@ -65,6 +66,7 @@ class SecurityController extends AbstractController
 
         return $this->render('security/_xhr_form.html.twig', [
             'form' => $form->createView(),
+            'order' => $request->query->get('order'),
         ]);
     }
 
