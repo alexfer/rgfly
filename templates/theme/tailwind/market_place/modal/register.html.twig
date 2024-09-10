@@ -17,8 +17,7 @@
                     <span class="sr-only">{{ 'form.action.close'|trans }}</span>
                 </button>
             </div>
-{#            {{ render(controller('App\\Controller\\Security\\RegistrationController::registerTemplate', {}, {order: order.id})) }}#}
-            {% include 'registration/_xhr_customer_form.html.twig' %}
+            {{ render(controller('App\\Controller\\Security\\RegistrationController::renderTemplate', {}, {order: order.id})) }}
         </div>
     </div>
 </div>

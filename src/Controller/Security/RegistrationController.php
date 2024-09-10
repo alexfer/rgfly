@@ -120,7 +120,7 @@ class RegistrationController extends AbstractController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/customer_xhr', name: 'app_customer_register_xhr', methods: ['GET', 'POST'])]
-    public function registerTemplate(
+    public function registerXhr(
         Request                                $request,
         CustomerRegistrationValidatorInterface $validator,
         ValidatorInterface                     $iValidator,
@@ -169,12 +169,16 @@ class RegistrationController extends AbstractController
 
             return $this->json(['success' => true, 'redirect' => $request->headers->get('referrer')], Response::HTTP_CREATED);
         }
-        $response = new Response();
-        return $response->send();
-//        return $this->render('registration/_xhr_customer_form.html.twig', [
-//            'countries' => Countries::getNames(Locale::getDefault()),
-//            'order' => $request->query->get('order'),
-//        ]);
+
+        return $this->json(['success' => false, 'error' => 'Invalid request'], Response::HTTP_BAD_REQUEST);
+    }
+
+    public function renderTemplate(Request $request): Response
+    {
+        return $this->render('registration/_xhr_customer_form.html.twig', [
+            'countries' => Countries::getNames(Locale::getDefault()),
+            'order' => $request->query->get('order'),
+        ]);
     }
 
     /**
