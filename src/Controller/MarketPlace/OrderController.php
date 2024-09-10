@@ -5,8 +5,8 @@ namespace App\Controller\MarketPlace;
 use App\Service\MarketPlace\Store\Customer\Interface\UserManagerInterface;
 use App\Service\MarketPlace\Store\Order\Interface\{CollectionInterface,
     ComputeInterface,
-    ProcessorInterface,
-    ProductInterface,
+    OrderServiceInterface,
+    ProductServiceInterface,
     SummaryInterface};
 use App\Storage\MarketPlace\FrontSessionHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,16 +22,16 @@ class OrderController extends AbstractController
      * @param UserManagerInterface $userManager
      * @param SummaryInterface $orderSummary
      * @param CollectionInterface $orderCollection
-     * @param ProductInterface $orderProduct
+     * @param ProductServiceInterface $orderProduct
      * @return Response
      */
     #[Route('/summary/remove', name: 'app_market_place_order_remove_product', methods: ['POST'])]
     public function remove(
-        Request              $request,
-        UserManagerInterface $userManager,
-        SummaryInterface     $orderSummary,
-        CollectionInterface  $orderCollection,
-        ProductInterface     $orderProduct,
+        Request                 $request,
+        UserManagerInterface    $userManager,
+        SummaryInterface        $orderSummary,
+        CollectionInterface     $orderCollection,
+        ProductServiceInterface $orderProduct,
     ): Response
     {
         $customer = $userManager->get($this->getUser());
@@ -63,7 +63,6 @@ class OrderController extends AbstractController
         ]);
     }
 
-
     /**
      * @param Request $request
      * @param ComputeInterface $compute
@@ -84,7 +83,7 @@ class OrderController extends AbstractController
     /**
      * @param Request $request
      * @param UserManagerInterface $userManager
-     * @param SummaryInterface $order
+     * @param SummaryInterface $orderSummary
      * @param CollectionInterface $collection
      * @return Response
      */
@@ -92,7 +91,7 @@ class OrderController extends AbstractController
     public function summary(
         Request              $request,
         UserManagerInterface $userManager,
-        SummaryInterface     $order,
+        SummaryInterface     $orderSummary,
         CollectionInterface  $collection,
     ): Response
     {
@@ -107,7 +106,7 @@ class OrderController extends AbstractController
 
         return $this->render('market_place/order/summary.html.twig', [
             'orders' => $orders['summary'] ?: null,
-            'summary' => $orders['summary'] !== null ? $order->summary($orders['summary']) : null,
+            'summary' => $orders['summary'] !== null ? $orderSummary->summary($orders['summary']) : null,
         ]);
     }
 
@@ -165,17 +164,17 @@ class OrderController extends AbstractController
 
     /**
      * @param Request $request
-     * @param ProcessorInterface $processor
+     * @param OrderServiceInterface $service
      * @param UserManagerInterface $userManager
      * @param CollectionInterface $collection
      * @return JsonResponse
      */
     #[Route('/{product}', name: 'app_market_place_product_order', methods: ['POST'])]
     public function order(
-        Request              $request,
-        ProcessorInterface   $processor,
-        UserManagerInterface $userManager,
-        CollectionInterface  $collection
+        Request               $request,
+        OrderServiceInterface $service,
+        UserManagerInterface  $userManager,
+        CollectionInterface   $collection
     ): JsonResponse
     {
         $data = $request->toArray();
@@ -188,9 +187,9 @@ class OrderController extends AbstractController
 
         $sessId = $this->getSessionId($request);
         $customer = $userManager->get($this->getUser());
-        $order = $processor->findOrder(null, $sessId);
-        $processor->processOrder($order, $customer);
-        $sessionId = $processor->getSessionId();
+        $order = $service->findOrder(null, $sessId);
+        $service->processOrder($order, $customer);
+        $sessionId = $service->getSessionId();
         $collection = $collection->getOrderProducts($sessionId);
 
         return $this->json([

@@ -1,11 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Service\MarketPlace\Store\Coupon\Interface;
 
 use App\Entity\MarketPlace\{Store, StoreCustomer};
 use Symfony\Component\Security\Core\User\UserInterface;
 
-interface ProcessorInterface
+interface CouponServiceInterface
 {
     /**
      * @param Store $store

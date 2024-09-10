@@ -55,7 +55,7 @@ if (el.form !== null) {
         if (el.modal) {
             order = el.form.querySelector('input[name="order"]');
             if (order && !order.value) {
-                showToast(el.danger, i18next.t('notFound'));
+                showToast(el.danger, i18next.t('orderNotFound'));
                 return false;
             }
         }
@@ -93,7 +93,7 @@ if (el.form !== null) {
             });
     });
 }
-if (el.search) {
+if (el.form && el.search) {
     const icon = el.search.previousElementSibling.previousElementSibling.children[0];
     const input = el.form.querySelector('input[type="search"]');
     document.getElementById('open-message').onclick = function () {
@@ -107,10 +107,13 @@ if (el.search) {
             headers: {'Content-type': 'application/json; charset=utf-8'}
         }).then((response) => response.json()).then((json) => {
             const response = json;
-            if (response.order) {
-                icon.classList.replace('text-gray-500', 'text-green-500');
+            if (response.order !== null) {
                 el.form.querySelector('input[name="store"]').value = response.order.store;
-                el.form.querySelector('input[name="order"]').value = response.order.id
+                el.form.querySelector('input[name="order"]').value = response.order.id;
+                el.form.querySelector('textarea').focus();
+                showToast(el.success, i18next.t('orderFound'));
+            } else {
+                showToast(el.danger, i18next.t('orderNotFound'));
             }
         }).catch(err => {
             console.log(err);

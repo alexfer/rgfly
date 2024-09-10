@@ -1,10 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Service\MarketPlace\Store\Order\Interface;
 
 use App\Entity\MarketPlace\{StoreCustomer, StoreOrders};
 
-interface ProcessorInterface
+interface OrderServiceInterface
 {
     /**
      * @param int|null $id

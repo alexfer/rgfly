@@ -5,7 +5,7 @@ namespace App\Controller\Dashboard\MarketPlace\Store;
 use App\Entity\MarketPlace\{Store, StoreMessage};
 use App\Message\MessageNotification;
 use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreInterface;
-use App\Service\MarketPlace\Store\Message\Interface\ProcessorInterface;
+use App\Service\MarketPlace\Store\Message\Interface\MessageServiceInterface;
 use App\Service\MarketPlace\StoreTrait;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
@@ -76,7 +76,7 @@ class MessageController extends AbstractController
      * @param Request $request
      * @param UserInterface $user
      * @param StoreInterface $serveStore
-     * @param ProcessorInterface $processor
+     * @param MessageServiceInterface $processor
      * @param EntityManagerInterface $em
      * @param MessageBusInterface $bus
      * @return Response
@@ -84,12 +84,12 @@ class MessageController extends AbstractController
      */
     #[Route('/{store}/{id}', name: 'app_dashboard_market_place_message_conversation', methods: ['GET', 'POST'])]
     public function conversation(
-        Request                $request,
-        UserInterface          $user,
-        StoreInterface         $serveStore,
-        ProcessorInterface     $processor,
-        EntityManagerInterface $em,
-        MessageBusInterface    $bus,
+        Request                 $request,
+        UserInterface           $user,
+        StoreInterface          $serveStore,
+        MessageServiceInterface $processor,
+        EntityManagerInterface  $em,
+        MessageBusInterface     $bus,
     ): Response
     {
         $store = $this->store($serveStore, $user);

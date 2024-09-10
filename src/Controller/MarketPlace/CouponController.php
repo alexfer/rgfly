@@ -1,11 +1,9 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Controller\MarketPlace;
 
 use App\Entity\MarketPlace\Store;
-use App\Service\MarketPlace\Store\Coupon\Interface\ProcessorInterface as CouponInterface;
+use App\Service\MarketPlace\Store\Coupon\Interface\CouponServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
@@ -18,15 +16,15 @@ class CouponController extends AbstractController
      * @param Request $request
      * @param Store $store
      * @param TranslatorInterface $translator
-     * @param CouponInterface $coupon
+     * @param CouponServiceInterface $coupon
      * @return JsonResponse
      */
     #[Route('/{store}/{relation}/{id}/{ref}', name: 'app_market_place_market_verify_coupon', methods: ['POST'])]
     public function verifyCoupon(
-        Request             $request,
-        Store               $store,
-        TranslatorInterface $translator,
-        CouponInterface     $coupon,
+        Request                $request,
+        Store                  $store,
+        TranslatorInterface    $translator,
+        CouponServiceInterface $coupon,
     ): JsonResponse
     {
         $user = $this->getUser();

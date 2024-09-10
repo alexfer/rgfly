@@ -1,18 +1,17 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Service\Contact;
 
 use App\Entity\Answer;
 use App\Entity\Contact;
+use App\Entity\User;
 use App\Service\Contact\Interface\HandleInterface;
 use App\Service\Validator\Interface\EmailNotificationInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Twig\Environment as Twig;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -20,11 +19,6 @@ use Twig\Error\SyntaxError;
 
 class Handler implements HandleInterface
 {
-
-    /**
-     * @var Request
-     */
-    protected Request $request;
 
     /**
      * @param RequestStack $requestStack
@@ -44,7 +38,6 @@ class Handler implements HandleInterface
 
     )
     {
-        $this->request = $requestStack->getCurrentRequest();
     }
 
     /**
@@ -54,7 +47,9 @@ class Handler implements HandleInterface
      */
     public function serve(FormInterface $form, Contact $contact): bool
     {
-        $form->handleRequest($this->request);
+        $request = $this->requestStack->getCurrentRequest();
+        $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $contact->setSubject(
                 $form->get('subject')->getData() ?:
@@ -88,7 +83,9 @@ class Handler implements HandleInterface
      */
     public function notify(): void
     {
-        $args = $this->request->request->all();
+        $request = $this->requestStack->getCurrentRequest();
+        $args = $request->request->all();
+
         $template = $this->renderView([
             'args' => $args['contact'],
             'subject' => $this->params->get('app.notifications.subject'),
@@ -98,7 +95,7 @@ class Handler implements HandleInterface
         $this->emailNotification->send($args['contact'], $template);
     }
 
-    public function answer(Contact $contact, UserInterface $user, string $message): void
+    public function answer(Contact $contact, User $user, string $message): void
     {
         $answers = $contact->getAnswers();
         $answer = new Answer();

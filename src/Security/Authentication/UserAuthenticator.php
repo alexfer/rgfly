@@ -4,7 +4,7 @@ namespace App\Security\Authentication;
 
 use App\Entity\MarketPlace\StoreCustomer;
 use App\Entity\User;
-use App\Service\MarketPlace\Store\Order\Interface\ProcessorInterface;
+use App\Service\MarketPlace\Store\Order\Interface\OrderServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\{JsonResponse, RedirectResponse, Request, Response};
 use Symfony\Component\Routing\RouterInterface;
@@ -22,12 +22,12 @@ class UserAuthenticator extends AbstractAuthenticator
     /**
      * @param RouterInterface $router
      * @param EntityManagerInterface $em
-     * @param ProcessorInterface $processor
+     * @param OrderServiceInterface $processor
      */
     public function __construct(
         private readonly RouterInterface        $router,
         private readonly EntityManagerInterface $em,
-        private readonly ProcessorInterface     $processor,
+        private readonly OrderServiceInterface  $processor,
     )
     {
 

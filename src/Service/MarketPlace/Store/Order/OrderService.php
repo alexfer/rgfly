@@ -4,12 +4,12 @@ namespace App\Service\MarketPlace\Store\Order;
 
 use App\Entity\MarketPlace\{Store, StoreCustomer, StoreCustomerOrders, StoreOrders, StoreOrdersProduct, StoreProduct};
 use App\Helper\MarketPlace\MarketPlaceHelper;
-use App\Service\MarketPlace\Store\Order\Interface\ProcessorInterface;
+use App\Service\MarketPlace\Store\Order\Interface\OrderServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\{RequestStack};
 use Symfony\Component\Uid\Uuid;
 
-final class Processor implements ProcessorInterface
+final class OrderService implements OrderServiceInterface
 {
     /**
      * @var string|null

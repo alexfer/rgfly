@@ -1,14 +1,14 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Service\MarketPlace\Store\Coupon;
 
 use App\Entity\MarketPlace\{Store, StoreCoupon, StoreCouponCode, StoreCouponUsage, StoreCustomer};
 use App\Service\MarketPlace\Currency;
-use App\Service\MarketPlace\Store\Coupon\Interface\ProcessorInterface;
+use App\Service\MarketPlace\Store\Coupon\Interface\CouponServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-readonly class Processor implements ProcessorInterface
+readonly class CouponService implements CouponServiceInterface
 {
     /**
      * @var array|int
