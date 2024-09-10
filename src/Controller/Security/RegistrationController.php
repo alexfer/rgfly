@@ -7,6 +7,7 @@ use App\Form\Type\MarketPlace\CustomerRegistrationType;
 use App\Form\Type\User\DetailsType;
 use App\Repository\{UserDetailsRepository, UserRepository};
 use App\Repository\MarketPlace\{StoreAddressRepository, StoreCustomerRepository};
+use App\Service\MarketPlace\Store\Order\Interface\ProcessorInterface;
 use App\Service\Validator\Interface\CustomerRegistrationValidatorInterface;
 use Doctrine\DBAL\Exception;
 use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
@@ -128,11 +129,14 @@ class RegistrationController extends AbstractController
         StoreCustomerRepository                $customerRepository,
         StoreAddressRepository                 $addressRepository,
         TranslatorInterface                    $translator,
+        ProcessorInterface                     $processor
     ): Response
     {
         if ($request->isMethod('POST')) {
             $payload = $request->getPayload()->all();
+
             $errors = $validator->validate($payload, $iValidator);
+
             if (count($errors) > 0) {
                 foreach ($errors as $error) {
                     return $this->json(['success' => false, 'error' => $error->getMessage()], Response::HTTP_BAD_REQUEST);
@@ -159,11 +163,18 @@ class RegistrationController extends AbstractController
             $addressRepository->create($customer, $addressData);
             $this->authenticateUser($userRepository->find($user));
 
+            if (isset($payload['order'])) {
+                $processor->updateAfterAuthenticate($payload['order'], $customer);
+            }
+
             return $this->json(['success' => true, 'redirect' => $request->headers->get('referrer')], Response::HTTP_CREATED);
         }
-        return $this->render('registration/_xhr_customer_form.html.twig', [
-            'countries' => Countries::getNames(Locale::getDefault()),
-        ]);
+        $response = new Response();
+        return $response->send();
+//        return $this->render('registration/_xhr_customer_form.html.twig', [
+//            'countries' => Countries::getNames(Locale::getDefault()),
+//            'order' => $request->query->get('order'),
+//        ]);
     }
 
     /**

@@ -213,4 +213,18 @@ final class Processor implements ProcessorInterface
     {
         return $this->sessionId;
     }
+
+    /**
+     * @param int $orderId
+     * @param int $customerId
+     * @return void
+     */
+    public function updateAfterAuthenticate(int $orderId, int $customerId): void
+    {
+        $order = $this->em->getRepository(StoreOrders::class)->find($orderId);
+        $customerOrder = $this->em->getRepository(StoreCustomerOrders::class)->findOneBy(['orders' => $order]);
+        $customerOrder->setCustomer($this->em->getRepository(StoreCustomer::class)->find($customerId));
+        $this->em->persist($customerOrder);
+        $this->em->flush();
+    }
 }
