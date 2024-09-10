@@ -140,9 +140,9 @@ class ElasticService implements ElasticServiceInterface
                         ]
                     ]
                 ]);
-                $io->write(sprintf('Added [%s] to elasticsearch]', $product['slug']));
+                $io->writeln(sprintf('Added [%s] to elasticsearch]', $product['slug']));
             } catch (ClientResponseException|MissingParameterException|ServerResponseException $e) {
-                $io->write($e->getMessage());
+                $io->writeln($e->getMessage());
             }
         }
     }

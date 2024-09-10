@@ -29,7 +29,7 @@
                             </svg>
                         </div>
                         <input type="search" id="input-search"
-                               class="invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500 peer block w-full p-4 ps-10 text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300 focus:ring-gray-300 focus:border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                               class="block w-full p-4 ps-10 text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300 focus:ring-gray-300 focus:border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                placeholder="{{ 'placeholder.search.orders'|trans }}" required/>
                         <button type="button"
                                 id="order-search"
@@ -46,7 +46,7 @@
                               rows="6"
                               minlength="20"
                               maxlength="250"
-                              placeholder="{{ 'form.header.message'|trans }}"
+                              placeholder="{{ 'form.write.message'|trans }}..."
                               required></textarea>
                     <span class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">{{ 'form.message.invalid'|trans }}</span>
                 </div>
@@ -60,8 +60,8 @@
                             class="group-invalid:pointer-events-none group-invalid:opacity-30 inline-block rounded mr-2 bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
                         {{ 'form.action.send'|trans }}
                     </button>
-                    <button data-modal-hide="modal-message" data-modal-name="modal" type="button"
-                            class="inline-block rounded bg-secondary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-secondary-3 transition duration-150 ease-in-out hover:bg-secondary-accent-300 hover:shadow-secondary-2 focus:bg-secondary-accent-300 focus:shadow-secondary-2 focus:outline-none focus:ring-0 active:bg-secondary-600 active:shadow-secondary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
+                    <button data-modal-hide="modal-message" data-modal-name="modal" type="reset"
+                            class="inline-block rounded bg-gray-700 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-secondary-3 transition duration-150 ease-in-out hover:bg-gray-500 hover:shadow-secondary-2 focus:bg-secondary-accent-300 focus:shadow-secondary-2 focus:outline-none focus:ring-0 active:bg-secondary-600 active:shadow-secondary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
                         {{ 'form.action.cancel'|trans }}
                     </button>
                 </div>

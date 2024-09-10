@@ -11,7 +11,8 @@ const messages = {
                 confirmLock: 'Do you want to lock this element?',
                 confirmUnLock: 'Do you want to unlock this element?',
                 removed: 'Removed',
-                notFound: 'Order not found',
+                orderNotFound: 'Order not found',
+                orderFound: 'Order found',
                 fileTooLarge: 'The file size too large'
             },
         },
