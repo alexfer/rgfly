@@ -22,6 +22,7 @@ if (loginForm !== null) {
             body: JSON.stringify({
                 email: loginForm.querySelector('input[name="login[email]"]').value,
                 password: loginForm.querySelector('input[name="login[password]"]').value,
+                order: loginForm.querySelector('input[name="login[order]"]').value,
                 _csrf_token: loginForm.querySelector('input[name="_csrf_token"]').value
             })
         });

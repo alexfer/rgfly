@@ -173,6 +173,10 @@ class RegistrationController extends AbstractController
         return $this->json(['success' => false, 'error' => 'Invalid request'], Response::HTTP_BAD_REQUEST);
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function renderTemplate(Request $request): Response
     {
         return $this->render('registration/_xhr_customer_form.html.twig', [
