@@ -64,7 +64,6 @@
                        for="country">{{ 'label.form.country'|trans }} <abbr class="text-red-700"
                                                                             title="{{ 'required.value'|trans }}">*</abbr>
                 </label>
-                {#                {{ dump(countries) }} #}
                 <select id="country" name="country"
                         class="invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500 peer bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500"
                         required>
@@ -114,6 +113,7 @@
             </div>
         </div>
     </div>
+    <input type="hidden" name="order" value="{{ order }}">
     <div class="flex justify-between items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
         <p class="text-xs text-red-500 my-3">{{ 'required.text'|trans }} <abbr class="text-red-700"
                                                                                title="{{ 'required.field'|trans }}">*</abbr>
@@ -121,7 +121,7 @@
         <div class="mx-0.5">
             <button type="submit"
                     class="inline-block rounded bg-danger px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-danger-3 transition duration-150 ease-in-out hover:bg-danger-accent-300 hover:shadow-danger-2 focus:bg-danger-accent-300 focus:shadow-danger-2 focus:outline-none focus:ring-0 active:bg-danger-600 active:shadow-danger-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong group-invalid:pointer-events-none group-invalid:opacity-30">{{ 'form.action.register'|trans }}</button>
-            <button data-modal-hide="register" type="button"
+            <button data-modal-hide="register" type="reset"
                     class="pb-1.5 pt-2 px-6 ms-3 text-xs font-medium uppercase leading-normal text-gray-900 shadow-gray-3 transition duration-150 ease-in-out focus:outline-none bg-white rounded border border-gray-200 hover:bg-gray-100 hover:text-gray-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                 Decline
             </button>

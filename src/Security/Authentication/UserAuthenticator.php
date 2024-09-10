@@ -2,7 +2,9 @@
 
 namespace App\Security\Authentication;
 
+use App\Entity\MarketPlace\StoreCustomer;
 use App\Entity\User;
+use App\Service\MarketPlace\Store\Order\Interface\ProcessorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\{JsonResponse, RedirectResponse, Request, Response};
 use Symfony\Component\Routing\RouterInterface;
@@ -20,10 +22,12 @@ class UserAuthenticator extends AbstractAuthenticator
     /**
      * @param RouterInterface $router
      * @param EntityManagerInterface $em
+     * @param ProcessorInterface $processor
      */
     public function __construct(
         private readonly RouterInterface        $router,
         private readonly EntityManagerInterface $em,
+        private readonly ProcessorInterface     $processor,
     )
     {
 
@@ -50,8 +54,10 @@ class UserAuthenticator extends AbstractAuthenticator
      */
     public function authenticate(Request $request): Passport
     {
+        $order = null;
         if ('json' == $request->getContentTypeFormat()) {
             $payload = $request->getPayload()->all();
+            $order = $payload['order'];
             $token = $payload['_csrf_token'];
         } else {
             $payload = $request->request->all()['login'];
@@ -59,13 +65,19 @@ class UserAuthenticator extends AbstractAuthenticator
         }
 
         return new Passport(
-            new UserBadge($payload['email'], function ($userIdentifier) use ($request) {
+            new UserBadge($payload['email'], function ($userIdentifier) use ($request, $order) {
                 // optionally pass a callback to load the User manually
                 $user = $this->em->getRepository(User::class)->loadUserByIdentifier($userIdentifier);
 
                 if (!$user) {
                     throw new UserNotFoundException('User not found.');
                 }
+
+                if ($order && 'json' == $request->getContentTypeFormat()) {
+                    $customer = $this->em->getRepository(StoreCustomer::class)->findOneBy(['member' => $user]);
+                    $this->processor->updateAfterAuthenticate((int)$order, $customer->getId());
+                }
+
                 $user->setIp($request->getClientIp())
                     ->setLastLoginAt(new \DateTimeImmutable());
                 $this->em->persist($user);

@@ -79,6 +79,9 @@ class CustomerRegistrationValidator implements CustomerRegistrationValidatorInte
             'agreeTerms' => [new IsTrue([
                 'message' => 'form.message.agree_terms',
             ])],
+            'order' => [new NotBlank([
+                'message' => 'form.order.not_blank',
+            ])]
         ];
 
         return $validator->validate($payload, new Collection($constraints));

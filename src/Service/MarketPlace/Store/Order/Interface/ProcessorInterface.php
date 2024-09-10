@@ -30,4 +30,11 @@ interface ProcessorInterface
      * @return string
      */
     public function getSessionId(): string;
+
+    /**
+     * @param int $orderId
+     * @param int $customerId
+     * @return void
+     */
+    public function updateAfterAuthenticate(int $orderId, int $customerId): void;
 }
