@@ -67,9 +67,9 @@ class JobElasticPopulateCommand extends Command
         $index = $this->options['index'];
 
         $this->elastic->reset($client, $index);
-        $io->write(strtoupper('deleted'));
+        $io->writeln(strtoupper('deleted'));
         $result = $this->elastic->create($client, $index);
-        $io->write($result);
+        $io->writeln($result);
 
         $queryBuilder = $this->manager
             ->getRepository(StoreProduct::class)

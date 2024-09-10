@@ -4,7 +4,7 @@ namespace App\Service\MarketPlace\Store\Checkout\Interface;
 
 use App\Entity\MarketPlace\{StoreCustomer, StoreInvoice, StoreOrders};
 
-interface ProcessorInterface
+interface CheckoutServiceInterface
 {
     /**
      * @param string|null $status

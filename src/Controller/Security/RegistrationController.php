@@ -7,7 +7,7 @@ use App\Form\Type\MarketPlace\CustomerRegistrationType;
 use App\Form\Type\User\DetailsType;
 use App\Repository\{UserDetailsRepository, UserRepository};
 use App\Repository\MarketPlace\{StoreAddressRepository, StoreCustomerRepository};
-use App\Service\MarketPlace\Store\Order\Interface\ProcessorInterface;
+use App\Service\MarketPlace\Store\Order\Interface\OrderServiceInterface;
 use App\Service\Validator\Interface\CustomerRegistrationValidatorInterface;
 use Doctrine\DBAL\Exception;
 use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
@@ -129,7 +129,7 @@ class RegistrationController extends AbstractController
         StoreCustomerRepository                $customerRepository,
         StoreAddressRepository                 $addressRepository,
         TranslatorInterface                    $translator,
-        ProcessorInterface                     $processor
+        OrderServiceInterface                  $processor
     ): Response
     {
         if ($request->isMethod('POST')) {

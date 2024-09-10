@@ -1921,6 +1921,10 @@
                 <source>form.header.message</source>
                 <target>Send Message</target>
             </trans-unit>
+            <trans-unit id="form.write.message">
+                <source>form.write.message</source>
+                <target>Write your message here</target>
+            </trans-unit>
             <trans-unit id="form.action.send">
                 <source>form.action.send</source>
                 <target>Send</target>
