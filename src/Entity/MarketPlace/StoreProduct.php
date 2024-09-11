@@ -227,7 +227,7 @@ class StoreProduct
      */
     public function setCost(string $cost): static
     {
-        $this->cost = number_format($cost, 2, '.', '');
+        $this->cost = $cost;
 
         return $this;
     }
@@ -640,7 +640,7 @@ class StoreProduct
      */
     public function setFee(?string $fee): static
     {
-        $this->fee = number_format($fee, 2, '.', '');;
+        $this->fee = $fee;
 
         return $this;
     }
