@@ -10,6 +10,9 @@ BEGIN
     SELECT json_build_object('coupon', json_build_object(
             'id', sc.id,
             'price', sc.price,
+            'available', sc.available,
+            'name', sc.name,
+            'promotion', sc.promotion_text,
             'discount', sc.discount,
             'start', to_char(sc.started_at::timestamp, 'YYYY-MM-DD HH24:MI:SS'),
             'emd', to_char(sc.expired_at::timestamp, 'YYYY-MM-DD HH24:MI:SS')
