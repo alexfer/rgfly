@@ -6,6 +6,7 @@ namespace App\Controller\MarketPlace;
 
 use App\Controller\Trait\ControllerTrait;
 use App\Entity\MarketPlace\Store;
+use App\Entity\MarketPlace\StoreCoupon;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
@@ -41,14 +42,20 @@ class StoreController extends AbstractController
 
         $offset = $request->query->getInt('offset', 0);
         $limit = $request->query->getInt('limit', 10);
-        $store = $this->em->getRepository(Store::class)->fetch($request->get('slug'), $customer, $offset, $limit);
+        $store = $this->em->getRepository(Store::class)
+            ->fetch($request->get('slug'), $customer, $offset, $limit);
 
         if ($store['result'] === null) {
             throw $this->createNotFoundException();
         }
 
+        $coupon = $this->em->getRepository(StoreCoupon::class)
+            ->getSingleActive($store['result']['id'], 'order');
+
+        $result = array_merge($store['result'], (is_array($coupon) ? $coupon : ['coupon' => null]));
+
         return $this->render('market_place/store/store.html.twig', [
-            'store' => $store['result'],
+            'store' => $result,
             'customer' => $customer,
         ]);
     }

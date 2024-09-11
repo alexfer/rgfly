@@ -39,7 +39,7 @@ readonly class CouponService implements CouponServiceInterface
     public function process(Store $store, string $type = StoreCoupon::COUPON_ORDER): array|int
     {
         $coupon = $this->em->getRepository(StoreCoupon::class)
-            ->getSingleActive($store, $type);
+            ->getSingleActive($store->getId(), $type);
         $this->coupon = !$coupon ? $coupon : $coupon['coupon'];
         return $this->coupon;
     }

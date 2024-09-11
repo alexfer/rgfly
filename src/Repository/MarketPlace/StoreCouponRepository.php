@@ -69,21 +69,21 @@ class StoreCouponRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Store $store
+     * @param int $id
      * @param string $type
      * @param int $event
      * @return int|array
      * @throws Exception
      */
     public function getSingleActive(
-        Store  $store,
+        int    $id,
         string $type,
         int    $event = 1,
     ): int|array
     {
         $connection = $this->getEntityManager()->getConnection();
         $statement = $connection->prepare('select get_active_coupon(:store_id, :type, :event)');
-        $statement->bindValue('store_id', $store->getId(), \PDO::PARAM_INT);
+        $statement->bindValue('store_id', $id, \PDO::PARAM_INT);
         $statement->bindValue('type', $type, \PDO::PARAM_STR);
         $statement->bindValue('event', $event, \PDO::PARAM_INT);
         $result = $statement->executeQuery()->fetchAllAssociative();
