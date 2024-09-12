@@ -95,7 +95,7 @@
                             <a role="button">
                                 <h4 class="block text-3xl text-white font-bold transform-gpu">{{ store.coupon.name }}</h4>
                                 <p class="leading-relaxed font-roboto font-medium text-lg mt-2 text-white animate__animated animate__bounceIn">{{ store.coupon.promotion }}</p>
-                                <div class="absolute top-5 start-2/3 z-[999] text-3xl font-oswald">{{ store.coupon.code }}</div>
+                                <div class="absolute top-5 start-2/3 z-[999] text-3xl font-oswald select-none">{{ store.coupon.code }}</div>
                                 <div class="absolute -end-2 -top-2 z-1 bg-blue-500 shadow-lg text-white text-2xl font-oswald rounded-lg -rotate-45 p-4">
                                     <span class="text-lg pr-1">{{ 'store.product.off'|trans }}</span>{{ store.coupon.discount ? store.coupon.discount : store.coupon.price }}
                                     <span class="text-lg">{{ store.coupon.discount ? '%' : store.currency|currency }}</span>
