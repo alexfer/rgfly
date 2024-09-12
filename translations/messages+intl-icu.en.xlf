@@ -2242,6 +2242,14 @@
                 <source>text.file.uploaded</source>
                 <target>The file has been uploaded successfully.</target>
             </trans-unit>
+            <trans-unit id="text.end">
+                <source>text.end</source>
+                <target>Left</target>
+            </trans-unit>
+            <trans-unit id="text.days">
+                <source>text.days</source>
+                <target>days</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
