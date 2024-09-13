@@ -180,6 +180,10 @@
                 <source>title.cookie_policy</source>
                 <target>Cookie Policy</target>
             </trans-unit>
+            <trans-unit id="title.privacy_policy">
+                <source>title.privacy_policy</source>
+                <target>Privacy Policy</target>
+            </trans-unit>
             <trans-unit id="title.legal">
                 <source>title.legal</source>
                 <target>Legal</target>
