@@ -10,7 +10,7 @@
     <div class="mt-3">
         <div class="h-full">
             <div class="grid grid-cols-12">
-                <div class="col-span-4 mb-5 hidden px-5 lg:block bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <div class="col-span-3 mb-5 hidden px-5 lg:block bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                     <div class="p-2">
                         {% if store.description is not null %}
                             <h6 class="text-md-start font-oswald font-medium text-cyan-700 underline underline-offset-8 mb-4">{{ 'store.about'|trans }}</h6>
@@ -86,42 +86,53 @@
                         </form>
                     </div>
                 </div>
-                <div class="col-span-12 mb-5 lg:col-span-8 pt-2 px-4 lg:-mt-16">
+                <div class="col-span-12 mb-5 lg:col-span-9 pt-2 px-4 lg:-mt-16">
                     <h4 class="text-center font-oswald hidden lg:block text-2xl py-3 border-b-1 shadow-sm text-gray-600 font-semibold mb-3">{{ 'store.products'|trans }}
                         <span class="text-gray-500 font-medium ml-2">{{ store.products_count }}</span>
                     </h4>
                     {% if store.coupon is not null %}
                         <div class="w-full relative area p-4 mb-2 border-4 bg-indigo-500 border-indigo-100 border-dashed rounded-lg">
-                            <a role="button">
-                            <h4 class="block text-3xl text-white font-bold transform-gpu">{{ store.coupon.name }}</h4>
-                            <p class="leading-relaxed font-roboto font-medium text-lg mt-2 text-white animate__animated animate__bounceIn">{{ store.coupon.promotion }}</p>
-                            <div class="absolute -end-2 -top-2 bg-blue-700 shadow-lg text-white text-2xl font-oswald rounded-lg -rotate-45 p-4">
-                                <span class="text-lg pr-1">{{ 'store.product.off'|trans }}</span>{{ store.coupon.discount ? store.coupon.discount : store.coupon.price }}
-                                <span class="text-lg">{{ store.coupon.discount ? '%' : store.currency|currency }}</span>
-                            </div>
-                            <ul class="circles absolute top-0 left-0 overflow-hidden w-full h-full">
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                            </ul>
+                            <a role="button" data-tooltip-target="tooltip-bottom" data-tooltip-placement="bottom">
+                                <h4 class="block text-3xl text-white font-bold transform-gpu">{{ store.coupon.name }}</h4>
+                                <p class="leading-relaxed font-roboto font-medium text-lg mt-2 text-white animate__animated animate__bounceIn">{{ store.coupon.promotion }}</p>
+                                <div class="absolute top-5 start-2/3 z-[999] text-3xl font-oswald select-none">{{ store.coupon.code }}</div>
+                                <div class="absolute -end-2 -top-2 z-1 bg-blue-500 shadow-lg text-white text-2xl font-oswald rounded-lg -rotate-45 p-4">
+                                    <span class="text-lg pr-1">{{ 'store.product.off'|trans }}</span>{{ store.coupon.discount ? store.coupon.discount : store.coupon.price }}
+                                    <span class="text-lg">{{ store.coupon.discount ? '%' : store.currency|currency }}</span>
+                                </div>
+                                <div class="text-xs text-gray-300" id="date-end"
+                                     data-end="{{ store.coupon.end }}">
+                                    <span class="font-medium pr-0.5">{{ 'text.end'|trans }}:</span>
+                                    <span class="days">0</span><span class="px-0.5">{{ 'text.days'|trans }}</span>
+                                    <span class="hours">00</span>:<span class="minutes">00</span>:<span class="seconds">00</span>
+                                </div>
+                                <ul class="circles absolute z-0 top-0 left-0 overflow-hidden w-full h-full">
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                </ul>
                             </a>
+                            <div id="tooltip-bottom" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                {{ 'label.form.available'|trans }}: {{ store.coupon.available }}
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
                         </div>
                     {% endif %}
-                    <div class="grid w-full gap-3 lg:grid-cols-3 md:grid-cols-2">
+                    <div class="grid w-full gap-3 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1">
                         {% for product in store.products %}
                             <div class="max-w-md bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                                 <div class="relative overflow-hidden h-200 rounded-t-lg">
                                     {% if product.attachment is not null %}
                                         {% set _picture= 'storage/product/' ~ product.id ~ '/' ~ product.attachment %}
                                         <a href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}">
-                                            <img class="object-contain sm:object-fit h-auto max-w-full transition duration-700 ease-in-out hover:scale-105"
+                                            <img class="object-contain h-auto max-w-full transition duration-700 ease-in-out hover:scale-105"
                                                  src="{{ asset(_picture)|imagine_filter('product_preview') }}"
                                                  alt="{{ product.name }}">
                                         </a>
@@ -203,4 +214,44 @@
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('message-js') }}
+    <script type="text/javascript">
+        const container = document.getElementById('date-end');
+        const dateEnd = container.getAttribute('data-end');
+
+        const getTimeRemaining = (end) => {
+            const total = Date.parse(end) - Date.parse(new Date());
+            const seconds = Math.floor((total / 1000) % 60);
+            const minutes = Math.floor((total / 1000 / 60) % 60);
+            const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+            const days = Math.floor(total / (1000 * 60 * 60 * 24));
+
+            return {
+                total,
+                days,
+                hours,
+                minutes,
+                seconds
+            };
+        }
+
+        const initializeClock = (container, end) => {
+            const timeInterval = setInterval(() => {
+                const t = getTimeRemaining(end);
+                const days = container.querySelector('.days');
+                const hours = container.querySelector('.hours');
+                const minutes = container.querySelector('.minutes');
+                const seconds = container.querySelector('.seconds');
+                days.innerHTML = t.days;
+                hours.innerHTML = t.hours;
+                minutes.innerHTML = t.minutes;
+                seconds.innerHTML = t.seconds;
+                if (t.total <= 0) {
+                    clearInterval(timeInterval);
+                }
+            }, 1000);
+        }
+
+        initializeClock(container, dateEnd);
+
+    </script>
 {% endblock %}

@@ -87,13 +87,13 @@ readonly class CouponService implements CouponServiceInterface
 
     /**
      * @param UserInterface $user
-     * @param int $orderId
+     * @param int $relationId
      * @param string $code
      * @return void
      */
     public function setInuse(
         UserInterface $user,
-        int           $orderId,
+        int           $relationId,
         string        $code,
     ): void
     {
@@ -103,11 +103,22 @@ readonly class CouponService implements CouponServiceInterface
         $couponUsage = new StoreCouponUsage();
         $couponUsage->setCustomer($customer)
             ->setCoupon($this->Coupon())
-            ->setRelation($orderId)
+            ->setRelation($relationId)
             ->setCouponCode($code);
 
         $this->em->persist($couponUsage);
+        $this->updateQuantity();
         $this->em->flush();
+    }
+
+    /**
+     * @return void
+     */
+    private function updateQuantity(): void
+    {
+        $coupon = $this->Coupon();
+        $coupon->setAvailable($coupon->getAvailable() - 1);
+        $this->em->persist($coupon);
     }
 
     /**

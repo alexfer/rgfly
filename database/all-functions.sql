@@ -521,10 +521,17 @@ BEGIN
             'price', sc.price,
             'available', sc.available,
             'name', sc.name,
+            'code', (SELECT c.code
+                     FROM store_coupon_code c
+                              LEFT JOIN store_coupon_usage cu
+                                   ON cu.coupon_code_id != c.id
+                     WHERE c.coupon_id = sc.id
+                     ORDER BY RANDOM()
+                     LIMIT 1),
             'promotion', sc.promotion_text,
             'discount', sc.discount,
             'start', to_char(sc.started_at::timestamp, 'YYYY-MM-DD HH24:MI:SS'),
-            'emd', to_char(sc.expired_at::timestamp, 'YYYY-MM-DD HH24:MI:SS')
+            'end', to_char(sc.expired_at::timestamp, 'YYYY-MM-DD HH24:MI:SS')
                                        )) AS single
     INTO coupon
     FROM store_coupon sc
