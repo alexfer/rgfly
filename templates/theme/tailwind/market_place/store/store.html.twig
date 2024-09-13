@@ -92,7 +92,7 @@
                     </h4>
                     {% if store.coupon is not null %}
                         <div class="w-full relative area p-4 mb-2 border-4 bg-indigo-500 border-indigo-100 border-dashed rounded-lg">
-                            <a role="button">
+                            <a role="button" data-tooltip-target="tooltip-bottom" data-tooltip-placement="bottom">
                                 <h4 class="block text-3xl text-white font-bold transform-gpu">{{ store.coupon.name }}</h4>
                                 <p class="leading-relaxed font-roboto font-medium text-lg mt-2 text-white animate__animated animate__bounceIn">{{ store.coupon.promotion }}</p>
                                 <div class="absolute top-5 start-2/3 z-[999] text-3xl font-oswald select-none">{{ store.coupon.code }}</div>
@@ -119,6 +119,10 @@
                                     <li></li>
                                 </ul>
                             </a>
+                            <div id="tooltip-bottom" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                {{ 'label.form.available'|trans }}: {{ store.coupon.available }}
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
                         </div>
                     {% endif %}
                     <div class="grid w-full gap-3 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1">

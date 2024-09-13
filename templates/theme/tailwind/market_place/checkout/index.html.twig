@@ -65,7 +65,7 @@
                                 id="discount">{{ discount }}</span>{{ 'store.product.off'|trans }}</span>
                     <h3 class="font-light relative text-2xl text-red-700 text-center mt-4 mb-2">
                         {% set total = (total + (total * tax)/100) %}
-                        {{ total|amount_format }}<small>{{ order.store.currency|currency }}</small>
+                        {{ total|amount_format(2) }}<small>{{ order.store.currency|currency }}</small>
                     </h3>
                     {% if creditCards is not null and creditCards|length %}
                         <ul class="list-none border-t flex mx-auto space-x-2 justify-between items-center">

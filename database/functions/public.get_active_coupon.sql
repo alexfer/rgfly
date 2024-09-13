@@ -12,11 +12,11 @@ BEGIN
             'price', sc.price,
             'available', sc.available,
             'name', sc.name,
-            'code', (SELECT c.code
-                     FROM store_coupon_code c
-                              LEFT JOIN store_coupon_usage cu
-                                        ON cu.coupon_code_id != c.id
-                     WHERE c.coupon_id = sc.id
+            'code', (SELECT scc.code
+                     FROM store_coupon_code scc
+                     WHERE scc.coupon_id = sc.id
+                       AND scc.id NOT IN (SELECT DISTINCT coupon_code_id
+                                          FROM store_coupon_usage)
                      ORDER BY RANDOM()
                      LIMIT 1),
             'promotion', sc.promotion_text,

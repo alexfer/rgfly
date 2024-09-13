@@ -2,6 +2,8 @@
 
 namespace App\Repository\MarketPlace;
 
+use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\NoResultException;
 use App\Entity\MarketPlace\{StoreCoupon, StoreCouponCode, StoreCouponUsage};
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -31,12 +33,17 @@ class StoreCouponCodeRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('scc');
         $qb->select(['scc.code'])
-            ->join(StoreCouponUsage::class, 'scu', Join::WITH, 'scc.id != scu.coupon_code')
+            ->leftJoin(StoreCouponUsage::class, 'scu', Join::WITH, 'scc.id != scu.coupon_code')
             ->where('scc.code = :code')
             ->andWhere('scc.coupon = :coupon')
             ->setParameter('code', $code)
-            ->setParameter('coupon', $coupon);
+            ->setParameter('coupon', $coupon)
+            ->setMaxResults(1);
 
-        return $qb->getQuery()->getOneOrNullResult();
+        try {
+            return $qb->getQuery()->getSingleResult()['code'];
+        } catch (NoResultException $exception) {
+            return null;
+        }
     }
 }

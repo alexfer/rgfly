@@ -36,11 +36,11 @@ interface CouponServiceInterface
 
     /**
      * @param UserInterface $user
-     * @param int $orderId
+     * @param int $relationId
      * @param string $code
      * @return void
      */
-    public function setInuse(UserInterface $user, int $orderId, string $code): void;
+    public function setInuse(UserInterface $user, int $relationId, string $code): void;
 
     /**
      * @param string $code

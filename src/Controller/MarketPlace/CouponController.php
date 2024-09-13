@@ -36,7 +36,7 @@ class CouponController extends AbstractController
 
         if ($process && $payload && isset($payload['ids'])) {
 
-            if ($coupon->getCouponUsage($relation, $user)) {
+            if ($coupon->getCouponUsage((int)$relation, $user)) {
                 return $this->json([
                     'success' => false,
                     'message' => $translator->trans('info.text.danger'),
@@ -51,7 +51,7 @@ class CouponController extends AbstractController
                     'message' => $translator->trans('info.text.warning'),
                 ], Response::HTTP_BAD_REQUEST);
             }
-            $coupon->setInuse($user, $relation, $code);
+            $coupon->setInuse($user, (int)$relation, $code);
         }
 
         $discount = $coupon->discount($store);

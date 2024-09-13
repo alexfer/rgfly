@@ -179,7 +179,7 @@
                                         <div class="me-auto">{{ 'order.subtotal'|trans }}</div>
                                         {% set tax = order.tax %}
                                         {% set total = (order.total + (order.total * tax)/100) %}
-                                        <span id="total-{{ order.store_id }}">{{ total|amount_format }}<small>{{ order.currency }}</small></span>
+                                        <span id="total-{{ order.store_id }}">{{ total|amount_format(2) }}<small>{{ order.currency }}</small></span>
                                     </div>
                                 </div>
                                 {% if order.cc is not null and order.cc|length %}
@@ -198,7 +198,7 @@
                                        type="submit">
                                         {{ 'order.checkout'|trans }}
                                         <span id="checkout-{{ order.store_id }}"
-                                              class="text-sm font-semibold">{{ total|amount_format }}<small>{{ order.currency }}</small>
+                                              class="text-sm font-semibold">{{ total|amount_format(2) }}<small>{{ order.currency }}</small>
                                         </span>
                                     </a>
                                     <p class="mt-2 font-medium text-md-start">

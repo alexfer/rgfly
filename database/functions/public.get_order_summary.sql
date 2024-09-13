@@ -24,6 +24,11 @@ BEGIN
                            'status', o.status,
                            'total', o.total,
                            'tax', o.tax,
+                           'qty',
+                           (SELECT SUM(sop.quantity)
+                            FROM store_orders_product sop
+                            WHERE sop.orders_id = o.id
+                            LIMIT 1),
                            'products', (SELECT json_agg(json_build_object(
                            'id', sop.id,
                            'size', sop.size::json -> 'size',
