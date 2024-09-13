@@ -9,32 +9,36 @@
             <img src="{{ asset('img/black.png') }}" class="h-8 mr-3 sm:h-12" alt="{{ 'site.title'|trans }}"/>
         </a>
         <div class="flex items-center align-bottom lg:order-2">
-            <a
-                    type="button"
-                    data-twe-offcanvas-toggle
-                    href="#shopping-cart"
-                    aria-controls="shopping-cart"
-                    data-twe-ripple-init
-                    data-twe-ripple-color="light"
-                    class="relative text-white dark:text-white block uppercase hover:bg-gray-50 hover:text-red-900 border-inherit focus:ring-gray-100 font-medium rounded-md text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
-                <i class="fa fa-shopping-cart mr-2 text-md-end"></i>{{ 'store.product.cart'|trans }}
+            <a role="button"
+               data-twe-offcanvas-toggle
+               href="#shopping-cart"
+               aria-controls="shopping-cart"
+               data-twe-ripple-init
+               data-twe-ripple-color="light"
+               class="relative text-white dark:text-white block uppercase hover:bg-gray-50 hover:text-red-900 border-inherit focus:ring-gray-100 font-medium rounded-md text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+                <div class="flex justify-between">
+                    <i class="fa fa-shopping-cart mr-2 text-md-end"></i><span
+                            class="hidden sm:block md:block">{{ 'store.product.cart'|trans }}</span>
+                </div>
                 <div id="qty"
                      class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-gray-600 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
                     {{ shop.quantity()|default(0) }}
                     <span class="sr-only">{{ shop.quantity() }}</span>
                 </div>
             </a>
-            <div
-                    class="relative"
-                    data-twe-dropdown-ref
-                    data-twe-dropdown-alignment="end">
+            <div class="relative"
+                 data-twe-dropdown-ref
+                 data-twe-dropdown-alignment="end">
                 <a href="#"
                    id="account"
                    role="button"
                    data-twe-dropdown-toggle-ref
                    aria-expanded="false"
                    class="relative text-white dark:text-white block uppercase hover:bg-gray-50 hover:text-red-900 focus:ring-1 focus:ring-gray-100 font-medium rounded-md text-sm px-4 lg:px-5 py-2 lg:py-2.5 ml-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
-                    <i class="fa fa-user text-md-end mr-2"></i>{{ 'title.account'|trans }}
+                    <div class="flex justify-between">
+                        <i class="fa fa-user text-md-end mr-2"></i><span
+                                class="hidden sm:block md:block">{{ 'title.account'|trans }}</span>
+                    </div>
                     <div id="notify"
                          class="absolute inline-flex items-center justify-center border-2 border-white w-4 h-4 bg-gray-500 rounded-full -top-2 -end-2">
                     </div>
@@ -97,7 +101,7 @@
                 </ul>
             </div>
             <button data-collapse-toggle="mobile-menu" type="button"
-                    class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                    class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                     aria-controls="mobile-menu" aria-expanded="false">
                 <span class="sr-only">Open main menu</span>
                 <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20"

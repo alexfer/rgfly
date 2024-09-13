@@ -180,6 +180,10 @@
                 <source>title.cookie_policy</source>
                 <target>Cookie Policy</target>
             </trans-unit>
+            <trans-unit id="title.privacy_policy">
+                <source>title.privacy_policy</source>
+                <target>Privacy Policy</target>
+            </trans-unit>
             <trans-unit id="title.legal">
                 <source>title.legal</source>
                 <target>Legal</target>
@@ -2241,6 +2245,14 @@
             <trans-unit id="text.file.uploaded">
                 <source>text.file.uploaded</source>
                 <target>The file has been uploaded successfully.</target>
+            </trans-unit>
+            <trans-unit id="text.end">
+                <source>text.end</source>
+                <target>Left</target>
+            </trans-unit>
+            <trans-unit id="text.days">
+                <source>text.days</source>
+                <target>days</target>
             </trans-unit>
         </body>
     </file>

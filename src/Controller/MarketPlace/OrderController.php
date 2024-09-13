@@ -98,7 +98,7 @@ class OrderController extends AbstractController
         $sessionId = $this->getSessionId($request);
 
         if (!$sessionId) {
-            return $this->redirectToRoute('app_market_place_order_summary');
+            return $this->redirectToRoute('app_market_place_index');
         }
 
         $customer = $userManager->get($this->getUser());
