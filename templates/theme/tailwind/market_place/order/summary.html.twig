@@ -46,7 +46,8 @@
                                                       id="discount">{{ product.coupon.price|amount_format }}<small>{{ order.store.currency|currency }}</small></span>{{ 'store.product.off'|trans }}
                                             </span>
                                         {% endif %}
-                                        <div class="relative justify-start">
+                                        <div class="flex justify-between">
+                                            {% set price = 0 %}
                                             {% if product.product.reduce.unit is not empty %}
                                                 <div class="font-medium whitespace-nowrap text-xl">
                                                     <span class="inline-block text-xs text-white opacity-85 bg-red-600 px-2 pt-1 pb-0.5 rounded-md">{{ product.product.reduce.value }}{{ product.product.reduce.unit|convert(order.store.currency|currency) }} {{ 'store.product.off'|trans }}</span>
@@ -55,8 +56,14 @@
                                                     <small>{{ order.store.currency|currency }}</small>
                                                 </div>
                                             {% else %}
-                                                <span class="font-sm whitespace-nowrap text-xl">{{ ((product.product.cost) + product.product.fee)|amount_format }}<small>{{ order.store.currency|currency }}</small></span>
+                                                {% set price = ((product.product.cost) + product.product.fee) %}
+                                                <span class="font-sm whitespace-nowrap text-xl">{{ price|amount_format }}<small>{{ order.store.currency|currency }}</small></span>
                                             {% endif %}
+                                            <div class="text-base font-light">
+                                                <span class="amount-{{ product.id }}"
+                                                      data-price="{{ price }}"
+                                                      data-amount="{{ (price * product.quantity) }}">{{ (price * product.quantity)|amount_format }}</span><small>{{ order.store.currency|currency }}</small>
+                                            </div>
                                         </div>
                                         <div class="py-1 whitespace-nowrap text-gray-600">
                                             {% if product.color %}
@@ -229,22 +236,49 @@
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('coupon-js') }}
+    {{ encore_entry_script_tags('summary-js') }}
     <script type="text/javascript">
         const form = document.querySelector('form[name="order[]"]');
         const quantities = form.querySelectorAll('.product-quantity');
 
         if (quantities !== null && quantities.length) {
             [...quantities].forEach((el) => {
+                const qtyId = el.getAttribute('name').match(/\d+/g)[0];
+                const amountEl = form.querySelector(`.amount-${qtyId}`);
+                const price = amountEl.getAttribute('data-price');
                 const decrement = el.previousElementSibling;
                 const increment = el.nextElementSibling;
                 const max = el.getAttribute('data-max');
 
-                decrement.addEventListener('click', () => {
+                decrement.addEventListener('click', (event) => {
+                    let amount = amountEl.getAttribute('data-amount');
+
+                    if (parseInt(amount) === parseInt(price)) {
+                        el.value = 1;
+                        event.stopImmediatePropagation();
+                        return false;
+                    }
+
+                    amountEl.textContent = (parseInt(amount) - parseInt(price)).toFixed(2);
+                    amountEl.setAttribute('data-amount', (parseInt(amount) - parseInt(price)));
+
+                    console.log(typeof amount, typeof price, typeof el.value);
                     if (el.value <= 1) {
                         el.value++;
                     }
                 });
-                increment.addEventListener('click', () => {
+                increment.addEventListener('click', (event) => {
+                    let amount = amountEl.getAttribute('data-amount');
+                    const decrementMax = max - 1;
+                    if (el.value === decrementMax) {
+                        el.value = decrementMax;
+                        event.stopImmediatePropagation();
+                        return false;
+                    }
+                    if (el.value !== max) {
+                        amountEl.textContent = (parseInt(amount) + parseInt(price)).toFixed(2);
+                        amountEl.setAttribute('data-amount', (parseInt(amount) + parseInt(price)));
+                    }
                     if (el.value === max) {
                         --el.value;
                     }
