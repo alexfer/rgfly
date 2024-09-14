@@ -2,6 +2,7 @@ import Swal from "sweetalert2";
 import i18next from "i18next";
 import messages from "./i18n";
 import customCss from "./customCss";
+import './utils';
 
 await i18next.init(messages);
 
@@ -14,6 +15,7 @@ const headers = {'Content-type': 'application/json; charset=utf-8'};
 const bulkRemoveWishlist = document.getElementById('bulk-remove');
 const target = document.getElementById('dropdown');
 const trigger = document.getElementById('dropdown-search');
+const success = document.getElementById('toast-success');
 
 if (target !== null) {
     [...target.getElementsByTagName('button')].forEach((btn) => {
@@ -249,7 +251,9 @@ if (typeof forms != 'undefined') {
                     let qty = document.getElementById('qty');
                     if (qty) {
                         qty.innerHTML = json.store.quantity;
-
+                        if(success !== undefined) {
+                            showToast(success, json.store.message);
+                        }
                         if (json.store.url !== null) {
                             fetch(json.store.url, {
                                 method: 'OPTIONS',

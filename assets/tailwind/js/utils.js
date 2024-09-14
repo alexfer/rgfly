@@ -2,7 +2,7 @@ window.showToast = (toast, message, timeout) => {
     toast.querySelector('.toast-body').innerText = message;
     toast.classList.remove('hidden');
     setTimeout(() => {
-        toast.classList.add('hidden');
+        toast.classList.add('animate__animated', 'animate__backOutRight');
     }, timeout ? timeout : 5000);
 };
 
