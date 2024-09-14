@@ -12,6 +12,7 @@ use App\Storage\MarketPlace\FrontSessionHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Cookie, JsonResponse, Request, Response};
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/market-place/order')]
 class OrderController extends AbstractController
@@ -174,7 +175,8 @@ class OrderController extends AbstractController
         Request               $request,
         OrderServiceInterface $service,
         UserManagerInterface  $userManager,
-        CollectionInterface   $collection
+        CollectionInterface   $collection,
+        TranslatorInterface   $translator
     ): JsonResponse
     {
         $data = $request->toArray();
@@ -197,6 +199,7 @@ class OrderController extends AbstractController
                 'url' => !$sessId ? $this->generateUrl('app_market_place_shop_cookie') : null,
                 'session' => $sessionId,
                 'quantity' => $collection['quantity'] ?: 1,
+                'message' => $translator->trans('shop.order.item_placed'),
             ],
         ]);
     }

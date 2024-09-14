@@ -2254,6 +2254,10 @@
                 <source>text.days</source>
                 <target>days</target>
             </trans-unit>
+            <trans-unit id="shop.order.item_placed">
+                <source>shop.order.item_placed</source>
+                <target>Placed on shopping cart</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
