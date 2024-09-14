@@ -2,6 +2,7 @@ import Swal from "sweetalert2";
 import i18next from "i18next";
 import messages from "./i18n";
 import customCss from "./customCss";
+import './utils';
 
 await i18next.init(messages);
 
@@ -9,11 +10,11 @@ const cart = document.getElementById('shopping-cart');
 const attributes = document.querySelectorAll('#attributes');
 const forms = document.querySelectorAll('.shopping-cart');
 const wishlists = document.querySelectorAll('.add-wishlist');
-const drops = document.querySelectorAll('.drops');
 const headers = {'Content-type': 'application/json; charset=utf-8'};
 const bulkRemoveWishlist = document.getElementById('bulk-remove');
 const target = document.getElementById('dropdown');
 const trigger = document.getElementById('dropdown-search');
+const success = document.getElementById('toast-success');
 
 if (target !== null) {
     [...target.getElementsByTagName('button')].forEach((btn) => {
@@ -68,83 +69,6 @@ if (bulkRemoveWishlist !== null) {
                     console.log(err);
                 });
         }
-    });
-}
-
-if (typeof drops !== 'undefined') {
-    Array.from(drops).forEach((drop) => {
-        drop.onclick = (event) => {
-            event.preventDefault();
-            let url = drop.getAttribute('data-url');
-            let product = drop.getAttribute('data-id');
-            let order = drop.getAttribute('data-order');
-            let store = drop.getAttribute('data-store');
-            let quantity = document.getElementById('qty');
-            Swal.fire({
-                text: i18next.t('question'),
-                showCancelButton: true,
-                confirmButtonText: i18next.t('proceed'),
-                denyButtonText: i18next.t('cancel'),
-                customClass: customCss,
-                icon: "question",
-                showLoaderOnConfirm: true
-            }).then(async (result) => {
-                if (result.isConfirmed) {
-                    const response = await fetch(url, {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                product: product,
-                                order: order,
-                                store: store
-                            }),
-                            headers: headers
-                        }
-                    );
-                    const data = await response.json();
-                    const summary = data.summary;
-                    summary.map((item) => {
-                        let total = document.getElementById('total-' + item.store);
-                        let checkout = document.getElementById('checkout-' + item.store);
-                        let itemSubtotal = document.getElementById('item-subtotal-' + item.store);
-                        let currency = '<small>' + item.currency + '</small>';
-
-                        checkout.innerHTML = item.total + currency;
-                        itemSubtotal.innerHTML = item.total + currency;
-                        total.innerHTML = item.total + currency;
-                    });
-
-                    quantity.innerHTML = data.store.quantity;
-
-                    if (data.products >= 1) {
-                        drop.closest('.parent').remove();
-                    }
-
-                    if (data.products === 0) {
-                        drop.closest('.root').remove();
-                        document.getElementById('store-' + data.removed).remove();
-                    }
-
-                    if (data.redirect === true) {
-                        fetch(data.url, {
-                            method: 'OPTIONS', body: JSON.stringify({
-                                session: data.session,
-                            })
-                        }).then((response) => {
-                            if (response.status === 200) {
-                                document.location.href = data.redirectUrl;
-                            }
-                        });
-                    } else {
-                        await Swal.fire({
-                            title: i18next.t('removed'),
-                            html: "",
-                            customClass: customCss,
-                            icon: "success"
-                        });
-                    }
-                }
-            });
-        };
     });
 }
 
@@ -249,7 +173,9 @@ if (typeof forms != 'undefined') {
                     let qty = document.getElementById('qty');
                     if (qty) {
                         qty.innerHTML = json.store.quantity;
-
+                        if(success !== undefined) {
+                            showToast(success, json.store.message);
+                        }
                         if (json.store.url !== null) {
                             fetch(json.store.url, {
                                 method: 'OPTIONS',

@@ -15,13 +15,13 @@ Encore
     .setPublicPath('/build')
     .addEntry('app', `./assets/tailwind/app.js`)
     //.enableStimulusBridge(`./assets/tailwind/controllers.json`)
-    .addEntry('coupon-js', `./assets/tailwind/js/coupon.js`)
+    .addEntry('coupon-js', `./assets/tailwind/js/order/coupon.js`)
+    .addEntry('summary-js', `./assets/tailwind/js/order/summary.js`)
     .addEntry('message-js', `./assets/tailwind/js/message.js`)
     .addEntry('market-js', `./assets/tailwind/js/market.js`)
     .addEntry('operation-js', `./assets/tailwind/js/dashboard/operation.js`)
     .addEntry('dashboard-js', `./assets/tailwind/js/dashboard/index.js`)
     .addEntry('checkout-js', `./assets/tailwind/js/checkout.js`)
-    //.addEntry('datepicker-js', `./assets/tailwind/js/dashboard/datepicker.js`)
     .enablePostCssLoader((options) => {
         options.postcssOptions = {
             config: './postcss.config.js',
