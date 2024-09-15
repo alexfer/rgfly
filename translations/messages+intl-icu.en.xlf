@@ -2258,6 +2258,14 @@
                 <source>shop.order.item_placed</source>
                 <target>Placed on shopping cart</target>
             </trans-unit>
+            <trans-unit id="title.dashboard.config">
+                <source>title.dashboard.config</source>
+                <target>Configuration</target>
+            </trans-unit>
+            <trans-unit id="menu.dashboard.config">
+                <source>menu.dashboard.config</source>
+                <target>Configuration</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

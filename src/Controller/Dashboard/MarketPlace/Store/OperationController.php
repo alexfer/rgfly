@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[Route('/dashboard/marker-place/operation')]
+#[Route('/dashboard/market-place/operation')]
 class OperationController extends AbstractController
 {
     use StoreTrait;

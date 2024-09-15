@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Controller\Dashboard;
 
@@ -11,23 +11,26 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/dashboard/faq')]
+#[IsGranted('ROLE_ADMIN')]
 class FaqController extends AbstractController
 {
     /**
      * @param EntityManagerInterface $em
-     * @param UserInterface $user
      * @return Response
      */
     #[Route('', name: 'app_dashboard_faq')]
     public function index(
         EntityManagerInterface $em,
-        UserInterface          $user,
     ): Response
     {
+        if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+            throw $this->createAccessDeniedException();
+        }
+
         return $this->render('dashboard/content/faq/index.html.twig', [
             'entries' => $em->getRepository(Faq::class)->findBy([], ['id' => 'desc']),
         ]);
@@ -35,7 +38,7 @@ class FaqController extends AbstractController
 
     /**
      * @param Request $request
-     * @param Faq $entry
+     * @param Faq $faq
      * @param EntityManagerInterface $em
      * @return Response
      * @throws Exception
@@ -43,7 +46,7 @@ class FaqController extends AbstractController
     #[Route('/delete/{id}', name: 'app_dashboard_delete_faq', methods: ['POST'])]
     public function delete(
         Request                $request,
-        Faq                    $entry,
+        Faq                    $faq,
         EntityManagerInterface $em,
     ): Response
     {
@@ -56,8 +59,8 @@ class FaqController extends AbstractController
 
         if ($this->isCsrfTokenValid('delete', $token)) {
             $date = new DateTime('@' . strtotime('now'));
-            $entry->setDeletedAt($date)->setVisible(false);
-            $em->persist($entry);
+            $faq->setDeletedAt($date)->setVisible(0);
+            $em->persist($faq);
             $em->flush();
         }
 
@@ -96,17 +99,17 @@ class FaqController extends AbstractController
         TranslatorInterface    $translator,
     ): Response
     {
-        $entry = new Faq();
+        $faq = new Faq();
 
-        $form = $this->createForm(FaqType::class, $entry);
+        $form = $this->createForm(FaqType::class, $faq);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($entry);
+            $em->persist($faq);
             $em->flush();
 
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.created')]));
-            return $this->redirectToRoute('app_dashboard_edit_faq', ['id' => $entry->getId()]);
+            return $this->redirectToRoute('app_dashboard_edit_faq', ['id' => $faq->getId()]);
         }
 
         return $this->render('dashboard/content/faq/_form.html.twig', [
@@ -116,7 +119,7 @@ class FaqController extends AbstractController
 
     /**
      * @param Request $request
-     * @param Faq $entry
+     * @param Faq $faq
      * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
      * @return Response
@@ -124,20 +127,20 @@ class FaqController extends AbstractController
     #[Route('/edit/{id}', name: 'app_dashboard_edit_faq', methods: ['GET', 'POST'])]
     public function edit(
         Request                $request,
-        Faq                    $entry,
         EntityManagerInterface $em,
         TranslatorInterface    $translator,
     ): Response
     {
-        $form = $this->createForm(FaqType::class, $entry);
+        $faq = $em->getRepository(Faq::class)->find($request->get('id'));
+        $form = $this->createForm(FaqType::class, $faq);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($entry);
+            $em->persist($faq);
             $em->flush();
 
             $this->addFlash('success', json_encode(['message' => $translator->trans('user.entry.updated')]));
-            return $this->redirectToRoute('app_dashboard_edit_faq', ['id' => $entry->getId()]);
+            return $this->redirectToRoute('app_dashboard_edit_faq', ['id' => $faq->getId()]);
         }
 
         return $this->render('dashboard/content/faq/_form.html.twig', [

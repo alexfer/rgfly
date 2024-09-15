@@ -177,6 +177,7 @@ class StoreType extends AbstractType
                 'required' => false,
                 'multiple' => true,
                 'expanded' => true,
+                'data' => json_decode($options['data']->getCc(), true),
                 'choices' => [
                     'mastercard' => 'mastercard',
                     'visa' => 'visa',
