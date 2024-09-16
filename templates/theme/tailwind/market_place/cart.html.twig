@@ -32,22 +32,26 @@
                                 <a title="{{ product.name }}"
                                    class="truncate font-bold w-48 inline-block align-top text-gray-900"
                                    href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}">{{ product.short_name }}</a>
-                                {% if product.reduce.unit is not empty %}
-                                    {% set price = discount(product.cost, product.reduce.value, product.fee, 1, product.reduce.unit) %}
-                                    <span class="font-light inline-block text-success">
-                                        {{ price|amount_format }}<small>{{ order.store.currency|currency }}</small>
-                                        <span class="ml-2 text-xs text-red-500">{{ product.reduce.value }}{{ product.reduce.unit|convert(order.store.currency|currency) }} {{ 'store.product.off'|trans }}</span>
-                                    </span>
-                                    <span class="block line-through font-light text-gray-300">
-
-                                        {{ (product.cost + product.fee)|amount_format }}<small>{{ order.store.currency|currency }}</small>
-                                    </span>
-                                {% else %}
-                                    <div class="text-gray-500 text-lg">
-                                        {{ (product.cost + product.fee)|amount_format }}
-                                        <small>{{ order.store.currency|currency }}</small>
+                                <div class="flex w-full justify-between">
+                                    <div class="inline-block text-xs pt-1 text-gray-800 dark:text-gray-100">{{ product.quantity }}{{ 'label.form.quantity_pcs'|trans }}</div>
+                                    <div>
+                                        {% if product.reduce.unit is not empty %}
+                                            {% set price = discount(product.cost, product.reduce.value, product.fee, 1, product.reduce.unit) %}
+                                            <span class="font-light inline-block text-success">
+                                                {{ price|amount_format }}<small>{{ order.store.currency|currency }}</small>
+                                                <span class="ml-2 text-xs text-red-500">{{ product.reduce.value }}{{ product.reduce.unit|convert(order.store.currency|currency) }} {{ 'store.product.off'|trans }}</span>
+                                            </span>
+                                            <span class="block line-through font-light text-gray-300">
+                                                {{ (product.cost + product.fee)|amount_format }}<small>{{ order.store.currency|currency }}</small>
+                                            </span>
+                                        {% else %}
+                                            <div class="text-gray-500 text-lg">
+                                                {{ (product.cost + product.fee)|amount_format }}
+                                                <small>{{ order.store.currency|currency }}</small>
+                                            </div>
+                                        {% endif %}
                                     </div>
-                                {% endif %}
+                                </div>
                             </div>
                         </div>
                     </div>

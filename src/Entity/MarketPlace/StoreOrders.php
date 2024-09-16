@@ -12,6 +12,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StoreOrdersRepository::class)]
+#[ORM\Index(name: 'session_index', columns: ['session'])]
 class StoreOrders
 {
     #[ORM\Id]

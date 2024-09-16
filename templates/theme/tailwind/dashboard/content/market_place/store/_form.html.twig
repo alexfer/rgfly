@@ -194,11 +194,13 @@
                         {{ form_label(form.cc, 'label.form.cc', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
                         {% for field in form.cc %}
                             {% set _checked = false %}
-                            {% for cc in form.vars.data.cc %}
-                                {% if cc == field.vars.value %}
-                                    {% set _checked = true %}
-                                {% endif %}
-                            {% endfor %}
+                            {% if form.vars.data.cc is not null %}
+                                {% for cc in form.vars.data.cc %}
+                                    {% if cc == field.vars.value %}
+                                        {% set _checked = true %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
                             <label for="{{ field.vars.id }}" title="{{ field.vars.label|capitalize }}"
                                    class="inline-flex items-center mb-5 cursor-pointer">
                                 {{ form_widget(field, {attr: {class: 'sr-only peer', checked: _checked}}) }}

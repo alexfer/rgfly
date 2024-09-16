@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[Route('/dashboard/marker-place')]
+#[Route('/dashboard/market-place')]
 class StoreController extends AbstractController
 {
 
