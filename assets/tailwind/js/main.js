@@ -196,7 +196,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (elements.tabList) {
         Array.from(elements.tabList.children).forEach((el) => {
             Array.from(el.children).forEach((handler) => {
-                handler.addEventListener('click', () => {
+                handler.addEventListener('click', (event) => {
+                    if(handler.classList.contains('exclude')) {
+                        event.stopImmediatePropagation();
+                        return false;
+                    }
                     let location = handler.getAttribute('aria-controls');
                     window.history.replaceState({}, '', location);
                 });

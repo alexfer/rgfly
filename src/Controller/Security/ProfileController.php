@@ -232,7 +232,7 @@ class ProfileController extends AbstractController
             $details->getUserSocial()
                 ->setFacebookProfile($form->get('facebook_profile')->getData())
                 ->setInstagramProfile($form->get('instagram_profile')->getData())
-                ->setTwitterProfile($form->get('twittetr_profile')->getData());
+                ->setTwitterProfile($form->get('twitter_profile')->getData());
 
             $em->persist($details);
             $em->flush();

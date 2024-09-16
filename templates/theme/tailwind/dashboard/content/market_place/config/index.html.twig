@@ -5,5 +5,195 @@
 {% block title_content %}{{ _title_extend }}{% endblock %}
 
 {% block content %}
-
+    <div class="border-b border-gray-200 dark:border-gray-700">
+        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400" id="tab"
+            data-tabs-toggle="#tab-content" role="tablist">
+            <li class="me-2" role="presentation">
+                <a href="" role="tab" id="pg-tab" data-tabs-target="#pg" aria-controls="/pg"
+                   aria-selected="{{ app.request.get('tab') == 'pg' ? 'true' : 'false' }}"
+                   class="inline-flex exclude items-center justify-center p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group">
+                    <svg class="w-4 h-4 me-2 text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
+                         aria-hidden="true" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 512 512" xml:space="preserve">
+                        <g>
+                            <g>
+                                <path d="M493.714,66.178h-69.66H197.661h-69.663c-10.099,0-18.286,8.187-18.286,18.286v69.659v30.475H18.286
+                                    C8.187,184.598,0,192.785,0,202.884v224.653c0,10.099,8.187,18.286,18.286,18.286H335.24c10.099,0,18.286-8.187,18.286-18.286
+                                    v-63.565h70.528h69.66c10.099,0,18.286-8.186,18.286-18.286v-69.66V154.122V84.464C512,74.364,503.813,66.178,493.714,66.178z
+                                     M146.285,102.75h29.729c-5.214,13.642-16.084,24.511-29.729,29.725V102.75z M316.954,409.249H36.572V294.311h280.383V409.249z
+                                     M316.954,257.74H36.572v-36.571h280.383V257.74z M475.428,327.4h-29.727c5.213-13.642,16.082-24.511,29.727-29.725V327.4z
+                                     M475.428,259.667c-33.843,7.186-60.548,33.891-67.735,67.734h-54.169v-71.918h0.001c14.81-9.817,23.609-24.527,23.607-40.409
+                                    c0-29.475-29.112-52.564-66.276-52.564c-21.971,0-42.032,8.405-54.207,22.088H146.285v-14.114
+                                    c33.844-7.186,60.55-33.891,67.737-67.734h193.672c7.188,33.842,33.892,60.545,67.735,67.734V259.667z M475.428,132.475
+                                    c-13.644-5.214-24.513-16.082-29.727-29.725h29.727V132.475z"></path>
+                            </g>
+                        </g>
+                        <g>
+                            <g>
+                                <path d="M152.383,330.883H91.429c-10.099,0-18.286,8.187-18.286,18.286c0,10.099,8.187,18.286,18.286,18.286h60.954
+                                c10.099,0,18.286-8.187,18.286-18.286C170.668,339.07,162.481,330.883,152.383,330.883z"></path>
+                            </g>
+                        </g>
+                    </svg>{{ 'table.header.payment_gateways'|trans }}
+                </a>
+            </li>
+            <li class="me-2" role="presentation">
+                <a href="" role="tab" id="carriers-tab" data-tabs-target="#carriers" aria-controls="/carriers"
+                   aria-selected="{{ app.request.get('tab') == 'carriers' ? 'true' : 'false' }}"
+                   class="inline-flex exclude items-center justify-center p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group">
+                    <svg class="w-4 h-4 me-2 text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
+                         viewBox="0 0 24 24" aria-hidden="true" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19.9597 8.95844C19.2897 8.21844 18.2797 7.78844 16.8797 7.63844V6.87844C16.8797 5.50844 16.2997 4.18844 15.2797 3.26844C14.2497 2.32844 12.9097 1.88844 11.5197 2.01844C9.12975 2.24844 7.11975 4.55844 7.11975 7.05844V7.63844C5.71975 7.78844 4.70975 8.21844 4.03975 8.95844C3.06975 10.0384 3.09975 11.4784 3.20975 12.4784L3.90975 18.0484C4.11975 19.9984 4.90975 21.9984 9.20975 21.9984H14.7897C19.0897 21.9984 19.8797 19.9984 20.0897 18.0584L20.7897 12.4684C20.8997 11.4784 20.9197 10.0384 19.9597 8.95844ZM11.6597 3.40844C12.6597 3.31844 13.6097 3.62844 14.3497 4.29844C15.0797 4.95844 15.4897 5.89844 15.4897 6.87844V7.57844H8.50975V7.05844C8.50975 5.27844 9.97975 3.56844 11.6597 3.40844ZM8.41975 13.1484H8.40975C7.85975 13.1484 7.40975 12.6984 7.40975 12.1484C7.40975 11.5984 7.85975 11.1484 8.40975 11.1484C8.96975 11.1484 9.41975 11.5984 9.41975 12.1484C9.41975 12.6984 8.96975 13.1484 8.41975 13.1484ZM15.4197 13.1484H15.4097C14.8597 13.1484 14.4097 12.6984 14.4097 12.1484C14.4097 11.5984 14.8597 11.1484 15.4097 11.1484C15.9697 11.1484 16.4197 11.5984 16.4197 12.1484C16.4197 12.6984 15.9697 13.1484 15.4197 13.1484Z"
+                              fill="currentColor"></path>
+                    </svg>{{ 'table.header.carriers'|trans }}
+                </a>
+            </li>
+            <li class="me-2" role="presentation">
+                <a href="" role="tab" id="settings-tab" data-tabs-target="#settings" aria-controls="/settings"
+                   aria-selected="{{ app.request.get('tab') == 'settings' ? 'true' : 'false' }}"
+                   class="inline-flex exclude items-center justify-center p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group">
+                    <svg class="w-4 h-4 me-2 text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
+                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M5 11.424V1a1 1 0 1 0-2 0v10.424a3.228 3.228 0 0 0 0 6.152V19a1 1 0 1 0 2 0v-1.424a3.228 3.228 0 0 0 0-6.152ZM19.25 14.5A3.243 3.243 0 0 0 17 11.424V1a1 1 0 0 0-2 0v10.424a3.227 3.227 0 0 0 0 6.152V19a1 1 0 1 0 2 0v-1.424a3.243 3.243 0 0 0 2.25-3.076Zm-6-9A3.243 3.243 0 0 0 11 2.424V1a1 1 0 0 0-2 0v1.424a3.228 3.228 0 0 0 0 6.152V19a1 1 0 1 0 2 0V8.576A3.243 3.243 0 0 0 13.25 5.5Z"></path>
+                    </svg>{{ 'menu.dashboard.config'|trans }}
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div id="tab-content">
+        <div class="hidden p-4 mt-2 rounded-lg bg-gray-50 dark:bg-gray-800" id="pg" role="tabpanel"
+             aria-labelledby="pg-tab">
+            <div class="flex justify-end mb-3">
+                <button type="button" data-modal-target="pg-modal" data-modal-toggle="pg-modal"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{{ 'config.action.create_pg'|trans }}</button>
+            </div>
+            <div class="sm:shadow-lg">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    {% for pg in paymentGateways %}
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <td class="px-6 py-4">
+                                <i class="{{ pg.icon }} text-lg text-gray-800 dark:text-white"></i>
+                            </td>
+                            <td class="px-6 py-4 font-medium">{{ pg.name }}</td>
+                            <td class="px-6 py-4">{{ pg.summary }}</td>
+                            <td class="px-6 py-4">
+                                <label>
+                                    <input type="checkbox"
+                                           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                           name="enabled" disabled{{ pg.active ? ' checked' : null }}>
+                                </label>
+                            </td>
+                            <td class="px-6 py-4">{{ pg.handlerText }}</td>
+                            <td class="px-6 py-4 text-end">
+                                <a role="button">
+                                    <svg class="h-5 w-5 text-gray-600 dark:text-gray-50" fill="currentColor"
+                                         viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                              d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                                              clip-rule="evenodd"></path>
+                                    </svg>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="hidden p-4 mt-2 rounded-lg bg-gray-50 dark:bg-gray-800" id="carriers" role="tabpanel"
+             aria-labelledby="carriers-tab">
+            <div class="flex justify-end mb-3">
+                <button type="button"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{{ 'config.action.create_carrier'|trans }}</button>
+            </div>
+            <div class="sm:shadow-lg">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    {% for carrier in carriers %}
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <td class="px-6 py-4 font-medium">{{ carrier.slug }}</td>
+                            <td class="px-6 py-4">{{ carrier.attach }}</td>
+                            <td class="px-6 py-4">{{ carrier.description }}</td>
+                            <td class="px-6 py-4">
+                                <label>
+                                    <input type="checkbox"
+                                           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                           name="enabled" disabled{{ carrier.enabled ? ' checked' : null }}>
+                                </label>
+                            </td>
+                            <td class="px-6 py-4 text-end">
+                                <a role="button">
+                                    <svg class="h-5 w-5 text-gray-600 dark:text-gray-50" fill="currentColor"
+                                         viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                              d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                                              clip-rule="evenodd"></path>
+                                    </svg>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="hidden p-4 mt-2 rounded-lg bg-gray-50 dark:bg-gray-800" id="settings" role="tabpanel"
+             aria-labelledby="settings-tab">
+            <p class="text-sm text-gray-500 dark:text-gray-400">settings</p>
+        </div>
+    </div>
+    <div id="pg-modal" tabindex="-1" aria-hidden="true"
+         class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-2xl max-h-full">
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                        {{ 'config.action.create_pg'|trans }}
+                    </h3>
+                    <button type="button"
+                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                            data-modal-hide="pg-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                             viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"></path>
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                {{ form_start(pgForm, {attr: {aitocomplete: 'off', action: './'}}) }}
+                <div class="p-4 md:p-5 space-y-4">
+                    <div>
+                        {{ form_label(pgForm.name, 'label.form.short_name', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {{ form_widget(pgForm.name, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white', placeholder: 'label.form.short_name'}}) }}
+                    </div>
+                    <div>
+                        {{ form_label(pgForm.handlerText, 'label.form.text', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {{ form_widget(pgForm.handlerText, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white', placeholder: 'label.form.text'}}) }}
+                    </div>
+                    <div>
+                        {{ form_label(pgForm.summary, 'label.form.description', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {{ form_widget(pgForm.summary, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 resize-none dark:text-white', placeholder: 'label.form.description'}}) }}
+                    </div>
+                    <div>
+                        {{ form_label(pgForm.icon, 'label.form.fa_icon', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {{ form_widget(pgForm.icon, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white', placeholder: 'label.form.fa_icon'}}) }}
+                    </div>
+                    <div>
+                        <label for="{{ pgForm.active.vars.id }}"
+                               class="inline-flex items-center -mb-1.5 cursor-pointer">
+                            {{ form_widget(pgForm.active, {attr: {class: 'sr-only peer', checked: pgForm.active.vars.data == true ? true : false}}) }}
+                            <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                            <span class="ms-3 relative text-sm font-medium text-gray-900 dark:text-gray-300">{{ 'label.form.enabled'|trans }}</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    {{ form_widget(pgForm.save, { label: 'form.action.save', attr: {class: 'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'}}) }}
+                    <button data-modal-hide="pg-modal" type="button"
+                            class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                        {{ 'form.action.cancel'|trans }}
+                    </button>
+                </div>
+                {{ form_end(pgForm) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}

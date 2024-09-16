@@ -487,6 +487,14 @@
                 <source>table.header.payment_type</source>
                 <target>Payment type</target>
             </trans-unit>
+            <trans-unit id="table.header.payment_gateways">
+                <source>table.header.payment_gateways</source>
+                <target>Payment gateways</target>
+            </trans-unit>
+            <trans-unit id="table.header.carriers">
+                <source>table.header.carriers</source>
+                <target>Carriers</target>
+            </trans-unit>
             <trans-unit id="table.header.total">
                 <source>table.header.total</source>
                 <target>Total</target>
@@ -1056,6 +1064,10 @@
                 <source>label.form.visible</source>
                 <target>Published</target>
             </trans-unit>
+            <trans-unit id="label.form.enabled">
+                <source>label.form.enabled</source>
+                <target>Enabled</target>
+            </trans-unit>
             <trans-unit id="user.lock">
                 <source>user.lock</source>
                 <target>Lock user</target>
@@ -1595,6 +1607,18 @@
                 <source>label.form.name</source>
                 <target>Your Name</target>
             </trans-unit>
+            <trans-unit id="label.form.short_name">
+                <source>label.form.short_name</source>
+                <target>Name</target>
+            </trans-unit>
+            <trans-unit id="label.form.text">
+                <source>label.form.text</source>
+                <target>Text</target>
+            </trans-unit>
+            <trans-unit id="label.form.fa_icon">
+                <source>label.form.fa_icon</source>
+                <target>Font awesome class</target>
+            </trans-unit>
             <trans-unit id="label.schedule.backup">
                 <source>label.schedule.backup</source>
                 <target>Schedule backup</target>
@@ -1840,6 +1864,14 @@
             <trans-unit id="store.attribute.create">
                 <source>store.attribute.create</source>
                 <target>Add Attribute</target>
+            </trans-unit>
+            <trans-unit id="config.action.create_pg">
+                <source>config.action.create_pg</source>
+                <target>Add payment gateway</target>
+            </trans-unit>
+            <trans-unit id="config.action.create_carrier">
+                <source>config.action.create_carrier</source>
+                <target>Add carrier</target>
             </trans-unit>
             <trans-unit id="store.manufacturer.create">
                 <source>store.manufacturer.create</source>
