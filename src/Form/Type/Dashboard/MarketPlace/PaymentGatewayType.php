@@ -13,26 +13,46 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PaymentGatewayType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', TextType::class, [
-
+                'attr' => [
+                    'maxlength' => 255,
+                ],
             ])
             ->add('summary', TextareaType::class, [
                 'required' => false,
+                'attr' => [
+                    'maxlength' => 255,
+                ],
             ])
             ->add('handlerText', TextType::class, [
-
+                'attr' => [
+                    'maxlength' => 255,
+                ],
             ])
-            ->add('icon', TextType::class, [])
+            ->add('icon', TextType::class, [
+                'attr' => [
+                    'maxlength' => 50,
+                ]
+            ])
             ->add('active', CheckboxType::class, [
                 'required' => false,
                 'data' => false,
             ])
-            ->add('save', SubmitType::class, []);
+            ->add('save', SubmitType::class);
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

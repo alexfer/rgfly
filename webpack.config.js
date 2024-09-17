@@ -22,6 +22,7 @@ Encore
     .addEntry('operation-js', `./assets/tailwind/js/dashboard/operation.js`)
     .addEntry('dashboard-js', `./assets/tailwind/js/dashboard/index.js`)
     .addEntry('checkout-js', `./assets/tailwind/js/checkout.js`)
+    .addEntry('configuration-js', `./assets/tailwind/js/dashboard/configuration.js`)
     .enablePostCssLoader((options) => {
         options.postcssOptions = {
             config: './postcss.config.js',

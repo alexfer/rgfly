@@ -69,6 +69,17 @@
             </div>
             <div class="sm:shadow-lg">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th class="px-6 py-3">{{ 'label.form.icon'|trans }}</th>
+                        <th class="px-6 py-3">{{ 'label.form.short_name'|trans }}</th>
+                        <th class="px-6 py-3">{{ 'label.form.description'|trans }}</th>
+                        <th class="px-6 py-3">{{ 'label.form.status'|trans }}</th>
+                        <th class="px-6 py-3">{{ 'label.form.text'|trans }}</th>
+                        <th class="px-6 py-3"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     {% for pg in paymentGateways %}
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                             <td class="px-6 py-4">
@@ -77,60 +88,99 @@
                             <td class="px-6 py-4 font-medium">{{ pg.name }}</td>
                             <td class="px-6 py-4">{{ pg.summary }}</td>
                             <td class="px-6 py-4">
-                                <label>
-                                    <input type="checkbox"
-                                           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                                           name="enabled" disabled{{ pg.active ? ' checked' : null }}>
-                                </label>
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="w-4 h-4 {{ pg.active ? ' text-blue-600' : 'text-gray-400' }} sm:h-5 sm:w-5"
+                                     viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                          clip-rule="evenodd"></path>
+                                </svg>
                             </td>
                             <td class="px-6 py-4">{{ pg.handlerText }}</td>
                             <td class="px-6 py-4 text-end">
-                                <a role="button">
-                                    <svg class="h-5 w-5 text-gray-600 dark:text-gray-50" fill="currentColor"
-                                         viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd"
-                                              d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
-                                              clip-rule="evenodd"></path>
+                                <a id="dropdown-menu" role="button" data-dropdown-toggle="dropdown-context-{{ pg.id }}"
+                                   data-dropdown-placement="bottom">
+                                    <svg class="h-5 w-5 text-gray-600 dark:text-gray-50" fill="currentColor" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                         viewBox="0 0 32 32" xml:space="preserve">
+                                        <g>
+                                            <path d="M16,10c1.7,0,3-1.3,3-3s-1.3-3-3-3s-3,1.3-3,3S14.3,10,16,10z"></path>
+                                            <path d="M16,13c-1.7,0-3,1.3-3,3s1.3,3,3,3s3-1.3,3-3S17.7,13,16,13z"></path>
+                                            <path d="M16,22c-1.7,0-3,1.3-3,3s1.3,3,3,3s3-1.3,3-3S17.7,22,16,22z"></path>
+                                        </g>
                                     </svg>
                                 </a>
+                                <div id="dropdown-context-{{ pg.id }}"
+                                     class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-32 dark:bg-gray-700">
+                                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                                        aria-labelledby="dropdown-menu">
+                                        <li>
+                                            <a href="#"
+                                               class="block text-start text-sm text-primary-600 px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                {{ 'text.edit'|trans }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#"
+                                               class="block text-start text-sm text-primary-600 px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                {{ 'text.remove'|trans }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </td>
                         </tr>
                     {% endfor %}
+                    </tbody>
                 </table>
             </div>
         </div>
         <div class="hidden p-4 mt-2 rounded-lg bg-gray-50 dark:bg-gray-800" id="carriers" role="tabpanel"
              aria-labelledby="carriers-tab">
             <div class="flex justify-end mb-3">
-                <button type="button"
+                <button type="button" data-modal-target="carrier-modal" data-modal-toggle="carrier-modal"
                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{{ 'config.action.create_carrier'|trans }}</button>
             </div>
             <div class="sm:shadow-lg">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th class="px-6 py-3">{{ 'label.form.short_name'|trans }}</th>
+                        <th class="px-6 py-3">{{ 'label.form.icon'|trans }}</th>
+                        <th class="px-6 py-3">{{ 'label.form.description'|trans }}</th>
+                        <th class="px-6 py-3">{{ 'label.form.status'|trans }}</th>
+                        <th class="px-6 py-3"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     {% for carrier in carriers %}
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                             <td class="px-6 py-4 font-medium">{{ carrier.slug }}</td>
                             <td class="px-6 py-4">{{ carrier.attach }}</td>
                             <td class="px-6 py-4">{{ carrier.description }}</td>
                             <td class="px-6 py-4">
-                                <label>
-                                    <input type="checkbox"
-                                           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                                           name="enabled" disabled{{ carrier.enabled ? ' checked' : null }}>
-                                </label>
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="w-4 h-4 {{ carrier.enabled ? ' text-blue-600' : 'text-gray-400' }} sm:h-5 sm:w-5"
+                                     viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                          clip-rule="evenodd"></path>
+                                </svg>
                             </td>
                             <td class="px-6 py-4 text-end">
                                 <a role="button">
-                                    <svg class="h-5 w-5 text-gray-600 dark:text-gray-50" fill="currentColor"
-                                         viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd"
-                                              d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
-                                              clip-rule="evenodd"></path>
+                                    <svg class="h-5 w-5 text-gray-600 dark:text-gray-50" fill="currentColor" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                         viewBox="0 0 32 32" xml:space="preserve">
+                                        <g>
+                                            <path d="M16,10c1.7,0,3-1.3,3-3s-1.3-3-3-3s-3,1.3-3,3S14.3,10,16,10z"></path>
+                                            <path d="M16,13c-1.7,0-3,1.3-3,3s1.3,3,3,3s3-1.3,3-3S17.7,13,16,13z"></path>
+                                            <path d="M16,22c-1.7,0-3,1.3-3,3s1.3,3,3,3s3-1.3,3-3S17.7,22,16,22z"></path>
+                                        </g>
                                     </svg>
                                 </a>
                             </td>
                         </tr>
                     {% endfor %}
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -139,61 +189,11 @@
             <p class="text-sm text-gray-500 dark:text-gray-400">settings</p>
         </div>
     </div>
-    <div id="pg-modal" tabindex="-1" aria-hidden="true"
-         class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-        <div class="relative p-4 w-full max-w-2xl max-h-full">
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                        {{ 'config.action.create_pg'|trans }}
-                    </h3>
-                    <button type="button"
-                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                            data-modal-hide="pg-modal">
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                             viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"></path>
-                        </svg>
-                        <span class="sr-only">Close modal</span>
-                    </button>
-                </div>
-                {{ form_start(pgForm, {attr: {aitocomplete: 'off', action: './'}}) }}
-                <div class="p-4 md:p-5 space-y-4">
-                    <div>
-                        {{ form_label(pgForm.name, 'label.form.short_name', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
-                        {{ form_widget(pgForm.name, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white', placeholder: 'label.form.short_name'}}) }}
-                    </div>
-                    <div>
-                        {{ form_label(pgForm.handlerText, 'label.form.text', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
-                        {{ form_widget(pgForm.handlerText, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white', placeholder: 'label.form.text'}}) }}
-                    </div>
-                    <div>
-                        {{ form_label(pgForm.summary, 'label.form.description', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
-                        {{ form_widget(pgForm.summary, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 resize-none dark:text-white', placeholder: 'label.form.description'}}) }}
-                    </div>
-                    <div>
-                        {{ form_label(pgForm.icon, 'label.form.fa_icon', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
-                        {{ form_widget(pgForm.icon, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white', placeholder: 'label.form.fa_icon'}}) }}
-                    </div>
-                    <div>
-                        <label for="{{ pgForm.active.vars.id }}"
-                               class="inline-flex items-center -mb-1.5 cursor-pointer">
-                            {{ form_widget(pgForm.active, {attr: {class: 'sr-only peer', checked: pgForm.active.vars.data == true ? true : false}}) }}
-                            <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                            <span class="ms-3 relative text-sm font-medium text-gray-900 dark:text-gray-300">{{ 'label.form.enabled'|trans }}</span>
-                        </label>
-                    </div>
-                </div>
-                <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                    {{ form_widget(pgForm.save, { label: 'form.action.save', attr: {class: 'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'}}) }}
-                    <button data-modal-hide="pg-modal" type="button"
-                            class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                        {{ 'form.action.cancel'|trans }}
-                    </button>
-                </div>
-                {{ form_end(pgForm) }}
-            </div>
-        </div>
-    </div>
+    {% include 'dashboard/content/market_place/config/form/payment_gateway.html.twig' %}
+    {% include 'dashboard/content/market_place/config/form/carrier.html.twig' %}
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('configuration-js') }}
+{% endblock %}
+

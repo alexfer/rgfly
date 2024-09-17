@@ -731,6 +731,10 @@
                 <source>label.form.logo</source>
                 <target>Market logo</target>
             </trans-unit>
+            <trans-unit id="label.form.icon">
+                <source>label.form.icon</source>
+                <target>Icon</target>
+            </trans-unit>
             <trans-unit id="label.size">
                 <source>label.size</source>
                 <target>Size</target>
