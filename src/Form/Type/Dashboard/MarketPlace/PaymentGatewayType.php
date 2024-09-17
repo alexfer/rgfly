@@ -17,15 +17,26 @@ class PaymentGatewayType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-
+                'attr' => [
+                    'maxlength' => 255,
+                ],
             ])
             ->add('summary', TextareaType::class, [
                 'required' => false,
+                'attr' => [
+                    'maxlength' => 255,
+                ],
             ])
             ->add('handlerText', TextType::class, [
-
+                'attr' => [
+                    'maxlength' => 255,
+                ],
             ])
-            ->add('icon', TextType::class, [])
+            ->add('icon', TextType::class, [
+                'attr' => [
+                    'maxlength' => 50,
+                ]
+            ])
             ->add('active', CheckboxType::class, [
                 'required' => false,
                 'data' => false,
