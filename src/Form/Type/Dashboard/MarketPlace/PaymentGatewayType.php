@@ -13,6 +13,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PaymentGatewayType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -41,9 +46,13 @@ class PaymentGatewayType extends AbstractType
                 'required' => false,
                 'data' => false,
             ])
-            ->add('save', SubmitType::class, []);
+            ->add('save', SubmitType::class);
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

@@ -4,6 +4,7 @@ namespace App\Controller\Dashboard\MarketPlace\Store;
 
 use App\Entity\MarketPlace\StoreCarrier;
 use App\Entity\MarketPlace\StorePaymentGateway;
+use App\Form\Type\Dashboard\MarketPlace\CarrierType;
 use App\Form\Type\Dashboard\MarketPlace\PaymentGatewayType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,16 +26,27 @@ class ConfigurationController extends AbstractController
         EntityManagerInterface $manager,
     ): Response
     {
-        $form = $this->createForm(PaymentGatewayType::class, new StorePaymentGateway());
+        $pgForm = $this->createForm(PaymentGatewayType::class, new StorePaymentGateway());
+        $carrierForm = $this->createForm(CarrierType::class, new StoreCarrier());
+
         $carriers = $manager->getRepository(StoreCarrier::class)->findAll();
         $paymentGateways = $manager->getRepository(StorePaymentGateway::class)->findAll();
+
         return $this->render('dashboard/content/market_place/config/index.html.twig', [
             'carriers' => $carriers,
-            'pgForm' => $form->createView(),
+            'pgForm' => $pgForm->createView(),
+            'carrierForm' => $carrierForm->createView(),
             'paymentGateways' => $paymentGateways,
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @param TranslatorInterface $translator
+     * @param SluggerInterface $slugger
+     * @return Response
+     */
     #[Route('/{target}', name: 'app_dashboard_config_save', methods: ['POST'])]
     public function save(
         Request                $request,
@@ -50,23 +62,50 @@ class ConfigurationController extends AbstractController
             $inputs = $payload[$target];
 
             $paymentGateway = new StorePaymentGateway();
-            $paymentGateway
-                ->setName($inputs['name'])
-                ->setSummary($inputs['summary'])
-                ->setSlug($slugger->slug($inputs['name'])->lower()->toString())
-                ->setHandlerText($inputs['handlerText'])
-                ->setIcon($inputs['icon'])
-                ->setActive($inputs['active'] == 1);
+            try {
+                $paymentGateway
+                    ->setName($inputs['name'])
+                    ->setSummary($inputs['summary'])
+                    ->setSlug($slugger->slug($inputs['name'])->lower()->toString())
+                    ->setHandlerText($inputs['handlerText'])
+                    ->setIcon($inputs['icon'])
+                    ->setActive($inputs['active'] == 1);
 
-            $manager->persist($paymentGateway);
-            $manager->flush();
+                $manager->persist($paymentGateway);
+                $manager->flush();
+            } catch (\Exception $e) {
+                return $this->json([
+                    'success' => false,
+                    'error' => $e->getMessage()
+                ], Response::HTTP_BAD_REQUEST);
+            }
         }
 
+        if ($target === 'carrier') {
+            $inputs = $payload[$target];
+            dd($inputs);
+            $carrier = new StoreCarrier();
+            try {
+                $carrier
+                    ->setDescription($inputs['description'])
+                    ->setSlug($slugger->slug($inputs['name'])->lower()->toString())
+                    ->setShippingAmount(0)
+                    ->setLinkUrl($inputs['linkUrl'])
+                    ->setEnabled($inputs['enabled'] == 1);
+
+                $manager->persist($carrier);
+                $manager->flush();
+            } catch (\Exception $e) {
+                return $this->json([
+                    'success' => false,
+                    'error' => $e->getMessage()
+                ], Response::HTTP_BAD_REQUEST);
+            }
+        }
 
         return $this->json([
             'success' => true,
             'message' => $translator->trans('user.entry.created'),
-            'payload' => $inputs ?? [],
         ]);
     }
 }
