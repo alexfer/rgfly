@@ -8,6 +8,7 @@ use App\Form\Type\Dashboard\MarketPlace\CarrierType;
 use App\Form\Type\Dashboard\MarketPlace\PaymentGatewayType;
 use App\Service\FileUploader;
 use App\Service\Validator\Interface\CarrierValidatorInterface;
+use App\Service\Validator\Interface\PaymentGatewayValidatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -26,7 +27,7 @@ class ConfigurationController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
-    #[Route('', name: 'app_dashboard_config', methods: ['GET'])]
+    #[Route('/{tab?}', name: 'app_dashboard_config', methods: ['GET'])]
     public function index(
         EntityManagerInterface $manager,
     ): Response
@@ -34,8 +35,8 @@ class ConfigurationController extends AbstractController
         $pgForm = $this->createForm(PaymentGatewayType::class, new StorePaymentGateway());
         $carrierForm = $this->createForm(CarrierType::class, new StoreCarrier());
 
-        $carriers = $manager->getRepository(StoreCarrier::class)->findAll();
-        $paymentGateways = $manager->getRepository(StorePaymentGateway::class)->findAll();
+        $carriers = $manager->getRepository(StoreCarrier::class)->findBy([], ['id' => 'DESC']);
+        $paymentGateways = $manager->getRepository(StorePaymentGateway::class)->findBy([], ['id' => 'DESC']);
 
         return $this->render('dashboard/content/market_place/config/index.html.twig', [
             'carriers' => $carriers,
@@ -50,17 +51,22 @@ class ConfigurationController extends AbstractController
      * @param EntityManagerInterface $manager
      * @param TranslatorInterface $translator
      * @param SluggerInterface $slugger
+     * @param CarrierValidatorInterface $carrierValidator
+     * @param PaymentGatewayValidatorInterface $paymentGatewayValidator
+     * @param ValidatorInterface $validator
+     * @param ParameterBagInterface $params
      * @return Response
      */
     #[Route('/{target}', name: 'app_dashboard_config_save', methods: ['POST'])]
     public function save(
-        Request                   $request,
-        EntityManagerInterface    $manager,
-        TranslatorInterface       $translator,
-        SluggerInterface          $slugger,
-        CarrierValidatorInterface $carrierValidator,
-        ValidatorInterface        $validator,
-        ParameterBagInterface     $params
+        Request                          $request,
+        EntityManagerInterface           $manager,
+        TranslatorInterface              $translator,
+        SluggerInterface                 $slugger,
+        CarrierValidatorInterface        $carrierValidator,
+        PaymentGatewayValidatorInterface $paymentGatewayValidator,
+        ValidatorInterface               $validator,
+        ParameterBagInterface            $params
     ): Response
     {
         $payload = $request->getPayload()->all();
@@ -69,18 +75,34 @@ class ConfigurationController extends AbstractController
         if ($target === 'payment_gateway') {
             $inputs = $payload[$target];
 
+            try {
+                $this->isCsrfTokenValid($target, $inputs['_token']);
+            } catch (\Exception $e) {
+                return $this->json(['success' => false, 'error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+            }
+
+            unset($inputs['save'], $inputs['_token']);
+
+            $errors = $paymentGatewayValidator->validate($inputs, $validator);
+
+            if (count($errors) > 0) {
+                foreach ($errors as $error) {
+                    return $this->json(['success' => false, 'error' => $error->getMessage()], Response::HTTP_BAD_REQUEST);
+                }
+            }
+
             $paymentGateway = new StorePaymentGateway();
 
-                $paymentGateway
-                    ->setName($inputs['name'])
-                    ->setSummary($inputs['summary'])
-                    ->setSlug($slugger->slug($inputs['name'])->lower()->toString())
-                    ->setHandlerText($inputs['handlerText'])
-                    ->setIcon($inputs['icon'])
-                    ->setActive($inputs['active'] == 1);
+            $paymentGateway
+                ->setName($inputs['name'])
+                ->setSummary($inputs['summary'])
+                ->setSlug($slugger->slug($inputs['name'])->lower()->toString())
+                ->setHandlerText($inputs['handlerText'])
+                ->setIcon($inputs['icon'])
+                ->setActive($inputs['active']);
 
-                $manager->persist($paymentGateway);
-                $manager->flush();
+            $manager->persist($paymentGateway);
+            $manager->flush();
         }
 
         if ($target === 'carrier') {
@@ -125,7 +147,7 @@ class ConfigurationController extends AbstractController
                     ->setSlug($slugger->slug($inputs['name'])->lower()->toString())
                     ->setShippingAmount(0)
                     ->setLinkUrl($inputs['linkUrl'])
-                    ->setEnabled($inputs['enabled'] == 1);
+                    ->setEnabled($inputs['enabled']);
 
                 $manager->persist($carrier);
                 $manager->flush();

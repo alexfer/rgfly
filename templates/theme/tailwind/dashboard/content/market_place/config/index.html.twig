@@ -9,7 +9,7 @@
         <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400" id="tab"
             data-tabs-toggle="#tab-content" role="tablist">
             <li class="me-2" role="presentation">
-                <a href="" role="tab" id="pg-tab" data-tabs-target="#pg" aria-controls="/pg"
+                <a href="" role="tab" id="pg-tab" data-tabs-target="#pg" aria-controls="pg"
                    aria-selected="{{ app.request.get('tab') == 'pg' ? 'true' : 'false' }}"
                    class="inline-flex exclude items-center justify-center p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group">
                     <svg class="w-4 h-4 me-2 text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
@@ -38,7 +38,7 @@
                 </a>
             </li>
             <li class="me-2" role="presentation">
-                <a href="" role="tab" id="carriers-tab" data-tabs-target="#carriers" aria-controls="/carriers"
+                <a href="" role="tab" id="carriers-tab" data-tabs-target="#carriers" aria-controls="carriers"
                    aria-selected="{{ app.request.get('tab') == 'carriers' ? 'true' : 'false' }}"
                    class="inline-flex exclude items-center justify-center p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group">
                     <svg class="w-4 h-4 me-2 text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
@@ -49,7 +49,7 @@
                 </a>
             </li>
             <li class="me-2" role="presentation">
-                <a href="" role="tab" id="settings-tab" data-tabs-target="#settings" aria-controls="/settings"
+                <a href="" role="tab" id="settings-tab" data-tabs-target="#settings" aria-controls="settings"
                    aria-selected="{{ app.request.get('tab') == 'settings' ? 'true' : 'false' }}"
                    class="inline-flex exclude items-center justify-center p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group">
                     <svg class="w-4 h-4 me-2 text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
@@ -154,8 +154,13 @@
                     <tbody>
                     {% for carrier in carriers %}
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <td class="px-6 py-4 font-medium">{{ carrier.slug }}</td>
-                            <td class="px-6 py-4">{{ carrier.attach }}</td>
+                            <td class="px-6 py-4 font-medium capitalize">{{ carrier.slug }}</td>
+                            <td class="px-6 py-4">
+                                {% if carrier.attach is not null %}
+                                    {% set icon = 'storage/carrier/' ~ carrier.attach.name %}
+                                    <img alt="{{ carrier.slug }}" src="{{ asset(icon)|imagine_filter('carrier_icon') }}">
+                                {% endif %}
+                            </td>
                             <td class="px-6 py-4">{{ carrier.description }}</td>
                             <td class="px-6 py-4">
                                 <svg xmlns="http://www.w3.org/2000/svg"

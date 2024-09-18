@@ -2,7 +2,7 @@ window.showToast = (toast, message, timeout) => {
     toast.querySelector('.toast-body').innerText = message;
     toast.classList.remove('hidden');
     setTimeout(() => {
-        toast.classList.add('animate__animated', 'animate__backOutRight');
+        toast.classList.add('hidden');
     }, timeout ? timeout : 5000);
 };
 
@@ -29,7 +29,11 @@ window.bindForm = (form) => {
         if (!previousValue[i]) {
             previousValue[i] = {};
         }
-        previousValue[i][prop] = currentValue.value
+        if(currentValue.type === 'checkbox') {
+            previousValue[i][prop] = !!currentValue.checked;
+        } else {
+            previousValue[i][prop] = currentValue.value;
+        }
         return previousValue;
     }, []);
 };
