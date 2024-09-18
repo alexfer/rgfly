@@ -6,12 +6,17 @@ use App\Entity\MarketPlace\StoreCarrier;
 use App\Entity\MarketPlace\StorePaymentGateway;
 use App\Form\Type\Dashboard\MarketPlace\CarrierType;
 use App\Form\Type\Dashboard\MarketPlace\PaymentGatewayType;
+use App\Service\FileUploader;
+use App\Service\Validator\Interface\CarrierValidatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/dashboard/config/setup')]
@@ -49,10 +54,13 @@ class ConfigurationController extends AbstractController
      */
     #[Route('/{target}', name: 'app_dashboard_config_save', methods: ['POST'])]
     public function save(
-        Request                $request,
-        EntityManagerInterface $manager,
-        TranslatorInterface    $translator,
-        SluggerInterface       $slugger
+        Request                   $request,
+        EntityManagerInterface    $manager,
+        TranslatorInterface       $translator,
+        SluggerInterface          $slugger,
+        CarrierValidatorInterface $carrierValidator,
+        ValidatorInterface        $validator,
+        ParameterBagInterface     $params
     ): Response
     {
         $payload = $request->getPayload()->all();
@@ -62,7 +70,7 @@ class ConfigurationController extends AbstractController
             $inputs = $payload[$target];
 
             $paymentGateway = new StorePaymentGateway();
-            try {
+
                 $paymentGateway
                     ->setName($inputs['name'])
                     ->setSummary($inputs['summary'])
@@ -73,21 +81,47 @@ class ConfigurationController extends AbstractController
 
                 $manager->persist($paymentGateway);
                 $manager->flush();
-            } catch (\Exception $e) {
-                return $this->json([
-                    'success' => false,
-                    'error' => $e->getMessage()
-                ], Response::HTTP_BAD_REQUEST);
-            }
         }
 
         if ($target === 'carrier') {
             $inputs = $payload[$target];
-            dd($inputs);
+            $media = json_decode($inputs['media'], true);
+
+            $file = explode(';base64,', $inputs['attach']);
+
+            $filePath = tempnam(sys_get_temp_dir(), 'UploadedFile');
+            $tmpFile = base64_decode($file[1]);
+            file_put_contents($filePath, $tmpFile);
+
+            $data = [
+                'name' => $inputs['name'],
+                'description' => $inputs['description'],
+                'linkUrl' => $inputs['linkUrl'],
+                'file' => $filePath,
+            ];
+
+            $errors = $carrierValidator->validate($data, $validator);
+
+            if (count($errors) > 0) {
+                foreach ($errors as $error) {
+                    return $this->json(['success' => false, 'error' => $error->getMessage()], Response::HTTP_BAD_REQUEST);
+                }
+            }
+
+            $fileUploader = new FileUploader($params->get('carrier_storage_dir'), $slugger, $manager);
+
+            try {
+                $attach = $fileUploader->upload(new UploadedFile($filePath, $media['name'], $media['mime'], null, true))->handle();
+            } catch (\Exception $e) {
+                return $this->json(['success' => false, 'error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+            }
+
             $carrier = new StoreCarrier();
+
             try {
                 $carrier
                     ->setDescription($inputs['description'])
+                    ->setAttach($attach)
                     ->setSlug($slugger->slug($inputs['name'])->lower()->toString())
                     ->setShippingAmount(0)
                     ->setLinkUrl($inputs['linkUrl'])

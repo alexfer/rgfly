@@ -44,7 +44,6 @@ class PaymentGatewayType extends AbstractType
             ])
             ->add('active', CheckboxType::class, [
                 'required' => false,
-                'data' => false,
             ])
             ->add('save', SubmitType::class);
     }

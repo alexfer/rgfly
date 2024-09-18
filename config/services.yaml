@@ -13,6 +13,7 @@ parameters:
     app.theme: '%env(APP_THEME)%' # theme dir
     user_storage_dir: '%kernel.project_dir%/public/storage/user'
     entry_storage_dir: '%kernel.project_dir%/public/storage/entry'
+    carrier_storage_dir: '%kernel.project_dir%/public/storage/carrier'
     private_storage: '%kernel.project_dir%/var/storage'
     product_storage_dir: 'storage/product'
     user_storage_picture: 'storage/user/picture'
