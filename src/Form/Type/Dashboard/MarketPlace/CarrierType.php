@@ -36,19 +36,6 @@ class CarrierType extends AbstractType
             ->add('logo', FileType::class, [
                 'mapped' => false,
                 'required' => true,
-                'label_attr' => [
-                    'name' => 'label.form.carrier_logo'
-                ],
-                'attr' => [
-                    'accept' => 'image/png, image/jpeg, image/webp',
-                ],
-                'constraints' => [
-                    new Image([
-                        'maxSize' => ini_get('post_max_size'),
-                        'mimeTypes' => ['image/jpeg', 'image/png', 'image/webp'],
-                        'mimeTypesMessage' => 'form.picture.not_valid_type',
-                    ]),
-                ],
             ])
             ->add('linkUrl', UrlType::class, [
                 'default_protocol' => 'https',
@@ -63,28 +50,12 @@ class CarrierType extends AbstractType
                     )
                 ],
             ])
-            ->add('description', TextareaType::class, [
-                'attr' => [
-                    'maxlength' => 255,
-                ],
-                'constraints' => [
-                    new Length([
-                        'min' => 10,
-                        'minMessage' => 'form.description.min',
-                        'max' => 255,
-                        'maxMessage' => 'form.description.max',
-                    ]),
-                ],
-            ])
+            ->add('description', TextareaType::class)
             ->add('shippingAmount', HiddenType::class, [
                 'data' => 0,
             ])
             ->add('enabled', CheckboxType::class, [
                 'required' => false,
-                'label_attr' => [
-                    'name' => 'label.enabled',
-                ],
-                'data' => false,
             ])
             ->add('save', SubmitType::class);
     }

@@ -8,7 +8,7 @@ use App\Entity\MarketPlace\StoreProductAttach;
 use App\Entity\UserDetails;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -70,8 +70,8 @@ class FileUploader
 
         try {
             $target = $file->move($this->getTargetDirectory(), $this->fileName);
-        } catch (FileException $e) {
-            throw new Exception($e->getMessage());
+        } catch (UploadException $e) {
+            throw new UploadException($e->getMessage());
         }
 
         $this->target = $target;
@@ -115,5 +115,10 @@ class FileUploader
     public function getTargetDirectory(): string
     {
         return $this->targetDirectory;
+    }
+
+    public function __destruct()
+    {
+        unset($this->target);
     }
 }

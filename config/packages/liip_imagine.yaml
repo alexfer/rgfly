@@ -12,6 +12,11 @@ liip_imagine:
             web_path: ~
     filter_sets:
         # name our filter set "my_thumb_filter"
+        carrier_icon:
+            filters:
+                thumbnail:
+                    size: [ 150, 80 ]
+                    mode: outbound
         store_thumb:
             filters:
                 thumbnail:
