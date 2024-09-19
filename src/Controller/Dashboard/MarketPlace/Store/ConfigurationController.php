@@ -4,6 +4,7 @@ namespace App\Controller\Dashboard\MarketPlace\Store;
 
 use App\Entity\MarketPlace\StoreCarrier;
 use App\Entity\MarketPlace\StorePaymentGateway;
+use App\Entity\MarketPlace\StorePaymentGatewayStore;
 use App\Form\Type\Dashboard\MarketPlace\CarrierType;
 use App\Form\Type\Dashboard\MarketPlace\PaymentGatewayType;
 use App\Service\FileUploader;
@@ -16,11 +17,13 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/dashboard/config/setup')]
+#[IsGranted('ROLE_ADMIN', message: 'Access denied.')]
 class ConfigurationController extends AbstractController
 {
     /**
@@ -50,6 +53,80 @@ class ConfigurationController extends AbstractController
      * @param Request $request
      * @param EntityManagerInterface $manager
      * @param TranslatorInterface $translator
+     * @return Response
+     */
+    #[Route('/{target}/{id}', name: 'app_dashboard_config_remove', methods: ['DELETE'])]
+    public function remove(
+        Request                $request,
+        EntityManagerInterface $manager,
+        TranslatorInterface    $translator,
+    ): Response
+    {
+        $target = $request->get('target');
+        $id = $request->get('id');
+
+        if ($target === 'carrier') {
+            $carrier = $manager->getRepository(StoreCarrier::class)->find($id);
+            $manager->remove($carrier);
+        }
+
+        if ($target === 'payment_gateway') {
+            $paymentGateway = $manager->getRepository(StorePaymentGateway::class)->find($id);
+
+            if ($manager->getRepository(StorePaymentGatewayStore::class)->findOneBy(['gateway' => $paymentGateway])) {
+                return $this->json(['success' => false, 'error' => $translator->trans('user.entry.cant_delete')]);
+            }
+
+            $manager->remove($paymentGateway);
+        }
+        $manager->flush();
+
+        return $this->json(['success' => true, 'message' => $translator->trans('user.entry.deleted')], Response::HTTP_OK);
+    }
+
+    #[Route('/{target}/{id}', name: 'app_dashboard_config_change', methods: ['GET', 'PUT'])]
+    public function change(
+        Request                $request,
+        EntityManagerInterface $manager,
+        TranslatorInterface    $translator,
+    ): Response
+    {
+        $carrier = $paymentGateway = null;
+
+        $target = $request->get('target');
+        $id = $request->get('id');
+
+        if ($target === 'payment_gateway') {
+            $paymentGateway = $manager->getRepository(StorePaymentGateway::class)->fetch($id);
+
+            if($request->isMethod('PUT')) {
+                $payload = $request->getPayload()->all();
+
+                return $this->json([
+                    'success' => true,
+                    'payload' => $payload,
+                    'message' => $translator->trans('user.entry.updated')]);
+            }
+
+            return $this->json([
+                $paymentGateway,
+                $this->generateUrl('app_dashboard_config_change', [
+                    'target' => $target,
+                    'id' => $id
+                ])
+            ], Response::HTTP_OK);
+        }
+
+        return $this->json([
+            'success' => true,
+            'message' => $translator->trans('user.entry.updated'),
+        ], Response::HTTP_OK);
+    }
+
+    /**
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @param TranslatorInterface $translator
      * @param SluggerInterface $slugger
      * @param CarrierValidatorInterface $carrierValidator
      * @param PaymentGatewayValidatorInterface $paymentGatewayValidator
@@ -71,6 +148,7 @@ class ConfigurationController extends AbstractController
     {
         $payload = $request->getPayload()->all();
         $target = $request->get('target');
+        $carrier = $paymentGateway = null;
 
         if ($target === 'payment_gateway') {
             $inputs = $payload[$target];
@@ -140,28 +218,27 @@ class ConfigurationController extends AbstractController
 
             $carrier = new StoreCarrier();
 
-            try {
-                $carrier
-                    ->setDescription($inputs['description'])
-                    ->setAttach($attach)
-                    ->setSlug($slugger->slug($inputs['name'])->lower()->toString())
-                    ->setShippingAmount(0)
-                    ->setLinkUrl($inputs['linkUrl'])
-                    ->setEnabled($inputs['enabled']);
+            $carrier
+                ->setDescription($inputs['description'])
+                ->setAttach($attach)
+                ->setSlug($slugger->slug($inputs['name'])->lower()->toString())
+                ->setShippingAmount(0)
+                ->setLinkUrl($inputs['linkUrl'])
+                ->setEnabled($inputs['enabled']);
 
-                $manager->persist($carrier);
-                $manager->flush();
-            } catch (\Exception $e) {
-                return $this->json([
-                    'success' => false,
-                    'error' => $e->getMessage()
-                ], Response::HTTP_BAD_REQUEST);
-            }
+            $manager->persist($carrier);
+            $manager->flush();
         }
+
+        $template = sprintf('dashboard/content/market_place/config/template/%s.html.twig', $target);
 
         return $this->json([
             'success' => true,
             'message' => $translator->trans('user.entry.created'),
+            'template' => $this->renderView($template, [
+                'carrier' => $carrier,
+                'pg' => $paymentGateway,
+            ])
         ]);
     }
 }

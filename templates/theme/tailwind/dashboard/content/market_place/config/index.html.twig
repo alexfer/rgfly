@@ -11,7 +11,7 @@
             <li class="me-2" role="presentation">
                 <a href="" role="tab" id="pg-tab" data-tabs-target="#pg" aria-controls="pg"
                    aria-selected="{{ app.request.get('tab') == 'pg' ? 'true' : 'false' }}"
-                   class="inline-flex exclude items-center justify-center p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group">
+                   class="inline-flex items-center justify-center p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group">
                     <svg class="w-4 h-4 me-2 text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
                          aria-hidden="true" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
                          viewBox="0 0 512 512" xml:space="preserve">
@@ -64,11 +64,11 @@
         <div class="hidden p-4 mt-2 rounded-lg bg-gray-50 dark:bg-gray-800" id="pg" role="tabpanel"
              aria-labelledby="pg-tab">
             <div class="flex justify-end mb-3">
-                <button type="button" data-modal-target="pg-modal" data-modal-toggle="pg-modal"
+                <button type="button" data-modal-target="payment_method-modal" data-modal-toggle="payment_method-modal"
                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{{ 'config.action.create_pg'|trans }}</button>
             </div>
             <div class="sm:shadow-lg">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" data-for="payment_gateway">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th class="px-6 py-3">{{ 'label.form.icon'|trans }}</th>
@@ -81,54 +81,7 @@
                     </thead>
                     <tbody>
                     {% for pg in paymentGateways %}
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <td class="px-6 py-4">
-                                <i class="{{ pg.icon }} text-lg text-gray-800 dark:text-white"></i>
-                            </td>
-                            <td class="px-6 py-4 font-medium">{{ pg.name }}</td>
-                            <td class="px-6 py-4">{{ pg.summary }}</td>
-                            <td class="px-6 py-4">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="w-4 h-4 {{ pg.active ? ' text-blue-600' : 'text-gray-400' }} sm:h-5 sm:w-5"
-                                     viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd"
-                                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                          clip-rule="evenodd"></path>
-                                </svg>
-                            </td>
-                            <td class="px-6 py-4">{{ pg.handlerText }}</td>
-                            <td class="px-6 py-4 text-end">
-                                <a id="dropdown-menu" role="button" data-dropdown-toggle="dropdown-context-{{ pg.id }}"
-                                   data-dropdown-placement="bottom">
-                                    <svg class="h-5 w-5 text-gray-600 dark:text-gray-50" fill="currentColor" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                         viewBox="0 0 32 32" xml:space="preserve">
-                                        <g>
-                                            <path d="M16,10c1.7,0,3-1.3,3-3s-1.3-3-3-3s-3,1.3-3,3S14.3,10,16,10z"></path>
-                                            <path d="M16,13c-1.7,0-3,1.3-3,3s1.3,3,3,3s3-1.3,3-3S17.7,13,16,13z"></path>
-                                            <path d="M16,22c-1.7,0-3,1.3-3,3s1.3,3,3,3s3-1.3,3-3S17.7,22,16,22z"></path>
-                                        </g>
-                                    </svg>
-                                </a>
-                                <div id="dropdown-context-{{ pg.id }}"
-                                     class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-32 dark:bg-gray-700">
-                                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
-                                        aria-labelledby="dropdown-menu">
-                                        <li>
-                                            <a href="#"
-                                               class="block text-start text-sm text-primary-600 px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                                {{ 'text.edit'|trans }}
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                               class="block text-start text-sm text-primary-600 px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                                {{ 'text.remove'|trans }}
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
+                        {% include 'dashboard/content/market_place/config/template/payment_gateway.html.twig' %}
                     {% endfor %}
                     </tbody>
                 </table>
@@ -141,7 +94,7 @@
                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{{ 'config.action.create_carrier'|trans }}</button>
             </div>
             <div class="sm:shadow-lg">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" data-for="carrier">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th class="px-6 py-3">{{ 'label.form.short_name'|trans }}</th>
@@ -153,37 +106,7 @@
                     </thead>
                     <tbody>
                     {% for carrier in carriers %}
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <td class="px-6 py-4 font-medium capitalize">{{ carrier.slug }}</td>
-                            <td class="px-6 py-4">
-                                {% if carrier.attach is not null %}
-                                    {% set icon = 'storage/carrier/' ~ carrier.attach.name %}
-                                    <img alt="{{ carrier.slug }}" src="{{ asset(icon)|imagine_filter('carrier_icon') }}">
-                                {% endif %}
-                            </td>
-                            <td class="px-6 py-4">{{ carrier.description }}</td>
-                            <td class="px-6 py-4">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="w-4 h-4 {{ carrier.enabled ? ' text-blue-600' : 'text-gray-400' }} sm:h-5 sm:w-5"
-                                     viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd"
-                                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                          clip-rule="evenodd"></path>
-                                </svg>
-                            </td>
-                            <td class="px-6 py-4 text-end">
-                                <a role="button">
-                                    <svg class="h-5 w-5 text-gray-600 dark:text-gray-50" fill="currentColor" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                         viewBox="0 0 32 32" xml:space="preserve">
-                                        <g>
-                                            <path d="M16,10c1.7,0,3-1.3,3-3s-1.3-3-3-3s-3,1.3-3,3S14.3,10,16,10z"></path>
-                                            <path d="M16,13c-1.7,0-3,1.3-3,3s1.3,3,3,3s3-1.3,3-3S17.7,13,16,13z"></path>
-                                            <path d="M16,22c-1.7,0-3,1.3-3,3s1.3,3,3,3s3-1.3,3-3S17.7,22,16,22z"></path>
-                                        </g>
-                                    </svg>
-                                </a>
-                            </td>
-                        </tr>
+                        {% include 'dashboard/content/market_place/config/template/carrier.html.twig' %}
                     {% endfor %}
                     </tbody>
                 </table>

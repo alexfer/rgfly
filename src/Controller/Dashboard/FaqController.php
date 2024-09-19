@@ -15,7 +15,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/dashboard/faq')]
-#[IsGranted('ROLE_ADMIN')]
+#[IsGranted('ROLE_ADMIN', message: 'Access denied.')]
 class FaqController extends AbstractController
 {
     /**
