@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Controller\Dashboard;
 
@@ -11,9 +11,11 @@ use Symfony\Component\HttpFoundation\{Request, Response,};
 use Symfony\Component\Intl\{Countries, Locale,};
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/dashboard/user/overview')]
+#[IsGranted('ROLE_ADMIN', message: 'Access denied.')]
 class UserController extends AbstractController
 {
 
@@ -37,10 +39,10 @@ class UserController extends AbstractController
     }
 
     /**
-     *
      * @param Request $request
      * @param UserPasswordHasherInterface $passwordHasher
      * @param EntityManagerInterface $em
+     * @param User $user
      * @param TranslatorInterface $translator
      * @return Response
      */

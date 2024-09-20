@@ -1418,6 +1418,14 @@
                 <source>user.entry.updated</source>
                 <target><![CDATA[Entry has been updated successfully.]]></target>
             </trans-unit>
+            <trans-unit id="user.entry.deleted">
+                <source>user.entry.deleted</source>
+                <target><![CDATA[Entry has been deleted successfully.]]></target>
+            </trans-unit>
+            <trans-unit id="user.entry.cant_delete">
+                <source>user.entry.cant_delete</source>
+                <target><![CDATA[Can't be deleted. Entry already in use.]]></target>
+            </trans-unit>
             <trans-unit id="message.danger.text">
                 <source>message.danger.text</source>
                 <target><![CDATA[Please type your message.]]></target>

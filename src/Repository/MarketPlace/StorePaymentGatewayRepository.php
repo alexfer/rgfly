@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Repository\MarketPlace;
 
@@ -22,5 +22,27 @@ class StorePaymentGatewayRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, StorePaymentGateway::class);
+    }
+
+    /**
+     * @param mixed $id
+     * @return StorePaymentGateway|null
+     */
+    public function fetch(mixed $id)
+    {
+        $qb = $this->createQueryBuilder('spg')
+            ->select([
+                'spg.id',
+                'spg.name',
+                'spg.summary',
+                'spg.active',
+                'spg.icon',
+                'spg.slug',
+                'spg.handler_text as handlerText',
+            ])
+            ->where("spg.id = :id")
+            ->setParameter('id', $id);
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }
