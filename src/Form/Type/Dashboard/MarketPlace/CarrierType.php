@@ -35,7 +35,7 @@ class CarrierType extends AbstractType
             ])
             ->add('logo', FileType::class, [
                 'mapped' => false,
-                'required' => true,
+                'required' => false,
             ])
             ->add('linkUrl', UrlType::class, [
                 'default_protocol' => 'https',

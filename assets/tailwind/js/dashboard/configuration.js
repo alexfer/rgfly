@@ -10,7 +10,6 @@ const logo = document.getElementById('carrier_logo');
 const remove = document.querySelectorAll('.rm');
 const change = document.querySelectorAll('.change');
 
-
 [...change].forEach((element) => {
     const target = element.getAttribute('data-target');
     const url = element.getAttribute('data-url');
@@ -27,8 +26,9 @@ const change = document.querySelectorAll('.change');
 
         for (const [key, value] of Object.entries(data.shift())) {
             const field = elements.namedItem(`${target}[${key}]`);
+
             if (field && field.getAttribute('type') === 'checkbox') {
-                field.checked = !field.checked;
+                field.checked = value;
             } else {
                 field && (field.value = value);
             }
@@ -46,8 +46,16 @@ const change = document.querySelectorAll('.change');
             });
 
             const data = await response.json();
-            console.log(data);
-        });
+            if (data.success === false) {
+                showToast(danger, data.error);
+            }
+
+            if (data.success === true) {
+                showToast(success, data.message);
+                form.reset();
+                form.querySelector('button[type="reset"]').click();
+            }
+        }, {capture: true, once: true});
     });
 
 });

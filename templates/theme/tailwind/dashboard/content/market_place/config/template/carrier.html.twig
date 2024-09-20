@@ -32,8 +32,10 @@
             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
                 aria-labelledby="dropdown-menu-pg">
                 <li>
-                    <a href="#"
-                       class="block text-start text-sm font-light text-gray-600 px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                    <a role="button" data-modal-target="carrier-modal" data-modal-toggle="carrier-modal"
+                       data-url="{{ path('app_dashboard_config_change', {target: 'carrier', id: carrier.id}) }}"
+                       data-target="carrier"
+                       class="block change text-start text-sm font-light text-gray-600 px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                         {{ 'text.edit'|trans }}
                     </a>
                 </li>

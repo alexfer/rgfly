@@ -86,27 +86,111 @@ class ConfigurationController extends AbstractController
 
     #[Route('/{target}/{id}', name: 'app_dashboard_config_change', methods: ['GET', 'PUT'])]
     public function change(
-        Request                $request,
-        EntityManagerInterface $manager,
-        TranslatorInterface    $translator,
+        Request                          $request,
+        EntityManagerInterface           $manager,
+        TranslatorInterface              $translator,
+        PaymentGatewayValidatorInterface $paymentGatewayValidator,
+        CarrierValidatorInterface        $carrierValidator,
+        ValidatorInterface               $validator,
     ): Response
     {
         $carrier = $paymentGateway = null;
 
         $target = $request->get('target');
         $id = $request->get('id');
+        $payload = $request->getPayload()->all();
 
-        if ($target === 'payment_gateway') {
-            $paymentGateway = $manager->getRepository(StorePaymentGateway::class)->fetch($id);
 
-            if($request->isMethod('PUT')) {
-                $payload = $request->getPayload()->all();
+        if ($target === 'carrier') {
+
+
+            if ($request->isMethod('PUT')) {
+                $inputs = $payload[$target];
+
+                try {
+                    $this->isCsrfTokenValid($target, $inputs['_token']);
+                } catch (\Exception $e) {
+                    return $this->json(['success' => false, 'error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+                }
+
+                unset($inputs['save'], $inputs['_token']);
+
+                $errors = $carrierValidator->validate([
+                    'linkUrl' => $inputs['linkUrl'],
+                    'description' => $inputs['description'],
+                ], $validator, true);
+
+                if (count($errors) > 0) {
+                    foreach ($errors as $error) {
+                        return $this->json(['success' => false, 'error' => $error->getMessage()], Response::HTTP_BAD_REQUEST);
+                    }
+                }
+
+                $carrier = $manager->getRepository(StoreCarrier::class)->find($id);
+
+                $carrier->setDescription($inputs['description'])
+                    ->setLinkUrl($inputs['linkUrl'])
+                    ->setEnabled($inputs['enabled']);
+
+                $manager->persist($carrier);
+                $manager->flush();
 
                 return $this->json([
                     'success' => true,
                     'payload' => $payload,
                     'message' => $translator->trans('user.entry.updated')]);
             }
+
+            $carrier = $manager->getRepository(StoreCarrier::class)->fetch($id);
+
+            return $this->json([
+                $carrier,
+                $this->generateUrl('app_dashboard_config_change', [
+                    'target' => $target,
+                    'id' => $id
+                ])
+            ], Response::HTTP_OK);
+        }
+
+        if ($target === 'payment_gateway') {
+
+            if ($request->isMethod('PUT')) {
+                $inputs = $payload[$target];
+                try {
+                    $this->isCsrfTokenValid($target, $inputs['_token']);
+                } catch (\Exception $e) {
+                    return $this->json(['success' => false, 'error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+                }
+
+                unset($inputs['save'], $inputs['_token']);
+
+                $errors = $paymentGatewayValidator->validate($inputs, $validator);
+
+                if (count($errors) > 0) {
+                    foreach ($errors as $error) {
+                        return $this->json(['success' => false, 'error' => $error->getMessage()], Response::HTTP_BAD_REQUEST);
+                    }
+                }
+
+                $paymentGateway = $manager->getRepository(StorePaymentGateway::class)->find($id);
+
+                $paymentGateway
+                    ->setName($inputs['name'])
+                    ->setSummary($inputs['summary'])
+                    ->setHandlerText($inputs['handlerText'])
+                    ->setIcon($inputs['icon'])
+                    ->setActive($inputs['active']);
+
+                $manager->persist($paymentGateway);
+                $manager->flush();
+
+                return $this->json([
+                    'success' => true,
+                    'payload' => $payload,
+                    'message' => $translator->trans('user.entry.updated')]);
+            }
+
+            $paymentGateway = $manager->getRepository(StorePaymentGateway::class)->fetch($id);
 
             return $this->json([
                 $paymentGateway,
