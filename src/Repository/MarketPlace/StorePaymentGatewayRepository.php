@@ -26,9 +26,9 @@ class StorePaymentGatewayRepository extends ServiceEntityRepository
 
     /**
      * @param mixed $id
-     * @return StorePaymentGateway|null
+     * @return mixed
      */
-    public function fetch(mixed $id)
+    public function fetch(mixed $id): mixed
     {
         $qb = $this->createQueryBuilder('spg')
             ->select([

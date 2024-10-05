@@ -17,9 +17,10 @@ class CarrierValidator implements CarrierValidatorInterface
     /**
      * @param mixed $payload
      * @param ValidatorInterface $validator
+     * @param bool $change
      * @return ConstraintViolationListInterface
      */
-    public function validate(mixed $payload, ValidatorInterface $validator): ConstraintViolationListInterface
+    public function validate(mixed $payload, ValidatorInterface $validator, bool $change = false): ConstraintViolationListInterface
     {
         $constraints = [
             'file' => [
@@ -53,6 +54,10 @@ class CarrierValidator implements CarrierValidatorInterface
                 ),
             ]
         ];
+
+        if ($change) {
+            unset($constraints['file'], $constraints['name']);
+        }
 
         return $validator->validate($payload, new Collection($constraints));
     }

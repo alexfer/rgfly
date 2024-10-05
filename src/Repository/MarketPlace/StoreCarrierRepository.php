@@ -1,9 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Repository\MarketPlace;
 
+use App\Entity\Attach;
 use App\Entity\MarketPlace\StoreCarrier;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -11,33 +13,35 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class StoreCarrierRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, StoreCarrier::class);
     }
 
-    //    /**
-    //     * @return StoreCarrier[] Returns an array of StoreCarrier objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('s.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * @param mixed $id
+     * @return mixed
+     */
+    public function fetch(mixed $id): mixed
+    {
+        $qb = $this->createQueryBuilder('sc')
+            ->select([
+                'sc.id',
+                'sc.slug as name',
+                'sc.description',
+                'sc.link_url as linkUrl',
+                'sc.is_enabled as enabled',
+                'a.name as image',
 
-    //    public function findOneBySomeField($value): ?StoreCarrier
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+            ])
+            ->leftJoin(Attach::class, 'a', Join::WITH, 'a.id = sc.attach')
+            ->where("sc.id = :id")
+            ->setParameter('id', $id);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
 }

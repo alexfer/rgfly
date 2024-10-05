@@ -11,7 +11,8 @@ interface CarrierValidatorInterface
     /**
      * @param mixed $payload
      * @param ValidatorInterface $validator
+     * @param bool $change
      * @return ConstraintViolationListInterface
      */
-    public function validate(mixed $payload, ValidatorInterface $validator): ConstraintViolationListInterface;
+    public function validate(mixed $payload, ValidatorInterface $validator, bool $change = false): ConstraintViolationListInterface;
 }
