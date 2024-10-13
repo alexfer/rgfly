@@ -41,9 +41,9 @@ class StoreCustomerOrdersRepository extends ServiceEntityRepository
     ): ?array
     {
         $statement = $this->connection->prepare('select get_customer_orders(:customer_id, :offset, :limit)');
-        $statement->bindValue('customer_id', $customerId, \PDO::PARAM_INT);
-        $statement->bindValue('offset', $offset, \PDO::PARAM_INT);
-        $statement->bindValue('limit', $limit, \PDO::PARAM_INT);
+        $statement->bindValue('customer_id', $customerId);
+        $statement->bindValue('offset', $offset);
+        $statement->bindValue('limit', $limit);
         $result = $statement->executeQuery()->fetchAllAssociative();
 
         return json_decode($result[0]['get_customer_orders'], true) ?: [];

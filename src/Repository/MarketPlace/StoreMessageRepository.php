@@ -40,8 +40,8 @@ class StoreMessageRepository extends ServiceEntityRepository
         int       $limit,
     ): Statement
     {
-        $statement->bindValue('offset', $offset, \PDO::PARAM_INT);
-        $statement->bindValue('limit', $limit, \PDO::PARAM_INT);
+        $statement->bindValue('offset', $offset);
+        $statement->bindValue('limit', $limit);
         return $statement;
     }
 
@@ -61,8 +61,8 @@ class StoreMessageRepository extends ServiceEntityRepository
     ): array
     {
         $statement = $this->connection->prepare('select get_messages(:store_id, :priority, :offset, :limit)');
-        $statement->bindValue('store_id', $store->getId(), \PDO::PARAM_INT);
-        $statement->bindValue('priority', $priority, \PDO::PARAM_STR);
+        $statement->bindValue('store_id', $store->getId());
+        $statement->bindValue('priority', $priority);
         $statement = $this->bindPagination($statement, $offset, $limit);
         $result = $statement->executeQuery()->fetchAllAssociative();
 
@@ -83,7 +83,7 @@ class StoreMessageRepository extends ServiceEntityRepository
     ): array
     {
         $statement = $this->connection->prepare('select get_customer_messages(:customer_id, :offset, :limit)');
-        $statement->bindValue('customer_id', $customer->getId(), \PDO::PARAM_INT);
+        $statement->bindValue('customer_id', $customer->getId());
         $statement = $this->bindPagination($statement, $offset, $limit);
         $result = $statement->executeQuery()->fetchAllAssociative();
 

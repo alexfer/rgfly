@@ -83,6 +83,7 @@ class IndexController extends AbstractController
                 'store' => $store,
                 'status' => EnumStoreOrderStatus::Confirmed->value,
             ], ['id' => 'DESC'], self::$limit, self::$offset);
+
             $messages = $em->getRepository(StoreMessage::class)->fetchAll($store, 'low', self::$offset, self::$limit);
 
             $ids = array_map(function ($order) {

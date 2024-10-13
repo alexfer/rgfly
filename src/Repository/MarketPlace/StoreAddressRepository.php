@@ -38,8 +38,8 @@ class StoreAddressRepository extends ServiceEntityRepository
         $statement = $this->getEntityManager()
             ->getConnection()
             ->prepare('select create_address(:customer_id, :values)');
-        $statement->bindValue('customer_id', $customer, \PDO::PARAM_INT);
-        $statement->bindValue('values', $jsonValues, \PDO::PARAM_STR);
+        $statement->bindValue('customer_id', $customer);
+        $statement->bindValue('values', $jsonValues);
 
         return $statement->executeQuery()->fetchOne();
     }

@@ -41,8 +41,8 @@ class StoreCustomerRepository extends ServiceEntityRepository
         $statement = $this->getEntityManager()
             ->getConnection()
             ->prepare('select create_customer(:user_id, :values)');
-        $statement->bindValue('user_id', $user, \PDO::PARAM_INT);
-        $statement->bindValue('values', $jsonValues, \PDO::PARAM_STR);
+        $statement->bindValue('user_id', $user);
+        $statement->bindValue('values', $jsonValues);
 
         return $statement->executeQuery()->fetchOne();
     }
@@ -74,7 +74,7 @@ class StoreCustomerRepository extends ServiceEntityRepository
                 Join::WITH,
                 'a.customer = c.id')
             ->where('c.id = :id')
-            ->setParameter('id', $id, \PDO::PARAM_INT)
+            ->setParameter('id', $id)
             ->setMaxResults(1);
 
         return $qb->getQuery()->getArrayResult();

@@ -81,8 +81,8 @@ class StoreOrdersRepository extends ServiceEntityRepository
     {
 
         $statement = $this->connection->prepare('select get_order_summary(:session, :customer_id)');
-        $statement->bindValue('session', $sessionId, \PDO::PARAM_STR);
-        $statement->bindValue('customer_id', $customer?->getId(), \PDO::PARAM_INT);
+        $statement->bindValue('session', $sessionId);
+        $statement->bindValue('customer_id', $customer?->getId());
         $result = $statement->executeQuery()->fetchAllAssociative();
 
         return json_decode($result[0]['get_order_summary'], true) ?: [];
@@ -206,9 +206,9 @@ class StoreOrdersRepository extends ServiceEntityRepository
         }
 
         $statement = $this->connection->prepare('select backdrop_order_summary_by_month(:store_id, :year, :month)');
-        $statement->bindValue('store_id', $store->getId(), \PDO::PARAM_INT);
-        $statement->bindValue('year', $year, \PDO::PARAM_INT);
-        $statement->bindValue('month', $month, \PDO::PARAM_STR);
+        $statement->bindValue('store_id', $store->getId());
+        $statement->bindValue('year', $year);
+        $statement->bindValue('month', $month);
         $result = $statement->executeQuery()->fetchAllAssociative();
         return json_decode($result[0]['backdrop_order_summary_by_month'], true)['result'] ?: [];
     }
@@ -222,8 +222,8 @@ class StoreOrdersRepository extends ServiceEntityRepository
     public function backdropOrderSummaryByYear(Store $store, int $year): ?array
     {
         $statement = $this->connection->prepare('select backdrop_order_summary_by_year(:store_id, :year)');
-        $statement->bindValue('store_id', $store->getId(), \PDO::PARAM_INT);
-        $statement->bindValue('year', $year, \PDO::PARAM_INT);
+        $statement->bindValue('store_id', $store->getId());
+        $statement->bindValue('year', $year);
         $result = $statement->executeQuery()->fetchAllAssociative();
         return json_decode($result[0]['backdrop_order_summary_by_year'], true)['result'] ?: [];
     }
@@ -237,8 +237,8 @@ class StoreOrdersRepository extends ServiceEntityRepository
     public function backdropOrderSummaryByDate(Store $store, string $date): ?array
     {
         $statement = $this->connection->prepare('select backdrop_order_summary_by_date(:store_id, :date)');
-        $statement->bindValue('store_id', $store->getId(), \PDO::PARAM_INT);
-        $statement->bindValue('date', $date, \PDO::PARAM_INT);
+        $statement->bindValue('store_id', $store->getId());
+        $statement->bindValue('date', $date);
         $result = $statement->executeQuery()->fetchAllAssociative();
         return json_decode($result[0]['backdrop_order_summary_by_date'], true)['result'] ?: [];
     }

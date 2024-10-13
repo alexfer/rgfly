@@ -4,10 +4,10 @@ namespace App\Controller\Dashboard\MarketPlace\Store;
 
 use App\Entity\MarketPlace\StoreCarrier;
 use App\Entity\MarketPlace\StorePaymentGateway;
-use App\Entity\MarketPlace\StorePaymentGatewayStore;
 use App\Form\Type\Dashboard\MarketPlace\CarrierType;
 use App\Form\Type\Dashboard\MarketPlace\PaymentGatewayType;
 use App\Service\FileUploader;
+use App\Service\MarketPlace\Dashboard\Configuration\Interface\ConfigurationServiceInterface;
 use App\Service\Validator\Interface\CarrierValidatorInterface;
 use App\Service\Validator\Interface\PaymentGatewayValidatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,59 +27,46 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class ConfigurationController extends AbstractController
 {
     /**
-     * @param EntityManagerInterface $manager
+     * @param ConfigurationServiceInterface $configuration
      * @return Response
      */
     #[Route('/{tab?}', name: 'app_dashboard_config', methods: ['GET'])]
-    public function index(
-        EntityManagerInterface $manager,
-    ): Response
+    public function index(ConfigurationServiceInterface $configuration): Response
     {
         $pgForm = $this->createForm(PaymentGatewayType::class, new StorePaymentGateway());
         $carrierForm = $this->createForm(CarrierType::class, new StoreCarrier());
 
-        $carriers = $manager->getRepository(StoreCarrier::class)->findBy([], ['id' => 'DESC']);
-        $paymentGateways = $manager->getRepository(StorePaymentGateway::class)->findBy([], ['id' => 'DESC']);
+        $collection = $configuration->collection();
 
         return $this->render('dashboard/content/market_place/config/index.html.twig', [
-            'carriers' => $carriers,
+            'carriers' => $collection['carriers'],
             'pgForm' => $pgForm->createView(),
             'carrierForm' => $carrierForm->createView(),
-            'paymentGateways' => $paymentGateways,
+            'paymentGateways' => $collection['payment_gateways'],
         ]);
     }
 
     /**
      * @param Request $request
-     * @param EntityManagerInterface $manager
      * @param TranslatorInterface $translator
+     * @param ConfigurationServiceInterface $configuration
      * @return Response
      */
     #[Route('/{target}/{id}', name: 'app_dashboard_config_remove', methods: ['DELETE'])]
     public function remove(
-        Request                $request,
-        EntityManagerInterface $manager,
-        TranslatorInterface    $translator,
+        Request                       $request,
+        TranslatorInterface           $translator,
+        ConfigurationServiceInterface $configuration,
     ): Response
     {
         $target = $request->get('target');
         $id = $request->get('id');
 
-        if ($target === 'carrier') {
-            $carrier = $manager->getRepository(StoreCarrier::class)->find($id);
-            $manager->remove($carrier);
+        $service = $configuration->take($target, $id);
+
+        if (!$service->remove()) {
+            return $this->json(['success' => false, 'error' => $translator->trans('user.entry.cant_delete')]);
         }
-
-        if ($target === 'payment_gateway') {
-            $paymentGateway = $manager->getRepository(StorePaymentGateway::class)->find($id);
-
-            if ($manager->getRepository(StorePaymentGatewayStore::class)->findOneBy(['gateway' => $paymentGateway])) {
-                return $this->json(['success' => false, 'error' => $translator->trans('user.entry.cant_delete')]);
-            }
-
-            $manager->remove($paymentGateway);
-        }
-        $manager->flush();
 
         return $this->json(['success' => true, 'message' => $translator->trans('user.entry.deleted')], Response::HTTP_OK);
     }
@@ -227,11 +214,15 @@ class ConfigurationController extends AbstractController
         CarrierValidatorInterface        $carrierValidator,
         PaymentGatewayValidatorInterface $paymentGatewayValidator,
         ValidatorInterface               $validator,
-        ParameterBagInterface            $params
+        ParameterBagInterface            $params,
+        ConfigurationServiceInterface    $configuration,
     ): Response
     {
         $payload = $request->getPayload()->all();
         $target = $request->get('target');
+
+        $service = $configuration->take($target);
+
         $carrier = $paymentGateway = null;
 
         if ($target === 'payment_gateway') {
@@ -271,11 +262,15 @@ class ConfigurationController extends AbstractController
             $inputs = $payload[$target];
             $media = json_decode($inputs['media'], true);
 
-            $file = explode(';base64,', $inputs['attach']);
+            $filePath = null;
 
-            $filePath = tempnam(sys_get_temp_dir(), 'UploadedFile');
-            $tmpFile = base64_decode($file[1]);
-            file_put_contents($filePath, $tmpFile);
+            if ($inputs['attach']) {
+                $file = explode(';base64,', $inputs['attach']);
+
+                $filePath = tempnam(sys_get_temp_dir(), 'UploadedFile');
+                $tmpFile = base64_decode($file[1]);
+                file_put_contents($filePath, $tmpFile);
+            }
 
             $data = [
                 'name' => $inputs['name'],
@@ -292,19 +287,22 @@ class ConfigurationController extends AbstractController
                 }
             }
 
-            $fileUploader = new FileUploader($params->get('carrier_storage_dir'), $slugger, $manager);
+            if ($filePath) {
 
-            try {
-                $attach = $fileUploader->upload(new UploadedFile($filePath, $media['name'], $media['mime'], null, true))->handle();
-            } catch (\Exception $e) {
-                return $this->json(['success' => false, 'error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+                $fileUploader = new FileUploader($params->get('carrier_storage_dir'), $slugger, $manager);
+
+                try {
+                    $attach = $fileUploader->upload(new UploadedFile($filePath, $media['name'], $media['mime'], null, true))->handle();
+                } catch (\Exception $e) {
+                    return $this->json(['success' => false, 'error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+                }
             }
 
             $carrier = new StoreCarrier();
 
             $carrier
                 ->setDescription($inputs['description'])
-                ->setAttach($attach)
+                ->setAttach($attach ?? null)
                 ->setSlug($slugger->slug($inputs['name'])->lower()->toString())
                 ->setShippingAmount(0)
                 ->setLinkUrl($inputs['linkUrl'])
