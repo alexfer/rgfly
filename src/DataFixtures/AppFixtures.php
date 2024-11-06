@@ -95,7 +95,7 @@ class AppFixtures extends Fixture
         foreach ($this->getCategoryData() as [$name, $description, $position]) {
             $category = new Category();
             $category->setName($name);
-            $category->setSlug(null);
+            $category->setSlug($this->slugger->slug($name)->lower()->toString());
             $category->setDescription($description);
             $category->setPosition($position);
             $category->setCreatedAt(new DateTime());
