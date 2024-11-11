@@ -5,7 +5,7 @@
             {% if product.attach_name %}
                 {% set _picture = 'storage/product/' ~ product.id ~ '/' ~ product.attach_name %}
                 <img loading="lazy" src="{{ asset(_picture)|imagine_filter('product_preview') }}"
-                     class="object-contain h-auto max-w-full transition duration-700 ease-in-out hover:scale-105"
+                     class="object-contain h-auto max-w-full mx-auto transition duration-700 ease-in-out hover:scale-105"
                      alt="{{ product.name }}">
             {% else %}
                 <img loading="lazy" src="{{ asset('img/300x200.png') }}"

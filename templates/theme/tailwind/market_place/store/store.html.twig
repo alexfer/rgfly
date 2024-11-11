@@ -132,7 +132,7 @@
                                     {% if product.attachment is not null %}
                                         {% set _picture= 'storage/product/' ~ product.id ~ '/' ~ product.attachment %}
                                         <a href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}">
-                                            <img class="object-contain h-auto max-w-full transition duration-700 ease-in-out hover:scale-105"
+                                            <img class="object-contain h-auto max-w-full mx-auto transition duration-700 ease-in-out hover:scale-105"
                                                  src="{{ asset(_picture)|imagine_filter('product_preview') }}"
                                                  alt="{{ product.name }}">
                                         </a>

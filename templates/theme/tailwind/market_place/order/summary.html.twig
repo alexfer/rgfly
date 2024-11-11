@@ -20,7 +20,7 @@
                                 <input type="hidden" name="order[]" value="{{ order.id }}">
                                 <div data-product-id="{{ product.product.id }}"
                                      class="flex flex-row parent my-3 hover:bg-gray-50 rounded-lg bg-white pt-3 text-surface shadow-lg dark:bg-neutral-700 dark:text-white dark:shadow-black/30">
-                                    <div class="basis-1/4 flex flex-row">
+                                    <div class="basis-1/4 flex flex-row p-2">
                                         {% if product.product.attachment %}
                                             {% set _picture = 'storage/product/' ~ product.product.id ~ '/' ~ product.product.attachment %}
                                             <img src="{{ asset(_picture)|imagine_filter('product_preview') }}"
