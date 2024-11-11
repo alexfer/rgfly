@@ -41,8 +41,8 @@ class StoreRepository extends ServiceEntityRepository
         int       $limit,
     ): Statement
     {
-        $statement->bindValue('offset', $offset, \PDO::PARAM_INT);
-        $statement->bindValue('limit', $limit, \PDO::PARAM_INT);
+        $statement->bindValue('offset', $offset);
+        $statement->bindValue('limit', $limit);
         return $statement;
     }
 
@@ -59,7 +59,7 @@ class StoreRepository extends ServiceEntityRepository
             return json_decode($result[0]['backdrop_admin_stores'], true) ?: [];
         } else {
             $statement = $this->connection->prepare('select backdrop_stores(:owner_id)');
-            $statement->bindValue('owner_id', $user->getId(), \PDO::PARAM_INT);
+            $statement->bindValue('owner_id', $user->getId());
             $result = $statement->executeQuery()->fetchAllAssociative();
             return json_decode($result[0]['backdrop_stores'], true) ?: [];
         }
@@ -85,7 +85,7 @@ class StoreRepository extends ServiceEntityRepository
             $result = $result[0]['backdrop_fetch_stores'];
         } else {
             $statement = $this->connection->prepare('select backdrop_owner_stores(:owner_id, :offset, :limit)');
-            $statement->bindValue('owner_id', $user->getId(), \PDO::PARAM_INT);
+            $statement->bindValue('owner_id', $user->getId());
             $statement = $this->bindPagination($statement, $offset, $limit);
             $result = $statement->executeQuery()->fetchAllAssociative();
             $result = $result[0]['backdrop_owner_stores'];
@@ -102,7 +102,7 @@ class StoreRepository extends ServiceEntityRepository
     public function extra(Store $store): ?array
     {
         $statement = $this->connection->prepare('select backdrop_store_extra(:store_id)');
-        $statement->bindValue('store_id', $store->getId(), \PDO::PARAM_INT);
+        $statement->bindValue('store_id', $store->getId());
         $result = $statement->executeQuery()->fetchOne();
         return json_decode($result, true) ?: [];
     }
@@ -115,7 +115,7 @@ class StoreRepository extends ServiceEntityRepository
     public function search(?string $query): array
     {
         $statement = $this->connection->prepare('select store_search(:query)');
-        $statement->bindValue('query', $query, \PDO::PARAM_STR);
+        $statement->bindValue('query', $query);
         $result = $statement->executeQuery()->fetchAllAssociative();
         return json_decode($result[0]['store_search'], true) ?: [];
     }
@@ -130,8 +130,8 @@ class StoreRepository extends ServiceEntityRepository
     public function searchByOwner(?string $query, UserInterface $user): array
     {
         $statement = $this->connection->prepare('select owner_store_search(:query, :oid)');
-        $statement->bindValue('query', $query, \PDO::PARAM_STR);
-        $statement->bindValue('oid', $user->getId(), \PDO::PARAM_INT);
+        $statement->bindValue('query', $query);
+        $statement->bindValue('oid', $user->getId());
         $result = $statement->executeQuery()->fetchAllAssociative();
         return json_decode($result[0]['owner_store_search'], true) ?: [];
     }
@@ -147,8 +147,8 @@ class StoreRepository extends ServiceEntityRepository
     public function fetch(string $slug, ?StoreCustomer $customer, int $offset = 0, int $limit = 12): ?array
     {
         $statement = $this->connection->prepare('select get_store(:slug, :customer_id, :offset, :limit)');
-        $statement->bindValue('slug', $slug, \PDO::PARAM_STR);
-        $statement->bindValue('customer_id', $customer?->getId(), \PDO::PARAM_INT);
+        $statement->bindValue('slug', $slug);
+        $statement->bindValue('customer_id', $customer?->getId());
         $statement = $this->bindPagination($statement, $offset, $limit);
 
         $result = $statement->executeQuery()->fetchAllAssociative();

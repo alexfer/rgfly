@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Form\Type;
 
@@ -54,7 +54,9 @@ class FaqType extends AbstractType
                 ],
             ])
             ->add('visible', CheckboxType::class, [
-                'mapped' => true,
+                'label' => 'form.visible',
+                'required' => false,
+                'data' => true,
             ])
             ->add('save', SubmitType::class, [
                 'attr' => [

@@ -487,6 +487,14 @@
                 <source>table.header.payment_type</source>
                 <target>Payment type</target>
             </trans-unit>
+            <trans-unit id="table.header.payment_gateways">
+                <source>table.header.payment_gateways</source>
+                <target>Payment gateways</target>
+            </trans-unit>
+            <trans-unit id="table.header.carriers">
+                <source>table.header.carriers</source>
+                <target>Carriers</target>
+            </trans-unit>
             <trans-unit id="table.header.total">
                 <source>table.header.total</source>
                 <target>Total</target>
@@ -722,6 +730,10 @@
             <trans-unit id="label.form.logo">
                 <source>label.form.logo</source>
                 <target>Market logo</target>
+            </trans-unit>
+            <trans-unit id="label.form.icon">
+                <source>label.form.icon</source>
+                <target>Icon</target>
             </trans-unit>
             <trans-unit id="label.size">
                 <source>label.size</source>
@@ -1055,6 +1067,10 @@
             <trans-unit id="label.form.visible">
                 <source>label.form.visible</source>
                 <target>Published</target>
+            </trans-unit>
+            <trans-unit id="label.form.enabled">
+                <source>label.form.enabled</source>
+                <target>Enabled</target>
             </trans-unit>
             <trans-unit id="user.lock">
                 <source>user.lock</source>
@@ -1402,6 +1418,14 @@
                 <source>user.entry.updated</source>
                 <target><![CDATA[Entry has been updated successfully.]]></target>
             </trans-unit>
+            <trans-unit id="user.entry.deleted">
+                <source>user.entry.deleted</source>
+                <target><![CDATA[Entry has been deleted successfully.]]></target>
+            </trans-unit>
+            <trans-unit id="user.entry.cant_delete">
+                <source>user.entry.cant_delete</source>
+                <target><![CDATA[Can't be deleted. Entry already in use.]]></target>
+            </trans-unit>
             <trans-unit id="message.danger.text">
                 <source>message.danger.text</source>
                 <target><![CDATA[Please type your message.]]></target>
@@ -1594,6 +1618,18 @@
             <trans-unit id="label.form.name">
                 <source>label.form.name</source>
                 <target>Your Name</target>
+            </trans-unit>
+            <trans-unit id="label.form.short_name">
+                <source>label.form.short_name</source>
+                <target>Name</target>
+            </trans-unit>
+            <trans-unit id="label.form.text">
+                <source>label.form.text</source>
+                <target>Text</target>
+            </trans-unit>
+            <trans-unit id="label.form.fa_icon">
+                <source>label.form.fa_icon</source>
+                <target>Font awesome class</target>
             </trans-unit>
             <trans-unit id="label.schedule.backup">
                 <source>label.schedule.backup</source>
@@ -1840,6 +1876,14 @@
             <trans-unit id="store.attribute.create">
                 <source>store.attribute.create</source>
                 <target>Add Attribute</target>
+            </trans-unit>
+            <trans-unit id="config.action.create_pg">
+                <source>config.action.create_pg</source>
+                <target>Add payment gateway</target>
+            </trans-unit>
+            <trans-unit id="config.action.create_carrier">
+                <source>config.action.create_carrier</source>
+                <target>Add carrier</target>
             </trans-unit>
             <trans-unit id="store.manufacturer.create">
                 <source>store.manufacturer.create</source>
@@ -2257,6 +2301,14 @@
             <trans-unit id="shop.order.item_placed">
                 <source>shop.order.item_placed</source>
                 <target>Placed on shopping cart</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.config">
+                <source>title.dashboard.config</source>
+                <target>Configuration</target>
+            </trans-unit>
+            <trans-unit id="menu.dashboard.config">
+                <source>menu.dashboard.config</source>
+                <target>Configuration</target>
             </trans-unit>
         </body>
     </file>

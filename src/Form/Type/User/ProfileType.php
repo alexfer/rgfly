@@ -105,7 +105,7 @@ class ProfileType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
             ])
-            ->add('twittetr_profile', TextType::class, [
+            ->add('twitter_profile', TextType::class, [
                 'mapped' => false,
                 'data' => $options['data']?->getUserSocial()?->getTwitterProfile(),
             ])

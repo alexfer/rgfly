@@ -2,7 +2,7 @@ window.showToast = (toast, message, timeout) => {
     toast.querySelector('.toast-body').innerText = message;
     toast.classList.remove('hidden');
     setTimeout(() => {
-        toast.classList.add('animate__animated', 'animate__backOutRight');
+        toast.classList.add('hidden');
     }, timeout ? timeout : 5000);
 };
 
@@ -21,14 +21,29 @@ window.focusNextInput = (el, prevId, nextId) => {
             document.getElementById(nextId).focus();
         }
     }
-}
+};
+
+window.bindForm = (form) => {
+    return [...form].reduce((previousValue, currentValue) => {
+        const [i, prop] = currentValue.name.split(/\[(.*?)]/g).filter(Boolean)
+        if (!previousValue[i]) {
+            previousValue[i] = {};
+        }
+        if(currentValue.type === 'checkbox') {
+            previousValue[i][prop] = !!currentValue.checked;
+        } else {
+            previousValue[i][prop] = currentValue.value;
+        }
+        return previousValue;
+    }, []);
+};
 
 window.SetCookie = (name, value, time, secure = false) => {
     let date = new Date();
     date.setTime(date.getTime() + time);
     let expires = "; expires=" + date.toUTCString();
     document.cookie = name + "=" + (value || '') + expires + ";SameSite=Lax;Path=/;";
-}
+};
 
 window.getCookie = (name) => {
     const value = `; ${document.cookie}`;
@@ -36,7 +51,7 @@ window.getCookie = (name) => {
     if (parts.length === 2) {
         return parts.pop().split(';').shift();
     }
-}
+};
 
 const any = document.getElementById('any');
 const discount = document.querySelector('[id$="_discount"]');

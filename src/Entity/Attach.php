@@ -31,7 +31,7 @@ class Attach
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     protected DateTime $created_at;
 
-    #[ORM\OneToMany(mappedBy: 'attach', targetEntity: EntryAttachment::class)]
+    #[ORM\OneToMany(targetEntity: EntryAttachment::class, mappedBy: 'attach')]
     private Collection $entryAttachments;
 
     #[ORM\ManyToOne(inversedBy: 'attach')]
@@ -40,7 +40,7 @@ class Attach
     #[ORM\OneToOne(mappedBy: 'attach', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'attach', targetEntity: StoreProductAttach::class)]
+    #[ORM\OneToMany(targetEntity: StoreProductAttach::class, mappedBy: 'attach')]
     private Collection $storeProductAttaches;
 
     #[ORM\OneToOne(mappedBy: 'attach', cascade: ['persist', 'remove'])]

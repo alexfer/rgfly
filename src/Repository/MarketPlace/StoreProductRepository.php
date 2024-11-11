@@ -40,8 +40,8 @@ class StoreProductRepository extends ServiceEntityRepository
         int       $limit,
     ): Statement
     {
-        $statement->bindValue('offset', $offset, \PDO::PARAM_INT);
-        $statement->bindValue('limit', $limit, \PDO::PARAM_INT);
+        $statement->bindValue('offset', $offset);
+        $statement->bindValue('limit', $limit);
         return $statement;
     }
 
@@ -68,7 +68,7 @@ class StoreProductRepository extends ServiceEntityRepository
     public function fetchProduct(string $slug): array
     {
         $statement = $this->connection->prepare('select get_product(:slug)');
-        $statement->bindValue('slug', $slug, \PDO::PARAM_STR);
+        $statement->bindValue('slug', $slug);
         $result = $statement->executeQuery()->fetchAllAssociative();
 
         return json_decode($result[0]['get_product'], true) ?: [];
@@ -82,7 +82,7 @@ class StoreProductRepository extends ServiceEntityRepository
     public function randomProducts(int $limit): array
     {
         $statement = $this->connection->prepare('select get_random_products(:rows_count)');
-        $statement->bindValue('rows_count', $limit, \PDO::PARAM_STR);
+        $statement->bindValue('rows_count', $limit);
         $result = $statement->executeQuery()->fetchAllAssociative();
 
         return json_decode($result[0]['get_random_products'], true) ?: [];
@@ -102,7 +102,7 @@ class StoreProductRepository extends ServiceEntityRepository
     ): array
     {
         $statement = $this->connection->prepare('select get_products_by_child_category(:child_id, :offset, :limit)');
-        $statement->bindValue('child_id', $id, \PDO::PARAM_INT);
+        $statement->bindValue('child_id', $id);
         $statement = $this->bindPagination($statement, $offset, $limit);
         $result = $statement->executeQuery()->fetchAllAssociative();
 
@@ -124,7 +124,7 @@ class StoreProductRepository extends ServiceEntityRepository
     ): array
     {
         $statement = $this->connection->prepare('select get_products_by_parent_category(:slug, :offset, :limit)');
-        $statement->bindValue('slug', $slug, \PDO::PARAM_STR);
+        $statement->bindValue('slug', $slug);
         $statement = $this->bindPagination($statement, $offset, $limit);
         $result = $statement->executeQuery()->fetchAllAssociative();
 
@@ -147,8 +147,8 @@ class StoreProductRepository extends ServiceEntityRepository
     ): array
     {
         $statement = $this->connection->prepare('select backdrop_products(:store_id, :query, :offset, :limit)');
-        $statement->bindValue('store_id', $store->getId(), \PDO::PARAM_INT);
-        $statement->bindValue('query', $search ?: '', \PDO::PARAM_STR);
+        $statement->bindValue('store_id', $store->getId());
+        $statement->bindValue('query', $search ?: '');
         $statement = $this->bindPagination($statement, $offset, $limit);
         $result = $statement->executeQuery()->fetchAllAssociative();
 
@@ -171,8 +171,8 @@ class StoreProductRepository extends ServiceEntityRepository
     ): array
     {
         $statement = $this->connection->prepare('select search_products(:term, :category, :offset, :limit)');
-        $statement->bindValue('category', $category ?: null, \PDO::PARAM_STR);
-        $statement->bindValue('term', $term, \PDO::PARAM_STR);
+        $statement->bindValue('category', $category ?: null);
+        $statement->bindValue('term', $term);
         $statement = $this->bindPagination($statement, $offset, $limit);
         $result = $statement->executeQuery()->fetchAllAssociative();
 

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
@@ -16,7 +16,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-#[Route('/dashboard/marker-place/message')]
+#[Route('/dashboard/market-place/message')]
 class MessageController extends AbstractController
 {
     use StoreTrait;

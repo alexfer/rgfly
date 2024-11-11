@@ -1,16 +1,14 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Controller\Security;
 
 use App\Form\Type\User\LoginType;
-use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 
@@ -73,13 +71,13 @@ class SecurityController extends AbstractController
     /**
      *
      * @return Response
-     * @throws Exception
+     * @throws \Exception
      */
     #[Route('/web/logout', name: 'app_logout')]
     public function logout(): Response
     {
         // controller can be blank: it will never be called!
-        throw new Exception('Activated');
+        throw new \Exception('Activated');
     }
 
     /**

@@ -99,10 +99,10 @@ class Entry
     }
 
     /**
-     * @param $slug
+     * @param string|null $slug
      * @return $this
      */
-    public function setSlug($slug): static
+    public function setSlug(?string $slug): static
     {
         $this->slug = $slug;
 

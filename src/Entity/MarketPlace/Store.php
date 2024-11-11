@@ -823,9 +823,9 @@ class Store
     /**
      * @return array|null
      */
-    public function getCc(): ?array
+    public function getCc(): ?string
     {
-        return json_decode($this->cc, true);
+        return $this->cc;
     }
 
     /**
