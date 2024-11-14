@@ -11,7 +11,7 @@ liip_imagine:
         default:
             web_path: ~
     filter_sets:
-        # name our filter set "my_thumb_filter"
+        # name our filter set "custom_thumb_filter"
         carrier_icon:
             filters:
                 thumbnail:
