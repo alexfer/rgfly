@@ -8,7 +8,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validation;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class OperationOperationFileValidator implements OperationFileValidatorInterface
+final class OperationFileValidator implements OperationFileValidatorInterface
 {
 
     /**
@@ -18,19 +18,19 @@ final class OperationOperationFileValidator implements OperationFileValidatorInt
      */
     public function validate(mixed $file, TranslatorInterface $translator): ConstraintViolationListInterface
     {
-        $imageConstraints = new File([
+        $fileConstraints = new File([
             // Change if needed own size, for instance it can be '2M'
             'maxSize' => ini_get('post_max_size'),
             'mimeTypes' => [
-                ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'],
-                ['text/xml', 'application/xml', 'application/x-msdownload'],
-                ['application/json']
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel',
+                'text/xml', 'application/xml', 'application/x-msdownload',
+                'application/json'
             ],
             'mimeTypesMessage' => $translator->trans('form.picture.not_valid_type', [], 'validators'),
         ]);
 
         $validator = Validation::createValidator();
-        return $validator->validate($file, $imageConstraints);
+        return $validator->validate($file, $fileConstraints);
 
     }
 }

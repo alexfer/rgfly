@@ -27,6 +27,13 @@ class OperationController extends AbstractController
 {
     use StoreTrait;
 
+    private string $storage = 'var/tmp';
+
+    public function __construct(ParameterBagInterface $params)
+    {
+        $this->storage = $params->get('kernel.project_dir') . $this->storage;
+    }
+
     /**
      * @param EntityManagerInterface $manager
      * @return Response
@@ -45,17 +52,14 @@ class OperationController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param ParameterBagInterface $params
+     * @param OperationInterface $operation
      * @param StoreInterface $serve
      * @return Response
      */
     #[Route('/{store}/import', name: 'app_dashboard_market_place_operation_import', methods: ['GET', 'POST'])]
     public function import(
-        Request               $request,
-        ParameterBagInterface $params,
-        OperationInterface    $operation,
-        StoreInterface        $serve,
+        OperationInterface $operation,
+        StoreInterface     $serve,
     ): Response
     {
         $store = $this->store($serve, $this->getUser());
@@ -138,17 +142,16 @@ class OperationController extends AbstractController
 
     /**
      * @param Request $request
-     * @param ParameterBagInterface $params
      * @param SluggerInterface $slugger
      * @param EntityManagerInterface $manager
      * @param TranslatorInterface $translator
      * @param StoreInterface $serveStore
+     * @param OperationFileValidatorInterface $fileValidator
      * @return Response
      */
     #[Route('/{store}/upload', name: 'app_dashboard_market_place_operation_upload', methods: ['GET', 'POST'])]
     public function upload(
         Request                         $request,
-        ParameterBagInterface           $params,
         SluggerInterface                $slugger,
         EntityManagerInterface          $manager,
         TranslatorInterface             $translator,
@@ -157,7 +160,6 @@ class OperationController extends AbstractController
     ): Response
     {
         $store = $this->store($serveStore, $this->getUser());
-        $storageTmp = $params->get('kernel.project_dir') . '/var/tmp';
         $file = $request->files->get('file');
         $fileName = $operation = null;
 
@@ -177,7 +179,7 @@ class OperationController extends AbstractController
             $fileName = $safeFileName . '-' . uniqid() . '.' . $format;
 
             try {
-                $file->move($storageTmp, $fileName);
+                $file->move($this->storage, $fileName);
             } catch (IOExceptionInterface $exception) {
                 return $this->json(['error' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
             }
@@ -214,17 +216,15 @@ class OperationController extends AbstractController
      */
     #[Route('/{store}/rm/{id}', name: 'app_dashboard_market_place_operation_remove', methods: ['POST'])]
     public function remove(
-        Request               $request,
-        OperationInterface    $operation,
-        StoreInterface        $serveStore,
-        ParameterBagInterface $params,
+        Request            $request,
+        OperationInterface $operation,
+        StoreInterface     $serveStore,
     ): Response
     {
         $store = $this->store($serveStore, $this->getUser());
 
         if ($item = $operation->find($store, (int)$request->get('id'))) {
-            $storage = $params->get('kernel.project_dir') . '/var/tmp';
-            $file = sprintf('%s/%s', $storage, $item->getFilename());
+            $file = sprintf('%s/%s', $this->storage, $item->getFilename());
             $operation->prune($file, $item);
         }
 
