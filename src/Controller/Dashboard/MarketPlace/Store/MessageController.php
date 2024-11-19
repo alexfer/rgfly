@@ -112,6 +112,7 @@ class MessageController extends AbstractController
         }
 
         $message = $repository->findOneBy(['store' => $store, 'id' => $request->get('id')]);
+
         if ($message === null) {
             throw $this->createNotFoundException();
         }
