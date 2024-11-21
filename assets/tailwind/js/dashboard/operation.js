@@ -16,9 +16,33 @@ const entry = document.getElementById('file-upload'),
         .getElementsByTagName('tbody')[0];
 
 let collection = table.getElementsByClassName('remove');
+let sync = table.getElementsByClassName('sync');
 let allowed = entry.getAttribute('accept').split(',');
 let xhr = new XMLHttpRequest();
 const formData = new FormData();
+
+if(sync.length > 0) {
+    [...sync].forEach(el => {
+        el.addEventListener('click', e => {
+            e.preventDefault();
+            Swal.fire({
+                title: i18next.t('proceed'),
+                text: i18next.t('operationText'),
+                customClass: customCss,
+                showCancelButton: true,
+                confirmButtonText: i18next.t('proceed'),
+                cancelButtonText: i18next.t('cancel'),
+                icon: "info",
+            }).then(async (result) => {
+                if(result.isConfirmed) {
+                    const response = await fetch(el.dataset.url);
+                    const data = await response.json();
+                    console.log(data);
+                }
+            });
+        });
+    });
+}
 
 dropzone.addEventListener('dragover', e => {
     e.preventDefault();
@@ -37,7 +61,6 @@ dropzone.addEventListener('drop', e => {
     displayPreview(file);
     formData.append('file', file);
 });
-
 
 entry.addEventListener('change', e => {
     let file = e.target.files[0];

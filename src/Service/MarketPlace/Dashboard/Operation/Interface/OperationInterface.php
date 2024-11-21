@@ -56,4 +56,11 @@ interface OperationInterface
      * @return void
      */
     public function prune(string $file, StoreOperation $operation): void;
+
+    /**
+     * @param string $dir
+     * @param StoreOperation $operation
+     * @return mixed
+     */
+    public function compose(string $dir, StoreOperation $operation): void;
 }
