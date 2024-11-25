@@ -1,0 +1,31 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% set _title_extend = 'title.dashboard.overview.conversation'|trans %}
+{% block title_extend %}{{ _title_extend }} - {% endblock %}
+{% block title_content %}{{ _title_extend }}{% endblock %}
+
+{% block content %}
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div class="px-4 pb-4">
+            <form class="max-w-sm mx-auto">
+                <label for="users"
+                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ 'title.user.area'|trans }}</label>
+                <select id="users" name="user"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    {% for user in users %}
+                        <option value="{{ user.id }}">{{ user.firstName }} {{ user.lastName }}</option>
+                    {% endfor %}
+                </select>
+                <label for="body"
+                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ 'form.write.message'|trans }}</label>
+                <textarea id="body" name="body" rows="4"
+                          class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          placeholder="{{ 'form.write.message'|trans }}..."></textarea>
+                <div class="flex justify-center p-4">
+                    <button
+                            class="bg-red-500 text-white text-sm px-3 py-2 rounded shadow hover:bg-red-700">{{ 'create.conversation'|trans }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

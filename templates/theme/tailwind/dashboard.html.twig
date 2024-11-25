@@ -84,6 +84,12 @@
 {% block toast %}{% endblock %}
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
+    <script type="text/javascript">
+        const eventSource = new EventSource("{{ mercure('/hub')|escape('js') }}");
+        eventSource.onmessage = event => {
+            console.log(JSON.parse(event.data));
+        }
+    </script>
 {% endblock %}
 </body>
 </html>

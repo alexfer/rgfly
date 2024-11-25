@@ -341,7 +341,11 @@
             </trans-unit>
             <trans-unit id="title.dashboard.overview_message.conversation">
                 <source>title.dashboard.overview_message.conversation</source>
-                <target>Message Conversation</target>
+                <target>Messages</target>
+            </trans-unit>
+            <trans-unit id="title.dashboard.overview.conversation">
+                <source>title.dashboard.overview.conversation</source>
+                <target>Conversations</target>
             </trans-unit>
             <trans-unit id="title.dashboard.overview_other">
                 <source>title.dashboard.overview_other</source>
@@ -374,6 +378,10 @@
             <trans-unit id="menu.dashboard.create.blog">
                 <source>menu.dashboard.create.blog</source>
                 <target>Create Blog</target>
+            </trans-unit>
+            <trans-unit id="create.conversation">
+                <source>create.conversation</source>
+                <target>Start conversation</target>
             </trans-unit>
             <trans-unit id="menu.dashboard.create.store">
                 <source>menu.dashboard.create.store</source>
