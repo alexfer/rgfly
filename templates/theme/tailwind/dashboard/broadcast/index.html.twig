@@ -7,7 +7,7 @@
 {% block content %}
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <div class="px-4 pb-4">
-            <form class="max-w-sm mx-auto">
+            <form name="publish-message" action="{{ path('app_dashboard_publish_publish') }}" class="max-w-sm mx-auto">
                 <label for="users"
                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ 'title.user.area'|trans }}</label>
                 <select id="users" name="user"
@@ -28,4 +28,8 @@
             </form>
         </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('hub-js') }}
 {% endblock %}

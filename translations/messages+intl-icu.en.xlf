@@ -383,6 +383,10 @@
                 <source>create.conversation</source>
                 <target>Start conversation</target>
             </trans-unit>
+            <trans-unit id="system.notification">
+                <source>system.notification</source>
+                <target>New notification</target>
+            </trans-unit>
             <trans-unit id="menu.dashboard.create.store">
                 <source>menu.dashboard.create.store</source>
                 <target>Add Store</target>

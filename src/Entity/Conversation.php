@@ -36,6 +36,7 @@ class Conversation
 
     public function __construct()
     {
+        $this->created_at = new \DateTimeImmutable();
         $this->messages = new ArrayCollection();
         $this->participants = new ArrayCollection();
     }
