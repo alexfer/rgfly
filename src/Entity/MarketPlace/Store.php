@@ -426,7 +426,7 @@ class Store
     {
         if (!$this->storeSuppliers->contains($storeSupplier)) {
             $this->storeSuppliers->add($storeSupplier);
-            $storeSupplier->seStore($this);
+            $storeSupplier->setStore($this);
         }
 
         return $this;
@@ -462,8 +462,8 @@ class Store
      */
     public function addStoreManufacturer(StoreManufacturer $storeManufacturer): static
     {
-        if (!$this->storetManufacturers->contains($storeManufacturer)) {
-            $this->storetManufacturers->add($storeManufacturer);
+        if (!$this->storeManufacturers->contains($storeManufacturer)) {
+            $this->storeManufacturers->add($storeManufacturer);
             $storeManufacturer->setStore($this);
         }
 

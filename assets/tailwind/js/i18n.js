@@ -13,7 +13,8 @@ const messages = {
                 removed: 'Removed',
                 orderNotFound: 'Order not found',
                 orderFound: 'Order found',
-                fileTooLarge: 'The file size too large'
+                fileTooLarge: 'The file size too large',
+                operationText: 'Xml file will be analyzed and show which products can be imported',
             },
         },
         // fr: {

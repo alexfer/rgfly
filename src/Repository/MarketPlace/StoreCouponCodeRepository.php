@@ -2,11 +2,10 @@
 
 namespace App\Repository\MarketPlace;
 
-use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\NoResultException;
 use App\Entity\MarketPlace\{StoreCoupon, StoreCouponCode, StoreCouponUsage};
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 

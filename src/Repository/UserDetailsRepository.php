@@ -2,10 +2,12 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\UserDetails;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @extends ServiceEntityRepository<UserDetails>
@@ -42,5 +44,24 @@ class UserDetailsRepository extends ServiceEntityRepository
         $statement->bindValue('values', $jsonValues, \PDO::PARAM_STR);
 
         return $statement->executeQuery()->fetchOne();
+    }
+
+    /**
+     * @param UserInterface $user
+     * @param int $offset
+     * @param int $limit
+     * @return array|null
+     */
+    public function findByNot(UserInterface $user, int $offset = 0, int $limit = 25): ?array
+    {
+        return $this->createQueryBuilder('ud')
+            ->select(['u.id', 'ud.first_name as firstName', 'ud.last_name as lastName'])
+            ->join(User::class, 'u', 'WITH', 'u.id = ud.user')
+            ->where('ud.user != :user')
+            ->setParameter(':user', $user)
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getArrayResult();
     }
 }

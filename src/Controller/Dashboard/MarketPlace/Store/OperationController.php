@@ -27,7 +27,7 @@ class OperationController extends AbstractController
 {
     use StoreTrait;
 
-    private string $storage = 'var/tmp';
+    private string $storage = '/var/tmp';
 
     public function __construct(ParameterBagInterface $params)
     {
@@ -229,5 +229,26 @@ class OperationController extends AbstractController
         }
 
         return $this->json(['success' => true], Response::HTTP_OK);
+    }
+
+    /**
+     * @param Request $request
+     * @param OperationInterface $operation
+     * @param StoreInterface $serveStore
+     * @return Response
+     */
+    #[Route('/{store}/compose/{id}', name: 'app_dashboard_market_place_operation_compose')]
+    public function compose(
+        Request            $request,
+        OperationInterface $operation,
+        StoreInterface     $serveStore,
+    ): Response
+    {
+        $store = $this->store($serveStore, $this->getUser());
+        $item = $operation->find($store, (int)$request->get('id'));
+
+        $compose = $operation->compose($this->storage, $item);
+
+        return $this->json(['success' => true, 'item' => $compose], Response::HTTP_OK);
     }
 }

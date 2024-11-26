@@ -137,4 +137,9 @@ class Operation extends FactoryHandler implements OperationInterface
         $fields = array_diff($fields, $exclude);
         return array_merge($fields, $include);
     }
+
+    public function compose(string $dir, StoreOperation $operation): void
+    {
+
+    }
 }
