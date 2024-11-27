@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
 import i18next from "i18next";
 import customCss from "../customCss";
+import swalOptions from "../swalOptions";
 
 const drops = document.querySelectorAll('.drops');
 const orderForm = document.getElementById('order-summary');
@@ -14,15 +15,7 @@ if (typeof drops !== 'undefined') {
             let order = drop.getAttribute('data-order');
             let store = drop.getAttribute('data-store');
             let quantity = document.getElementById('qty');
-            Swal.fire({
-                text: i18next.t('question'),
-                showCancelButton: true,
-                confirmButtonText: i18next.t('proceed'),
-                denyButtonText: i18next.t('cancel'),
-                customClass: customCss,
-                icon: "question",
-                showLoaderOnConfirm: true
-            }).then(async (result) => {
+            Swal.fire(swalOptions).then(async (result) => {
                 if (result.isConfirmed) {
                     const response = await fetch(url, {
                             method: 'POST',

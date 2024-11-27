@@ -2,6 +2,7 @@ import './../utils';
 import Swal from "sweetalert2";
 import i18next from "i18next";
 import customCss from "../customCss";
+import swalOptions from "../swalOptions";
 
 const forms = document.querySelectorAll('form');
 const danger = document.getElementById('toast-danger');
@@ -65,15 +66,7 @@ const change = document.querySelectorAll('.change');
         const id = element.getAttribute('data-id');
         const url = element.getAttribute('data-url');
         e.preventDefault();
-        Swal.fire({
-            text: i18next.t('question'),
-            showCancelButton: true,
-            showConfirmButton: true,
-            customClass: customCss,
-            confirmButtonText: i18next.t('proceed'),
-            denyButtonText: i18next.t('cancel'),
-            icon: "question"
-        }).then(async (result) => {
+        Swal.fire(swalOptions).then(async (result) => {
             if (result.isConfirmed) {
                 const response = await fetch(url, {
                     method: 'DELETE',

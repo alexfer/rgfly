@@ -41,7 +41,7 @@
                               stroke-width="2" d="M9 17h6l3 3v-3h2V9h-2M4 4h11v8H9l-3 3v-3H4V4Z"></path>
                     </svg>
                     <span class="ms-3">{{ 'menu.dashboard.messages'|trans }}</span>
-                    <div id="hub" class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 end-0 dark:border-gray-900">0</div>
+                    <div id="hub" class="absolute inline-flex items-center justify-center w-7 h-7 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 end-0 dark:border-gray-900">{{ messages.total(app.user.id) }}</div>
                 </a>
             </li>
             <li>

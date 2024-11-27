@@ -40,7 +40,7 @@ permit.forEach((element) => {
                 const data = await response.json();
 
                 if (data.message !== undefined) {
-                    Swal.fire({
+                    await Swal.fire({
                         icon: "error",
                         text: data.message,
                         customClass: customCss

@@ -1,14 +1,14 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Message;
 
-class DeleteMessage
+readonly class DeleteMessage
 {
     /**
      * @param string $message
      */
     public function __construct(
-        private readonly string $message,
+        private string $message,
     )
     {
     }
