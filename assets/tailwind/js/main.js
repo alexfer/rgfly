@@ -2,6 +2,7 @@ import Swal from "sweetalert2";
 import i18next from "i18next";
 import './utils';
 import customCss from "./customCss";
+import swalOptions from "./swalOptions";
 
 document.addEventListener('DOMContentLoaded', () => {
     const formData = new FormData();
@@ -210,15 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
             entry.addEventListener('click', () => {
                 let url = entry.getAttribute('data-url');
                 let token = entry.getAttribute('data-token');
-                Swal.fire({
-                    text: i18next.t('question'),
-                    showCancelButton: true,
-                    showConfirmButton: true,
-                    customClass: customCss,
-                    confirmButtonText: i18next.t('proceed'),
-                    denyButtonText: i18next.t('cancel'),
-                    icon: "question"
-                }).then(async (result) => {
+                Swal.fire(swalOptions).then(async (result) => {
                     if (result.isConfirmed) {
                         const response = await fetch(url, {
                                 method: 'POST',

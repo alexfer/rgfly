@@ -59,14 +59,12 @@ class PublishController extends AbstractController
         $conversation->setHub(Uuid::v4());
 
         $message = new Message();
-        //$message->setConversation($conversation);
         $message->setBody($payload['message']);
         $message->setRead(false);
         $message->setSender($owner->getUser());
         $conversation->addMessage($message);
 
         $participant = new Participant();
-        //$participant->setConversation($conversation);
         $participant->setOwner($user->getUser());
         $conversation->addParticipant($participant);
 
@@ -80,6 +78,7 @@ class PublishController extends AbstractController
             json_encode(['update' => [
                 'createdAt' => $createdAt->format('m F, D. Y, H:i'),
                 'sender' => $owner->getFirstName() . ' ' . $owner->getLastName(),
+                'count' => $user->getUser()->getParticipants()->count(),
                 'message' => $payload['message'],
             ]]),
         );

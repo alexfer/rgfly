@@ -8,15 +8,15 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-class DeleteMessageNotificationHandler
+readonly class DeleteMessageNotificationHandler
 {
     /**
      * @param ConnectionInterface $connection
      * @param LoggerInterface $logger
      */
     public function __construct(
-        private readonly ConnectionInterface $connection,
-        private readonly LoggerInterface     $logger,
+        private ConnectionInterface $connection,
+        private LoggerInterface     $logger,
     )
     {
     }

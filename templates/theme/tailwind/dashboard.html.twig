@@ -87,6 +87,7 @@
     {{ encore_entry_script_tags('app') }}
     <script type="text/javascript">
         const user = document.getElementById('key').dataset.id,
+            hub = document.getElementById('hub'),
             toast = document.getElementById('hub-notification'),
             eventSource = new EventSource("{{ mercure('/hub/')|escape('js') }}" + user);
 
@@ -97,6 +98,7 @@
             toast.querySelector('img').innerHTML = data.update.sender;
             toast.querySelector('.message').innerHTML = data.update.message;
             toast.querySelector('.created').innerHTML = data.update.createdAt;
+            hub.innerHTML = data.update.count;
         }
     </script>
 {% endblock %}
