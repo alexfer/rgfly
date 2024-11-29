@@ -7,6 +7,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class MessageCounter
 {
+    /**
+     * @param EntityManagerInterface $manager
+     */
     public function __construct(
         private EntityManagerInterface $manager,
     )
@@ -14,6 +17,10 @@ final readonly class MessageCounter
 
     }
 
+    /**
+     * @param int $id
+     * @return int
+     */
     public function total(int $id): int
     {
         $user = $this->manager->getRepository(User::class)->find($id);

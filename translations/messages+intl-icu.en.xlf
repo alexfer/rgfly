@@ -96,6 +96,10 @@
                 <source>text.answer</source>
                 <target>Answer</target>
             </trans-unit>
+            <trans-unit id="text.reply">
+                <source>text.reply</source>
+                <target>Reply</target>
+            </trans-unit>
             <trans-unit id="title.blogs">
                 <source>title.blogs</source>
                 <target>Blogs</target>
@@ -2321,6 +2325,14 @@
             <trans-unit id="menu.dashboard.config">
                 <source>menu.dashboard.config</source>
                 <target>Configuration</target>
+            </trans-unit>
+            <trans-unit id="status.delivered">
+                <source>status.delivered</source>
+                <target>Delivered</target>
+            </trans-unit>
+            <trans-unit id="status.unread">
+                <source>status.unread</source>
+                <target>Unread</target>
             </trans-unit>
         </body>
     </file>
