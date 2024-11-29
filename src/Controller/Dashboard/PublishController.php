@@ -9,18 +9,31 @@ use App\Entity\User;
 use App\Entity\UserDetails;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Clock\DatePoint;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Uid\Uuid;
 
 class PublishController extends AbstractController
 {
+    /**
+     * @var array
+     */
+    private array $payload = [];
 
+    /**
+     * @param HubInterface $hub
+     */
+    public function __construct(private readonly HubInterface $hub)
+    {
+    }
+
+    /**
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
     #[Route('/dashboard/hub/index', name: 'app_dashboard_publish_index', methods: ['GET'])]
     public function index(EntityManagerInterface $manager): Response
     {
@@ -34,57 +47,81 @@ class PublishController extends AbstractController
     }
 
     /**
-     * @param HubInterface $hub
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    #[Route('/dashboard/hub/message/{hub}', name: 'app_dashboard_publish_index_messages', methods: ['GET'])]
+    public function conversation(Request $request, EntityManagerInterface $manager): Response
+    {
+        $conversation = $manager->getRepository(Conversation::class)->findOneBy(['hub' => $request->get('hub')]);
+//        $participant = $manager->getRepository(Participant::class)->findOneBy(['conversation' => $conversation]);
+//
+//        if ($participant->getOwner()->getId() == $this->getUser()->getId()) {
+//            $manager->getRepository(Message::class)->setRead($conversation);
+//        }
+
+        $messages = $manager->getRepository(Message::class)->findBy(['conversation' => $conversation], ['created_at' => 'ASC']);
+
+        return $this->render('dashboard/broadcast/conversation.html.twig', [
+            'messages' => $messages,
+        ]);
+    }
+
+    /**
      * @param Request $request
      * @param EntityManagerInterface $manager
      * @return JsonResponse
-     * @throws \DateMalformedStringException
      */
-    #[Route('/dashboard/hub/publish', name: 'app_dashboard_publish_publish', methods: ['POST'])]
-    public function publish(
-        HubInterface           $hub,
+    #[Route('/dashboard/hub/reply', name: 'app_dashboard_publish_reply', methods: ['POST'])]
+    public function reply(
         Request                $request,
         EntityManagerInterface $manager,
     ): JsonResponse
     {
-        $payload = $request->getPayload()->all();
+        $this->payload = $request->getPayload()->all();
 
-        $user = $manager->getRepository(User::class)->find($payload['id']);
-        $owner = $manager->getRepository(UserDetails::class)->findOneBy(['user' => $this->getUser()]);
-        $user = $manager->getRepository(UserDetails::class)->findOneBy(['user' => $user]);
-
-        $createdAt = new DatePoint(timezone: new \DateTimezone('UTC'));
-
-        $conversation = new Conversation();
-        $conversation->setHub(Uuid::v4());
+        $conversation = $manager->getRepository(Conversation::class)->findOneBy(['hub' => $this->payload['hub']]);
 
         $message = new Message();
-        $message->setBody($payload['message']);
+        $message->setBody($this->payload['message']);
         $message->setRead(false);
-        $message->setSender($owner->getUser());
+        $message->setSender($this->getUser());
         $conversation->addMessage($message);
 
         $participant = new Participant();
-        $participant->setOwner($user->getUser());
+        $participant->setOwner($manager->getRepository(User::class)->find($this->payload['recipient']));
         $conversation->addParticipant($participant);
 
-        $manager->persist($conversation);
         $manager->persist($message);
         $manager->persist($participant);
         $manager->flush();
 
+        return $this->publish($participant, $message);
+
+    }
+
+    /**
+     * @param Participant $participant
+     * @param Message $message
+     * @return JsonResponse
+     */
+    private function publish(Participant $participant, Message $message): JsonResponse
+    {
+        $createdAt = $message->getcreatedAt()->format('F j, H:i');
+
         $update = new Update(
-            '/hub/' . $user->getId(),
+            '/hub/' . $this->payload['recipient'],
             json_encode(['update' => [
-                'createdAt' => $createdAt->format('m F, D. Y, H:i'),
-                'sender' => $owner->getFirstName() . ' ' . $owner->getLastName(),
-                'count' => $user->getUser()->getParticipants()->count(),
-                'message' => $payload['message'],
+                'createdAt' => $createdAt,
+                'sender' => "{$this->getUser()->getUserDetails()->getFirstName()}  {$this->getUser()->getUserDetails()->getLastName()}",
+                'count' => $participant->getOwner()->getParticipants()->count(),
+                'message' => $this->payload['message'],
             ]]),
         );
 
-        $hub->publish($update);
+        $this->hub->publish($update);
 
-        return $this->json(['message' => 'Sent to ' . $user->getFirstName() . ' at ' . $createdAt->format('m F, D. Y, H:i')]);
+        return $this->json(['message' => "Sent to  {$participant->getOwner()->getUserDetails()->getFirstName()}  at  {$createdAt}"]);
     }
 }

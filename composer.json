@@ -1,6 +1,6 @@
 {
     "type": "project",
-    "description": "E-commerce marketplaces using the Symfony framework, Docker, PHP and PostgreSQL",
+    "description": "E-commerce marketplaces using the Symfony framework, Docker, PHP and PostgresSQL",
     "keywords": ["framework", "symfony", "symfony-7", "php", "dev", "blog", "tailwindcss",
         "marketplace", "shop", "store", "ecommerce", "online-shop", "php", "php-8.3",
         "postgresql", "posrgres", "javascript", "webpack", "docker", "redis"],
@@ -15,7 +15,7 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.3",
         "ext-ctype": "*",
         "ext-curl": "*",
         "ext-iconv": "*",

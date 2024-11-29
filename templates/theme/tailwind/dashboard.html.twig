@@ -92,7 +92,8 @@
             eventSource = new EventSource("{{ mercure('/hub/')|escape('js') }}" + user);
 
         eventSource.onmessage = event => {
-            const data = JSON.parse(event.data)
+            const data = JSON.parse(event.data);
+            console.log(data);
             toast.classList.remove('hidden');
             toast.querySelector('.name').innerHTML = data.update.sender;
             toast.querySelector('img').innerHTML = data.update.sender;
