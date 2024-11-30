@@ -11,7 +11,7 @@
             <div class="flex justify-between items-stretch space-x-2 rtl:space-x-reverse">
                 <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ message.customer.firstName }} {{ message.customer.lastName }}</span>
                 <span class="bg-{{ priority[message.priority] }}-100 text-{{ priority[message.priority] }}-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-{{ priority[message.priority] }}-900 dark:text-{{ priority[message.priority] }}-300 capitalize">{{ message.priority }}</span>
-                <span class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ message.createdAt|date(datetime_format) }}</span>
+                <span class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ message.createdAt|date('F j, H:i') }}</span>
             </div>
             <p class="text-sm font-normal my-1.5 p-4 bg-gray-50 rounded-lg text-gray-900 dark:bg-gray-500 dark:text-white ">{{ message.message }}</p>
             <div class="block w-full justify-start items-start my-1 px-0.5">

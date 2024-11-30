@@ -8,14 +8,13 @@ use App\Entity\MarketPlace\StoreMessage;
 use App\Entity\MarketPlace\StoreOrders;
 use App\Entity\MarketPlace\StoreProduct;
 use App\Entity\UserDetails;
-use App\Message\DeleteMessage;
-use App\Message\MessageNotification;
 use App\Service\MarketPlace\Store\Message\Interface\MessageServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
@@ -38,7 +37,7 @@ class MessageService implements MessageServiceInterface
      * @param EntityManagerInterface $em
      * @param CsrfTokenManagerInterface $csrfTokenManager
      * @param RouterInterface $router
-     * @param MessageBusInterface $bus
+     * @param HubInterface $hub
      */
     public function __construct(
         private readonly TranslatorInterface       $translator,
@@ -46,10 +45,9 @@ class MessageService implements MessageServiceInterface
         private readonly EntityManagerInterface    $em,
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
         private readonly RouterInterface           $router,
-        private readonly MessageBusInterface       $bus,
+        private readonly HubInterface              $hub,
     )
     {
-
     }
 
     /**
@@ -99,19 +97,32 @@ class MessageService implements MessageServiceInterface
             'id' => $message->getId(),
         ]);
 
-        $request = [
+        $data = [
             'id' => $message->getId(),
             'message' => $message->getMessage(),
             'createdAt' => $message->getCreatedAt(),
             'identity' => $message->getIdentity(),
+            'count' => $message->getStoreMessages()->count(),
             'from' => sprintf("%s %s", $customer->getFirstName(), $customer->getLastName()),
+            'recipient_id' => $message->getStore()->getOwner()->getId(),
             'recipient' => $message->getStore()->getOwner()->getEmail(),
             'priority' => $message->getPriority(),
             'url' => $url,
         ];
 
-        $notify = json_encode($request);
-        $this->bus->dispatch(new MessageNotification($notify));
+        $update = new Update(
+            '/hub/' . $data['recipient_id'],
+            json_encode(['update' => [
+                'createdAt' => $data['createdAt']->format('F j, H:i'),
+                'sender' => $data['from'],
+                'count' => $data['count'],
+                'message' => $data['message'],
+            ]]),
+        );
+
+        $this->hub->publish($update);
+
+        //$this->bus->dispatch(new MessageNotification($notify));
 
         return new JsonResponse([
             'success' => true,
@@ -234,17 +245,12 @@ class MessageService implements MessageServiceInterface
      * @param UserInterface|null $user
      * @param bool $customer
      * @return array
-     * @throws ExceptionInterface
      */
     public function answer(?UserInterface $user, bool $customer = false): array
     {
         $message = $this->em->getRepository(StoreMessage::class)->find($this->payload['id']);
         $previous = $this->em->getRepository(StoreMessage::class)->find($this->payload['last']);
 
-        $id = $this->payload['last'];
-        $recipientEmail = $customer ? $this->customer($user)->getEmail() : $user->getEmail();
-
-        $this->bus->dispatch(new DeleteMessage("{$recipientEmail}:{$id}"));
         $previous->setRead(true);
         $this->em->persist($previous);
         $this->em->flush();
@@ -291,6 +297,10 @@ class MessageService implements MessageServiceInterface
             'parent' => $answer->getParent()->getId(),
             'identity' => $answer->getIdentity(),
             'from' => $recipientName,
+            'count' => $customer ?
+                $this->em->getRepository(StoreMessage::class)->countMessages($previous->getOwner()) :
+                $this->em->getRepository(StoreCustomer::class)->countMessages($message->getCustomer()->getMember()),
+            'recipient_id' => $customer ? $previous->getOwner()->getId() : $message->getCustomer()->getMember()->getId(),
             'recipient' => $customer ? $previous->getOwner()->getEmail() : $previous->getCustomer()->getEmail(),
             'customer' => $answer->getCustomer(),
             'priority' => $answer->getPriority(),

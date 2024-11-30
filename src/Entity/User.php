@@ -60,18 +60,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: StoreMessage::class, mappedBy: 'owner')]
     private Collection $storeMessages;
 
-    /**
-     * @var Collection<int, Message>
-     */
-    #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'sender')]
-    private Collection $messages;
-
-    /**
-     * @var Collection<int, Participant>
-     */
-    #[ORM\OneToMany(targetEntity: Participant::class, mappedBy: 'owner')]
-    private Collection $participants;
-
     final public const string ROLE_USER = 'ROLE_USER';
     final public const string ROLE_ADMIN = 'ROLE_ADMIN';
     final public const string ROLE_CUSTOMER = 'ROLE_CUSTOMER';
@@ -81,8 +69,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->created_at = new DateTime();
         $this->stores = new ArrayCollection();
         $this->storeMessages = new ArrayCollection();
-        $this->messages = new ArrayCollection();
-        $this->participants = new ArrayCollection();
     }
 
     /**
@@ -401,81 +387,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
-    /**
-     * @return Collection<int, Message>
-     */
-    public function getMessages(): Collection
-    {
-        return $this->messages;
-    }
-
-    /**
-     * @param Message $message
-     * @return $this
-     */
-    public function addMessage(Message $message): static
-    {
-        if (!$this->messages->contains($message)) {
-            $this->messages->add($message);
-            $message->setSender($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param Message $message
-     * @return $this
-     */
-    public function removeMessage(Message $message): static
-    {
-        if ($this->messages->removeElement($message)) {
-            // set the owning side to null (unless already changed)
-            if ($message->getSender() === $this) {
-                $message->setSender(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Participant>
-     */
-    public function getParticipants(): Collection
-    {
-        return $this->participants;
-    }
-
-    /**
-     * @param Participant $participant
-     * @return $this
-     */
-    public function addParticipant(Participant $participant): static
-    {
-        if (!$this->participants->contains($participant)) {
-            $this->participants->add($participant);
-            $participant->setOwner($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param Participant $participant
-     * @return $this
-     */
-    public function removeParticipant(Participant $participant): static
-    {
-        if ($this->participants->removeElement($participant)) {
-            // set the owning side to null (unless already changed)
-            if ($participant->getOwner() === $this) {
-                $participant->setOwner(null);
-            }
-        }
-
-        return $this;
-    }
-
 }

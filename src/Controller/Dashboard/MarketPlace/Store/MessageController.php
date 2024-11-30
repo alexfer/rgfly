@@ -11,6 +11,8 @@ use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -89,7 +91,7 @@ class MessageController extends AbstractController
         StoreInterface          $serveStore,
         MessageServiceInterface $processor,
         EntityManagerInterface  $em,
-        MessageBusInterface     $bus,
+        HubInterface     $hub,
     ): Response
     {
         $store = $this->store($serveStore, $user);
@@ -100,8 +102,18 @@ class MessageController extends AbstractController
             $payload['store'] = $store->getId();
             $processor->process($payload, null, null, false);
             $answer = $processor->answer($user);
-            $notify = json_encode($answer);
-            $bus->dispatch(new MessageNotification($notify));
+
+            $update = new Update(
+                '/hub/' . $answer['recipient_id'],
+                json_encode(['update' => [
+                    'createdAt' => $answer['createdAt']->format('F j, H:i'),
+                    'sender' => $answer['from'],
+                    'count' => $answer['count'],
+                    'message' => $answer['message'],
+                ]]),
+            );
+
+            $hub->publish($update);
 
             return $this->json([
                 'template' => $this->renderView('dashboard/content/market_place/message/answers.html.twig', [
@@ -116,7 +128,8 @@ class MessageController extends AbstractController
         if ($message === null) {
             throw $this->createNotFoundException();
         }
-        $conversation = $repository->findBy(['store' => $store, 'parent' => $message->getId()]);
+
+        $conversation = $repository->findBy(['store' => $store, 'parent' => $message->getId()], ['created_at' => 'ASC']);
 
         return $this->render('dashboard/content/market_place/message/conversation.html.twig', [
             'message' => $message,

@@ -55,7 +55,7 @@
                     </td>
                     <td class="text-center px-6 py-3">
                         {% set priority = {low: 'green', medium: 'yellow', high: 'red'} %}
-                        <span class="text-center w-16 bg-{{ priority[message.priority] }}-100 text-{{ priority[message.priority] }}-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-{{ priority[message.priority] }}-900 dark:text-{{ priority[message.priority] }}-300 capitalize">{{ message.priority }}</span>
+                        <span class="text-center w-16 bg-{{ priority[message.priority|lower] }}-100 text-{{ priority[message.priority|lower] }}-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-{{ priority[message.priority|lower] }}-900 dark:text-{{ priority[message.priority|lower] }}-300 capitalize">{{ message.priority }}</span>
                     </td>
                     <td class="text-center px-6 py-3">
                         <a role="button"

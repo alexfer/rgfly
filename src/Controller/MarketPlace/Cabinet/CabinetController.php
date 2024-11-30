@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Controller\MarketPlace\Cabinet;
 
@@ -13,6 +11,8 @@ use App\Service\MarketPlace\Store\Customer\Interface\CustomerServiceInterface as
 use App\Service\MarketPlace\Store\Message\Interface\MessageServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
@@ -70,7 +70,7 @@ class CabinetController extends AbstractController
     public function messages(
         Request                 $request,
         MessageServiceInterface $processor,
-        MessageBusInterface     $bus,
+        HubInterface     $hub,
     ): Response
     {
         $id = $request->get('id');
@@ -80,22 +80,37 @@ class CabinetController extends AbstractController
         if ($request->isMethod('POST')) {
             $payload = $request->getPayload()->all();
             $processor->process($payload, null, null, false);
-            $answer = $processor->answer($this->getUser(), true);
-            $notify = json_encode($answer);
-            $bus->dispatch(new MessageNotification($notify));
-            unset($answer['recipient']);
+            $data = $processor->answer($this->getUser(), true);
+
+            $update = new Update(
+                '/hub/' . $data['recipient_id'],
+                json_encode(['update' => [
+                    'createdAt' => $data['createdAt']->format('F j, H:i'),
+                    'sender' => $data['from'],
+                    'count' => $data['count'],
+                    'message' => $data['message'],
+                ]]),
+            );
+
+            $hub->publish($update);
+            unset($data['recipient']);
 
             return $this->json([
                 'template' => $this->renderView('market_place/cabinet/message/answers.html.twig', [
                     'animated' => true,
-                    'row' => $answer,
+                    'row' => $data,
                 ])
             ], Response::HTTP_CREATED);
         }
 
         if ($id) {
             $message = $repository->findOneBy(['customer' => $customer, 'id' => $id]);
-            $conversation = $repository->findBy(['customer' => $customer, 'parent' => $message->getId()]);
+
+            if(!$message) {
+                throw $this->createNotFoundException();
+            }
+
+            $conversation = $repository->findBy(['customer' => $customer, 'parent' => $message->getId()], ['created_at' => 'ASC']);
 
             return $this->render('market_place/cabinet/message/conversation.html.twig', [
                 'customer' => $customer,
