@@ -62,7 +62,7 @@ class IndexController extends AbstractController
             if ($slug) {
                 $adminStore = $em->getRepository(Store::class)->findOneBy(['slug' => $slug]);
             }
-            $stores = $em->getRepository(Store::class)->findAll();
+            $stores = $em->getRepository(Store::class)->findBy([], ['created_at' => 'DESC'], self::$limit, self::$offset);
 
         } else {
             $stores = $em->getRepository(Store::class)->findBy($criteria);
@@ -97,6 +97,7 @@ class IndexController extends AbstractController
             'stores' => $stores,
             'store' => $store,
             'products' => $products,
+            'limit' => self::$limit,
             'orders' => $orders,
             'messages' => $messages ? $messages['data'] : $messages,
             'countries' => Countries::getNames(Locale::getDefault()),

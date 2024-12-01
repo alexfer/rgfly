@@ -609,7 +609,7 @@
             </trans-unit>
             <trans-unit id="table.caption.shops">
                 <source>table.caption.shops</source>
-                <target><![CDATA[Latest 20 shops that uses platform.]]></target>
+                <target><![CDATA[Latest { limit } shops that uses platform.]]></target>
             </trans-unit>
             <trans-unit id="table.caption.blogs">
                 <source>table.caption.blogs</source>
