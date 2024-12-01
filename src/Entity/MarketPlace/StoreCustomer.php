@@ -37,19 +37,19 @@ class StoreCustomer
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?User $member = null;
 
-    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: StoreCustomerOrders::class)]
+    #[ORM\OneToMany(targetEntity: StoreCustomerOrders::class, mappedBy: 'customer')]
     private Collection $storeCustomerOrders;
 
     #[ORM\OneToOne(mappedBy: 'customer', cascade: ['persist', 'remove'])]
     private ?StoreAddress $storeAddress = null;
 
-    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: StoreWishlist::class)]
+    #[ORM\OneToMany(targetEntity: StoreWishlist::class, mappedBy: 'customer')]
     private Collection $storeWishlists;
 
     /**
      * @var Collection<int, StoreCouponUsage>
      */
-    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: StoreCouponUsage::class)]
+    #[ORM\OneToMany(targetEntity: StoreCouponUsage::class, mappedBy: 'customer')]
     private Collection $storeCouponUsages;
 
     #[ORM\Column]
@@ -61,7 +61,7 @@ class StoreCustomer
     /**
      * @var Collection<int, StoreMessage>
      */
-    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: StoreMessage::class)]
+    #[ORM\OneToMany(targetEntity: StoreMessage::class, mappedBy: 'customer')]
     private Collection $storeMessages;
 
     public function __construct()

@@ -1,10 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Repository\MarketPlace;
 
 use App\Entity\MarketPlace\{Store, StoreCustomer, StoreMessage};
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\{Connection, Exception, Statement};
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -88,6 +89,21 @@ class StoreMessageRepository extends ServiceEntityRepository
         $result = $statement->executeQuery()->fetchAllAssociative();
 
         return json_decode($result[0]['get_customer_messages'], true) ?: [];
+    }
+
+    /**
+     * @param array $stores
+     * @return int
+     */
+    public function countMessages(array $stores): int
+    {
+        return $this->createQueryBuilder('m')
+            ->select('COUNT(m.id)')
+            ->leftJoin(Store::class, 's', Join::WITH, 's.id = m.store')
+            ->where('m.store IN (:ids)')
+            ->setParameter('ids', array_map(fn(Store $s) => $s->getId(), $stores))
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
 }

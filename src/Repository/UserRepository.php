@@ -81,7 +81,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $statement = $this->getEntityManager()
             ->getConnection()
             ->prepare('select create_user(:values)');
-        $statement->bindValue('values', $jsonValues, \PDO::PARAM_STR);
+        $statement->bindValue('values', $jsonValues);
 
         return $statement->executeQuery()->fetchOne();
     }

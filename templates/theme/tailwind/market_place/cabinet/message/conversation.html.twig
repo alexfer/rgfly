@@ -17,7 +17,7 @@
                 {% elseif message.product %}
                     {{ 'customer.product.messages'|trans }}: {{ message.product.shortName }}
                 {% else %}
-                    {{ 'customer.cabinet.question'|trans({date: message.createdAt|date('l, F jS, Y, g:i a')}) }}
+                    {{ 'customer.cabinet.question'|trans({date: message.createdAt|date('F j, H:i')}) }}
                 {% endif %}
             </h4>
             {% set priority = {low: 'green', medium: 'yellow', high: 'red'} %}

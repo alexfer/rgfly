@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Controller\MarketPlace\Cabinet;
 
@@ -8,13 +6,10 @@ use App\Controller\Trait\ControllerTrait;
 use App\Entity\MarketPlace\{StoreCustomer, StoreCustomerOrders, StoreMessage, StoreOrders, StoreWishlist};
 use App\Entity\User;
 use App\Form\Type\MarketPlace\{AddressType, CustomerProfileType};
-use App\Message\MessageNotification;
 use App\Service\MarketPlace\Store\Customer\Interface\CustomerServiceInterface as CustomerInterface;
 use App\Service\MarketPlace\Store\Message\Interface\MessageServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
-use Symfony\Component\Messenger\Exception\ExceptionInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -62,15 +57,12 @@ class CabinetController extends AbstractController
     /**
      * @param Request $request
      * @param MessageServiceInterface $processor
-     * @param MessageBusInterface $bus
      * @return Response
-     * @throws ExceptionInterface
      */
     #[Route('/messages/{id}', name: 'app_cabinet_messages', defaults: ['id' => null], methods: ['GET', 'POST'])]
     public function messages(
         Request                 $request,
         MessageServiceInterface $processor,
-        MessageBusInterface     $bus,
     ): Response
     {
         $id = $request->get('id');
@@ -81,8 +73,7 @@ class CabinetController extends AbstractController
             $payload = $request->getPayload()->all();
             $processor->process($payload, null, null, false);
             $answer = $processor->answer($this->getUser(), true);
-            $notify = json_encode($answer);
-            $bus->dispatch(new MessageNotification($notify));
+
             unset($answer['recipient']);
 
             return $this->json([
@@ -95,7 +86,12 @@ class CabinetController extends AbstractController
 
         if ($id) {
             $message = $repository->findOneBy(['customer' => $customer, 'id' => $id]);
-            $conversation = $repository->findBy(['customer' => $customer, 'parent' => $message->getId()]);
+
+            if (!$message) {
+                throw $this->createNotFoundException();
+            }
+
+            $conversation = $repository->findBy(['customer' => $customer, 'parent' => $message->getId()], ['created_at' => 'ASC']);
 
             return $this->render('market_place/cabinet/message/conversation.html.twig', [
                 'customer' => $customer,

@@ -9,7 +9,7 @@
                     {{ row.customer.firstName }} {{ row.customer.lastName }}
                 {% endif %}
             </span>
-            <span class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ row.createdAt|date(datetime_format) }}</span>
+            <span class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ row.createdAt|date('F j, H:i') }}</span>
         </div>
         <p class="text-sm font-normal py-4 px-2 my-2 {{ row.owner != null ? 'bg-blue-50' : 'bg-gray-50' }} shadow-sm rounded-md text-gray-900 dark:bg-gray-600 dark:text-white">{{ row.message }}</p>
         {% set priority = {low: 'green', medium: 'yellow', high: 'red'} %}

@@ -50,7 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         document.body.addEventListener('click', (e) => {
-            autocomplete.innerHTML = '';
+            if(autocomplete) {
+                autocomplete.innerHTML = '';
+            }
         });
     }
 

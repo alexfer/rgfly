@@ -1,9 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Repository\MarketPlace;
 
 use App\Entity\MarketPlace\StoreAddress;
 use App\Entity\MarketPlace\StoreCustomer;
+use App\Entity\MarketPlace\StoreMessage;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\Query\Expr\Join;
@@ -78,6 +80,22 @@ class StoreCustomerRepository extends ServiceEntityRepository
             ->setMaxResults(1);
 
         return $qb->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param User $user
+     * @return int
+     */
+    public function countMessages(User $user): int
+    {
+        return $this->createQueryBuilder('c')
+            ->select('COUNT(m.id)')
+            ->leftJoin(StoreMessage::class, 'm', Join::WITH, 'm.customer = c.id')
+            ->where('c.member = :user')
+            ->setParameter('user', $user)
+            ->andWhere('m.owner IS NOT NULL')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
 }
