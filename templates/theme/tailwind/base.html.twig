@@ -50,13 +50,6 @@
 </div>
 {% include 'layouts/cart.html.twig' %}
 {% include 'layouts/toast/hub.html.twig' %}
-{% set routes = _route|split('_') %}
-{% if routes|length > 1 and routes[1] == 'cabinet' %}
-    {% include 'market_place/notification.html.twig' with {
-        end: 'bottom',
-        start: 'start'
-    } %}
-{% endif %}
 {% block toast %}{% endblock %}
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
@@ -74,6 +67,7 @@
                 toast.querySelector('img').innerHTML = data.update.sender;
                 toast.querySelector('.message').innerHTML = data.update.message;
                 toast.querySelector('.created').innerHTML = data.update.createdAt;
+                toast.querySelector('.url').setAttribute('href', data.update.url);
                 hub.innerHTML = data.update.count;
             }
         }

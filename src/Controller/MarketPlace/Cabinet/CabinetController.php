@@ -6,15 +6,10 @@ use App\Controller\Trait\ControllerTrait;
 use App\Entity\MarketPlace\{StoreCustomer, StoreCustomerOrders, StoreMessage, StoreOrders, StoreWishlist};
 use App\Entity\User;
 use App\Form\Type\MarketPlace\{AddressType, CustomerProfileType};
-use App\Message\MessageNotification;
 use App\Service\MarketPlace\Store\Customer\Interface\CustomerServiceInterface as CustomerInterface;
 use App\Service\MarketPlace\Store\Message\Interface\MessageServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
-use Symfony\Component\Mercure\HubInterface;
-use Symfony\Component\Mercure\Update;
-use Symfony\Component\Messenger\Exception\ExceptionInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -62,15 +57,12 @@ class CabinetController extends AbstractController
     /**
      * @param Request $request
      * @param MessageServiceInterface $processor
-     * @param MessageBusInterface $bus
      * @return Response
-     * @throws ExceptionInterface
      */
     #[Route('/messages/{id}', name: 'app_cabinet_messages', defaults: ['id' => null], methods: ['GET', 'POST'])]
     public function messages(
         Request                 $request,
         MessageServiceInterface $processor,
-        HubInterface     $hub,
     ): Response
     {
         $id = $request->get('id');
@@ -80,25 +72,14 @@ class CabinetController extends AbstractController
         if ($request->isMethod('POST')) {
             $payload = $request->getPayload()->all();
             $processor->process($payload, null, null, false);
-            $data = $processor->answer($this->getUser(), true);
+            $answer = $processor->answer($this->getUser(), true);
 
-            $update = new Update(
-                '/hub/' . $data['recipient_id'],
-                json_encode(['update' => [
-                    'createdAt' => $data['createdAt']->format('F j, H:i'),
-                    'sender' => $data['from'],
-                    'count' => $data['count'],
-                    'message' => $data['message'],
-                ]]),
-            );
-
-            $hub->publish($update);
-            unset($data['recipient']);
+            unset($answer['recipient']);
 
             return $this->json([
                 'template' => $this->renderView('market_place/cabinet/message/answers.html.twig', [
                     'animated' => true,
-                    'row' => $data,
+                    'row' => $answer,
                 ])
             ], Response::HTTP_CREATED);
         }
@@ -106,7 +87,7 @@ class CabinetController extends AbstractController
         if ($id) {
             $message = $repository->findOneBy(['customer' => $customer, 'id' => $id]);
 
-            if(!$message) {
+            if (!$message) {
                 throw $this->createNotFoundException();
             }
 

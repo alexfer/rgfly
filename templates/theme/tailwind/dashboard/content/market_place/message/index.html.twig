@@ -19,7 +19,7 @@
             </thead>
             <tbody>
             {% for message in messages %}
-                <tr class="{{ message.read ? 'bg-green-200': 'bg-white' }} border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <tr class="{{ message.read ? 'bg-green-100': 'bg-white' }} border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <th scope="row"
                         class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap max-w-xs xs:max-w-xl md:max-w-sm lg:max-w-xs truncate dark:text-white">
                         {% if message.product is not null %}

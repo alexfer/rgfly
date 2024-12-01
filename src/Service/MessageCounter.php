@@ -26,12 +26,8 @@ final readonly class MessageCounter
     public function dashboard(int $id): int
     {
         $user = $this->manager->getRepository(User::class)->find($id);
-        $stores = $user->getStores();
-        $messages = [];
-        foreach ($stores as $store) {
-            $messages[$store->getId()] = $store->getMessages();
-        }
-        return count($messages);
+        $stores = $user->getStores()->toArray();
+        return $this->manager->getRepository(StoreMessage::class)->countMessages($stores);
     }
 
     /**

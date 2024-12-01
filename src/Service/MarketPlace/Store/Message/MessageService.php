@@ -97,32 +97,18 @@ class MessageService implements MessageServiceInterface
             'id' => $message->getId(),
         ]);
 
-        $data = [
-            'id' => $message->getId(),
-            'message' => $message->getMessage(),
-            'createdAt' => $message->getCreatedAt(),
-            'identity' => $message->getIdentity(),
-            'count' => $message->getStoreMessages()->count(),
-            'from' => sprintf("%s %s", $customer->getFirstName(), $customer->getLastName()),
-            'recipient_id' => $message->getStore()->getOwner()->getId(),
-            'recipient' => $message->getStore()->getOwner()->getEmail(),
-            'priority' => $message->getPriority(),
-            'url' => $url,
-        ];
-
         $update = new Update(
-            '/hub/' . $data['recipient_id'],
+            '/hub/' . $message->getStore()->getOwner()->getId(),
             json_encode(['update' => [
-                'createdAt' => $data['createdAt']->format('F j, H:i'),
-                'sender' => $data['from'],
-                'count' => $data['count'],
-                'message' => $data['message'],
+                'createdAt' => $message->getCreatedAt()->format('F j, H:i'),
+                'sender' => sprintf("%s %s", $customer->getFirstName(), $customer->getLastName()),
+                'count' => $message->getStoreMessages()->count(),
+                'message' => $message->getCreatedAt()->format('F j, H:i'),
+                'url' => $url,
             ]]),
         );
 
         $this->hub->publish($update);
-
-        //$this->bus->dispatch(new MessageNotification($notify));
 
         return new JsonResponse([
             'success' => true,
@@ -289,7 +275,7 @@ class MessageService implements MessageServiceInterface
             ]);
         }
 
-        return [
+        $data = [
             'id' => $answer->getId(),
             'store' => $answer->getStore()->getId(),
             'message' => $answer->getMessage(),
@@ -298,7 +284,7 @@ class MessageService implements MessageServiceInterface
             'identity' => $answer->getIdentity(),
             'from' => $recipientName,
             'count' => $customer ?
-                $this->em->getRepository(StoreMessage::class)->countMessages($previous->getOwner()) :
+                $this->em->getRepository(StoreMessage::class)->countMessages($previous->getOwner()->getStores()->toArray()) :
                 $this->em->getRepository(StoreCustomer::class)->countMessages($message->getCustomer()->getMember()),
             'recipient_id' => $customer ? $previous->getOwner()->getId() : $message->getCustomer()->getMember()->getId(),
             'recipient' => $customer ? $previous->getOwner()->getEmail() : $previous->getCustomer()->getEmail(),
@@ -307,5 +293,19 @@ class MessageService implements MessageServiceInterface
             'owner' => $answer->getOwner(),
             'url' => $url,
         ];
+
+        $update = new Update(
+            '/hub/' . $data['recipient_id'],
+            json_encode(['update' => [
+                'createdAt' => $data['createdAt']->format('F j, H:i'),
+                'sender' => $data['from'],
+                'count' => $data['count'],
+                'message' => $data['message'],
+                'url' => $url,
+            ]]),
+        );
+
+        $this->hub->publish($update);
+        return $data;
     }
 }
