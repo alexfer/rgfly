@@ -12,6 +12,7 @@ BEGIN
                                    phone,
                                    country,
                                    email,
+                                   social_id,
                                    created_at)
     VALUES (user_id,
             values ->> 'first_name',
@@ -19,6 +20,7 @@ BEGIN
             values ->> 'phone',
             values ->> 'country',
             values ->> 'email',
+            values ->> 'social_id',
             CURRENT_TIMESTAMP)
     RETURNING id INTO last_inserted_id;
 
