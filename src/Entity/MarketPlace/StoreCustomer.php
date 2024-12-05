@@ -12,6 +12,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StoreCustomerRepository::class)]
+#[ORM\Index(name: 'social_id_idx', columns: ['social_id'])]
 class StoreCustomer
 {
     #[ORM\Id]
@@ -63,6 +64,9 @@ class StoreCustomer
      */
     #[ORM\OneToMany(targetEntity: StoreMessage::class, mappedBy: 'customer')]
     private Collection $storeMessages;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $social_id = null;
 
     public function __construct()
     {
@@ -410,6 +414,18 @@ class StoreCustomer
                 $storeMessage->setCustomer(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSocialId(): ?string
+    {
+        return $this->social_id;
+    }
+
+    public function setSocialId(?string $social_id): static
+    {
+        $this->social_id = $social_id;
 
         return $this;
     }

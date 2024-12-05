@@ -1,15 +1,3 @@
-create function notify_messenger_messages() returns trigger
-    language plpgsql
-as
-$$
-            BEGIN
-                PERFORM pg_notify('messenger_messages', NEW.queue_name::text);
-                RETURN NEW;
-            END;
-        $$;
-
-alter function notify_messenger_messages() owner to rgfly;
-
 create function get_coupons(store_id integer, type character varying DEFAULT NULL::character varying, start integer DEFAULT 0, row_count integer DEFAULT 10) returns json
     language plpgsql
 as
@@ -128,6 +116,7 @@ BEGIN
                                    phone,
                                    country,
                                    email,
+                                   social_id,
                                    created_at)
     VALUES (user_id,
             values ->> 'first_name',
@@ -135,6 +124,7 @@ BEGIN
             values ->> 'phone',
             values ->> 'country',
             values ->> 'email',
+            values ->> 'social_id',
             CURRENT_TIMESTAMP)
     RETURNING id INTO last_inserted_id;
 
@@ -269,7 +259,7 @@ $$;
 
 alter function get_product(varchar) owner to rgfly;
 
-create function get_random_store(owner_id integer, start integer, row_count integer) returns jsonb
+create function get_random_store() returns jsonb
     language plpgsql
 as
 $$
@@ -370,7 +360,7 @@ BEGIN
 END;
 $$;
 
-alter function get_random_store(integer, integer, integer) owner to rgfly;
+alter function get_random_store() owner to rgfly;
 
 create function create_address(customer_id integer, "values" json) returns integer
     language plpgsql
@@ -406,7 +396,7 @@ BEGIN
 END;
 $$;
 
-alter function create_address(integer, json, smallint) owner to rgfly;
+alter function create_address(integer, json) owner to rgfly;
 
 create function get_random_products(row_count integer DEFAULT 18) returns json
     language plpgsql
@@ -463,7 +453,7 @@ RETURN json_build_object(
        );
 END;$$;
 
-alter function get_random_products(integer, integer, integer, text) owner to rgfly;
+alter function get_random_products(integer) owner to rgfly;
 
 create function backdrop_store_extra(store_id integer) returns json
     language plpgsql
@@ -506,7 +496,45 @@ BEGIN
 END;
 $$;
 
-alter function backdrop_store_extra(integer, integer, varchar) owner to rgfly;
+alter function backdrop_store_extra(integer) owner to rgfly;
+
+create function backdrop_owner_stores(owner_id integer, start integer DEFAULT 0, row_count integer DEFAULT 10) returns json
+    language plpgsql
+as
+$$
+DECLARE
+    results JSON;
+BEGIN
+    WITH stores AS (SELECT DISTINCT jsonb_build_object(
+                                            'id', s.id,
+                                            'name', s.name,
+                                            'products', (SELECT COUNT(p.id)
+                                                         FROM store_product p
+                                                         WHERE p.store_id = s.id
+                                                         LIMIT 1),
+                                            'owner', (SELECT u.email
+                                                      FROM "user" u
+                                                      WHERE u.id = s.owner_id
+                                                      LIMIT 1),
+                                            'created', s.created_at,
+                                            'deleted', s.deleted_at,
+                                            'locked', s.locked_to
+                                    ) AS store
+                    FROM store s
+                    WHERE s.owner_id = backdrop_owner_stores.owner_id
+                    OFFSET start LIMIT row_count)
+    SELECT json_agg(store ORDER BY store ->> 'id' DESC)
+    INTO results
+    FROM stores;
+
+    RETURN json_build_object(
+            'result', results,
+            'rows', (SELECT COUNT(*) FROM store s WHERE s.owner_id = backdrop_owner_stores.owner_id)
+           );
+END;
+$$;
+
+alter function backdrop_owner_stores(integer, integer, integer) owner to rgfly;
 
 create function get_active_coupon(store_id integer, type text, event smallint DEFAULT 1) returns json
     language plpgsql
@@ -521,11 +549,11 @@ BEGIN
             'price', sc.price,
             'available', sc.available,
             'name', sc.name,
-            'code', (SELECT c.code
-                     FROM store_coupon_code c
-                              LEFT JOIN store_coupon_usage cu
-                                   ON cu.coupon_code_id != c.id
-                     WHERE c.coupon_id = sc.id
+            'code', (SELECT scc.code
+                     FROM store_coupon_code scc
+                     WHERE scc.coupon_id = sc.id
+                       AND scc.id NOT IN (SELECT DISTINCT coupon_code_id
+                                          FROM store_coupon_usage)
                      ORDER BY RANDOM()
                      LIMIT 1),
             'promotion', sc.promotion_text,
@@ -666,6 +694,11 @@ BEGIN
                            'status', o.status,
                            'total', o.total,
                            'tax', o.tax,
+                           'qty',
+                           (SELECT SUM(sop.quantity)
+                            FROM store_orders_product sop
+                            WHERE sop.orders_id = o.id
+                            LIMIT 1),
                            'products', (SELECT json_agg(json_build_object(
                            'id', sop.id,
                            'size', sop.size::json -> 'size',
@@ -728,7 +761,7 @@ BEGIN
 END;
 $$;
 
-alter function get_order_summary(varchar, integer, varchar, integer) owner to rgfly;
+alter function get_order_summary(varchar, integer, varchar) owner to rgfly;
 
 create function store_search(query text) returns json
     language plpgsql
@@ -748,7 +781,7 @@ RETURN json_build_object(
        );
 END;$$;
 
-alter function store_search(text, integer) owner to rgfly;
+alter function store_search(text) owner to rgfly;
 
 create function get_customer_messages(customer_id integer, "offset" integer DEFAULT 0, "limit" integer DEFAULT 25) returns json
     language plpgsql
@@ -806,7 +839,7 @@ BEGIN
 END;
 $$;
 
-alter function get_customer_messages(integer, integer, integer, integer) owner to rgfly;
+alter function get_customer_messages(integer, integer, integer) owner to rgfly;
 
 create function get_customer_orders(customer_id integer, start integer DEFAULT 0, row_count integer DEFAULT 25) returns json
     language plpgsql
@@ -1155,7 +1188,7 @@ BEGIN
 END;
 $$;
 
-alter function create_user_details(integer, json, integer, text) owner to rgfly;
+alter function create_user_details(integer, json) owner to rgfly;
 
 create function backdrop_stores(owner_id integer) returns json
     language plpgsql
@@ -1260,7 +1293,7 @@ BEGIN
 END;
 $$;
 
-alter function get_products(integer, integer, integer, integer) owner to rgfly;
+alter function get_products(integer, integer) owner to rgfly;
 
 create function search_products(term text, category text DEFAULT NULL::text, start integer DEFAULT 0, row_count integer DEFAULT 25) returns json
     language plpgsql
@@ -1488,43 +1521,5 @@ END;
 $$;
 
 alter function get_messages(integer, text, integer, integer) owner to rgfly;
-
-create function backdrop_owner_stores(owner_id integer, start integer DEFAULT 0, row_count integer DEFAULT 10) returns json
-    language plpgsql
-as
-$$
-DECLARE
-    results JSON;
-BEGIN
-    WITH stores AS (SELECT DISTINCT jsonb_build_object(
-                                            'id', s.id,
-                                            'name', s.name,
-                                            'products', (SELECT COUNT(p.id)
-                                                         FROM store_product p
-                                                         WHERE p.store_id = s.id
-                                                         LIMIT 1),
-                                            'owner', (SELECT u.email
-                                                      FROM "user" u
-                                                      WHERE u.id = s.owner_id
-                                                      LIMIT 1),
-                                            'created', s.created_at,
-                                            'deleted', s.deleted_at,
-                                            'locked', s.locked_to
-                                    ) AS store
-                    FROM store s
-                    WHERE s.owner_id = backdrop_owner_stores.owner_id
-                    OFFSET start LIMIT row_count)
-    SELECT json_agg(store ORDER BY store ->> 'id' DESC)
-    INTO results
-    FROM stores;
-
-    RETURN json_build_object(
-            'result', results,
-            'rows', (SELECT COUNT(*) FROM store s WHERE s.owner_id = backdrop_owner_stores.owner_id)
-           );
-END;
-$$;
-
-alter function backdrop_owner_stores(integer, integer, integer) owner to rgfly;
 
 

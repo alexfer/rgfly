@@ -32,6 +32,8 @@
         "doctrine/orm": "^3.2.1",
         "elasticsearch/elasticsearch": "^8.14",
         "knplabs/knp-paginator-bundle": "^v6.4.0",
+        "knpuniversity/oauth2-client-bundle": "^2.18",
+        "league/oauth2-google": "^4.0",
         "liip/imagine-bundle": "^2.13.1",
         "phpdocumentor/reflection-docblock": "^5.4",
         "phpoffice/phpspreadsheet": "^2.2",
