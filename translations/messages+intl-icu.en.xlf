@@ -765,23 +765,23 @@
             </trans-unit>
             <trans-unit id="label.form.repeat_password">
                 <source>label.form.repeat_password</source>
-                <target>Repeat Password</target>
+                <target>Repeat password</target>
             </trans-unit>
             <trans-unit id="label.form.store_name">
                 <source>label.form.store_name</source>
-                <target>Store Name</target>
+                <target>Store name</target>
             </trans-unit>
             <trans-unit id="label.form.store_address">
                 <source>label.form.store_address</source>
-                <target>Store Address</target>
+                <target>Store address</target>
             </trans-unit>
             <trans-unit id="label.form.store_phone">
                 <source>label.form.store_phone</source>
-                <target>Store Phone number</target>
+                <target>Store phone number</target>
             </trans-unit>
             <trans-unit id="label.form.store_email">
                 <source>label.form.store_email</source>
-                <target>Store Email address</target>
+                <target>Store email address</target>
             </trans-unit>
             <trans-unit id="label.form.store_currency">
                 <source>label.form.store_currency</source>
@@ -2206,13 +2206,17 @@
                 <source>store.about</source>
                 <target>About</target>
             </trans-unit>
-            <trans-unit id="customer.temporary.passwod">
-                <source>customer.temporary.passwod</source>
+            <trans-unit id="customer.temporary.password">
+                <source>customer.temporary.password</source>
                 <target>Your temporary password to log in. You may change that in your cabinet</target>
             </trans-unit>
             <trans-unit id="customer.cabinet">
                 <source>customer.cabinet</source>
                 <target>Your cabinet</target>
+            </trans-unit>
+            <trans-unit id="customer.password">
+                <source>customer.password</source>
+                <target>Change password</target>
             </trans-unit>
             <trans-unit id="customer.header">
                 <source>customer.header</source>
@@ -2237,6 +2241,10 @@
             <trans-unit id="customer.cabinet.personal_information">
                 <source>customer.cabinet.personal_information</source>
                 <target>Personal information</target>
+            </trans-unit>
+            <trans-unit id="customer.cabinet.password">
+                <source>customer.cabinet.password</source>
+                <target>Password</target>
             </trans-unit>
             <trans-unit id="customer.cabinet.address">
                 <source>customer.cabinet.address</source>
