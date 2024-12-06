@@ -138,6 +138,10 @@
                 <source>form.password.invalid_message</source>
                 <target>The password fields must match.</target>
             </trans-unit>
+            <trans-unit id="form.password.invalid">
+                <source>form.password.invalid</source>
+                <target>The password is not valid</target>
+            </trans-unit>
             <trans-unit id="form.password.min">
                 <source>form.password.min</source>
                 <target>The password is too short. It should have {{ limit }} characters or more.</target>

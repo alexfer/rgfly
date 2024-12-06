@@ -6,10 +6,12 @@ use App\Controller\Trait\ControllerTrait;
 use App\Entity\MarketPlace\{StoreCustomer, StoreCustomerOrders, StoreMessage, StoreOrders, StoreWishlist};
 use App\Entity\User;
 use App\Form\Type\MarketPlace\{AddressType, CustomerProfileType};
+use App\Form\Type\User\ChangePasswordFormType;
 use App\Service\MarketPlace\Store\Customer\Interface\CustomerServiceInterface as CustomerInterface;
 use App\Service\MarketPlace\Store\Message\Interface\MessageServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -128,7 +130,41 @@ class CabinetController extends AbstractController
 
     /**
      * @param Request $request
+     * @param UserPasswordHasherInterface $passwordHasher
      * @param TranslatorInterface $translator
+     * @return Response
+     */
+    #[Route('/secure', name: 'app_cabinet_secure', methods: ['GET', 'POST'])]
+    public function secure(
+        Request                     $request,
+        UserPasswordHasherInterface $passwordHasher,
+        TranslatorInterface         $translator,
+    ): Response
+    {
+        $customer = $this->customer();
+        $form = $this->createForm(ChangePasswordFormType::class, $customer->getMember());
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $encodedPassword = $passwordHasher->hashPassword($customer->getMember(), $form->get('plainPassword')->getData());
+            $customer->getMember()->setPassword($encodedPassword);
+            $this->em->flush();
+            $this->addFlash('success', json_encode(['message' => $translator->trans('user.password.changed')]));
+            return $this->redirectToRoute('app_cabinet_secure');
+        }
+
+
+        return $this->render('market_place/cabinet/secure.html.twig', [
+            'customer' => $customer,
+            'form' => $form,
+            'errors' => $form->getErrors(true),
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @param CustomerInterface $processor
      * @return Response
      */
     #[Route('/personal-information', name: 'app_cabinet_personal_information', methods: ['GET', 'POST'])]
