@@ -101,7 +101,10 @@ class StoreMessageRepository extends ServiceEntityRepository
             ->select('COUNT(m.id)')
             ->leftJoin(Store::class, 's', Join::WITH, 's.id = m.store')
             ->where('m.store IN (:ids)')
+            ->andWhere('m.read = :read')
+            ->andWhere('m.parent IS NULL')
             ->setParameter('ids', array_map(fn(Store $s) => $s->getId(), $stores))
+            ->setParameter('read', false)
             ->getQuery()
             ->getSingleScalarResult();
     }

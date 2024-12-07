@@ -28,9 +28,9 @@ class CheckoutService implements CheckoutServiceInterface
     protected ?StoreOrders $order;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private string $sessionId;
+    private ?string $sessionId = null;
 
     /**
      * @param EntityManagerInterface $em
@@ -100,7 +100,7 @@ class CheckoutService implements CheckoutServiceInterface
         foreach ($this->getProducts() as $product) {
             $item = $this->em->getRepository(StoreProduct::class)->find($product->getProduct());
             $item->setQuantity($item->getQuantity() - $product->getQuantity())
-                ->setUpdatedAt(new \DateTimeImmutable());
+                ->setUpdatedAt(new \DateTime());
             $this->em->persist($item);
         }
     }
@@ -145,12 +145,14 @@ class CheckoutService implements CheckoutServiceInterface
 
         $orderCustomer = $this->em->getRepository(StoreCustomerOrders::class)->findOneBy(['orders' => $this->order]);
         $orderCustomer->setCustomer($customer);
-        $this->em->persist($order);
+        $this->em->persist($orderCustomer);
 
         $this->em->flush();
 
         $cookies = $this->requestStack->getCurrentRequest()->cookies;
-        $this->frontSession->delete($cookies->get(FrontSessionHandler::NAME));
+        if($cookies->has(FrontSessionHandler::NAME)) {
+            $this->frontSession->delete($cookies->get(FrontSessionHandler::NAME));
+        }
     }
 
     /**

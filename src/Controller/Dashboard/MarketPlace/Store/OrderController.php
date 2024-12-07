@@ -10,29 +10,27 @@ use App\Service\MarketPlace\StoreTrait;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\{Request, Response};
+use Symfony\Component\HttpFoundation\{RedirectResponse, Request, Response};
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route('/dashboard/market-place/order')]
 class OrderController extends AbstractController
 {
     use StoreTrait;
 
+
     /**
-     * @param UserInterface $user
-     * @param EntityManagerInterface $manager
+     * @param EntityManagerInterface $em
      * @return Response
      * @throws Exception
      */
     #[Route('', name: 'app_dashboard_market_place_order_stores')]
     public function index(
-        UserInterface          $user,
-        EntityManagerInterface $manager,
+        EntityManagerInterface $em,
     ): Response
     {
-        $stores = $manager->getRepository(Store::class)->stores($user);
+        $stores = $em->getRepository(Store::class)->stores($this->getUser());
 
         return $this->render('dashboard/content/market_place/order/stores.html.twig', [
             'stores' => $stores['result'],
@@ -41,7 +39,6 @@ class OrderController extends AbstractController
 
     /**
      * @param Request $request
-     * @param UserInterface $user
      * @param EntityManagerInterface $em
      * @param StoreInterface $serveStore
      * @return Response
@@ -49,12 +46,11 @@ class OrderController extends AbstractController
     #[Route('/{store}', name: 'app_dashboard_market_place_order_store_current')]
     public function current(
         Request                $request,
-        UserInterface          $user,
         EntityManagerInterface $em,
         StoreInterface         $serveStore,
     ): Response
     {
-        $store = $this->store($serveStore, $user);
+        $store = $this->store($serveStore, $this->getUser());
 
         $currency = Currency::currency($store->getCurrency());
         $orders = $em->getRepository(StoreOrders::class)->findBy(['store' => $store], ['id' => 'desc']);
@@ -75,7 +71,6 @@ class OrderController extends AbstractController
     /**
      * @param Request $request
      * @param EntityManagerInterface $em
-     * @param UserInterface $user
      * @param StoreInterface $serveStore
      * @return Response
      */
@@ -83,11 +78,10 @@ class OrderController extends AbstractController
     public function details(
         Request                $request,
         EntityManagerInterface $em,
-        UserInterface          $user,
         StoreInterface         $serveStore,
     ): Response
     {
-        $store = $this->store($serveStore, $user);
+        $store = $this->store($serveStore, $this->getUser());
         $currency = Currency::currency($store->getCurrency());
 
         $order = $em->getRepository(StoreOrders::class)->findOneBy(['store' => $store, 'number' => $request->get('number')]);
@@ -117,6 +111,28 @@ class OrderController extends AbstractController
             'country' => Countries::getNames(\Locale::getDefault()),
             'order' => $order,
             'itemSubtotal' => array_sum($itemSubtotal),
+        ]);
+    }
+
+    #[Route('/{store}/{order}/{status}', name: 'app_dashboard_market_place_order_change_status')]
+    public function changeStatus(
+        Request                $request,
+        EntityManagerInterface $em,
+        StoreInterface         $serveStore,
+    ): RedirectResponse
+    {
+        $store = $this->store($serveStore, $this->getUser());
+        $order = $em->getRepository(StoreOrders::class)->findOneBy(['store' => $store, 'id' => $request->get('order')]);
+        $status = $request->get('status');
+
+        if(EnumStoreOrderStatus::tryFrom($status) != null) {
+            $order->setStatus(EnumStoreOrderStatus::from($status))->setCompletedAt(new \DateTime());
+            $order->getStoreInvoice()->setPayedAt(new \DateTime());
+            $em->persist($order);
+            $em->flush();
+        }
+        return $this->redirectToRoute('app_dashboard_market_place_order_store_current', [
+            'store' => $store->getId(),
         ]);
     }
 }

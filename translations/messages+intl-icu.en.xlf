@@ -1961,6 +1961,14 @@
                 <source>order.action.cancel</source>
                 <target>Cancel order</target>
             </trans-unit>
+            <trans-unit id="order.action.pending">
+                <source>order.action.pending</source>
+                <target>Pending approval</target>
+            </trans-unit>
+            <trans-unit id="order.action.complete">
+                <source>order.action.complete</source>
+                <target>Complete order</target>
+            </trans-unit>
             <trans-unit id="form.action.delete">
                 <source>form.action.delete</source>
                 <target>Delete</target>
