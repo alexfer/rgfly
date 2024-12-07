@@ -86,12 +86,6 @@ class OrderController extends AbstractController
 
         $order = $em->getRepository(StoreOrders::class)->findOneBy(['store' => $store, 'number' => $request->get('number')]);
 
-        if ($order->getStatus()->value != EnumStoreOrderStatus::Confirmed->value) {
-            return $this->redirectToRoute('app_dashboard_market_place_order_store_current', [
-                'store' => $store->getId(),
-            ]);
-        }
-
         $itemSubtotal = [];
 
         foreach ($order->getStoreOrdersProducts() as $item) {
@@ -114,6 +108,12 @@ class OrderController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param StoreInterface $serveStore
+     * @return RedirectResponse
+     */
     #[Route('/{store}/{order}/{status}', name: 'app_dashboard_market_place_order_change_status')]
     public function changeStatus(
         Request                $request,
@@ -125,7 +125,7 @@ class OrderController extends AbstractController
         $order = $em->getRepository(StoreOrders::class)->findOneBy(['store' => $store, 'id' => $request->get('order')]);
         $status = $request->get('status');
 
-        if(EnumStoreOrderStatus::tryFrom($status) != null) {
+        if (EnumStoreOrderStatus::tryFrom($status) != null) {
             $order->setStatus(EnumStoreOrderStatus::from($status))->setCompletedAt(new \DateTime());
             $order->getStoreInvoice()->setPayedAt(new \DateTime());
             $em->persist($order);
