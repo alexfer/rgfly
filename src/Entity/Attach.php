@@ -54,6 +54,11 @@ class Attach
         $this->storeProductAttaches = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->name;
+    }
+
     /**
      * @return int|null
      */

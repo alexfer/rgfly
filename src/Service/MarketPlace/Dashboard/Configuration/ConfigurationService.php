@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Service\MarketPlace\Dashboard\Configuration;
 
@@ -16,21 +16,12 @@ class ConfigurationService extends HandleService implements ConfigurationService
     private string $target;
 
     /**
-     * @var int
-     */
-    private mixed $id;
-
-
-    /**
      * @param string|null $target
-     * @param mixed|null $id
      * @return $this
      */
-    public function take(?string $target = null, mixed $id = null): self
+    public function take(string $target = null): self
     {
-        $this->request = $this->requestStack->getCurrentRequest();
         $this->target = $target;
-        $this->id = $id;
         return $this;
     }
 
@@ -47,18 +38,20 @@ class ConfigurationService extends HandleService implements ConfigurationService
         ];
     }
 
+
     /**
+     * @param int $id
      * @return bool
      */
-    public function remove(): bool
+    public function remove(int $id): bool
     {
         if ($this->target == 'carrier') {
-            $target = $this->manager->getRepository(StoreCarrier::class)->find((int)$this->id);
+            $target = $this->get($id, StoreCarrier::class);
             $this->manager->remove($target);
         }
 
         if ($this->target == 'payment_gateway') {
-            $target = $this->manager->getRepository(StorePaymentGateway::class)->find($this->id);
+            $target = $this->get($id, StorePaymentGateway::class);
 
             if ($this->manager->getRepository(StorePaymentGatewayStore::class)->findOneBy(['gateway' => $target])) {
                 return false;
@@ -67,18 +60,47 @@ class ConfigurationService extends HandleService implements ConfigurationService
         }
 
         $this->manager->flush();
-
         return true;
     }
 
-    public function createTarget()
+    /**
+     * @param array $data
+     * @param array|null $media
+     * @return StoreCarrier|StorePaymentGateway|null
+     */
+    public function create(array $data, array $media = null): null|StoreCarrier|StorePaymentGateway
     {
         if ($this->target == 'carrier') {
-            $this->createCarrier();
+            return $this->createCarrier($data, $media);
         }
 
         if ($this->target == 'payment_gateway') {
-            $this->createPaymentGateway($this->target);
+            return $this->createPaymentGateway($data, $media);
         }
+        return null;
+    }
+
+    public function update(int $id, array $data, array $media = null): null|StoreCarrier|StorePaymentGateway
+    {
+        if ($this->target == 'carrier') {
+            $carrier = $this->get($id, StoreCarrier::class);
+            return $this->updateCarrier($data, $carrier, $media);
+        }
+
+        if ($this->target == 'payment_gateway') {
+            $paymentGateway = $this->get($id, StorePaymentGateway::class);
+            return $this->updatePaymentGateway($data, $paymentGateway, $media);
+        }
+        return null;
+    }
+
+    /**
+     * @param int $id
+     * @param string $class
+     * @return array|null
+     */
+    public function find(int $id, string $class = StoreCarrier::class | StorePaymentGateway::class): ?array
+    {
+        return $this->manager->getRepository($class)->fetch($id);
     }
 }

@@ -53,6 +53,10 @@ module.exports = {
     plugins: [
         require("tw-elements/plugin.cjs"),
         require('flowbite/plugin'),
+        require('@tailwindcss/typography'),
+        require('@tailwindcss/forms'),
+        require('@tailwindcss/aspect-ratio'),
+        require('@tailwindcss/container-queries'),
     ],
     darkMode: "class"
 }

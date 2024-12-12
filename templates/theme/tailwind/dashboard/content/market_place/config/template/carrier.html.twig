@@ -3,7 +3,11 @@
     <td class="px-6 py-4">
         {% if carrier.attach is not null %}
             {% set icon = 'storage/carrier/' ~ carrier.attach.name %}
-            <img alt="{{ carrier.slug }}" src="{{ asset(icon)|imagine_filter('carrier_icon') }}">
+            {% if carrier.attach.mime != 'image/svg+xml' %}
+                <img alt="{{ carrier.slug }}" src="{{ asset(icon)|imagine_filter('carrier_icon') }}">
+            {% else %}
+                <img alt="{{ carrier.slug }}" src="{{ asset(icon) }}">
+            {% endif %}
         {% endif %}
     </td>
     <td class="px-6 py-4">{{ carrier.description }}</td>

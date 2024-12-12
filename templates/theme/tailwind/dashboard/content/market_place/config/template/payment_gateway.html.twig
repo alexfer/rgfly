@@ -1,6 +1,15 @@
 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700" id="row-{{ pg.id }}">
     <td class="px-6 py-4">
-        <i class="{{ pg.icon }} text-lg text-gray-800 dark:text-white"></i>
+        {% if pg.attach is not null %}
+            {% set icon = 'storage/payment_gateway/' ~ pg.attach.name %}
+            {% if pg.attach.mime != 'image/svg+xml' %}
+                <img class="h-10" alt="{{ pg.slug }}" src="{{ asset(icon)|imagine_filter('carrier_icon') }}">
+            {% else %}
+                <img class="flex h-3" alt="{{ pg.slug }}" src="{{ asset(icon) }}">
+            {% endif %}
+        {% else %}
+            <img class="h-10" src="{{ asset('img/payment_gateway/' ~ pg.slug ~ '.svg') }}" alt="{{ pg.slug }}">
+        {% endif %}
     </td>
     <td class="px-6 py-4 font-medium">{{ pg.name }}</td>
     <td class="px-6 py-4">{{ pg.summary }}</td>

@@ -72,6 +72,7 @@ class CheckoutController extends AbstractController
                 $this->addFlash('danger', $translator->trans('email.unique', [], 'validators'));
                 $error = true;
             }
+
             if (!$error) {
                 if (!$customer->getId()) {
 
@@ -84,7 +85,6 @@ class CheckoutController extends AbstractController
                 } else {
                     $customerManager->bind($form)->updateCustomer($customer, $form->getData());
                 }
-
 
                 $checkout->addInvoice(new StoreInvoice(), floatval($tax));
                 $checkout->updateOrder(EnumStoreOrderStatus::Confirmed->value, $customer);

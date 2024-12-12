@@ -2,8 +2,10 @@
 
 namespace App\Repository\MarketPlace;
 
+use App\Entity\Attach;
 use App\Entity\MarketPlace\StorePaymentGateway;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -36,10 +38,11 @@ class StorePaymentGatewayRepository extends ServiceEntityRepository
                 'spg.name',
                 'spg.summary',
                 'spg.active',
-                'spg.icon',
                 'spg.slug',
                 'spg.handler_text as handlerText',
+                'a.name as image',
             ])
+            ->leftJoin(Attach::class, 'a', Join::WITH, 'a.id = spg.attach')
             ->where("spg.id = :id")
             ->setParameter('id', $id);
 

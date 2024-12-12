@@ -2,110 +2,270 @@
 
 namespace App\Service\MarketPlace\Dashboard\Configuration;
 
+use App\Entity\Attach;
+use App\Entity\MarketPlace\StoreCarrier;
 use App\Entity\MarketPlace\StorePaymentGateway;
+use App\Service\FileUploader;
 use App\Service\Validator\Interface\CarrierValidatorInterface;
+use App\Service\Validator\Interface\ImageValidatorInterface;
 use App\Service\Validator\Interface\PaymentGatewayValidatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\ContainerInterface;
-use Psr\Container\NotFoundExceptionInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class HandleService
 {
     /**
-     * @var Request|null
+     * @var Filesystem
      */
-    protected ?Request $request;
+    protected Filesystem $filesystem;
 
     /**
      * @param EntityManagerInterface $manager
-     * @param RequestStack $requestStack
+     * @param TranslatorInterface $translator
+     * @param CarrierValidatorInterface $carrierValidator
+     * @param PaymentGatewayValidatorInterface $paymentGatewayValidator
+     * @param ValidatorInterface $validator
+     * @param SluggerInterface $slugger
+     * @param ParameterBagInterface $params
+     * @param ImageValidatorInterface $imageValidator
      */
     public function __construct(
         protected readonly EntityManagerInterface         $manager,
-        protected readonly RequestStack                   $requestStack,
-        private readonly ContainerInterface               $container,
+        private readonly TranslatorInterface              $translator,
         private readonly CarrierValidatorInterface        $carrierValidator,
         private readonly PaymentGatewayValidatorInterface $paymentGatewayValidator,
         private readonly ValidatorInterface               $validator,
         private readonly SluggerInterface                 $slugger,
+        protected readonly ParameterBagInterface          $params,
+        private readonly ImageValidatorInterface          $imageValidator,
     )
     {
-
-    }
-
-    protected function createCarrier()
-    {
-
+        $this->filesystem = new Filesystem();
     }
 
     /**
-     * @param string $target
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     * @throws \Exception
+     * @param int $id
+     * @param string $class
+     * @return StoreCarrier|StorePaymentGateway
      */
-    protected function createPaymentGateway(string $target)
+    protected function get(
+        int $id, string $class = StoreCarrier::class | StorePaymentGateway::class
+    ): StoreCarrier|StorePaymentGateway
     {
-        $payload = $this->request->getPayload()->all();
-        $inputs = $payload[$target];
+        return $this->manager->getRepository($class)->findOneBy(['id' => $id]);
+    }
 
-        try {
-            $this->isCsrfTokenValid($target, $inputs['_token']);
-        } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
+    /**
+     * @param array $data
+     * @param array|null $media
+     * @return StoreCarrier
+     */
+    protected function createCarrier(array $data, array $media = null): StoreCarrier
+    {
+        if ($media) {
+            try {
+                $attach = $this->setAttach($media['attach'], 'carrier_storage_dir', $media);
+            } catch (\Exception $e) {
+                throw new \InvalidArgumentException($e->getMessage(), 400);
+            }
         }
 
-        unset($inputs['save'], $inputs['_token']);
-
-        $errors = $this->paymentGatewayValidator->validate($inputs, $this->validator);
+        $errors = $this->carrierValidator->validate($data, $this->validator);
 
         if (count($errors) > 0) {
-            return $errors;
+            foreach ($errors as $error) {
+                throw new \InvalidArgumentException($error->getMessage(), 400);
+            }
         }
 
-        $target = new StorePaymentGateway();
+        $carrier = new StoreCarrier();
 
-        $target
-            ->setName($inputs['name'])
-            ->setSummary($inputs['summary'])
-            ->setSlug($this->slugger->slug($inputs['name'])->lower()->toString())
-            ->setHandlerText($inputs['handlerText'])
-            ->setIcon($inputs['icon'])
-            ->setActive($inputs['active']);
+        $carrier
+            ->setDescription($data['description'])
+            ->setAttach($attach ?? null)
+            ->setSlug($this->slugger->slug($data['name'])->lower()->toString())
+            ->setShippingAmount(0)
+            ->setLinkUrl($data['linkUrl'])
+            ->setEnabled($data['enabled']);
 
-        $this->manager->persist($target);
+        $this->manager->persist($carrier);
         $this->manager->flush();
-    }
-
-    protected function updateCarrier()
-    {
-
-    }
-
-    protected function updatePaymentGateway()
-    {
-
+        return $carrier;
     }
 
     /**
-     * @param string $id
-     * @param string|null $token
-     * @return bool
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @param array $data
+     * @param array|null $media
+     * @return StorePaymentGateway
      */
-    protected function isCsrfTokenValid(string $id, #[\SensitiveParameter] ?string $token): bool
+    protected function createPaymentGateway(array $data, array $media = null): StorePaymentGateway
     {
-        if (!$this->container->has('security.csrf.token_manager')) {
-            throw new \LogicException('CSRF protection is not enabled in your application. Enable it with the "csrf_protection" key in "config/packages/framework.yaml".');
+        if ($media) {
+            try {
+                $attach = $this->setAttach($media['attach'], 'payment_gateway_storage_dir', $media);
+            } catch (\Exception $e) {
+                throw new \InvalidArgumentException($e->getMessage(), 400);
+            }
         }
 
-        return $this->container->get('security.csrf.token_manager')->isTokenValid(new CsrfToken($id, $token));
+        $errors = $this->paymentGatewayValidator->validate($data, $this->validator);
+
+        if (count($errors) > 0) {
+            foreach ($errors as $error) {
+                throw new \InvalidArgumentException($error->getMessage(), 400);
+            }
+        }
+
+        $paymentGateway = new StorePaymentGateway();
+
+        $paymentGateway
+            ->setName($data['name'])
+            ->setSummary($data['summary'])
+            ->setSlug($this->slugger->slug($data['name'])->lower()->toString())
+            ->setHandlerText($data['handlerText'])
+            ->setAttach($attach ?? null)
+            ->setActive($data['active']);
+
+        $this->manager->persist($paymentGateway);
+        $this->manager->flush();
+
+        return $paymentGateway;
+    }
+
+    /**
+     * @param array $data
+     * @param StoreCarrier $storeCarrier
+     * @param array|null $media
+     * @return StoreCarrier
+     */
+    protected function updateCarrier(array $data, StoreCarrier $storeCarrier, array $media = null): StoreCarrier
+    {
+        if ($media) {
+            try {
+                $attach = $this->setAttach($media['attach'], 'carrier_storage_dir', $media);
+            } catch (\Exception $e) {
+                throw new \InvalidArgumentException($e->getMessage(), 400);
+            }
+
+            if ($storeCarrier->getAttach()) {
+                $file = $this->params->get('carrier_storage_dir') . '/' . $storeCarrier->getAttach()->getName();
+
+                if ($this->filesystem->exists($file)) {
+                    $this->filesystem->remove($file);
+                }
+            }
+
+        }
+
+        $errors = $this->carrierValidator->validate($data, $this->validator);
+
+        if (count($errors) > 0) {
+            foreach ($errors as $error) {
+                throw new \InvalidArgumentException($error->getMessage(), 400);
+            }
+        }
+
+        $storeCarrier->setDescription($data['description'])
+            ->setSlug($this->slugger->slug($data['name'])->lower()->toString())
+            ->setShippingAmount(0)
+            ->setLinkUrl($data['linkUrl']);
+        if ($media) {
+            $storeCarrier->setAttach($attach);
+        }
+        $storeCarrier->setEnabled($data['enabled']);
+
+        $this->manager->persist($storeCarrier);
+        $this->manager->flush();
+        return $storeCarrier;
+    }
+
+    /**
+     * @param array $data
+     * @param StorePaymentGateway $paymentGateway
+     * @param array|null $media
+     * @return StorePaymentGateway
+     */
+    protected function updatePaymentGateway(array $data, StorePaymentGateway $paymentGateway, array $media = null): StorePaymentGateway
+    {
+
+        if ($media) {
+            try {
+                $attach = $this->setAttach($media['attach'], 'payment_gateway_storage_dir', $media);
+            } catch (\Exception $e) {
+                throw new \InvalidArgumentException($e->getMessage(), 400);
+            }
+
+            if ($paymentGateway->getAttach()) {
+                $file = $this->params->get('payment_gateway_storage_dir') . '/' . $paymentGateway->getAttach()->getName();
+
+                if ($this->filesystem->exists($file)) {
+                    $this->filesystem->remove($file);
+                }
+            }
+        }
+
+        $errors = $this->paymentGatewayValidator->validate($data, $this->validator);
+
+        if (count($errors) > 0) {
+            foreach ($errors as $error) {
+                throw new \InvalidArgumentException($error->getMessage(), 400);
+            }
+        }
+
+        $paymentGateway
+            ->setName($data['name'])
+            ->setSummary($data['summary'])
+            ->setHandlerText($data['handlerText']);
+        if ($media) {
+            $paymentGateway->setAttach($attach);
+        }
+        $paymentGateway->setActive($data['active']);
+
+        $this->manager->persist($paymentGateway);
+        $this->manager->flush();
+
+        return $paymentGateway;
+    }
+
+    /**
+     * @param string|null $attach
+     * @param string $storage
+     * @param array|null $media
+     * @return Attach|null
+     */
+    protected function setAttach(?string $attach, string $storage, array $media = null): ?Attach
+    {
+        $filePath = null;
+
+        if ($attach) {
+            $file = explode(';base64,', $attach);
+            $filePath = tempnam(sys_get_temp_dir(), 'UploadedFile');
+            $tmpFile = base64_decode($file[1]);
+            file_put_contents($filePath, $tmpFile);
+        }
+
+        if ($filePath) {
+            $validate = $this->imageValidator->validate($filePath, $this->translator);
+
+            if ($validate->has(0)) {
+                throw new \InvalidArgumentException($validate->get(0)->getMessage(), 400);
+            }
+
+            $fileUploader = new FileUploader($this->params->get($storage), $this->slugger, $this->manager);
+
+            try {
+                $attach = $fileUploader->upload(new UploadedFile($filePath, $media['name'], $media['mime'], null, true))->handle();
+            } catch (\Exception $e) {
+                throw new \InvalidArgumentException($e->getMessage(), 400);
+            }
+
+            return $attach;
+        }
+        return null;
     }
 }

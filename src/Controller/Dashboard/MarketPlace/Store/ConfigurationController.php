@@ -6,20 +6,12 @@ use App\Entity\MarketPlace\StoreCarrier;
 use App\Entity\MarketPlace\StorePaymentGateway;
 use App\Form\Type\Dashboard\MarketPlace\CarrierType;
 use App\Form\Type\Dashboard\MarketPlace\PaymentGatewayType;
-use App\Service\FileUploader;
 use App\Service\MarketPlace\Dashboard\Configuration\Interface\ConfigurationServiceInterface;
-use App\Service\Validator\Interface\CarrierValidatorInterface;
-use App\Service\Validator\Interface\PaymentGatewayValidatorInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/dashboard/config/setup')]
@@ -27,16 +19,16 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class ConfigurationController extends AbstractController
 {
     /**
-     * @param ConfigurationServiceInterface $configuration
+     * @param ConfigurationServiceInterface $config
      * @return Response
      */
     #[Route('/{tab?}', name: 'app_dashboard_config', methods: ['GET'])]
-    public function index(ConfigurationServiceInterface $configuration): Response
+    public function index(ConfigurationServiceInterface $config): Response
     {
         $pgForm = $this->createForm(PaymentGatewayType::class, new StorePaymentGateway());
         $carrierForm = $this->createForm(CarrierType::class, new StoreCarrier());
 
-        $collection = $configuration->collection();
+        $collection = $config->collection();
 
         return $this->render('dashboard/content/market_place/config/index.html.twig', [
             'carriers' => $collection['carriers'],
@@ -60,11 +52,11 @@ class ConfigurationController extends AbstractController
     ): Response
     {
         $target = $request->get('target');
-        $id = $request->get('id');
+        $id = (int)$request->get('id');
 
-        $service = $configuration->take($target, $id);
+        $service = $configuration->take($target);
 
-        if (!$service->remove()) {
+        if (!$service->remove($id)) {
             return $this->json(['success' => false, 'error' => $translator->trans('user.entry.cant_delete')]);
         }
 
@@ -73,62 +65,49 @@ class ConfigurationController extends AbstractController
 
     #[Route('/{target}/{id}', name: 'app_dashboard_config_change', methods: ['GET', 'PUT'])]
     public function change(
-        Request                          $request,
-        EntityManagerInterface           $manager,
-        TranslatorInterface              $translator,
-        PaymentGatewayValidatorInterface $paymentGatewayValidator,
-        CarrierValidatorInterface        $carrierValidator,
-        ValidatorInterface               $validator,
+        Request                       $request,
+        TranslatorInterface           $translator,
+        ConfigurationServiceInterface $configuration,
     ): Response
     {
-        $carrier = $paymentGateway = null;
 
+        $id = (int)$request->get('id');
+        $inputs = $request->getPayload()->all();
         $target = $request->get('target');
-        $id = $request->get('id');
-        $payload = $request->getPayload()->all();
 
+        $media = null;
+
+        if (in_array($target, ['carrier', 'payment_gateway']) && $request->isMethod('PUT')) {
+            $inputs = $inputs[$target];
+            if ($inputs['media']) {
+                $media = json_decode($inputs['media'], true);
+                $media['attach'] = $inputs['attach'];
+            }
+        }
+
+        $service = $configuration->take($target);
 
         if ($target === 'carrier') {
-
-
             if ($request->isMethod('PUT')) {
-                $inputs = $payload[$target];
+                $data = [
+                    'name' => $inputs['name'],
+                    'description' => $inputs['description'],
+                    'linkUrl' => $inputs['linkUrl'],
+                    'enabled' => $inputs['enabled'],
+                ];
 
                 try {
-                    $this->isCsrfTokenValid($target, $inputs['_token']);
+                    $service->update($id, $data, $media);
                 } catch (\Exception $e) {
                     return $this->json(['success' => false, 'error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
                 }
 
-                unset($inputs['save'], $inputs['_token']);
-
-                $errors = $carrierValidator->validate([
-                    'linkUrl' => $inputs['linkUrl'],
-                    'description' => $inputs['description'],
-                ], $validator, true);
-
-                if (count($errors) > 0) {
-                    foreach ($errors as $error) {
-                        return $this->json(['success' => false, 'error' => $error->getMessage()], Response::HTTP_BAD_REQUEST);
-                    }
-                }
-
-                $carrier = $manager->getRepository(StoreCarrier::class)->find($id);
-
-                $carrier->setDescription($inputs['description'])
-                    ->setLinkUrl($inputs['linkUrl'])
-                    ->setEnabled($inputs['enabled']);
-
-                $manager->persist($carrier);
-                $manager->flush();
-
                 return $this->json([
                     'success' => true,
-                    'payload' => $payload,
                     'message' => $translator->trans('user.entry.updated')]);
             }
 
-            $carrier = $manager->getRepository(StoreCarrier::class)->fetch($id);
+            $carrier = $service->find($id, StoreCarrier::class);
 
             return $this->json([
                 $carrier,
@@ -140,44 +119,26 @@ class ConfigurationController extends AbstractController
         }
 
         if ($target === 'payment_gateway') {
-
             if ($request->isMethod('PUT')) {
-                $inputs = $payload[$target];
+                $data = [
+                    'name' => $inputs['name'],
+                    'summary' => $inputs['summary'],
+                    'handlerText' => $inputs['handlerText'],
+                    'active' => $inputs['active'],
+                ];
+
                 try {
-                    $this->isCsrfTokenValid($target, $inputs['_token']);
+                    $service->update($id, $data, $media);
                 } catch (\Exception $e) {
                     return $this->json(['success' => false, 'error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
                 }
 
-                unset($inputs['save'], $inputs['_token']);
-
-                $errors = $paymentGatewayValidator->validate($inputs, $validator);
-
-                if (count($errors) > 0) {
-                    foreach ($errors as $error) {
-                        return $this->json(['success' => false, 'error' => $error->getMessage()], Response::HTTP_BAD_REQUEST);
-                    }
-                }
-
-                $paymentGateway = $manager->getRepository(StorePaymentGateway::class)->find($id);
-
-                $paymentGateway
-                    ->setName($inputs['name'])
-                    ->setSummary($inputs['summary'])
-                    ->setHandlerText($inputs['handlerText'])
-                    ->setIcon($inputs['icon'])
-                    ->setActive($inputs['active']);
-
-                $manager->persist($paymentGateway);
-                $manager->flush();
-
                 return $this->json([
                     'success' => true,
-                    'payload' => $payload,
                     'message' => $translator->trans('user.entry.updated')]);
             }
 
-            $paymentGateway = $manager->getRepository(StorePaymentGateway::class)->fetch($id);
+            $paymentGateway = $service->find($id, StorePaymentGateway::class);
 
             return $this->json([
                 $paymentGateway,
@@ -196,120 +157,64 @@ class ConfigurationController extends AbstractController
 
     /**
      * @param Request $request
-     * @param EntityManagerInterface $manager
      * @param TranslatorInterface $translator
-     * @param SluggerInterface $slugger
-     * @param CarrierValidatorInterface $carrierValidator
-     * @param PaymentGatewayValidatorInterface $paymentGatewayValidator
-     * @param ValidatorInterface $validator
-     * @param ParameterBagInterface $params
+     * @param ConfigurationServiceInterface $configuration
      * @return Response
      */
     #[Route('/{target}', name: 'app_dashboard_config_save', methods: ['POST'])]
     public function save(
-        Request                          $request,
-        EntityManagerInterface           $manager,
-        TranslatorInterface              $translator,
-        SluggerInterface                 $slugger,
-        CarrierValidatorInterface        $carrierValidator,
-        PaymentGatewayValidatorInterface $paymentGatewayValidator,
-        ValidatorInterface               $validator,
-        ParameterBagInterface            $params,
-        ConfigurationServiceInterface    $configuration,
+        Request                       $request,
+        TranslatorInterface           $translator,
+        ConfigurationServiceInterface $configuration,
     ): Response
     {
-        $payload = $request->getPayload()->all();
+        $inputs = $request->getPayload()->all();
         $target = $request->get('target');
 
         $service = $configuration->take($target);
+        $carrier = $media = $paymentGateway = null;
 
-        $carrier = $paymentGateway = null;
+
+        if (in_array($target, ['carrier', 'payment_gateway'])) {
+            $inputs = $inputs[$target];
+        }
+
+        if ($inputs['media']) {
+            $media = json_decode($inputs['media'], true);
+            $media['attach'] = $inputs['attach'];
+        }
 
         if ($target === 'payment_gateway') {
-            $inputs = $payload[$target];
+
+            $data = [
+                'name' => $inputs['name'],
+                'summary' => $inputs['summary'],
+                'handlerText' => $inputs['handlerText'],
+                'active' => $inputs['active'],
+            ];
 
             try {
-                $this->isCsrfTokenValid($target, $inputs['_token']);
+                $paymentGateway = $service->create($data, $media);
             } catch (\Exception $e) {
                 return $this->json(['success' => false, 'error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
             }
-
-            unset($inputs['save'], $inputs['_token']);
-
-            $errors = $paymentGatewayValidator->validate($inputs, $validator);
-
-            if (count($errors) > 0) {
-                foreach ($errors as $error) {
-                    return $this->json(['success' => false, 'error' => $error->getMessage()], Response::HTTP_BAD_REQUEST);
-                }
-            }
-
-            $paymentGateway = new StorePaymentGateway();
-
-            $paymentGateway
-                ->setName($inputs['name'])
-                ->setSummary($inputs['summary'])
-                ->setSlug($slugger->slug($inputs['name'])->lower()->toString())
-                ->setHandlerText($inputs['handlerText'])
-                ->setIcon($inputs['icon'])
-                ->setActive($inputs['active']);
-
-            $manager->persist($paymentGateway);
-            $manager->flush();
         }
 
         if ($target === 'carrier') {
-            $inputs = $payload[$target];
-            $media = json_decode($inputs['media'], true);
-
-            $filePath = null;
-
-            if ($inputs['attach']) {
-                $file = explode(';base64,', $inputs['attach']);
-
-                $filePath = tempnam(sys_get_temp_dir(), 'UploadedFile');
-                $tmpFile = base64_decode($file[1]);
-                file_put_contents($filePath, $tmpFile);
-            }
 
             $data = [
                 'name' => $inputs['name'],
                 'description' => $inputs['description'],
                 'linkUrl' => $inputs['linkUrl'],
-                'file' => $filePath,
+                'enabled' => $inputs['enabled'],
             ];
 
-            $errors = $carrierValidator->validate($data, $validator);
-
-            if (count($errors) > 0) {
-                foreach ($errors as $error) {
-                    return $this->json(['success' => false, 'error' => $error->getMessage()], Response::HTTP_BAD_REQUEST);
-                }
+            try {
+                $carrier = $service->create($data, $media);
+            } catch (\Exception $e) {
+                return $this->json(['success' => false, 'error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
             }
 
-            if ($filePath) {
-
-                $fileUploader = new FileUploader($params->get('carrier_storage_dir'), $slugger, $manager);
-
-                try {
-                    $attach = $fileUploader->upload(new UploadedFile($filePath, $media['name'], $media['mime'], null, true))->handle();
-                } catch (\Exception $e) {
-                    return $this->json(['success' => false, 'error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
-                }
-            }
-
-            $carrier = new StoreCarrier();
-
-            $carrier
-                ->setDescription($inputs['description'])
-                ->setAttach($attach ?? null)
-                ->setSlug($slugger->slug($inputs['name'])->lower()->toString())
-                ->setShippingAmount(0)
-                ->setLinkUrl($inputs['linkUrl'])
-                ->setEnabled($inputs['enabled']);
-
-            $manager->persist($carrier);
-            $manager->flush();
         }
 
         $template = sprintf('dashboard/content/market_place/config/template/%s.html.twig', $target);

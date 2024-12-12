@@ -48,15 +48,6 @@ class PaymentGatewayValidator implements PaymentGatewayValidatorInterface
                     'maxMessage' => 'form.handler.too_long',
                 ]),
             ],
-            'icon' => [
-                new NotBlank([
-                    'message' => 'form.icon.not_blank'
-                ]),
-                new Length([
-                    'max' => 50,
-                    'maxMessage' => 'form.icon.too_long',
-                ])
-            ],
             'active' => [],
         ];
 

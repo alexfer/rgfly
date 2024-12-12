@@ -14,6 +14,7 @@ parameters:
     user_storage_dir: '%kernel.project_dir%/public/storage/user'
     entry_storage_dir: '%kernel.project_dir%/public/storage/entry'
     carrier_storage_dir: '%kernel.project_dir%/public/storage/carrier'
+    payment_gateway_storage_dir: '%kernel.project_dir%/public/storage/payment_gateway'
     private_storage: '%kernel.project_dir%/var/storage'
     product_storage_dir: 'storage/product'
     user_storage_picture: 'storage/user/picture'

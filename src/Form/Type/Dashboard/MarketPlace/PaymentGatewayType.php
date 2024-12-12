@@ -5,6 +5,7 @@ namespace App\Form\Type\Dashboard\MarketPlace;
 use App\Entity\MarketPlace\StorePaymentGateway;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -37,10 +38,9 @@ class PaymentGatewayType extends AbstractType
                     'maxlength' => 255,
                 ],
             ])
-            ->add('icon', TextType::class, [
-                'attr' => [
-                    'maxlength' => 50,
-                ]
+            ->add('logo', FileType::class, [
+                'mapped' => false,
+                'required' => false,
             ])
             ->add('active', CheckboxType::class, [
                 'required' => false,

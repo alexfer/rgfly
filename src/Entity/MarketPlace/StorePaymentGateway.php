@@ -2,6 +2,7 @@
 
 namespace App\Entity\MarketPlace;
 
+use App\Entity\Attach;
 use App\Repository\MarketPlace\StorePaymentGatewayRepository;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -26,8 +27,8 @@ class StorePaymentGateway
     #[ORM\Column]
     private bool $active;
 
-    #[ORM\Column(length: 50)]
-    private ?string $icon = null;
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Attach $attach = null;
 
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
@@ -38,10 +39,10 @@ class StorePaymentGateway
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $deleted_at = null;
 
-    #[ORM\OneToMany(mappedBy: 'gateway', targetEntity: StorePaymentGatewayStore::class)]
+    #[ORM\OneToMany(targetEntity: StorePaymentGatewayStore::class, mappedBy: 'gateway')]
     private Collection $storePaymentGatewayStores;
 
-    #[ORM\OneToMany(mappedBy: 'payment_gateway', targetEntity: StoreInvoice::class)]
+    #[ORM\OneToMany(targetEntity: StoreInvoice::class, mappedBy: 'payment_gateway')]
     private Collection $storeInvoices;
 
     public function __construct()
@@ -111,25 +112,6 @@ class StorePaymentGateway
     public function setActive(bool $active): static
     {
         $this->active = $active;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIcon(): string
-    {
-        return $this->icon;
-    }
-
-    /**
-     * @param string $icon
-     * @return $this
-     */
-    public function setIcon(string $icon): static
-    {
-        $this->icon = $icon;
 
         return $this;
     }
@@ -251,6 +233,25 @@ class StorePaymentGateway
                 $storeInvoice->setPaymentGateway(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Attach|null
+     */
+    public function getAttach(): ?Attach
+    {
+        return $this->attach;
+    }
+
+    /**
+     * @param Attach|null $attach
+     * @return $this
+     */
+    public function setAttach(?Attach $attach): static
+    {
+        $this->attach = $attach;
 
         return $this;
     }
