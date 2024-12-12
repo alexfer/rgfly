@@ -1,13 +1,11 @@
 import './../utils';
 import Swal from "sweetalert2";
-import i18next from "i18next";
-import customCss from "../customCss";
 import swalOptions from "../swalOptions";
 
 const forms = document.querySelectorAll('form');
 const danger = document.getElementById('toast-danger');
 const success = document.getElementById('toast-success');
-const logo = document.getElementById('carrier_logo');
+const logos = document.querySelectorAll('input[id$="_logo"]');
 const remove = document.querySelectorAll('.rm');
 const change = document.querySelectorAll('.change');
 
@@ -21,12 +19,22 @@ const change = document.querySelectorAll('.change');
         const response = await fetch(url);
         const data = await response.json();
         const {elements} = form;
+        const preview = form.querySelector(`img[id="_preview_${target}"]`);
 
         form.setAttribute('action', data.pop());
         form.setAttribute('method', 'put');
+        preview.setAttribute('src', null);
+        preview.classList.add('hidden');
 
         for (const [key, value] of Object.entries(data.shift())) {
             const field = elements.namedItem(`${target}[${key}]`);
+
+            if(key === 'image') {
+                if(value) {
+                    preview.classList.remove('hidden');
+                    preview.setAttribute('src', `/storage/${target}/${value}`);
+                }
+            }
 
             if (field && field.getAttribute('type') === 'checkbox') {
                 field.checked = value;
@@ -34,6 +42,7 @@ const change = document.querySelectorAll('.change');
                 field && (field.value = value);
             }
         }
+
         form.querySelector('button[type="submit"]').addEventListener('click', async (e) => {
             e.preventDefault();
             const inputs = bindForm(form);
@@ -58,7 +67,6 @@ const change = document.querySelectorAll('.change');
             }
         }, {capture: true, once: true});
     });
-
 });
 [...remove].forEach((element) => {
     element.addEventListener('click', (e) => {
@@ -88,26 +96,29 @@ const change = document.querySelectorAll('.change');
     });
 });
 
-logo.addEventListener('change', (event) => {
-    event.preventDefault();
-    const image = event.target.files[0];
-    const reader = new FileReader();
-    const preview = document.getElementById('carrier_preview');
-    const attach = document.getElementById('carrier_attach');
-    const media = document.getElementById('carrier_media');
+[...logos].forEach((logo) => {
+    logo.addEventListener('change', (event) => {
+        event.preventDefault();
 
-    reader.onload = function (e) {
-        const src = e.target.result;
-        preview.classList.remove('hidden');
-        preview.setAttribute('src', src);
-        attach.value = src;
-        media.value = JSON.stringify({
-            name: image.name,
-            size: image.size,
-            mime: image.type,
-        });
-    }
-    reader.readAsDataURL(image);
+        const image = event.target.files[0];
+        const reader = new FileReader();
+        const preview = document.getElementById(`_preview_${logo.dataset.target}`);
+        const attach = document.getElementById(`_attach_${logo.dataset.target}`);
+        const media = document.getElementById(`_media_${logo.dataset.target}`);
+
+        reader.onload = function (e) {
+            const src = e.target.result;
+            preview.classList.remove('hidden');
+            preview.setAttribute('src', src);
+            attach.value = src;
+            media.value = JSON.stringify({
+                name: image.name,
+                size: image.size,
+                mime: image.type,
+            });
+        }
+        reader.readAsDataURL(image);
+    });
 });
 
 [...forms].forEach((form) => {
@@ -119,7 +130,7 @@ logo.addEventListener('change', (event) => {
         body[target] = inputs[target];
 
         const response = await fetch(form.getAttribute('action'), {
-            method: 'POST',
+            method: form.method,
             body: JSON.stringify(body),
             headers: new Headers({'Content-Type': 'application/json'}),
         });

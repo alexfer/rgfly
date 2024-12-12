@@ -19,12 +19,12 @@
             </div>
             {{ form_start(carrierForm, {attr: {autocomplete: 'off', action: path('app_dashboard_config_save', {target: 'carrier'})}}) }}
             <div class="p-4 md:p-5 space-y-2">
-                <div class="relative form-input">
+                <div class="relative">
                     {{ form_label(carrierForm.name, 'label.form.short_name', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
                     {{ form_widget(carrierForm.name, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-200 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white', placeholder: 'label.form.short_name'}}) }}
                     <div class="counter ordinal slashed-zero tabular-nums text-end mt-0.5 text-xs"></div>
                 </div>
-                <div class="relative form-input">
+                <div class="relative">
                     {{ form_label(carrierForm.linkUrl, 'table.header.url', {label_attr: {class: 'block mb-1 text-sm font-medium text-gray-900 dark:text-white'}}) }}
                     {{ form_widget(carrierForm.linkUrl, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-200 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'}}) }}
                     <div class="counter ordinal slashed-zero tabular-nums text-end mt-0.5 text-xs"></div>
@@ -34,13 +34,13 @@
                     {{ form_widget(carrierForm.description, {attr: {class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-200 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 resize-none dark:text-white', placeholder: 'label.form.description'}}) }}
                 </div>
                 <div class="relative mt-2">
-                    <img alt="..." src="" id="carrier_preview" class="hidden rounded-md w-20 h-20">
-                    <input type="hidden" name="carrier[attach]" id="carrier_attach" value="">
-                    <input type="hidden" name="carrier[media]" id="carrier_media" value="">
+                    <img alt="..." src="" id="_preview_carrier" data-target="carrier" class="hidden rounded-md w-20 h-20">
+                    <input type="hidden" name="carrier[attach]" id="_attach_carrier" value="">
+                    <input type="hidden" name="carrier[media]" id="_media_carrier" value="">
                 </div>
                 <div class="max-w-full mx-auto">
                     {{ form_label(carrierForm.logo, 'label.form.store_picture', {label_attr: {class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
-                    {{ form_widget(carrierForm.logo, {attr: {class: 'skip block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400'}}) }}
+                    {{ form_widget(carrierForm.logo, {attr: {'data-target': 'carrier', class: 'skip block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400'}}) }}
                     <span id="error-message" class="mt-0.5 block text-sm text-red-500"></span>
                 </div>
                 <div class="pt-5">

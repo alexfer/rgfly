@@ -21,7 +21,7 @@ final class ImageValidator implements ImageValidatorInterface
         $imageConstraints = new Image([
             // Change if needed own size, for instance it can be '2M'
             'maxSize' => ini_get('post_max_size'),
-            'mimeTypes' => ['image/jpeg', 'image/png', 'image/webp'],
+            'mimeTypes' => ['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'],
             'mimeTypesMessage' => $translator->trans('form.picture.not_valid_type', [], 'validators'),
         ]);
 
