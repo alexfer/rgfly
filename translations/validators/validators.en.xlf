@@ -218,6 +218,10 @@
                 <source>form.url.not_valid</source>
                 <target>The Url '{{ value }}' is not a valid. Please provide a valid Url.</target>
             </trans-unit>
+            <trans-unit id="form.money.not_valid">
+                <source>form.money.not_valid</source>
+                <target>The money '{{ value }}' is not a valid. Please provide a valid money format.</target>
+            </trans-unit>
             <trans-unit id="form.title.not_blank">
                 <source>form.title.not_blank</source>
                 <target>The title can't be blank.</target>

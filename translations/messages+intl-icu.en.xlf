@@ -859,6 +859,10 @@
                 <source>coupon.choices.shipment</source>
                 <target>Shipment discount</target>
             </trans-unit>
+            <trans-unit id="form.label.shipping_amount">
+                <source>form.label.shipping_amount</source>
+                <target>Shipping amount</target>
+            </trans-unit>
             <trans-unit id="text.info">
                 <source>text.info</source>
                 <target>Info!</target>

@@ -28,7 +28,6 @@ BEGIN
                               LIMIT 1),
                    'payments', json_agg(json_build_object(
                     'id', spg.id,
-                    'icon', spg.icon,
                     'text', spg.handler_text,
                     'name', spg.name,
                     'summary', spg.summary
@@ -63,8 +62,7 @@ BEGIN
                        WHERE spd.product_id = p.id
                 LIMIT 1),
             'payments', (SELECT json_agg(json_build_object(
-                    'name', g.name,
-                    'icon', g.icon
+                    'name', g.name
                                          ))
                          FROM store_payment_gateway_store spg
                                   LEFT JOIN store_payment_gateway g ON g.id = spg.gateway_id

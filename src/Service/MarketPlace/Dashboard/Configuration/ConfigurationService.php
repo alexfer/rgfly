@@ -47,6 +47,7 @@ class ConfigurationService extends HandleService implements ConfigurationService
     {
         if ($this->target == 'carrier') {
             $target = $this->get($id, StoreCarrier::class);
+            $this->removeAttach($target);
             $this->manager->remove($target);
         }
 
@@ -56,6 +57,7 @@ class ConfigurationService extends HandleService implements ConfigurationService
             if ($this->manager->getRepository(StorePaymentGatewayStore::class)->findOneBy(['gateway' => $target])) {
                 return false;
             }
+            $this->removeAttach($target);
             $this->manager->remove($target);
         }
 
@@ -80,6 +82,12 @@ class ConfigurationService extends HandleService implements ConfigurationService
         return null;
     }
 
+    /**
+     * @param int $id
+     * @param array $data
+     * @param array|null $media
+     * @return StoreCarrier|StorePaymentGateway|null
+     */
     public function update(int $id, array $data, array $media = null): null|StoreCarrier|StorePaymentGateway
     {
         if ($this->target == 'carrier') {

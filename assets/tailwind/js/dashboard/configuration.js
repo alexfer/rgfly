@@ -9,6 +9,25 @@ const logos = document.querySelectorAll('input[id$="_logo"]');
 const remove = document.querySelectorAll('.rm');
 const change = document.querySelectorAll('.change');
 
+document.querySelector('button[data-modal-target="payment_method-modal"]').addEventListener('click', (e) => {
+    e.preventDefault();
+    const preview = document.querySelector('#_preview_payment_gateway');
+
+    document.querySelector('form[name="payment_gateway"]').reset();
+    preview.setAttribute('src', null);
+    preview.classList.add('hidden');
+
+});
+
+document.querySelector('button[data-modal-target="carrier-modal"]').addEventListener('click', (e) => {
+    e.preventDefault();
+    const preview = document.querySelector('#_preview_carrier');
+
+    document.querySelector('form[name="carrier"]').reset();
+    preview.setAttribute('src', null);
+    preview.classList.add('hidden');
+});
+
 [...change].forEach((element) => {
     const target = element.getAttribute('data-target');
     const url = element.getAttribute('data-url');
@@ -29,8 +48,8 @@ const change = document.querySelectorAll('.change');
         for (const [key, value] of Object.entries(data.shift())) {
             const field = elements.namedItem(`${target}[${key}]`);
 
-            if(key === 'image') {
-                if(value) {
+            if (key === 'image') {
+                if (value) {
                     preview.classList.remove('hidden');
                     preview.setAttribute('src', `/storage/${target}/${value}`);
                 }

@@ -52,8 +52,7 @@ BEGIN
                     'paid', si.paid_at,
                     'payment_gateway', (SELECT json_build_object(
                                                        'id', spg.id,
-                                                       'name', spg.name,
-                                                       'icon', spg.icon
+                                                       'name', spg.name
                                                )
                                         FROM store_payment_gateway spg
                                         WHERE spg.id = si.payment_gateway_id

@@ -1,7 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\DataFixtures\MarketPlace;
 
+use App\Entity\MarketPlace\StoreCarrier;
 use App\Entity\MarketPlace\StorePaymentGateway;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -24,6 +25,7 @@ class Fixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $this->loadPaymentMethods($manager);
+        $this->loadCarriers($manager);
     }
 
     /**
@@ -42,11 +44,11 @@ class Fixtures extends Fixture
      */
     private function loadPaymentMethods(ObjectManager $manager): void
     {
-        foreach ($this->getPaymentGatewayData() as [$name, $summary, $active, $icon, $handler_text]) {
+        foreach ($this->getPaymentGatewayData() as [$name, $summary, $active, $handler_text]) {
             $gateway = new StorePaymentGateway();
             $gateway->setName($name);
-            $gateway->setSlug($this->slugger->slug($name)->lower());
-            $gateway->setIcon($icon);
+            $gateway->setSlug($this->slugger->slug($name)->lower()->toString());
+            $gateway->setAttach(null);
             $gateway->setHandlerText($handler_text);
             $gateway->setSummary($summary);
             $gateway->setActive($active);
@@ -56,15 +58,42 @@ class Fixtures extends Fixture
     }
 
     /**
+     * @param ObjectManager $manager
+     * @return void
+     */
+    private function loadCarriers(ObjectManager $manager): void
+    {
+        foreach ($this->getCarrierData() as [$name, $description, $enabled, $url]) {
+            $carrier = new StoreCarrier();
+            $carrier->setShippingAmount(0);
+            $carrier->setSlug($this->slugger->slug($name)->lower()->toString());
+            $carrier->setAttach(null);
+            $carrier->setLinkUrl($url);
+            $carrier->setDescription($description);
+            $carrier->setEnabled($enabled);
+            $manager->persist($carrier);
+        }
+        $manager->flush();
+    }
+
+    private function getCarrierData(): array
+    {
+        return [
+            'DHL', 'Discover shipping and logistics service options from DHL Global Forwarding.', false, 'https://www.dhl.com'
+        ];
+    }
+
+    /**
      * @return array[]
      */
     private function getPaymentGatewayData(): array
     {
         return [
-            ['Stripe', 'Stripe is powerful payment platform designed for internet businesses', false, 'fa fa-cc-stripe', 'Checkout with Stripe'],
-            ['PayPal', 'PatPal - the safer, easier way to pay', false, 'fa fa-paypal', 'Pay with Paypal'],
-            ['ApplePay', 'Apple Pay is a safe, secure, and private way to pay', false, 'fa fa-apple', 'Checkout'],
-            ['Cash', 'Pay with cash when your order is delivered', true, 'fa fa-money', 'Checkout'],
+            ['Stripe', 'Stripe is powerful payment platform designed for internet businesses', false, 'Checkout with Stripe'],
+            ['PayPal', 'PatPal - the safer, easier way to pay', false, 'Pay with Paypal'],
+            ['ApplePay', 'Apple Pay is a safe, secure, and private way to pay', false, 'Checkout'],
+            ['Cash', 'Pay with cash when your order is delivered', true, 'Checkout'],
+            ['Adyen', 'End-to-end payments, data, and financial management in a single solution', true, 'Checkout via Adyen'],
         ];
     }
 }

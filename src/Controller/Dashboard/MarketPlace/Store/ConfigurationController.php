@@ -63,6 +63,12 @@ class ConfigurationController extends AbstractController
         return $this->json(['success' => true, 'message' => $translator->trans('user.entry.deleted')], Response::HTTP_OK);
     }
 
+    /**
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @param ConfigurationServiceInterface $configuration
+     * @return Response
+     */
     #[Route('/{target}/{id}', name: 'app_dashboard_config_change', methods: ['GET', 'PUT'])]
     public function change(
         Request                       $request,
@@ -94,6 +100,7 @@ class ConfigurationController extends AbstractController
                     'description' => $inputs['description'],
                     'linkUrl' => $inputs['linkUrl'],
                     'enabled' => $inputs['enabled'],
+                    'shippingAmount' => (float)$inputs['shippingAmount'],
                 ];
 
                 try {
@@ -207,6 +214,7 @@ class ConfigurationController extends AbstractController
                 'description' => $inputs['description'],
                 'linkUrl' => $inputs['linkUrl'],
                 'enabled' => $inputs['enabled'],
+                'shippingAmount' => (float)$inputs['shippingAmount'],
             ];
 
             try {
