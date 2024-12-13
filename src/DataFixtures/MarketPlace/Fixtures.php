@@ -65,7 +65,8 @@ class Fixtures extends Fixture
     {
         foreach ($this->getCarrierData() as [$name, $description, $enabled, $url]) {
             $carrier = new StoreCarrier();
-            $carrier->setShippingAmount(0);
+            $carrier->setName($name);
+            $carrier->setShippingAmount('0.00');
             $carrier->setSlug($this->slugger->slug($name)->lower()->toString());
             $carrier->setAttach(null);
             $carrier->setLinkUrl($url);
@@ -79,7 +80,7 @@ class Fixtures extends Fixture
     private function getCarrierData(): array
     {
         return [
-            'DHL', 'Discover shipping and logistics service options from DHL Global Forwarding.', false, 'https://www.dhl.com'
+            ['DHL', 'Discover shipping and logistics service options from DHL Global Forwarding.', false, 'https://www.dhl.com']
         ];
     }
 
@@ -93,7 +94,7 @@ class Fixtures extends Fixture
             ['PayPal', 'PatPal - the safer, easier way to pay', false, 'Pay with Paypal'],
             ['ApplePay', 'Apple Pay is a safe, secure, and private way to pay', false, 'Checkout'],
             ['Cash', 'Pay with cash when your order is delivered', true, 'Checkout'],
-            ['Adyen', 'End-to-end payments, data, and financial management in a single solution', true, 'Checkout via Adyen'],
+            ['Adyen', 'End-to-end payments, data, and financial management in a single solution', false, 'Checkout via Adyen'],
         ];
     }
 }

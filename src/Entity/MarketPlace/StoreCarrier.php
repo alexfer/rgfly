@@ -18,8 +18,8 @@ class StoreCarrier
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $slug = null;
+    #[ORM\Column(length: 255)]
+    private string $slug;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Attach $attach = null;
@@ -53,10 +53,10 @@ class StoreCarrier
     }
 
     /**
-     * @param string|null $slug
+     * @param string $slug
      * @return $this
      */
-    public function setSlug(?string $slug): static
+    public function setSlug(string $slug): static
     {
         $this->slug = $slug;
 
