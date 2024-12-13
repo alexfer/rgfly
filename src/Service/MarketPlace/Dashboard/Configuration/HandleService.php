@@ -25,6 +25,14 @@ class HandleService
     protected Filesystem $filesystem;
 
     /**
+     * @var array|string[]
+     */
+    protected array $storage = [
+        'carrier' => 'carrier_storage_dir',
+        'payment_gateway' => 'payment_gateway_storage_dir',
+    ];
+
+    /**
      * @param EntityManagerInterface $manager
      * @param TranslatorInterface $translator
      * @param CarrierValidatorInterface $carrierValidator
@@ -61,6 +69,29 @@ class HandleService
     }
 
     /**
+     * @param StoreCarrier|StorePaymentGateway $class
+     * @return void
+     */
+    protected function removeAttach(StoreCarrier|StorePaymentGateway $class): void
+    {
+        if ($class instanceof StoreCarrier) {
+            $file = $this->params->get($this->storage['carrier']) . '/' . $class->getAttach()->getName();
+
+            if ($this->filesystem->exists($file)) {
+                $this->filesystem->remove($file);
+            }
+        }
+
+        if ($class instanceof StorePaymentGateway) {
+            $file = $this->params->get($this->storage['payment_gateway']) . '/' . $class->getAttach()->getName();
+
+            if ($this->filesystem->exists($file)) {
+                $this->filesystem->remove($file);
+            }
+        }
+    }
+
+    /**
      * @param array $data
      * @param array|null $media
      * @return StoreCarrier
@@ -69,7 +100,7 @@ class HandleService
     {
         if ($media) {
             try {
-                $attach = $this->setAttach($media['attach'], 'carrier_storage_dir', $media);
+                $attach = $this->setAttach($media['attach'], $this->storage['carrier'], $media);
             } catch (\Exception $e) {
                 throw new \InvalidArgumentException($e->getMessage(), 400);
             }
@@ -85,11 +116,11 @@ class HandleService
 
         $carrier = new StoreCarrier();
 
-        $carrier
+        $carrier->setName($data['name'])
             ->setDescription($data['description'])
             ->setAttach($attach ?? null)
             ->setSlug($this->slugger->slug($data['name'])->lower()->toString())
-            ->setShippingAmount(0)
+            ->setShippingAmount(number_format($data['shippingAmount'], 2, '.', ''))
             ->setLinkUrl($data['linkUrl'])
             ->setEnabled($data['enabled']);
 
@@ -107,7 +138,7 @@ class HandleService
     {
         if ($media) {
             try {
-                $attach = $this->setAttach($media['attach'], 'payment_gateway_storage_dir', $media);
+                $attach = $this->setAttach($media['attach'], $this->storage['payment_gateway'], $media);
             } catch (\Exception $e) {
                 throw new \InvalidArgumentException($e->getMessage(), 400);
             }
@@ -147,13 +178,13 @@ class HandleService
     {
         if ($media) {
             try {
-                $attach = $this->setAttach($media['attach'], 'carrier_storage_dir', $media);
+                $attach = $this->setAttach($media['attach'], $this->storage['carrier'], $media);
             } catch (\Exception $e) {
                 throw new \InvalidArgumentException($e->getMessage(), 400);
             }
 
             if ($storeCarrier->getAttach()) {
-                $file = $this->params->get('carrier_storage_dir') . '/' . $storeCarrier->getAttach()->getName();
+                $file = $this->params->get($this->storage['carrier']) . '/' . $storeCarrier->getAttach()->getName();
 
                 if ($this->filesystem->exists($file)) {
                     $this->filesystem->remove($file);
@@ -170,9 +201,10 @@ class HandleService
             }
         }
 
-        $storeCarrier->setDescription($data['description'])
+        $storeCarrier->setName($data['name'])
+            ->setDescription($data['description'])
             ->setSlug($this->slugger->slug($data['name'])->lower()->toString())
-            ->setShippingAmount(0)
+            ->setShippingAmount(number_format($data['shippingAmount'], 2, '.', ''))
             ->setLinkUrl($data['linkUrl']);
         if ($media) {
             $storeCarrier->setAttach($attach);
@@ -195,13 +227,13 @@ class HandleService
 
         if ($media) {
             try {
-                $attach = $this->setAttach($media['attach'], 'payment_gateway_storage_dir', $media);
+                $attach = $this->setAttach($media['attach'], $this->storage['payment_gateway'], $media);
             } catch (\Exception $e) {
                 throw new \InvalidArgumentException($e->getMessage(), 400);
             }
 
             if ($paymentGateway->getAttach()) {
-                $file = $this->params->get('payment_gateway_storage_dir') . '/' . $paymentGateway->getAttach()->getName();
+                $file = $this->params->get($this->storage['payment_gateway']) . '/' . $paymentGateway->getAttach()->getName();
 
                 if ($this->filesystem->exists($file)) {
                     $this->filesystem->remove($file);

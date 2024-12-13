@@ -46,7 +46,7 @@
                     {% for payment in store.payments %}
                         <li class="inline-flex ps-3 py-2">
                             <i data-twe-toggle="tooltip" title="{{ payment.summary }}"
-                               class="{{ payment.icon }} text-2xl text-white"></i>
+                               class="text-2xl text-white"></i>
                         </li>
                     {% endfor %}
                 </ul>
@@ -141,7 +141,7 @@
                                     {% for payment in product.payments %}
                                         <l class="inline-flex">
                                             <i data-twe-toggle="tooltip" title="{{ payment.name }}"
-                                               class="{{ payment.icon }} cursor-pointer text-lg text-primary ms-1"></i>
+                                               class="cursor-pointer text-lg text-primary ms-1"></i>
                                         </l>
                                     {% endfor %}
                                 </ul>

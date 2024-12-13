@@ -1,5 +1,6 @@
 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700" id="row-{{ pg.id }}">
     <td class="px-6 py-4">
+        {% set remove = true %}
         {% if pg.attach is not null %}
             {% set icon = 'storage/payment_gateway/' ~ pg.attach.name %}
             {% if pg.attach.mime != 'image/svg+xml' %}
@@ -8,6 +9,7 @@
                 <img class="flex h-3" alt="{{ pg.slug }}" src="{{ asset(icon) }}">
             {% endif %}
         {% else %}
+            {% set remove = false %}
             <img class="h-10" src="{{ asset('img/payment_gateway/' ~ pg.slug ~ '.svg') }}" alt="{{ pg.slug }}">
         {% endif %}
     </td>
@@ -47,14 +49,16 @@
                         {{ 'text.edit'|trans }}
                     </a>
                 </li>
-                <li>
-                    <a role="button" data-target="payment_gateway"
-                       data-url="{{ path('app_dashboard_config_remove', {target: 'payment_gateway', id: pg.id}) }}"
-                       data-id="{{ pg.id }}"
-                       class="block rm text-start text-sm font-light text-red-600 px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                        {{ 'text.remove'|trans }}
-                    </a>
-                </li>
+                {% if remove %}
+                    <li>
+                        <a role="button" data-target="payment_gateway"
+                           data-url="{{ path('app_dashboard_config_remove', {target: 'payment_gateway', id: pg.id}) }}"
+                           data-id="{{ pg.id }}"
+                           class="block rm text-start text-sm font-light text-red-600 px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                            {{ 'text.remove'|trans }}
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </td>

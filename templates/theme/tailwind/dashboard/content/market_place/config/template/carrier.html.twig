@@ -1,6 +1,6 @@
 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700" id="row-{{ carrier.id }}">
-    <td class="px-6 py-4 font-medium capitalize">{{ carrier.slug }}</td>
     <td class="px-6 py-4">
+        {% set remove = true %}
         {% if carrier.attach is not null %}
             {% set icon = 'storage/carrier/' ~ carrier.attach.name %}
             {% if carrier.attach.mime != 'image/svg+xml' %}
@@ -8,8 +8,12 @@
             {% else %}
                 <img alt="{{ carrier.slug }}" src="{{ asset(icon) }}">
             {% endif %}
+        {% else %}
+            {% set remove = false %}
+            <img class="h-5" src="{{ asset('img/carrier/' ~ carrier.slug ~ '.svg') }}" alt="{{ carrier.name }}">
         {% endif %}
     </td>
+    <td class="px-6 py-4 font-medium capitalize">{{ carrier.name }}</td>
     <td class="px-6 py-4">{{ carrier.description }}</td>
     <td class="px-6 py-4">
         <svg xmlns="http://www.w3.org/2000/svg"
@@ -43,14 +47,16 @@
                         {{ 'text.edit'|trans }}
                     </a>
                 </li>
-                <li>
-                    <a role="button" data-target="carrier"
-                       data-url="{{ path('app_dashboard_config_remove', {target: 'carrier', id: carrier.id}) }}"
-                       data-id="{{ carrier.id }}"
-                       class="block rm text-start text-sm font-light text-red-600 px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                        {{ 'text.remove'|trans }}
-                    </a>
-                </li>
+                {% if remove %}
+                    <li>
+                        <a role="button" data-target="carrier"
+                           data-url="{{ path('app_dashboard_config_remove', {target: 'carrier', id: carrier.id}) }}"
+                           data-id="{{ carrier.id }}"
+                           class="block rm text-start text-sm font-light text-red-600 px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                            {{ 'text.remove'|trans }}
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </td>

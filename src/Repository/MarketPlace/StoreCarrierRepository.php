@@ -30,8 +30,10 @@ class StoreCarrierRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('sc')
             ->select([
                 'sc.id',
-                'sc.slug as name',
+                'sc.name',
+                'sc.slug',
                 'sc.description',
+                'sc.shipping_amount as shippingAmount',
                 'sc.link_url as linkUrl',
                 'sc.is_enabled as enabled',
                 'a.name as image',

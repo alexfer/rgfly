@@ -15,8 +15,11 @@ class StoreCarrier
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $slug = null;
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
+    #[ORM\Column(length: 255)]
+    private string $slug;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Attach $attach = null;
@@ -27,8 +30,8 @@ class StoreCarrier
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $shipping_amount = null;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $shipping_amount = null;
 
     #[ORM\Column(nullable: true)]
     private ?bool $is_enabled = null;
@@ -50,10 +53,10 @@ class StoreCarrier
     }
 
     /**
-     * @param string|null $slug
+     * @param string $slug
      * @return $this
      */
-    public function setSlug(?string $slug): static
+    public function setSlug(string $slug): static
     {
         $this->slug = $slug;
 
@@ -118,18 +121,18 @@ class StoreCarrier
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getShippingAmount(): ?int
+    public function getShippingAmount(): ?string
     {
         return $this->shipping_amount;
     }
 
     /**
-     * @param int|null $shipping_amount
+     * @param string|null $shipping_amount
      * @return $this
      */
-    public function setShippingAmount(?int $shipping_amount): static
+    public function setShippingAmount(?string $shipping_amount): static
     {
         $this->shipping_amount = $shipping_amount;
 
@@ -151,6 +154,25 @@ class StoreCarrier
     public function setEnabled(?bool $is_enabled): static
     {
         $this->is_enabled = $is_enabled;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return $this
+     */
+    public function setName(string $name): static
+    {
+        $this->name = $name;
 
         return $this;
     }
