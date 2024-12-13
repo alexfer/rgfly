@@ -1,7 +1,6 @@
 //import '@sweetalert2/theme-bulma/bulma.min.css';
 import './styles/tailwind.css';
 import './styles/default.css';
-import 'font-awesome/css/font-awesome.min.css'
 import 'flowbite/dist/flowbite.min.css';
 // import js files into app.js
 import './twe';

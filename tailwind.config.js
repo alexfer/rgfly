@@ -51,12 +51,14 @@ module.exports = {
         },
     },
     plugins: [
-        require("tw-elements/plugin.cjs"),
-        require('flowbite/plugin'),
-        require('@tailwindcss/typography'),
-        require('@tailwindcss/forms'),
-        require('@tailwindcss/aspect-ratio'),
-        require('@tailwindcss/container-queries'),
+        'tw-elements/plugin.cjs',
+        'flowbite/plugin',
+        '@tailwindcss/typography',
+        '@tailwindcss/forms',
+        '@tailwindcss/aspect-ratio',
+        'tailwindcss/inset',
+        'tailwindcss/plugin',
+        '@tailwindcss/container-queries',
     ],
     darkMode: "class"
 }
