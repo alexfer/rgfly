@@ -916,6 +916,10 @@
                 <source>form.phone.invalid</source>
                 <target>Please enter valid phone number</target>
             </trans-unit>
+            <trans-unit id="form.subject.invalid">
+                <source>form.subject.invalid</source>
+                <target>Please enter subject message</target>
+            </trans-unit>
             <trans-unit id="form.country.invalid">
                 <source>form.country.invalid</source>
                 <target>Choice country</target>
@@ -1831,7 +1835,15 @@
             </trans-unit>
             <trans-unit id="store.product.create">
                 <source>store.product.create</source>
-                <target>Add Product</target>
+                <target>Add product</target>
+            </trans-unit>
+            <trans-unit id="store.action.unlock">
+                <source>store.action.unlock</source>
+                <target>Unlock store</target>
+            </trans-unit>
+            <trans-unit id="store.action.locked">
+                <source>store.action.locked</source>
+                <target>Store locked</target>
             </trans-unit>
             <trans-unit id="store.product.remove">
                 <source>store.product.remove</source>

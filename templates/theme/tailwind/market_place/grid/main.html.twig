@@ -34,7 +34,11 @@
                 <button class="text-white bg-gray-800 cursor-pointer shadow-md hover:bg-surface-dark focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-md text-sm px-4 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         data-slug="{{ product.slug }}" type="submit"
                         {% if product.quantity == 0 or (app.user and 'ROLE_USER' in app.user.roles or app.user and 'ROLE_ADMIN' in app.user.roles) %}disabled{% endif %}>
-                    <i class="fa fa-shopping-cart mt-1 me-2"></i>{{ 'store.product.add'|trans }}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+                         class="inline-flex w-4 h-4 me-1.5">
+                        <path d="M1.75 1.002a.75.75 0 1 0 0 1.5h1.835l1.24 5.113A3.752 3.752 0 0 0 2 11.25c0 .414.336.75.75.75h10.5a.75.75 0 0 0 0-1.5H3.628A2.25 2.25 0 0 1 5.75 9h6.5a.75.75 0 0 0 .73-.578l.846-3.595a.75.75 0 0 0-.578-.906 44.118 44.118 0 0 0-7.996-.91l-.348-1.436a.75.75 0 0 0-.73-.573H1.75ZM5 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM13 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/>
+                    </svg>
+                    {{ 'store.product.add'|trans }}
                 </button>
             </form>
         </div>
@@ -51,26 +55,33 @@
     </a>
     <a href="{{ path('app_market_place_parent_category', {parent:  product.parent_category_slug}) }}"
        class="hover:underline truncate ml-2 text-gray-500 w-full block">
-        <i class="fa fa-check px-2 text-green-400"></i>{{ product.parent_category_name }}
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="inline-flex w-4 h-4 me-2">
+            <path fill-rule="evenodd" d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" />
+        </svg>{{ product.parent_category_name }}
     </a>
     <a href="{{ path('app_market_place_child_category', {
         parent: product.parent_category_slug,
         child:  product.category_slug
     }) }}" title="{{ product.category_name }}"
        class="hover:underline hover:w-full truncate block w-auto ml-2 mr-3 text-gray-500">
-        <i class="fa fa-check px-2 text-green-400"></i>{{ product.category_name }}
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="inline-flex w-4 h-4 me-2">
+            <path fill-rule="evenodd" d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" />
+        </svg>{{ product.category_name }}
     </a>
     <ul class="list-none ml-2 mt-6">
         <li class="pb-0 flex">
             <a class="hover:text-indigo-600 text-blue-600 hover:animate-pulse"
                href="{{ path('app_market_place_product', {slug: product.slug, tab: 'tabs-contact'}) }}#product-ifo-ref">
-                <i class="fa fa-comment mx-2 text-indigo-700"></i>{{ 'label.form.message'|trans }}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="inline-flex w-4 h-4 mx-2">
+                    <path fill-rule="evenodd" d="M1 8.74c0 .983.713 1.825 1.69 1.943.764.092 1.534.164 2.31.216v2.351a.75.75 0 0 0 1.28.53l2.51-2.51c.182-.181.427-.286.684-.294a44.298 44.298 0 0 0 3.837-.293C14.287 10.565 15 9.723 15 8.74V4.26c0-.983-.713-1.825-1.69-1.943a44.447 44.447 0 0 0-10.62 0C1.712 2.435 1 3.277 1 4.26v4.482ZM5.5 6.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm2.5 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm3.5 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd" />
+                </svg>
+                {{ 'label.form.message'|trans }}
             </a>
         </li>
         <li class="flex">
             <a class="truncate inline-block w-auto mr-3 hover:w-full hover:fill-sky-600 hover:animate-pulse"
                href="{{ path('app_market_place_market', {slug:  product.store_slug}) }}">
-                <svg class="w-4 h-4 mx-2 fill-red-700 inline-block"
+                <svg class="w-4 h-4 mx-2 fill-red-700 inline-flex"
                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                     <path d="M256 96c38.4 0 73.7 13.5 101.3 36.1l-32.6 32.6c-4.6 4.6-5.9 11.5-3.5 17.4s8.3 9.9 14.8 9.9H448c8.8 0 16-7.2 16-16V64c0-6.5-3.9-12.3-9.9-14.8s-12.9-1.1-17.4 3.5l-34 34C363.4 52.6 312.1 32 256 32c-10.9 0-21.5 .8-32 2.3V99.2c10.3-2.1 21-3.2 32-3.2zM132.1 154.7l32.6 32.6c4.6 4.6 11.5 5.9 17.4 3.5s9.9-8.3 9.9-14.8V64c0-8.8-7.2-16-16-16H64c-6.5 0-12.3 3.9-14.8 9.9s-1.1 12.9 3.5 17.4l34 34C52.6 148.6 32 199.9 32 256c0 10.9 .8 21.5 2.3 32H99.2c-2.1-10.3-3.2-21-3.2-32c0-38.4 13.5-73.7 36.1-101.3zM477.7 224H412.8c2.1 10.3 3.2 21 3.2 32c0 38.4-13.5 73.7-36.1 101.3l-32.6-32.6c-4.6-4.6-11.5-5.9-17.4-3.5s-9.9 8.3-9.9 14.8V448c0 8.8 7.2 16 16 16H448c6.5 0 12.3-3.9 14.8-9.9s1.1-12.9-3.5-17.4l-34-34C459.4 363.4 480 312.1 480 256c0-10.9-.8-21.5-2.3-32zM256 416c-38.4 0-73.7-13.5-101.3-36.1l32.6-32.6c4.6-4.6 5.9-11.5 3.5-17.4s-8.3-9.9-14.8-9.9H64c-8.8 0-16 7.2-16 16l0 112c0 6.5 3.9 12.3 9.9 14.8s12.9 1.1 17.4-3.5l34-34C148.6 459.4 199.9 480 256 480c10.9 0 21.5-.8 32-2.3V412.8c-10.3 2.1-21 3.2-32 3.2z"></path>
                 </svg>{{ product.store }}
@@ -80,7 +91,10 @@
             <li class="pb-0 flex">
                 <a href="tel:{{ product.store_phone }}"
                    class="text-green-700 hover:text-green-800 hover:animate-pulse">
-                    <i class="fa fa-phone-square text-green-700 mx-2"></i>{{ product.store_phone }}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="inline-flex w-4 h-4 mx-2">
+                        <path fill-rule="evenodd" d="m3.855 7.286 1.067-.534a1 1 0 0 0 .542-1.046l-.44-2.858A1 1 0 0 0 4.036 2H3a1 1 0 0 0-1 1v2c0 .709.082 1.4.238 2.062a9.012 9.012 0 0 0 6.7 6.7A9.024 9.024 0 0 0 11 14h2a1 1 0 0 0 1-1v-1.036a1 1 0 0 0-.848-.988l-2.858-.44a1 1 0 0 0-1.046.542l-.534 1.067a7.52 7.52 0 0 1-4.86-4.859Z" clip-rule="evenodd" />
+                    </svg>
+                    {{ product.store_phone }}
                 </a>
             </li>
         {% endif %}

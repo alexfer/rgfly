@@ -154,11 +154,11 @@
                 {% if orders is not null %}
                     <div class="flex justify-between mt-4">
                         <a href="{{ path('app_market_place_index') }}"
-                           class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-gray-200 hover:text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
+                           class="inline-block rounded bg-red-700 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-gray-200 hover:text-white shadow-red-300 transition duration-150 ease-in-out hover:bg-red-900 hover:shadow-primary-2 focus:outline-none focus:ring-0 motion-reduce:transition-none">
                             {{ 'order.continue.shopping'|trans }}
                         </a>
                         <button type="submit"
-                                class="hidden lg:block rounded bg-black px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-gray-200 hover:text-white shadow-black-3 transition duration-150 ease-in-out hover:bg-black-accent-300 hover:shadow-black-2 focus:bg-black-accent-300 focus:shadow-black-2 focus:outline-none focus:ring-0 active:bg-black-600 active:shadow-black-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
+                                class="hidden lg:block rounded bg-gray-950 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-gray-200 hover:text-white shadow-gray-700 transition duration-150 ease-in-out hover:bg-gray-700 focus:outline-none focus:ring-0 motion-reduce:transition-none">
                             {{ 'order.update.cart'|trans }}
                         </button>
                     </div>
@@ -201,7 +201,7 @@
                                 {% endif %}
                                 <div class=" mt-2 text-center">
                                     <a href="{{ path('app_market_place_order_checkout', {order: order.number, tab: 'customer-info'}) }}"
-                                       class="flex rounded bg-danger px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-danger-200 hover:text-white shadow-danger-3 transition duration-150 ease-in-out hover:bg-danger-accent-300 hover:shadow-danger-2 focus:bg-danger-accent-300 focus:shadow-danger-2 focus:outline-none focus:ring-0 active:bg-danger-600 active:shadow-danger-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong mb-2 justify-between items-center"
+                                       class="flex rounded bg-red-700 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-red-200 hover:text-white shadow-red-300 transition duration-150 ease-in-out hover:bg-red-700 hover:shadow-red-200 focus:bg-rd-300 focus:shadow-red-200 focus:outline-none focus:ring-0 active:bg-red-600 active:shadow-red-200 motion-reduce:transition-none dark:shadow-black/30 mb-2 justify-between items-center"
                                        type="submit">
                                         {{ 'order.checkout'|trans }}
                                         <span id="checkout-{{ order.store_id }}"
@@ -256,7 +256,6 @@
                     amountEl.textContent = (parseInt(amount) - parseInt(price)).toFixed(2);
                     amountEl.setAttribute('data-amount', (parseInt(amount) - parseInt(price)));
 
-                    console.log(typeof amount, typeof price, typeof el.value);
                     if (el.value <= 1) {
                         el.value++;
                     }

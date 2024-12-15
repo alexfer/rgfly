@@ -6,7 +6,7 @@ import './utils';
 
 await i18next.init(messages);
 
-const cart = document.getElementById('shopping-cart');
+const cart = document.getElementById('show-cart');
 const attributes = document.querySelectorAll('#attributes');
 const forms = document.querySelectorAll('.shopping-cart');
 const wishlists = document.querySelectorAll('.add-wishlist');
@@ -73,20 +73,22 @@ if (bulkRemoveWishlist !== null) {
 }
 
 if (cart !== null) {
-    cart.addEventListener('show.twe.offcanvas', () => {
+    cart.addEventListener('click', () => {
         let url = cart.getAttribute('data-url');
-        let body = cart.querySelectorAll('#order-body');
-        body.item(0).innerHTML = '';
+        console.log(url);
+        let body = document.getElementById('order-body');
+        if(!body) return;
+        body.innerHTML = '';
         fetch(url, {
             headers: headers
         })
             .then((response) => response.json())
             .then((json) => {
-                body.item(0).innerHTML = json.template;
+                body.innerHTML = json.template;
                 if (parseInt(json.quantity) !== 0) {
-                    body.item(0).children[0].classList.remove('visually-hidden');
+                    body.children[0].classList.remove('visually-hidden');
                 } else {
-                    body.item(0).children[0].classList.toggle('visually-hidden');
+                    body.children[0].classList.toggle('visually-hidden');
                 }
             })
             .catch(err => {

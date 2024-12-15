@@ -14,9 +14,12 @@ liip_imagine:
         # name our filter set "custom_thumb_filter"
         carrier_icon:
             filters:
-                thumbnail:
-                    size: [ 150, 80 ]
-                    mode: outbound
+                relative_resize:
+                    heighten: 20
+        gateway_icon:
+            filters:
+                relative_resize:
+                    heighten: 20
         store_thumb:
             filters:
                 thumbnail:

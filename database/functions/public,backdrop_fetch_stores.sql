@@ -19,7 +19,8 @@ BEGIN
                                                       FROM "user" u
                                                       WHERE u.id = s.owner_id),
                                             'created', s.created_at,
-                                            'deleted', s.deleted_at
+                                            'deleted', s.deleted_at,
+                                            'locked', s.locked_to
                                     ) AS store
                     FROM store s
                     OFFSET start LIMIT row_count)

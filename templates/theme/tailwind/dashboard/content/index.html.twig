@@ -227,11 +227,11 @@
                                 </a>
                                 <div id="dropdown-context"
                                      class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                                    <ul class="py-2 text-xs text-gray-700 dark:text-gray-200"
                                         aria-labelledby="dropdown-menu">
                                         <li>
                                             <a href="{{ path('app_dashboard_market_place_edit_product', {store: store.id, id: product.id, tab: 'details'}) }}"
-                                               class="block text-primary-600 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ 'text.edit'|trans }}</a>
+                                               class="block text-blue-600 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ 'text.edit'|trans }}</a>
                                         </li>
                                         <li>
                                             {% if product.deletedAt is null %}

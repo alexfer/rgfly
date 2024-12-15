@@ -24,17 +24,17 @@
                                class="invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500 peer bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                id="brand_name" min="3" max="250" pattern=".{3,200}"
                                placeholder="{{ 'label.form.brand_name'|trans }}" required>
-                        <span class="mt-1 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">{{ 'form.name.invalid'|trans }}</span>
+                        <span class="mt-1 hidden text-xs text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">{{ 'form.name.invalid'|trans }}</span>
                     </div>
                 </div>
                 <div class="flex justify-end items-end p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
                     <input type="hidden" id="_token" name="brand[_token]" value="{{ csrf_token('create') }}">
                     <button type="submit"
-                            class="group-invalid:pointer-events-none group-invalid:opacity-30 inline-block rounded mr-2 bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
+                            class="group-invalid:pointer-events-none group-invalid:opacity-30 inline-block rounded mr-2 bg-red-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:bg-red-700 hover:shadow-lg focus:bg-red-800 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-600 active:shadow-lg motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
                         {{ 'form.action.save'|trans }}
                     </button>
                     <button data-modal-hide="modal-brand" data-modal-name="modal" type="button"
-                            class="inline-block rounded bg-gray-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-secondary-3 transition duration-150 ease-in-out hover:bg-secondary-accent-300 hover:shadow-secondary-2 focus:bg-secondary-accent-300 focus:shadow-secondary-2 focus:outline-none focus:ring-0 active:bg-secondary-600 active:shadow-secondary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
+                            class="inline-block rounded bg-gray-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-gray-300 transition duration-150 ease-in-out hover:bg-gray-700 hover:shadow-gray-300 focus:bg-gray-700 focus:shadow-gray-200 focus:outline-none focus:ring-0 active:bg-gray-600 active:shadow-gray-200 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
                         {{ 'form.action.cancel'|trans }}
                     </button>
                 </div>
