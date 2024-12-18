@@ -114,6 +114,7 @@ class RegistrationController extends AbstractController
      * @param StoreCustomerRepository $customerRepository
      * @param StoreAddressRepository $addressRepository
      * @param TranslatorInterface $translator
+     * @param OrderServiceInterface $processor
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws Exception
@@ -195,7 +196,7 @@ class RegistrationController extends AbstractController
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws Exception
-     * @throws NotFoundExceptionInterface
+     * @throws NotFoundExceptionInterface|\DateMalformedStringException
      */
     #[Route('/register', name: 'app_register', methods: ['GET', 'POST'])]
     public function register(

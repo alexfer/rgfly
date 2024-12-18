@@ -26,6 +26,7 @@ class ContactType extends AbstractType
             'attr' => [
                 'min' => 5,
                 'max' => 250,
+                'pattern' => ".{5,250}",
             ],
             'constraints' => [
                 new NotBlank([
@@ -50,6 +51,12 @@ class ContactType extends AbstractType
                 ],
             ])
             ->add('phone', TelType::class, [
+                'required' => false,
+                'attr' => [
+                    'min' => 8,
+                    'max' => 80,
+                    'pattern' => "/[+0-9]+$/i",
+                ],
                 'constraints' => [
                     new Regex(
                         "/[+0-9]+$/i",
@@ -58,9 +65,11 @@ class ContactType extends AbstractType
                 ],
             ])
             ->add('subject', TextType::class, [
+                'required' => false,
                 'attr' => [
                     'min' => 5,
                     'max' => 250,
+                    'pattern' => ".{5,250}",
                 ],
                 'constraints' => [
                     new Length([
@@ -73,8 +82,9 @@ class ContactType extends AbstractType
             ])
             ->add('message', TextareaType::class, [
                 'attr' => [
-                    'min' => 100,
+                    'min' => 10,
                     'max' => 65535,
+                    'pattern' => ".{10,65535}",
                 ],
                 'constraints' => [
                     new NotBlank([

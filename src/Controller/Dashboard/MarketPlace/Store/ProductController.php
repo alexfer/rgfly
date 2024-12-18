@@ -206,8 +206,8 @@ class ProductController extends AbstractController
             $em->persist($product);
             $em->flush();
         }
-
-        return $this->redirect($request->headers->get('referer'));
+        return $this->json(['message' => 'success', 'redirect' => $request->headers->get('referer')]);
+        //return $this->redirect($request->headers->get('referer'));
     }
 
     /**

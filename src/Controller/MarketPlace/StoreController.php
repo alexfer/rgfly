@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Controller\MarketPlace;
 
@@ -29,6 +27,17 @@ class StoreController extends AbstractController
             'store' => $random['store'],
             'products' => $random['products'],
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    #[Route('/redirect/{website}', name: 'app_market_place_market_redirect')]
+    public function redirectTo(Request $request): Response
+    {
+        $store = $this->em->getRepository(Store::class)->findOneBy(['website' => $request->get('website')]);
+        return $this->redirect($store->getUrl());
     }
 
     /**

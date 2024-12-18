@@ -166,7 +166,7 @@ class CouponController extends AbstractController
             for ($i = 0; $i < $available; $i++) {
                 $code = new StoreCouponCode();
                 $code->setCoupon($coupon)
-                    ->setCode(strtoupper(substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 6)));
+                    ->setCode(strtoupper(substr(base_convert(sha1(uniqid((string)mt_rand())), 16, 36), 0, 6)));
                 $em->persist($code);
             }
 
@@ -246,7 +246,7 @@ class CouponController extends AbstractController
     {
         $store = $this->store($serveStore, $user);
         $coupon = $em->getRepository(StoreCoupon::class)
-            ->codes($store, $request->get('id'), $request->get('type'));
+            ->codes($store, (int)$request->get('id'), $request->get('type'));
 
         return $this->json([
             'codes' => $coupon['result'],

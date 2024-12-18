@@ -118,7 +118,7 @@ class BrandController extends AbstractController
     {
         $store = $this->store($serveStore, $user);
 
-        $form = $this->createForm(BrandType::class, $brand);
+        $form = $this->createForm(BrandType::class, new StoreBrand());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

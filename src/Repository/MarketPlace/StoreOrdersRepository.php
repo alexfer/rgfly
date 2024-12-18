@@ -92,6 +92,7 @@ class StoreOrdersRepository extends ServiceEntityRepository
      * @param int|null $year
      * @param string|null $month
      * @return array
+     * @throws \DateMalformedStringException
      */
     private function filterByDates(?int $year, ?string $month = null): array
     {
@@ -122,7 +123,7 @@ class StoreOrdersRepository extends ServiceEntityRepository
      * @param string|null $month
      * @return int
      * @throws NoResultException
-     * @throws NonUniqueResultException
+     * @throws NonUniqueResultException|\DateMalformedStringException
      */
     public function summaryOrders(Store $store, ?int $year, ?string $month = null): int
     {
@@ -154,7 +155,7 @@ class StoreOrdersRepository extends ServiceEntityRepository
      * @param string|null $month
      * @return int
      * @throws NoResultException
-     * @throws NonUniqueResultException
+     * @throws NonUniqueResultException|\DateMalformedStringException
      */
     public function summarySum(Store $store, ?int $year, ?string $month = null): int
     {
@@ -179,6 +180,10 @@ class StoreOrdersRepository extends ServiceEntityRepository
         return (int)$qb->getQuery()->getSingleScalarResult();
     }
 
+    /**
+     * @param Store $store
+     * @return mixed
+     */
     public function orders(Store $store)
     {
         $qb = $this->createQueryBuilder('o')
@@ -196,7 +201,8 @@ class StoreOrdersRepository extends ServiceEntityRepository
      * @param Store $store
      * @param int $year
      * @param string $month
-     * @return array|null
+     * @param array $months
+     * @return array|null[]|null
      * @throws Exception
      */
     public function backdropOrderSummaryByMonths(Store $store, int $year, string $month, array $months): ?array

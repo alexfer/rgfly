@@ -16,30 +16,28 @@
     {% endif %}
 </div>
 {% set _tab = app.request.get('tab') %}
-<ul class="flex list-none flex-row flex-wrap border-b-0 ps-0" role="tablist" data-twe-nav-ref>
+<ul class="flex list-none flex-row flex-wrap border-b-0 ps-0" data-tabs-toggle="#customerTabContent"
+    data-tabs-active-classes="bg-gray-100 text-red-600 hover:text-red-600 border-red-600"
+    data-tabs-inactive-classes="text-gray-500 hover:text-red-600 border-b border-gray-100 hover:border-gray-300"
+    role="tablist">
     <li role="presentation">
-        <a
-                href="#customer-info"
-                class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[twe-nav-active]:border-primary data-[twe-nav-active]:text-primary dark:text-white/50 dark:hover:bg-neutral-700/60 dark:data-[twe-nav-active]:text-primary"
-                data-twe-toggle="pill"
-                data-twe-target="#customer-info"
-                data-twe-nav-active
-                role="tab"
-                aria-controls="customer-info"
-                aria-selected="{{ _tab == 'customer-info' ? 'true' : 'false' }}">{{ 'customer.cabinet.personal_information'|trans }}</a>
+        <a href="#"
+           class="my-2 block border-x-0 border-b-2 border-red-600 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent dark:text-white/50 dark:hover:bg-neutral-700/60"
+           data-tabs-target="#customer-info"
+           role="tab"
+           aria-controls="customer-info"
+           aria-selected="false{{ _tab == 'customer-info' ? 'true' : 'false' }}">{{ 'customer.cabinet.personal_information'|trans }}</a>
     </li>
     <li role="presentation">
-        <a
-                href="#address-info"
-                class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[twe-nav-active]:border-primary data-[twe-nav-active]:text-primary dark:text-white/50 dark:hover:bg-neutral-700/60 dark:data-[twe-nav-active]:text-primary"
-                data-twe-toggle="pill"
-                data-twe-target="#address-info"
-                role="tab"
-                aria-controls="address-info"
-                aria-selected="{{ _tab == 'address-info' ? 'true' : 'false' }}">{{ 'customer.cabinet.delivery_address'|trans }}</a>
+        <a href="#"
+           class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent dark:text-white/50 dark:hover:bg-neutral-700/60"
+           data-tabs-target="#address-info"
+           role="tab"
+           aria-controls="address-info"
+           aria-selected="{{ _tab == 'address-info' ? 'true' : 'false' }}">{{ 'customer.cabinet.delivery_address'|trans }}</a>
     </li>
 </ul>
-<div class="pt-2 mr-5">
+<div id="checkout-req" class="pt-2 mr-5">
     {% if errors.count %}
         <div class="flex items-center p-4 mb-4 mr-5 text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-400"
              role="alert">
@@ -48,14 +46,13 @@
     {% endif %}
     {{ form_start(form, {attr: {novalidate: '', action: path('app_market_place_order_checkout', {order: order.number, session: app.request.get('session'), tab: app.request.get('tab')})}}) }}
     <div class="tab-content" id="customerTabContent">
-        <div class="hidden opacity-100 p-4 shadow-md rounded-md dark:bg-gray-800 transition-opacity duration-150 ease-linear data-[twe-tab-active]:block"
+        <div class="hidden p-4 shadow-md rounded-md dark:bg-gray-800 transition-opacity duration-150 ease-linear"
              id="customer-info"
              role="tabpanel"
-             aria-labelledby="customer-info-tab"
-             data-twe-tab-active>
+             aria-labelledby="customer-info-tab">
             {% include 'market_place/checkout/parts/customer.html.twig' %}
         </div>
-        <div class="hidden opacity-0 p-4 shadow-md rounded-md dark:bg-gray-800 transition-opacity duration-150 ease-linear data-[twe-tab-active]:block"
+        <div class="hidden p-4 shadow-md rounded-md dark:bg-gray-800 transition-opacity duration-150 ease-linear"
              id="address-info"
              role="tabpanel"
              aria-labelledby="address-info-tab">
@@ -81,16 +78,30 @@
         {% endif %}
     {% endif %}
     <div id="payment-method" class="mt-3">
-        <div class="rounded-t-lg border border-neutral-200 bg-white dark:border-neutral-600 dark:bg-body-dark">
+        <div class="rounded-t-lg border border-neutral-200 bg-white dark:border-neutral-600 dark:bg-body-dark"
+             data-accordion="collapse" data-active-classes="bg-neutral-300">
             {% for key, gateway in order.store.storePaymentGatewaystores.toArray %}
-                <h2 class="mb-0" id="headingOne">
-                    <button class="group relative font-semibold flex w-full items-center rounded-t-lg border-0 bg-white px-5 py-4 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-body-dark dark:text-white [&:not([data-twe-collapse-collapsed])]:bg-white [&:not([data-twe-collapse-collapsed])]:text-primary [&:not([data-twe-collapse-collapsed])]:shadow-border-b dark:[&:not([data-twe-collapse-collapsed])]:bg-surface-dark dark:[&:not([data-twe-collapse-collapsed])]:text-primary dark:[&:not([data-twe-collapse-collapsed])]:shadow-white/10"
+                <h2 class="mb-0" id="heading-{{ key }}">
+                    <button class="group relative font-semibold flex w-full items-center rounded-t-lg border-0 bg-white px-5 py-4 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-body-dark dark:text-white"
                             type="button"
-                            data-twe-collapse-init
-                            data-twe-target="#collapse-{{ key }}"
+                            data-accordion-target="#collapse-{{ key }}"
                             aria-expanded="true"
-                            aria-controls="collapse-{{ key }}"><i
-                                class="text-lg text-yellow-300 mb-1 mr-2"></i>{{ gateway.gateway.name }}
+                            aria-controls="collapse-{{ key }}">
+                        {% if gateway.gateway.attach is not null %}
+                            {% set icon = 'storage/payment_gateway/' ~ gateway.gateway.attach.name %}
+                            {% if gateway.gateway.attach.mime != 'image/svg+xml' %}
+                                <img class="h-5" alt="{{ gateway.gateway.name }}"
+                                     src="{{ asset(icon)|imagine_filter('gateway_icon') }}">
+                            {% else %}
+                                <img class="inline-flex me-1.5 h-5" alt="{{ gateway.gateway.name }}"
+                                     src="{{ asset(icon) }}">
+                            {% endif %}
+                        {% else %}
+                            <img class="inline-flex me-1.5 h-5"
+                                 src="{{ asset('img/payment_gateway/' ~ gateway.gateway.slug ~ '.svg') }}"
+                                 alt="{{ gateway.gateway.name }}">
+                        {% endif %}
+                        {{ gateway.gateway.name }}
                         <span class="-me-1 ms-auto h-5 w-5 shrink-0 rotate-[-180deg] transition-transform duration-200 ease-in-out group-data-[twe-collapse-collapsed]:me-0 group-data-[twe-collapse-collapsed]:rotate-0 motion-reduce:transition-none [&>svg]:h-6 [&>svg]:w-6">
                               <svg xmlns="http://www.w3.org/2000/svg"
                                    fill="none"
@@ -105,15 +116,12 @@
                     </button>
                 </h2>
                 <div id="collapse-{{ key }}"
-                     class="!visible"
-                     data-twe-collapse-item
-                     data-twe-collapse-show
-                     aria-labelledby="heading-{{ key }}"
-                     data-twe-parent="#payment-method">
+                     class="hidden"
+                     aria-labelledby="heading-{{ key }}">
                     <div class="px-5 py-4">
                         <div class="mb-2">{{ gateway.gateway.summary }}</div>
                         <button type="submit" name="gateway[{{ gateway.gateway.slug }}]"
-                                class="inline-block justify-start rounded bg-danger px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-danger-3 transition duration-150 ease-in-out hover:bg-danger-accent-300 hover:shadow-danger-2 focus:bg-danger-accent-300 focus:shadow-danger-2 focus:outline-none focus:ring-0 active:bg-danger-600 active:shadow-danger-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong group-invalid:pointer-events-none group-invalid:opacity-30">
+                                class="inline-block justify-start rounded bg-red-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-md shadow-red-300 transition duration-150 ease-in-out hover:bg-red-700 hover:shadow-red-200 focus:bg-red-300 focus:shadow-red-200 focus:outline-none focus:ring-0 active:bg-red-600 active:shadow-red-200 motion-reduce:transition-none dark:shadow-black/30 group-invalid:pointer-events-none group-invalid:opacity-30">
                             {{ gateway.gateway.handlerText }}
                         </button>
                     </div>

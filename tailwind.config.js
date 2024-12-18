@@ -1,30 +1,16 @@
 /** @type {import('tailwindcss').Config} */
-const colors = require('tailwindcss/colors');
 module.exports = {
     mode: 'jit',
     content: [
-        "./assets/**/*.js",
-        "./templates/**/*.html.twig",
-        "./node_modules/flowbite/**/*.js",
-        "./node_modules/tw-elements/js/**/*.js"
+        './assets/**/*.js',
+        './templates/theme/tailwind/**/*.{html.twig,js}',
+        './node_modules/flowbite/**/*.js',
     ],
     theme: {
         fontFamily: {
             'oswald': ['Oswald'],
             'roboto': ['Roboto'],
             'sans': ['Helvetica', 'Arial', 'sans-serif'],
-        },
-        colors: {
-            transparent: 'transparent',
-            current: 'currentColor',
-            black: colors.black,
-            white: colors.white,
-            gray: colors.gray,
-            emerald: colors.emerald,
-            purple: colors.violet,
-            pink: colors.fuchsia,
-            indigo: colors.indigo,
-            yellow: colors.yellow,
         },
         extend: {
             height: {

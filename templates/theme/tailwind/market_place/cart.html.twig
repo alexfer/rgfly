@@ -94,6 +94,6 @@
 {% if orders|length != 0 %}
     <div class="flex justify-center items-center mt-4 mb-6">
         <a href="{{ path('app_market_place_order_summary') }}"
-           class="inline-block rounded bg-info px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-gray-200 hover:text-white shadow-info-3 transition duration-150 ease-in-out hover:bg-info-accent-300 hover:shadow-info-2 focus:bg-info-accent-300 focus:shadow-info-2 focus:outline-none focus:ring-0 active:bg-info-600 active:shadow-info-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">{{ 'order.view'|trans }}</a>
+           class="inline-block rounded bg-gray-950 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-gray-200 hover:text-white shadow-gray-700 transition duration-150 ease-in-out hover:bg-gray-700 focus:outline-none focus:ring-0 motion-reduce:transition-none">{{ 'order.view'|trans }}</a>
     </div>
 {% endif %}

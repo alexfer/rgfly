@@ -29,6 +29,7 @@ BEGIN
                    'payments', json_agg(json_build_object(
                     'id', spg.id,
                     'text', spg.handler_text,
+                    'slug', spg.slug,
                     'name', spg.name,
                     'summary', spg.summary
                                         ))
@@ -81,8 +82,7 @@ BEGIN
                  sp.name,
                  sp.short_name,
                  sp.cost,
-                 sp.fee,
-                 sp.discount
+                 sp.fee
           FROM store_product sp
           WHERE sp.deleted_at IS NULL
           ORDER BY RANDOM()

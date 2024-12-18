@@ -4,16 +4,15 @@
 
 {% block body %}
     <h2 class="text-2xl pb-4 font-oswald font-extrabold text-primary-700 dark:text-white">{{ 'title.questions'|trans }}</h2>
-    <div id="accordion-flush">
+    <div id="accordion-flush" data-accordion="collapse" data-active-classes="bg-transparent">
         {% for key, entry in entries %}
             <h2 id="faq-flush-heading-{{ key }}">
                 <button type="button"
-                        class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3"
-                        data-twe-target="#faq-body-{{ key }}"
-                        data-twe-collapse-init
-                        aria-expanded="{{ key == 0 ? 'true' : 'false' }}"
+                        class="group relative flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3"
+                        data-accordion-target="#faq-body-{{ key }}"
+                        aria-expanded="true"
                         aria-controls="faq-body-{{ key }}">
-                    <h5 class="flex text-xl font-oswald subpixel-antialiased hover:text-black dark:text-white">
+                    <div class="flex text-xl font-oswald subpixel-antialiased hover:text-black dark:text-white">
                         <svg class="w-5 h-5 mt-1 me-2 shrink-0" fill="currentColor" viewBox="0 0 20 20"
                              xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd"
@@ -21,7 +20,7 @@
                                   clip-rule="evenodd"></path>
                         </svg>
                         {{ entry.title }}
-                    </h5>
+                    </div>
                     <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
                          xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -29,10 +28,7 @@
                     </svg>
                 </button>
             </h2>
-            <div id="faq-body-{{ key }}" class="!visible{% if key > 0 %} hidden{% endif %} border-0"
-                 data-twe-collapse-item
-                    {% if key == 0 %} data-twe-collapse-show{% endif %}
-                 data-twe-parent="#accordion-flush"
+            <div id="faq-body-{{ key }}" class="hidden border-0"
                  aria-labelledby="faq-flush-heading-{{ key }}">
                 <div class="font-sans py-5 border-b border-gray-200 dark:border-gray-700">
                     <p class="mb-2 text-gray-500 font-sans dark:text-gray-400">{{ entry.content|raw }}</p>
