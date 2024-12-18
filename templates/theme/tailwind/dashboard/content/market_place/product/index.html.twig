@@ -12,7 +12,7 @@
             {{ 'product.unavailable'|trans }}
         </div>
     {% endif %}
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="relative shadow-md sm:rounded-lg">
         <form id="products" name="products" method="post" autocomplete="off">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs whitespace-nowrap text-gray-500 uppercase bg-info-50 dark:bg-gray-700 dark:text-gray-400">
@@ -33,8 +33,8 @@
                         scope="col">{{ 'table.header.amount'|trans }}</th>
                     <th class="px-3 py-3 text-center"
                         scope="col">{{ 'table.header.created_at'|trans }}</th>
-                    <th class="px-3 py-3 text-center"
-                        scope="col">{{ 'table.header.handle'|trans }}</th>
+                    <th class="px-3 py-3"
+                        scope="col"></th>
                 </tr>
                 </thead>
                 <tbody class="whitespace-nowrap">
@@ -78,26 +78,44 @@
                         </td>
                         <td class="px-3 py-3 text-center">{{ product.created|date(date_format) }}</td>
                         <td class="px-3 py-3 text-center">
-                            {% if product.deleted %}
-                                <a class="border rounded px-1.5 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800{{ product.store.deleted ? ' pointer-events-none' : '' }}"
-                                   href="{% if product.store.deleted is null %}{{ path('app_dashboard_restore_product', {store: product.store.id, id: product.id}) }}{% endif %}">
-                                    <i class="fa fa-{{ product.store.deleted ? 'ban' : 'arrow-up' }} dark:text-white"></i>
-                                </a>
-                            {% else %}
-                                <a role="button"
-                                   href="{{ path('app_dashboard_market_place_edit_product', {store: product.store.id, id: product.id, tab: 'details'}) }}"
-                                   class="border rounded ps-1.5 pr-1 py-1 mr-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
-                                    <i class="fa fa-pencil text-indigo-600 dark:text-white"></i>
-                                </a>
-                                <button type="button"
-                                        class="border rounded delete-entry px-2 py-1 hover:shadow-md hover:bg-gray-100 dark:hover:bg-gray-800"
-                                        data-token="{{ csrf_token('delete') }}"
-                                        data-url="{{ url('app_dashboard_delete_product', {store: product.store.id, id: product.id}) }}"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modal-delete">
-                                    <i class="fa fa-trash text-red-600 dark:text-white"></i>
-                                </button>
-                            {% endif %}
+                            <a id="dropdown-menu-{{ product.id }}" role="button"
+                               data-dropdown-toggle="dropdown-context-{{ product.id }}" class="flex justify-end">
+                                <svg class="h-5 w-5 text-gray-600 dark:text-gray-50" fill="currentColor"
+                                     viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                          d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                                          clip-rule="evenodd"></path>
+                                </svg>
+                            </a>
+                            <div id="dropdown-context-{{ store.id }}"
+                                 class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                                <ul class="py-2 text-left text-xs text-gray-700 dark:text-gray-200 "
+                                    aria-labelledby="dropdown-menu-{{ store.id }}">
+                                    {% if product.deleted %}
+                                        <li>
+                                            <a class="block px-4 py-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:text-gray-100{{ product.store.deleted ? ' pointer-events-none' : '' }}"
+                                               href="{% if product.store.deleted is null %}{{ path('app_dashboard_restore_product', {store: product.store.id, id: product.id}) }}{% endif %}">
+                                                {{ 'text.restore'|trans }}
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <a role="button"
+                                           href="{{ path('app_dashboard_market_place_edit_product', {store: product.store.id, id: product.id, tab: 'details'}) }}"
+                                           class="block px-4 py-2 text-indigo-500 dark:text-gray-100 hover:text-indigo-700 hover:bg-gray-100 dark:hover:text-white">
+                                            {{ 'text.edit'|trans }}
+                                        </a>
+                                        <a role="button"
+                                           class="block delete-entry px-4 py-2 text-red-500 hover:text-red-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                           data-token="{{ csrf_token('delete') }}"
+                                           data-url="{{ url('app_dashboard_delete_product', {store: product.store.id, id: product.id}) }}"
+                                           data-bs-toggle="modal"
+                                           data-bs-target="#modal-delete">
+                                            {{ 'text.delete'|trans }}
+                                        </a>
+                                    {% endif %}
+                                </ul>
+                            </div>
+
                         </td>
                     </tr>
                 {% else %}

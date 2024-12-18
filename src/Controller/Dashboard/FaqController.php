@@ -64,7 +64,7 @@ class FaqController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('app_dashboard_faq');
+        return $this->json(['message' => 'success', 'redirect' => $this->generateUrl('app_dashboard_faq')]);
     }
 
     /**

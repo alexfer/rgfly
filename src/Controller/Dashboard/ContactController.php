@@ -62,7 +62,7 @@ class ContactController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('app_dashboard_contact');
+        return $this->json(['success' => true, 'redirect' => $this->generateUrl('app_dashboard_contact')]);
     }
 
     /**

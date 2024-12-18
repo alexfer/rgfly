@@ -2370,6 +2370,10 @@
                 <source>status.unread</source>
                 <target>Unread</target>
             </trans-unit>
+            <trans-unit id="form.create.account">
+                <source>form.create.account</source>
+                <target>Create account</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

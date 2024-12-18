@@ -5,7 +5,9 @@
         {% if requestPage > 1 %}
             <span class="bg-white text-gray-600 px-3 py-2 text-sm border-r border-gray-400 font-bold">
                     <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({page: 1})) }}">
-                        <i class="fa fa-angle-double-left"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="h-4 w-4">
+                            <path fill-rule="evenodd" d="M3.22 7.595a.75.75 0 0 0 0 1.06l3.25 3.25a.75.75 0 0 0 1.06-1.06l-2.72-2.72 2.72-2.72a.75.75 0 0 0-1.06-1.06l-3.25 3.25Zm8.25-3.25-3.25 3.25a.75.75 0 0 0 0 1.06l3.25 3.25a.75.75 0 1 0 1.06-1.06l-2.72-2.72 2.72-2.72a.75.75 0 0 0-1.06-1.06Z" clip-rule="evenodd" />
+                        </svg>
                     </a>
                 </span>
         {% endif %}
@@ -13,7 +15,9 @@
             <span class="bg-white text-gray-600 px-3 text-sm py-2 border-r border-gray-400">
                 <a rel="prev"
                    href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({page: (0 + requestPage|number_format - 1)})) }}">
-                    <i class="fa fa-angle-left"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="h-4 w-4">
+                      <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+                    </svg>
                 </a>
             </span>
         {% endif %}
@@ -37,14 +41,18 @@
             <span class="bg-white text-gray-600 px-3 py-2 text-sm border-r border-gray-400">
                 <a rel="next"
                    href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({page: (0 + requestPage|number_format + 1)})) }}">
-                    <i class="fa fa-angle-right"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="h-4 w-4">
+                      <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                    </svg>
                 </a>
             </span>
         {% endif %}
         {% if requestPage < pages %}
             <span class="bg-white text-gray-600 px-3 py-2 text-sm border-gray-400 font-bold">
                 <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({page: pages})) }}">
-                    <i class="fa fa-angle-double-right"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="h-4 w-4">
+                      <path fill-rule="evenodd" d="M12.78 7.595a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06l2.72-2.72-2.72-2.72a.75.75 0 0 1 1.06-1.06l3.25 3.25Zm-8.25-3.25 3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06l2.72-2.72-2.72-2.72a.75.75 0 0 1 1.06-1.06Z" clip-rule="evenodd" />
+                    </svg>
                 </a>
             </span>
         {% endif %}

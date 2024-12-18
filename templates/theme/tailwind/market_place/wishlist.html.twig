@@ -1,12 +1,10 @@
 {% set _wishlist_bg = 'text-grey-600' %}
 {% set _disabled = null %}
-{% set _icon = 'fa-heart' %}
 {% if customer is not null %}
     {% for wishlist in customer.storeWishlists.toArray %}
         {% if wishlist.product.id == product.id %}
             {% set _wishlist_bg = 'text-rose-500' %}
             {% set _disabled = 'disabled' %}
-            {% set _icon = 'fa-heart' %}
         {% endif %}
     {% endfor %}
 {% endif %}
