@@ -185,21 +185,39 @@ class StoreController extends AbstractController
                     $em->persist($social);
                 }
 
-                $paymentGateways = $em->getRepository(StorePaymentGateway::class)->findBy(['active' => true]);
+                $requestGateways = $form->get('gateway')->getData();
+
+                $criteria = ['active' => true];
+
+                if ($requestGateways) {
+                    $criteria = ['active' => true, 'id' => $requestGateways];
+                }
+
+                $paymentGateways = $em->getRepository(StorePaymentGateway::class)->findBy($criteria);
 
                 foreach ($paymentGateways as $gateway) {
                     $paymentGatewayStore = new StorePaymentGatewayStore();
                     $paymentGatewayStore->setStore($store)
                         ->setGateway($gateway)
-                        ->setActive(true);
+                        ->setActive(count($criteria) > 1);
                     $em->persist($paymentGatewayStore);
                 }
+                unset($criteria);
 
-                $carriers = $em->getRepository(StoreCarrier::class)->findBy(['is_enabled' => true]);
+                $requestCarriers = $form->get('carrier')->getData();
+                $criteria = ['is_enabled' => true];
+
+                if ($requestCarriers) {
+                    $criteria = ['is_enabled' => true, 'id' => $requestCarriers];
+                }
+
+                $carriers = $em->getRepository(StoreCarrier::class)->findBy($criteria);
 
                 foreach ($carriers as $carrier) {
                     $carrierStore = new StoreCarrierStore();
-                    $carrierStore->setStore($store)->setCarrier($carrier);
+                    $carrierStore->setStore($store)
+                        ->setCarrier($carrier)
+                        ->setActive(count($criteria) > 1);
                     $em->persist($carrierStore);
                 }
 
@@ -315,7 +333,7 @@ class StoreController extends AbstractController
                         ]);
                     if (!$carrierStore) {
                         $newCarrier = new StoreCarrierStore();
-                        $newCarrier->setCarrier($em->getRepository($newCarrier::class)->find($carrier))
+                        $newCarrier->setCarrier($em->getRepository(StoreCarrier::class)->find($carrier))
                             ->setStore($store)
                             ->setActive(true);
                         $em->persist($newCarrier);
@@ -343,7 +361,7 @@ class StoreController extends AbstractController
                         $newGateway = new StorePaymentGatewayStore();
                         $newGateway->setGateway($em->getRepository(StorePaymentGateway::class)->find($gateway))
                             ->setStore($store)
-                        ->setActive(true);
+                            ->setActive(true);
                         $em->persist($newGateway);
                     } else {
                         $paymentGateway->setActive(true);

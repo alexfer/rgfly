@@ -82,7 +82,7 @@ class Store
     #[ORM\Column(type: Types::SIMPLE_ARRAY)]
     private array $messages = [];
 
-    #[ORM\OneToMany(targetEntity: StorePaymentGatewayStore::class, mappedBy: 'store')]
+    #[ORM\OneToMany(targetEntity: StorePaymentGatewayStore::class, mappedBy: 'store', cascade: ['persist', 'remove'])]
     private Collection $storePaymentGatewayStores;
 
     #[ORM\OneToMany(targetEntity: StoreWishlist::class, mappedBy: 'store')]
@@ -103,7 +103,7 @@ class Store
     /**
      * @var Collection<int, StoreSocial>
      */
-    #[ORM\OneToMany(targetEntity: StoreSocial::class, mappedBy: 'store')]
+    #[ORM\OneToMany(targetEntity: StoreSocial::class, mappedBy: 'store', cascade: ['persist', 'remove'])]
     private Collection $storeSocials;
 
     /**
@@ -112,13 +112,13 @@ class Store
     #[ORM\OneToMany(targetEntity: StoreOperation::class, mappedBy: 'store')]
     private Collection $storeOperations;
 
-    #[ORM\OneToOne(mappedBy: 'store', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'store', cascade: ['remove'])]
     private ?StoreOptions $storeOptions = null;
 
     /**
      * @var Collection<int, StoreCarrierStore>
      */
-    #[ORM\OneToMany(targetEntity: StoreCarrierStore::class, mappedBy: 'store')]
+    #[ORM\OneToMany(targetEntity: StoreCarrierStore::class, mappedBy: 'store', cascade: ['persist', 'remove'])]
     private Collection $storeCarrierStores;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
