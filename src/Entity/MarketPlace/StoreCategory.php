@@ -54,16 +54,16 @@ class StoreCategory
     private ?DateTimeImmutable $created_at;
 
     /**
-     * @var DateTimeInterface|null
-     */
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTimeInterface $deleted_at = null;
-
-    /**
      * @var Collection
      */
     #[ORM\OneToMany(targetEntity: StoreCategoryProduct::class, mappedBy: 'category')]
     private Collection $storeCategoryProducts;
+
+    /**
+     * @var DateTimeInterface|null
+     */
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $deleted_at = null;
 
     public function __construct()
     {

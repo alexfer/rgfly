@@ -19,16 +19,26 @@ class StoreOptions
     #[ORM\Column(nullable: true)]
     private ?int $backup_schedule = null;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return Store|null
+     */
     public function getStore(): ?Store
     {
         return $this->store;
     }
 
+    /**
+     * @param Store|null $store
+     * @return $this
+     */
     public function setStore(?Store $store): static
     {
         $this->store = $store;
@@ -36,11 +46,18 @@ class StoreOptions
         return $this;
     }
 
+    /**
+     * @return int|null
+     */
     public function getBackupSchedule(): ?int
     {
         return $this->backup_schedule;
     }
 
+    /**
+     * @param int|null $backup_schedule
+     * @return $this
+     */
     public function setBackupSchedule(?int $backup_schedule): static
     {
         $this->backup_schedule = $backup_schedule;

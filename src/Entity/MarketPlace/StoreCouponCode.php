@@ -24,7 +24,7 @@ class StoreCouponCode
     /**
      * @var Collection<int, StoreCouponUsage>
      */
-    #[ORM\OneToMany(mappedBy: 'coupon_code', targetEntity: StoreCouponUsage::class)]
+    #[ORM\OneToMany(targetEntity: StoreCouponUsage::class, mappedBy: 'coupon_code')]
     private Collection $storeCouponUsages;
 
     public function __construct()

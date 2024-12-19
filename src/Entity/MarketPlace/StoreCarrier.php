@@ -4,6 +4,8 @@ namespace App\Entity\MarketPlace;
 
 use App\Entity\Attach;
 use App\Repository\MarketPlace\StoreCarrierRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -30,11 +32,19 @@ class StoreCarrier
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?string $shipping_amount = null;
-
     #[ORM\Column(nullable: true)]
     private ?bool $is_enabled = null;
+
+    /**
+     * @var Collection<int, StoreCarrierStore>
+     */
+    #[ORM\OneToMany(targetEntity: StoreCarrierStore::class, mappedBy: 'carrier')]
+    private Collection $storeCarrierStores;
+
+    public function __construct()
+    {
+        $this->storeCarrierStores = new ArrayCollection();
+    }
 
     /**
      * @return int|null
@@ -121,25 +131,6 @@ class StoreCarrier
     }
 
     /**
-     * @return string|null
-     */
-    public function getShippingAmount(): ?string
-    {
-        return $this->shipping_amount;
-    }
-
-    /**
-     * @param string|null $shipping_amount
-     * @return $this
-     */
-    public function setShippingAmount(?string $shipping_amount): static
-    {
-        $this->shipping_amount = $shipping_amount;
-
-        return $this;
-    }
-
-    /**
      * @return bool|null
      */
     public function isEnabled(): ?bool
@@ -173,6 +164,44 @@ class StoreCarrier
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, StoreCarrierStore>
+     */
+    public function getStoreCarrierStores(): Collection
+    {
+        return $this->storeCarrierStores;
+    }
+
+    /**
+     * @param StoreCarrierStore $storeCarrierStore
+     * @return $this
+     */
+    public function addStoreCarrierStore(StoreCarrierStore $storeCarrierStore): static
+    {
+        if (!$this->storeCarrierStores->contains($storeCarrierStore)) {
+            $this->storeCarrierStores->add($storeCarrierStore);
+            $storeCarrierStore->setCarrier($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param StoreCarrierStore $storeCarrierStore
+     * @return $this
+     */
+    public function removeStoreCarrierStore(StoreCarrierStore $storeCarrierStore): static
+    {
+        if ($this->storeCarrierStores->removeElement($storeCarrierStore)) {
+            // set the owning side to null (unless already changed)
+            if ($storeCarrierStore->getCarrier() === $this) {
+                $storeCarrierStore->setCarrier(null);
+            }
+        }
 
         return $this;
     }

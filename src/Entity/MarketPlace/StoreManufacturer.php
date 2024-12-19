@@ -25,7 +25,7 @@ class StoreManufacturer
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: StoreProductManufacturer::class)]
+    #[ORM\OneToMany(targetEntity: StoreProductManufacturer::class, mappedBy: 'manufacturer')]
     private Collection $storeProductManufacturers;
 
     public function __construct()

@@ -24,7 +24,7 @@ class StoreBrand
     #[ORM\Column(length: 512, nullable: true)]
     private ?string $url = null;
 
-    #[ORM\OneToMany(mappedBy: 'brand', targetEntity: StoreProductBrand::class)]
+    #[ORM\OneToMany(targetEntity: StoreProductBrand::class, mappedBy: 'brand')]
     private Collection $storeProductBrands;
 
     public function __construct()

@@ -106,6 +106,21 @@ class Store
     #[ORM\OneToMany(targetEntity: StoreSocial::class, mappedBy: 'store')]
     private Collection $storeSocials;
 
+    /**
+     * @var Collection<int, StoreOperation>
+     */
+    #[ORM\OneToMany(targetEntity: StoreOperation::class, mappedBy: 'store')]
+    private Collection $storeOperations;
+
+    #[ORM\OneToOne(mappedBy: 'store', cascade: ['persist', 'remove'])]
+    private ?StoreOptions $storeOptions = null;
+
+    /**
+     * @var Collection<int, StoreCarrierStore>
+     */
+    #[ORM\OneToMany(targetEntity: StoreCarrierStore::class, mappedBy: 'store')]
+    private Collection $storeCarrierStores;
+
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $cc = null;
 
@@ -117,15 +132,6 @@ class Store
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $locked_to = null;
-
-    /**
-     * @var Collection<int, StoreOperation>
-     */
-    #[ORM\OneToMany(targetEntity: StoreOperation::class, mappedBy: 'store')]
-    private Collection $storeOperations;
-
-    #[ORM\OneToOne(mappedBy: 'store', cascade: ['persist', 'remove'])]
-    private ?StoreOptions $storeOptions = null;
 
     public function __construct()
     {
@@ -142,6 +148,7 @@ class Store
         $this->storeMessages = new ArrayCollection();
         $this->storeSocials = new ArrayCollection();
         $this->storeOperations = new ArrayCollection();
+        $this->storeCarrierStores = new ArrayCollection();
     }
 
     /**
@@ -932,6 +939,44 @@ class Store
         }
 
         $this->storeOptions = $storeOptions;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, StoreCarrierStore>
+     */
+    public function getStoreCarrierStores(): Collection
+    {
+        return $this->storeCarrierStores;
+    }
+
+    /**
+     * @param StoreCarrierStore $storeCarrierStore
+     * @return $this
+     */
+    public function addStoreCarrierStore(StoreCarrierStore $storeCarrierStore): static
+    {
+        if (!$this->storeCarrierStores->contains($storeCarrierStore)) {
+            $this->storeCarrierStores->add($storeCarrierStore);
+            $storeCarrierStore->setStore($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param StoreCarrierStore $storeCarrierStore
+     * @return $this
+     */
+    public function removeStoreCarrierStore(StoreCarrierStore $storeCarrierStore): static
+    {
+        if ($this->storeCarrierStores->removeElement($storeCarrierStore)) {
+            // set the owning side to null (unless already changed)
+            if ($storeCarrierStore->getStore() === $this) {
+                $storeCarrierStore->setStore(null);
+            }
+        }
 
         return $this;
     }

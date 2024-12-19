@@ -100,7 +100,6 @@ class ConfigurationController extends AbstractController
                     'description' => $inputs['description'],
                     'linkUrl' => $inputs['linkUrl'],
                     'enabled' => $inputs['enabled'],
-                    'shippingAmount' => (float)$inputs['shippingAmount'],
                 ];
 
                 try {
@@ -214,7 +213,6 @@ class ConfigurationController extends AbstractController
                 'description' => $inputs['description'],
                 'linkUrl' => $inputs['linkUrl'],
                 'enabled' => $inputs['enabled'],
-                'shippingAmount' => (float)$inputs['shippingAmount'],
             ];
 
             try {

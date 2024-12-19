@@ -2,7 +2,13 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
-use App\Entity\MarketPlace\{Store, StoreOptions, StorePaymentGateway, StorePaymentGatewayStore, StoreSocial};
+use App\Entity\MarketPlace\{Store,
+    StoreCarrier,
+    StoreCarrierStore,
+    StoreOptions,
+    StorePaymentGateway,
+    StorePaymentGatewayStore,
+    StoreSocial};
 use App\Form\Type\Dashboard\MarketPlace\StoreType;
 use App\Service\FileUploader;
 use Doctrine\DBAL\Exception;
@@ -189,6 +195,14 @@ class StoreController extends AbstractController
                     $em->persist($paymentGatewayStore);
                 }
 
+                $carriers = $em->getRepository(StoreCarrier::class)->findBy(['is_enabled' => true]);
+
+                foreach ($carriers as $carrier) {
+                    $carrierStore = new StoreCarrierStore();
+                    $carrierStore->setStore($store)->setCarrier($carrier);
+                    $em->persist($carrierStore);
+                }
+
                 $url = $form->get('website')->getData();
 
                 if ($url) {
@@ -289,6 +303,32 @@ class StoreController extends AbstractController
                 $store->setAttach($attach);
             }
 
+            $carriers = $form->get('carrier')->getData();
+
+            if ($carriers) {
+                $em = $this->resetCarriers($store, $em);
+                foreach ($carriers as $carrier) {
+                    $carrierStore = $em->getRepository(StoreCarrierStore::class)
+                        ->findOneBy([
+                            'carrier' => $carrier,
+                            'store' => $store,
+                        ]);
+                    if (!$carrierStore) {
+                        $newCarrier = new StoreCarrierStore();
+                        $newCarrier->setCarrier($em->getRepository($newCarrier::class)->find($carrier))
+                            ->setStore($store)
+                            ->setActive(true);
+                        $em->persist($newCarrier);
+                    } else {
+                        $carrierStore->setActive(true);
+                        $em->persist($carrierStore);
+                    }
+                }
+            } else {
+                $em = $this->resetCarriers($store, $em);
+                $em->flush();
+            }
+
             $gateways = $form->get('gateway')->getData();
 
             if ($gateways) {
@@ -301,9 +341,9 @@ class StoreController extends AbstractController
                         ]);
                     if (!$paymentGateway) {
                         $newGateway = new StorePaymentGatewayStore();
-                        $newGateway->setGateway($em->getRepository(StorePaymentGateway::class)->find($gateway));
-                        $newGateway->setStore($store);
-                        $newGateway->setActive(true);
+                        $newGateway->setGateway($em->getRepository(StorePaymentGateway::class)->find($gateway))
+                            ->setStore($store)
+                        ->setActive(true);
                         $em->persist($newGateway);
                     } else {
                         $paymentGateway->setActive(true);
@@ -350,6 +390,20 @@ class StoreController extends AbstractController
         foreach ($store->getStorePaymentGatewayStores() as $gatewayStore) {
             $gatewayStore->setActive(false);
             $em->persist($gatewayStore);
+        }
+        return $em;
+    }
+
+    /**
+     * @param Store $store
+     * @param EntityManagerInterface $em
+     * @return EntityManagerInterface
+     */
+    private function resetCarriers(Store $store, EntityManagerInterface $em): EntityManagerInterface
+    {
+        foreach ($store->getStoreCarrierStores() as $carrierStore) {
+            $carrierStore->setActive(false);
+            $em->persist($carrierStore);
         }
         return $em;
     }

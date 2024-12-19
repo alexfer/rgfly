@@ -1426,6 +1426,10 @@
                 <source>entry.form.billing</source>
                 <target>Billing</target>
             </trans-unit>
+            <trans-unit id="entry.form.carrier">
+                <source>entry.form.carrier</source>
+                <target>Carrier</target>
+            </trans-unit>
             <trans-unit id="entry.form.store_details">
                 <source>entry.form.store_details</source>
                 <target>Store Details</target>
@@ -2111,6 +2115,10 @@
             <trans-unit id="label.form.cc">
                 <source>label.form.cc</source>
                 <target>Credit cards</target>
+            </trans-unit>
+            <trans-unit id="label.form.carrier">
+                <source>label.form.carrier</source>
+                <target>Carrier</target>
             </trans-unit>
             <trans-unit id="label.form.keep_me_logged_in">
                 <source>label.form.keep_me_logged_in</source>

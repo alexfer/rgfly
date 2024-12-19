@@ -26,7 +26,7 @@ class StoreCouponUsage
     private ?StoreCouponCode $coupon_code = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $used_at = null;
+    private ?\DateTimeImmutable $used_at;
 
 
     public function __construct()
