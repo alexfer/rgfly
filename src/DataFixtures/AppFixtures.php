@@ -57,7 +57,7 @@ class AppFixtures extends Fixture
         $userDetails = $this->getUserDetailsData();
 
         $key = 0;
-        foreach ($this->getUserData() as [$password, $email, $roles, $ip]) {
+        foreach (self::getUserData() as [$password, $email, $roles, $ip]) {
             $user = new User();
             $user->setPassword($this->passwordHasher->hashPassword($user, $password));
             $user->setEmail($email);
@@ -125,7 +125,7 @@ class AppFixtures extends Fixture
      *
      * @return array
      */
-    private function getUserData(): array
+    public static function getUserData(): array
     {
         return [
             ['7212104', 'alexandershtyher@gmail.com', [User::ROLE_ADMIN], '0.0.0.0'],

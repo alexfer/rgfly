@@ -35,6 +35,7 @@ class Fixtures extends Fixture
     {
         return [
             CategoryFixtures::class,
+            StoreFixtures::class,
         ];
     }
 
@@ -95,11 +96,11 @@ class Fixtures extends Fixture
     private function getPaymentGatewayData(): array
     {
         return [
-            ['Stripe', 'Stripe is powerful payment platform designed for internet businesses', false, 'Checkout with Stripe'],
-            ['PayPal', 'PatPal - the safer, easier way to pay', false, 'Pay with Paypal'],
-            ['ApplePay', 'Apple Pay is a safe, secure, and private way to pay', false, 'Checkout'],
+            ['Stripe', 'Stripe is powerful payment platform designed for internet businesses', true, 'Checkout with Stripe'],
+            ['PayPal', 'PatPal - the safer, easier way to pay', true, 'Pay with Paypal'],
+            ['ApplePay', 'Apple Pay is a safe, secure, and private way to pay', true, 'Checkout'],
             ['Cash', 'Pay with cash when your order is delivered', true, 'Checkout'],
-            ['Adyen', 'End-to-end payments, data, and financial management in a single solution', false, 'Checkout via Adyen'],
+            ['Adyen', 'End-to-end payments, data, and financial management in a single solution', true, 'Checkout via Adyen'],
         ];
     }
 }

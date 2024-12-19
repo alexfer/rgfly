@@ -180,7 +180,8 @@ class StoreController extends AbstractController
 
                 foreach (StoreSocial::NAME as $value) {
                     $social = new StoreSocial();
-                    $social->setSourceName($value)->setSource("https://{$value}.com");
+                    $social->setSourceName($value)
+                        ->setSource("https://{$value}.com");
                     $store->addStoreSocial($social);
                     $em->persist($social);
                 }
