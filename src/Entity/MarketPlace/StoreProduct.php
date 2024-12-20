@@ -52,15 +52,6 @@ class StoreProduct
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $fee;
 
-    #[ORM\Column]
-    private ?DateTime $created_at;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTimeInterface $updated_at = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTimeInterface $deleted_at = null;
-
     #[ORM\OneToMany(targetEntity: StoreCategoryProduct::class, mappedBy: 'product')]
     private Collection $storeCategoryProducts;
 
@@ -102,6 +93,15 @@ class StoreProduct
 
     #[ORM\OneToOne(mappedBy: 'product', cascade: ['persist', 'remove'])]
     private ?StoreProductDiscount $storeProductDiscount = null;
+
+    #[ORM\Column]
+    private ?DateTime $created_at;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $updated_at = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $deleted_at = null;
 
     public function __construct()
     {

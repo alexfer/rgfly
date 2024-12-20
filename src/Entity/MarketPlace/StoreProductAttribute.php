@@ -24,17 +24,17 @@ class StoreProductAttribute
     #[ORM\Column]
     private ?int $in_front = null;
 
-    #[ORM\Column]
-    private ?DateTimeImmutable $created_at = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTimeInterface $deleted_at = null;
-
-    #[ORM\OneToMany(mappedBy: 'attribute', targetEntity: StoreProductAttributeValue::class)]
+    #[ORM\OneToMany(targetEntity: StoreProductAttributeValue::class, mappedBy: 'attribute')]
     private Collection $storeProductAttributeValues;
 
     #[ORM\ManyToOne(inversedBy: 'storeProductAttributes')]
     private ?StoreProduct $product = null;
+
+    #[ORM\Column]
+    private ?DateTimeImmutable $created_at;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $deleted_at = null;
 
     public function __construct()
     {

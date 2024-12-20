@@ -120,7 +120,6 @@ class HandleService
             ->setDescription($data['description'])
             ->setAttach($attach ?? null)
             ->setSlug($this->slugger->slug($data['name'])->lower()->toString())
-            ->setShippingAmount(number_format($data['shippingAmount'], 2, '.', ''))
             ->setLinkUrl($data['linkUrl'])
             ->setEnabled($data['enabled']);
 
@@ -204,7 +203,6 @@ class HandleService
         $storeCarrier->setName($data['name'])
             ->setDescription($data['description'])
             ->setSlug($this->slugger->slug($data['name'])->lower()->toString())
-            ->setShippingAmount(number_format($data['shippingAmount'], 2, '.', ''))
             ->setLinkUrl($data['linkUrl']);
         if ($media) {
             $storeCarrier->setAttach($attach);

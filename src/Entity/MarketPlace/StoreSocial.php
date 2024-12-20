@@ -16,10 +16,10 @@ class StoreSocial
     #[ORM\ManyToOne(inversedBy: 'storeSocials')]
     private ?Store $store = null;
 
-    #[ORM\Column(length: 4096)]
+    #[ORM\Column(length: 4096, nullable: true)]
     private ?string $source = null;
 
-    #[ORM\Column]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $source_name = null;
 
     #[ORM\Column(nullable: true)]
@@ -73,10 +73,10 @@ class StoreSocial
     }
 
     /**
-     * @param string $source_name
+     * @param string|null $source_name
      * @return $this
      */
-    public function setSourceName(string $source_name): static
+    public function setSourceName(?string $source_name): static
     {
         $this->source_name = $source_name;
 
@@ -92,10 +92,10 @@ class StoreSocial
     }
 
     /**
-     * @param string $source
+     * @param string|null $source
      * @return $this
      */
-    public function setSource(string $source): static
+    public function setSource(?string $source): static
     {
         $this->source = $source;
 

@@ -35,6 +35,7 @@ class Fixtures extends Fixture
     {
         return [
             CategoryFixtures::class,
+            StoreFixtures::class,
         ];
     }
 
@@ -66,7 +67,6 @@ class Fixtures extends Fixture
         foreach ($this->getCarrierData() as [$name, $description, $enabled, $url]) {
             $carrier = new StoreCarrier();
             $carrier->setName($name);
-            $carrier->setShippingAmount('0.00');
             $carrier->setSlug($this->slugger->slug($name)->lower()->toString());
             $carrier->setAttach(null);
             $carrier->setLinkUrl($url);
@@ -77,10 +77,16 @@ class Fixtures extends Fixture
         $manager->flush();
     }
 
+    /**
+     * @return array[]
+     */
     private function getCarrierData(): array
     {
         return [
-            ['DHL', 'Discover shipping and logistics service options from DHL Global Forwarding.', false, 'https://www.dhl.com']
+            ['DHL', 'Discover shipping and logistics service options from DHL Global Forwarding.', true, 'https://www.dhl.com'],
+            ['FedEx', 'FedEx offers a wide range of services to meet your shipping needs to and from over 220 countries and territories worldwide.', true, 'https://www.fedex.com'],
+            ['UPS', 'Moving our world forward by delivering what matters.', true, 'https://www.fedex.com'],
+            ['Meest', 'International solutions for all your shipping and delivery needs.', true, 'https://meest.com'],
         ];
     }
 
@@ -90,11 +96,11 @@ class Fixtures extends Fixture
     private function getPaymentGatewayData(): array
     {
         return [
-            ['Stripe', 'Stripe is powerful payment platform designed for internet businesses', false, 'Checkout with Stripe'],
-            ['PayPal', 'PatPal - the safer, easier way to pay', false, 'Pay with Paypal'],
-            ['ApplePay', 'Apple Pay is a safe, secure, and private way to pay', false, 'Checkout'],
+            ['Stripe', 'Stripe is powerful payment platform designed for internet businesses', true, 'Checkout with Stripe'],
+            ['PayPal', 'PatPal - the safer, easier way to pay', true, 'Pay with Paypal'],
+            ['ApplePay', 'Apple Pay is a safe, secure, and private way to pay', true, 'Checkout'],
             ['Cash', 'Pay with cash when your order is delivered', true, 'Checkout'],
-            ['Adyen', 'End-to-end payments, data, and financial management in a single solution', false, 'Checkout via Adyen'],
+            ['Adyen', 'End-to-end payments, data, and financial management in a single solution', true, 'Checkout via Adyen'],
         ];
     }
 }

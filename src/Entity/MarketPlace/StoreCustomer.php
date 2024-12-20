@@ -53,12 +53,6 @@ class StoreCustomer
     #[ORM\OneToMany(targetEntity: StoreCouponUsage::class, mappedBy: 'customer')]
     private Collection $storeCouponUsages;
 
-    #[ORM\Column]
-    private ?DateTimeImmutable $created_at = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTimeInterface $updated_at = null;
-
     /**
      * @var Collection<int, StoreMessage>
      */
@@ -67,6 +61,12 @@ class StoreCustomer
 
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $social_id = null;
+
+    #[ORM\Column]
+    private ?DateTimeImmutable $created_at = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $updated_at = null;
 
     public function __construct()
     {

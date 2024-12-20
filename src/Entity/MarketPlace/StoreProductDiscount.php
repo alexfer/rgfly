@@ -28,7 +28,7 @@ class StoreProductDiscount
     private ?string $unit = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $updated_at = null;
+    private ?\DateTimeImmutable $updated_at;
 
     public function __construct()
     {

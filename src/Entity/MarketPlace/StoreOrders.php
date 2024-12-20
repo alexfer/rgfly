@@ -38,9 +38,6 @@ class StoreOrders
     #[ORM\Column(length: 100, enumType: EnumStoreOrderStatus::class)]
     private ?EnumStoreOrderStatus $status;
 
-    #[ORM\Column]
-    private ?DateTimeImmutable $created_at;
-
     #[ORM\OneToOne(mappedBy: 'orders', cascade: ['persist', 'remove'])]
     private ?StoreInvoice $storeInvoice = null;
 
@@ -50,14 +47,17 @@ class StoreOrders
     #[ORM\OneToMany(targetEntity: StoreCustomerOrders::class, mappedBy: 'orders')]
     private Collection $storeCustomerOrders;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTimeInterface $completed_at = null;
-
     /**
      * @var Collection<int, StoreMessage>
      */
     #[ORM\OneToMany(targetEntity: StoreMessage::class, mappedBy: 'orders')]
     private Collection $storeMessages;
+
+    #[ORM\Column]
+    private ?DateTimeImmutable $created_at;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $completed_at = null;
 
     public function __construct()
     {

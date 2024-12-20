@@ -2,7 +2,13 @@
 
 namespace App\Controller\Dashboard\MarketPlace\Store;
 
-use App\Entity\MarketPlace\{Store, StoreOptions, StorePaymentGateway, StorePaymentGatewayStore, StoreSocial};
+use App\Entity\MarketPlace\{Store,
+    StoreCarrier,
+    StoreCarrierStore,
+    StoreOptions,
+    StorePaymentGateway,
+    StorePaymentGatewayStore,
+    StoreSocial};
 use App\Form\Type\Dashboard\MarketPlace\StoreType;
 use App\Service\FileUploader;
 use Doctrine\DBAL\Exception;
@@ -174,19 +180,46 @@ class StoreController extends AbstractController
 
                 foreach (StoreSocial::NAME as $value) {
                     $social = new StoreSocial();
-                    $social->setSourceName($value)->setSource("https://{$value}.com");
+                    $social->setSourceName($value)
+                        ->setSource("https://{$value}.com");
                     $store->addStoreSocial($social);
                     $em->persist($social);
                 }
 
-                $paymentGateways = $em->getRepository(StorePaymentGateway::class)->findBy(['active' => true]);
+                $requestGateways = $form->get('gateway')->getData();
+
+                $criteria = ['active' => true];
+
+                if ($requestGateways) {
+                    $criteria = ['active' => true, 'id' => $requestGateways];
+                }
+
+                $paymentGateways = $em->getRepository(StorePaymentGateway::class)->findBy($criteria);
 
                 foreach ($paymentGateways as $gateway) {
                     $paymentGatewayStore = new StorePaymentGatewayStore();
                     $paymentGatewayStore->setStore($store)
                         ->setGateway($gateway)
-                        ->setActive(true);
+                        ->setActive(count($criteria) > 1);
                     $em->persist($paymentGatewayStore);
+                }
+                unset($criteria);
+
+                $requestCarriers = $form->get('carrier')->getData();
+                $criteria = ['is_enabled' => true];
+
+                if ($requestCarriers) {
+                    $criteria = ['is_enabled' => true, 'id' => $requestCarriers];
+                }
+
+                $carriers = $em->getRepository(StoreCarrier::class)->findBy($criteria);
+
+                foreach ($carriers as $carrier) {
+                    $carrierStore = new StoreCarrierStore();
+                    $carrierStore->setStore($store)
+                        ->setCarrier($carrier)
+                        ->setActive(count($criteria) > 1);
+                    $em->persist($carrierStore);
                 }
 
                 $url = $form->get('website')->getData();
@@ -253,12 +286,9 @@ class StoreController extends AbstractController
 
             foreach ($socials as $social) {
                 $source = $form->get($social->getSourceName())->getData();
-
-                if ($source) {
-                    $social->setSource($source)
-                        ->setActive(in_array($social->getSourceName(), $sources));
-                    $em->persist($social);
-                }
+                $social->setSource($source)
+                    ->setActive(in_array($social->getSourceName(), $sources));
+                $em->persist($social);
             }
 
             if ($file) {
@@ -289,6 +319,32 @@ class StoreController extends AbstractController
                 $store->setAttach($attach);
             }
 
+            $carriers = $form->get('carrier')->getData();
+
+            if ($carriers) {
+                $em = $this->resetCarriers($store, $em);
+                foreach ($carriers as $carrier) {
+                    $carrierStore = $em->getRepository(StoreCarrierStore::class)
+                        ->findOneBy([
+                            'carrier' => $carrier,
+                            'store' => $store,
+                        ]);
+                    if (!$carrierStore) {
+                        $newCarrier = new StoreCarrierStore();
+                        $newCarrier->setCarrier($em->getRepository(StoreCarrier::class)->find($carrier))
+                            ->setStore($store)
+                            ->setActive(true);
+                        $em->persist($newCarrier);
+                    } else {
+                        $carrierStore->setActive(true);
+                        $em->persist($carrierStore);
+                    }
+                }
+            } else {
+                $em = $this->resetCarriers($store, $em);
+                $em->flush();
+            }
+
             $gateways = $form->get('gateway')->getData();
 
             if ($gateways) {
@@ -301,9 +357,9 @@ class StoreController extends AbstractController
                         ]);
                     if (!$paymentGateway) {
                         $newGateway = new StorePaymentGatewayStore();
-                        $newGateway->setGateway($em->getRepository(StorePaymentGateway::class)->find($gateway));
-                        $newGateway->setStore($store);
-                        $newGateway->setActive(true);
+                        $newGateway->setGateway($em->getRepository(StorePaymentGateway::class)->find($gateway))
+                            ->setStore($store)
+                            ->setActive(true);
                         $em->persist($newGateway);
                     } else {
                         $paymentGateway->setActive(true);
@@ -350,6 +406,20 @@ class StoreController extends AbstractController
         foreach ($store->getStorePaymentGatewayStores() as $gatewayStore) {
             $gatewayStore->setActive(false);
             $em->persist($gatewayStore);
+        }
+        return $em;
+    }
+
+    /**
+     * @param Store $store
+     * @param EntityManagerInterface $em
+     * @return EntityManagerInterface
+     */
+    private function resetCarriers(Store $store, EntityManagerInterface $em): EntityManagerInterface
+    {
+        foreach ($store->getStoreCarrierStores() as $carrierStore) {
+            $carrierStore->setActive(false);
+            $em->persist($carrierStore);
         }
         return $em;
     }

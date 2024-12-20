@@ -2,7 +2,7 @@
 
 namespace App\Form\Type\Dashboard\MarketPlace;
 
-use App\Entity\MarketPlace\{Store, StorePaymentGateway};
+use App\Entity\MarketPlace\{Store, StoreCarrier, StorePaymentGateway};
 use App\Service\MarketPlace\Currency;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
@@ -29,6 +29,11 @@ class StoreType extends AbstractType
     private array $gateways = [];
 
     /**
+     * @var array
+     */
+    private array $carriers = [];
+
+    /**
      * @param EntityManagerInterface $em
      */
     public function __construct(EntityManagerInterface $em)
@@ -37,6 +42,12 @@ class StoreType extends AbstractType
 
         foreach ($gateways as $gateway) {
             $this->gateways[$gateway->getName()] = $gateway->getId();
+        }
+
+        $carriers = $em->getRepository(StoreCarrier::class)->findBy(['is_enabled' => true]);
+
+        foreach ($carriers as $carrier) {
+            $this->carriers[$carrier->getName()] = $carrier->getId();
         }
     }
 
@@ -205,6 +216,14 @@ class StoreType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('carrier', ChoiceType::class, [
+                'mapped' => false,
+                'label' => 'label.form.carrier',
+                'required' => false,
+                'multiple' => true,
+                'expanded' => true,
+                'choices' => $this->carriers,
+            ])
             ->add('description', TextareaType::class, [
                 'attr' => [
                     'min' => 100,
@@ -219,11 +238,7 @@ class StoreType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('save', SubmitType::class, [
-                'attr' => [
-                    'class' => 'btn btn-primary rounded-1 shadow-sm',
-                ],
-            ]);
+            ->add('save', SubmitType::class);
     }
 
     /**

@@ -73,6 +73,7 @@ BEGIN
                            'phone', s.phone,
                            'email', s.email,
                            'currency', s.currency,
+                           'country', s.country,
                            'website', s.website,
                            'description', s.description
                             ),
