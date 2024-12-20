@@ -286,12 +286,9 @@ class StoreController extends AbstractController
 
             foreach ($socials as $social) {
                 $source = $form->get($social->getSourceName())->getData();
-
-                if ($source) {
-                    $social->setSource($source)
-                        ->setActive(in_array($social->getSourceName(), $sources));
-                    $em->persist($social);
-                }
+                $social->setSource($source)
+                    ->setActive(in_array($social->getSourceName(), $sources));
+                $em->persist($social);
             }
 
             if ($file) {

@@ -106,6 +106,14 @@ class CategoryFixtures extends Fixture
                         'description' => 'Office equipment',
                     ],
                     [
+                        'name' => 'Power banks',
+                        'description' => 'Power banks',
+                    ],
+                    [
+                        'name' => 'Headsets & microphones',
+                        'description' => 'Headsets & microphones',
+                    ],
+                    [
                         'name' => 'Accompanying accessories',
                         'description' => 'Accompanying accessories',
                     ],
@@ -131,6 +139,10 @@ class CategoryFixtures extends Fixture
                         'description' => 'Household accessories',
                     ],
                     [
+                        'name' => 'Smart electronics',
+                        'description' => 'Smart electronics',
+                    ],
+                    [
                         'name' => 'Microwave ovens',
                         'description' => 'Microwave ovens',
                     ],
@@ -150,6 +162,10 @@ class CategoryFixtures extends Fixture
                     [
                         'name' => 'Cell phones & accessorises',
                         'description' => 'Cell phones & accessorises',
+                    ],
+                    [
+                        'name' => 'Headphones',
+                        'description' => 'Headphones',
                     ],
                     [
                         'name' => 'Photo & Video',
@@ -172,6 +188,14 @@ class CategoryFixtures extends Fixture
                         'description' => 'Projection equipments',
                     ],
                     [
+                        'name' => 'Power stations',
+                        'description' => 'Power stations',
+                    ],
+                    [
+                        'name' => 'Smart watches',
+                        'description' => 'Smart watches',
+                    ],
+                    [
                         'name' => 'Accessories',
                         'description' => 'Accessories',
                     ],
@@ -185,16 +209,28 @@ class CategoryFixtures extends Fixture
                         'description' => 'Gaming gamepads',
                     ],
                     [
-                        'name' => 'Game consoles',
-                        'description' => 'Game consoles',
+                        'name' => 'Gaming keyboards',
+                        'description' => 'Gaming keyboards',
+                    ],
+                    [
+                        'name' => 'Gaming mouses',
+                        'description' => 'Gaming mouses',
+                    ],
+                    [
+                        'name' => 'Gaming headphones',
+                        'description' => 'Gaming headphones',
+                    ],
+                    [
+                        'name' => 'Video game consoles',
+                        'description' => 'Video game consoles',
                     ],
                     [
                         'name' => 'Accessories for gamers',
                         'description' => 'Accessories for gamers',
                     ],
                     [
-                        'name' => 'Games',
-                        'description' => 'Games',
+                        'name' => 'Video games',
+                        'description' => 'Video games',
                     ],
                     [
                         'name' => 'Accessories and souvenirs',

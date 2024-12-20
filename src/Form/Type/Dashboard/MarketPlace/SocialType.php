@@ -31,7 +31,7 @@ class SocialType extends AbstractType
             $builder->add($name, UrlType::class, [
                 'mapped' => false,
                 'label' => 'label.social.' . $name,
-                'required' => true,
+                'required' => false,
                 'default_protocol' => 'https',
                 'attr' => [
                     'placeholder' => 'https://',

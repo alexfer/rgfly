@@ -86,7 +86,7 @@ class StoreFixtures extends Fixture
         foreach (StoreSocial::NAME as $value) {
             $social = new StoreSocial();
             $social->setSourceName($value)
-                ->setSource("https://");
+                ->setSource("https://{$value}.com");
             $store->addStoreSocial($social);
             $manager->persist($social);
         }
