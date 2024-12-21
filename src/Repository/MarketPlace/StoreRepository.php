@@ -159,9 +159,10 @@ class StoreRepository extends ServiceEntityRepository
      * @return array|null
      * @throws Exception
      */
-    public function random(): ?array
+    public function random(int $limit = 16): ?array
     {
-        $statement = $this->connection->prepare('select get_random_store()');
+        $statement = $this->connection->prepare('select get_random_store(:limit)');
+        $statement->bindValue('limit', $limit);
         $result = $statement->executeQuery()->fetchAllAssociative();
         return json_decode($result[0]['get_random_store'], true) ?: null;
     }

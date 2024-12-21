@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION public.get_random_store()
+CREATE OR REPLACE FUNCTION public.get_random_store(_limit integer DEFAULT 4)
     RETURNS jsonb
     LANGUAGE plpgsql
 AS $function$
@@ -61,8 +61,12 @@ BEGIN
                               )
                        FROM store_product_discount spd
                        WHERE spd.product_id = p.id
-                LIMIT 1),
+                       LIMIT 1),
             'payments', (SELECT json_agg(json_build_object(
+                    'id', g.id,
+                    'slug', g.slug,
+                    'name', g.name,
+                    'summary', g.summary,
                     'name', g.name
                                          ))
                          FROM store_payment_gateway_store spg
@@ -86,7 +90,7 @@ BEGIN
           FROM store_product sp
           WHERE sp.deleted_at IS NULL
           ORDER BY RANDOM()
-          LIMIT 3) AS p
+          LIMIT get_random_store._limit) AS p
     INTO products;
 
     RETURN
