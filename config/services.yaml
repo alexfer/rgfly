@@ -32,11 +32,11 @@ parameters:
     s3.app_key: '%env(S3_APP_KEY)%'
     s3.name: '%env(S3_NAME)%'
     s3.bucket: '%env(S3_BUCKET)%'
-    fedex.api_url: '%env(FEDEX_API_URL))%'
-    fedex.key: '%env(FEDEX_KEY))%'
-    fedex.password: '%env(FEDEX_PASSWORD))%'
-    fedex.account_number: '%env(FEDEX_ACCOUNT_NUMBER))%'
-    fedex.mere_number: '%env(FEDEX_METER_NUMBER))%'
+    fedex.api_url: '%env(FEDEX_API_URL)%'
+    fedex.key: '%env(FEDEX_KEY)%'
+    fedex.password: '%env(FEDEX_PASSWORD)%'
+    fedex.account_number: '%env(FEDEX_ACCOUNT_NUMBER)%'
+    fedex.mere_number: '%env(FEDEX_METER_NUMBER)%'
 
 services:
     Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
