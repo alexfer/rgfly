@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ae1aae149e0bdba1df677a4e13694273",
+    "content-hash": "7418807591b8f309ec9840eeb645cb3d",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2123,6 +2123,62 @@
                 "source": "https://github.com/php-imagine/Imagine/tree/1.5.0"
             },
             "time": "2024-12-03T14:37:55+00:00"
+        },
+        {
+            "name": "jeremy-dunn/php-fedex-api-wrapper",
+            "version": "3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JeremyDunn/php-fedex-api-wrapper.git",
+                "reference": "6b7465013b7f8313801d635a0bf864b0afcb5007"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JeremyDunn/php-fedex-api-wrapper/zipball/6b7465013b7f8313801d635a0bf864b0afcb5007",
+                "reference": "6b7465013b7f8313801d635a0bf864b0afcb5007",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "apigen/apigen": "^4.1",
+                "fzaninotto/faker": "^1.6",
+                "phpunit/phpunit": "^5.7",
+                "squizlabs/php_codesniffer": "*",
+                "symfony/console": "2.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "FedEx\\": "src/FedEx/",
+                    "FedEx\\Tests\\": "tests/FedEx/Tests",
+                    "FedEx\\Utility\\": "util/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeremy Dunn",
+                    "email": "jeremy@jsdunn.info",
+                    "homepage": "http://www.jsdunn.info"
+                }
+            ],
+            "description": "API Wrapper for Fedex web services",
+            "homepage": "https://github.com/JeremyDunn/php-fedex-api-wrapper",
+            "keywords": [
+                "FedEx",
+                "shipping",
+                "soap"
+            ],
+            "support": {
+                "issues": "https://github.com/JeremyDunn/php-fedex-api-wrapper/issues",
+                "source": "https://github.com/JeremyDunn/php-fedex-api-wrapper/tree/master"
+            },
+            "time": "2018-12-27T15:44:58+00:00"
         },
         {
             "name": "knplabs/knp-components",

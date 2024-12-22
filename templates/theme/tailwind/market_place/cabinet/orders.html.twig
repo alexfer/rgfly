@@ -20,21 +20,21 @@
                             type="button"
                             class="flex text-blue-500 hover:text-blue-700 p-3 shadow-md rounded-md hover:shadow-lg focus:shadow-lg absolute me-4 top-2 right-1">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4">
-                            <path fill-rule="evenodd" d="M8 2C4.262 2 1 4.57 1 8c0 1.86.98 3.486 2.455 4.566a3.472 3.472 0 0 1-.469 1.26.75.75 0 0 0 .713 1.14 6.961 6.961 0 0 0 3.06-1.06c.403.062.818.094 1.241.094 3.738 0 7-2.57 7-6s-3.262-6-7-6ZM5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm7-1a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM8 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd"
+                                  d="M8 2C4.262 2 1 4.57 1 8c0 1.86.98 3.486 2.455 4.566a3.472 3.472 0 0 1-.469 1.26.75.75 0 0 0 .713 1.14 6.961 6.961 0 0 0 3.06-1.06c.403.062.818.094 1.241.094 3.738 0 7-2.57 7-6s-3.262-6-7-6ZM5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm7-1a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM8 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"
+                                  clip-rule="evenodd"/>
                         </svg>
                     </button>
                 {% endif %}
             </h4>
-            <div id="accordion-flush">
+            <div id="accordion-flush" data-accordion="collapse" data-active-classes="bg-white">
                 {% for key, order in orders %}
                     {% set discount = 0 %}
                     <h2 id="order-flush-heading-{{ key }}">
                         <button type="button"
-                                class="flex items-center pl-5 justify-between w-full py-5 font-medium border bg-gray-50 rtl:text-right focus:ring-1 focus:ring-gray-200 active:bg-gray-100 hover:bg-gray-100 text-gray-500 dark:border-gray-700 dark:text-gray-400 gap-3"
-                                data-twe-target="#order-body-{{ key }}"
-                                data-twe-collapse-init
-                                data-twe-ripple-color="black"
-                                aria-expanded="{{ key == 0 ? 'true' : 'false' }}"
+                                class="flex rounded-t-lg border-s border-e border-t items-center pl-5 justify-between w-full py-5 font-medium bg-gray-50 text-gray-500 dark:border-gray-700 dark:text-gray-400 gap-3"
+                                data-accordion-target="#order-body-{{ key }}"
+                                aria-expanded="true"
                                 aria-controls="order-body-{{ key }}">
                             <h5 class="flex text-md-start subpixel-antialiased hover:text-black dark:text-white">
                                 <svg class="w-4 h-4 text-gray-800 dark:text-white mr-2"
@@ -57,12 +57,9 @@
                         </button>
                     </h2>
                     <div id="order-body-{{ key }}"
-                         class="!visible{% if key > 0 %} hidden{% endif %} border-0 shadow-lg shadow-gray-100"
-                         data-twe-collapse-item
-                            {% if key == 0 %} data-twe-collapse-show{% endif %}
-                         data-twe-parent="#accordion-flush"
-                         aria-labelledby="faq-flush-heading-{{ key }}">
-                        <div class="grid grid-cols-4 gap-3 py-5 px-8 bg-gray-100">
+                         class="hidden"
+                         aria-labelledby="order-flush-heading-{{ key }}">
+                        <div class="grid grid-cols-4 gap-3 py-5 px-8 bg-gray-100 border">
                             <div class="font-medium select-all text-info-700">{{ order.number|upper }}</div>
                             <div class="ms-5">
                                 {% if order.status == 'processing' %}
@@ -72,22 +69,21 @@
                                     {{ order.status|capitalize }}
                                 {% endif %}
                             </div>
-                            <div class="ms-5 relative"
-                                 data-twe-dropdown-ref>
-                                <a id="dropdown-action"
+                            <div class="ms-5 relative">
+                                <a id="dropdown-action-{{ key }}"
                                    role="button"
-                                   data-twe-dropdown-toggle-ref
+                                   data-dropdown-toggle="dropdown-status-{{ key }}"
                                    aria-expanded="false"
-                                   class="text-blue-800 font-normal"
-                                   href="#">{{ 'label.form.status'|trans }}</a>
-                                <ul class="absolute z-[1000] w-48 hidden min-w-max list-none overflow-hidden p-2 rounded-md border-none bg-white bg-clip-padding text-left text-base data-[twe-dropdown-show]:block"
-                                    aria-labelledby="dropdown-action"
-                                    data-twe-dropdown-menu-ref>
-                                    <li>
-                                        <a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-md dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 hover:text-gray-500 focus:text-gray-50 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
-                                           href="#">{{ 'order.action.cancel'|trans }}</a>
-                                    </li>
-                                </ul>
+                                   class="text-blue-800 font-normal">{{ 'label.form.status'|trans }}</a>
+                                <div id="dropdown-status-{{ key }}" class="z-10 hidden">
+                                    <ul class="w-48 min-w-max list-none overflow-hidden p-2 shadow-lg rounded-md border-none bg-white bg-clip-padding text-left text-base data-[twe-dropdown-show]:block"
+                                        aria-labelledby="dropdown-action">
+                                        <li>
+                                            <a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-md dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 hover:text-gray-500 focus:text-gray-50 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
+                                               href="#">{{ 'order.action.cancel'|trans }}</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                             <div class="text-right text-{{ order.completed is null ? 'danger': 'success' }}">
                                 {{ order.completed is null ? 'customer.cabinet.order.notpaid'|trans : order.completed|date(datetime_format) }}
@@ -98,11 +94,14 @@
                                 <caption
                                         class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
                                     {{ order.store.name }}
-                                    <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
-                                        {{ order.invoice.payment_gateway.name|default('n/a') }}
+                                    <p class="mt-1 text-sm text-gray-900 dark:text-gray-400">
+                                        <span class="text-gray-600 font-normal mr-1">{{ 'text.payment'|trans }}:</span>{{ order.invoice.payment_gateway.name|default('n/a') }}
+                                    </p>
+                                    <p class="mt-1 text-sm text-gray-900 dark:text-gray-400">
+                                        <span class="text-gray-600 font-normal mr-1">{{ 'text.shipping'|trans }}:</span>{{ order.invoice.carrier.name|default('n/a') }}
                                     </p>
                                 </caption>
-                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <thead class="text-xs border-t border-b text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">
                                         {{ 'label.form.product_name'|trans }}
@@ -222,8 +221,8 @@
                                     fill: #fca5a5;
                                 }
                             </style>
-                                        <g>
-                                            <path class="st0" d="M494.365,133.438c-11.528-15.738-29.35-25.678-48.804-27.219L126.245,80.918l-3.129-17.749
+                            <g>
+                                <path class="st0" d="M494.365,133.438c-11.528-15.738-29.35-25.678-48.804-27.219L126.245,80.918l-3.129-17.749
                             c-5.252-29.676-28.858-52.657-58.671-57.066L24.597,0.187C15.093-1.209,6.253,5.359,4.84,14.846
                             c-1.409,9.512,5.158,18.356,14.658,19.761v-0.008l39.861,5.907c14.97,2.218,26.868,13.785,29.501,28.71l54.009,306.134
                             c5.073,28.735,30.027,49.669,59.206,49.678h221.971c9.606,0,17.394-7.792,17.394-17.39c0-9.607-7.788-17.398-17.394-17.398H202.075
@@ -233,11 +232,11 @@
                              M477.378,181.668l-23.245,100.776c-3.986,17.278-19.385,29.53-37.125,29.53h-1.657V132.916l27.926,2.208
                             c11.049,0.866,21.174,6.516,27.706,15.447c4.838,6.592,7.381,14.495,7.381,22.526C478.363,175.949,478.038,178.809,477.378,181.668
                             z"></path>
-                                            <path class="st0" d="M215.346,450.165c-17.076,0-30.909,13.853-30.909,30.926c0,17.073,13.832,30.909,30.909,30.909
+                                <path class="st0" d="M215.346,450.165c-17.076,0-30.909,13.853-30.909,30.926c0,17.073,13.832,30.909,30.909,30.909
                             c17.078,0,30.927-13.836,30.927-30.909C246.273,464.018,232.423,450.165,215.346,450.165z"></path>
-                                            <path class="st0" d="M381.539,450.165c-17.073,0-30.913,13.853-30.913,30.926c0,17.073,13.84,30.909,30.913,30.909
+                                <path class="st0" d="M381.539,450.165c-17.073,0-30.913,13.853-30.913,30.926c0,17.073,13.84,30.909,30.913,30.909
                             c17.072,0,30.922-13.836,30.922-30.909C412.461,464.018,398.612,450.165,381.539,450.165z"></path>
-                                        </g>
+                            </g>
                         </svg>
                     </div>
                     <p class="text-center">

@@ -41,9 +41,16 @@ class StoreCarrier
     #[ORM\OneToMany(targetEntity: StoreCarrierStore::class, mappedBy: 'carrier')]
     private Collection $storeCarrierStores;
 
+    /**
+     * @var Collection<int, StoreInvoice>
+     */
+    #[ORM\OneToMany(targetEntity: StoreInvoice::class, mappedBy: 'carrier')]
+    private Collection $storeInvoices;
+
     public function __construct()
     {
         $this->storeCarrierStores = new ArrayCollection();
+        $this->storeInvoices = new ArrayCollection();
     }
 
     /**
@@ -200,6 +207,44 @@ class StoreCarrier
             // set the owning side to null (unless already changed)
             if ($storeCarrierStore->getCarrier() === $this) {
                 $storeCarrierStore->setCarrier(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, StoreInvoice>
+     */
+    public function getStoreInvoices(): Collection
+    {
+        return $this->storeInvoices;
+    }
+
+    /**
+     * @param StoreInvoice $storeInvoice
+     * @return $this
+     */
+    public function addStoreInvoice(StoreInvoice $storeInvoice): static
+    {
+        if (!$this->storeInvoices->contains($storeInvoice)) {
+            $this->storeInvoices->add($storeInvoice);
+            $storeInvoice->setCarrier($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param StoreInvoice $storeInvoice
+     * @return $this
+     */
+    public function removeStoreInvoice(StoreInvoice $storeInvoice): static
+    {
+        if ($this->storeInvoices->removeElement($storeInvoice)) {
+            // set the owning side to null (unless already changed)
+            if ($storeInvoice->getCarrier() === $this) {
+                $storeInvoice->setCarrier(null);
             }
         }
 
