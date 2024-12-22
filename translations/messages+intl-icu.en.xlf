@@ -867,6 +867,14 @@
                 <source>text.info</source>
                 <target>Info!</target>
             </trans-unit>
+            <trans-unit id="text.payment">
+                <source>text.payment</source>
+                <target>Payment</target>
+            </trans-unit>
+            <trans-unit id="text.shipping">
+                <source>text.shipping</source>
+                <target>Shipping</target>
+            </trans-unit>
             <trans-unit id="text.info.description">
                 <source>text.info.description</source>
                 <target>Please sign in to see more info.</target>

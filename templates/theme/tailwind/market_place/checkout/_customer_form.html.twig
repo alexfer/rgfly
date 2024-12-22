@@ -77,11 +77,61 @@
             </div>
         {% endif %}
     {% endif %}
+    <div id="carrier" class="mt-3">
+        <div class="block py-2 text-lg font-medium text-gray-600">{{ 'text.shipping'|trans }}</div>
+        <div class="rounded-t-lg rounded-bl-lg rounded-br-lg shadow-md border border-neutral-200 bg-white dark:border-neutral-600 dark:bg-body-dark"
+             data-accordion="collapse" data-active-classes="bg-neutral-300">
+            {% for key, carrier in order.store.storeCarrierStores.toArray %}
+                <h2 class="mb-0 border-b" id="heading-carrier-{{ key }}">
+                    <button class="group relative font-semibold flex w-full items-center rounded-t-lg border-0 bg-white px-5 py-4 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-body-dark dark:text-white"
+                            type="button"
+                            data-accordion-target="#collapse-carrier-{{ key }}"
+                            aria-expanded="true"
+                            aria-controls="collapse-carrier-{{ key }}">
+                        <div class="flex w-full justify-between mx-auto">
+                            <div >
+                                {% if carrier.carrier.attach is not null %}
+                                    {% set icon = 'storage/payment_gateway/' ~ carrier.carrier.attach.name %}
+                                    {% if carrier.carrier.attach.mime != 'image/svg+xml' %}
+                                        <img class="h-5" alt="{{ carrier.carrier.name }}"
+                                             src="{{ asset(icon)|imagine_filter('carrier_icon') }}">
+                                    {% else %}
+                                        <img class="inline-flex me-1.5 h-5" alt="{{ carrier.carrier.name }}"
+                                             src="{{ asset(icon) }}">
+                                    {% endif %}
+                                {% else %}
+                                    <img class="inline-flex me-1.5 h-5"
+                                         src="{{ asset('img/carrier/' ~ carrier.carrier.slug ~ '.svg') }}"
+                                         alt="{{ carrier.carrier.name }}">
+                                {% endif %}
+                            </div>
+                            <div>
+                                {{ carrier.carrier.name }}
+                            </div>
+                        </div>
+                    </button>
+                </h2>
+                <div id="collapse-carrier-{{ key }}"
+                     class="hidden"
+                     aria-labelledby="heading-carrier-{{ key }}">
+                    <div class="px-5 py-4 border-b bg-gray-50 dark:bg-gray-800">
+                        <div class="mb-2">{{ carrier.carrier.description }}</div>
+                        <label class="inline-flex items-center mb-5 cursor-pointer">
+                            <input type="radio" name="shipping[{{ carrier.carrier.id }}]" value="{{ carrier.carrier.id }}" class="sr-only peer" {{ key == 0 ? 'checked' : null }}>
+                            <div class="relative w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                            <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{ carrier.carrier.name }}</span>
+                        </label>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
     <div id="payment-method" class="mt-3">
-        <div class="rounded-t-lg border border-neutral-200 bg-white dark:border-neutral-600 dark:bg-body-dark"
+        <div class="block py-2 text-lg font-medium text-gray-600">{{ 'text.payment'|trans }}</div>
+        <div class="rounded-t-lg rounded-bl-lg rounded-br-lg shadow-md border border-neutral-200 bg-white dark:border-neutral-600 dark:bg-body-dark"
              data-accordion="collapse" data-active-classes="bg-neutral-300">
             {% for key, gateway in order.store.storePaymentGatewaystores.toArray %}
-                <h2 class="mb-0" id="heading-{{ key }}">
+                <h2 class="mb-0 border-b" id="heading-{{ key }}">
                     <button class="group relative font-semibold flex w-full items-center rounded-t-lg border-0 bg-white px-5 py-4 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-body-dark dark:text-white"
                             type="button"
                             data-accordion-target="#collapse-{{ key }}"
@@ -118,7 +168,7 @@
                 <div id="collapse-{{ key }}"
                      class="hidden"
                      aria-labelledby="heading-{{ key }}">
-                    <div class="px-5 py-4">
+                    <div class="px-5 py-4 border-b bg-gray-50 dark:bg-gray-800">
                         <div class="mb-2">{{ gateway.gateway.summary }}</div>
                         <button type="submit" name="gateway[{{ gateway.gateway.slug }}]"
                                 class="inline-block justify-start rounded bg-red-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-md shadow-red-300 transition duration-150 ease-in-out hover:bg-red-700 hover:shadow-red-200 focus:bg-red-300 focus:shadow-red-200 focus:outline-none focus:ring-0 active:bg-red-600 active:shadow-red-200 motion-reduce:transition-none dark:shadow-black/30 group-invalid:pointer-events-none group-invalid:opacity-30">

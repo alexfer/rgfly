@@ -3,6 +3,7 @@
 namespace App\Service\MarketPlace\Store\Checkout;
 
 use App\Entity\MarketPlace\{Enum\EnumStoreOrderStatus,
+    StoreCarrier,
     StoreCustomer,
     StoreCustomerOrders,
     StoreInvoice,
@@ -106,12 +107,22 @@ class CheckoutService implements CheckoutServiceInterface
     }
 
     /**
-     * @return StorePaymentGateway
+     * @return StorePaymentGateway|null
      */
-    private function getPaymentGateway(): StorePaymentGateway
+    private function getPaymentGateway(): ?StorePaymentGateway
     {
         return $this->em->getRepository(StorePaymentGateway::class)->findOneBy([
             'slug' => key($this->requestStack->getCurrentRequest()->request->all('gateway')),
+        ]);
+    }
+
+    /**
+     * @return StoreCarrier|null
+     */
+    private function getShipping(): ?StoreCarrier
+    {
+        return $this->em->getRepository(StoreCarrier::class)->findOneBy([
+            'id' => key($this->requestStack->getCurrentRequest()->request->all('shipping')),
         ]);
     }
 
@@ -124,6 +135,7 @@ class CheckoutService implements CheckoutServiceInterface
     {
         $invoice->setOrders($this->order)
             ->setPaymentGateway($this->getPaymentGateway())
+            ->setCarrier($this->getShipping())
             ->setNumber(MarketPlaceHelper::slug($this->order->getId(), 6, 'i'))
             ->setAmount($this->order->getTotal())
             ->setTax(number_format($tax, 2, '.', ''));
@@ -150,7 +162,7 @@ class CheckoutService implements CheckoutServiceInterface
         $this->em->flush();
 
         $cookies = $this->requestStack->getCurrentRequest()->cookies;
-        if($cookies->has(FrontSessionHandler::NAME)) {
+        if ($cookies->has(FrontSessionHandler::NAME)) {
             $this->frontSession->delete($cookies->get(FrontSessionHandler::NAME));
         }
     }

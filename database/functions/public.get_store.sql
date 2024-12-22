@@ -55,6 +55,7 @@ BEGIN
                    'email', s.email,
                    'website', s.website,
                    'address', s.address,
+                   'picture', (select a.name FROM attach a WHERE a.id = s.attach_id LIMIT 1),
                    'promo', json_build_object(' expired ', coupon.expired, ' started ', coupon.started),
                    'products_count', (SELECT COUNT(p.id)
                                       FROM store_product p

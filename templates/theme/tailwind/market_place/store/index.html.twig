@@ -3,7 +3,7 @@
 {% block title %}{{ 'store.best.sellers'|trans }}{% endblock %}
 {% block description %}{{ 'store.best.sellers'|trans }}{% endblock %}
 {% block extend_title %}{{ 'store.best.sellers'|trans }}{% endblock %}
-{% block offest %}pt-4 py-8 lg:py-16 lg:px-2{% endblock %}
+{% block offest %}pt-4 py-4 lg:py-8 lg:px-2{% endblock %}
 {% block childen %}{% endblock %}
 {% block content_body %}
     <h2 class="text-2xl font-oswald relative mb-4 font-extrabold text-primary-700 dark:text-white text-ellipsis overflow-hidden">{{ 'store.best.sellers'|trans }}
@@ -20,9 +20,9 @@
         {% endif %}
     </h2>
     <div class="mt-3">
-        {% set _picture = store.picture is not null ? 'storage/market/logo/' ~ store.id ~ '/' ~ store.picture : 'img/800x600.png' %}
+        {% set _picture = store.picture is not null ? 'storage/market/logo/' ~ store.id ~ '/' ~ store.picture : 'img/bg-store/store-' ~ random(9) ~ '.jpg' %}
         <div class="relative overflow-hidden rounded-lg bg-cover bg-no-repeat p-12 text-center"
-             style="background-image: url('{{ asset(_picture)|imagine_filter('store_bg') }}'); background-position: top center; height: 400px">
+             style="background-image: url('{{ asset(_picture)|imagine_filter('store_bg') }}'); background-position: center center; height: 400px">
             <div class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-fixed"
                  style="background-color: rgba(0, 0, 0, 0.2)">
                 <div class="flex h-full items-center justify-center">
@@ -42,13 +42,15 @@
                 </div>
             </div>
             <div class="absolute bottom-0 right-0 z-20 m-1 p-0.5">
-                <ul class="list-none h-8">
+                <ul class="list-none relative h-8">
                     {% for payment in store.payments %}
-                        <li class="inline-flex relative ps-3 py-2">
+                        <li class="inline-flex ps-3 py-2">
                             <img class="w-8 h-8" data-tooltip-target="cc-{{ payment.id }}" alt="{{ payment.name }}"
                                  src="{{ asset('img/payment_gateway/' ~ payment.slug ~'.svg') }}">
                             <div class="absolute z-10 invisible inline-block w-48 px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip"
-                                 role="tooltip" id="cc-{{ payment.id }}">{{ payment.summary }}</div>
+                                 role="tooltip" id="cc-{{ payment.id }}">{{ payment.summary }}
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
                         </li>
                     {% endfor %}
                 </ul>
@@ -72,17 +74,18 @@
 {% endblock %}
 {% block extra %}
     <div class="max-w-screen-xl flex mx-auto py-2 lg:px-2 mb-5">
-        <div class="mx-auto w-full bg-white p-6 rounded-lg shadow-4 dark:bg-gray-700">
+        <div class="mx-auto w-full bg-white px-6 rounded-lg shadow-4 dark:bg-gray-700">
             <h2 class="text-2xl font-oswald mb-4 font-extrabold text-primary-700 dark:text-white text-ellipsis overflow-hidden">{{ 'store.best.products'|trans }}</h2>
-            <div class="grid w-full gap-3 grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
+            <div class="grid grid-flow-row gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {% for product in products %}
                     <div class="min-h-full">
-                        <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                            <div class="lg:max-w-2xl pt-2 relative overflow-hidden bg-cover bg-no-repeat">
+                        <div class="max-w-md bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                            <div class="relative overflow-hidden h-250 rounded-t-lg">
                                 {% if product.attachment %}
                                     {% set _picture = 'storage/product/' ~ product.id ~ '/' ~ product.attachment %}
                                     <a href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}">
-                                        <img loading="lazy" src="{{ asset(_picture)|imagine_filter('product_preview') }}"
+                                        <img loading="lazy"
+                                             src="{{ asset(_picture)|imagine_filter('product_preview') }}"
                                              class="object-contain h-auto max-w-full mx-auto transition duration-700 ease-in-out hover:scale-105"
                                              alt="{{ product.name }}">
                                     </a>
@@ -93,14 +96,14 @@
                                 {% endif %}
                                 <div class="absolute top-5 w-full">
                                     <div class="flex justify-between">
-                                        <span class="ml-2 bg-gray-600 bg-opacity-90 text-gray-500 text-sm shadow-xl font-medium px-2.5 pt-1.5 rounded-md dark:bg-gray-900 dark:text-gray-300">
+                                        <div class="ml-2 bg-gray-600 bg-opacity-90 text-gray-500 text-sm shadow-xl font-medium px-2.5 pt-2 rounded-md dark:bg-gray-900 dark:text-gray-300">
                                             <a title="{{ product.name }}"
                                                href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}"
-                                               class="text-white hover:text-neutral-100 pt-3 hover:animate-pulse">{{ 'store.product.details'|trans }}
+                                               class="text-white hover:text-neutral-100 hover:animate-pulse">{{ 'store.product.details'|trans }}
                                             </a>
-                                        </span>
+                                        </div>
                                         {% set price = discount(product.cost, product.reduce.value, product.fee, 1, product.reduce.unit) %}
-                                        <span class="text-2xl font-medium {% if product.reduce.unit is not empty %}text-rose-500{% else %}text-gray-900{% endif %} dark:text-white">{{ price }}<small>{{ product.currency|currency }}</small></span>
+                                        <span class="text-2xl pr-2 font-medium {% if product.reduce.unit is not empty %}text-rose-500{% else %}text-gray-900{% endif %} dark:text-white">{{ price }}<small>{{ product.currency|currency }}</small></span>
                                     </div>
                                 </div>
                             </div>
@@ -132,21 +135,25 @@
                             <div class="flex items-center border-t mt-3 pt-3 bg-gray-50 bg-opacity-75 pb-3 px-3 justify-between">
                                 <div>
                                     <a href="{{ path('app_market_place_product', {slug: product.slug, tab: 'about'}) }}"
-                                       class="hover:text-violet-500 text-md  hover:text-decoration-underline hover:animate-pulse">{{ 'store.product.details'|trans }}
-                                        <svg class="w-[16px] h-[16px] inline ml-3 fill-primary-500 hover:fill-violet-600 hover:scale-110"
+                                       class="hover:text-red-700 font-medium  hover:text-decoration-underline">{{ 'store.product.details'|trans }}
+                                        <svg class="w-[16px] h-[16px] inline ml-3 hover:scale-110"
                                              viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l370.7 0-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128z"></path>
                                         </svg>
                                     </a>
                                 </div>
                                 <ul class="list-none">
-                                    {% for payment in store.payments %}
+                                    {% for payment in product.payments %}
                                         <li class="inline-flex relative">
-                                            <img class="w-6 h-6" data-tooltip-target="cc-{{ payment.slug }}"
+                                            <img class="w-6 h-6"
+                                                 data-tooltip-target="cc-{{ payment.slug }}-{{ product.id }}"
                                                  alt="{{ payment.name }}"
                                                  src="{{ asset('img/payment_gateway/' ~ payment.slug ~'.svg') }}">
                                             <div class="absolute z-10 invisible inline-block w-48 px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip"
-                                                 role="tooltip" id="cc-{{ payment.slug }}">{{ payment.summary }}</div>
+                                                 role="tooltip"
+                                                 id="cc-{{ payment.slug }}-{{ product.id }}">{{ payment.summary }}
+                                                <div class="tooltip-arrow" data-popper-arrow></div>
+                                            </div>
                                         </li>
                                     {% endfor %}
                                 </ul>

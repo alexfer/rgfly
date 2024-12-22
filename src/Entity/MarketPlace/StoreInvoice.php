@@ -31,6 +31,9 @@ class StoreInvoice
     #[ORM\ManyToOne(inversedBy: 'storeInvoices')]
     private ?StorePaymentGateway $payment_gateway = null;
 
+    #[ORM\ManyToOne(inversedBy: 'storeInvoices')]
+    private ?StoreCarrier $carrier = null;
+
     #[ORM\Column]
     private ?DateTimeImmutable $created_at;
 
@@ -179,6 +182,25 @@ class StoreInvoice
     public function setPaymentGateway(?StorePaymentGateway $payment_gateway): static
     {
         $this->payment_gateway = $payment_gateway;
+
+        return $this;
+    }
+
+    /**
+     * @return StoreCarrier|null
+     */
+    public function getCarrier(): ?StoreCarrier
+    {
+        return $this->carrier;
+    }
+
+    /**
+     * @param StoreCarrier|null $carrier
+     * @return $this
+     */
+    public function setCarrier(?StoreCarrier $carrier): static
+    {
+        $this->carrier = $carrier;
 
         return $this;
     }

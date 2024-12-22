@@ -50,6 +50,13 @@ BEGIN
                     'amount', si.amount,
                     'created', si.created_at,
                     'paid', si.paid_at,
+                    'carrier', (SELECT json_build_object(
+                                               'id', sc.id,
+                                               'name', sc.name
+                                       )
+                                FROM store_carrier sc
+                                WHERE sc.id = si.carrier_id
+                                LIMIT 1),
                     'payment_gateway', (SELECT json_build_object(
                                                        'id', spg.id,
                                                        'name', spg.name

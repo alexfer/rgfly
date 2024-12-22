@@ -239,6 +239,7 @@ class CabinetController extends AbstractController
     /**
      * @param Request $request
      * @param TranslatorInterface $translator
+     * @param CustomerInterface $processor
      * @return Response
      */
     #[Route('/address', name: 'app_cabinet_address', methods: ['GET', 'POST'])]
