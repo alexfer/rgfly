@@ -1,4 +1,4 @@
-<div id="modal-message" data-modal-backdrop="static" tabindex="-1" aria-hidden="true"
+<div id="modal-message" tabindex="-1" aria-hidden="true"
      class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-2xl max-h-full" role="document">
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -34,7 +34,7 @@
                         <button type="button"
                                 id="order-search"
                                 data-url="{{ path('app_cabinet_search_order') }}"
-                                class="text-white absolute end-2.5 bottom-2.5 bg-primary hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                class="text-white absolute end-2.5 bottom-2.5 bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             {{ 'title.search'|trans }}
                         </button>
                     </div>
@@ -57,7 +57,7 @@
                 <div class="flex justify-end items-end p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
                     <input type="hidden" id="_token" name="brand[_token]" value="{{ csrf_token('create') }}">
                     <button type="submit"
-                            class="group-invalid:pointer-events-none group-invalid:opacity-30 inline-block rounded mr-2 bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
+                            class="group-invalid:pointer-events-none group-invalid:opacity-30 inline-block rounded mr-2 bg-blue-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-blue-300 transition duration-150 ease-in-out hover:bg-blue-700 hover:shadow-blue-200 focus:bg-blue-700 focus:shadow-blue-200 focus:outline-none focus:ring-0 active:bg-blue-600 active:shadow-blue-200 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
                         {{ 'form.action.send'|trans }}
                     </button>
                     <button data-modal-hide="modal-message" data-modal-name="modal" type="reset"
