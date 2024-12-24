@@ -139,17 +139,17 @@
                                                 {{ product.product.reduce.value|amount_format }}
                                                 <small>{{ product.product.reduce.unit|convert(order.store.currency|currency) }}</small>
                                             {% else %}
-                                                {{ product.product.reduce.value }}
+                                                {{ product.product.reduce.value|amount_format }}
                                                 <small>{{ product.product.reduce.unit|convert(order.store.currency|currency) }}</small>
                                             {% endif %}
                                         </td>
                                         <td class="px-6 py-4 text-right cursor-pointer">
                                             {% set price = discount(product.product.cost, product.product.reduce.value, product.product.fee, 1, product.product.reduce.unit) %}
                                             <abbr data-twe-toggle="tooltip"
-                                                  title="{{ (product.product.cost + product.product.fee) }}{{ order.store.currency|currency }}">{{ price }}</abbr><small
+                                                  title="{{ (product.product.cost + product.product.fee) }}{{ order.store.currency|currency }}">{{ price|amount_format }}</abbr><small
                                                     class="ms-1">{{ order.store.currency|currency }}</small>
                                         </td>
-                                        <td class="px-6 py-4 text-right">
+                                        <td class="px-6 py-4 text-right font-medium">
                                             {{ (price * product.quantity)|amount_format }}<small
                                                     class="ms-1">{{ order.store.currency|currency }}</small>
                                         </td>
