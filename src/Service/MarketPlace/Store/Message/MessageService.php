@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
-use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
@@ -77,7 +76,6 @@ class MessageService implements MessageServiceInterface
     /**
      * @param UserInterface|null $user
      * @return JsonResponse
-     * @throws ExceptionInterface
      */
     public function obtainAndResponse(?UserInterface $user): JsonResponse
     {

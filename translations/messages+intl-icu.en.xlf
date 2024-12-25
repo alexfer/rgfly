@@ -503,6 +503,14 @@
                 <source>table.header.payment_type</source>
                 <target>Payment type</target>
             </trans-unit>
+            <trans-unit id="table.header.shipping">
+                <source>table.header.shipping</source>
+                <target>Shipping provider</target>
+            </trans-unit>
+            <trans-unit id="table.header.tracking">
+                <source>table.header.tracking</source>
+                <target>Tracking</target>
+            </trans-unit>
             <trans-unit id="table.header.payment_gateways">
                 <source>table.header.payment_gateways</source>
                 <target>Payment gateways</target>
@@ -870,6 +878,14 @@
             <trans-unit id="text.payment">
                 <source>text.payment</source>
                 <target>Payment</target>
+            </trans-unit>
+            <trans-unit id="text.check">
+                <source>text.check</source>
+                <target>Check</target>
+            </trans-unit>
+            <trans-unit id="text.order">
+                <source>text.order</source>
+                <target>Order</target>
             </trans-unit>
             <trans-unit id="text.shipping">
                 <source>text.shipping</source>
