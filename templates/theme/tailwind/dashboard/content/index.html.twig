@@ -294,19 +294,21 @@
                     <tbody>
                     {% for message in messages %}
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" data-twe-toggle="tooltip" data-twe-html="true" data-twe-placement="top"
-                                title="{{ message.customer.phone }}"
-                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-10 truncate cursor-pointer">
-                                {{ message.customer.full_name }}
+                            <th scope="row" class="px-6 py-4">
+                                <span data-tooltip-target="tooltip-{{ message.id }}" data-tooltip-placement="right" class="font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-10 truncate cursor-pointer">{{ message.customer.full_name }}</span>
+                                <div id="tooltip-{{ message.id }}" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-100">
+                                    {{ message.customer.phone }}
+                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                </div>
                             </th>
                             <td class="px-6 py-4">
                                 {{ message.created|date(date_format) }}
                             </td>
                             <td class="px-6 py-4 capitalize">
-                                {{ message.answers }}
+                                <span class="bg-green-600 text-white text-xs font-medium px-2.5 py-1.5 rounded-full dark:bg-green-900 dark:text-green-300">{{ message.answers }}</span>
                             </td>
                             <td class="px-6 py-4 capitalize">
-                                {{ message.priority }}
+                                <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">{{ message.priority }}</span>
                             </td>
                             <td class="px-6 py-4 flex justify-end items-end">
                                 <a href="{{ path('app_dashboard_market_place_message_conversation', {store: message.store, id: message.id}) }}"
