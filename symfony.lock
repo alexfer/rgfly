@@ -104,6 +104,9 @@
             "./tests/bootstrap.php"
         ]
     },
+    "pontedilana/weasyprint-bundle": {
+        "version": "2.3.0"
+    },
     "stof/doctrine-extensions-bundle": {
         "version": "1.10",
         "recipe": {
