@@ -2338,6 +2338,18 @@
                 <source>customer.cabinet.order.notpaid</source>
                 <target>Not paid yet.</target>
             </trans-unit>
+            <trans-unit id="customer.cabinet.invoice">
+                <source>customer.cabinet.invoice</source>
+                <target>Invoice</target>
+            </trans-unit>
+            <trans-unit id="customer.cabinet.download.invoice">
+                <source>customer.cabinet.download.invoice</source>
+                <target>Download</target>
+            </trans-unit>
+            <trans-unit id="customer.cabinet.send.invoice">
+                <source>customer.cabinet.send.invoice</source>
+                <target>Send</target>
+            </trans-unit>
             <trans-unit id="caption.messages.history">
                 <source>caption.messages.history</source>
                 <target>Your messages history</target>
