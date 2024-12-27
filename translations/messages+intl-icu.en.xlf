@@ -691,6 +691,10 @@
                 <source>table.header.created_at</source>
                 <target>Created</target>
             </trans-unit>
+            <trans-unit id="table.header.due">
+                <source>table.header.due</source>
+                <target>Due</target>
+            </trans-unit>
             <trans-unit id="table.header.joined_at">
                 <source>table.header.joined_at</source>
                 <target>Joined</target>
@@ -2337,6 +2341,18 @@
             <trans-unit id="customer.cabinet.order.notpaid">
                 <source>customer.cabinet.order.notpaid</source>
                 <target>Not paid yet.</target>
+            </trans-unit>
+            <trans-unit id="customer.cabinet.invoice">
+                <source>customer.cabinet.invoice</source>
+                <target>Invoice</target>
+            </trans-unit>
+            <trans-unit id="customer.cabinet.download.invoice">
+                <source>customer.cabinet.download.invoice</source>
+                <target>Download</target>
+            </trans-unit>
+            <trans-unit id="customer.cabinet.send.invoice">
+                <source>customer.cabinet.send.invoice</source>
+                <target>Send</target>
             </trans-unit>
             <trans-unit id="caption.messages.history">
                 <source>caption.messages.history</source>

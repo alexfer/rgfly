@@ -29,7 +29,7 @@ class CabinetController extends AbstractController
         $user = $this->em->getRepository(User::class)->find($this->getUser());
 
         if (!$user->hasRole('ROLE_CUSTOMER')) {
-            return throw $this->createAccessDeniedException();
+            throw $this->createAccessDeniedException();
         }
 
         return $this->em->getRepository(StoreCustomer::class)->findOneBy([

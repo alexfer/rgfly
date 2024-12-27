@@ -61,12 +61,12 @@
                          aria-labelledby="order-flush-heading-{{ key }}">
                         <div class="grid grid-cols-4 gap-3 py-5 px-8 bg-gray-100 border">
                             <div class="font-medium select-all text-info-700">{{ order.number|upper }}</div>
-                            <div class="ms-5">
+                            <div class="ms-5 capitalize">
                                 {% if order.status == 'processing' %}
-                                    <a class="text-gray-600 underline hover:text-black hover:no-underline"
+                                    <a class="text-gray-600 text-sm underline hover:text-black hover:no-underline"
                                        href="{{ path('app_market_place_order_checkout', {order: order.number, tab: 'customer-info'}) }}">{{ 'order.checkout'|trans }}</a>
                                 {% else %}
-                                    {{ order.status|capitalize }}
+                                    {{ order.status }}
                                 {% endif %}
                             </div>
                             <div class="ms-5 relative">
@@ -74,19 +74,40 @@
                                    role="button"
                                    data-dropdown-toggle="dropdown-status-{{ key }}"
                                    aria-expanded="false"
-                                   class="text-blue-800 font-normal">{{ 'label.form.status'|trans }}</a>
+                                   class="text-gray-800 text-sm underline hover:no-underline font-normal">{{ 'label.form.status'|trans }}</a>
                                 <div id="dropdown-status-{{ key }}" class="z-10 hidden">
                                     <ul class="w-48 min-w-max list-none overflow-hidden p-2 shadow-lg rounded-md border-none bg-white bg-clip-padding text-left text-base data-[twe-dropdown-show]:block"
-                                        aria-labelledby="dropdown-action">
+                                        aria-labelledby="dropdown-action-{{ key }}">
                                         <li>
-                                            <a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-md dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 hover:text-gray-500 focus:text-gray-50 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
+                                            <a class="block px-4 py-2 mt-2 text-xs font-semibold bg-transparent rounded-md dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 hover:text-gray-500 focus:text-gray-50 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
                                                href="#">{{ 'order.action.cancel'|trans }}</a>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
-                            <div class="text-right text-{{ order.completed is null ? 'danger': 'success' }}">
-                                {{ order.completed is null ? 'customer.cabinet.order.notpaid'|trans : order.completed|date(datetime_format) }}
+                            <div class="text-right text-sm font-medium relative">
+                                {% if order.completed is null %}
+                                    <a id="invoice-action-{{ key }}"
+                                       role="button"
+                                       data-dropdown-toggle="invoice-status-{{ key }}"
+                                       aria-expanded="false"
+                                       class="bg-indigo-500 hover:bg-indigo-800 rounded px-2.5 py-1.5 text-white dark:text-gray-100 font-normal">{{ 'customer.cabinet.invoice'|trans }}</a>
+                                    <div id="invoice-status-{{ key }}" class="z-10 hidden">
+                                        <ul class="w-48 min-w-max list-none overflow-hidden p-2 text-xs shadow-lg rounded-md border-none bg-white bg-clip-padding text-left data-[twe-dropdown-show]:block"
+                                            aria-labelledby="dropdown-invoice-{{ key }}">
+                                            <li>
+                                                <a class="block px-4 py-2 mt-2 font-semibold bg-transparent rounded-md dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 hover:text-gray-500 focus:text-gray-50 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
+                                                   href="{{ path('app_marketplace_cabinet_invoice_download', {order: order.id, invoice: order.invoice.id}) }}">{{ 'customer.cabinet.download.invoice'|trans }}</a>
+                                            </li>
+                                            <li>
+                                                <a class="block px-4 py-2 mt-2 font-semibold bg-transparent rounded-md dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 hover:text-gray-500 focus:text-gray-50 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
+                                                   href="#">{{ 'customer.cabinet.send.invoice'|trans }}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                {% else %}
+
+                                {% endif %}
                             </div>
                         </div>
                         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
