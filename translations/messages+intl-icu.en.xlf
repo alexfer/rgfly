@@ -691,6 +691,10 @@
                 <source>table.header.created_at</source>
                 <target>Created</target>
             </trans-unit>
+            <trans-unit id="table.header.due">
+                <source>table.header.due</source>
+                <target>Due</target>
+            </trans-unit>
             <trans-unit id="table.header.joined_at">
                 <source>table.header.joined_at</source>
                 <target>Joined</target>
