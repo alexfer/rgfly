@@ -89,7 +89,7 @@
                                 {% if order.completed is null %}
                                     <a id="invoice-action-{{ key }}"
                                        role="button"
-                                       data-dropdown-toggle="invoice-status-{{ key }}"
+                                       data-dropdown-toggle="invoice-status-{{ key }}" data-dropdown-trigger="hover"
                                        aria-expanded="false"
                                        class="bg-indigo-500 hover:bg-indigo-800 rounded px-2.5 py-1.5 text-white dark:text-gray-100 font-normal">{{ 'customer.cabinet.invoice'|trans }}</a>
                                     <div id="invoice-status-{{ key }}" class="z-10 hidden">

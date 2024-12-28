@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Intl\{Countries, Locale,};
 
 #[Route(path: '/cabinet/invoice')]
 class InvoiceController extends AbstractController
@@ -39,15 +40,22 @@ class InvoiceController extends AbstractController
 
         $order = $customerOrder->getOrders();
         $invoice = $order->getStoreInvoice();
+        $embed = null;
+
+        if ($order->getStore()->getAttach()) {
+            $embed = '/public/' . $params->get('market_storage_logo') . '/' . $order->getStore()->getId() . '/' . $order->getStore()->getAttach()->getName();
+        }
 
         $html = $this->renderView(
             'market_place/cabinet/pdf/invoice.html.twig',
             [
+                'countries' => Countries::getNames(Locale::getDefault()),
                 'invoice' => $invoice,
                 'products' => $order->getStoreOrdersProducts(),
                 'order' => $order,
                 'customer' => $customerOrder->getCustomer(),
                 'path' => $params->get('kernel.project_dir'),
+                'embed' => $embed,
                 'embedded' => false,
             ]
         );
@@ -102,6 +110,7 @@ class InvoiceController extends AbstractController
         $html = $this->renderView(
             'market_place/cabinet/pdf/invoice.html.twig',
             [
+                'countries' => Countries::getNames(Locale::getDefault()),
                 'invoice' => $invoice,
                 'products' => $order->getStoreOrdersProducts(),
                 'order' => $order,
