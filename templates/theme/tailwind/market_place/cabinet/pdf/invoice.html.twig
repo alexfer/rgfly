@@ -107,9 +107,17 @@
             <td colspan="2">
                 <table>
                     <tr>
+                        {% set src = path ~ '/public/img/rgbfly.png' %}
+                        {% if embedded %}
+                            {% set src = embed %}
+                        {% else %}
+                            {% if embed %}
+                                {% set src = path ~ embed %}
+                            {% endif %}
+                        {% endif %}
                         <td class="title">
                             <img
-                                    src="{{ path ~ '/public/img/rgbfly.png' }}" width="150" height="100%"
+                                    src="{{ src }}" width="150" height="100%"
                                     style="width: 100%; max-width: 300px" alt="{{ 'site.title'|trans }}"
                             />
                         </td>
@@ -130,10 +138,10 @@
                         <td>
                             {{ order.store.name }}<br/>
                             {{ order.store.address }}<br/>
-                            {{ order.store.country }}
+                            {{ countries[order.store.country] }}
                         </td>
                         <td>
-                            {{ customer.phone }}<br/>
+                            {{ countries[customer.country] }}, {{ customer.phone }}<br/>
                             {{ customer.firstName }} {{ customer.lastName }}<br/>
                             {{ customer.email }}
                         </td>

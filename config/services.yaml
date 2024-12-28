@@ -19,6 +19,7 @@ parameters:
     product_storage_dir: 'storage/product'
     user_storage_picture: 'storage/user/picture'
     market_storage_logo: 'storage/market/logo'
+    invoice_pdf: '%kernel.project_dir%/public/storage/market/invoice'
     entry_storage_picture: 'storage/entry/picture'
     product_storage_picture: 'storage/product/picture'
     app.notifications.subject: '%env(EMAIL_SUBJECT)%'
