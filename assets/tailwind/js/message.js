@@ -10,8 +10,28 @@ const el = {
     danger: document.getElementById('toast-danger'),
     success: document.getElementById('toast-success'),
     modal: document.getElementById('modal-message'),
-    formAnswer: document.getElementById('form-answer')
+    formAnswer: document.getElementById('form-answer'),
+    invoices: document.querySelectorAll('.send-invoice'),
 };
+
+if(el.invoices.length) {
+    [...el.invoices].forEach((invoice, i) => {
+        invoice.addEventListener('click', async e => {
+            e.preventDefault();
+            const request = await fetch(invoice.attributes.href.nodeValue, {
+                method: 'POST',
+            });
+            request.json().then(data => {
+                if(!data.success) {
+                    window.showToast(document.getElementById('toast-danger'), data.message);
+                    return;
+                }
+                window.showToast(document.getElementById('toast-success'), data.message);
+            });
+            document.body.click();
+        });
+    });
+}
 
 if (el.formAnswer !== null) {
     const form = el.formAnswer;

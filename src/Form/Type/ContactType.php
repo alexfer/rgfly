@@ -55,7 +55,7 @@ class ContactType extends AbstractType
                 'attr' => [
                     'min' => 8,
                     'max' => 80,
-                    'pattern' => "/[+0-9]+$/i",
+                    'pattern' => "[+0-9]+$",
                 ],
                 'constraints' => [
                     new Regex(

@@ -100,8 +100,8 @@
                                                    href="{{ path('app_marketplace_cabinet_invoice_download', {order: order.id, invoice: order.invoice.id}) }}">{{ 'customer.cabinet.download.invoice'|trans }}</a>
                                             </li>
                                             <li>
-                                                <a class="block px-4 py-2 mt-2 font-semibold bg-transparent rounded-md dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 hover:text-gray-500 focus:text-gray-50 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
-                                                   href="#">{{ 'customer.cabinet.send.invoice'|trans }}</a>
+                                                <a class="send-invoice block px-4 py-2 mt-2 font-semibold bg-transparent rounded-md dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 hover:text-gray-500 focus:text-gray-50 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
+                                                   href="{{ path('app_marketplace_cabinet_invoice_send', {order: order.id, invoice: order.invoice.id}) }}">{{ 'customer.cabinet.send.invoice'|trans }}</a>
                                             </li>
                                         </ul>
                                     </div>
