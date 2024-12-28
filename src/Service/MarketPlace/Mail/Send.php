@@ -37,7 +37,7 @@ readonly class Send implements SendMailInterface
     {
         $mail = new Email();
 
-        $mail->from($this->address($data['from']['email'], $data['from']['email']))
+        $mail->from($this->address($data['from']['email'], $data['from']['name']))
             ->to($this->address($data['to']['email'], $data['to']['name']))
             ->subject($data['subject'])
             ->attachFromPath($data['attachment'])

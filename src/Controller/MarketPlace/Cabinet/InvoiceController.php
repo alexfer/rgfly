@@ -11,9 +11,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Intl\{Countries, Locale,};
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Component\Intl\{Countries, Locale,};
 
 #[Route(path: '/cabinet/invoice')]
 class InvoiceController extends AbstractController
@@ -125,8 +125,8 @@ class InvoiceController extends AbstractController
 
         $data = [
             'from' => [
-                'email' => $params->get('app.notifications.email_sender'),
-                'name' => $params->get('app.notifications.email_sender_name')
+                'email' => $order->getStore()->getEmail() ?: $params->get('app.notifications.email_sender'),
+                'name' => $order->getStore()->getName(),
             ],
             'to' => [
                 'email' => $customerOrder->getCustomer()->getEmail(),
