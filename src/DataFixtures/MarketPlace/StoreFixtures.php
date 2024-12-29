@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace App\DataFixtures\MarketPlace;
+namespace Essence\DataFixtures\MarketPlace;
 
-use App\Entity\MarketPlace\Store;
-use App\Entity\MarketPlace\StoreCarrier;
-use App\Entity\MarketPlace\StoreCarrierStore;
-use App\Entity\MarketPlace\StoreOptions;
-use App\Entity\MarketPlace\StorePaymentGateway;
-use App\Entity\MarketPlace\StorePaymentGatewayStore;
-use App\Entity\MarketPlace\StoreSocial;
-use App\Entity\User;
+use Essence\Entity\MarketPlace\Store;
+use Essence\Entity\MarketPlace\StoreCarrier;
+use Essence\Entity\MarketPlace\StoreCarrierStore;
+use Essence\Entity\MarketPlace\StoreOptions;
+use Essence\Entity\MarketPlace\StorePaymentGateway;
+use Essence\Entity\MarketPlace\StorePaymentGatewayStore;
+use Essence\Entity\MarketPlace\StoreSocial;
+use Essence\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\String\Slugger\SluggerInterface;

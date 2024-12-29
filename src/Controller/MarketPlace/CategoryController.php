@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\MarketPlace;
+namespace Essence\Controller\MarketPlace;
 
-use App\Entity\MarketPlace\{StoreCategory, StoreCustomer, StoreProduct};
+use Essence\Entity\MarketPlace\{StoreCategory, StoreCustomer, StoreProduct};
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

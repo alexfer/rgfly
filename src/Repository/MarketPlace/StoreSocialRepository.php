@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository\MarketPlace;
+namespace Essence\Repository\MarketPlace;
 
-use App\Entity\MarketPlace\StoreSocial;
+use Essence\Entity\MarketPlace\StoreSocial;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

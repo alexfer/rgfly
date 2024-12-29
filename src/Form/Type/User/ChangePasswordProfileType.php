@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Form\Type\User;
+namespace Essence\Form\Type\User;
 
-use App\Entity\User;
+use Essence\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{PasswordType, RepeatedType, SubmitType,};
 use Symfony\Component\Form\FormBuilderInterface;

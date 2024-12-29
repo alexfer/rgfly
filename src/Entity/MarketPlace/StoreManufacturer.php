@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Entity\MarketPlace;
+namespace Essence\Entity\MarketPlace;
 
-use App\Repository\MarketPlace\StoreManufacturerRepository;
+use Essence\Repository\MarketPlace\StoreManufacturerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;

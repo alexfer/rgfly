@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Entity\MarketPlace;
+namespace Essence\Entity\MarketPlace;
 
-use App\Repository\MarketPlace\StoreCategoryRepository;
+use Essence\Repository\MarketPlace\StoreCategoryRepository;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;

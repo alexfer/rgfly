@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository;
+namespace Essence\Repository;
 
-use App\Entity\ResetPasswordRequest;
+use Essence\Entity\ResetPasswordRequest;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

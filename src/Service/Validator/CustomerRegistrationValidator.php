@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\Validator;
+namespace Essence\Service\Validator;
 
-use App\Service\Validator\Interface\CustomerRegistrationValidatorInterface;
+use Essence\Service\Validator\Interface\CustomerRegistrationValidatorInterface;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\IsTrue;

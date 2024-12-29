@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DataFixtures\MarketPlace;
+namespace Essence\DataFixtures\MarketPlace;
 
-use App\Entity\MarketPlace\StoreCategory;
+use Essence\Entity\MarketPlace\StoreCategory;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;

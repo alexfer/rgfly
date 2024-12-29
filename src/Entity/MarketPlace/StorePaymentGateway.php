@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Entity\MarketPlace;
+namespace Essence\Entity\MarketPlace;
 
-use App\Entity\Attach;
-use App\Repository\MarketPlace\StorePaymentGatewayRepository;
+use Essence\Entity\Attach;
+use Essence\Repository\MarketPlace\StorePaymentGatewayRepository;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

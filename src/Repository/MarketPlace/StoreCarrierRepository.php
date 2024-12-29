@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Repository\MarketPlace;
+namespace Essence\Repository\MarketPlace;
 
-use App\Entity\Attach;
-use App\Entity\MarketPlace\StoreCarrier;
+use Essence\Entity\Attach;
+use Essence\Entity\MarketPlace\StoreCarrier;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;

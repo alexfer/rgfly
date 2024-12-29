@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\MarketPlace\Dashboard\Operation\FactoryHandler;
+namespace Essence\Service\MarketPlace\Dashboard\Operation\FactoryHandler;
 
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use PhpOffice\PhpSpreadsheet\IOFactory;

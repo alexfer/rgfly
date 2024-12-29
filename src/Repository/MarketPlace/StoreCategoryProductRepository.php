@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repository\MarketPlace;
+namespace Essence\Repository\MarketPlace;
 
-use App\Entity\MarketPlace\StoreCategoryProduct;
-use App\Entity\MarketPlace\StoreProduct;
+use Essence\Entity\MarketPlace\StoreCategoryProduct;
+use Essence\Entity\MarketPlace\StoreProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

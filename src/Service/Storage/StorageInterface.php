@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Storage;
+namespace Essence\Service\Storage;
 
 interface StorageInterface
 {

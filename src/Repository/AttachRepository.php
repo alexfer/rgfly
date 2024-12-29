@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repository;
+namespace Essence\Repository;
 
-use App\Entity\Attach;
-use App\Entity\UserDetails;
+use Essence\Entity\Attach;
+use Essence\Entity\UserDetails;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\Persistence\ManagerRegistry;

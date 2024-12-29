@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Controller\Dashboard;
+namespace Essence\Controller\Dashboard;
 
-use App\Entity\Entry;
-use App\Entity\MarketPlace\Enum\EnumStoreOrderStatus;
-use App\Entity\MarketPlace\Store;
-use App\Entity\MarketPlace\StoreCustomer;
-use App\Entity\MarketPlace\StoreCustomerOrders;
-use App\Entity\MarketPlace\StoreMessage;
-use App\Entity\MarketPlace\StoreOrders;
-use App\Entity\MarketPlace\StoreProduct;
-use App\Entity\User;
+use Essence\Entity\Entry;
+use Essence\Entity\MarketPlace\Enum\EnumStoreOrderStatus;
+use Essence\Entity\MarketPlace\Store;
+use Essence\Entity\MarketPlace\StoreCustomer;
+use Essence\Entity\MarketPlace\StoreCustomerOrders;
+use Essence\Entity\MarketPlace\StoreMessage;
+use Essence\Entity\MarketPlace\StoreOrders;
+use Essence\Entity\MarketPlace\StoreProduct;
+use Essence\Entity\User;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

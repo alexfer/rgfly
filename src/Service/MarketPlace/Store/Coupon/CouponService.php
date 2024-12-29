@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\MarketPlace\Store\Coupon;
+namespace Essence\Service\MarketPlace\Store\Coupon;
 
-use App\Entity\MarketPlace\{Store, StoreCoupon, StoreCouponCode, StoreCouponUsage, StoreCustomer};
-use App\Service\MarketPlace\Currency;
-use App\Service\MarketPlace\Store\Coupon\Interface\CouponServiceInterface;
+use Essence\Entity\MarketPlace\{Store, StoreCoupon, StoreCouponCode, StoreCouponUsage, StoreCustomer};
+use Essence\Service\MarketPlace\Currency;
+use Essence\Service\MarketPlace\Store\Coupon\Interface\CouponServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 

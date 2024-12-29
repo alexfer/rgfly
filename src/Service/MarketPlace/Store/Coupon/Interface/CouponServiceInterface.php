@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\MarketPlace\Store\Coupon\Interface;
+namespace Essence\Service\MarketPlace\Store\Coupon\Interface;
 
-use App\Entity\MarketPlace\{Store, StoreCustomer};
+use Essence\Entity\MarketPlace\{Store, StoreCustomer};
 use Symfony\Component\Security\Core\User\UserInterface;
 
 interface CouponServiceInterface

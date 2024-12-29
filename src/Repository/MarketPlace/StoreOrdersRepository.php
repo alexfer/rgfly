@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository\MarketPlace;
+namespace Essence\Repository\MarketPlace;
 
-use App\Entity\MarketPlace\{Store, StoreCustomer, StoreCustomerOrders, StoreInvoice, StoreOrders};
+use Essence\Entity\MarketPlace\{Store, StoreCustomer, StoreCustomerOrders, StoreInvoice, StoreOrders};
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\{Connection, Exception};
 use Doctrine\ORM\{AbstractQuery, NonUniqueResultException, Query\Expr\Join};

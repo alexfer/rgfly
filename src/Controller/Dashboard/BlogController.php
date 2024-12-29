@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Controller\Dashboard;
+namespace Essence\Controller\Dashboard;
 
-use App\Entity\{Attach, Category, Entry, EntryAttachment, EntryCategory, EntryDetails};
-use App\Form\Type\Dashboard\EntryDetailsType;
-use App\Service\FileUploader;
-use App\Service\Validator\Interface\ImageValidatorInterface;
-use App\Service\Validator\Interface\OperationFileValidatorInterface;
+use Essence\Entity\{Attach, Category, Entry, EntryAttachment, EntryCategory, EntryDetails};
+use Essence\Form\Type\Dashboard\EntryDetailsType;
+use Essence\Service\FileUploader;
+use Essence\Service\Validator\Interface\ImageValidatorInterface;
+use Essence\Service\Validator\Interface\OperationFileValidatorInterface;
 use DateTime;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;

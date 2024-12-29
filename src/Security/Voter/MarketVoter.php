@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Security\Voter;
+namespace Essence\Security\Voter;
 
-use App\Entity\MarketPlace\Market;
-use App\Entity\User;
+use Essence\Entity\MarketPlace\Market;
+use Essence\Entity\User;
 use LogicException;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

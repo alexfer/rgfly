@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Form\Type;
+namespace Essence\Form\Type;
 
-use App\Entity\Contact;
+use Essence\Entity\Contact;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{EmailType, SubmitType, TelType, TextareaType, TextType,};
 use Symfony\Component\Form\FormBuilderInterface;

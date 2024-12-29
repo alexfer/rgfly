@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Entity\MarketPlace;
+namespace Essence\Entity\MarketPlace;
 
-use App\Repository\MarketPlace\StoreProductRepository;
+use Essence\Repository\MarketPlace\StoreProductRepository;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;

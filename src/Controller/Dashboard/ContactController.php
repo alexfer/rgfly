@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace App\Controller\Dashboard;
+namespace Essence\Controller\Dashboard;
 
-use App\Entity\Answer;
-use App\Entity\Contact;
-use App\Service\Contact\Interface\HandleInterface;
+use Essence\Entity\Answer;
+use Essence\Entity\Contact;
+use Essence\Service\Contact\Interface\HandleInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

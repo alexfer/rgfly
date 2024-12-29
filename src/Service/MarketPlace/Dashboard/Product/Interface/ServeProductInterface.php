@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Service\MarketPlace\Dashboard\Product\Interface;
+namespace Essence\Service\MarketPlace\Dashboard\Product\Interface;
 
-use App\Entity\MarketPlace\{Store, StoreProduct};
+use Essence\Entity\MarketPlace\{Store, StoreProduct};
 use Symfony\Component\Form\FormInterface;
 
 interface ServeProductInterface

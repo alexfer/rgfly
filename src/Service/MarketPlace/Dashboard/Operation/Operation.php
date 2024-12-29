@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\MarketPlace\Dashboard\Operation;
+namespace Essence\Service\MarketPlace\Dashboard\Operation;
 
-use App\Entity\MarketPlace\Enum\EnumOperation;
-use App\Entity\MarketPlace\Store;
-use App\Entity\MarketPlace\StoreOperation;
-use App\Entity\MarketPlace\StoreProduct;
-use App\Service\MarketPlace\Dashboard\Operation\Interface\OperationInterface;
+use Essence\Entity\MarketPlace\Enum\EnumOperation;
+use Essence\Entity\MarketPlace\Store;
+use Essence\Entity\MarketPlace\StoreOperation;
+use Essence\Entity\MarketPlace\StoreProduct;
+use Essence\Service\MarketPlace\Dashboard\Operation\Interface\OperationInterface;
 
 class Operation extends FactoryHandler implements OperationInterface
 {

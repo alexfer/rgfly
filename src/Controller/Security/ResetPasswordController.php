@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Controller\Security;
+namespace Essence\Controller\Security;
 
-use App\Controller\Trait\ControllerTrait;
-use App\Entity\User;
-use App\Form\Type\User\ChangePasswordFormType;
-use App\Form\Type\User\ResetPasswordRequestFormType;
-use App\Service\Validator\Interface\EmailNotificationInterface;
+use Essence\Controller\Trait\ControllerTrait;
+use Essence\Entity\User;
+use Essence\Form\Type\User\ChangePasswordFormType;
+use Essence\Form\Type\User\ResetPasswordRequestFormType;
+use Essence\Service\Validator\Interface\EmailNotificationInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\{RedirectResponse, Request, Response,};

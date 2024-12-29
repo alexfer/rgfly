@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\MessageHandler;
+namespace Essence\MessageHandler;
 
-use App\Message\MessageNotification;
+use Essence\Message\MessageNotification;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

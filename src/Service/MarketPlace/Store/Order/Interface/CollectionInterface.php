@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\MarketPlace\Store\Order\Interface;
+namespace Essence\Service\MarketPlace\Store\Order\Interface;
 
-use App\Entity\MarketPlace\StoreCustomer;
+use Essence\Entity\MarketPlace\StoreCustomer;
 
 interface CollectionInterface
 {

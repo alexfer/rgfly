@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Form\Type;
+namespace Essence\Form\Type;
 
-use App\Entity\Faq;
+use Essence\Entity\Faq;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{CheckboxType, SubmitType, TextareaType, TextType,};
 use Symfony\Component\Form\FormBuilderInterface;

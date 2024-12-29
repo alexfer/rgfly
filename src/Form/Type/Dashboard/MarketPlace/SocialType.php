@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Form\Type\Dashboard\MarketPlace;
+namespace Essence\Form\Type\Dashboard\MarketPlace;
 
-use App\Entity\MarketPlace\StoreSocial;
+use Essence\Entity\MarketPlace\StoreSocial;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, UrlType};
 use Symfony\Component\Form\FormBuilderInterface;

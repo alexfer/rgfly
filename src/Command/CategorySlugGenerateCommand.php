@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Command;
+namespace Essence\Command;
 
-use App\Repository\CategoryRepository;
+use Essence\Repository\CategoryRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

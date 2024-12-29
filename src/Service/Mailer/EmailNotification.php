@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\Mailer;
+namespace Essence\Service\Mailer;
 
-use App\Service\Validator\Interface\EmailNotificationInterface;
+use Essence\Service\Validator\Interface\EmailNotificationInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;

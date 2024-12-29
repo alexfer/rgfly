@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Entity\MarketPlace;
+namespace Essence\Entity\MarketPlace;
 
-use App\Entity\MarketPlace\Enum\EnumOperation;
-use App\Repository\MarketPlace\StoreOperationRepository;
+use Essence\Entity\MarketPlace\Enum\EnumOperation;
+use Essence\Repository\MarketPlace\StoreOperationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StoreOperationRepository::class)]

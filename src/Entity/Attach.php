@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace App\Entity;
+namespace Essence\Entity;
 
-use App\Entity\MarketPlace\Store;
-use App\Entity\MarketPlace\StoreProductAttach;
-use App\Repository\AttachRepository;
+use Essence\Entity\MarketPlace\Store;
+use Essence\Entity\MarketPlace\StoreProductAttach;
+use Essence\Repository\AttachRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

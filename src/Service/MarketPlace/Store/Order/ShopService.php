@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\MarketPlace\Store\Order;
+namespace Essence\Service\MarketPlace\Store\Order;
 
-use App\Storage\MarketPlace\FrontSessionInterface;
+use Essence\Storage\MarketPlace\FrontSessionInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 readonly class ShopService
@@ -26,7 +26,7 @@ readonly class ShopService
         $quantity = [];
 
         $orders = $this->frontSession->get(
-            (string)$this->requestStack->getCurrentRequest()->cookies?->get('rgfly')
+            (string)$this->requestStack->getCurrentRequest()->cookies?->get('essence')
         );
 
         if ($orders) {

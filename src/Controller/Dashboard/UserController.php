@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace App\Controller\Dashboard;
+namespace Essence\Controller\Dashboard;
 
-use App\Entity\MarketPlace\StoreCustomer;
-use App\Entity\User;
-use App\Form\Type\User\ChangePasswordProfileType;
+use Essence\Entity\MarketPlace\StoreCustomer;
+use Essence\Entity\User;
+use Essence\Form\Type\User\ChangePasswordProfileType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response,};

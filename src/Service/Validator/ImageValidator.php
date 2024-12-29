@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\Validator;
+namespace Essence\Service\Validator;
 
-use App\Service\Validator\Interface\ImageValidatorInterface;
+use Essence\Service\Validator\Interface\ImageValidatorInterface;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validation;

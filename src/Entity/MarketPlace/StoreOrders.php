@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Entity\MarketPlace;
+namespace Essence\Entity\MarketPlace;
 
-use App\Entity\MarketPlace\Enum\EnumStoreOrderStatus;
-use App\Repository\MarketPlace\StoreOrdersRepository;
+use Essence\Entity\MarketPlace\Enum\EnumStoreOrderStatus;
+use Essence\Repository\MarketPlace\StoreOrdersRepository;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;

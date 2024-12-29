@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace App\Service;
+namespace Essence\Service;
 
-use App\Entity\Attach;
-use App\Entity\MarketPlace\Store;
-use App\Entity\MarketPlace\StoreProductAttach;
-use App\Entity\UserDetails;
+use Essence\Entity\Attach;
+use Essence\Entity\MarketPlace\Store;
+use Essence\Entity\MarketPlace\StoreProductAttach;
+use Essence\Entity\UserDetails;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;

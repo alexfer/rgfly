@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Service\MarketPlace\Dashboard\Product;
+namespace Essence\Service\MarketPlace\Dashboard\Product;
 
-use App\Entity\MarketPlace\{StoreBrand,
+use Essence\Entity\MarketPlace\{StoreBrand,
     StoreManufacturer,
     StoreProduct,
     StoreProductAttribute,
@@ -11,7 +11,7 @@ use App\Entity\MarketPlace\{StoreBrand,
     StoreProductManufacturer,
     StoreProductSupplier,
     StoreSupplier};
-use App\Helper\MarketPlace\StoreAttributeValues;
+use Essence\Helper\MarketPlace\StoreAttributeValues;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\{Request, RequestStack};
 

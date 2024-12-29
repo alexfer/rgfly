@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\MarketPlace\Store\Order;
+namespace Essence\Service\MarketPlace\Store\Order;
 
-use App\Helper\MarketPlace\MarketPlaceHelper;
-use App\Service\MarketPlace\Currency;
-use App\Service\MarketPlace\Store\Order\Interface\SummaryInterface;
+use Essence\Helper\MarketPlace\MarketPlaceHelper;
+use Essence\Service\MarketPlace\Currency;
+use Essence\Service\MarketPlace\Store\Order\Interface\SummaryInterface;
 
 final class Summary implements SummaryInterface
 {

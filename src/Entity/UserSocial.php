@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Entity;
+namespace Essence\Entity;
 
-use App\Repository\UserSocialRepository;
+use Essence\Repository\UserSocialRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserSocialRepository::class)]

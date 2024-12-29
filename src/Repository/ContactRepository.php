@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository;
+namespace Essence\Repository;
 
-use App\Entity\Contact;
+use Essence\Entity\Contact;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\Validator;
+namespace Essence\Service\Validator;
 
-use App\Service\Validator\Interface\PaymentGatewayValidatorInterface;
+use Essence\Service\Validator\Interface\PaymentGatewayValidatorInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Length;

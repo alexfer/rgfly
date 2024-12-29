@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\Contact\Interface;
+namespace Essence\Service\Contact\Interface;
 
-use App\Entity\Contact;
-use App\Entity\User;
+use Essence\Entity\Contact;
+use Essence\Entity\User;
 use Symfony\Component\Form\FormInterface;
 
 interface HandleInterface

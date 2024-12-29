@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\MarketPlace\Dashboard\Configuration;
+namespace Essence\Service\MarketPlace\Dashboard\Configuration;
 
-use App\Entity\Attach;
-use App\Entity\MarketPlace\StoreCarrier;
-use App\Entity\MarketPlace\StorePaymentGateway;
-use App\Service\FileUploader;
-use App\Service\Validator\Interface\CarrierValidatorInterface;
-use App\Service\Validator\Interface\ImageValidatorInterface;
-use App\Service\Validator\Interface\PaymentGatewayValidatorInterface;
+use Essence\Entity\Attach;
+use Essence\Entity\MarketPlace\StoreCarrier;
+use Essence\Entity\MarketPlace\StorePaymentGateway;
+use Essence\Service\FileUploader;
+use Essence\Service\Validator\Interface\CarrierValidatorInterface;
+use Essence\Service\Validator\Interface\ImageValidatorInterface;
+use Essence\Service\Validator\Interface\PaymentGatewayValidatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;

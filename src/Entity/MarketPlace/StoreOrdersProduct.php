@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Entity\MarketPlace;
+namespace Essence\Entity\MarketPlace;
 
-use App\Repository\MarketPlace\StoreOrdersProductRepository;
+use Essence\Repository\MarketPlace\StoreOrdersProductRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StoreOrdersProductRepository::class)]

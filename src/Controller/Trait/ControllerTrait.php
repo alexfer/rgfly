@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Controller\Trait;
+namespace Essence\Controller\Trait;
 
-use App\Entity\MarketPlace\StoreCustomer;
+use Essence\Entity\MarketPlace\StoreCustomer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 

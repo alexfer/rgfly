@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\MarketPlace\Mail;
+namespace Essence\Service\MarketPlace\Mail;
 
 interface SendMailInterface
 {

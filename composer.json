@@ -100,12 +100,12 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "Essence\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/"
+            "Essence\\Tests\\": "tests/"
         }
     },
     "replace": {

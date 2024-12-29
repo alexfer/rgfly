@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helper\MarketPlace;
+namespace Essence\Helper\MarketPlace;
 
 class MarketPlaceHelper
 {

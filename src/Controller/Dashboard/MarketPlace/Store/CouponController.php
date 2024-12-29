@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace App\Controller\Dashboard\MarketPlace\Store;
+namespace Essence\Controller\Dashboard\MarketPlace\Store;
 
-use App\Entity\MarketPlace\{Store, StoreCoupon, StoreCouponCode, StoreProduct};
-use App\Form\Type\Dashboard\MarketPlace\CouponType;
-use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface;
-use App\Service\MarketPlace\StoreTrait;
+use Essence\Entity\MarketPlace\{Store, StoreCoupon, StoreCouponCode, StoreProduct};
+use Essence\Form\Type\Dashboard\MarketPlace\CouponType;
+use Essence\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface;
+use Essence\Service\MarketPlace\StoreTrait;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

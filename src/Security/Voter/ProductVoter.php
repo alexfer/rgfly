@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Security\Voter;
+namespace Essence\Security\Voter;
 
-use App\Entity\MarketPlace\StoreProduct;
-use App\Entity\User;
+use Essence\Entity\MarketPlace\StoreProduct;
+use Essence\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;

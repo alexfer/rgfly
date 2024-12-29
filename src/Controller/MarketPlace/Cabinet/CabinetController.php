@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace App\Controller\MarketPlace\Cabinet;
+namespace Essence\Controller\MarketPlace\Cabinet;
 
-use App\Controller\Trait\ControllerTrait;
-use App\Entity\MarketPlace\{StoreCustomer, StoreCustomerOrders, StoreMessage, StoreOrders, StoreWishlist};
-use App\Entity\User;
-use App\Form\Type\MarketPlace\{AddressType, CustomerProfileType};
-use App\Form\Type\User\ChangePasswordFormType;
-use App\Service\MarketPlace\Store\Customer\Interface\CustomerServiceInterface as CustomerInterface;
-use App\Service\MarketPlace\Store\Message\Interface\MessageServiceInterface;
+use Essence\Controller\Trait\ControllerTrait;
+use Essence\Entity\MarketPlace\{StoreCustomer, StoreCustomerOrders, StoreMessage, StoreOrders, StoreWishlist};
+use Essence\Entity\User;
+use Essence\Form\Type\MarketPlace\{AddressType, CustomerProfileType};
+use Essence\Form\Type\User\ChangePasswordFormType;
+use Essence\Service\MarketPlace\Store\Customer\Interface\CustomerServiceInterface as CustomerInterface;
+use Essence\Service\MarketPlace\Store\Message\Interface\MessageServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;

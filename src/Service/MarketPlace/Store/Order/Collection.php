@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\MarketPlace\Store\Order;
+namespace Essence\Service\MarketPlace\Store\Order;
 
-use App\Entity\MarketPlace\{StoreCustomer, StoreOrders};
-use App\Helper\MarketPlace\MarketPlaceHelper;
-use App\Service\MarketPlace\Store\Order\Interface\CollectionInterface;
-use App\Storage\MarketPlace\FrontSessionHandler;
-use App\Storage\MarketPlace\FrontSessionInterface;
+use Essence\Entity\MarketPlace\{StoreCustomer, StoreOrders};
+use Essence\Helper\MarketPlace\MarketPlaceHelper;
+use Essence\Service\MarketPlace\Store\Order\Interface\CollectionInterface;
+use Essence\Storage\MarketPlace\FrontSessionHandler;
+use Essence\Storage\MarketPlace\FrontSessionInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\{RequestStack};
 

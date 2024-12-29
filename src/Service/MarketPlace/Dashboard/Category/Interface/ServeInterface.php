@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Service\MarketPlace\Dashboard\Category\Interface;
+namespace Essence\Service\MarketPlace\Dashboard\Category\Interface;
 
-use App\Entity\MarketPlace\StoreCategoryProduct;
-use App\Repository\MarketPlace\StoreCategoryRepository;
+use Essence\Entity\MarketPlace\StoreCategoryProduct;
+use Essence\Repository\MarketPlace\StoreCategoryRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\FormInterface;
 

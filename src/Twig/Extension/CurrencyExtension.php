@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Twig\Extension;
+namespace Essence\Twig\Extension;
 
-use App\Service\MarketPlace\Currency;
+use Essence\Service\MarketPlace\Currency;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 

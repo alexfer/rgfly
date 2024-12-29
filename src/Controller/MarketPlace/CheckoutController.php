@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace App\Controller\MarketPlace;
+namespace Essence\Controller\MarketPlace;
 
-use App\Entity\MarketPlace\Enum\EnumStoreOrderStatus;
-use App\Entity\MarketPlace\StoreInvoice;
-use App\Form\Type\MarketPlace\CustomerType;
-use App\Form\Type\User\LoginType;
-use App\Service\MarketPlace\Store\Checkout\Interface\CheckoutServiceInterface as Checkout;
-use App\Service\MarketPlace\Store\Coupon\Interface\CouponServiceInterface as Coupon;
-use App\Service\MarketPlace\Store\Customer\Interface\{CustomerServiceInterface as Customer, UserManagerInterface};
-use App\Storage\MarketPlace\FrontSessionHandler;
+use Essence\Entity\MarketPlace\Enum\EnumStoreOrderStatus;
+use Essence\Entity\MarketPlace\StoreInvoice;
+use Essence\Form\Type\MarketPlace\CustomerType;
+use Essence\Form\Type\User\LoginType;
+use Essence\Service\MarketPlace\Store\Checkout\Interface\CheckoutServiceInterface as Checkout;
+use Essence\Service\MarketPlace\Store\Coupon\Interface\CouponServiceInterface as Coupon;
+use Essence\Service\MarketPlace\Store\Customer\Interface\{CustomerServiceInterface as Customer, UserManagerInterface};
+use Essence\Storage\MarketPlace\FrontSessionHandler;
 use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};

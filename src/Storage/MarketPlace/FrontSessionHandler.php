@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace App\Storage\MarketPlace;
+namespace Essence\Storage\MarketPlace;
 
-use App\Service\Redis\ConnectionInterface;
+use Essence\Service\Redis\ConnectionInterface;
 use Psr\Log\LoggerInterface;
 
 class FrontSessionHandler implements FrontSessionInterface
 {
     const int TTL = 604800;
 
-    const string NAME = 'rgfly';
+    const string NAME = 'essence';
 
     public function __construct(
         private readonly ConnectionInterface $connection,

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Controller;
+namespace Essence\Controller;
 
-use App\Controller\Trait\ControllerTrait;
-use App\Entity\{Category, Entry};
+use Essence\Controller\Trait\ControllerTrait;
+use Essence\Entity\{Category, Entry};
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};

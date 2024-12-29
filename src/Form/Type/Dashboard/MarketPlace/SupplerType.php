@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Form\Type\Dashboard\MarketPlace;
+namespace Essence\Form\Type\Dashboard\MarketPlace;
 
-use App\Entity\MarketPlace\StoreSupplier;
+use Essence\Entity\MarketPlace\StoreSupplier;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

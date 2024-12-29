@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Repository;
+namespace Essence\Repository;
 
-use App\Entity\Attach;
-use App\Entity\Entry;
-use App\Entity\EntryAttachment;
-use App\Entity\EntryDetails;
+use Essence\Entity\Attach;
+use Essence\Entity\Entry;
+use Essence\Entity\EntryAttachment;
+use Essence\Entity\EntryDetails;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Query\Expr;

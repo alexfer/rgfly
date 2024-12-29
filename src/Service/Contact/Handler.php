@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\Contact;
+namespace Essence\Service\Contact;
 
-use App\Entity\Answer;
-use App\Entity\Contact;
-use App\Entity\User;
-use App\Service\Contact\Interface\HandleInterface;
-use App\Service\Validator\Interface\EmailNotificationInterface;
+use Essence\Entity\Answer;
+use Essence\Entity\Contact;
+use Essence\Entity\User;
+use Essence\Service\Contact\Interface\HandleInterface;
+use Essence\Service\Validator\Interface\EmailNotificationInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\FormInterface;

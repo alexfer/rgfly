@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace Essence\Controller;
 
-use App\Controller\Trait\ControllerTrait;
-use App\Entity\Category;
-use App\Entity\Entry;
-use App\Entity\MarketPlace\{Store, StoreCategory};
+use Essence\Controller\Trait\ControllerTrait;
+use Essence\Entity\Category;
+use Essence\Entity\Entry;
+use Essence\Entity\MarketPlace\{Store, StoreCategory};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

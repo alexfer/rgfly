@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Service\MarketPlace\Dashboard\Category;
+namespace Essence\Service\MarketPlace\Dashboard\Category;
 
-use App\Entity\MarketPlace\StoreCategory;
-use App\Entity\MarketPlace\StoreCategoryProduct;
-use App\Repository\MarketPlace\StoreCategoryRepository;
-use App\Service\MarketPlace\Dashboard\Category\Interface\ServeInterface;
+use Essence\Entity\MarketPlace\StoreCategory;
+use Essence\Entity\MarketPlace\StoreCategoryProduct;
+use Essence\Repository\MarketPlace\StoreCategoryRepository;
+use Essence\Service\MarketPlace\Dashboard\Category\Interface\ServeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\FormInterface;
