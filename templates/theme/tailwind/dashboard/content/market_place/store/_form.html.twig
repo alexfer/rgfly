@@ -316,18 +316,7 @@
     <script type="text/javascript">
         CKEDITOR.replace('store_description', {
             extraPlugins: 'editorplaceholder',
-            contentsCss: 'body{font-family:Arial;font-size:14px;}',
-            //skin: 'moono-dark',
-            //contentsCss: "body{background-color:#000000;font-family: Arial;color:#ffffff;}",
             editorplaceholder: '{{ 'label.form.store_description'|trans }}',
-            removePlugins: 'simage,image,youtube,html5video,iframe,uicolor,videodetector,preview',
+            removePlugins: 'simage,image,youtube,html5video,iframe,uicolor,videodetector,preview'
         });
-
-        // const options = document.querySelector('[id^="store_storeOptions_"]');
-        // const label = document.getElementById('sb-label');
-        // options.addEventListener('change', () => {
-        //     options.value = options.value === '0' ? '1' : '0';
-        //     label.textContent = document.getElementById('label-' + options.value).textContent;
-        // });
-    </script>
 {% endblock %}
