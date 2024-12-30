@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Service\MarketPlace\Dashboard\Operation\Interface;
+namespace Inno\Service\MarketPlace\Dashboard\Operation\Interface;
 
-use Essence\Entity\MarketPlace\Store;
-use Essence\Entity\MarketPlace\StoreOperation;
+use Inno\Entity\MarketPlace\Store;
+use Inno\Entity\MarketPlace\StoreOperation;
 
 interface OperationInterface
 {

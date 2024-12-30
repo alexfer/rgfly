@@ -1,9 +1,9 @@
 <?php
 
-namespace Essence\Form\Type\Dashboard\MarketPlace;
+namespace Inno\Form\Type\Dashboard\MarketPlace;
 
-use Essence\Entity\MarketPlace\Store;
-use Essence\Entity\MarketPlace\StoreCoupon;
+use Inno\Entity\MarketPlace\Store;
+use Inno\Entity\MarketPlace\StoreCoupon;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;

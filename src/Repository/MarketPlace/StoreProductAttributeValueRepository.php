@@ -1,8 +1,8 @@
 <?php
 
-namespace Essence\Repository\MarketPlace;
+namespace Inno\Repository\MarketPlace;
 
-use Essence\Entity\MarketPlace\StoreProductAttributeValue;
+use Inno\Entity\MarketPlace\StoreProductAttributeValue;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

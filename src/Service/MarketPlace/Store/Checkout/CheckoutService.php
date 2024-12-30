@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Service\MarketPlace\Store\Checkout;
+namespace Inno\Service\MarketPlace\Store\Checkout;
 
-use Essence\Entity\MarketPlace\{Enum\EnumStoreOrderStatus,
+use Inno\Entity\MarketPlace\{Enum\EnumStoreOrderStatus,
     StoreCarrier,
     StoreCustomer,
     StoreCustomerOrders,
@@ -10,10 +10,10 @@ use Essence\Entity\MarketPlace\{Enum\EnumStoreOrderStatus,
     StoreOrders,
     StorePaymentGateway,
     StoreProduct};
-use Essence\Helper\MarketPlace\MarketPlaceHelper;
-use Essence\Service\MarketPlace\Store\Checkout\Interface\CheckoutServiceInterface;
-use Essence\Storage\MarketPlace\FrontSessionHandler;
-use Essence\Storage\MarketPlace\FrontSessionInterface;
+use Inno\Helper\MarketPlace\MarketPlaceHelper;
+use Inno\Service\MarketPlace\Store\Checkout\Interface\CheckoutServiceInterface;
+use Inno\Storage\MarketPlace\FrontSessionHandler;
+use Inno\Storage\MarketPlace\FrontSessionInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\{RequestStack, Response};

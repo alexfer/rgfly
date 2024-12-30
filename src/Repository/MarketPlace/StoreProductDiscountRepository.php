@@ -1,8 +1,8 @@
 <?php
 
-namespace Essence\Repository\MarketPlace;
+namespace Inno\Repository\MarketPlace;
 
-use Essence\Entity\MarketPlace\StoreProductDiscount;
+use Inno\Entity\MarketPlace\StoreProductDiscount;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

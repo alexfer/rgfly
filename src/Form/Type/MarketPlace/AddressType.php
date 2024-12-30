@@ -1,10 +1,10 @@
 <?php
 
-namespace Essence\Form\Type\MarketPlace;
+namespace Inno\Form\Type\MarketPlace;
 
-use Essence\Entity\MarketPlace\StoreAddress;
-use Essence\Entity\MarketPlace\StoreCustomer;
-use Essence\Service\HostApi\HostApiInterface;
+use Inno\Entity\MarketPlace\StoreAddress;
+use Inno\Entity\MarketPlace\StoreCustomer;
+use Inno\Service\HostApi\HostApiInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;

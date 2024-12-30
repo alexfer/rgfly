@@ -1,8 +1,8 @@
 <?php
 
-namespace Essence\Form\Type\User;
+namespace Inno\Form\Type\User;
 
-use Essence\Entity\{User,};
+use Inno\Entity\{User,};
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

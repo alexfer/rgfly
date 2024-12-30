@@ -1,6 +1,6 @@
 <?php
 
-namespace Essence\Service\MarketPlace\Dashboard\Product\Interface;
+namespace Inno\Service\MarketPlace\Dashboard\Product\Interface;
 
 interface CopyServiceInterface
 {

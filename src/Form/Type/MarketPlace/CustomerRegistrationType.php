@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Form\Type\MarketPlace;
+namespace Inno\Form\Type\MarketPlace;
 
-use Essence\Entity\MarketPlace\StoreCustomer;
-use Essence\Form\Type\User\RegistrationType;
-use Essence\Service\HostApi\HostApiInterface;
+use Inno\Entity\MarketPlace\StoreCustomer;
+use Inno\Form\Type\User\RegistrationType;
+use Inno\Service\HostApi\HostApiInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, EmailType, TelType, TextType};
 use Symfony\Component\Form\FormBuilderInterface;

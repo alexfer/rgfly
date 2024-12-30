@@ -43,7 +43,7 @@ services:
     Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
         arguments:
             - '@Redis'
-            - { 'prefix': 'essence_', 'ttl': 604800 }
+            - { 'prefix': 'inno_', 'ttl': 604800 }
     Redis:
         class: \Redis
         calls:
@@ -60,7 +60,7 @@ services:
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
-    Essence\:
+    Inno\:
         resource: '../src/'
         exclude:
             - '../src/DependencyInjection/'

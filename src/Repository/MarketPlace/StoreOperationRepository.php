@@ -1,9 +1,9 @@
 <?php
 
-namespace Essence\Repository\MarketPlace;
+namespace Inno\Repository\MarketPlace;
 
-use Essence\Entity\MarketPlace\Store;
-use Essence\Entity\MarketPlace\StoreOperation;
+use Inno\Entity\MarketPlace\Store;
+use Inno\Entity\MarketPlace\StoreOperation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

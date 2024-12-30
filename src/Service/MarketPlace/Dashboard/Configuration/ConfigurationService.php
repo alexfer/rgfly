@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Service\MarketPlace\Dashboard\Configuration;
+namespace Inno\Service\MarketPlace\Dashboard\Configuration;
 
-use Essence\Entity\MarketPlace\StoreCarrier;
-use Essence\Entity\MarketPlace\StorePaymentGateway;
-use Essence\Entity\MarketPlace\StorePaymentGatewayStore;
-use Essence\Service\MarketPlace\Dashboard\Configuration\Interface\ConfigurationServiceInterface;
+use Inno\Entity\MarketPlace\StoreCarrier;
+use Inno\Entity\MarketPlace\StorePaymentGateway;
+use Inno\Entity\MarketPlace\StorePaymentGatewayStore;
+use Inno\Service\MarketPlace\Dashboard\Configuration\Interface\ConfigurationServiceInterface;
 
 class ConfigurationService extends HandleService implements ConfigurationServiceInterface
 {

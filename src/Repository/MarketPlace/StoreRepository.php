@@ -1,9 +1,9 @@
 <?php
 
-namespace Essence\Repository\MarketPlace;
+namespace Inno\Repository\MarketPlace;
 
-use Essence\Entity\MarketPlace\{Store, StoreCustomer};
-use Essence\Entity\User;
+use Inno\Entity\MarketPlace\{Store, StoreCustomer};
+use Inno\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\{Connection, Exception, Statement};
 use Doctrine\Persistence\ManagerRegistry;

@@ -1,9 +1,9 @@
 <?php
 
-namespace Essence\Controller;
+namespace Inno\Controller;
 
-use Essence\Controller\Trait\ControllerTrait;
-use Essence\Entity\Faq;
+use Inno\Controller\Trait\ControllerTrait;
+use Inno\Entity\Faq;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

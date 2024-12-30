@@ -1,10 +1,10 @@
 <?php
 
-namespace Essence\Service\MarketPlace\Store\Order\Interface;
+namespace Inno\Service\MarketPlace\Store\Order\Interface;
 
-use Essence\Entity\MarketPlace\Store;
-use Essence\Entity\MarketPlace\StoreCustomer;
-use Essence\Entity\MarketPlace\StoreOrders;
+use Inno\Entity\MarketPlace\Store;
+use Inno\Entity\MarketPlace\StoreCustomer;
+use Inno\Entity\MarketPlace\StoreOrders;
 
 interface ProductServiceInterface
 {

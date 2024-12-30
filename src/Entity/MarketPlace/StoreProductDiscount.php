@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Entity\MarketPlace;
+namespace Inno\Entity\MarketPlace;
 
-use Essence\Repository\MarketPlace\StoreProductDiscountRepository;
+use Inno\Repository\MarketPlace\StoreProductDiscountRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 

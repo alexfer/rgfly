@@ -1,8 +1,8 @@
 <?php
 
-namespace Essence\Form\Type\Dashboard\MarketPlace;
+namespace Inno\Form\Type\Dashboard\MarketPlace;
 
-use Essence\Entity\MarketPlace\StoreManufacturer;
+use Inno\Entity\MarketPlace\StoreManufacturer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;

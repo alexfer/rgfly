@@ -1,6 +1,6 @@
 <?php
 
-namespace Essence\Helper\MarketPlace;
+namespace Inno\Helper\MarketPlace;
 
 class StoreAttributeValues
 {

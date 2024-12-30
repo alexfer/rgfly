@@ -1,8 +1,8 @@
 <?php
 
-namespace Essence\Form\Type\Dashboard;
+namespace Inno\Form\Type\Dashboard;
 
-use Essence\Entity\Entry;
+use Inno\Entity\Entry;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{SubmitType, TextareaType, TextType};
 use Symfony\Component\Form\FormBuilderInterface;

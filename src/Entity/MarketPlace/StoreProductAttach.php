@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Entity\MarketPlace;
+namespace Inno\Entity\MarketPlace;
 
-use Essence\Entity\Attach;
-use Essence\Repository\MarketPlace\StoreProductAttachRepository;
+use Inno\Entity\Attach;
+use Inno\Repository\MarketPlace\StoreProductAttachRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StoreProductAttachRepository::class)]

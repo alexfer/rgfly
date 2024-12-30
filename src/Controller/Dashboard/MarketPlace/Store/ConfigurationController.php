@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Controller\Dashboard\MarketPlace\Store;
+namespace Inno\Controller\Dashboard\MarketPlace\Store;
 
-use Essence\Entity\MarketPlace\StoreCarrier;
-use Essence\Entity\MarketPlace\StorePaymentGateway;
-use Essence\Form\Type\Dashboard\MarketPlace\CarrierType;
-use Essence\Form\Type\Dashboard\MarketPlace\PaymentGatewayType;
-use Essence\Service\MarketPlace\Dashboard\Configuration\Interface\ConfigurationServiceInterface;
+use Inno\Entity\MarketPlace\StoreCarrier;
+use Inno\Entity\MarketPlace\StorePaymentGateway;
+use Inno\Form\Type\Dashboard\MarketPlace\CarrierType;
+use Inno\Form\Type\Dashboard\MarketPlace\PaymentGatewayType;
+use Inno\Service\MarketPlace\Dashboard\Configuration\Interface\ConfigurationServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

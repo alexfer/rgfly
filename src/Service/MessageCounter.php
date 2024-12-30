@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Service;
+namespace Inno\Service;
 
-use Essence\Entity\MarketPlace\StoreCustomer;
-use Essence\Entity\MarketPlace\StoreMessage;
-use Essence\Entity\User;
+use Inno\Entity\MarketPlace\StoreCustomer;
+use Inno\Entity\MarketPlace\StoreMessage;
+use Inno\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class MessageCounter

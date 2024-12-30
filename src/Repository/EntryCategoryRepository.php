@@ -1,8 +1,8 @@
 <?php
 
-namespace Essence\Repository;
+namespace Inno\Repository;
 
-use Essence\Entity\EntryCategory;
+use Inno\Entity\EntryCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

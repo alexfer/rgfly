@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Controller\Dashboard\MarketPlace\Store;
+namespace Inno\Controller\Dashboard\MarketPlace\Store;
 
-use Essence\Entity\MarketPlace\{Enum\EnumStoreOrderStatus, Store, StoreOrders};
-use Essence\Helper\MarketPlace\MarketPlaceHelper;
-use Essence\Service\MarketPlace\Currency;
-use Essence\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreInterface;
-use Essence\Service\MarketPlace\StoreTrait;
+use Inno\Entity\MarketPlace\{Enum\EnumStoreOrderStatus, Store, StoreOrders};
+use Inno\Helper\MarketPlace\MarketPlaceHelper;
+use Inno\Service\MarketPlace\Currency;
+use Inno\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreInterface;
+use Inno\Service\MarketPlace\StoreTrait;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

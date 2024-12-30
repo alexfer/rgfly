@@ -1,10 +1,10 @@
 <?php
 
-namespace Essence\Repository;
+namespace Inno\Repository;
 
-use Essence\Entity\MarketPlace\StoreCustomer;
-use Essence\Entity\User;
-use Essence\Entity\UserDetails;
+use Inno\Entity\MarketPlace\StoreCustomer;
+use Inno\Entity\User;
+use Inno\Entity\UserDetails;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\NonUniqueResultException;
@@ -65,7 +65,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         $em = $this->getEntityManager();
 
-        return $em->createQuery('SELECT u FROM Essence\Entity\User u WHERE u.email = :query AND u.deleted_at IS NULL')
+        return $em->createQuery('SELECT u FROM Inno\Entity\User u WHERE u.email = :query AND u.deleted_at IS NULL')
             ->setParameter('query', $email)
             ->getOneOrNullResult();
     }

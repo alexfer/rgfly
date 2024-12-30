@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Service\MarketPlace\Store\Order;
+namespace Inno\Service\MarketPlace\Store\Order;
 
-use Essence\Storage\MarketPlace\FrontSessionInterface;
+use Inno\Storage\MarketPlace\FrontSessionInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 readonly class ShopService
@@ -26,7 +26,7 @@ readonly class ShopService
         $quantity = [];
 
         $orders = $this->frontSession->get(
-            (string)$this->requestStack->getCurrentRequest()->cookies?->get('essence')
+            (string)$this->requestStack->getCurrentRequest()->cookies?->get('inno')
         );
 
         if ($orders) {

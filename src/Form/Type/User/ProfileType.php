@@ -1,8 +1,8 @@
 <?php
 
-namespace Essence\Form\Type\User;
+namespace Inno\Form\Type\User;
 
-use Essence\Entity\UserDetails;
+use Inno\Entity\UserDetails;
 use Symfony\Component\Form\{AbstractType, FormBuilderInterface,};
 use Symfony\Component\Form\Extension\Core\Type\{ChoiceType,
     DateType,

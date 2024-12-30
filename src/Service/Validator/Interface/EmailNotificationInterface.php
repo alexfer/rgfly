@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Service\Validator\Interface;
+namespace Inno\Service\Validator\Interface;
 
 interface EmailNotificationInterface
 {

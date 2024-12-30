@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Repository\MarketPlace;
+namespace Inno\Repository\MarketPlace;
 
-use Essence\Entity\MarketPlace\StoreCarrierStore;
+use Inno\Entity\MarketPlace\StoreCarrierStore;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

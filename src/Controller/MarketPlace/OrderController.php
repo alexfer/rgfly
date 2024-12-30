@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Controller\MarketPlace;
+namespace Inno\Controller\MarketPlace;
 
-use Essence\Service\MarketPlace\Store\Customer\Interface\UserManagerInterface;
-use Essence\Service\MarketPlace\Store\Order\Interface\{CollectionInterface,
+use Inno\Service\MarketPlace\Store\Customer\Interface\UserManagerInterface;
+use Inno\Service\MarketPlace\Store\Order\Interface\{CollectionInterface,
     ComputeInterface,
     OrderServiceInterface,
     ProductServiceInterface,
     SummaryInterface};
-use Essence\Storage\MarketPlace\FrontSessionHandler;
+use Inno\Storage\MarketPlace\FrontSessionHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Cookie, JsonResponse, Request, Response};
 use Symfony\Component\Routing\Attribute\Route;

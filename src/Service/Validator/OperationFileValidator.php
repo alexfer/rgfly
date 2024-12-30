@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Service\Validator;
+namespace Inno\Service\Validator;
 
-use Essence\Service\Validator\Interface\OperationFileValidatorInterface;
+use Inno\Service\Validator\Interface\OperationFileValidatorInterface;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validation;

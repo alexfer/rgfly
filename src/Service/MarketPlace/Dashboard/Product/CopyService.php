@@ -1,10 +1,10 @@
 <?php
 
-namespace Essence\Service\MarketPlace\Dashboard\Product;
+namespace Inno\Service\MarketPlace\Dashboard\Product;
 
-use Essence\Entity\MarketPlace\StoreProduct;
-use Essence\Helper\MarketPlace\MarketPlaceHelper;
-use Essence\Service\MarketPlace\Dashboard\Product\Interface\CopyServiceInterface;
+use Inno\Entity\MarketPlace\StoreProduct;
+use Inno\Helper\MarketPlace\MarketPlaceHelper;
+use Inno\Service\MarketPlace\Dashboard\Product\Interface\CopyServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;

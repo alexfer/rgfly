@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Entity\MarketPlace;
+namespace Inno\Entity\MarketPlace;
 
-use Essence\Entity\User;
-use Essence\Repository\MarketPlace\StoreCustomerRepository;
+use Inno\Entity\User;
+use Inno\Repository\MarketPlace\StoreCustomerRepository;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;

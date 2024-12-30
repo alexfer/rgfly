@@ -1,11 +1,11 @@
 <?php
 
-namespace Essence\Repository;
+namespace Inno\Repository;
 
-use Essence\Entity\Attach;
-use Essence\Entity\Entry;
-use Essence\Entity\EntryAttachment;
-use Essence\Entity\EntryDetails;
+use Inno\Entity\Attach;
+use Inno\Entity\Entry;
+use Inno\Entity\EntryAttachment;
+use Inno\Entity\EntryDetails;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Query\Expr;

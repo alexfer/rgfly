@@ -1,6 +1,6 @@
 <?php
 
-namespace Essence\Service\Storage;
+namespace Inno\Service\Storage;
 
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;

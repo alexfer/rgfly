@@ -1,6 +1,6 @@
 <?php
 
-namespace Essence\Controller\Security;
+namespace Inno\Controller\Security;
 
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;

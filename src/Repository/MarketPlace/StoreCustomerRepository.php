@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Repository\MarketPlace;
+namespace Inno\Repository\MarketPlace;
 
-use Essence\Entity\MarketPlace\StoreAddress;
-use Essence\Entity\MarketPlace\StoreCustomer;
-use Essence\Entity\MarketPlace\StoreMessage;
-use Essence\Entity\User;
+use Inno\Entity\MarketPlace\StoreAddress;
+use Inno\Entity\MarketPlace\StoreCustomer;
+use Inno\Entity\MarketPlace\StoreMessage;
+use Inno\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\Query\Expr\Join;

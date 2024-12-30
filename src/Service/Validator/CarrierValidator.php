@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Service\Validator;
+namespace Inno\Service\Validator;
 
-use Essence\Service\Validator\Interface\CarrierValidatorInterface;
+use Inno\Service\Validator\Interface\CarrierValidatorInterface;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;

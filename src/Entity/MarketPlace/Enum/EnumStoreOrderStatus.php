@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Entity\MarketPlace\Enum;
+namespace Inno\Entity\MarketPlace\Enum;
 
 enum EnumStoreOrderStatus: string
 {

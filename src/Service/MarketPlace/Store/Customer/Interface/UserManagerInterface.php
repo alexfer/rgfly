@@ -1,9 +1,9 @@
 <?php
 
-namespace Essence\Service\MarketPlace\Store\Customer\Interface;
+namespace Inno\Service\MarketPlace\Store\Customer\Interface;
 
-use Essence\Entity\MarketPlace\StoreCustomer;
-use Essence\Entity\User;
+use Inno\Entity\MarketPlace\StoreCustomer;
+use Inno\Entity\User;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 interface UserManagerInterface

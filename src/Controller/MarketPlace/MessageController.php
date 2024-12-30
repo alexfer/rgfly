@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Controller\MarketPlace;
+namespace Inno\Controller\MarketPlace;
 
-use Essence\Service\MarketPlace\Store\Message\Interface\MessageServiceInterface;
+use Inno\Service\MarketPlace\Store\Message\Interface\MessageServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
 use Symfony\Component\Routing\Attribute\Route;

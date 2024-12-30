@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Service\MarketPlace;
+namespace Inno\Service\MarketPlace;
 
-use Essence\Entity\MarketPlace\Store;
-use Essence\Service\MarketPlace\Dashboard\Store\StoreStore;
+use Inno\Entity\MarketPlace\Store;
+use Inno\Service\MarketPlace\Dashboard\Store\StoreStore;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 

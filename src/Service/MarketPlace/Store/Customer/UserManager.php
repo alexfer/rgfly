@@ -1,10 +1,10 @@
 <?php
 
-namespace Essence\Service\MarketPlace\Store\Customer;
+namespace Inno\Service\MarketPlace\Store\Customer;
 
-use Essence\Entity\MarketPlace\StoreCustomer;
-use Essence\Entity\User;
-use Essence\Service\MarketPlace\Store\Customer\Interface\UserManagerInterface;
+use Inno\Entity\MarketPlace\StoreCustomer;
+use Inno\Entity\User;
+use Inno\Service\MarketPlace\Store\Customer\Interface\UserManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 

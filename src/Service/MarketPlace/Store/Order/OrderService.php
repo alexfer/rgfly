@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Service\MarketPlace\Store\Order;
+namespace Inno\Service\MarketPlace\Store\Order;
 
-use Essence\Entity\MarketPlace\{Store, StoreCustomer, StoreCustomerOrders, StoreOrders, StoreOrdersProduct, StoreProduct};
-use Essence\Helper\MarketPlace\MarketPlaceHelper;
-use Essence\Service\MarketPlace\Store\Order\Interface\OrderServiceInterface;
+use Inno\Entity\MarketPlace\{Store, StoreCustomer, StoreCustomerOrders, StoreOrders, StoreOrdersProduct, StoreProduct};
+use Inno\Helper\MarketPlace\MarketPlaceHelper;
+use Inno\Service\MarketPlace\Store\Order\Interface\OrderServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\{RequestStack};
 use Symfony\Component\Uid\Uuid;

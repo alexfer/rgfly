@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Essence\Controller\MarketPlace;
+namespace Inno\Controller\MarketPlace;
 
-use Essence\Controller\Trait\ControllerTrait;
-use Essence\Entity\MarketPlace\StoreProduct;
+use Inno\Controller\Trait\ControllerTrait;
+use Inno\Entity\MarketPlace\StoreProduct;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

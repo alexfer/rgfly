@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Service\HostApi;
+namespace Inno\Service\HostApi;
 
 interface HostApiInterface
 {

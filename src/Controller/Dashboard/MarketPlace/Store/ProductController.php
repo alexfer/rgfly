@@ -1,17 +1,17 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Controller\Dashboard\MarketPlace\Store;
+namespace Inno\Controller\Dashboard\MarketPlace\Store;
 
-use Essence\Entity\{Attach, User};
-use Essence\Entity\MarketPlace\{StoreCoupon, StoreProduct, StoreProductAttach};
-use Essence\Form\Type\Dashboard\MarketPlace\ProductType;
-use Essence\Security\Voter\ProductVoter;
-use Essence\Service\FileUploader;
-use Essence\Service\MarketPlace\Dashboard\Product\Interface\CopyServiceInterface;
-use Essence\Service\MarketPlace\Dashboard\Product\Interface\ServeProductInterface;
-use Essence\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface;
-use Essence\Service\MarketPlace\StoreTrait;
-use Essence\Service\Validator\Interface\ImageValidatorInterface;
+use Inno\Entity\{Attach, User};
+use Inno\Entity\MarketPlace\{StoreCoupon, StoreProduct, StoreProductAttach};
+use Inno\Form\Type\Dashboard\MarketPlace\ProductType;
+use Inno\Security\Voter\ProductVoter;
+use Inno\Service\FileUploader;
+use Inno\Service\MarketPlace\Dashboard\Product\Interface\CopyServiceInterface;
+use Inno\Service\MarketPlace\Dashboard\Product\Interface\ServeProductInterface;
+use Inno\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface;
+use Inno\Service\MarketPlace\StoreTrait;
+use Inno\Service\Validator\Interface\ImageValidatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

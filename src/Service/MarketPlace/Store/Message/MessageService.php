@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Service\MarketPlace\Store\Message;
+namespace Inno\Service\MarketPlace\Store\Message;
 
-use Essence\Entity\MarketPlace\Store;
-use Essence\Entity\MarketPlace\StoreCustomer;
-use Essence\Entity\MarketPlace\StoreMessage;
-use Essence\Entity\MarketPlace\StoreOrders;
-use Essence\Entity\MarketPlace\StoreProduct;
-use Essence\Entity\UserDetails;
-use Essence\Service\MarketPlace\Store\Message\Interface\MessageServiceInterface;
+use Inno\Entity\MarketPlace\Store;
+use Inno\Entity\MarketPlace\StoreCustomer;
+use Inno\Entity\MarketPlace\StoreMessage;
+use Inno\Entity\MarketPlace\StoreOrders;
+use Inno\Entity\MarketPlace\StoreProduct;
+use Inno\Entity\UserDetails;
+use Inno\Service\MarketPlace\Store\Message\Interface\MessageServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

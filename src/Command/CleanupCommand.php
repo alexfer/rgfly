@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Command;
+namespace Inno\Command;
 
-use Essence\Entity\MarketPlace\StoreOperation;
+use Inno\Entity\MarketPlace\StoreOperation;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

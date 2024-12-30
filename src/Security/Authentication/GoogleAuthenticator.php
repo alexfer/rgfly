@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Security\Authentication;
+namespace Inno\Security\Authentication;
 
-use Essence\Entity\MarketPlace\StoreAddress;
-use Essence\Entity\MarketPlace\StoreCustomer;
-use Essence\Entity\User;
+use Inno\Entity\MarketPlace\StoreAddress;
+use Inno\Entity\MarketPlace\StoreCustomer;
+use Inno\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\OAuth2Authenticator;

@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Form\Type\Dashboard\MarketPlace;
+namespace Inno\Form\Type\Dashboard\MarketPlace;
 
-use Essence\Entity\MarketPlace\StorePaymentGateway;
+use Inno\Entity\MarketPlace\StorePaymentGateway;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;

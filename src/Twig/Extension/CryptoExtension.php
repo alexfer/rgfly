@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Essence\Twig\Extension;
+namespace Inno\Twig\Extension;
 
-use Essence\Service\Crypto\CryptoInterface;
+use Inno\Service\Crypto\CryptoInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 

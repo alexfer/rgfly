@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Entity\MarketPlace;
+namespace Inno\Entity\MarketPlace;
 
-use Essence\Repository\MarketPlace\StorePaymentGatewayStoreRepository;
+use Inno\Repository\MarketPlace\StorePaymentGatewayStoreRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StorePaymentGatewayStoreRepository::class)]

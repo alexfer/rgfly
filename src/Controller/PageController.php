@@ -1,6 +1,6 @@
 <?php
 
-namespace Essence\Controller;
+namespace Inno\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;

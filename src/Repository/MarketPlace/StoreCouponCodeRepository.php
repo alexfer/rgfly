@@ -1,8 +1,8 @@
 <?php
 
-namespace Essence\Repository\MarketPlace;
+namespace Inno\Repository\MarketPlace;
 
-use Essence\Entity\MarketPlace\{StoreCoupon, StoreCouponCode, StoreCouponUsage};
+use Inno\Entity\MarketPlace\{StoreCoupon, StoreCouponCode, StoreCouponUsage};
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;

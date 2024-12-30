@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Entity;
+namespace Inno\Entity;
 
-use Essence\Repository\CategoryRepository;
+use Inno\Repository\CategoryRepository;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;

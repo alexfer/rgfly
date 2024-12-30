@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Repository\MarketPlace;
+namespace Inno\Repository\MarketPlace;
 
-use Essence\Entity\Attach;
-use Essence\Entity\MarketPlace\StorePaymentGateway;
+use Inno\Entity\Attach;
+use Inno\Entity\MarketPlace\StorePaymentGateway;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;

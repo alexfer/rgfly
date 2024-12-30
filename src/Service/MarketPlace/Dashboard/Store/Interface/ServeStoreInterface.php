@@ -1,8 +1,8 @@
 <?php
 
-namespace Essence\Service\MarketPlace\Dashboard\Store\Interface;
+namespace Inno\Service\MarketPlace\Dashboard\Store\Interface;
 
-use Essence\Entity\MarketPlace\Store;
+use Inno\Entity\MarketPlace\Store;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 interface ServeStoreInterface

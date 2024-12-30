@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Controller;
+namespace Inno\Controller;
 
-use Essence\Entity\Contact;
-use Essence\Form\Type\ContactType;
-use Essence\Service\Contact\ContactTrait;
-use Essence\Service\Contact\Interface\HandleInterface;
+use Inno\Entity\Contact;
+use Inno\Form\Type\ContactType;
+use Inno\Service\Contact\ContactTrait;
+use Inno\Service\Contact\Interface\HandleInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

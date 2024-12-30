@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Command\Elastic;
+namespace Inno\Command\Elastic;
 
 use Doctrine\ORM\QueryBuilder;
 use Elastic\Elasticsearch\Client;

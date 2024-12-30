@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Service\MarketPlace\Store\Order;
+namespace Inno\Service\MarketPlace\Store\Order;
 
-use Essence\Entity\MarketPlace\StoreOrders;
-use Essence\Entity\MarketPlace\StoreOrdersProduct;
-use Essence\Helper\MarketPlace\MarketPlaceHelper;
-use Essence\Service\MarketPlace\Store\Order\Interface\ComputeInterface;
+use Inno\Entity\MarketPlace\StoreOrders;
+use Inno\Entity\MarketPlace\StoreOrdersProduct;
+use Inno\Helper\MarketPlace\MarketPlaceHelper;
+use Inno\Service\MarketPlace\Store\Order\Interface\ComputeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 class Compute implements ComputeInterface

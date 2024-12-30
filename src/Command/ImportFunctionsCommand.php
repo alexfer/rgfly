@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Command;
+namespace Inno\Command;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;

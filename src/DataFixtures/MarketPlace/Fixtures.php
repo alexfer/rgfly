@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Essence\DataFixtures\MarketPlace;
+namespace Inno\DataFixtures\MarketPlace;
 
-use Essence\Entity\MarketPlace\StoreCarrier;
-use Essence\Entity\MarketPlace\StorePaymentGateway;
+use Inno\Entity\MarketPlace\StoreCarrier;
+use Inno\Entity\MarketPlace\StorePaymentGateway;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -87,7 +87,7 @@ class Fixtures extends Fixture
             ['FedEx', 'FedEx offers a wide range of services to meet your shipping needs to and from over 220 countries and territories worldwide.', false, 'https://www.fedex.com'],
             ['UPS', 'Moving our world forward by delivering what matters.', false, 'https://www.fedex.com'],
             ['Meest', 'International solutions for all your shipping and delivery needs.', false, 'https://meest.com'],
-            ['Free', 'Free shipping.', true, 'https://rgfly.local'],
+            ['Free', 'Free shipping.', true, 'https://inno.local'],
         ];
     }
 

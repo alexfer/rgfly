@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Command\Elastic;
+namespace Inno\Command\Elastic;
 
-use Essence\Entity\MarketPlace\Store;
-use Essence\Entity\MarketPlace\StoreCategory;
-use Essence\Entity\MarketPlace\StoreCategoryProduct;
+use Inno\Entity\MarketPlace\Store;
+use Inno\Entity\MarketPlace\StoreCategory;
+use Inno\Entity\MarketPlace\StoreCategoryProduct;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Elastic\Elasticsearch\Client;

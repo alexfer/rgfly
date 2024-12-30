@@ -1,9 +1,9 @@
 <?php
 
-namespace Essence\Form\Type\Dashboard\MarketPlace;
+namespace Inno\Form\Type\Dashboard\MarketPlace;
 
-use Essence\Entity\MarketPlace\StoreProductAttribute;
-use Essence\Helper\MarketPlace\StoreAttributeValues;
+use Inno\Entity\MarketPlace\StoreProductAttribute;
+use Inno\Helper\MarketPlace\StoreAttributeValues;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, SubmitType};
 use Symfony\Component\Form\FormBuilderInterface;

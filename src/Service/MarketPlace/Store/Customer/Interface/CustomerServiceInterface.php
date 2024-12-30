@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Essence\Service\MarketPlace\Store\Customer\Interface;
+namespace Inno\Service\MarketPlace\Store\Customer\Interface;
 
-use Essence\Entity\MarketPlace\{StoreAddress, StoreCustomer, StoreOrders};
-use Essence\Entity\User;
+use Inno\Entity\MarketPlace\{StoreAddress, StoreCustomer, StoreOrders};
+use Inno\Entity\User;
 use Symfony\Component\Form\FormInterface;
 
 interface CustomerServiceInterface
