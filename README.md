@@ -20,7 +20,7 @@ RgFly E-commerce solution.
 
 ### 1. Clone repository
 ```shell
-    $ git clone git@github.com:alexfer/rgfly.git
+    $ git clone git@github.com:alexfer/inno.git
 ```
 ### 2. Prepare configuration
 You should change database configuration
