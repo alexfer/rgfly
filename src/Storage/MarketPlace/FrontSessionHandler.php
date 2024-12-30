@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace App\Storage\MarketPlace;
+namespace Inno\Storage\MarketPlace;
 
-use App\Service\Redis\ConnectionInterface;
+use Inno\Service\Redis\ConnectionInterface;
 use Psr\Log\LoggerInterface;
 
 class FrontSessionHandler implements FrontSessionInterface
 {
     const int TTL = 604800;
 
-    const string NAME = 'rgfly';
+    const string NAME = 'inno';
 
     public function __construct(
         private readonly ConnectionInterface $connection,

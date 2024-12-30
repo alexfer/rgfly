@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Form\Type\Dashboard\MarketPlace;
+namespace Inno\Form\Type\Dashboard\MarketPlace;
 
-use App\Entity\MarketPlace\{Store, StoreCarrier, StorePaymentGateway};
-use App\Service\MarketPlace\Currency;
+use Inno\Entity\MarketPlace\{Store, StoreCarrier, StorePaymentGateway};
+use Inno\Service\MarketPlace\Currency;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{ChoiceType,

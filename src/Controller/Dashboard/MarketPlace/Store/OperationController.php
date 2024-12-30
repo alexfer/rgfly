@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace App\Controller\Dashboard\MarketPlace\Store;
+namespace Inno\Controller\Dashboard\MarketPlace\Store;
 
-use App\Entity\MarketPlace\Enum\EnumOperation;
-use App\Entity\MarketPlace\Store;
-use App\Entity\MarketPlace\StoreOperation;
-use App\Entity\MarketPlace\StoreProduct;
-use App\Service\MarketPlace\Dashboard\Operation\Interface\OperationInterface;
-use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreInterface;
-use App\Service\MarketPlace\StoreTrait;
-use App\Service\Validator\Interface\OperationFileValidatorInterface;
+use Inno\Entity\MarketPlace\Enum\EnumOperation;
+use Inno\Entity\MarketPlace\Store;
+use Inno\Entity\MarketPlace\StoreOperation;
+use Inno\Entity\MarketPlace\StoreProduct;
+use Inno\Service\MarketPlace\Dashboard\Operation\Interface\OperationInterface;
+use Inno\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreInterface;
+use Inno\Service\MarketPlace\StoreTrait;
+use Inno\Service\Validator\Interface\OperationFileValidatorInterface;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

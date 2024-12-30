@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository\MarketPlace;
+namespace Inno\Repository\MarketPlace;
 
-use App\Entity\MarketPlace\{Store, StoreProduct};
+use Inno\Entity\MarketPlace\{Store, StoreProduct};
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\{Connection, Exception, Statement};
 use Doctrine\Persistence\ManagerRegistry;

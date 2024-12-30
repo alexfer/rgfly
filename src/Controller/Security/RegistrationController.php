@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace App\Controller\Security;
+namespace Inno\Controller\Security;
 
-use App\Entity\{MarketPlace\StoreCustomer, User};
-use App\Form\Type\MarketPlace\CustomerRegistrationType;
-use App\Form\Type\User\DetailsType;
-use App\Repository\{UserDetailsRepository, UserRepository};
-use App\Repository\MarketPlace\{StoreAddressRepository, StoreCustomerRepository};
-use App\Service\MarketPlace\Store\Order\Interface\OrderServiceInterface;
-use App\Service\Validator\Interface\CustomerRegistrationValidatorInterface;
+use Inno\Entity\{MarketPlace\StoreCustomer, User};
+use Inno\Form\Type\MarketPlace\CustomerRegistrationType;
+use Inno\Form\Type\User\DetailsType;
+use Inno\Repository\{UserDetailsRepository, UserRepository};
+use Inno\Repository\MarketPlace\{StoreAddressRepository, StoreCustomerRepository};
+use Inno\Service\MarketPlace\Store\Order\Interface\OrderServiceInterface;
+use Inno\Service\Validator\Interface\CustomerRegistrationValidatorInterface;
 use Doctrine\DBAL\Exception;
 use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

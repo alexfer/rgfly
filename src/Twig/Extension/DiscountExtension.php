@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Twig\Extension;
+namespace Inno\Twig\Extension;
 
-use App\Helper\MarketPlace\MarketPlaceHelper;
+use Inno\Helper\MarketPlace\MarketPlaceHelper;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;

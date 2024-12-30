@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository\MarketPlace;
+namespace Inno\Repository\MarketPlace;
 
-use App\Entity\MarketPlace\StoreWishlist;
+use Inno\Entity\MarketPlace\StoreWishlist;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

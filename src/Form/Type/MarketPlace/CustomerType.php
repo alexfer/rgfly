@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Form\Type\MarketPlace;
+namespace Inno\Form\Type\MarketPlace;
 
-use App\Entity\MarketPlace\StoreCustomer;
+use Inno\Entity\MarketPlace\StoreCustomer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;

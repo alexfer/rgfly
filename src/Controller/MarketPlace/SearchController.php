@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\MarketPlace;
+namespace Inno\Controller\MarketPlace;
 
-use App\Entity\MarketPlace\StoreCategory;
-use App\Entity\MarketPlace\StoreCustomer;
-use App\Entity\MarketPlace\StoreProduct;
+use Inno\Entity\MarketPlace\StoreCategory;
+use Inno\Entity\MarketPlace\StoreCustomer;
+use Inno\Entity\MarketPlace\StoreProduct;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Elastic\Elasticsearch\Client;

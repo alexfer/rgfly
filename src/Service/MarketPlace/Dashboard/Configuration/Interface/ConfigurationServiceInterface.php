@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\MarketPlace\Dashboard\Configuration\Interface;
+namespace Inno\Service\MarketPlace\Dashboard\Configuration\Interface;
 
-use App\Entity\MarketPlace\StoreCarrier;
-use App\Entity\MarketPlace\StorePaymentGateway;
+use Inno\Entity\MarketPlace\StoreCarrier;
+use Inno\Entity\MarketPlace\StorePaymentGateway;
 
 interface ConfigurationServiceInterface
 {

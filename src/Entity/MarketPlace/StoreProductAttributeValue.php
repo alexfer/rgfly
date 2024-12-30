@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Entity\MarketPlace;
+namespace Inno\Entity\MarketPlace;
 
-use App\Repository\MarketPlace\StoreProductAttributeValueRepository;
+use Inno\Repository\MarketPlace\StoreProductAttributeValueRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StoreProductAttributeValueRepository::class)]

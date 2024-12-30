@@ -62,7 +62,7 @@
             </trans-unit>
             <trans-unit id="site.title">
                 <source>site.title</source>
-                <target>RgFly</target>
+                <target>Inno</target>
             </trans-unit>
             <trans-unit id="text.theme">
                 <source>text.theme</source>
@@ -78,7 +78,7 @@
             </trans-unit>
             <trans-unit id="site.description">
                 <source>site.description</source>
-                <target>A marketplace with free and paid RgFly solutions - RgFly Online</target>
+                <target>A marketplace with free and paid Inno solutions - Inno Online</target>
             </trans-unit>
             <trans-unit id="text.home.header">
                 <source>text.home.header</source>

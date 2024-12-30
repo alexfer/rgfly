@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Entity;
+namespace Inno\Entity;
 
-use App\Repository\FaqRepository;
+use Inno\Repository\FaqRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 

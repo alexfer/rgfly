@@ -8,7 +8,7 @@ security:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
             entity:
-                class: App\Entity\User
+                class: Inno\Entity\User
                 property: email
     firewalls:
         dev:
@@ -18,8 +18,8 @@ security:
             lazy: true
             entry_point: form_login
             custom_authenticators:
-                - App\Security\Authentication\UserAuthenticator
-                - App\Security\Authentication\GoogleAuthenticator
+                - Inno\Security\Authentication\UserAuthenticator
+                - Inno\Security\Authentication\GoogleAuthenticator
             remember_me:
                 secret:   '%kernel.secret%' # required
                 lifetime: 31556926 # 1 year in seconds

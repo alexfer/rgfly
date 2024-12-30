@@ -100,12 +100,12 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "Inno\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/"
+            "Inno\\Tests\\": "tests/"
         }
     },
     "replace": {

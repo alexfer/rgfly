@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Repository\MarketPlace;
+namespace Inno\Repository\MarketPlace;
 
-use App\Entity\MarketPlace\{Store, StoreCustomer, StoreMessage};
+use Inno\Entity\MarketPlace\{Store, StoreCustomer, StoreMessage};
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\{Connection, Exception, Statement};
 use Doctrine\ORM\Query\Expr\Join;

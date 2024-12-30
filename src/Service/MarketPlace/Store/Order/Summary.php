@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\MarketPlace\Store\Order;
+namespace Inno\Service\MarketPlace\Store\Order;
 
-use App\Helper\MarketPlace\MarketPlaceHelper;
-use App\Service\MarketPlace\Currency;
-use App\Service\MarketPlace\Store\Order\Interface\SummaryInterface;
+use Inno\Helper\MarketPlace\MarketPlaceHelper;
+use Inno\Service\MarketPlace\Currency;
+use Inno\Service\MarketPlace\Store\Order\Interface\SummaryInterface;
 
 final class Summary implements SummaryInterface
 {

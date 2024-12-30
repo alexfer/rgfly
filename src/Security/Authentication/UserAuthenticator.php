@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace App\Security\Authentication;
+namespace Inno\Security\Authentication;
 
-use App\Entity\MarketPlace\StoreCustomer;
-use App\Entity\User;
-use App\Service\MarketPlace\Store\Order\Interface\OrderServiceInterface;
+use Inno\Entity\MarketPlace\StoreCustomer;
+use Inno\Entity\User;
+use Inno\Service\MarketPlace\Store\Order\Interface\OrderServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\{JsonResponse, RedirectResponse, Request, Response};
 use Symfony\Component\Routing\RouterInterface;

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Service\MarketPlace\Dashboard\Store;
+namespace Inno\Service\MarketPlace\Dashboard\Store;
 
-use App\Entity\MarketPlace\Store;
-use App\Entity\User;
-use App\Service\MarketPlace\Currency;
-use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface;
+use Inno\Entity\MarketPlace\Store;
+use Inno\Entity\User;
+use Inno\Service\MarketPlace\Currency;
+use Inno\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
 

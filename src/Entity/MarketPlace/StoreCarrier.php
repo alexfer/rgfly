@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Entity\MarketPlace;
+namespace Inno\Entity\MarketPlace;
 
-use App\Entity\Attach;
-use App\Repository\MarketPlace\StoreCarrierRepository;
+use Inno\Entity\Attach;
+use Inno\Repository\MarketPlace\StoreCarrierRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;

@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace App\Controller\Security;
+namespace Inno\Controller\Security;
 
-use App\Entity\Attach;
-use App\Entity\User;
-use App\Form\Type\User\ProfileType;
-use App\Repository\AttachRepository;
-use App\Repository\UserDetailsRepository;
-use App\Repository\UserRepository;
-use App\Service\FileUploader;
-use App\Service\Validator\Interface\ImageValidatorInterface;
+use Inno\Entity\Attach;
+use Inno\Entity\User;
+use Inno\Form\Type\User\ProfileType;
+use Inno\Repository\AttachRepository;
+use Inno\Repository\UserDetailsRepository;
+use Inno\Repository\UserRepository;
+use Inno\Service\FileUploader;
+use Inno\Service\Validator\Interface\ImageValidatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;

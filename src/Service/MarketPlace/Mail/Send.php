@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\MarketPlace\Mail;
+namespace Inno\Service\MarketPlace\Mail;
 
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;

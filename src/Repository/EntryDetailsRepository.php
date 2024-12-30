@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository;
+namespace Inno\Repository;
 
-use App\Entity\EntryDetails;
+use Inno\Entity\EntryDetails;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository;
+namespace Inno\Repository;
 
-use App\Entity\UserSocial;
+use Inno\Entity\UserSocial;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

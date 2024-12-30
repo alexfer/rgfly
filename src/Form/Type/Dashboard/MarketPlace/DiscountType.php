@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Form\Type\Dashboard\MarketPlace;
+namespace Inno\Form\Type\Dashboard\MarketPlace;
 
-use App\Entity\MarketPlace\StoreProductDiscount;
+use Inno\Entity\MarketPlace\StoreProductDiscount;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;

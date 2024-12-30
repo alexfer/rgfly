@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Service\MarketPlace\Dashboard\Product;
+namespace Inno\Service\MarketPlace\Dashboard\Product;
 
-use App\Entity\MarketPlace\{Store,
+use Inno\Entity\MarketPlace\{Store,
     StoreCategory,
     StoreCategoryProduct,
     StoreCoupon,
     StoreProduct,
     StoreProductDiscount};
-use App\Helper\MarketPlace\MarketPlaceHelper;
-use App\Service\MarketPlace\Dashboard\Product\Interface\ServeProductInterface;
+use Inno\Helper\MarketPlace\MarketPlaceHelper;
+use Inno\Service\MarketPlace\Dashboard\Product\Interface\ServeProductInterface;
 use Symfony\Component\Form\FormInterface;
 
 class ServeProductProduct extends Handle implements ServeProductInterface

@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\MarketPlace\Store\Customer;
+namespace Inno\Service\MarketPlace\Store\Customer;
 
-use App\Entity\MarketPlace\{StoreAddress, StoreCustomer, StoreCustomerOrders, StoreOrders};
-use App\Entity\User;
-use App\Service\MarketPlace\Store\Customer\Interface\CustomerServiceInterface;
+use Inno\Entity\MarketPlace\{StoreAddress, StoreCustomer, StoreCustomerOrders, StoreOrders};
+use Inno\Entity\User;
+use Inno\Service\MarketPlace\Store\Customer\Interface\CustomerServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;

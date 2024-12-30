@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\MarketPlace\Dashboard\Store;
+namespace Inno\Service\MarketPlace\Dashboard\Store;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\{Request, RequestStack};

@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Entity\MarketPlace;
+namespace Inno\Entity\MarketPlace;
 
-use App\Repository\MarketPlace\StoreCouponUsageRepository;
+use Inno\Repository\MarketPlace\StoreCouponUsageRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StoreCouponUsageRepository::class)]

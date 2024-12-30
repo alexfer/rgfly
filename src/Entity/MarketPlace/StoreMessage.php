@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Entity\MarketPlace;
+namespace Inno\Entity\MarketPlace;
 
-use App\Entity\User;
-use App\Repository\MarketPlace\StoreMessageRepository;
+use Inno\Entity\User;
+use Inno\Repository\MarketPlace\StoreMessageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;

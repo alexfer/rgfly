@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace App\DataFixtures\MarketPlace;
+namespace Inno\DataFixtures\MarketPlace;
 
-use App\Entity\MarketPlace\Store;
-use App\Entity\MarketPlace\StoreCarrier;
-use App\Entity\MarketPlace\StoreCarrierStore;
-use App\Entity\MarketPlace\StoreOptions;
-use App\Entity\MarketPlace\StorePaymentGateway;
-use App\Entity\MarketPlace\StorePaymentGatewayStore;
-use App\Entity\MarketPlace\StoreSocial;
-use App\Entity\User;
+use Inno\Entity\MarketPlace\Store;
+use Inno\Entity\MarketPlace\StoreCarrier;
+use Inno\Entity\MarketPlace\StoreCarrierStore;
+use Inno\Entity\MarketPlace\StoreOptions;
+use Inno\Entity\MarketPlace\StorePaymentGateway;
+use Inno\Entity\MarketPlace\StorePaymentGatewayStore;
+use Inno\Entity\MarketPlace\StoreSocial;
+use Inno\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -42,7 +42,7 @@ class StoreFixtures extends Fixture
             ->setSlug($this->slugger->slug($name)->lower()->toString())
             ->setEmail('alexandershtyher@gmail.com')
             ->setAddress('New York, NY, Brooklyn')
-            ->setWebsite('https://rgfly.site')
+            ->setWebsite('https://inno.site')
             ->setCurrency('USD')
             ->setCountry('US')
             ->setTax(number_format(18, 2, '.', ''));

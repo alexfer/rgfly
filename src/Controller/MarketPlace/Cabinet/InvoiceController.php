@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace App\Controller\MarketPlace\Cabinet;
+namespace Inno\Controller\MarketPlace\Cabinet;
 
-use App\Controller\Trait\ControllerTrait;
-use App\Entity\MarketPlace\StoreCustomerOrders;
-use App\Service\MarketPlace\Mail\SendMailInterface;
+use Inno\Controller\Trait\ControllerTrait;
+use Inno\Entity\MarketPlace\StoreCustomerOrders;
+use Inno\Service\MarketPlace\Mail\SendMailInterface;
 use Pontedilana\PhpWeasyPrint\Pdf;
 use Pontedilana\WeasyprintBundle\WeasyPrint\Response\PdfResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -97,7 +97,7 @@ class InvoiceController extends AbstractController
 
         $output = $params->get('invoice_pdf') . '/' . strtoupper($invoice->getNumber()) . '.pdf';
 
-        $path = $params->get('kernel.project_dir') . '/public/img/rgbfly.png';
+        $path = $params->get('kernel.project_dir') . '/public/img/inno.svg';
 
         if ($order->getStore()->getAttach()) {
             $path = $params->get('kernel.project_dir') . '/public/' . $params->get('market_storage_logo') . '/' . $order->getStore()->getId() . '/' . $order->getStore()->getAttach()->getName();

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\MarketPlace\Store\Message\Interface;
+namespace Inno\Service\MarketPlace\Store\Message\Interface;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\User\UserInterface;

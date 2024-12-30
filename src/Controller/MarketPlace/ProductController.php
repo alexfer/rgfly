@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\MarketPlace;
+namespace Inno\Controller\MarketPlace;
 
-use App\Controller\Trait\ControllerTrait;
-use App\Entity\MarketPlace\StoreProduct;
+use Inno\Controller\Trait\ControllerTrait;
+use Inno\Entity\MarketPlace\StoreProduct;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Attribute\Route;

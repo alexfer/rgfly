@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\MessageHandler;
+namespace Inno\MessageHandler;
 
-use App\Message\DeleteMessage;
-use App\Service\Redis\ConnectionInterface;
+use Inno\Message\DeleteMessage;
+use Inno\Service\Redis\ConnectionInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 

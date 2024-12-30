@@ -1,9 +1,9 @@
 <?php
 
-namespace App\DataFixtures;
+namespace Inno\DataFixtures;
 
-use App\DataFixtures\MarketPlace\Fixtures;
-use App\Entity\{Category, Faq, User, UserDetails, UserSocial};
+use Inno\DataFixtures\MarketPlace\Fixtures;
+use Inno\Entity\{Category, Faq, User, UserDetails, UserSocial};
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;

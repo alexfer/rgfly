@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repository;
+namespace Inno\Repository;
 
-use App\Entity\User;
-use App\Entity\UserDetails;
+use Inno\Entity\User;
+use Inno\Entity\UserDetails;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;

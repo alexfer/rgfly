@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace App\Command;
+namespace Inno\Command;
 
-use App\Entity\MarketPlace\Store;
-use App\Entity\MarketPlace\StoreProduct;
-use App\Service\MarketPlace\Dashboard\Operation\Interface\OperationInterface;
+use Inno\Entity\MarketPlace\Store;
+use Inno\Entity\MarketPlace\StoreProduct;
+use Inno\Service\MarketPlace\Dashboard\Operation\Interface\OperationInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

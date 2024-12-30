@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Repository\MarketPlace;
+namespace Inno\Repository\MarketPlace;
 
-use App\Entity\MarketPlace\Store;
-use App\Entity\MarketPlace\StoreOrders;
-use App\Entity\MarketPlace\StoreOrdersProduct;
+use Inno\Entity\MarketPlace\Store;
+use Inno\Entity\MarketPlace\StoreOrders;
+use Inno\Entity\MarketPlace\StoreOrdersProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\Persistence\ManagerRegistry;

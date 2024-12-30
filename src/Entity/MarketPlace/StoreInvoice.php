@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Entity\MarketPlace;
+namespace Inno\Entity\MarketPlace;
 
-use App\Repository\MarketPlace\StoreInvoiceRepository;
+use Inno\Repository\MarketPlace\StoreInvoiceRepository;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;

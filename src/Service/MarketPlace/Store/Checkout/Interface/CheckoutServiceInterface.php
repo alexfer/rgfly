@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Service\MarketPlace\Store\Checkout\Interface;
+namespace Inno\Service\MarketPlace\Store\Checkout\Interface;
 
-use App\Entity\MarketPlace\{StoreCustomer, StoreInvoice, StoreOrders};
+use Inno\Entity\MarketPlace\{StoreCustomer, StoreInvoice, StoreOrders};
 
 interface CheckoutServiceInterface
 {

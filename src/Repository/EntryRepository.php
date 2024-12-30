@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository;
+namespace Inno\Repository;
 
-use App\Entity\{Attach, Category, Entry, EntryAttachment, EntryCategory, EntryDetails, User, UserDetails, UserSocial};
+use Inno\Entity\{Attach, Category, Entry, EntryAttachment, EntryCategory, EntryDetails, User, UserDetails, UserSocial};
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\NonUniqueResultException;

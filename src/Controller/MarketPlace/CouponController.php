@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Controller\MarketPlace;
+namespace Inno\Controller\MarketPlace;
 
-use App\Entity\MarketPlace\Store;
-use App\Service\MarketPlace\Store\Coupon\Interface\CouponServiceInterface;
+use Inno\Entity\MarketPlace\Store;
+use Inno\Service\MarketPlace\Store\Coupon\Interface\CouponServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
 use Symfony\Component\Routing\Attribute\Route;

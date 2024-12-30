@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Message;
+namespace Inno\Message;
 
 readonly class DeleteMessage
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repository\MarketPlace;
+namespace Inno\Repository\MarketPlace;
 
-use App\Entity\MarketPlace\Store;
-use App\Entity\MarketPlace\StoreCoupon;
+use Inno\Entity\MarketPlace\Store;
+use Inno\Entity\MarketPlace\StoreCoupon;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Statement;

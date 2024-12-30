@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Controller\Security;
+namespace Inno\Controller\Security;
 
-use App\Form\Type\User\LoginType;
+use Inno\Form\Type\User\LoginType;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

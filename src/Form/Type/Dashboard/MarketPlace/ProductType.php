@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Form\Type\Dashboard\MarketPlace;
+namespace Inno\Form\Type\Dashboard\MarketPlace;
 
-use App\Entity\MarketPlace\{Store, StoreCategory, StoreProduct};
-use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreProductInterface;
+use Inno\Entity\MarketPlace\{Store, StoreCategory, StoreProduct};
+use Inno\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreProductInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\SecurityBundle\Security;

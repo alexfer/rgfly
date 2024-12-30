@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace App\Controller\MarketPlace;
+namespace Inno\Controller\MarketPlace;
 
-use App\Controller\Trait\ControllerTrait;
-use App\Entity\MarketPlace\Store;
-use App\Entity\MarketPlace\StoreCoupon;
+use Inno\Controller\Trait\ControllerTrait;
+use Inno\Entity\MarketPlace\Store;
+use Inno\Entity\MarketPlace\StoreCoupon;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Attribute\Route;

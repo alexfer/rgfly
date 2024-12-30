@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Entity;
+namespace Inno\Entity;
 
-use App\Repository\ResetPasswordRequestRepository;
+use Inno\Repository\ResetPasswordRequestRepository;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;

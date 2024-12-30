@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Storage;
+namespace Inno\Service\Storage;
 
 interface StorageInterface
 {

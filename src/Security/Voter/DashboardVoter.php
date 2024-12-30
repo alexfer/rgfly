@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Security\Voter;
+namespace Inno\Security\Voter;
 
-use App\Entity\{Entry, User,};
+use Inno\Entity\{Entry, User,};
 use LogicException;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

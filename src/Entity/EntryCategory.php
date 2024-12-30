@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Entity;
+namespace Inno\Entity;
 
-use App\Repository\EntryCategoryRepository;
+use Inno\Repository\EntryCategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EntryCategoryRepository::class)]

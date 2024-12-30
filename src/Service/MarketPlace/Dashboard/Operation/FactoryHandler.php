@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\MarketPlace\Dashboard\Operation;
+namespace Inno\Service\MarketPlace\Dashboard\Operation;
 
-use App\Entity\MarketPlace\Enum\EnumOperation;
-use App\Entity\MarketPlace\Store;
-use App\Entity\MarketPlace\StoreOperation;
-use App\Service\MarketPlace\Dashboard\Operation\FactoryHandler\XlsxFactory;
-use App\Service\MarketPlace\Dashboard\Operation\FactoryHandler\XmlFactory;
-use App\Service\MarketPlace\Dashboard\Operation\Interface\HandleFactoryInterface;
+use Inno\Entity\MarketPlace\Enum\EnumOperation;
+use Inno\Entity\MarketPlace\Store;
+use Inno\Entity\MarketPlace\StoreOperation;
+use Inno\Service\MarketPlace\Dashboard\Operation\FactoryHandler\XlsxFactory;
+use Inno\Service\MarketPlace\Dashboard\Operation\FactoryHandler\XmlFactory;
+use Inno\Service\MarketPlace\Dashboard\Operation\Interface\HandleFactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;

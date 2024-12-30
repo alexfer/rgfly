@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Storage\MarketPlace;
+namespace Inno\Storage\MarketPlace;
 
 interface FrontSessionInterface
 {

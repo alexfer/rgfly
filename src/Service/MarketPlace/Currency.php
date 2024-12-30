@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\MarketPlace;
+namespace Inno\Service\MarketPlace;
 
 class Currency
 {

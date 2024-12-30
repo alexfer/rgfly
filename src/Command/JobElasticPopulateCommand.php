@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Command;
+namespace Inno\Command;
 
-use App\Command\Elastic\ElasticServiceInterface;
-use App\Entity\MarketPlace\StoreProduct;
+use Inno\Command\Elastic\ElasticServiceInterface;
+use Inno\Entity\MarketPlace\StoreProduct;
 use Doctrine\ORM\EntityManagerInterface;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientBuilder;

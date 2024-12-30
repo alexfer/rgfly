@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Command;
+namespace Inno\Command;
 
-use App\Repository\ResetPasswordRequestRepository;
+use Inno\Repository\ResetPasswordRequestRepository;
 use DateTime;
 use Doctrine\ORM\{NonUniqueResultException, NoResultException,};
 use Symfony\Component\Console\Attribute\AsCommand;

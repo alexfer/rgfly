@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace App\Controller\Dashboard\MarketPlace\Store;
+namespace Inno\Controller\Dashboard\MarketPlace\Store;
 
-use App\Entity\MarketPlace\{Store,
+use Inno\Entity\MarketPlace\{Store,
     StoreCarrier,
     StoreCarrierStore,
     StoreOptions,
     StorePaymentGateway,
     StorePaymentGatewayStore,
     StoreSocial};
-use App\Form\Type\Dashboard\MarketPlace\StoreType;
-use App\Service\FileUploader;
+use Inno\Form\Type\Dashboard\MarketPlace\StoreType;
+use Inno\Service\FileUploader;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;

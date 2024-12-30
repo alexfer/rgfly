@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\MarketPlace\Store\Order\Interface;
+namespace Inno\Service\MarketPlace\Store\Order\Interface;
 
 interface SummaryInterface
 {

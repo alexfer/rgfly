@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Controller\Dashboard;
+namespace Inno\Controller\Dashboard;
 
-use App\Entity\Faq;
-use App\Form\Type\FaqType;
+use Inno\Entity\Faq;
+use Inno\Form\Type\FaqType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;

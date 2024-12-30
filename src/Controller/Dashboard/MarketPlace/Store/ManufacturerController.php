@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace App\Controller\Dashboard\MarketPlace\Store;
+namespace Inno\Controller\Dashboard\MarketPlace\Store;
 
-use App\Entity\MarketPlace\StoreManufacturer;
-use App\Form\Type\Dashboard\MarketPlace\ManufacturerType;
-use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface;
-use App\Service\MarketPlace\StoreTrait;
+use Inno\Entity\MarketPlace\StoreManufacturer;
+use Inno\Form\Type\Dashboard\MarketPlace\ManufacturerType;
+use Inno\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface;
+use Inno\Service\MarketPlace\StoreTrait;
 use Doctrine\ORM\{EntityManagerInterface, NonUniqueResultException};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};

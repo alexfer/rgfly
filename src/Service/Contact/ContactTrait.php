@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Contact;
+namespace Inno\Service\Contact;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

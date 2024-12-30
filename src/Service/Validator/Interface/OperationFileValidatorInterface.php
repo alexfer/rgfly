@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\Validator\Interface;
+namespace Inno\Service\Validator\Interface;
 
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;

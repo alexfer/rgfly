@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace App\Controller\Dashboard\MarketPlace\Store;
+namespace Inno\Controller\Dashboard\MarketPlace\Store;
 
-use App\Entity\MarketPlace\{Store, StoreMessage};
-use App\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreInterface;
-use App\Service\MarketPlace\Store\Message\Interface\MessageServiceInterface;
-use App\Service\MarketPlace\StoreTrait;
+use Inno\Entity\MarketPlace\{Store, StoreMessage};
+use Inno\Service\MarketPlace\Dashboard\Store\Interface\ServeStoreInterface as StoreInterface;
+use Inno\Service\MarketPlace\Store\Message\Interface\MessageServiceInterface;
+use Inno\Service\MarketPlace\StoreTrait;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
