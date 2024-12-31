@@ -132,7 +132,7 @@ class InvoiceController extends AbstractController
                 'email' => $customerOrder->getCustomer()->getEmail(),
                 'name' => $customerOrder->getCustomer()->getFirstName() . ' ' . $customerOrder->getCustomer()->getLastName(),
             ],
-            'subject' => 'Invoice #' . $order->getStoreInvoice()->getNumber(),
+            'subject' => 'Invoice #' . mb_strtoupper($order->getStoreInvoice()->getNumber()),
             'body' => $html,
             'attachment' => $output,
         ];

@@ -25,6 +25,7 @@ parameters:
     app.notifications.subject: '%env(EMAIL_SUBJECT)%'
     app.notifications.email_sender: '%env(EMAIL_SENDER)%'
     app.notifications.email_sender_name: '%env(EMAIL_SENDER_NAME)%'
+    app.notifications.email_recipient: '%env(EMAIL_RECIPIENT)%'
     app.elastic.dsn: '%env(ELASTIC_DSN)%'
     app.elastic.index: '%env(ELASTIC_INDEX)%'
     app.hostip.url: '%env(HOST_API_URL)%'
