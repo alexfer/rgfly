@@ -316,7 +316,7 @@
     <script type="text/javascript">
         if (document.getElementById('store_description')) {
             CKEDITOR.replace('store_description', {
-                language: 'en',
+                language: '{{ app.locale }}',
                 extraPlugins: 'editorplaceholder',
                 editorplaceholder: '{{ 'label.form.store_description'|trans }}',
                 removePlugins: 'simage,image,youtube,html5video,iframe,uicolor,videodetector,preview'

@@ -149,7 +149,7 @@
             chars.innerHTML = short_name.value.length;
         }
         CKEDITOR.replace('product_description', {
-            language: 'en',
+            language: '{{ app.locale }}',
             extraPlugins: 'editorplaceholder',
             editorplaceholder: '{{ 'label.form.product_description'|trans }}',
             removePlugins: 'simage,image,youtube,html5video,iframe,uicolor,videodetector,preview',

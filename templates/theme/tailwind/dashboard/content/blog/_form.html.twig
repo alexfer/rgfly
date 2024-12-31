@@ -71,7 +71,7 @@
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
     <script type="text/javascript">
         CKEDITOR.replace('entry_details_content', {
-            language: 'en',
+            language: '{{ app.locale }}',
             extraPlugins: 'editorplaceholder',
             removePlugins: 'simage',
             editorplaceholder: '{{ 'label.form.content'|trans }}'
