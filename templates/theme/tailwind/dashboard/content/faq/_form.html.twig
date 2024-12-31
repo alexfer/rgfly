@@ -44,9 +44,11 @@
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
     <script type="text/javascript">
         CKEDITOR.replace('faq_content', {
+            language: 'en',
             extraPlugins: 'editorplaceholder',
             removePlugins: 'simage,image,youtube,html5video,iframe,uicolor,videodetector,preview',
             editorplaceholder: '{{ 'label.form.content'|trans }}'
         });
+        CKEDITOR.addCss(".cke_editable{cursor:text; font-size: 15px; color: #000000;}");
     </script>
 {% endblock %}

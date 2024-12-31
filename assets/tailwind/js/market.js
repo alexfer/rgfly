@@ -1,7 +1,5 @@
-import Swal from "sweetalert2";
 import i18next from "i18next";
 import messages from "./i18n";
-import customCss from "./customCss";
 import './utils';
 
 await i18next.init(messages);
@@ -77,7 +75,7 @@ if (cart !== null) {
         let url = cart.getAttribute('data-url');
         console.log(url);
         let body = document.getElementById('order-body');
-        if(!body) return;
+        if (!body) return;
         body.innerHTML = '';
         fetch(url, {
             headers: headers
@@ -175,7 +173,7 @@ if (typeof forms != 'undefined') {
                     let qty = document.getElementById('qty');
                     if (qty) {
                         qty.innerHTML = json.store.quantity;
-                        if(success !== undefined) {
+                        if (success !== undefined) {
                             showToast(success, json.store.message);
                         }
                         if (json.store.url !== null) {
